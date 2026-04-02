@@ -12,6 +12,12 @@
 </head>
 <body>
 
+  <!-- Custom cursor -->
+  <div id="cursor-dot"   aria-hidden="true"></div>
+  <div id="cursor-ring"  aria-hidden="true"></div>
+  <!-- Scroll progress bar -->
+  <div id="scrollProgress" aria-hidden="true"></div>
+
   <!-- ===================== NAVBAR ===================== -->
   <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
     <div class="container">
@@ -33,12 +39,13 @@
 
   <!-- ===================== HERO ===================== -->
   <section class="hero" id="hero" aria-label="Introduction">
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
     <div class="container">
       <div class="hero-grid">
         <!-- Copy -->
         <div class="hero-content">
           <div class="hero-badge"><span class="dot" aria-hidden="true"></span>Available for new projects</div>
-          <h1 class="hero-title">
+          <h1 class="hero-title" data-text="Senior Mobile Engineering">
             Senior<br />
             <span class="gradient-text">Mobile Engineering</span><br />
             Done Right
@@ -71,6 +78,14 @@
           <div class="hero-glow"></div>
           <div class="hero-card-stack">
             <div class="ai-card">
+              <div class="terminal-topbar">
+                <div class="t-dots">
+                  <span class="t-dot red"   aria-hidden="true"></span>
+                  <span class="t-dot yellow" aria-hidden="true"></span>
+                  <span class="t-dot green"  aria-hidden="true"></span>
+                </div>
+                <span class="terminal-filename">android-review.sh</span>
+              </div>
               <div class="ai-card-header">
                 <div class="ai-card-icon blue">🤖</div>
                 <div>
