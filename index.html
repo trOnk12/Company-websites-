@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mateusz Pachulski – Senior Android & AI Engineer. 7+ years delivering scalable mobile systems for banking, messaging, and IoT. AI-powered development services." />
+  <title>MP Tech – AI-Powered Mobile Development</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#hero" class="nav-logo" aria-label="MP Tech home">MP Tech</a>
+        <ul class="nav-links" id="navLinks" role="list">
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#highlights">Work</a></li>
+          <li><a href="#contact" class="btn btn-primary nav-cta nav-cta-desktop">Hire Me</a></li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero" aria-label="Introduction">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Copy -->
+        <div class="hero-content">
+          <div class="hero-badge"><span class="dot" aria-hidden="true"></span>Available for new projects</div>
+          <h1 class="hero-title">
+            AI-Powered<br />
+            <span class="gradient-text">Mobile Engineering</span><br />
+            at Scale
+          </h1>
+          <p class="hero-desc">
+            Senior Android engineer with 7+ years in banking, messaging &amp; IoT — now supercharging every project with AI: faster delivery, smarter testing, and production-ready architecture.
+          </p>
+          <div class="hero-actions">
+            <a href="#contact" class="btn btn-primary">🚀 Start a Project</a>
+            <a href="#services" class="btn btn-outline">Explore Services</a>
+          </div>
+          <div class="hero-stats">
+            <div>
+              <div class="hero-stat-num"><span data-target="7" data-suffix="+">0+</span></div>
+              <div class="hero-stat-label">Years Experience</div>
+            </div>
+            <div>
+              <div class="hero-stat-num"><span data-target="15" data-suffix="+">0+</span></div>
+              <div class="hero-stat-label">Apps Delivered</div>
+            </div>
+            <div>
+              <div class="hero-stat-num"><span data-target="4">0</span></div>
+              <div class="hero-stat-label">Countries Served</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-glow"></div>
+          <div class="hero-card-stack">
+            <div class="ai-card">
+              <div class="ai-card-header">
+                <div class="ai-card-icon blue">🤖</div>
+                <div>
+                  <div class="ai-card-title">AI Code Review</div>
+                  <div class="ai-card-subtitle">Running analysis…</div>
+                </div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-label"><span>Architecture quality</span><span>94%</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="94%"></div></div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-label"><span>Test coverage</span><span>89%</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="89%"></div></div>
+              </div>
+              <div class="progress-row">
+                <div class="progress-label"><span>Performance score</span><span>97%</span></div>
+                <div class="progress-bar"><div class="progress-fill" data-width="97%"></div></div>
+              </div>
+            </div>
+
+            <!-- Floating pills -->
+            <div class="floating-pill">✅ Build passed</div>
+            <div class="floating-pill">⚡ 2× faster delivery</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICES ===================== -->
+  <section class="services" id="services" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-label">What I Do</span>
+        <h2 class="section-title" id="services-title">AI-Enhanced Services</h2>
+        <p class="section-subtitle">Every service combines battle-tested engineering practices with AI tools to deliver faster, more reliable results.</p>
+      </div>
+
+      <div class="services-grid">
+
+        <article class="service-card fade-up" aria-label="AI-Accelerated Android Development">
+          <div class="service-icon" aria-hidden="true">📱</div>
+          <h3 class="service-name">AI-Accelerated Android Development</h3>
+          <p class="service-desc">From greenfield apps to legacy rewrites — I use AI pair-programming, automated code generation, and intelligent refactoring to ship production Kotlin &amp; Jetpack Compose apps up to 2× faster.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">Kotlin</li>
+            <li class="tag">Jetpack Compose</li>
+            <li class="tag">Clean Architecture</li>
+            <li class="tag">Coroutines</li>
+          </ul>
+        </article>
+
+        <article class="service-card fade-up" aria-label="AI-Powered Testing & Quality">
+          <div class="service-icon" aria-hidden="true">🧪</div>
+          <h3 class="service-name">AI-Powered Testing &amp; Quality</h3>
+          <p class="service-desc">AI-generated snapshot tests, automated accessibility audits, and intelligent regression detection. I introduced this approach during a large-scale banking rebranding, catching UI bugs before they reached production.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">Snapshot Testing</li>
+            <li class="tag">WCAG Accessibility</li>
+            <li class="tag">AI Test Generation</li>
+            <li class="tag">CI Integration</li>
+          </ul>
+        </article>
+
+        <article class="service-card fade-up" aria-label="Kotlin Multiplatform & AI Integration">
+          <div class="service-icon" aria-hidden="true">🔗</div>
+          <h3 class="service-name">Kotlin Multiplatform &amp; AI Integration</h3>
+          <p class="service-desc">Share business logic across Android, iOS, and server with KMP. I embed on-device AI models and cloud LLM integrations to add smart features — recommendations, NLP, real-time analysis — without sacrificing performance.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">KMP</li>
+            <li class="tag">Ktor</li>
+            <li class="tag">SQLDelight</li>
+            <li class="tag">On-device AI</li>
+          </ul>
+        </article>
+
+        <article class="service-card fade-up" aria-label="AI-Driven Architecture Consulting">
+          <div class="service-icon" aria-hidden="true">🏗️</div>
+          <h3 class="service-name">AI-Driven Architecture Consulting</h3>
+          <p class="service-desc">I help teams define scalable architectures using ADR (Architecture Decision Records) enhanced by AI analysis. From monorepo setups to Gradle optimisation, I align technical decisions with long-term product goals.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">ADR</li>
+            <li class="tag">Monorepo</li>
+            <li class="tag">Gradle</li>
+            <li class="tag">MVI</li>
+          </ul>
+        </article>
+
+        <article class="service-card fade-up" aria-label="End-to-End Encrypted Messaging">
+          <div class="service-icon" aria-hidden="true">🔐</div>
+          <h3 class="service-name">End-to-End Encrypted Messaging</h3>
+          <p class="service-desc">Built secure, privacy-first communication features for Wire Messenger. I design and implement E2E encryption flows, gRPC binary transfer, and AI-powered moderation pipelines — keeping data private and apps compliant.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">E2E Encryption</li>
+            <li class="tag">gRPC</li>
+            <li class="tag">Protobuf</li>
+            <li class="tag">Privacy</li>
+          </ul>
+        </article>
+
+        <article class="service-card fade-up" aria-label="IoT & BLE SDK Development">
+          <div class="service-icon" aria-hidden="true">📡</div>
+          <h3 class="service-name">IoT &amp; BLE SDK Development</h3>
+          <p class="service-desc">Built a BLE-mesh Android SDK from scratch, porting an iOS implementation and adapting the mesh networking protocol. I integrate AI anomaly detection and predictive maintenance features directly into device SDKs.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">BLE</li>
+            <li class="tag">Mesh Networking</li>
+            <li class="tag">Android SDK</li>
+            <li class="tag">IoT AI</li>
+          </ul>
+        </article>
+
+        <article class="service-card fade-up" aria-label="Real-Time Data & FinTech Apps">
+          <div class="service-icon" aria-hidden="true">📊</div>
+          <h3 class="service-name">Real-Time Data &amp; FinTech Apps</h3>
+          <p class="service-desc">Delivered crypto trading platforms with live WebSocket data visualisation, reactive programming, and AI-powered chart pattern detection. Also built multi-country core banking modules used daily by millions of users.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">WebSockets</li>
+            <li class="tag">RxJava</li>
+            <li class="tag">Banking</li>
+            <li class="tag">Real-time AI</li>
+          </ul>
+        </article>
+
+        <article class="service-card fade-up" aria-label="Cross-Platform Flutter Development">
+          <div class="service-icon" aria-hidden="true">🦋</div>
+          <h3 class="service-name">Cross-Platform Flutter Development</h3>
+          <p class="service-desc">Solo-built the FitCrony fitness app from scratch to MVP in 4 months using Flutter. I leverage AI for personalised workout recommendations, computer-vision form analysis, and smart health insights.</p>
+          <ul class="service-tags" aria-label="Technologies">
+            <li class="tag">Flutter</li>
+            <li class="tag">Dart</li>
+            <li class="tag">Health AI</li>
+            <li class="tag">MVP</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="about" id="about" aria-labelledby="about-title">
+    <div class="container">
+      <div class="about-grid">
+        <!-- Skills column -->
+        <div class="fade-up">
+          <span class="section-label">Skills &amp; Stack</span>
+          <h2 class="section-title" id="about-title">Built on a Deep Technical Foundation</h2>
+          <p class="section-subtitle">7+ years of hands-on work across banking, messaging, IoT, and consumer apps — now amplified by AI tools at every layer.</p>
+
+          <div class="skills-list">
+            <div class="skill-group">
+              <div class="skill-group-label">Android</div>
+              <ul class="skill-chips" aria-label="Android skills">
+                <li class="chip">Kotlin</li>
+                <li class="chip">Jetpack Compose</li>
+                <li class="chip">Android SDK</li>
+                <li class="chip">Clean Architecture</li>
+                <li class="chip">MVI</li>
+                <li class="chip">Coroutines</li>
+                <li class="chip">Dependency Injection</li>
+                <li class="chip">Java</li>
+                <li class="chip">Reactive Programming</li>
+              </ul>
+            </div>
+            <div class="skill-group">
+              <div class="skill-group-label">Platform &amp; Connectivity</div>
+              <ul class="skill-chips" aria-label="Platform skills">
+                <li class="chip">Kotlin Multiplatform</li>
+                <li class="chip">Ktor</li>
+                <li class="chip">SQLDelight</li>
+                <li class="chip">Koin</li>
+                <li class="chip">Protobuf</li>
+                <li class="chip">gRPC</li>
+                <li class="chip">BLE</li>
+                <li class="chip">Encryption</li>
+              </ul>
+            </div>
+            <div class="skill-group">
+              <div class="skill-group-label">AI &amp; Tooling</div>
+              <ul class="skill-chips" aria-label="AI tools">
+                <li class="chip">LLM Integration</li>
+                <li class="chip">On-device ML</li>
+                <li class="chip">AI Code Review</li>
+                <li class="chip">Snapshot Testing</li>
+                <li class="chip">WCAG / Accessibility</li>
+                <li class="chip">ADR</li>
+                <li class="chip">Gradle</li>
+              </ul>
+            </div>
+            <div class="skill-group">
+              <div class="skill-group-label">Languages</div>
+              <ul class="skill-chips" aria-label="Languages">
+                <li class="chip">Dutch (fluent)</li>
+                <li class="chip">English (professional)</li>
+                <li class="chip">Polish (native)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline column -->
+        <div class="fade-up">
+          <span class="section-label">Experience</span>
+          <h2 class="section-title" style="visibility:hidden;height:0;overflow:hidden" aria-hidden="true">Experience Timeline</h2>
+          <ol class="timeline" aria-label="Work experience">
+            <li class="timeline-item">
+              <div class="timeline-period">2023 – Present</div>
+              <div class="timeline-role">Senior Android Developer</div>
+              <div class="timeline-company">Santander / Erste · Remote</div>
+              <div class="timeline-desc">Snapshot testing during rebranding, WCAG accessibility rollout, 30+ XML → Compose migrations, monorepo Gradle alignment, core banking module for 4 countries, introduced ADRs.</div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-period">2021 – 2023</div>
+              <div class="timeline-role">Senior Android Developer</div>
+              <div class="timeline-company">Wire (via AppUnite) · Remote</div>
+              <div class="timeline-desc">Full rewrite of Wire Messenger with Jetpack Compose, KMP architecture with Ktor / Koin / SQLDelight, E2E encrypted features over gRPC.</div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-period">2019 – 2021</div>
+              <div class="timeline-role">Senior Android Developer</div>
+              <div class="timeline-company">AppUnite · Remote</div>
+              <div class="timeline-desc">Multi-client delivery across fintech, fitness, and retail. Built FitCrony (Flutter, 4 months), BlockTrade crypto platform (WebSockets, RxJava), and AlleFolders Dutch brochure app.</div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-period">2017 – 2019</div>
+              <div class="timeline-role">Android SDK Engineer</div>
+              <div class="timeline-company">Bright Inventions · Gdańsk</div>
+              <div class="timeline-desc">Built a BLE-mesh Android SDK from scratch (iOS port), live device-map demo app, full SDK documentation and test coverage as sole Android engineer.</div>
+            </li>
+            <li class="timeline-item">
+              <div class="timeline-period">2014 – 2019</div>
+              <div class="timeline-role">Bachelor of Engineering</div>
+              <div class="timeline-company">Hanze University · Groningen, Netherlands</div>
+              <div class="timeline-desc">Electrical &amp; Electronics Engineering — foundation in embedded systems, signal processing, and hardware-software integration.</div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROCESS ===================== -->
+  <section class="process" id="process" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-label">How It Works</span>
+        <h2 class="section-title" id="process-title">From Idea to Shipped Product</h2>
+        <p class="section-subtitle">A lean, AI-assisted process that keeps you in control at every step.</p>
+      </div>
+
+      <ol class="process-grid" aria-label="Development process steps">
+        <li class="process-card fade-up">
+          <div class="process-icon" aria-hidden="true">💬</div>
+          <h3 class="process-title">Discovery Call</h3>
+          <p class="process-desc">We discuss your goals, constraints, and timeline. I use AI to analyse your existing codebase and produce an instant technical audit.</p>
+        </li>
+        <li class="process-card fade-up">
+          <div class="process-icon" aria-hidden="true">📐</div>
+          <h3 class="process-title">Architecture Plan</h3>
+          <p class="process-desc">I deliver an ADR-backed architecture proposal with risk analysis, stack recommendations, and a phased delivery roadmap.</p>
+        </li>
+        <li class="process-card fade-up">
+          <div class="process-icon" aria-hidden="true">⚙️</div>
+          <h3 class="process-title">AI-Assisted Build</h3>
+          <p class="process-desc">Development begins with AI pair-programming, automated tests generated alongside every feature, and weekly progress demos.</p>
+        </li>
+        <li class="process-card fade-up">
+          <div class="process-icon" aria-hidden="true">🚀</div>
+          <h3 class="process-title">Launch &amp; Support</h3>
+          <p class="process-desc">Google Play release management, post-launch monitoring, and optional ongoing AI-powered maintenance retainer.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ===================== HIGHLIGHTS ===================== -->
+  <section class="highlights" id="highlights" aria-labelledby="highlights-title">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-label">Project Highlights</span>
+        <h2 class="section-title" id="highlights-title">What AI Makes Possible</h2>
+        <p class="section-subtitle">Real outcomes from real projects — the same approach I'll bring to yours.</p>
+      </div>
+
+      <div class="highlights-grid">
+
+        <article class="highlight-card fade-up" aria-label="Banking rebranding highlight">
+          <p class="highlight-quote">
+            "Introduced AI-assisted snapshot testing during a large-scale banking rebranding. Caught 40+ UI regressions across dual-brand layouts before a single line reached production — across 4 countries simultaneously."
+          </p>
+          <div class="highlight-meta">
+            <div class="highlight-avatar" aria-hidden="true">SB</div>
+            <div>
+              <div class="highlight-name">Santander / Erste Bank</div>
+              <div class="highlight-role">Rebranding &amp; Design System · 2023–Present</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="highlight-card fade-up" aria-label="Wire Messenger highlight">
+          <p class="highlight-quote">
+            "Full rewrite of the Wire Messenger Android app using Jetpack Compose. Set up Kotlin Multiplatform with AI-accelerated shared logic, shipped features continuously during migration — zero downtime for millions of users."
+          </p>
+          <div class="highlight-meta">
+            <div class="highlight-avatar" aria-hidden="true">WR</div>
+            <div>
+              <div class="highlight-name">Wire Messenger</div>
+              <div class="highlight-role">E2E Encrypted App Rewrite · 2021–2023</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="highlight-card fade-up" aria-label="FitCrony highlight">
+          <p class="highlight-quote">
+            "Solo-built FitCrony, an AI-powered fitness app, from zero to MVP in 4 months using Flutter. AI-generated workout plans and computer-vision form checks delivered a polished product on a startup timeline."
+          </p>
+          <div class="highlight-meta">
+            <div class="highlight-avatar" aria-hidden="true">FC</div>
+            <div>
+              <div class="highlight-name">FitCrony</div>
+              <div class="highlight-role">Flutter Fitness App · AppUnite</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="highlight-card fade-up" aria-label="BLE SDK highlight">
+          <p class="highlight-quote">
+            "Built a BLE-mesh Android SDK from scratch as the sole engineer — porting an iOS mesh networking protocol, writing full documentation, and delivering AI-assisted anomaly detection for IoT devices."
+          </p>
+          <div class="highlight-meta">
+            <div class="highlight-avatar" aria-hidden="true">BI</div>
+            <div>
+              <div class="highlight-name">Bright Inventions</div>
+              <div class="highlight-role">BLE Mesh SDK · 2017–2019</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="highlight-card fade-up" aria-label="BlockTrade highlight">
+          <p class="highlight-quote">
+            "Implemented real-time crypto data visualisation with WebSockets and RxJava for BlockTrade. AI-powered chart pattern recognition added predictive signals directly in the mobile trading interface."
+          </p>
+          <div class="highlight-meta">
+            <div class="highlight-avatar" aria-hidden="true">BT</div>
+            <div>
+              <div class="highlight-name">BlockTrade</div>
+              <div class="highlight-role">Crypto Platform · AppUnite</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="highlight-card fade-up" aria-label="AlleFolders highlight">
+          <p class="highlight-quote">
+            "Built AlleFolders, a Dutch retail brochure app, end-to-end as the sole Android developer. Integrated AI-powered personalisation to surface relevant offers, improving engagement by surfacing the right content at the right time."
+          </p>
+          <div class="highlight-meta">
+            <div class="highlight-avatar" aria-hidden="true">AF</div>
+            <div>
+              <div class="highlight-name">AlleFolders</div>
+              <div class="highlight-role">Dutch Retail App · AppUnite</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="contact" id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info fade-up">
+          <span class="section-label">Get in Touch</span>
+          <h2 class="section-title" id="contact-title">Let's Build Something with AI</h2>
+          <p class="section-subtitle">Have an Android project, architecture challenge, or AI feature idea? I'd love to hear about it.</p>
+
+          <div style="margin-top: 2.5rem;">
+            <div class="contact-item">
+              <div class="contact-icon" aria-hidden="true">📧</div>
+              <div>
+                <div class="contact-label">Email</div>
+                <a href="mailto:m.pachulski94@gmail.com" class="contact-value">m.pachulski94@gmail.com</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" aria-hidden="true">📱</div>
+              <div>
+                <div class="contact-label">Phone</div>
+                <a href="tel:+48513890663" class="contact-value">+48 513 890 663</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" aria-hidden="true">🌐</div>
+              <div>
+                <div class="contact-label">LinkedIn</div>
+                <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer" class="contact-value">linkedin.com/in/mateusz-pachulski</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon" aria-hidden="true">📍</div>
+              <div>
+                <div class="contact-label">Location</div>
+                <div class="contact-value">Zielona Góra, Poland · Remote worldwide</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-up">
+          <form class="contact-form" id="contactForm" novalidate aria-label="Contact form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="firstName">First Name *</label>
+                <input class="form-input" type="text" id="firstName" name="firstName" placeholder="Ada" required autocomplete="given-name" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="lastName">Last Name</label>
+                <input class="form-input" type="text" id="lastName" name="lastName" placeholder="Lovelace" autocomplete="family-name" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">Email *</label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="ada@example.com" required autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="service">Service I'm interested in</label>
+              <select class="form-select" id="service" name="service">
+                <option value="">Select a service…</option>
+                <option value="android">AI-Accelerated Android Development</option>
+                <option value="testing">AI-Powered Testing &amp; Quality</option>
+                <option value="kmp">Kotlin Multiplatform &amp; AI Integration</option>
+                <option value="architecture">Architecture Consulting</option>
+                <option value="encryption">E2E Encrypted Messaging</option>
+                <option value="iot">IoT &amp; BLE SDK Development</option>
+                <option value="fintech">Real-Time Data &amp; FinTech</option>
+                <option value="flutter">Cross-Platform Flutter Development</option>
+                <option value="other">Other / Not sure yet</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="message">Tell me about your project *</label>
+              <textarea class="form-textarea" id="message" name="message" placeholder="What are you building? What's the biggest challenge you're facing?" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">🚀 Send Message</button>
+          </form>
+          <div class="form-success" id="formSuccess" role="status" aria-live="polite">
+            <p style="font-size:2rem;margin-bottom:.5rem;">🎉</p>
+            <p>Message sent! I'll get back to you within 24 hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer role="contentinfo">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">MP Tech</div>
+        <p class="footer-copy">© <span id="year"></span> Mateusz Pachulski. All rights reserved.</p>
+        <nav class="footer-links" aria-label="Footer links">
+          <a href="#services">Services</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <a href="mailto:m.pachulski94@gmail.com">Email</a>
+          <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
