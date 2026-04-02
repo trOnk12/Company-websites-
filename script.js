@@ -86,6 +86,23 @@ const counterObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 counterEls.forEach(el => counterObserver.observe(el));
 
+/* ---------- Floating CTA visibility ---------- */
+const floatCta = document.getElementById('floatCta');
+const contactSection = document.getElementById('contact');
+const FLOAT_CTA_SHOW_THRESHOLD = 500;
+const CONTACT_SECTION_HIDE_OFFSET = 100;
+
+function updateFloatCta() {
+  if (!floatCta || !contactSection) return;
+  const scrollY = window.scrollY;
+  const contactTop = contactSection.offsetTop;
+  const visible = scrollY > FLOAT_CTA_SHOW_THRESHOLD && scrollY < contactTop - CONTACT_SECTION_HIDE_OFFSET;
+  floatCta.classList.toggle('visible', visible);
+  floatCta.setAttribute('aria-hidden', String(!visible));
+}
+
+window.addEventListener('scroll', updateFloatCta, { passive: true });
+
 /* ---------- Contact form ---------- */
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
