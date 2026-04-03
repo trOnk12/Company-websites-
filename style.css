@@ -5,7 +5,7 @@
   --bg: #0D0D0D;
   --text: #F5F5F5;
   --accent: #F59E0B;
-  --muted: #666666;
+  --muted: #8C8C8C;
   --border: #222222;
   --green: #22C55E;
   --font-head: 'Playfair Display', Georgia, serif;
@@ -703,6 +703,96 @@ textarea::placeholder { color: #333; }
 .footer-nav a:hover { color: var(--accent); }
 
 /* =====================
+   TERMINAL TRIGGER BUTTON
+   ===================== */
+#term-trigger {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  background: rgba(13,13,13,0.9);
+  border: 1px solid rgba(245,158,11,0.35);
+  color: var(--accent);
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.07em;
+  z-index: 999;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  line-height: 1;
+}
+#term-trigger:hover {
+  border-color: var(--accent);
+  background: rgba(245,158,11,0.07);
+}
+#term-trigger.hidden { display: none; }
+
+/* =====================
+   HERO CODE DECORATION
+   ===================== */
+.hero-code-deco {
+  position: absolute;
+  right: 2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 2;
+  color: rgba(245,158,11,0.13);
+  pointer-events: none;
+  user-select: none;
+  white-space: pre;
+  border-left: 2px solid rgba(245,158,11,0.07);
+  padding-left: 1.25rem;
+  letter-spacing: 0.02em;
+}
+@media (max-width: 960px) { .hero-code-deco { display: none; } }
+
+/* =====================
+   HERO META STATS
+   ===================== */
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 2.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.hero-meta-item strong {
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 0.3rem;
+}
+
+/* =====================
+   KEYBOARD MAP (footer)
+   ===================== */
+.kbd-map {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+.kbd-key {
+  display: inline-block;
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.38rem;
+  font-size: 0.58rem;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  vertical-align: middle;
+  line-height: 1.6;
+}
+
+/* =====================
    TERMINAL EASTER EGG
    ===================== */
 #terminal {
@@ -807,7 +897,9 @@ textarea::placeholder { color: #333; }
 
   #cursor { display: none !important; }
   #terminal { display: none !important; }
+  #term-trigger { display: none !important; }
   #kbd-toast { display: none !important; }
+  .kbd-map { display: none !important; }
 
   .section-inner { padding: 0 1.25rem; }
   section { padding: 4rem 0; }
