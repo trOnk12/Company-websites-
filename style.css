@@ -26,7 +26,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
-  cursor: none;
+  cursor: auto;
   overflow-x: hidden;
 }
 
@@ -764,7 +764,7 @@ textarea::placeholder { color: #333; }
 #term-output::-webkit-scrollbar-track { background: transparent; }
 #term-output::-webkit-scrollbar-thumb { background: var(--border); }
 
-.term-line { color: var(--text); white-space: pre-wrap; word-break: break-all; }
+.term-line { color: var(--text); white-space: pre-wrap; overflow-wrap: break-word; word-break: break-word; }
 .term-line.muted { color: var(--muted); }
 .term-line.accent { color: var(--accent); }
 .term-prompt-echo { color: var(--muted); margin-top: 0.2rem; }

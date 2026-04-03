@@ -23,6 +23,7 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 const cursor = document.getElementById('cursor');
 
 if (!isMobile() && cursor) {
+  document.body.style.cursor = 'none';
   document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top  = e.clientY + 'px';
@@ -346,12 +347,11 @@ if (contactForm && formSuccess) {
     const firstName = contactForm.querySelector('#firstName');
     const email     = contactForm.querySelector('#email');
     const message   = contactForm.querySelector('#message');
-    const emailRe   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     let valid = true;
     [firstName, email, message].forEach(field => {
       const ok = field.value.trim() !== '' &&
-        (field.type !== 'email' || emailRe.test(field.value.trim()));
+        (field.type !== 'email' || field.validity.valid);
       field.setAttribute('aria-invalid', ok ? 'false' : 'true');
       field.style.borderColor = ok ? '' : 'var(--accent)';
       if (!ok) valid = false;
