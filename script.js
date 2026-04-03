@@ -174,6 +174,11 @@ function openTerminal() {
     appendTermLine('Welcome to mptech terminal. Type "help" to start.', 'accent');
   }
   if (termInput) termInput.focus();
+  const trigger = document.getElementById('term-trigger');
+  if (trigger) {
+    trigger.classList.add('hidden');
+    trigger.setAttribute('aria-expanded', 'true');
+  }
 }
 
 function closeTerminal() {
@@ -181,6 +186,11 @@ function closeTerminal() {
   termOpen = false;
   terminal.classList.remove('open');
   terminal.setAttribute('aria-hidden', 'true');
+  const trigger = document.getElementById('term-trigger');
+  if (trigger) {
+    trigger.classList.remove('hidden');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
 }
 
 function appendTermLine(text, cls) {
@@ -286,6 +296,14 @@ if (termInput) {
 
 if (termClose) {
   termClose.addEventListener('click', closeTerminal);
+}
+
+const termTrigger = document.getElementById('term-trigger');
+if (termTrigger) {
+  termTrigger.addEventListener('click', () => {
+    if (termOpen) closeTerminal();
+    else openTerminal();
+  });
 }
 
 /* =====================
