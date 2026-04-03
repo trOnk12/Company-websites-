@@ -890,6 +890,139 @@ textarea::placeholder { color: #333; }
 }
 
 /* =====================
+   BOOT SCREEN
+   ===================== */
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  background: #060606;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+#boot-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#boot-screen.hidden {
+  display: none;
+}
+
+#boot-content {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text);
+  width: 480px;
+  max-width: 90vw;
+}
+
+.boot-line {
+  color: var(--muted);
+  line-height: 1.85;
+  white-space: pre;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.boot-line.accent { color: var(--accent); }
+.boot-line.green  { color: var(--green); }
+
+#boot-progress-wrap {
+  margin: 1.1rem 0 0.6rem;
+  height: 2px;
+  background: var(--border);
+  width: 100%;
+}
+
+#boot-bar {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.12s linear;
+  box-shadow: 0 0 10px rgba(245,158,11,0.65), 0 0 22px rgba(245,158,11,0.3);
+}
+
+#boot-skip {
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: 0.07em;
+  opacity: 0.5;
+  text-align: right;
+}
+
+/* =====================
+   MATRIX CANVAS (hero)
+   ===================== */
+#matrix-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure hero content stays above canvas */
+#hero .section-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* =====================
+   GLITCH (hero name)
+   ===================== */
+@keyframes glitch {
+  0%, 85%, 100% { transform: none; filter: none; }
+  86%  { transform: translate(-2px, 0) skewX(-0.5deg);
+         filter: drop-shadow(3px 0 rgba(245,158,11,0.6))
+                 drop-shadow(-3px 0 rgba(0, 212, 255, 0.35)); }
+  87%  { transform: translate(2px, 0) skewX(0.5deg);
+         filter: drop-shadow(-3px 0 rgba(245,158,11,0.5))
+                 drop-shadow(3px 0 rgba(255, 0, 128, 0.3)); opacity: 0.92; }
+  88%  { transform: translate(-1px, 1px);
+         filter: drop-shadow(2px 0 rgba(245,158,11,0.3)); opacity: 1; }
+  89%  { transform: translate(1px, 0) skewX(-0.2deg); filter: none; }
+  90%  { transform: none; filter: none; }
+}
+
+.hero-name {
+  animation: glitch 10s ease-in-out infinite;
+  text-shadow: 0 0 80px rgba(245,158,11,0.06);
+}
+
+/* =====================
+   NEON / GLOW EFFECTS
+   ===================== */
+.cs-stat.visible {
+  text-shadow: 0 0 40px rgba(245,158,11,0.22);
+}
+
+.hero-cta:hover {
+  opacity: 1;
+  box-shadow: 0 0 22px rgba(245,158,11,0.4), 0 0 44px rgba(245,158,11,0.15);
+}
+
+#fixed-cta:hover {
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(245,158,11,0.38);
+}
+
+.submit-btn:hover {
+  opacity: 1;
+  box-shadow: 0 0 18px rgba(245,158,11,0.32);
+}
+
+#term-trigger:hover {
+  box-shadow: 0 0 14px rgba(245,158,11,0.2);
+}
+
+/* =====================
    MOBILE (≤640px)
    ===================== */
 @media (max-width: 640px) {
@@ -957,4 +1090,6 @@ textarea::placeholder { color: #333; }
 
   #avail-badge { font-size: 0.6rem; }
   #fixed-cta { font-size: 0.62rem; padding: 0.6rem 0.9rem; }
+
+  #matrix-canvas { opacity: 0.04; }
 }

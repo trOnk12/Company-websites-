@@ -1,6 +1,11 @@
 'use strict';
 
 /* =====================
+   CONSTANTS
+   ===================== */
+const PORTFOLIO_VERSION = 'v2.0.1';
+
+/* =====================
    UTILITIES
    ===================== */
 function sleep(ms) {
@@ -10,6 +15,69 @@ function sleep(ms) {
 function isMobile() {
   return window.innerWidth <= 640;
 }
+
+/* =====================
+   BOOT SCREEN
+   ===================== */
+(function initBoot() {
+  const screen  = document.getElementById('boot-screen');
+  if (!screen) return;
+
+  // Only show once per browser session
+  if (sessionStorage.getItem('mptech_booted')) {
+    screen.classList.add('hidden');
+    return;
+  }
+
+  const linesEl = document.getElementById('boot-lines');
+  const bar     = document.getElementById('boot-bar');
+
+  const messages = [
+    { text: 'mptech://boot ~ bash',              cls: 'accent', delay: 0   },
+    { text: '> initializing runtime…',            cls: '',       delay: 220 },
+    { text: '> loading  [android-sdk]  ✓',        cls: 'green',  delay: 440 },
+    { text: '> loading  [kotlin 2.0]   ✓',        cls: 'green',  delay: 620 },
+    { text: '> loading  [jetpack-compose] ✓',     cls: 'green',  delay: 800 },
+    { text: '> loading  [e2e-encryption] ✓',      cls: 'green',  delay: 960 },
+    { text: '> mounting portfolio assets… done',  cls: '',       delay: 1180},
+    { text: '> all systems nominal.',             cls: 'accent', delay: 1420},
+    { text: '> 7+ years · 4 countries · available now.', cls: '', delay: 1640},
+  ];
+
+  function dismiss() {
+    sessionStorage.setItem('mptech_booted', '1');
+    screen.classList.add('fade-out');
+    setTimeout(() => screen.classList.add('hidden'), 520);
+    document.removeEventListener('keydown', dismiss);
+    screen.removeEventListener('click', dismiss);
+  }
+
+  screen.addEventListener('click', dismiss);
+  document.addEventListener('keydown', dismiss);
+
+  (async function runBoot() {
+    const totalDuration = 1900;
+    const barInterval = setInterval(() => {
+      const pct = Math.min(parseFloat(bar.style.width || '0') + 2, 100);
+      bar.style.width = pct + '%';
+      if (pct >= 100) clearInterval(barInterval);
+    }, totalDuration / 50);
+
+    for (let i = 0; i < messages.length; i++) {
+      const msg      = messages[i];
+      const prevDelay = i > 0 ? messages[i - 1].delay : 0;
+      await sleep(msg.delay - prevDelay);
+      if (screen.classList.contains('fade-out') || screen.classList.contains('hidden')) return;
+      const line = document.createElement('div');
+      line.className = 'boot-line' + (msg.cls ? ' ' + msg.cls : '');
+      line.textContent = msg.text;
+      linesEl.appendChild(line);
+    }
+
+    await sleep(700);
+    dismiss();
+  }());
+}());
 
 /* =====================
    FOOTER YEAR
@@ -37,6 +105,50 @@ if (!isMobile() && cursor) {
     cursor.style.transform = 'translate(-50%, -50%) scale(1)';
   });
 }
+
+/* =====================
+   MATRIX RAIN CANVAS
+   ===================== */
+(function initMatrix() {
+  const canvas = document.getElementById('matrix-canvas');
+  if (!canvas) return;
+
+  const MATRIX_CHARS         = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン0123456789ABCDEFKLMNPQRSUVXYZ{}[]<>/|\\'.split('');
+  const MATRIX_FRAME_INTERVAL = 48; // ~20 FPS
+  const ctx                   = canvas.getContext('2d');
+  const fontSize              = 13;
+  let cols, drops;
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    cols  = Math.floor(canvas.width / fontSize);
+    drops = Array.from({ length: cols }, () => Math.random() * -50);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.fillStyle = 'rgba(13, 13, 13, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#F59E0B';
+    ctx.font      = fontSize + 'px "Space Mono", monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i] += 0.55;
+    }
+  }
+
+  setInterval(draw, MATRIX_FRAME_INTERVAL);
+}());
 
 /* =====================
    SMOOTH SCROLL (all #anchors)
@@ -266,15 +378,102 @@ async function processCommand(raw) {
     await sleep(400);
     closeTerminal();
 
+  } else if (c === 'neofetch') {
+    appendTermLine('');
+    appendTermLine('  ███╗   ███╗██████╗ ', 'accent');
+    appendTermLine('  ████╗ ████║██╔══██╗', 'accent');
+    appendTermLine('  ██╔████╔██║██████╔╝', 'accent');
+    appendTermLine('  ██║╚██╔╝██║██╔═══╝ ', 'accent');
+    appendTermLine('  ██║ ╚═╝ ██║██║     ', 'accent');
+    appendTermLine('  ╚═╝     ╚═╝╚═╝     ', 'accent');
+    appendTermLine('');
+    await typeTermLine('  OS:       Portfolio ' + PORTFOLIO_VERSION);
+    await typeTermLine('  Host:     Mateusz Pachulski');
+    await typeTermLine('  Shell:    Kotlin 2.0 / Bash');
+    await typeTermLine('  CPU:      Senior Android Engineer');
+    await typeTermLine('  Memory:   6+ production apps shipped');
+    await typeTermLine('  Network:  4 countries · remote worldwide');
+    await typeTermLine('  Uptime:   since 2017 — no downtime');
+    appendTermLine('');
+
+  } else if (c === 'uptime') {
+    const start     = new Date(2017, 0, 1);
+    const now       = new Date();
+    const diffMs    = now - start;
+    const days      = Math.floor(diffMs / 86400000);
+    const hours     = Math.floor((diffMs % 86400000) / 3600000);
+    await typeTermLine('mptech up ' + days + ' days, ' + hours + ' hours');
+    await typeTermLine('load average: 0.82, 0.91, 0.88');
+    await typeTermLine('users: 1  processes: 47 running');
+
+  } else if (c.startsWith('ping')) {
+    const host = cmd.split(' ')[1] || 'mptech.dev';
+    await typeTermLine('PING ' + host + ' (127.0.0.1): 56 bytes');
+    for (let i = 1; i <= 4; i++) {
+      const ms = (Math.random() * 4 + 1).toFixed(3);
+      await typeTermLine('64 bytes from ' + host + ': icmp_seq=' + i + ' ttl=64 time=' + ms + ' ms');
+      await sleep(200);
+    }
+    await typeTermLine('--- ' + host + ' ping statistics ---', 'muted');
+    await typeTermLine('4 packets transmitted, 4 received, 0% packet loss', 'green');
+
+  } else if (c === 'sudo hire mateusz') {
+    await typeTermLine('[sudo] password for visitor:', 'muted');
+    await sleep(600);
+    await typeTermLine('✓ Access granted. Redirecting to contact...', 'green');
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+    }, 900);
+
+  } else if (c.startsWith('sudo')) {
+    await typeTermLine('sudo: permission denied — try: sudo hire mateusz', 'muted');
+
+  } else if (c === 'git log') {
+    await typeTermLine('* a1b2c3d (HEAD → main) Senior Android Dev @ Santander', 'accent');
+    await typeTermLine('* d4e5f6b (origin/wire) Senior Android Dev @ Wire', 'accent');
+    await typeTermLine('* g7h8i9c (origin/appunite) Android Dev @ AppUnite', 'accent');
+    await typeTermLine('* j0k1l2d (origin/bright) SDK Engineer @ Bright Inventions', 'accent');
+    await typeTermLine('* n3o4p5e (origin/edu) B.Eng Electrical @ Hanze, Groningen', 'accent');
+
+  } else if (c === 'cat readme.md') {
+    await typeTermLine('# Mateusz Pachulski — Senior Android Engineer');
+    await typeTermLine('');
+    await typeTermLine('Available for new projects. Specialising in:');
+    await typeTermLine('- Production Kotlin & Jetpack Compose apps');
+    await typeTermLine('- Kotlin Multiplatform (KMP)');
+    await typeTermLine('- Architecture consulting & ADRs');
+    await typeTermLine('- E2E encrypted messaging (gRPC / Protobuf)');
+    await typeTermLine('- BLE / IoT SDK development');
+
+  } else if (c === 'man mptech') {
+    await typeTermLine('MPTECH(1)              User Commands             MPTECH(1)', 'muted');
+    await typeTermLine('');
+    await typeTermLine('NAME');
+    await typeTermLine('       mptech — Senior Android Engineer for hire');
+    await typeTermLine('');
+    await typeTermLine('SYNOPSIS');
+    await typeTermLine('       mptech [--kotlin] [--compose] [--kmp] [project]');
+    await typeTermLine('');
+    await typeTermLine('DESCRIPTION');
+    await typeTermLine('       7+ years delivering production-grade Android apps.');
+    await typeTermLine('       Run: sudo hire mateusz  to begin collaboration.');
+
   } else if (c === 'help') {
     await typeTermLine('Available commands:');
-    await typeTermLine('  whoami        — About me');
-    await typeTermLine('  ls projects   — List projects');
-    await typeTermLine('  stack         — Technology stack');
-    await typeTermLine('  contact       — Scroll to contact');
-    await typeTermLine('  clear         — Clear terminal');
-    await typeTermLine('  exit          — Close terminal');
-    await typeTermLine('  help          — Show this list');
+    await typeTermLine('  whoami            — About me');
+    await typeTermLine('  ls projects       — List projects');
+    await typeTermLine('  stack             — Technology stack');
+    await typeTermLine('  neofetch          — System info');
+    await typeTermLine('  uptime            — Time since first commit');
+    await typeTermLine('  git log           — Work history');
+    await typeTermLine('  cat readme.md     — Project overview');
+    await typeTermLine('  ping <host>       — Connectivity check');
+    await typeTermLine('  sudo hire mateusz — ⚡ Hire me');
+    await typeTermLine('  man mptech        — Manual page');
+    await typeTermLine('  contact           — Scroll to contact');
+    await typeTermLine('  clear             — Clear terminal');
+    await typeTermLine('  exit              — Close terminal');
 
   } else {
     await typeTermLine('command not found: ' + cmd, 'muted');
