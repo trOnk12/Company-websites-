@@ -673,7 +673,7 @@ if (!isMobile() && tamaCanvas) {
     tamaBubble.textContent = msg;
     tamaBubble.classList.add('visible');
     clearTimeout(bubbleHideTimer);
-    if (duration !== Infinity) {
+    if (duration !== null) {
       bubbleHideTimer = setTimeout(() => tamaBubble.classList.remove('visible'), duration || 2200);
     }
   }
@@ -713,7 +713,7 @@ if (!isMobile() && tamaCanvas) {
     challengeActive = true;
     challengeClicks = 0;
     if (tamaEl) tamaEl.classList.add('challenge-active');
-    showTamaBubble('⚡ TAP ' + CHALLENGE_TARGET + 'x! GO!', Infinity);
+    showTamaBubble(`⚡ TAP ${CHALLENGE_TARGET}x! GO!`, null);
     tamaState = 'happy';
     actionEnd = Date.now() + 600;
     clearTimeout(challengeEndTimer);
@@ -726,7 +726,7 @@ if (!isMobile() && tamaCanvas) {
     if (remaining <= 0) {
       winChallenge();
     } else {
-      showTamaBubble('⚡ ' + remaining + ' more!', Infinity);
+      showTamaBubble(`⚡ ${remaining} more!`, null);
     }
   }
 
