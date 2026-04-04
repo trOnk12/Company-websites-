@@ -408,17 +408,10 @@ if (contactForm && formSuccess) {
    PIXEL TAMAGOTCHI
    ===================== */
 
-const TAMA_COLORS = [
-  'transparent', // 0
-  '#22C55E',     // 1 green body
-  '#16a34a',     // 2 dark green
-  '#f0f0f0',     // 3 white (eyes)
-  '#111111',     // 4 black (pupils)
-  '#F59E0B',     // 5 amber (details)
-];
-
 const PIXEL_SIZE = 4;
+const THEME_KEYS = ['default', 'ai', 'mobile', 'specialist'];
 
+// ── Base frame builders (default / green) ──────────────────────────────────
 function makeTamaIdle() {
   return [
     [0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0],
@@ -439,14 +432,12 @@ function makeTamaIdle() {
     [0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0],
   ];
 }
-
 function makeTamaBlink() {
   const f = makeTamaIdle();
   f[5] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
   f[6] = [0,0,1,1,2,2,1,1,1,1,2,2,1,1,0,0];
   return f;
 }
-
 function makeTamaWave() {
   const f = makeTamaIdle();
   f[5]  = [0,0,1,1,5,5,1,1,1,1,5,5,1,1,0,0];
@@ -457,7 +448,6 @@ function makeTamaWave() {
   f[12] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
   return f;
 }
-
 function makeTamaHappy() {
   const f = makeTamaIdle();
   f[5] = [0,0,1,1,1,3,1,1,1,1,1,3,1,1,0,0];
@@ -465,7 +455,6 @@ function makeTamaHappy() {
   f[8] = [0,0,1,5,5,5,5,5,5,5,5,5,5,1,0,0];
   return f;
 }
-
 function makeTamaSleep() {
   const f = makeTamaIdle();
   f[0] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -477,55 +466,203 @@ function makeTamaSleep() {
   return f;
 }
 
-const TAMA_FRAMES = {
-  idle:  makeTamaIdle(),
-  blink: makeTamaBlink(),
-  wave:  makeTamaWave(),
-  happy: makeTamaHappy(),
-  sleep: makeTamaSleep(),
+// ── AI theme frames (circuit antennae, rectangular eyes) ───────────────────
+function makeAiIdle() {
+  const f = makeTamaIdle();
+  f[0] = [0,0,0,5,0,5,0,0,0,5,0,5,0,0,0,0];
+  f[1] = [0,0,0,5,5,5,0,0,0,5,5,5,0,0,0,0];
+  f[2] = [0,0,0,0,5,0,0,0,0,0,5,0,0,0,0,0];
+  f[5] = [0,0,1,1,3,3,3,1,1,3,3,3,1,1,0,0];
+  f[6] = [0,0,1,1,4,4,4,1,1,4,4,4,1,1,0,0];
+  return f;
+}
+function makeAiBlink() {
+  const f = makeAiIdle();
+  f[5] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[6] = [0,0,1,1,2,2,2,1,1,2,2,2,1,1,0,0];
+  return f;
+}
+function makeAiWave() {
+  const f = makeAiIdle();
+  f[5]  = [0,0,1,1,5,5,5,1,1,5,5,5,1,1,0,0];
+  f[6]  = [0,0,1,1,5,5,5,1,1,5,5,5,1,1,0,0];
+  f[8]  = [0,0,1,5,5,5,5,5,5,5,5,5,1,1,0,0];
+  f[10] = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[11] = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0];
+  f[12] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+function makeAiHappy() {
+  const f = makeAiIdle();
+  f[5] = [0,0,1,1,1,3,3,1,1,1,3,3,1,1,0,0];
+  f[6] = [0,0,1,1,3,3,1,1,1,3,3,1,1,1,0,0];
+  f[8] = [0,0,1,5,5,5,5,5,5,5,5,5,5,1,0,0];
+  return f;
+}
+function makeAiSleep() {
+  const f = makeAiIdle();
+  f[0] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[1] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[2] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[5] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[6] = [0,0,1,1,2,2,2,1,1,2,2,2,1,1,0,0];
+  f[8] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+
+// ── Mobile theme frames (single centre antenna, signal-bar detail) ─────────
+function makeMobileIdle() {
+  const f = makeTamaIdle();
+  f[0] = [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0];
+  f[1] = [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0];
+  f[2] = [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0];
+  f[5] = [0,0,1,1,3,3,1,1,1,1,3,3,1,1,0,0];
+  f[6] = [0,0,1,1,3,5,1,1,1,1,3,5,1,1,0,0];
+  f[8] = [0,0,1,1,1,5,5,1,5,5,5,1,1,1,0,0];
+  return f;
+}
+function makeMobileBlink() {
+  const f = makeMobileIdle();
+  f[5] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[6] = [0,0,1,1,2,2,1,1,1,1,2,2,1,1,0,0];
+  return f;
+}
+function makeMobileWave() {
+  const f = makeMobileIdle();
+  f[5]  = [0,0,1,1,5,5,1,1,1,1,5,5,1,1,0,0];
+  f[6]  = [0,0,1,1,5,5,1,1,1,1,5,5,1,1,0,0];
+  f[8]  = [0,0,1,5,5,5,5,5,5,5,5,5,1,1,0,0];
+  f[10] = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[11] = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0];
+  f[12] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+function makeMobileHappy() {
+  const f = makeMobileIdle();
+  f[5] = [0,0,1,1,1,3,1,1,1,1,1,3,1,1,0,0];
+  f[6] = [0,0,1,1,3,1,1,1,1,1,3,1,1,1,0,0];
+  f[8] = [0,0,1,5,5,5,5,5,5,5,5,5,5,1,0,0];
+  return f;
+}
+function makeMobileSleep() {
+  const f = makeMobileIdle();
+  f[0] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[1] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[2] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[5] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[6] = [0,0,1,1,2,2,1,1,1,1,2,2,1,1,0,0];
+  f[8] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+
+// ── Specialist theme frames (gear tips, framed eyes) ──────────────────────
+function makeSpecialistIdle() {
+  const f = makeTamaIdle();
+  f[0] = [0,0,0,0,0,5,0,0,0,0,5,0,0,0,0,0];
+  f[1] = [0,0,0,0,5,5,0,0,0,5,5,0,0,0,0,0];
+  f[2] = [0,0,0,0,0,5,0,0,0,0,5,0,0,0,0,0];
+  f[5] = [0,0,1,5,3,3,1,1,1,1,3,3,5,1,0,0];
+  f[6] = [0,0,1,5,3,4,1,1,1,1,3,4,5,1,0,0];
+  return f;
+}
+function makeSpecialistBlink() {
+  const f = makeSpecialistIdle();
+  f[5] = [0,0,1,5,1,1,1,1,1,1,1,1,5,1,0,0];
+  f[6] = [0,0,1,5,2,2,1,1,1,1,2,2,5,1,0,0];
+  return f;
+}
+function makeSpecialistWave() {
+  const f = makeSpecialistIdle();
+  f[5]  = [0,0,1,5,5,5,1,1,1,1,5,5,5,1,0,0];
+  f[6]  = [0,0,1,5,5,5,1,1,1,1,5,5,5,1,0,0];
+  f[8]  = [0,0,1,5,5,5,5,5,5,5,5,5,1,1,0,0];
+  f[10] = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[11] = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0];
+  f[12] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+function makeSpecialistHappy() {
+  const f = makeSpecialistIdle();
+  f[5] = [0,0,1,5,1,3,1,1,1,1,1,3,5,1,0,0];
+  f[6] = [0,0,1,5,3,1,1,1,1,1,3,1,5,1,0,0];
+  f[8] = [0,0,1,5,5,5,5,5,5,5,5,5,5,1,0,0];
+  return f;
+}
+function makeSpecialistSleep() {
+  const f = makeSpecialistIdle();
+  f[0] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[1] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[2] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[5] = [0,0,1,5,1,1,1,1,1,1,1,1,5,1,0,0];
+  f[6] = [0,0,1,5,2,2,1,1,1,1,2,2,5,1,0,0];
+  f[8] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+
+// ── Theme registry ─────────────────────────────────────────────────────────
+const TAMA_THEMES = {
+  default: {
+    colors: ['transparent','#22C55E','#16a34a','#f0f0f0','#111111','#F59E0B'],
+    frames: { idle: makeTamaIdle(), blink: makeTamaBlink(), wave: makeTamaWave(), happy: makeTamaHappy(), sleep: makeTamaSleep() },
+    messages: ['Hey there! 👾','Kotlin > ☕','100% uptime ✓','Hire my creator?','BLE mesh gang','MVI architect 🏗️','Compose > XML 👀','Ship it! 🚀','Feed me commits','4 countries 🌍','7+ years deep','Clean code only','Available now!'],
+    label: '🟢 Default',
+  },
+  ai: {
+    colors: ['transparent','#38BDF8','#0284C7','#E0F2FE','#0f172a','#A78BFA'],
+    frames: { idle: makeAiIdle(), blink: makeAiBlink(), wave: makeAiWave(), happy: makeAiHappy(), sleep: makeAiSleep() },
+    messages: ['Processing… 🤖','Neural net ready','Inferring… ⚡','AI + Kotlin FTW','On-device ML 🧠','KMP + AI = 🔥','Smart systems','Tensor deployed','LLM-ready arch','Edge AI ✓','AutoML pending…','Available now!'],
+    label: '🤖 AI',
+  },
+  mobile: {
+    colors: ['transparent','#3DDC84','#249E5B','#f0f0f0','#1a1a1a','#64B5F6'],
+    frames: { idle: makeMobileIdle(), blink: makeMobileBlink(), wave: makeMobileWave(), happy: makeMobileHappy(), sleep: makeMobileSleep() },
+    messages: ['📱 Android gang','Compose all day','Material 3 only','KMP everywhere','Jetpack ✓','60fps always','App shipped! 🚀','Clean MVI arch','BLE connected','Kotlin Flows ✓','DI with Hilt ✓','Available now!'],
+    label: '📱 Mobile',
+  },
+  specialist: {
+    colors: ['transparent','#F59E0B','#D97706','#FEF3C7','#1a1a1a','#7C3AED'],
+    frames: { idle: makeSpecialistIdle(), blink: makeSpecialistBlink(), wave: makeSpecialistWave(), happy: makeSpecialistHappy(), sleep: makeSpecialistSleep() },
+    messages: ['Architecture ✓','7+ yrs deep 🔧','Clean code only','IoT + BLE mesh','Security first 🔒','E2E encrypted','Systems thinking','Scale-ready ✓','Tech lead mode','Mentor mode on','Full-stack deep','Available now!'],
+    label: '🔧 Specialist',
+  },
 };
 
-const TAMA_MESSAGES = [
-  'Hey there! 👾',
-  'Kotlin > ☕',
-  '100% uptime ✓',
-  'Hire my creator?',
-  'BLE mesh gang',
-  'MVI architect 🏗️',
-  'Compose > XML 👀',
-  'Ship it! 🚀',
-  'Feed me commits',
-  '4 countries 🌍',
-  '7+ years deep',
-  'Clean code only',
-  'Available now!',
-];
-
-const tamaEl     = document.getElementById('tama');
-const tamaCanvas = document.getElementById('tama-canvas');
-const tamaBubble = document.getElementById('tama-bubble');
+const tamaEl      = document.getElementById('tama');
+const tamaCanvas  = document.getElementById('tama-canvas');
+const tamaBubble  = document.getElementById('tama-bubble');
 const tamaBarFill = document.getElementById('tama-bar-fill');
 
 if (!isMobile() && tamaCanvas) {
   const ctx = tamaCanvas.getContext('2d');
   ctx.imageSmoothingEnabled = false;
 
-  let tamaMood    = 100;
-  let tamaState   = 'idle';
-  let blinkNext   = Date.now() + 3000 + Math.random() * 3000;
-  let blinkEnd    = 0;
-  let actionEnd   = 0;
-  let lastTamaTime = 0;
+  let currentThemeKey = 'default';
+  let tamaMood        = 100;
+  let tamaState       = 'idle';
+  let blinkNext       = Date.now() + 3000 + Math.random() * 3000;
+  let blinkEnd        = 0;
+  let actionEnd       = 0;
+  let lastTamaTime    = 0;
   let bubbleHideTimer = 0;
-  let msgIdx      = 0;
+  let msgIdx          = 0;
+
+  // ── Challenge state ──────────────────────────────────────────────────────
+  const CHALLENGE_TARGET = 10;
+  const CHALLENGE_MS     = 5000;
+  let challengeActive    = false;
+  let challengeClicks    = 0;
+  let challengeEndTimer  = null;
+
+  function getCurrentTheme() { return TAMA_THEMES[currentThemeKey]; }
 
   function drawTamaFrame(frame) {
+    const colors = getCurrentTheme().colors;
     ctx.clearRect(0, 0, 64, 64);
     for (let r = 0; r < 16; r++) {
       for (let c = 0; c < 16; c++) {
         const ci = frame[r][c];
         if (ci === 0) continue;
-        ctx.fillStyle = TAMA_COLORS[ci];
+        ctx.fillStyle = colors[ci];
         ctx.fillRect(c * PIXEL_SIZE, r * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
       }
     }
@@ -536,7 +673,9 @@ if (!isMobile() && tamaCanvas) {
     tamaBubble.textContent = msg;
     tamaBubble.classList.add('visible');
     clearTimeout(bubbleHideTimer);
-    bubbleHideTimer = setTimeout(() => tamaBubble.classList.remove('visible'), duration || 2200);
+    if (duration !== Infinity) {
+      bubbleHideTimer = setTimeout(() => tamaBubble.classList.remove('visible'), duration || 2200);
+    }
   }
 
   function updateTamaMoodBar() {
@@ -552,32 +691,88 @@ if (!isMobile() && tamaCanvas) {
   }
 
   function nextTamaMessage() {
-    return TAMA_MESSAGES[msgIdx++ % TAMA_MESSAGES.length];
+    const msgs = getCurrentTheme().messages;
+    return msgs[msgIdx++ % msgs.length];
   }
 
+  // ── Theme cycling ────────────────────────────────────────────────────────
+  function cycleTheme() {
+    const idx = THEME_KEYS.indexOf(currentThemeKey);
+    currentThemeKey = THEME_KEYS[(idx + 1) % THEME_KEYS.length];
+    if (tamaEl) tamaEl.dataset.theme = currentThemeKey;
+    msgIdx = 0;
+    tamaMood = Math.min(100, tamaMood + 20);
+    tamaState = 'wave';
+    actionEnd = Date.now() + 1500;
+    showTamaBubble(getCurrentTheme().label + ' mode!', 2200);
+  }
+
+  // ── Challenge mini-game ──────────────────────────────────────────────────
+  function startChallenge() {
+    if (challengeActive || tamaMood <= 0) return;
+    challengeActive = true;
+    challengeClicks = 0;
+    if (tamaEl) tamaEl.classList.add('challenge-active');
+    showTamaBubble('⚡ TAP ' + CHALLENGE_TARGET + 'x! GO!', Infinity);
+    tamaState = 'happy';
+    actionEnd = Date.now() + 600;
+    clearTimeout(challengeEndTimer);
+    challengeEndTimer = setTimeout(failChallenge, CHALLENGE_MS);
+  }
+
+  function challengeHandleClick() {
+    challengeClicks++;
+    const remaining = CHALLENGE_TARGET - challengeClicks;
+    if (remaining <= 0) {
+      winChallenge();
+    } else {
+      showTamaBubble('⚡ ' + remaining + ' more!', Infinity);
+    }
+  }
+
+  function winChallenge() {
+    clearTimeout(challengeEndTimer);
+    challengeActive = false;
+    if (tamaEl) tamaEl.classList.remove('challenge-active');
+    tamaMood = 100;
+    tamaState = 'happy';
+    actionEnd = Date.now() + 2500;
+    showTamaBubble('WINNER! 🏆 +100', 3000);
+  }
+
+  function failChallenge() {
+    challengeActive = false;
+    if (tamaEl) tamaEl.classList.remove('challenge-active');
+    tamaMood = Math.max(0, tamaMood - 20);
+    showTamaBubble('Too slow! 😴 -20', 3000);
+    tamaState = tamaMood > 0 ? 'idle' : 'sleep';
+  }
+
+  // ── Render loop ──────────────────────────────────────────────────────────
   function tamaLoop(timestamp) {
     const dt = lastTamaTime ? Math.min((timestamp - lastTamaTime) / 1000, 0.1) : 0;
     lastTamaTime = timestamp;
 
-    tamaMood = Math.max(0, tamaMood - 0.4 * dt);
+    if (!challengeActive) {
+      tamaMood = Math.max(0, tamaMood - 0.4 * dt);
+    }
     updateTamaMoodBar();
 
-    const now = Date.now();
+    const now    = Date.now();
+    const frames = getCurrentTheme().frames;
     let frame;
 
-    if (tamaMood <= 0) {
-      tamaState = 'sleep';
-    }
+    if (tamaMood <= 0) tamaState = 'sleep';
 
     if (tamaState === 'wave' || tamaState === 'happy') {
-      frame = TAMA_FRAMES[tamaState];
+      frame = frames[tamaState];
       if (now >= actionEnd) tamaState = 'idle';
     } else if (tamaState === 'sleep') {
-      frame = TAMA_FRAMES.sleep;
+      frame = frames.sleep;
     } else if (now < blinkEnd) {
-      frame = TAMA_FRAMES.blink;
+      frame = frames.blink;
     } else {
-      frame = TAMA_FRAMES.idle;
+      frame = frames.idle;
       if (now >= blinkNext) {
         blinkEnd  = now + 180;
         blinkNext = now + 3500 + Math.random() * 4000;
@@ -588,16 +783,30 @@ if (!isMobile() && tamaCanvas) {
     requestAnimationFrame(tamaLoop);
   }
 
+  // ── Event listeners ──────────────────────────────────────────────────────
   if (tamaEl) {
     tamaEl.addEventListener('click', () => {
+      if (challengeActive) {
+        challengeHandleClick();
+        return;
+      }
       tamaMood = Math.min(100, tamaMood + 35);
       tamaState = 'wave';
       actionEnd = Date.now() + 1600;
       showTamaBubble(nextTamaMessage(), 2000);
     });
 
+    tamaEl.addEventListener('dblclick', () => {
+      if (!challengeActive) cycleTheme();
+    });
+
+    tamaEl.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      startChallenge();
+    });
+
     tamaEl.addEventListener('mouseenter', () => {
-      if (tamaState !== 'sleep' && tamaState !== 'wave') {
+      if (!challengeActive && tamaState !== 'sleep' && tamaState !== 'wave') {
         showTamaBubble(nextTamaMessage(), 2000);
       }
     });
@@ -610,8 +819,9 @@ if (!isMobile() && tamaCanvas) {
     showTamaBubble('Hey there! 👾', 2500);
   }, 1800);
 
-  // Periodic bubble when idle
-  const tamaIntervalId = setInterval(() => {
+  // Periodic idle bubble
+  setInterval(() => {
+    if (challengeActive) return;
     if (tamaState === 'idle' && tamaMood > 0) {
       showTamaBubble(nextTamaMessage(), 2200);
     } else if (tamaMood <= 0) {
