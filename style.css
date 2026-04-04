@@ -890,6 +890,203 @@ textarea::placeholder { color: #333; }
 }
 
 /* =====================
+   PIXEL TAMAGOTCHI
+   ===================== */
+#tama {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 1.5rem;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+#tama-bubble {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--accent);
+  background: rgba(13, 13, 13, 0.94);
+  border: 1px solid rgba(245, 158, 11, 0.38);
+  padding: 0.22rem 0.55rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  line-height: 1.5;
+}
+
+#tama-bubble.visible { opacity: 1; }
+
+#tama-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+  animation: tama-float 3s ease-in-out infinite;
+}
+
+@keyframes tama-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-5px); }
+}
+
+#tama-bar {
+  width: 48px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+#tama-bar-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--green);
+  transition: width 0.5s ease, background 0.5s ease;
+}
+
+/* =====================
+   QUICK BRIEF WIDGET
+   ===================== */
+#qb-trigger {
+  position: fixed;
+  bottom: 4rem;
+  left: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  background: rgba(13, 13, 13, 0.9);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: var(--accent);
+  padding: 0.45rem 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.07em;
+  z-index: 999;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  line-height: 1;
+}
+
+#qb-trigger:hover {
+  border-color: var(--accent);
+  background: rgba(245, 158, 11, 0.07);
+}
+
+#qb-panel {
+  position: fixed;
+  bottom: 7rem;
+  left: 1.5rem;
+  width: 360px;
+  background: #0a0a0a;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  z-index: 2000;
+  font-family: var(--font-mono);
+  display: none;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 0.75rem;
+}
+
+#qb-panel.open { display: flex; }
+
+#qb-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+#qb-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0 0.2rem;
+  transition: color 0.2s ease;
+}
+
+#qb-close:hover { color: var(--accent); }
+
+#qb-hint {
+  font-size: 0.65rem;
+  color: var(--muted);
+  line-height: 1.65;
+  font-family: var(--font-body);
+  letter-spacing: 0;
+}
+
+#qb-result {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--muted);
+  line-height: 1.65;
+  display: none;
+}
+
+#qb-result.visible { display: block; }
+
+.qb-detected {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.qb-links {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.qb-link {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.4rem 0.85rem;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.qb-link:hover { opacity: 0.82; }
+
+.qb-link-email {
+  background: var(--accent);
+  color: #0D0D0D;
+}
+
+.qb-link-linkedin {
+  background: transparent;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: var(--accent);
+}
+
+#qb-analyze {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: var(--accent);
+  color: #0D0D0D;
+  border: none;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: opacity 0.2s ease;
+}
+
+#qb-analyze:hover { opacity: 0.82; }
+#qb-analyze:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* =====================
    MOBILE (≤640px)
    ===================== */
 @media (max-width: 640px) {
@@ -900,6 +1097,9 @@ textarea::placeholder { color: #333; }
   #term-trigger { display: none !important; }
   #kbd-toast { display: none !important; }
   .kbd-map { display: none !important; }
+  #tama { display: none !important; }
+  #qb-trigger { display: none !important; }
+  #qb-panel { display: none !important; }
 
   .section-inner { padding: 0 1.25rem; }
   section { padding: 4rem 0; }

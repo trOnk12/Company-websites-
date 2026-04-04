@@ -323,11 +323,14 @@ document.addEventListener('keydown', e => {
     return;
   }
 
-  // Always handle Escape (close terminal)
+  // Always handle Escape (close terminal or quick brief)
   if (e.key === 'Escape') {
     if (termOpen) {
       e.preventDefault();
       closeTerminal();
+    } else if (qbOpen) {
+      e.preventDefault();
+      closeQB();
     }
     return;
   }
@@ -398,5 +401,348 @@ if (contactForm && formSuccess) {
       field.style.borderColor = '';
       field.removeAttribute('aria-invalid');
     });
+  });
+}
+
+/* =====================
+   PIXEL TAMAGOTCHI
+   ===================== */
+
+const TAMA_COLORS = [
+  'transparent', // 0
+  '#22C55E',     // 1 green body
+  '#16a34a',     // 2 dark green
+  '#f0f0f0',     // 3 white (eyes)
+  '#111111',     // 4 black (pupils)
+  '#F59E0B',     // 5 amber (details)
+];
+
+const PIXEL_SIZE = 4;
+
+function makeTamaIdle() {
+  return [
+    [0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0],
+    [0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0],
+    [0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0],
+    [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+    [0,0,1,1,3,3,1,1,1,1,3,3,1,1,0,0],
+    [0,0,1,1,3,4,1,1,1,1,3,4,1,1,0,0],
+    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+    [0,0,1,1,1,5,5,5,5,5,1,1,1,1,0,0],
+    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+    [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+    [0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0],
+    [0,0,0,1,1,0,0,0,0,0,1,1,0,0,0,0],
+  ];
+}
+
+function makeTamaBlink() {
+  const f = makeTamaIdle();
+  f[5] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[6] = [0,0,1,1,2,2,1,1,1,1,2,2,1,1,0,0];
+  return f;
+}
+
+function makeTamaWave() {
+  const f = makeTamaIdle();
+  f[5]  = [0,0,1,1,5,5,1,1,1,1,5,5,1,1,0,0];
+  f[6]  = [0,0,1,1,5,5,1,1,1,1,5,5,1,1,0,0];
+  f[8]  = [0,0,1,5,5,5,5,5,5,5,5,5,1,1,0,0];
+  f[10] = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[11] = [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0];
+  f[12] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+
+function makeTamaHappy() {
+  const f = makeTamaIdle();
+  f[5] = [0,0,1,1,1,3,1,1,1,1,1,3,1,1,0,0];
+  f[6] = [0,0,1,1,3,1,1,1,1,1,3,1,1,1,0,0];
+  f[8] = [0,0,1,5,5,5,5,5,5,5,5,5,5,1,0,0];
+  return f;
+}
+
+function makeTamaSleep() {
+  const f = makeTamaIdle();
+  f[0] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[1] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[2] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  f[5] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  f[6] = [0,0,1,1,2,2,1,1,1,1,2,2,1,1,0,0];
+  f[8] = [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0];
+  return f;
+}
+
+const TAMA_FRAMES = {
+  idle:  makeTamaIdle(),
+  blink: makeTamaBlink(),
+  wave:  makeTamaWave(),
+  happy: makeTamaHappy(),
+  sleep: makeTamaSleep(),
+};
+
+const TAMA_MESSAGES = [
+  'Hey there! 👾',
+  'Kotlin > ☕',
+  '100% uptime ✓',
+  'Hire my creator?',
+  'BLE mesh gang',
+  'MVI architect 🏗️',
+  'Compose > XML 👀',
+  'Ship it! 🚀',
+  'Feed me commits',
+  '4 countries 🌍',
+  '7+ years deep',
+  'Clean code only',
+  'Available now!',
+];
+
+const tamaEl     = document.getElementById('tama');
+const tamaCanvas = document.getElementById('tama-canvas');
+const tamaBubble = document.getElementById('tama-bubble');
+const tamaBarFill = document.getElementById('tama-bar-fill');
+
+if (!isMobile() && tamaCanvas) {
+  const ctx = tamaCanvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+
+  let tamaMood    = 100;
+  let tamaState   = 'idle';
+  let blinkNext   = Date.now() + 3000 + Math.random() * 3000;
+  let blinkEnd    = 0;
+  let actionEnd   = 0;
+  let lastTamaTime = 0;
+  let bubbleHideTimer = 0;
+  let msgIdx      = 0;
+
+  function drawTamaFrame(frame) {
+    ctx.clearRect(0, 0, 64, 64);
+    for (let r = 0; r < 16; r++) {
+      for (let c = 0; c < 16; c++) {
+        const ci = frame[r][c];
+        if (ci === 0) continue;
+        ctx.fillStyle = TAMA_COLORS[ci];
+        ctx.fillRect(c * PIXEL_SIZE, r * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+      }
+    }
+  }
+
+  function showTamaBubble(msg, duration) {
+    if (!tamaBubble) return;
+    tamaBubble.textContent = msg;
+    tamaBubble.classList.add('visible');
+    clearTimeout(bubbleHideTimer);
+    bubbleHideTimer = setTimeout(() => tamaBubble.classList.remove('visible'), duration || 2200);
+  }
+
+  function updateTamaMoodBar() {
+    if (!tamaBarFill) return;
+    tamaBarFill.style.width = tamaMood + '%';
+    if (tamaMood > 60) {
+      tamaBarFill.style.background = 'var(--green)';
+    } else if (tamaMood > 30) {
+      tamaBarFill.style.background = 'var(--accent)';
+    } else {
+      tamaBarFill.style.background = '#ef4444';
+    }
+  }
+
+  function tamaLoop(timestamp) {
+    const dt = lastTamaTime ? (timestamp - lastTamaTime) / 1000 : 0;
+    lastTamaTime = timestamp;
+
+    tamaMood = Math.max(0, tamaMood - 0.4 * dt);
+    updateTamaMoodBar();
+
+    const now = Date.now();
+    let frame;
+
+    if (tamaMood <= 0) {
+      tamaState = 'sleep';
+    }
+
+    if (tamaState === 'wave' || tamaState === 'happy') {
+      frame = TAMA_FRAMES[tamaState];
+      if (now >= actionEnd) tamaState = 'idle';
+    } else if (tamaState === 'sleep') {
+      frame = TAMA_FRAMES.sleep;
+    } else if (now < blinkEnd) {
+      frame = TAMA_FRAMES.blink;
+    } else {
+      frame = TAMA_FRAMES.idle;
+      if (now >= blinkNext) {
+        blinkEnd  = now + 180;
+        blinkNext = now + 3500 + Math.random() * 4000;
+      }
+    }
+
+    drawTamaFrame(frame);
+    requestAnimationFrame(tamaLoop);
+  }
+
+  if (tamaEl) {
+    tamaEl.addEventListener('click', () => {
+      tamaMood = Math.min(100, tamaMood + 35);
+      tamaState = 'wave';
+      actionEnd = Date.now() + 1600;
+      showTamaBubble(TAMA_MESSAGES[msgIdx % TAMA_MESSAGES.length], 2000);
+      msgIdx++;
+    });
+
+    tamaEl.addEventListener('mouseenter', () => {
+      if (tamaState !== 'sleep' && tamaState !== 'wave') {
+        showTamaBubble(TAMA_MESSAGES[msgIdx % TAMA_MESSAGES.length], 2000);
+        msgIdx++;
+      }
+    });
+  }
+
+  // Greet on load
+  setTimeout(() => {
+    tamaState = 'wave';
+    actionEnd = Date.now() + 2000;
+    showTamaBubble('Hey there! 👾', 2500);
+  }, 1800);
+
+  // Periodic bubble when idle
+  setInterval(() => {
+    if (tamaState === 'idle' && tamaMood > 0) {
+      showTamaBubble(TAMA_MESSAGES[msgIdx % TAMA_MESSAGES.length], 2200);
+      msgIdx++;
+    } else if (tamaMood <= 0) {
+      showTamaBubble('zZzZ… 💤', 3000);
+    }
+  }, 12000);
+
+  requestAnimationFrame(tamaLoop);
+}
+
+/* =====================
+   QUICK BRIEF WIDGET
+   ===================== */
+
+const SERVICE_MAP = {
+  'Android Development':    ['android', 'kotlin', 'compose', 'jetpack', 'mobile app', 'play store', 'google play'],
+  'Testing & Quality':      ['test', 'quality', 'snapshot', 'regression', 'bug', 'qa', 'accessibility', 'wcag'],
+  'Kotlin Multiplatform':   ['kmp', 'multiplatform', 'shared', 'kotlin multiplatform', 'cross-platform', 'ios'],
+  'Architecture Consulting':['architecture', 'refactor', 'codebase', 'consult', 'review', 'adr', 'monorepo', 'gradle'],
+  'Encrypted Messaging':    ['e2e', 'encrypted', 'encryption', 'messaging', 'grpc', 'protobuf', 'secure', 'privacy'],
+  'IoT & BLE SDK':          ['ble', 'bluetooth', 'iot', 'sdk', 'embedded', 'hardware', 'mesh'],
+  'FinTech & Real-time':    ['fintech', 'finance', 'trading', 'websocket', 'real-time', 'banking', 'crypto'],
+  'Flutter Development':    ['flutter', 'dart'],
+  'Hiring / Contract':      ['hire', 'contract', 'freelance', 'job', 'position', 'work with', 'team up', 'offer'],
+};
+
+function detectService(text) {
+  const lower = text.toLowerCase();
+  let best = null;
+  let bestScore = 0;
+  for (const [service, keywords] of Object.entries(SERVICE_MAP)) {
+    let score = 0;
+    for (const kw of keywords) {
+      if (lower.includes(kw)) score++;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      best = service;
+    }
+  }
+  return best || 'General Inquiry';
+}
+
+const qbTrigger = document.getElementById('qb-trigger');
+const qbPanel   = document.getElementById('qb-panel');
+const qbClose   = document.getElementById('qb-close');
+const qbInput   = document.getElementById('qb-input');
+const qbAnalyze = document.getElementById('qb-analyze');
+const qbResult  = document.getElementById('qb-result');
+
+let qbOpen = false;
+
+function openQB() {
+  if (isMobile() || !qbPanel) return;
+  qbOpen = true;
+  qbPanel.classList.add('open');
+  qbPanel.setAttribute('aria-hidden', 'false');
+  if (qbTrigger) qbTrigger.setAttribute('aria-expanded', 'true');
+  if (qbInput) qbInput.focus();
+}
+
+function closeQB() {
+  if (!qbPanel) return;
+  qbOpen = false;
+  qbPanel.classList.remove('open');
+  qbPanel.setAttribute('aria-hidden', 'true');
+  if (qbTrigger) qbTrigger.setAttribute('aria-expanded', 'false');
+}
+
+if (qbTrigger) {
+  qbTrigger.addEventListener('click', () => {
+    if (qbOpen) closeQB(); else openQB();
+  });
+}
+
+if (qbClose) qbClose.addEventListener('click', closeQB);
+
+if (qbAnalyze && qbInput && qbResult) {
+  qbAnalyze.addEventListener('click', () => {
+    const text = qbInput.value.trim();
+    if (!text) {
+      qbInput.focus();
+      return;
+    }
+
+    const service  = detectService(text);
+    const subject  = encodeURIComponent('[Quick Brief] ' + service);
+    const bodyText = 'Service: ' + service + '\n\nBrief:\n' + text + '\n\n---\nSent via Quick Brief on mptech portfolio';
+    const mailHref = 'mailto:m.pachulski94@gmail.com?subject=' + subject + '&body=' + encodeURIComponent(bodyText);
+    const liHref   = 'https://linkedin.com/in/mateusz-pachulski';
+
+    // Build result using DOM to avoid raw HTML injection
+    qbResult.innerHTML = '';
+
+    const line1 = document.createElement('div');
+    const label = document.createTextNode('Detected: ');
+    const badge = document.createElement('span');
+    badge.className = 'qb-detected';
+    badge.textContent = service;
+    line1.appendChild(label);
+    line1.appendChild(badge);
+
+    const line2 = document.createElement('div');
+    line2.style.cssText = 'margin-top:0.35rem;font-size:0.63rem;color:var(--muted)';
+    line2.textContent = 'Your brief is ready. Choose where to send it:';
+
+    const links = document.createElement('div');
+    links.className = 'qb-links';
+
+    const emailLink = document.createElement('a');
+    emailLink.className = 'qb-link qb-link-email';
+    emailLink.href = mailHref;
+    emailLink.textContent = '📧 Email';
+
+    const liLink = document.createElement('a');
+    liLink.className = 'qb-link qb-link-linkedin';
+    liLink.href = liHref;
+    liLink.target = '_blank';
+    liLink.rel = 'noopener noreferrer';
+    liLink.textContent = '💼 LinkedIn';
+
+    links.appendChild(emailLink);
+    links.appendChild(liLink);
+
+    qbResult.appendChild(line1);
+    qbResult.appendChild(line2);
+    qbResult.appendChild(links);
+    qbResult.classList.add('visible');
+  });
+
+  qbInput.addEventListener('input', () => {
+    qbResult.classList.remove('visible');
+    qbResult.innerHTML = '';
   });
 }

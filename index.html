@@ -417,6 +417,28 @@ class SeniorEngineer(
     </div>
   </footer>
 
+  <!-- ===== PIXEL TAMAGOTCHI ===== -->
+  <div id="tama" role="img" aria-label="Interactive pixel mascot — click to interact">
+    <div id="tama-bubble" aria-live="polite" aria-atomic="true"></div>
+    <canvas id="tama-canvas" width="64" height="64" aria-hidden="true"></canvas>
+    <div id="tama-bar" title="Mood" aria-label="Mascot mood bar">
+      <div id="tama-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- ===== QUICK BRIEF WIDGET ===== -->
+  <button id="qb-trigger" aria-label="Open quick brief panel" aria-expanded="false">&#9889; Quick Brief</button>
+  <div id="qb-panel" role="dialog" aria-modal="true" aria-label="Quick Brief" aria-hidden="true">
+    <div id="qb-head">
+      <span>&#9889; Quick Brief</span>
+      <button id="qb-close" aria-label="Close quick brief">&times;</button>
+    </div>
+    <p id="qb-hint">Describe your project in plain English — I&rsquo;ll detect what you need and send a formatted brief straight to my inbox or LinkedIn.</p>
+    <textarea id="qb-input" rows="4" placeholder="E.g. I need an Android developer to rebuild our banking app in Jetpack Compose…" aria-label="Project description"></textarea>
+    <div id="qb-result" aria-live="polite" aria-atomic="true"></div>
+    <button id="qb-analyze" type="button">Analyze &amp; Send &#8594;</button>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
