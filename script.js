@@ -249,7 +249,7 @@ async function processCommand(raw) {
     await typeTermLine('Kotlin · Jetpack Compose · KMP');
     await typeTermLine('Clean Architecture · Coroutines');
     await typeTermLine('gRPC · Protobuf · BLE · Flutter');
-    await typeTermLine('Snapshot Testing · WCAG · CI/CD');
+    await typeTermLine('WCAG · CI/CD · AI Agents');
 
   } else if (c === 'contact') {
     await typeTermLine('Opening contact section...');
