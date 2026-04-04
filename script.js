@@ -551,8 +551,12 @@ if (!isMobile() && tamaCanvas) {
     }
   }
 
+  function nextTamaMessage() {
+    return TAMA_MESSAGES[msgIdx++ % TAMA_MESSAGES.length];
+  }
+
   function tamaLoop(timestamp) {
-    const dt = lastTamaTime ? (timestamp - lastTamaTime) / 1000 : 0;
+    const dt = lastTamaTime ? Math.min((timestamp - lastTamaTime) / 1000, 0.1) : 0;
     lastTamaTime = timestamp;
 
     tamaMood = Math.max(0, tamaMood - 0.4 * dt);
@@ -589,14 +593,12 @@ if (!isMobile() && tamaCanvas) {
       tamaMood = Math.min(100, tamaMood + 35);
       tamaState = 'wave';
       actionEnd = Date.now() + 1600;
-      showTamaBubble(TAMA_MESSAGES[msgIdx % TAMA_MESSAGES.length], 2000);
-      msgIdx++;
+      showTamaBubble(nextTamaMessage(), 2000);
     });
 
     tamaEl.addEventListener('mouseenter', () => {
       if (tamaState !== 'sleep' && tamaState !== 'wave') {
-        showTamaBubble(TAMA_MESSAGES[msgIdx % TAMA_MESSAGES.length], 2000);
-        msgIdx++;
+        showTamaBubble(nextTamaMessage(), 2000);
       }
     });
   }
@@ -609,10 +611,9 @@ if (!isMobile() && tamaCanvas) {
   }, 1800);
 
   // Periodic bubble when idle
-  setInterval(() => {
+  const tamaIntervalId = setInterval(() => {
     if (tamaState === 'idle' && tamaMood > 0) {
-      showTamaBubble(TAMA_MESSAGES[msgIdx % TAMA_MESSAGES.length], 2200);
-      msgIdx++;
+      showTamaBubble(nextTamaMessage(), 2200);
     } else if (tamaMood <= 0) {
       showTamaBubble('zZzZ… 💤', 3000);
     }
@@ -698,7 +699,15 @@ if (qbAnalyze && qbInput && qbResult) {
 
     const service  = detectService(text);
     const subject  = encodeURIComponent('[Quick Brief] ' + service);
-    const bodyText = 'Service: ' + service + '\n\nBrief:\n' + text + '\n\n---\nSent via Quick Brief on mptech portfolio';
+    const bodyText = [
+      'Service: ' + service,
+      '',
+      'Brief:',
+      text,
+      '',
+      '---',
+      'Sent via Quick Brief on mptech portfolio',
+    ].join('\n');
     const mailHref = 'mailto:m.pachulski94@gmail.com?subject=' + subject + '&body=' + encodeURIComponent(bodyText);
     const liHref   = 'https://linkedin.com/in/mateusz-pachulski';
 
