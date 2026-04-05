@@ -949,6 +949,41 @@ textarea::placeholder { color: #333; }
   transition: width 0.5s ease, background 0.5s ease;
 }
 
+/* ── Per-theme bubble colours ─────────────────────────────────────────── */
+#tama[data-theme="ai"] #tama-bubble {
+  color: #38BDF8;
+  border-color: rgba(56, 189, 248, 0.38);
+}
+
+#tama[data-theme="mobile"] #tama-bubble {
+  color: #3DDC84;
+  border-color: rgba(61, 220, 132, 0.38);
+}
+
+#tama[data-theme="specialist"] #tama-bubble {
+  color: #A78BFA;
+  border-color: rgba(124, 58, 237, 0.38);
+}
+
+/* ── Challenge-active pulse ───────────────────────────────────────────── */
+#tama.challenge-active #tama-canvas {
+  animation: tama-float 1s ease-in-out infinite, tama-challenge-pulse 0.35s ease-in-out infinite;
+}
+
+@keyframes tama-challenge-pulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-3px) scale(1.08); }
+}
+
+#tama.challenge-active #tama-bubble {
+  animation: tama-challenge-blink 0.5s step-start infinite;
+}
+
+@keyframes tama-challenge-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
 /* =====================
    QUICK BRIEF WIDGET
    ===================== */
