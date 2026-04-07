@@ -335,7 +335,10 @@ test.describe('Click Tracker', () => {
     await page.locator('#term-trigger').click();
     await page.locator('#term-input').fill('stats');
     await page.keyboard.press('Enter');
-    await page.waitForTimeout(600);
+    await page.waitForFunction(
+      () => document.getElementById('term-output').textContent.includes('No clicks recorded'),
+      { timeout: 5000 }
+    );
     const output = await page.locator('#term-output').textContent();
     expect(output).toContain('No clicks recorded');
   });

@@ -23,10 +23,11 @@ function recordClick(label) {
   } catch (_) {}
   const now = new Date().toISOString();
   if (!stats[label]) {
-    stats[label] = { count: 0, firstClicked: now, lastClicked: now };
+    stats[label] = { count: 1, firstClicked: now, lastClicked: now };
+  } else {
+    stats[label].count++;
+    stats[label].lastClicked = now;
   }
-  stats[label].count++;
-  stats[label].lastClicked = now;
   try {
     localStorage.setItem(CLICK_STATS_KEY, JSON.stringify(stats));
   } catch (_) {}
@@ -305,7 +306,7 @@ async function processCommand(raw) {
       await typeTermLine('Click statistics (most clicked first):');
       const sorted = entries.sort((a, b) => b[1].count - a[1].count);
       for (const [label, data] of sorted) {
-        await typeTermLine('  ' + data.count + 'x  ' + label);
+        await typeTermLine(`  ${data.count}x  ${label}`);
       }
     }
 
@@ -1026,10 +1027,10 @@ if (qbTrigger) {
 
 // Case study stats
 document.querySelectorAll('.cs-stat').forEach(el => {
-  const csName = el.closest('.case-study')
-    ? (el.closest('.case-study').querySelector('.cs-name') || {}).textContent || 'Case Study'
-    : 'Case Study';
-  el.addEventListener('click', () => recordClick('Stat: ' + csName.trim()));
+  const caseStudyEl = el.closest('.case-study');
+  const nameEl = caseStudyEl ? caseStudyEl.querySelector('.cs-name') : null;
+  const csName = nameEl ? nameEl.textContent.trim() : 'Case Study';
+  el.addEventListener('click', () => recordClick('Stat: ' + csName));
 });
 
 // Contact links
