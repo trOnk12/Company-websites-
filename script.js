@@ -12,6 +12,26 @@ function isMobile() {
 }
 
 /* =====================
+   EMAILJS CONFIGURATION
+   ─────────────────────────────────────────────────────────────────
+   To receive contact-form emails without a back-end:
+   1. Sign up at https://www.emailjs.com (free: 200 emails/month)
+   2. Add a service (Gmail, Outlook, SMTP …) → copy the Service ID
+   3. Create an email template that uses these variables:
+        {{from_name}}, {{from_email}}, {{service}}, {{message}}
+      → copy the Template ID
+   4. Go to Account → API Keys → copy your Public Key
+   5. Replace the three placeholder strings below.
+   ===================== */
+const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // TODO: replace
+const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // TODO: replace
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // TODO: replace
+
+if (typeof emailjs !== 'undefined') {
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+}
+
+/* =====================
    FOOTER YEAR
    ===================== */
 const yearEl = document.getElementById('year');
@@ -358,42 +378,98 @@ document.addEventListener('keydown', e => {
 /* =====================
    CONTACT FORM
    ===================== */
+
+/**
+ * Validates a single contact-form field.
+ * Sets aria-invalid and a red border when the field is empty or the e-mail
+ * format is wrong; clears both attributes when the field is valid.
+ *
+ * @param {HTMLInputElement|HTMLTextAreaElement} field
+ * @returns {boolean} true when the field value is acceptable
+ */
+function validateContactField(field) {
+  const ok = field.value.trim() !== '' &&
+    (field.type !== 'email' || field.validity.valid);
+  field.setAttribute('aria-invalid', ok ? 'false' : 'true');
+  field.style.borderColor = ok ? '' : 'var(--accent)';
+  return ok;
+}
+
+/**
+ * Validates all required fields in the contact form and focuses the first
+ * invalid one so the user knows what needs fixing.
+ *
+ * @param {HTMLFormElement} form
+ * @returns {boolean} true when every required field is valid
+ */
+function validateContactForm(form) {
+  const fields = [
+    form.querySelector('#firstName'),
+    form.querySelector('#email'),
+    form.querySelector('#message'),
+  ];
+  const valid = fields.every(validateContactField);
+  if (!valid) {
+    const firstBad = form.querySelector('[aria-invalid="true"]');
+    if (firstBad) firstBad.focus();
+  }
+  return valid;
+}
+
+/**
+ * Sends the contact-form data via EmailJS.
+ *
+ * @param {{ name: string, email: string, service: string, message: string }} data
+ * @returns {Promise<void>}
+ */
+function sendContactEmail(data) {
+  if (typeof emailjs === 'undefined') {
+    return Promise.reject(new Error('EmailJS SDK not loaded'));
+  }
+  return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    from_name:  data.name,
+    from_email: data.email,
+    service:    data.service,
+    message:    data.message,
+  });
+}
+
 const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
+const formError   = document.getElementById('formError');
 
 if (contactForm && formSuccess) {
   contactForm.addEventListener('submit', async e => {
     e.preventDefault();
 
-    // Basic validation
-    const firstName = contactForm.querySelector('#firstName');
-    const email     = contactForm.querySelector('#email');
-    const message   = contactForm.querySelector('#message');
-
-    let valid = true;
-    [firstName, email, message].forEach(field => {
-      const ok = field.value.trim() !== '' &&
-        (field.type !== 'email' || field.validity.valid);
-      field.setAttribute('aria-invalid', ok ? 'false' : 'true');
-      field.style.borderColor = ok ? '' : 'var(--accent)';
-      if (!ok) valid = false;
-    });
-
-    if (!valid) {
-      const firstBad = contactForm.querySelector('[aria-invalid="true"]');
-      if (firstBad) firstBad.focus();
-      return;
-    }
+    if (!validateContactForm(contactForm)) return;
 
     const btn = contactForm.querySelector('.submit-btn');
-    btn.textContent = 'Sending...';
+    btn.textContent = 'Sending\u2026';
     btn.disabled = true;
+    if (formError) formError.hidden = true;
 
-    // Simulate async send
-    await sleep(1500);
+    const lastName = contactForm.querySelector('#lastName');
+    const fullName = [
+      contactForm.querySelector('#firstName').value.trim(),
+      lastName && lastName.value.trim(),
+    ].filter(Boolean).join(' ');
 
-    contactForm.style.display = 'none';
-    formSuccess.hidden = false;
+    try {
+      await sendContactEmail({
+        name:    fullName,
+        email:   contactForm.querySelector('#email').value.trim(),
+        service: contactForm.querySelector('#service').value,
+        message: contactForm.querySelector('#message').value.trim(),
+      });
+      contactForm.style.display = 'none';
+      formSuccess.hidden = false;
+    } catch (err) {
+      console.error('Contact form submission failed:', err);
+      btn.textContent = 'Send Message \u2192';
+      btn.disabled = false;
+      if (formError) formError.hidden = false;
+    }
   });
 
   // Reset border highlight + aria-invalid on input

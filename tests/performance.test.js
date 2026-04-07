@@ -103,10 +103,17 @@ test.describe('Performance', () => {
     const failed = [];
     page.on('requestfailed', req => {
       const url = req.url();
-      // Ignore external font CDNs by exact hostname – they may be blocked in CI
+      // Ignore external CDN hostnames – they may be blocked in CI
       try {
         const { hostname } = new URL(url);
-        if (hostname === 'fonts.googleapis.com' || hostname === 'fonts.gstatic.com') return;
+        const externalCdns = [
+          'fonts.googleapis.com',
+          'fonts.gstatic.com',
+          'www.googletagmanager.com',
+          'www.clarity.ms',
+          'cdn.jsdelivr.net',
+        ];
+        if (externalCdns.includes(hostname)) return;
       } catch (_) { /* unparseable URL – include in failures */ }
       failed.push(url);
     });
