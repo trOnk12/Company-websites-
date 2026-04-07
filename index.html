@@ -7,7 +7,14 @@
   <meta property="og:title" content="MP Tech – Senior Android Engineer for Hire" />
   <meta property="og:description" content="7+ years delivering production-grade Android apps for Santander, Wire &amp; more. Clean architecture, high test coverage, on-time delivery. Available now." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tronk12.github.io/Company-websites-/" />
+  <meta property="og:image" content="https://tronk12.github.io/Company-websites-/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="627" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MP Tech – Senior Android Engineer for Hire" />
+  <meta name="twitter:description" content="7+ years delivering production-grade Android apps for Santander, Wire &amp; more. Clean architecture, high test coverage, on-time delivery. Available now." />
+  <meta name="twitter:image" content="https://tronk12.github.io/Company-websites-/og-image.svg" />
   <meta name="author" content="Mateusz Pachulski">
   <title>MP Tech – Senior Android Engineer | Hire Mateusz Pachulski</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📱</text></svg>" />
@@ -15,6 +22,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <!-- Get yours free at analytics.google.com → Admin → Create Property -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
 </head>
 <body>
 
@@ -203,6 +220,14 @@ class SeniorEngineer(
             <div class="svc-tags"><span>Flutter</span><span>Dart</span><span>Health</span><span>MVP</span></div>
           </div>
         </li>
+        <li class="service-item fade-up">
+          <span class="svc-num" aria-hidden="true">09</span>
+          <div class="svc-body">
+            <span class="svc-name">UI/UX Design <span class="svc-new-badge">AI-Assisted</span></span>
+            <p class="svc-desc">Clean, user-centred interface design with the help of AI tools &mdash; from wireframes and component libraries to full Figma prototypes. Fast turnaround, engineering-aware design that actually ships.</p>
+            <div class="svc-tags"><span>Figma</span><span>Wireframing</span><span>Prototyping</span><span>AI Design Tools</span><span>Material 3</span></div>
+          </div>
+        </li>
       </ol>
     </div>
   </section>
@@ -365,6 +390,10 @@ class SeniorEngineer(
               <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer" class="contact-link">linkedin.com/in/mateusz-pachulski</a>
             </li>
             <li>
+              <span class="contact-label">GitHub</span>
+              <a href="https://github.com/trOnk12" target="_blank" rel="noopener noreferrer" class="contact-link">github.com/trOnk12</a>
+            </li>
+            <li>
               <span class="contact-label">Location</span>
               <span class="contact-link">Zielona G&oacute;ra, Poland &middot; Remote worldwide</span>
             </li>
@@ -388,9 +417,9 @@ class SeniorEngineer(
               <input type="email" id="email" name="email" required autocomplete="email">
             </div>
             <div class="form-field">
-              <label for="service">Service</label>
+              <label for="service">What can I help you with?</label>
               <select id="service" name="service">
-                <option value="">Select a service...</option>
+                <option value="">Pick the closest match...</option>
                 <option value="android">Android Development</option>
                 <option value="testing">Testing &amp; Quality</option>
                 <option value="kmp">Kotlin Multiplatform</option>
@@ -399,7 +428,10 @@ class SeniorEngineer(
                 <option value="iot">IoT &amp; BLE SDK Development</option>
                 <option value="fintech">Real-Time Data &amp; FinTech Apps</option>
                 <option value="flutter">Cross-Platform Flutter Development</option>
+                <option value="uxdesign">UI/UX Design (AI-Assisted)</option>
+                <option value="other">Other / Something Else &#8594; just describe it below</option>
               </select>
+              <p class="form-hint">Not sure which fits? Select <em>Other</em> and describe your idea &mdash; I&rsquo;ll figure out what you need.</p>
             </div>
             <div class="form-field">
               <label for="message">Message <abbr title="required">*</abbr></label>
@@ -408,7 +440,8 @@ class SeniorEngineer(
             <button type="submit" class="submit-btn">Send Message &rarr;</button>
           </form>
           <div id="formSuccess" hidden role="status" aria-live="polite">
-            <p>&#10003; Message sent! I&rsquo;ll get back to you within 24 hours.</p>
+            <p>&#10003; Your email client should have opened with your message ready to send.</p>
+            <p style="margin-top:0.5rem;font-size:0.78rem;opacity:0.75">If it didn&rsquo;t open, email me directly at <a href="mailto:m.pachulski94@gmail.com" style="color:var(--green)">m.pachulski94@gmail.com</a> &mdash; I respond within 24 hours.</p>
           </div>
         </div>
       </div>
@@ -426,6 +459,7 @@ class SeniorEngineer(
         <a href="#contact">Contact</a>
         <a href="mailto:m.pachulski94@gmail.com">Email</a>
         <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/trOnk12" target="_blank" rel="noopener noreferrer">GitHub</a>
       </nav>
       <div class="kbd-map" aria-label="Keyboard shortcuts">
         <span class="kbd-key">1&ndash;5</span> navigate &nbsp;

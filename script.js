@@ -50,6 +50,12 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
       e.preventDefault();
       target.scrollIntoView({ behavior: 'smooth' });
     }
+    if (href === '#contact' && typeof gtag !== 'undefined') {
+      const source = link.id === 'fixed-cta' ? 'fixed_cta'
+        : link.classList.contains('hero-cta') ? 'hero_cta'
+        : 'nav_link';
+      gtag('event', 'cta_click', { source });
+    }
   });
 });
 
@@ -361,7 +367,7 @@ const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
 
 if (contactForm && formSuccess) {
-  contactForm.addEventListener('submit', async e => {
+  contactForm.addEventListener('submit', e => {
     e.preventDefault();
 
     // Basic validation
@@ -385,14 +391,43 @@ if (contactForm && formSuccess) {
     }
 
     const btn = contactForm.querySelector('.submit-btn');
-    btn.textContent = 'Sending...';
+    btn.textContent = 'Opening email client\u2026';
     btn.disabled = true;
 
-    // Simulate async send
-    await sleep(1500);
+    const lastNameEl  = contactForm.querySelector('#lastName');
+    const serviceEl   = contactForm.querySelector('#service');
+    const firstNameVal = firstName.value.trim();
+    const lastNameVal  = lastNameEl ? lastNameEl.value.trim() : '';
+    const emailVal     = email.value.trim();
+    const serviceLabel = (serviceEl && serviceEl.value)
+      ? serviceEl.options[serviceEl.selectedIndex].text.replace(/ →.*$/, '').trim()
+      : 'General Inquiry';
+    const messageVal   = message.value.trim();
 
-    contactForm.style.display = 'none';
-    formSuccess.hidden = false;
+    const subject = '[Portfolio Inquiry] ' + serviceLabel + ' \u2014 ' + firstNameVal;
+    const bodyText = [
+      'From: ' + firstNameVal + (lastNameVal ? ' ' + lastNameVal : ''),
+      'Reply-to: ' + emailVal,
+      'Service: ' + serviceLabel,
+      '',
+      'Message:',
+      messageVal,
+      '',
+      '---',
+      'Sent via mptech portfolio contact form',
+    ].join('\n');
+
+    window.location.href = 'mailto:m.pachulski94@gmail.com'
+      + '?subject=' + encodeURIComponent(subject)
+      + '&body='    + encodeURIComponent(bodyText);
+
+    setTimeout(() => {
+      contactForm.style.display = 'none';
+      formSuccess.hidden = false;
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'contact_form_submit', { service: serviceLabel });
+      }
+    }, 600);
   });
 
   // Reset border highlight + aria-invalid on input
@@ -845,6 +880,7 @@ const SERVICE_MAP = {
   'IoT & BLE SDK':          ['ble', 'bluetooth', 'iot', 'sdk', 'embedded', 'hardware', 'mesh'],
   'FinTech & Real-time':    ['fintech', 'finance', 'trading', 'websocket', 'real-time', 'banking', 'crypto'],
   'Flutter Development':    ['flutter', 'dart'],
+  'UI/UX Design':           ['design', 'ux', 'ui', 'figma', 'wireframe', 'prototype', 'mockup', 'interface', 'layout', 'screens'],
   'Hiring / Contract':      ['hire', 'contract', 'freelance', 'job', 'position', 'work with', 'team up', 'offer'],
 };
 
@@ -958,6 +994,10 @@ if (qbAnalyze && qbInput && qbResult) {
     qbResult.appendChild(line2);
     qbResult.appendChild(links);
     qbResult.classList.add('visible');
+
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'quick_brief_send', { service });
+    }
   });
 
   qbInput.addEventListener('input', () => {
