@@ -12,6 +12,35 @@ function isMobile() {
 }
 
 /* =====================
+   CLICK TRACKER
+   ===================== */
+const CLICK_STATS_KEY = 'pachulski_click_stats';
+
+function recordClick(label) {
+  let stats = {};
+  try {
+    stats = JSON.parse(localStorage.getItem(CLICK_STATS_KEY) || '{}');
+  } catch (_) {}
+  const now = new Date().toISOString();
+  if (!stats[label]) {
+    stats[label] = { count: 0, firstClicked: now, lastClicked: now };
+  }
+  stats[label].count++;
+  stats[label].lastClicked = now;
+  try {
+    localStorage.setItem(CLICK_STATS_KEY, JSON.stringify(stats));
+  } catch (_) {}
+}
+
+function getClickStats() {
+  try {
+    return JSON.parse(localStorage.getItem(CLICK_STATS_KEY) || '{}');
+  } catch (_) {
+    return {};
+  }
+}
+
+/* =====================
    FOOTER YEAR
    ===================== */
 const yearEl = document.getElementById('year');
@@ -267,12 +296,26 @@ async function processCommand(raw) {
     await sleep(400);
     closeTerminal();
 
+  } else if (c === 'stats') {
+    const stats = getClickStats();
+    const entries = Object.entries(stats);
+    if (entries.length === 0) {
+      await typeTermLine('No clicks recorded yet.', 'muted');
+    } else {
+      await typeTermLine('Click statistics (most clicked first):');
+      const sorted = entries.sort((a, b) => b[1].count - a[1].count);
+      for (const [label, data] of sorted) {
+        await typeTermLine('  ' + data.count + 'x  ' + label);
+      }
+    }
+
   } else if (c === 'help') {
     await typeTermLine('Available commands:');
     await typeTermLine('  whoami        — About me');
     await typeTermLine('  ls projects   — List projects');
     await typeTermLine('  stack         — Technology stack');
     await typeTermLine('  contact       — Scroll to contact');
+    await typeTermLine('  stats         — Click statistics');
     await typeTermLine('  clear         — Clear terminal');
     await typeTermLine('  exit          — Close terminal');
     await typeTermLine('  help          — Show this list');
@@ -966,3 +1009,36 @@ if (qbAnalyze && qbInput && qbResult) {
     qbResult.innerHTML = '';
   });
 }
+
+/* =====================
+   CLICK TRACKING LISTENERS
+   ===================== */
+
+// CTA buttons
+document.querySelectorAll('.hero-cta, #fixed-cta').forEach(el => {
+  el.addEventListener('click', () => recordClick('CTA: Book a discovery call'));
+});
+
+// Quick Brief trigger
+if (qbTrigger) {
+  qbTrigger.addEventListener('click', () => recordClick('Quick Brief: Opened'));
+}
+
+// Case study stats
+document.querySelectorAll('.cs-stat').forEach(el => {
+  const csName = el.closest('.case-study')
+    ? (el.closest('.case-study').querySelector('.cs-name') || {}).textContent || 'Case Study'
+    : 'Case Study';
+  el.addEventListener('click', () => recordClick('Stat: ' + csName.trim()));
+});
+
+// Contact links
+document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
+  el.addEventListener('click', () => recordClick('Contact: Email'));
+});
+document.querySelectorAll('a[href^="tel:"]').forEach(el => {
+  el.addEventListener('click', () => recordClick('Contact: Phone'));
+});
+document.querySelectorAll('a[href*="linkedin"]').forEach(el => {
+  el.addEventListener('click', () => recordClick('Contact: LinkedIn'));
+});

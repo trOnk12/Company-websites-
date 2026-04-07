@@ -257,3 +257,122 @@ test.describe('Desktop Layout', () => {
     await expect(page.locator('#fixed-cta')).toBeVisible();
   });
 });
+
+// ─── Click Tracker ─────────────────────────────────────────────────────────
+
+test.describe('Click Tracker', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    // Clear any leftover stats between tests
+    await page.evaluate(() => localStorage.removeItem('pachulski_click_stats'));
+  });
+
+  test('recordClick stores an entry in localStorage', async ({ page }) => {
+    await page.evaluate(() => {
+      recordClick('Test: click');
+    });
+    const stats = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pachulski_click_stats') || '{}')
+    );
+    expect(stats['Test: click']).toBeDefined();
+    expect(stats['Test: click'].count).toBe(1);
+  });
+
+  test('recordClick increments count on repeated clicks', async ({ page }) => {
+    await page.evaluate(() => {
+      recordClick('Test: repeat');
+      recordClick('Test: repeat');
+      recordClick('Test: repeat');
+    });
+    const stats = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pachulski_click_stats') || '{}')
+    );
+    expect(stats['Test: repeat'].count).toBe(3);
+  });
+
+  test('getClickStats returns empty object when nothing recorded', async ({ page }) => {
+    const stats = await page.evaluate(() => getClickStats());
+    expect(stats).toEqual({});
+  });
+
+  test('CTA click records "CTA: Book a discovery call"', async ({ page }) => {
+    // Click the hero CTA
+    await page.locator('.hero-cta').click();
+    const stats = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pachulski_click_stats') || '{}')
+    );
+    expect(stats['CTA: Book a discovery call']).toBeDefined();
+    expect(stats['CTA: Book a discovery call'].count).toBeGreaterThanOrEqual(1);
+  });
+
+  test('email link click records "Contact: Email"', async ({ page }) => {
+    // Intercept navigation to avoid leaving the page
+    await page.route('**/*', route => route.continue());
+    await page.evaluate(() => {
+      document.querySelector('a[href^="mailto:"]').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const stats = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pachulski_click_stats') || '{}')
+    );
+    expect(stats['Contact: Email']).toBeDefined();
+    expect(stats['Contact: Email'].count).toBeGreaterThanOrEqual(1);
+  });
+
+  test('case study stat click records correct label', async ({ page }) => {
+    await page.evaluate(() => {
+      document.querySelector('.cs-stat').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    const stats = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pachulski_click_stats') || '{}')
+    );
+    const keys = Object.keys(stats);
+    expect(keys.some(k => k.startsWith('Stat:'))).toBe(true);
+  });
+
+  test('terminal stats command shows "No clicks recorded yet" when empty', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop-only test');
+    // Open terminal
+    await page.locator('#term-trigger').click();
+    await page.locator('#term-input').fill('stats');
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(600);
+    const output = await page.locator('#term-output').textContent();
+    expect(output).toContain('No clicks recorded');
+  });
+
+  test('terminal stats command shows recorded clicks', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop-only test');
+    // Pre-populate stats
+    await page.evaluate(() => {
+      recordClick('CTA: Book a discovery call');
+      recordClick('CTA: Book a discovery call');
+      recordClick('Contact: Email');
+    });
+    // Open terminal and run stats
+    await page.locator('#term-trigger').click();
+    await page.locator('#term-input').fill('stats');
+    await page.keyboard.press('Enter');
+    // Wait until the expected label is fully typed out
+    await page.waitForFunction(
+      () => document.getElementById('term-output').textContent.includes('CTA: Book a discovery call'),
+      { timeout: 5000 }
+    );
+    const output = await page.locator('#term-output').textContent();
+    expect(output).toContain('2x');
+    expect(output).toContain('CTA: Book a discovery call');
+  });
+
+  test('terminal help lists the stats command', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop-only test');
+    await page.locator('#term-trigger').click();
+    await page.locator('#term-input').fill('help');
+    await page.keyboard.press('Enter');
+    // Wait until "stats" line is typed out
+    await page.waitForFunction(
+      () => document.getElementById('term-output').textContent.includes('stats'),
+      { timeout: 8000 }
+    );
+    const output = await page.locator('#term-output').textContent();
+    expect(output).toContain('stats');
+  });
+});
