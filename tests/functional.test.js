@@ -180,7 +180,7 @@ test.describe('Security Meta Tags', () => {
     await page.goto('/');
     const content = await page.$eval('meta[http-equiv="Content-Security-Policy"]', el => el.getAttribute('content'));
     expect(content, 'CSP should include default-src').toContain('default-src');
-    expect(content, 'CSP should block object-src').toContain('object-src');
+    expect(content, 'CSP should block object-src with none').toContain("object-src 'none'");
     expect(content, 'CSP should set frame-ancestors').toContain('frame-ancestors');
   });
 });
