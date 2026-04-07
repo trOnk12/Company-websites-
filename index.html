@@ -35,6 +35,22 @@
 </head>
 <body>
 
+  <!-- Boot screen (first-visit terminal intro) -->
+  <div id="boot-screen" aria-hidden="true" aria-label="Loading portfolio">
+    <div id="boot-content">
+      <div id="boot-lines"></div>
+      <div id="boot-progress-wrap"><span id="boot-bar"></span></div>
+      <div id="boot-skip">[ press any key or click to skip ]</div>
+    </div>
+  </div>
+
+  <!-- Scroll progress bar -->
+  <div id="scrollProgress" aria-hidden="true"></div>
+
+  <!-- Enhanced cursor (dot + lag ring) -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
   <!-- Custom cursor -->
   <div id="cursor" aria-hidden="true"></div>
 
@@ -65,6 +81,8 @@
 
   <!-- ===== HERO ===== -->
   <section id="hero" aria-labelledby="hero-name">
+    <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+    <canvas id="bgCanvas" aria-hidden="true"></canvas>
     <div class="section-inner">
       <div class="avail-hero" aria-label="Availability status">
         <span class="pulse-dot" aria-hidden="true"></span>
@@ -81,7 +99,16 @@
         <span class="hero-meta-item"><strong>3</strong> industries</span>
         <span class="hero-meta-item"><strong>6+</strong> apps shipped</span>
       </div>
-      <pre class="hero-code-deco" aria-hidden="true">// Mateusz.kt
+      <div class="hero-terminal-card" aria-hidden="true">
+        <div class="terminal-topbar">
+          <div class="t-dots">
+            <span class="t-dot red"></span>
+            <span class="t-dot yellow"></span>
+            <span class="t-dot green"></span>
+          </div>
+          <span class="terminal-filename">Mateusz.kt</span>
+        </div>
+        <pre class="hero-code-deco">// Mateusz.kt
 class SeniorEngineer(
   val name: String = "Mateusz Pachulski",
   val stack: List<String> = listOf(
@@ -92,6 +119,7 @@ class SeniorEngineer(
   val experience: String = "7+ years",
   val available: Boolean = true
 )</pre>
+      </div>
     </div>
   </section>
 

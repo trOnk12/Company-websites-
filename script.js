@@ -1,6 +1,11 @@
 'use strict';
 
 /* =====================
+   CONSTANTS
+   ===================== */
+const PORTFOLIO_VERSION = 'v2.0.1';
+
+/* =====================
    UTILITIES
    ===================== */
 function sleep(ms) {
@@ -37,6 +42,113 @@ if (!isMobile() && cursor) {
     cursor.style.transform = 'translate(-50%, -50%) scale(1)';
   });
 }
+
+/* =====================
+   BOOT SCREEN
+   ===================== */
+(function initBoot() {
+  const screen  = document.getElementById('boot-screen');
+  if (!screen) return;
+
+  if (sessionStorage.getItem('mptech_booted')) {
+    screen.classList.add('hidden');
+    return;
+  }
+
+  const linesEl = document.getElementById('boot-lines');
+  const bar     = document.getElementById('boot-bar');
+
+  const messages = [
+    { text: 'mptech://boot ~ bash',                       cls: 'accent', delay: 0    },
+    { text: '> initializing runtime…',                    cls: '',       delay: 220  },
+    { text: '> loading  [android-sdk]  ✓',                cls: 'green',  delay: 440  },
+    { text: '> loading  [kotlin 2.0]   ✓',                cls: 'green',  delay: 620  },
+    { text: '> loading  [jetpack-compose] ✓',             cls: 'green',  delay: 800  },
+    { text: '> loading  [e2e-encryption] ✓',              cls: 'green',  delay: 960  },
+    { text: '> mounting portfolio assets… done',          cls: '',       delay: 1180 },
+    { text: '> all systems nominal.',                     cls: 'accent', delay: 1420 },
+    { text: '> 7+ years · 4 countries · available now.',  cls: '',       delay: 1640 },
+  ];
+
+  function dismiss() {
+    sessionStorage.setItem('mptech_booted', '1');
+    screen.classList.add('fade-out');
+    setTimeout(() => screen.classList.add('hidden'), 520);
+    document.removeEventListener('keydown', dismiss);
+    screen.removeEventListener('click', dismiss);
+  }
+
+  screen.addEventListener('click', dismiss);
+  document.addEventListener('keydown', dismiss);
+
+  (async function runBoot() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      dismiss();
+      return;
+    }
+
+    const totalDuration = 1900;
+    const barInterval = setInterval(() => {
+      const pct = Math.min(parseFloat(bar.style.width || '0') + 2, 100);
+      bar.style.width = pct + '%';
+      if (pct >= 100) clearInterval(barInterval);
+    }, totalDuration / 50);
+
+    for (let i = 0; i < messages.length; i++) {
+      const msg       = messages[i];
+      const prevDelay = i > 0 ? messages[i - 1].delay : 0;
+      await sleep(msg.delay - prevDelay);
+      if (screen.classList.contains('fade-out') || screen.classList.contains('hidden')) return;
+      const line = document.createElement('div');
+      line.className = 'boot-line' + (msg.cls ? ' ' + msg.cls : '');
+      line.textContent = msg.text;
+      linesEl.appendChild(line);
+    }
+
+    await sleep(700);
+    dismiss();
+  }());
+}());
+
+/* =====================
+   MATRIX RAIN CANVAS
+   ===================== */
+(function initMatrix() {
+  const canvas = document.getElementById('matrix-canvas');
+  if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const MATRIX_CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワン0123456789ABCDEFKLMNPQRSUVXYZ{}[]<>/|\\'.split('');
+  const MATRIX_FRAME_INTERVAL = 48;
+  const ctx = canvas.getContext('2d');
+  const fontSize = 13;
+  let cols, drops;
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    cols  = Math.floor(canvas.width / fontSize);
+    drops = Array.from({ length: cols }, () => Math.random() * -50);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.fillStyle = 'rgba(13, 13, 13, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#F59E0B';
+    ctx.font = fontSize + 'px "Space Mono", monospace';
+    for (let i = 0; i < drops.length; i++) {
+      const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i] += 0.55;
+    }
+  }
+
+  setInterval(draw, MATRIX_FRAME_INTERVAL);
+}());
 
 /* =====================
    SMOOTH SCROLL (all #anchors)
@@ -272,15 +384,101 @@ async function processCommand(raw) {
     await sleep(400);
     closeTerminal();
 
+  } else if (c === 'neofetch') {
+    await typeTermLine('       ████████       mateusz@mptech');
+    await typeTermLine('      ██      ██      ──────────────');
+    await typeTermLine('     ██  ████  ██     OS: Android / KMP');
+    await typeTermLine('     ██  ████  ██     Host: Senior Engineer');
+    await typeTermLine('      ██      ██      Uptime: 7+ years');
+    await typeTermLine('       ████████       Shell: Kotlin 2.0');
+    await typeTermLine('                      Stack: Compose · gRPC · BLE');
+    await typeTermLine('                      Status: available now ✓');
+
+  } else if (c === 'uptime') {
+    const since = new Date('2017-06-01');
+    const now   = new Date();
+    const years = Math.floor((now - since) / (1000 * 60 * 60 * 24 * 365));
+    const days  = Math.floor(((now - since) % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24));
+    await typeTermLine('up ' + years + ' years, ' + days + ' days (since first commit: 2017-06-01)');
+
+  } else if (c === 'ping' || c.startsWith('ping ')) {
+    const host = cmd.split(' ')[1] || 'pachulski.dev';
+    await typeTermLine('PING ' + host + ' — 56 bytes of data.');
+    await sleep(300);
+    await typeTermLine('64 bytes from ' + host + ': icmp_seq=1 ttl=64 time=2.1 ms', 'green');
+    await typeTermLine('64 bytes from ' + host + ': icmp_seq=2 ttl=64 time=1.9 ms', 'green');
+    await typeTermLine('64 bytes from ' + host + ': icmp_seq=3 ttl=64 time=2.0 ms', 'green');
+    await typeTermLine('3 packets transmitted, 3 received, 0% packet loss');
+
+  } else if (c === 'sudo hire mateusz') {
+    await typeTermLine('[sudo] password for visitor: ');
+    await sleep(600);
+    await typeTermLine('✓ Access granted. Launching hire sequence…', 'accent');
+    await sleep(400);
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+    }, 600);
+
+  } else if (c.startsWith('sudo ')) {
+    await typeTermLine('visitor is not in the sudoers file. Try: sudo hire mateusz', 'muted');
+
+  } else if (c === 'git log') {
+    await typeTermLine('commit a1b2c3d  (HEAD -> main)');
+    await typeTermLine('Author: Mateusz Pachulski <m.pachulski94@gmail.com>');
+    await typeTermLine('Date:   2024 — Present');
+    await typeTermLine('    feat: Synaptic AI · BLE mesh · KMP cross-platform');
+    await typeTermLine('');
+    await typeTermLine('commit e4f5a6b');
+    await typeTermLine('Date:   2022 — 2024');
+    await typeTermLine('    feat: Wire Messenger E2E · Blocktrade crypto exchange');
+    await typeTermLine('');
+    await typeTermLine('commit 7c8d9e0');
+    await typeTermLine('Date:   2018 — 2022');
+    await typeTermLine('    feat: Santander/Erste Bank rebranding · FitCrony');
+
+  } else if (c === 'cat readme.md') {
+    await typeTermLine('# MP Tech Portfolio');
+    await typeTermLine('');
+    await typeTermLine('Senior Android Engineer specialising in:');
+    await typeTermLine('- Kotlin · Jetpack Compose · KMP');
+    await typeTermLine('- Clean Architecture · gRPC · BLE');
+    await typeTermLine('- AI integrations · WCAG accessibility');
+    await typeTermLine('');
+    await typeTermLine('Available for contract · remote-first · EU timezone');
+    await typeTermLine('→ https://pachulski.dev');
+
+  } else if (c === 'man mptech') {
+    await typeTermLine('MPTECH(1)          User Commands          MPTECH(1)');
+    await typeTermLine('');
+    await typeTermLine('NAME');
+    await typeTermLine('       mptech - Senior Android Engineer portfolio');
+    await typeTermLine('');
+    await typeTermLine('SYNOPSIS');
+    await typeTermLine('       hire [--remote] [--contract] mateusz');
+    await typeTermLine('');
+    await typeTermLine('DESCRIPTION');
+    await typeTermLine('       7+ years delivering production Android apps.');
+    await typeTermLine('       Specialises in Kotlin, Compose, KMP, BLE, gRPC.');
+    await typeTermLine('');
+    await typeTermLine('SEE ALSO');
+    await typeTermLine('       whoami(1), stack(1), ls-projects(1)');
+
   } else if (c === 'help') {
     await typeTermLine('Available commands:');
-    await typeTermLine('  whoami        — About me');
-    await typeTermLine('  ls projects   — List projects');
-    await typeTermLine('  stack         — Technology stack');
-    await typeTermLine('  contact       — Scroll to contact');
-    await typeTermLine('  clear         — Clear terminal');
-    await typeTermLine('  exit          — Close terminal');
-    await typeTermLine('  help          — Show this list');
+    await typeTermLine('  whoami            — About me');
+    await typeTermLine('  ls projects       — List projects');
+    await typeTermLine('  stack             — Technology stack');
+    await typeTermLine('  neofetch          — System info');
+    await typeTermLine('  uptime            — Time since first commit');
+    await typeTermLine('  git log           — Work history');
+    await typeTermLine('  cat readme.md     — Project overview');
+    await typeTermLine('  ping <host>       — Connectivity check');
+    await typeTermLine('  sudo hire mateusz — ⚡ Hire me');
+    await typeTermLine('  man mptech        — Manual page');
+    await typeTermLine('  contact           — Scroll to contact');
+    await typeTermLine('  clear             — Clear terminal');
+    await typeTermLine('  exit              — Close terminal');
 
   } else {
     await typeTermLine('command not found: ' + cmd, 'muted');
@@ -1005,3 +1203,185 @@ if (qbAnalyze && qbInput && qbResult) {
     qbResult.innerHTML = '';
   });
 }
+
+/* =====================
+   SCROLL PROGRESS BAR
+   ===================== */
+(function initScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = Math.min(scrolled, 100) + '%';
+  }, { passive: true });
+}());
+
+/* =====================
+   PARTICLE NETWORK CANVAS
+   ===================== */
+(function initParticles() {
+  const canvas = document.getElementById('bgCanvas');
+  if (!canvas) return;
+  if (isMobile()) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const ctx = canvas.getContext('2d');
+  const COUNT = 80;
+  let W, H, particles, mouse = { x: -9999, y: -9999 };
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+
+  function Particle() {
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.6;
+    this.vy = (Math.random() - 0.5) * 0.6;
+    this.r  = Math.random() * 2 + 1;
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({ length: COUNT }, () => new Particle());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0,200,255,0.55)';
+      ctx.fill();
+
+      // Connect to mouse
+      const dx = mouse.x - p.x;
+      const dy = mouse.y - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = 'rgba(0,200,255,' + (1 - dist / 120) * 0.3 + ')';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+
+      // Connect nearby particles
+      for (let j = i + 1; j < particles.length; j++) {
+        const q    = particles[j];
+        const ddx  = p.x - q.x;
+        const ddy  = p.y - q.y;
+        const d    = Math.sqrt(ddx * ddx + ddy * ddy);
+        if (d < 90) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = 'rgba(0,200,255,' + (1 - d / 90) * 0.15 + ')';
+          ctx.lineWidth = 0.4;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  canvas.closest('#hero').addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  canvas.closest('#hero').addEventListener('mouseleave', () => {
+    mouse.x = -9999; mouse.y = -9999;
+  });
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
+}());
+
+/* =====================
+   ENHANCED CURSOR (dot + ring)
+   ===================== */
+(function initEnhancedCursor() {
+  if (isMobile()) return;
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+
+  document.body.style.cursor = 'none';
+
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.transform  = `translate(${mx}px, ${my}px)`;
+  });
+
+  (function animateRing() {
+    rx += (mx - rx) * 0.14;
+    ry += (my - ry) * 0.14;
+    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    requestAnimationFrame(animateRing);
+  }());
+
+  document.addEventListener('mousedown', () => {
+    dot.classList.add('clicking');
+    ring.classList.add('clicking');
+  });
+  document.addEventListener('mouseup', () => {
+    dot.classList.remove('clicking');
+    ring.classList.remove('clicking');
+  });
+}());
+
+/* =====================
+   3D CARD TILT (service items)
+   ===================== */
+(function initTilt() {
+  if (isMobile()) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  document.querySelectorAll('.service-item').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect   = card.getBoundingClientRect();
+      const x      = e.clientX - rect.left;
+      const y      = e.clientY - rect.top;
+      const cx     = rect.width  / 2;
+      const cy     = rect.height / 2;
+      const rotX   = ((y - cy) / cy) * -8;
+      const rotY   = ((x - cx) / cx) *  8;
+      card.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.03,1.03,1.03)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}());
+
+/* =====================
+   GLITCH HERO TITLE
+   ===================== */
+(function initGlitch() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const heroName = document.getElementById('hero-name');
+  if (!heroName) return;
+
+  function triggerGlitch() {
+    heroName.classList.add('glitch-active');
+    setTimeout(() => heroName.classList.remove('glitch-active'), 600);
+    setTimeout(triggerGlitch, 4000 + Math.random() * 6000);
+  }
+
+  setTimeout(triggerGlitch, 3000);
+}());
