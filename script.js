@@ -172,7 +172,7 @@ function openTerminal() {
   terminal.classList.add('open');
   terminal.setAttribute('aria-hidden', 'false');
   if (termOutput && termOutput.childElementCount === 0) {
-    appendTermLine('Welcome to mptech terminal. Type "help" to start.', 'accent');
+    appendTermLine('Welcome to pachulski.dev terminal. Type "help" to start.', 'accent');
   }
   if (termInput) termInput.focus();
   const trigger = document.getElementById('term-trigger');
@@ -228,7 +228,7 @@ async function processCommand(raw) {
   echo.className = 'term-prompt-echo';
   const promptSpan = document.createElement('span');
   promptSpan.className = 'term-prompt-color';
-  promptSpan.textContent = 'visitor@mptech:~$';
+  promptSpan.textContent = 'visitor@pachulski.dev:~$';
   const cmdText = document.createTextNode(' ' + cmd);
   echo.appendChild(promptSpan);
   echo.appendChild(cmdText);
@@ -917,7 +917,7 @@ if (qbAnalyze && qbInput && qbResult) {
       text,
       '',
       '---',
-      'Sent via Quick Brief on mptech portfolio',
+      'Sent via Quick Brief on pachulski.dev',
     ].join('\n');
     const mailHref = 'mailto:m.pachulski94@gmail.com?subject=' + subject + '&body=' + encodeURIComponent(bodyText);
     const liHref   = 'https://linkedin.com/in/mateusz-pachulski';
