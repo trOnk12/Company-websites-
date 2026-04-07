@@ -391,7 +391,7 @@ if (contactForm && formSuccess) {
     }
 
     const btn = contactForm.querySelector('.submit-btn');
-    btn.textContent = 'Opening email client\u2026';
+    btn.textContent = 'Opening email\u2026';
     btn.disabled = true;
 
     const lastNameEl  = contactForm.querySelector('#lastName');
@@ -427,7 +427,7 @@ if (contactForm && formSuccess) {
       if (typeof gtag !== 'undefined') {
         gtag('event', 'contact_form_submit', { service: serviceLabel });
       }
-    }, 600);
+    }, 150);
   });
 
   // Reset border highlight + aria-invalid on input

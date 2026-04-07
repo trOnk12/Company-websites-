@@ -512,6 +512,99 @@ section {
 }
 
 /* =====================
+   TESTIMONIALS
+   ===================== */
+.testi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.testi-card {
+  position: relative;
+  border: 1px solid var(--border);
+  padding: 2.25rem 2rem 1.75rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.25s ease;
+}
+.testi-card:hover {
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.testi-card--wide {
+  grid-column: 1 / -1;
+}
+
+.testi-mark {
+  font-family: var(--font-head);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.35;
+  position: absolute;
+  top: 0.75rem;
+  left: 1.5rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.testi-text {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.8;
+  flex: 1;
+  margin-top: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.testi-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.testi-name {
+  font-family: var(--font-head);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.15rem;
+}
+
+.testi-role {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.testi-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.testi-linkedin-note {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+.testi-linkedin-note a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.testi-linkedin-note a:hover { color: var(--accent); }
+
+/* =====================
    CONTACT
    ===================== */
 .contact-grid {
@@ -1198,6 +1291,9 @@ textarea::placeholder { color: #333; }
   }
 
   .stack-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+  .testi-grid { grid-template-columns: 1fr; }
+  .testi-card--wide { grid-column: 1; }
 
   .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
 
