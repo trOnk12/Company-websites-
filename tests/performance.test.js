@@ -3,13 +3,18 @@
 const { test, expect } = require('@playwright/test');
 
 /**
- * Collect Core Web Vitals via the browser's Performance API.
- * Called after waitForLoadState('load') + a short settle delay so
- * LCP and CLS observers have time to fire.
+ * Collect Core Web Vitals after page has loaded and settled.
+ * Waits for the first LCP entry (or up to 3 s) rather than using a fixed timeout.
  */
 async function collectVitals(page) {
   await page.waitForLoadState('load');
-  await page.waitForTimeout(2000);
+  // Wait until at least one LCP entry has been emitted, or give up after 3 s.
+  // `null` is the arg placeholder required so the third param is treated as options.
+  await page.waitForFunction(
+    () => performance.getEntriesByType('largest-contentful-paint').length > 0,
+    null,
+    { timeout: 3000 }
+  ).catch(() => { /* LCP not emitted in time – continue and report null */ });
 
   return page.evaluate(() => {
     const vitals = { fcp: null, lcp: null, cls: 0, domContentLoaded: null, loadTime: null };
@@ -98,13 +103,12 @@ test.describe('Performance', () => {
     const failed = [];
     page.on('requestfailed', req => {
       const url = req.url();
-      // External font CDNs may be unavailable in test environments – ignore them
-      if (
-        !url.includes('fonts.googleapis.com') &&
-        !url.includes('fonts.gstatic.com')
-      ) {
-        failed.push(url);
-      }
+      // Ignore external font CDNs by exact hostname – they may be blocked in CI
+      try {
+        const { hostname } = new URL(url);
+        if (hostname === 'fonts.googleapis.com' || hostname === 'fonts.gstatic.com') return;
+      } catch (_) { /* unparseable URL – include in failures */ }
+      failed.push(url);
     });
     // networkidle can timeout on font requests; catch and still assert
     await page.goto('/', { waitUntil: 'load' });

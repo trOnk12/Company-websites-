@@ -21,10 +21,11 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
   const safePath = path.normalize(req.url.split('?')[0]);
-  const filePath = path.join(ROOT, safePath === '/' ? 'index.html' : safePath);
+  // Resolve to an absolute path and verify it stays inside ROOT
+  const filePath = path.resolve(ROOT, safePath === '/' ? 'index.html' : safePath.replace(/^\//, ''));
 
   // Prevent directory traversal
-  if (!filePath.startsWith(ROOT + path.sep) && filePath !== path.join(ROOT, 'index.html')) {
+  if (!filePath.startsWith(ROOT + path.sep)) {
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('Forbidden');
     return;
