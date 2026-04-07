@@ -966,3 +966,47 @@ if (qbAnalyze && qbInput && qbResult) {
     qbResult.innerHTML = '';
   });
 }
+
+
+/* =====================
+   ANALYTICS
+   ===================== */
+
+/**
+ * Google Analytics 4 initialization.
+ * The gtag.js loader is added as <script async> in <head>.
+ * Replace 'G-XXXXXXXXXX' with your real Measurement ID from
+ * https://analytics.google.com → Admin → Data Streams.
+ *
+ * What GA4 tracks out-of-the-box:
+ *   • Unique users & sessions
+ *   • Page views and average engagement time
+ *   • Traffic sources (where visitors come from)
+ *   • Bounce / engagement rate
+ *   • Device / geography breakdown
+ *
+ * Note: GA4 anonymizes IP addresses automatically — no extra config needed.
+ */
+window.dataLayer = window.dataLayer || [];
+function gtag() { dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', 'G-XXXXXXXXXX');
+
+/**
+ * Microsoft Clarity — free heatmaps & session recordings.
+ * Replace 'XXXXXXXXXX' with your real Project ID from
+ * https://clarity.microsoft.com → New Project.
+ *
+ * What Clarity adds on top of GA4:
+ *   • Heatmaps  – see exactly where visitors click / tap
+ *   • Scroll maps – how far down the page users get
+ *   • Session recordings – watch real user journeys
+ *   • Rage-click & dead-click detection
+ *   • Exit-click analysis (why visitors leave)
+ *   • Native GA4 integration (link sessions to GA4 data)
+ */
+(function (c, l, a, r, i, t, y) {
+  c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+  t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+  y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+})(window, document, 'clarity', 'script', 'XXXXXXXXXX');
