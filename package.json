@@ -1,0 +1,14 @@
+{
+  "name": "company-website-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:perf": "playwright test tests/performance.test.js",
+    "test:functional": "playwright test tests/functional.test.js",
+    "install:browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0"
+  }
+}

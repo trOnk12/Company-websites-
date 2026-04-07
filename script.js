@@ -106,7 +106,8 @@ document.querySelectorAll('.cs-stat').forEach(el => statObserver.observe(el));
 const typewriterLines = [
   'Senior Android Engineer. Apps shipped. Architecture that lasts.',
   '7+ years across banking, messaging & IoT in 4 countries.',
-  'Production-grade Kotlin & Jetpack Compose, on time.'
+  'Production-grade Kotlin & Jetpack Compose, on time.',
+  'AI-accelerated delivery. Your app ships in weeks, not months.'
 ];
 
 const twEl = document.getElementById('typewriter-text');
@@ -171,7 +172,7 @@ function openTerminal() {
   terminal.classList.add('open');
   terminal.setAttribute('aria-hidden', 'false');
   if (termOutput && termOutput.childElementCount === 0) {
-    appendTermLine('Welcome to mptech terminal. Type "help" to start.', 'accent');
+    appendTermLine('Welcome to pachulski.dev terminal. Type "help" to start.', 'accent');
   }
   if (termInput) termInput.focus();
   const trigger = document.getElementById('term-trigger');
@@ -227,7 +228,7 @@ async function processCommand(raw) {
   echo.className = 'term-prompt-echo';
   const promptSpan = document.createElement('span');
   promptSpan.className = 'term-prompt-color';
-  promptSpan.textContent = 'visitor@mptech:~$';
+  promptSpan.textContent = 'visitor@pachulski.dev:~$';
   const cmdText = document.createTextNode(' ' + cmd);
   echo.appendChild(promptSpan);
   echo.appendChild(cmdText);
@@ -309,7 +310,7 @@ if (termTrigger) {
 /* =====================
    KEYBOARD SHORTCUTS
    ===================== */
-const navSections = ['hero', 'case-studies', 'services', 'stack', 'timeline'];
+const navSections = ['hero', 'case-studies', 'services', 'how-i-work', 'stack', 'timeline'];
 
 document.addEventListener('keydown', e => {
   const tag     = document.activeElement ? document.activeElement.tagName : '';
@@ -339,8 +340,8 @@ document.addEventListener('keydown', e => {
   const inFormField = (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') && !isTermInput;
   if (inFormField) return;
 
-  // 1–5: navigate to sections
-  if (e.key >= '1' && e.key <= '5') {
+  // 1–6: navigate to sections
+  if (e.key >= '1' && e.key <= '6') {
     const id = navSections[parseInt(e.key, 10) - 1];
     const section = document.getElementById(id);
     if (section) section.scrollIntoView({ behavior: 'smooth' });
@@ -916,7 +917,7 @@ if (qbAnalyze && qbInput && qbResult) {
       text,
       '',
       '---',
-      'Sent via Quick Brief on mptech portfolio',
+      'Sent via Quick Brief on pachulski.dev',
     ].join('\n');
     const mailHref = 'mailto:m.pachulski94@gmail.com?subject=' + subject + '&body=' + encodeURIComponent(bodyText);
     const liHref   = 'https://linkedin.com/in/mateusz-pachulski';

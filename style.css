@@ -414,6 +414,76 @@ section {
 }
 
 /* =====================
+   HOW I WORK (Process)
+   ===================== */
+#how-i-work {
+  border-top: 1px solid var(--border);
+}
+
+.process-steps {
+  list-style: none;
+  position: relative;
+  max-width: 700px;
+}
+
+.process-steps::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.process-step {
+  display: flex;
+  gap: 1.75rem;
+  padding-bottom: 2.5rem;
+  align-items: flex-start;
+  position: relative;
+}
+
+.process-step:last-child { padding-bottom: 0; }
+
+.step-num {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #0D0D0D;
+  background: var(--accent);
+  font-weight: 700;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.step-body {
+  flex: 1;
+  padding-top: 0.4rem;
+}
+
+.step-name {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.45rem;
+}
+
+.step-desc {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+/* =====================
    STACK
    ===================== */
 .stack-grid {
@@ -1192,4 +1262,8 @@ textarea::placeholder { color: #333; }
 
   #avail-badge { font-size: 0.6rem; }
   #fixed-cta { font-size: 0.62rem; padding: 0.6rem 0.9rem; }
+
+  .process-step { gap: 1rem; padding-bottom: 2rem; }
+  .step-num { width: 28px; height: 28px; font-size: 0.58rem; }
+  .step-desc { font-size: 0.82rem; }
 }
