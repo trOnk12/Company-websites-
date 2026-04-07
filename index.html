@@ -18,7 +18,7 @@
   <meta name="author" content="Mateusz Pachulski">
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.clarity.ms; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.clarity.ms; frame-ancestors 'none'; base-uri 'self'; object-src 'none'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.clarity.ms https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://api.emailjs.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'" />
   <title>Mateusz Pachulski – Senior Android Engineer for Hire</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='3' fill='%230D0D0D'/><text x='16' y='23' font-family='Georgia,serif' font-size='16' font-weight='900' fill='%23F59E0B' text-anchor='middle'>MP</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -487,6 +487,9 @@ class SeniorEngineer(
           <div id="formSuccess" hidden role="status" aria-live="polite">
             <p>&#10003; Message sent! I&rsquo;ll get back to you within 24 hours.</p>
           </div>
+          <div id="formError" hidden role="alert" aria-live="assertive">
+            <p>&#9888; Something went wrong. Please try again or email me directly at <a href="mailto:m.pachulski94@gmail.com">m.pachulski94@gmail.com</a>.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -536,6 +539,10 @@ class SeniorEngineer(
     <button id="qb-analyze" type="button">Analyze &amp; Send &#8594;</button>
   </div>
 
+  <!-- ── EmailJS ──────────────────────────────────────────────────────────── -->
+  <!-- Used to deliver contact-form submissions to your inbox without a back-end. -->
+  <!-- Docs: https://www.emailjs.com/docs/sdk/installation/                        -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
