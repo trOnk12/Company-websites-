@@ -106,7 +106,8 @@ document.querySelectorAll('.cs-stat').forEach(el => statObserver.observe(el));
 const typewriterLines = [
   'Senior Android Engineer. Apps shipped. Architecture that lasts.',
   '7+ years across banking, messaging & IoT in 4 countries.',
-  'Production-grade Kotlin & Jetpack Compose, on time.'
+  'Production-grade Kotlin & Jetpack Compose, on time.',
+  'AI-accelerated delivery. Your app ships in weeks, not months.'
 ];
 
 const twEl = document.getElementById('typewriter-text');
@@ -309,7 +310,7 @@ if (termTrigger) {
 /* =====================
    KEYBOARD SHORTCUTS
    ===================== */
-const navSections = ['hero', 'case-studies', 'services', 'stack', 'timeline'];
+const navSections = ['hero', 'case-studies', 'services', 'how-i-work', 'stack', 'timeline'];
 
 document.addEventListener('keydown', e => {
   const tag     = document.activeElement ? document.activeElement.tagName : '';
@@ -339,8 +340,8 @@ document.addEventListener('keydown', e => {
   const inFormField = (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') && !isTermInput;
   if (inFormField) return;
 
-  // 1–5: navigate to sections
-  if (e.key >= '1' && e.key <= '5') {
+  // 1–6: navigate to sections
+  if (e.key >= '1' && e.key <= '6') {
     const id = navSections[parseInt(e.key, 10) - 1];
     const section = document.getElementById(id);
     if (section) section.scrollIntoView({ behavior: 'smooth' });
