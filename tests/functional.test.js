@@ -119,6 +119,72 @@ test.describe('Contact Section', () => {
   });
 });
 
+// ─── LinkedIn / Open Graph Meta Tags ──────────────────────────────────────
+
+test.describe('LinkedIn / Open Graph Meta Tags', () => {
+  test('og:url is set to canonical domain', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[property="og:url"]', el => el.getAttribute('content'));
+    expect(content).toBe('https://pachulski.dev');
+  });
+
+  test('og:image is set', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[property="og:image"]', el => el.getAttribute('content'));
+    expect(content, 'og:image should be an absolute URL').toMatch(/^https?:\/\//);
+  });
+
+  test('og:image:width and og:image:height are present', async ({ page }) => {
+    await page.goto('/');
+    const width  = await page.$eval('meta[property="og:image:width"]',  el => el.getAttribute('content'));
+    const height = await page.$eval('meta[property="og:image:height"]', el => el.getAttribute('content'));
+    expect(Number(width),  'og:image:width should be >= 1200').toBeGreaterThanOrEqual(1200);
+    expect(Number(height), 'og:image:height should be >= 630').toBeGreaterThanOrEqual(630);
+  });
+
+  test('og:image:alt is set', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[property="og:image:alt"]', el => el.getAttribute('content'));
+    expect(content, 'og:image:alt should not be empty').toBeTruthy();
+  });
+
+  test('og:site_name is present', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[property="og:site_name"]', el => el.getAttribute('content'));
+    expect(content, 'og:site_name should not be empty').toBeTruthy();
+  });
+
+  test('og:locale is set to en_US', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[property="og:locale"]', el => el.getAttribute('content'));
+    expect(content).toBe('en_US');
+  });
+});
+
+// ─── Security Meta Tags ────────────────────────────────────────────────────
+
+test.describe('Security Meta Tags', () => {
+  test('X-Content-Type-Options is nosniff', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[http-equiv="X-Content-Type-Options"]', el => el.getAttribute('content'));
+    expect(content).toBe('nosniff');
+  });
+
+  test('referrer policy is strict-origin-when-cross-origin', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[name="referrer"]', el => el.getAttribute('content'));
+    expect(content).toBe('strict-origin-when-cross-origin');
+  });
+
+  test('Content-Security-Policy meta tag is present', async ({ page }) => {
+    await page.goto('/');
+    const content = await page.$eval('meta[http-equiv="Content-Security-Policy"]', el => el.getAttribute('content'));
+    expect(content, 'CSP should include default-src').toContain('default-src');
+    expect(content, 'CSP should block object-src with none').toContain("object-src 'none'");
+    expect(content, 'CSP should set frame-ancestors').toContain('frame-ancestors');
+  });
+});
+
 // ─── Footer ────────────────────────────────────────────────────────────────
 
 test.describe('Footer', () => {
