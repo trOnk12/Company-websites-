@@ -253,9 +253,18 @@ section {
   font-family: var(--font-mono);
   font-size: clamp(0.78rem, 1.8vw, 1rem);
   color: var(--muted);
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   min-height: 1.5em;
   letter-spacing: 0.02em;
+}
+
+.hero-dutch {
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  color: var(--muted);
+  opacity: 0.7;
+  letter-spacing: 0.04em;
+  margin-bottom: 2rem;
 }
 
 .hero-cta {

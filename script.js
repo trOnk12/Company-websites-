@@ -124,8 +124,8 @@ document.querySelectorAll('.cs-stat').forEach(el => statObserver.observe(el));
    TYPEWRITER EFFECT (hero)
    ===================== */
 const typewriterLines = [
-  'Senior Android Engineer. Apps shipped. Architecture that lasts.',
-  '7+ years across banking, messaging & IoT in 4 countries.',
+  'KMP & Android Engineer for Fintech — Wire Messenger · Santander · BlockTrade',
+  '7+ years across banking, messaging & fintech in 4 countries.',
   'Production-grade Kotlin & Jetpack Compose, on time.',
   'AI-accelerated delivery. Your app ships in weeks, not months.'
 ];
