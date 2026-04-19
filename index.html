@@ -44,13 +44,16 @@
   <div id="cursor" aria-hidden="true"></div>
 
   <!-- Fixed top-left availability badge -->
-  <div id="avail-badge"><span aria-hidden="true">&#9679;</span> Available &middot; 2 spots</div>
+  <div id="avail-badge"><span aria-hidden="true">&#9679;</span> <span data-i18n="badge.avail">Available &middot; 2 spots</span></div>
 
   <!-- Fixed bottom-right CTA -->
-  <a href="#contact" id="fixed-cta" aria-label="Book a discovery call">Book a discovery call &rarr;</a>
+  <a href="#contact" id="fixed-cta" aria-label="Book a discovery call" data-i18n="nav.cta">Book a discovery call &rarr;</a>
 
   <!-- Keyboard shortcuts toast -->
   <div id="kbd-toast" role="status" aria-live="polite">[ esc &middot; 1&ndash;6 navigate &middot; B book ]</div>
+
+  <!-- Language toggle -->
+  <button id="lang-toggle" aria-label="Switch to Dutch / Schakel naar Engels">NL</button>
 
   <!-- Terminal trigger (desktop only) -->
   <button id="term-trigger" aria-label="Open terminal emulator" aria-expanded="false">&gt;_ terminal</button>
@@ -73,19 +76,19 @@
     <div class="section-inner">
       <div class="avail-hero" aria-label="Availability status">
         <span class="pulse-dot" aria-hidden="true"></span>
-        <span>Available &middot; 2 spots open this quarter</span>
+        <span data-i18n="hero.avail">Available &middot; 2 spots open this quarter</span>
       </div>
       <h1 id="hero-name" class="hero-name">Mateusz<br>Pachulski</h1>
       <div class="typewriter-wrap" aria-live="polite" aria-label="Value proposition">
         <span id="typewriter-text" class="typewriter-text"></span><span class="cursor-blink" aria-hidden="true">|</span>
       </div>
-      <p class="hero-dutch">🇳🇱 Dutch fluent · EU timezone · Remote</p>
-      <a href="#contact" class="hero-cta">Book a discovery call</a>
+      <p class="hero-dutch" data-i18n="hero.dutch">🇳🇱 Dutch fluent &middot; EU timezone &middot; Remote</p>
+      <a href="#contact" class="hero-cta" data-i18n="hero.cta">Book a discovery call</a>
       <div class="hero-meta" aria-label="Quick facts">
-        <span class="hero-meta-item"><strong>7+</strong> years</span>
-        <span class="hero-meta-item" title="incl. Netherlands"><strong>4</strong> countries</span>
-        <span class="hero-meta-item"><strong>3</strong> industries</span>
-        <span class="hero-meta-item"><strong>6+</strong> apps shipped</span>
+        <span class="hero-meta-item"><strong>7+</strong> <span data-i18n="hero.years">years</span></span>
+        <span class="hero-meta-item" title="incl. Netherlands"><strong>4</strong> <span data-i18n="hero.countries">countries</span></span>
+        <span class="hero-meta-item"><strong>3</strong> <span data-i18n="hero.industries">industries</span></span>
+        <span class="hero-meta-item"><strong>6+</strong> <span data-i18n="hero.apps">apps shipped</span></span>
       </div>
       <pre class="hero-code-deco" aria-hidden="true">// Mateusz.kt
 class SeniorEngineer(
@@ -104,14 +107,14 @@ class SeniorEngineer(
   <!-- ===== CASE STUDIES ===== -->
   <section id="case-studies" aria-labelledby="cs-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">02 &mdash; Case Studies</p>
-      <h2 id="cs-heading" class="section-heading">Selected Work</h2>
+      <p class="section-label" aria-hidden="true" data-i18n="cs.label">02 &mdash; Case Studies</p>
+      <h2 id="cs-heading" class="section-heading" data-i18n="cs.heading">Selected Work</h2>
 
       <div class="case-study">
         <div class="cs-stat" data-target="40" data-suffix="+" aria-label="40 plus UI regressions caught">40+</div>
         <div class="cs-content fade-up">
           <h3 class="cs-name">Santander / Erste Bank</h3>
-          <p class="cs-desc">Large-scale banking rebranding and multi-country app migration. Identified and resolved 40+ UI regressions across 4 countries before reaching production.</p>
+          <p class="cs-desc" data-i18n="cs.santander.desc">Large-scale banking rebranding and multi-country app migration. Identified and resolved 40+ UI regressions across 4 countries before reaching production.</p>
           <div class="cs-tags" aria-label="Technologies">
             <span class="tag">Rebranding</span>
             <span class="tag">WCAG</span>
@@ -126,7 +129,7 @@ class SeniorEngineer(
         <div class="cs-stat" aria-label="100 percent uptime during migration">100%</div>
         <div class="cs-content fade-up">
           <h3 class="cs-name">Wire Messenger</h3>
-          <p class="cs-desc">Full app rewrite from scratch using Jetpack Compose + KMP. Built the shared business logic layer covering networking, data persistence, and domain models across Android and iOS &mdash; serving millions of users with zero downtime during the entire migration. KMP was central to architecture decisions from day one.</p>
+          <p class="cs-desc" data-i18n="cs.wire.desc">Full app rewrite from scratch using Jetpack Compose + KMP. Built the shared business logic layer covering networking, data persistence, and domain models across Android and iOS &mdash; serving millions of users with zero downtime during the entire migration. KMP was central to architecture decisions from day one.</p>
           <div class="cs-tags" aria-label="Technologies">
             <span class="tag">Jetpack Compose</span>
             <span class="tag">KMP</span>
@@ -141,7 +144,7 @@ class SeniorEngineer(
         <div class="cs-stat" aria-label="4 months from concept to launch">4mo</div>
         <div class="cs-content fade-up">
           <h3 class="cs-name">FitCrony</h3>
-          <p class="cs-desc">Sole developer from concept to Google Play in 4 months. Full Flutter fitness app &mdash; architecture, UI, and release management solo.</p>
+          <p class="cs-desc" data-i18n="cs.fitcrony.desc">Sole developer from concept to Google Play in 4 months. Full Flutter fitness app &mdash; architecture, UI, and release management solo.</p>
           <div class="cs-tags" aria-label="Technologies">
             <span class="tag">Flutter</span>
             <span class="tag">Dart</span>
@@ -157,40 +160,40 @@ class SeniorEngineer(
   <!-- ===== SERVICES ===== -->
   <section id="services" aria-labelledby="svc-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">03 &mdash; Services</p>
-      <h2 id="svc-heading" class="section-heading">What I Do</h2>
-      <p class="section-sub">Banking apps, encrypted messengers, IoT SDKs, trading platforms. I&rsquo;ve shipped them all &mdash; here&rsquo;s what I can do for yours.</p>
+      <p class="section-label" aria-hidden="true" data-i18n="svc.label">03 &mdash; Services</p>
+      <h2 id="svc-heading" class="section-heading" data-i18n="svc.heading">What I Do</h2>
+      <p class="section-sub" data-i18n="svc.sub">Banking apps, encrypted messengers, IoT SDKs, trading platforms. I&rsquo;ve shipped them all &mdash; here&rsquo;s what I can do for yours.</p>
 
       <ol class="services-list" aria-label="Services">
         <li class="service-item fade-up">
           <span class="svc-num" aria-hidden="true">01</span>
           <div class="svc-body">
-            <span class="svc-name">Android Development</span>
-            <p class="svc-desc">Kotlin and Jetpack Compose done right &mdash; clean architecture, proper test coverage, and no hacks that haunt you six months later.</p>
+            <span class="svc-name" data-i18n="svc.android.name">Android Development</span>
+            <p class="svc-desc" data-i18n="svc.android.desc">Kotlin and Jetpack Compose done right &mdash; clean architecture, proper test coverage, and no hacks that haunt you six months later.</p>
             <div class="svc-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>Clean Architecture</span><span>Coroutines</span></div>
           </div>
         </li>
         <li class="service-item fade-up">
           <span class="svc-num" aria-hidden="true">02</span>
           <div class="svc-body">
-            <span class="svc-name">Kotlin Multiplatform</span>
-            <p class="svc-desc">One shared business logic layer across Android, iOS, and server. I&rsquo;m also building with on-device ML &mdash; it&rsquo;s where things are heading and I want to be ahead of it.</p>
+            <span class="svc-name" data-i18n="svc.kmp.name">Kotlin Multiplatform</span>
+            <p class="svc-desc" data-i18n="svc.kmp.desc">One shared business logic layer across Android, iOS, and server. I&rsquo;m also building with on-device ML &mdash; it&rsquo;s where things are heading and I want to be ahead of it.</p>
             <div class="svc-tags"><span>KMP</span><span>Ktor</span><span>SQLDelight</span><span>On-device ML</span></div>
           </div>
         </li>
         <li class="service-item fade-up">
           <span class="svc-num" aria-hidden="true">03</span>
           <div class="svc-body">
-            <span class="svc-name">Architecture Consulting</span>
-            <p class="svc-desc">ADR-backed architecture proposals, module boundaries, and Gradle optimisation. From monorepo setups to multi-country banking platforms.</p>
+            <span class="svc-name" data-i18n="svc.arch.name">Architecture Consulting</span>
+            <p class="svc-desc" data-i18n="svc.arch.desc">ADR-backed architecture proposals, module boundaries, and Gradle optimisation. From monorepo setups to multi-country banking platforms.</p>
             <div class="svc-tags"><span>ADR</span><span>Monorepo</span><span>Gradle</span><span>MVI</span></div>
           </div>
         </li>
         <li class="service-item fade-up">
           <span class="svc-num" aria-hidden="true">04</span>
           <div class="svc-body">
-            <span class="svc-name">Real-Time Data &amp; FinTech Apps</span>
-            <p class="svc-desc">Crypto trading platforms with live WebSocket data visualisation. Multi-country core banking modules used daily by millions of users.</p>
+            <span class="svc-name" data-i18n="svc.fintech.name">Real-Time Data &amp; FinTech Apps</span>
+            <p class="svc-desc" data-i18n="svc.fintech.desc">Crypto trading platforms with live WebSocket data visualisation. Multi-country core banking modules used daily by millions of users.</p>
             <div class="svc-tags"><span>WebSockets</span><span>RxJava</span><span>Banking</span><span>Real-time</span></div>
           </div>
         </li>
@@ -201,44 +204,44 @@ class SeniorEngineer(
   <!-- ===== HOW I WORK ===== -->
   <section id="how-i-work" aria-labelledby="hiw-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">04 &mdash; Process</p>
-      <h2 id="hiw-heading" class="section-heading">How I Work</h2>
-      <p class="section-sub">No surprises, no scope creep. Here&rsquo;s exactly what working together looks like &mdash; from first call to shipped product.</p>
+      <p class="section-label" aria-hidden="true" data-i18n="hiw.label">04 &mdash; Process</p>
+      <h2 id="hiw-heading" class="section-heading" data-i18n="hiw.heading">How I Work</h2>
+      <p class="section-sub" data-i18n="hiw.sub">No surprises, no scope creep. Here&rsquo;s exactly what working together looks like &mdash; from first call to shipped product.</p>
 
       <ol class="process-steps" aria-label="Work process">
         <li class="process-step fade-up">
           <span class="step-num" aria-hidden="true">01</span>
           <div class="step-body">
-            <h3 class="step-name">Discovery Call</h3>
-            <p class="step-desc">30 minutes to understand your problem, goals, and constraints. We align on scope before a single line of code is written.</p>
+            <h3 class="step-name" data-i18n="hiw.step1.name">Discovery Call</h3>
+            <p class="step-desc" data-i18n="hiw.step1.desc">30 minutes to understand your problem, goals, and constraints. We align on scope before a single line of code is written.</p>
           </div>
         </li>
         <li class="process-step fade-up">
           <span class="step-num" aria-hidden="true">02</span>
           <div class="step-body">
-            <h3 class="step-name">Proposal &amp; Architecture</h3>
-            <p class="step-desc">I write down what we&rsquo;re building, how, and when &mdash; just enough to move with confidence. No 40-page documents, just a clear plan we both agree on before anything starts.</p>
+            <h3 class="step-name" data-i18n="hiw.step2.name">Proposal &amp; Architecture</h3>
+            <p class="step-desc" data-i18n="hiw.step2.desc">I write down what we&rsquo;re building, how, and when &mdash; just enough to move with confidence. No 40-page documents, just a clear plan we both agree on before anything starts.</p>
           </div>
         </li>
         <li class="process-step fade-up">
           <span class="step-num" aria-hidden="true">03</span>
           <div class="step-body">
-            <h3 class="step-name">Sprint-Based Delivery</h3>
-            <p class="step-desc">You get a weekly update and something you can actually test. Real progress, not slide decks. AI tooling helps me ship faster without cutting corners on quality.</p>
+            <h3 class="step-name" data-i18n="hiw.step3.name">Sprint-Based Delivery</h3>
+            <p class="step-desc" data-i18n="hiw.step3.desc">You get a weekly update and something you can actually test. Real progress, not slide decks. AI tooling helps me ship faster without cutting corners on quality.</p>
           </div>
         </li>
         <li class="process-step fade-up">
           <span class="step-num" aria-hidden="true">04</span>
           <div class="step-body">
-            <h3 class="step-name">Ship &amp; Handover</h3>
-            <p class="step-desc">CI/CD set up, docs written, and I walk your team through what was built. You own it from day one &mdash; not just the files, but the understanding of why things are the way they are.</p>
+            <h3 class="step-name" data-i18n="hiw.step4.name">Ship &amp; Handover</h3>
+            <p class="step-desc" data-i18n="hiw.step4.desc">CI/CD set up, docs written, and I walk your team through what was built. You own it from day one &mdash; not just the files, but the understanding of why things are the way they are.</p>
           </div>
         </li>
         <li class="process-step fade-up">
           <span class="step-num" aria-hidden="true">05</span>
           <div class="step-body">
-            <h3 class="step-name">Post-Launch Support</h3>
-            <p class="step-desc">Optional retainer or bug-fix period. I stay reachable after delivery &mdash; not just until the invoice clears.</p>
+            <h3 class="step-name" data-i18n="hiw.step5.name">Post-Launch Support</h3>
+            <p class="step-desc" data-i18n="hiw.step5.desc">Optional retainer or bug-fix period. I stay reachable after delivery &mdash; not just until the invoice clears.</p>
           </div>
         </li>
       </ol>
@@ -248,9 +251,9 @@ class SeniorEngineer(
   <!-- ===== STACK ===== -->
   <section id="stack" aria-labelledby="stack-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">05 &mdash; Stack</p>
-      <h2 id="stack-heading" class="section-heading">My Stack</h2>
-      <p class="section-sub">7 years building real things. Banking apps across 4 countries, an encrypted messenger for millions, a BLE mesh SDK from scratch &mdash; the stack reflects the work.</p>
+      <p class="section-label" aria-hidden="true" data-i18n="stack.label">05 &mdash; Stack</p>
+      <h2 id="stack-heading" class="section-heading" data-i18n="stack.heading">My Stack</h2>
+      <p class="section-sub" data-i18n="stack.sub">7 years building real things. Banking apps across 4 countries, an encrypted messenger for millions, a BLE mesh SDK from scratch &mdash; the stack reflects the work.</p>
 
       <div class="stack-grid">
         <div class="stack-group fade-up">
@@ -270,18 +273,18 @@ class SeniorEngineer(
           </div>
         </div>
         <div class="stack-group fade-up">
-          <p class="stack-label">Tooling &amp; Quality</p>
+          <p class="stack-label" data-i18n="stack.tooling.label">Tooling &amp; Quality</p>
           <div class="stack-chips">
             <span class="chip">Snapshot Testing</span><span class="chip">WCAG / Accessibility</span>
             <span class="chip">ADR</span><span class="chip">Gradle</span><span class="chip">CI/CD</span><span class="chip">On-device ML</span>
           </div>
         </div>
         <div class="stack-group fade-up">
-          <p class="stack-label">Languages</p>
+          <p class="stack-label" data-i18n="stack.lang.label">Languages</p>
           <div class="stack-chips">
-            <span class="chip">Dutch (fluent)</span>
-            <span class="chip">English (professional)</span>
-            <span class="chip">Polish (native)</span>
+            <span class="chip" data-i18n="stack.lang.dutch">Dutch (fluent)</span>
+            <span class="chip" data-i18n="stack.lang.english">English (professional)</span>
+            <span class="chip" data-i18n="stack.lang.polish">Polish (native)</span>
           </div>
         </div>
         <div class="stack-group fade-up">
@@ -298,8 +301,8 @@ class SeniorEngineer(
   <!-- ===== TIMELINE ===== -->
   <section id="timeline" aria-labelledby="timeline-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">06 &mdash; Experience</p>
-      <h2 id="timeline-heading" class="section-heading">Timeline</h2>
+      <p class="section-label" aria-hidden="true" data-i18n="tl.label">06 &mdash; Experience</p>
+      <h2 id="timeline-heading" class="section-heading" data-i18n="tl.heading">Timeline</h2>
 
       <div class="git-log" role="list" aria-label="Work history">
         <div class="git-entry fade-up" role="listitem">
@@ -307,11 +310,11 @@ class SeniorEngineer(
             <span class="git-graph">*</span>
             <span class="git-hash">f9e0a1b</span>
             <span class="git-branch">(HEAD &rarr; main)</span>
-            <span class="git-msg">Exploring AI &amp; Agent-driven Development</span>
+            <span class="git-msg" data-i18n="tl.e1.msg">Exploring AI &amp; Agent-driven Development</span>
             <span class="git-tag">[2025&ndash;Present]</span>
           </div>
           <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Building side projects with AI agents &mdash; LLM APIs, Cursor, agentic workflows. Figuring out what actually changes when the tools get this good. Spoiler: quite a lot.</p>
+          <p class="git-detail" data-i18n="tl.e1.detail">Building side projects with AI agents &mdash; LLM APIs, Cursor, agentic workflows. Figuring out what actually changes when the tools get this good. Spoiler: quite a lot.</p>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
@@ -319,11 +322,11 @@ class SeniorEngineer(
             <span class="git-graph">*</span>
             <span class="git-hash">a1b2c3d</span>
             <span class="git-branch">(origin/santander)</span>
-            <span class="git-msg">Senior Android Developer @ Santander / Erste</span>
+            <span class="git-msg" data-i18n="tl.e2.msg">Senior Android Developer @ Santander / Erste</span>
             <span class="git-tag">[2023&ndash;2025]</span>
           </div>
           <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Hired into the core team delivering features across 4 countries; 30+ XML &rarr; Compose migrations, WCAG accessibility rollout, monorepo Gradle alignment, introduced ADRs. Acted as bridge between the Polish business unit and Santander Digital Services. Later led the Poland mono repo migration and the full rebranding to Erste following the acquisition.</p>
+          <p class="git-detail" data-i18n="tl.e2.detail">Hired into the core team delivering features across 4 countries; 30+ XML &rarr; Compose migrations, WCAG accessibility rollout, monorepo Gradle alignment, introduced ADRs. Acted as bridge between the Polish business unit and Santander Digital Services. Later led the Poland mono repo migration and the full rebranding to Erste following the acquisition.</p>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
@@ -331,11 +334,11 @@ class SeniorEngineer(
             <span class="git-graph">*</span>
             <span class="git-hash">d4e5f6b</span>
             <span class="git-branch">(origin/wire)</span>
-            <span class="git-msg">Senior Android Developer @ Wire Messenger</span>
+            <span class="git-msg" data-i18n="tl.e3.msg">Senior Android Developer @ Wire Messenger</span>
             <span class="git-tag">[2021&ndash;2023]</span>
           </div>
           <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Built Wire Messenger from scratch with Jetpack Compose &mdash; end-to-end architecture decisions, daily collaboration with designers on product direction, E2E-encrypted features over gRPC, and shared business logic via KMP (Ktor / Koin / SQLDelight).</p>
+          <p class="git-detail" data-i18n="tl.e3.detail">Built Wire Messenger from scratch with Jetpack Compose &mdash; end-to-end architecture decisions, daily collaboration with designers on product direction, E2E-encrypted features over gRPC, and shared business logic via KMP (Ktor / Koin / SQLDelight).</p>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
@@ -343,11 +346,11 @@ class SeniorEngineer(
             <span class="git-graph">*</span>
             <span class="git-hash">g7h8i9c</span>
             <span class="git-branch">(origin/appunite)</span>
-            <span class="git-msg">Senior Android Developer @ AppUnite</span>
+            <span class="git-msg" data-i18n="tl.e4.msg">Senior Android Developer @ AppUnite</span>
             <span class="git-tag">[2019&ndash;2021]</span>
           </div>
           <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Multi-client Android delivery: AlleFolders Dutch brochure-browsing app (bug fixes &amp; features), BlockTrade crypto platform with live prices and real-time graphs (RxJava, reactive programming), multiple radio app releases, and FitCrony fitness app built solo in Flutter.</p>
+          <p class="git-detail" data-i18n="tl.e4.detail">Multi-client Android delivery: AlleFolders Dutch brochure-browsing app (bug fixes &amp; features), BlockTrade crypto platform with live prices and real-time graphs (RxJava, reactive programming), multiple radio app releases, and FitCrony fitness app built solo in Flutter.</p>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
@@ -355,11 +358,11 @@ class SeniorEngineer(
             <span class="git-graph">*</span>
             <span class="git-hash">j0k1l2d</span>
             <span class="git-branch">(origin/bright)</span>
-            <span class="git-msg">Android SDK Engineer @ Bright Inventions, Gda&#324;sk</span>
+            <span class="git-msg" data-i18n="tl.e5.msg">Android SDK Engineer @ Bright Inventions, Gda&#324;sk</span>
             <span class="git-tag">[2017&ndash;2019]</span>
           </div>
           <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Built a BLE-mesh Android SDK as sole engineer &mdash; replicating the iOS implementation through unit tests with full documentation. The SDK powered a BLE mesh where dedicated devices exchanged data with phones acting as radars for BLE signals. Ran in parallel with a companion pet-tracking demo app.</p>
+          <p class="git-detail" data-i18n="tl.e5.detail">Built a BLE-mesh Android SDK as sole engineer &mdash; replicating the iOS implementation through unit tests with full documentation. The SDK powered a BLE mesh where dedicated devices exchanged data with phones acting as radars for BLE signals. Ran in parallel with a companion pet-tracking demo app.</p>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
@@ -367,10 +370,10 @@ class SeniorEngineer(
             <span class="git-graph">*</span>
             <span class="git-hash">n3o4p5e</span>
             <span class="git-branch">(origin/edu)</span>
-            <span class="git-msg">B.Eng Electrical &amp; Electronics @ Hanze University, Groningen</span>
+            <span class="git-msg" data-i18n="tl.e6.msg">B.Eng Electrical &amp; Electronics @ Hanze University, Groningen</span>
             <span class="git-tag">[2014&ndash;2019]</span>
           </div>
-          <p class="git-detail">Electrical &amp; Electronics Engineering &mdash; foundation in embedded systems, signal processing, and hardware-software integration. Originally from Poland; studied and lived in the Netherlands for 14 years.</p>
+          <p class="git-detail" data-i18n="tl.e6.detail">Electrical &amp; Electronics Engineering &mdash; foundation in embedded systems, signal processing, and hardware-software integration. Originally from Poland; studied and lived in the Netherlands for 14 years.</p>
         </div>
       </div>
     </div>
@@ -379,23 +382,23 @@ class SeniorEngineer(
   <!-- ===== CONTACT ===== -->
   <section id="contact" aria-labelledby="contact-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">07 &mdash; Contact</p>
-      <h2 id="contact-heading" class="section-heading">Let&rsquo;s Work Together</h2>
-      <p class="section-sub">Have an Android project, a codebase that needs rescuing, or a startup idea that needs an app? Tell me about it.</p>
+      <p class="section-label" aria-hidden="true" data-i18n="contact.label">07 &mdash; Contact</p>
+      <h2 id="contact-heading" class="section-heading" data-i18n="contact.heading">Let&rsquo;s Work Together</h2>
+      <p class="section-sub" data-i18n="contact.sub">Have an Android project, a codebase that needs rescuing, or a startup idea that needs an app? Tell me about it.</p>
 
       <div class="contact-grid">
         <div class="contact-info fade-up">
           <div class="contact-avail">
             <span class="pulse-dot" aria-hidden="true"></span>
-            <span>Currently available &mdash; responses within 24 hours</span>
+            <span data-i18n="contact.avail">Currently available &mdash; responses within 24 hours</span>
           </div>
           <ul class="contact-list" aria-label="Contact details">
             <li>
-              <span class="contact-label">Email</span>
+              <span class="contact-label" data-i18n="contact.email.label">Email</span>
               <a href="mailto:mateusz@pachulski.dev" class="contact-link">mateusz@pachulski.dev</a>
             </li>
             <li>
-              <span class="contact-label">Phone</span>
+              <span class="contact-label" data-i18n="contact.phone.label">Phone</span>
               <a href="tel:+48513890663" class="contact-link">+48 513 890 663</a>
             </li>
             <li>
@@ -403,8 +406,8 @@ class SeniorEngineer(
               <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer" class="contact-link">linkedin.com/in/mateusz-pachulski</a>
             </li>
             <li>
-              <span class="contact-label">Location</span>
-              <span class="contact-link">Poland &middot; EU timezone &middot; Remote worldwide</span>
+              <span class="contact-label" data-i18n="contact.loc.label">Location</span>
+              <span class="contact-link" data-i18n="contact.loc">Poland &middot; EU timezone &middot; Remote worldwide</span>
             </li>
           </ul>
         </div>
@@ -413,39 +416,39 @@ class SeniorEngineer(
           <form id="contactForm" novalidate aria-label="Contact form">
             <div class="form-row">
               <div class="form-field">
-                <label for="firstName">First Name <abbr title="required">*</abbr></label>
+                <label for="firstName"><span data-i18n="form.fname">First Name</span> <abbr title="required">*</abbr></label>
                 <input type="text" id="firstName" name="firstName" required autocomplete="given-name">
               </div>
               <div class="form-field">
-                <label for="lastName">Last Name</label>
+                <label for="lastName"><span data-i18n="form.lname">Last Name</span></label>
                 <input type="text" id="lastName" name="lastName" autocomplete="family-name">
               </div>
             </div>
             <div class="form-field">
-              <label for="email">Email <abbr title="required">*</abbr></label>
+              <label for="email"><span data-i18n="form.email.label">Email</span> <abbr title="required">*</abbr></label>
               <input type="email" id="email" name="email" required autocomplete="email">
             </div>
             <div class="form-field">
-              <label for="service">Service</label>
+              <label for="service"><span data-i18n="form.service">Service</span></label>
               <select id="service" name="service">
-                <option value="">Select a service...</option>
-                <option value="android">Android Development</option>
-                <option value="kmp">Kotlin Multiplatform</option>
-                <option value="architecture">Architecture Consulting</option>
-                <option value="fintech">FinTech &amp; Banking Apps</option>
+                <option value="" data-i18n="form.service.select">Select a service...</option>
+                <option value="android" data-i18n="form.service.android">Android Development</option>
+                <option value="kmp" data-i18n="form.service.kmp">Kotlin Multiplatform</option>
+                <option value="architecture" data-i18n="form.service.arch">Architecture Consulting</option>
+                <option value="fintech" data-i18n="form.service.fintech">FinTech &amp; Banking Apps</option>
               </select>
             </div>
             <div class="form-field">
-              <label for="message">Message <abbr title="required">*</abbr></label>
-              <textarea id="message" name="message" rows="5" required placeholder="Tell me about your project..."></textarea>
+              <label for="message"><span data-i18n="form.message">Message</span> <abbr title="required">*</abbr></label>
+              <textarea id="message" name="message" rows="5" required data-i18n-placeholder="form.placeholder" placeholder="Tell me about your project..."></textarea>
             </div>
-            <button type="submit" class="submit-btn">Send Message &rarr;</button>
+            <button type="submit" class="submit-btn" data-i18n="form.submit">Send Message &rarr;</button>
           </form>
           <div id="formSuccess" hidden role="status" aria-live="polite">
-            <p>&#10003; Message sent! I&rsquo;ll get back to you within 24 hours.</p>
+            <p data-i18n="form.success">&#10003; Message sent! I&rsquo;ll get back to you within 24 hours.</p>
           </div>
           <div id="formError" hidden role="alert" aria-live="assertive">
-            <p>&#9888; Something went wrong. Please try again or email me directly at <a href="mailto:mateusz@pachulski.dev">mateusz@pachulski.dev</a>.</p>
+            <p id="formErrorMsg">&#9888; Something went wrong. Please try again or email me directly at <a href="mailto:mateusz@pachulski.dev">mateusz@pachulski.dev</a>.</p>
           </div>
         </div>
       </div>
@@ -458,11 +461,11 @@ class SeniorEngineer(
       <p class="footer-logo">Mateusz Pachulski</p>
       <p class="footer-copy">&copy; <span id="year"></span> Mateusz Pachulski. All rights reserved.</p>
       <nav class="footer-nav" aria-label="Footer links">
-        <a href="#services">Services</a>
-        <a href="#how-i-work">Process</a>
-        <a href="#stack">Stack</a>
-        <a href="#contact">Contact</a>
-        <a href="mailto:mateusz@pachulski.dev">Email</a>
+        <a href="#services" data-i18n="footer.services">Services</a>
+        <a href="#how-i-work" data-i18n="footer.process">Process</a>
+        <a href="#stack" data-i18n="footer.stack">Stack</a>
+        <a href="#contact" data-i18n="footer.contact">Contact</a>
+        <a href="mailto:mateusz@pachulski.dev" data-i18n="footer.email">Email</a>
         <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </nav>
       <div class="kbd-map" aria-label="Keyboard shortcuts">
