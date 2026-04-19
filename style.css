@@ -258,6 +258,23 @@ section {
   letter-spacing: 0.02em;
 }
 
+.hero-tagline {
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: var(--accent);
+  letter-spacing: 0.01em;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+.hero-sub {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--muted);
+  max-width: 580px;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
 .hero-dutch {
   font-family: var(--font-mono);
   font-size: clamp(0.7rem, 1.5vw, 0.85rem);
@@ -265,6 +282,13 @@ section {
   opacity: 0.7;
   letter-spacing: 0.04em;
   margin-bottom: 2rem;
+}
+
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
 }
 
 .hero-cta {
@@ -281,6 +305,22 @@ section {
   transition: opacity 0.2s ease;
 }
 .hero-cta:hover { opacity: 0.82; }
+
+.hero-cta-secondary {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  background: transparent;
+  color: var(--text);
+  padding: 1rem 2.25rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.hero-cta-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
 /* =====================
    CASE STUDIES
