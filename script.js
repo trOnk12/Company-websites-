@@ -124,10 +124,10 @@ document.querySelectorAll('.cs-stat').forEach(el => statObserver.observe(el));
    TYPEWRITER EFFECT (hero)
    ===================== */
 const typewriterLines = [
-  'KMP & Android Engineer for Fintech — Wire Messenger · Santander · BlockTrade',
-  '7+ years across banking, messaging & fintech in 4 countries.',
-  'Production-grade Kotlin & Jetpack Compose, on time.',
-  'AI-accelerated delivery. Your app ships in weeks, not months.'
+  'Senior Android & KMP Engineer — Wire Messenger · Santander · Erste',
+  '7+ years delivering complex mobile products for fintech and messaging.',
+  'Android architecture, KMP shared logic, Compose migrations.',
+  'Production quality. Remote EU. Available now.'
 ];
 
 const twEl = document.getElementById('typewriter-text');
