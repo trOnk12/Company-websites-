@@ -19,103 +19,164 @@ test.describe('Site Structure', () => {
     expect(href, 'favicon should contain "MP" initials').toContain('MP');
   });
 
-  test('all 7 sections are present in the DOM', async ({ page }) => {
+  test('core sections are present in the DOM', async ({ page }) => {
     await page.goto('/');
-    const ids = ['hero', 'case-studies', 'services', 'how-i-work', 'stack', 'timeline', 'contact'];
+    const ids = ['hero', 'work', 'bar', 'stack', 'timeline', 'signal', 'lab', 'contact'];
     for (const id of ids) {
       await expect(page.locator(`#${id}`), `#${id} should be in the DOM`).toBeAttached();
     }
   });
 
-  test('section labels are correctly numbered 01–07', async ({ page }) => {
+  test('consultant chrome is removed', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#avail-badge')).toHaveCount(0);
+    await expect(page.locator('#fixed-cta')).toHaveCount(0);
+    await expect(page.locator('#qb-trigger')).toHaveCount(0);
+    await expect(page.locator('#qb-panel')).toHaveCount(0);
+    await expect(page.locator('#tama')).toHaveCount(0);
+    await expect(page.locator('#how-i-work')).toHaveCount(0);
+    const bodyText = await page.locator('body').innerText();
+    expect(bodyText).not.toMatch(/€\s*600/);
+    expect(bodyText.toLowerCase()).not.toContain('book a call');
+  });
+
+  test('section labels cover the new IA', async ({ page }) => {
     await page.goto('/');
     const labels = await page.locator('.section-label').allTextContents();
-    // Services = 03, Process = 04, Stack = 05, Experience = 06, Contact = 07
-    expect(labels.some(l => l.includes('03'))).toBe(true);
-    expect(labels.some(l => l.includes('04'))).toBe(true);
-    expect(labels.some(l => l.includes('05'))).toBe(true);
-    expect(labels.some(l => l.includes('06'))).toBe(true);
-    expect(labels.some(l => l.includes('07'))).toBe(true);
+    expect(labels.some(l => /selected work/i.test(l))).toBe(true);
+    expect(labels.some(l => /on a team/i.test(l))).toBe(true);
+    expect(labels.some(l => /stack/i.test(l))).toBe(true);
+    expect(labels.some(l => /timeline/i.test(l))).toBe(true);
+    expect(labels.some(l => /signal/i.test(l))).toBe(true);
+    expect(labels.some(l => /lab/i.test(l))).toBe(true);
+    expect(labels.some(l => /contact/i.test(l))).toBe(true);
   });
 });
 
 // ─── Hero ──────────────────────────────────────────────────────────────────
 
 test.describe('Hero Section', () => {
-  test('renders full name', async ({ page }) => {
+  test('renders full name as brand', async ({ page }) => {
     await page.goto('/');
     const heading = page.locator('#hero-name');
     await expect(heading).toContainText('Mateusz');
     await expect(heading).toContainText('Pachulski');
   });
 
-  test('"Book a discovery call" CTA links to #contact', async ({ page }) => {
+  test('"Get in touch" CTA links to #contact', async ({ page }) => {
     await page.goto('/');
     const cta = page.locator('.hero-cta');
     await expect(cta).toBeVisible();
     await expect(cta).toHaveAttribute('href', '#contact');
+    await expect(cta).toContainText(/get in touch/i);
   });
 
-  test('availability badge is shown', async ({ page }) => {
+  test('availability line mentions remote EU', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.avail-hero')).toBeVisible();
+    await expect(page.locator('.hero-avail')).toContainText(/remote EU/i);
+  });
+
+  test('LinkedIn link is present in hero', async ({ page }) => {
+    await page.goto('/');
+    const linkedin = page.locator('#hero a[href*="linkedin.com/in/mateusz-pachulski"]');
+    await expect(linkedin.first()).toBeVisible();
   });
 });
 
-// ─── Services ──────────────────────────────────────────────────────────────
+// ─── Selected Work ─────────────────────────────────────────────────────────
 
-test.describe('Services Section', () => {
-  test('lists at least 9 services', async ({ page }) => {
+test.describe('Selected Work', () => {
+  test('features Arrive/EasyPark, Santander, and Wire', async ({ page }) => {
     await page.goto('/');
-    const count = await page.locator('#services .service-item').count();
-    expect(count).toBeGreaterThanOrEqual(9);
+    const names = await page.locator('#work .work-name').allTextContents();
+    expect(names.some(n => /Arrive|EasyPark/i.test(n))).toBe(true);
+    expect(names.some(n => /Santander/i.test(n))).toBe(true);
+    expect(names.some(n => /Wire/i.test(n))).toBe(true);
   });
 
-  test('includes MVP & Speed-to-Market service', async ({ page }) => {
+  test('does not feature FitCrony as a case study', async ({ page }) => {
     await page.goto('/');
-    const names = await page.locator('#services .svc-name').allTextContents();
-    expect(names.some(t => t.includes('MVP'))).toBe(true);
+    const names = await page.locator('#work .work-name').allTextContents();
+    expect(names.some(n => /FitCrony/i.test(n))).toBe(false);
   });
 });
 
-// ─── How I Work ────────────────────────────────────────────────────────────
+// ─── Raise the bar ─────────────────────────────────────────────────────────
 
-test.describe('How I Work Section', () => {
+test.describe('Raise the bar', () => {
   test('section heading is visible', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#hiw-heading')).toContainText('How I Work');
+    await expect(page.locator('#bar-heading')).toContainText(/raise the bar/i);
   });
 
-  test('contains exactly 5 process steps', async ({ page }) => {
+  test('lists four focus areas', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#how-i-work .process-step')).toHaveCount(5);
+    await expect(page.locator('#bar .bar-item')).toHaveCount(4);
+  });
+});
+
+// ─── Signal & Lab ──────────────────────────────────────────────────────────
+
+test.describe('Signal & Lab', () => {
+  test('loads curated Signal links from signal.json', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#signal-list .signal-item').first()).toBeVisible({ timeout: 5000 });
+    const count = await page.locator('#signal-list .signal-item').count();
+    expect(count).toBeGreaterThanOrEqual(5);
+    const firstHref = await page.locator('#signal-list .signal-link').first().getAttribute('href');
+    expect(firstHref).toMatch(/^https?:\/\//);
   });
 
-  test('step names cover the full process', async ({ page }) => {
+  test('Lab strip has experiment items', async ({ page }) => {
     await page.goto('/');
-    const names = await page.locator('#how-i-work .step-name').allTextContents();
-    expect(names.some(n => n.includes('Discovery'))).toBe(true);
-    expect(names.some(n => n.includes('Proposal'))).toBe(true);
-    expect(names.some(n => n.includes('Delivery'))).toBe(true);
-    expect(names.some(n => n.includes('Handover'))).toBe(true);
-    expect(names.some(n => n.includes('Support'))).toBe(true);
+    const count = await page.locator('#lab .lab-item').count();
+    expect(count).toBeGreaterThanOrEqual(2);
   });
 });
 
 // ─── Contact ───────────────────────────────────────────────────────────────
 
 test.describe('Contact Section', () => {
-  test('form has all required fields', async ({ page }) => {
+  test('exposes email, phone, and LinkedIn', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#firstName')).toBeAttached();
-    await expect(page.locator('#email')).toBeAttached();
-    await expect(page.locator('#message')).toBeAttached();
+    await expect(page.locator('#contact a[href="mailto:mateusz@pachulski.dev"]')).toBeAttached();
+    await expect(page.locator('#contact a[href="tel:+48513890663"]')).toBeAttached();
+    await expect(page.locator('#contact a[href*="linkedin.com/in/mateusz-pachulski"]')).toBeAttached();
   });
 
-  test('email field is required', async ({ page }) => {
+  test('does not show a day rate', async ({ page }) => {
     await page.goto('/');
-    const attr = await page.locator('#email').getAttribute('required');
-    expect(attr).not.toBeNull();
+    const text = await page.locator('#contact').innerText();
+    expect(text).not.toMatch(/€|\$\d|\/day/i);
+  });
+});
+
+// ─── SEO assets ────────────────────────────────────────────────────────────
+
+test.describe('SEO assets', () => {
+  test('robots.txt and sitemap.xml are served', async ({ request }) => {
+    const robots = await request.get('/robots.txt');
+    expect(robots.ok()).toBeTruthy();
+    expect(await robots.text()).toContain('Sitemap:');
+
+    const sitemap = await request.get('/sitemap.xml');
+    expect(sitemap.ok()).toBeTruthy();
+    expect(await sitemap.text()).toContain('https://pachulski.dev/');
+  });
+
+  test('og-image.png is available', async ({ request }) => {
+    const res = await request.get('/og-image.png');
+    expect(res.ok()).toBeTruthy();
+    expect(res.headers()['content-type'] || '').toMatch(/image\/png/);
+  });
+
+  test('meta description mentions 8+ years and key companies', async ({ page }) => {
+    await page.goto('/');
+    const desc = await page.$eval('meta[name="description"]', el => el.getAttribute('content'));
+    expect(desc).toMatch(/8\+/);
+    expect(desc).toMatch(/Santander/i);
+    expect(desc).toMatch(/Wire/i);
+    expect(desc).toMatch(/EasyPark/i);
   });
 });
 
@@ -188,16 +249,12 @@ test.describe('Security Meta Tags', () => {
 // ─── Footer ────────────────────────────────────────────────────────────────
 
 test.describe('Footer', () => {
-  test('navigation includes a Process link to #how-i-work', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.locator('.footer-nav a[href="#how-i-work"]')).toBeAttached();
-  });
-
-  test('navigation includes Services, Stack and Contact links', async ({ page }) => {
+  test('navigation includes Work, Stack, Signal, and Contact', async ({ page }) => {
     await page.goto('/');
     const nav = page.locator('.footer-nav');
-    await expect(nav.locator('a[href="#services"]')).toBeAttached();
+    await expect(nav.locator('a[href="#work"]')).toBeAttached();
     await expect(nav.locator('a[href="#stack"]')).toBeAttached();
+    await expect(nav.locator('a[href="#signal"]')).toBeAttached();
     await expect(nav.locator('a[href="#contact"]')).toBeAttached();
   });
 });
@@ -205,14 +262,11 @@ test.describe('Footer', () => {
 // ─── Mobile Layout ─────────────────────────────────────────────────────────
 
 test.describe('Mobile Layout', () => {
-  test('desktop-only widgets are hidden on mobile', async ({ page, isMobile }) => {
+  test('desktop-only terminal widgets are hidden on mobile', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'mobile-only test');
     await page.goto('/');
-    await expect(page.locator('#cursor')).toBeHidden();
     await expect(page.locator('#terminal')).toBeHidden();
     await expect(page.locator('#term-trigger')).toBeHidden();
-    await expect(page.locator('#tama')).toBeHidden();
-    await expect(page.locator('#qb-trigger')).toBeHidden();
   });
 
   test('hero CTA is full-width on mobile', async ({ page, isMobile }) => {
@@ -220,19 +274,9 @@ test.describe('Mobile Layout', () => {
     await page.goto('/');
     const cta = page.locator('.hero-cta');
     await expect(cta).toBeVisible();
-    const box      = await cta.boundingBox();
+    const box = await cta.boundingBox();
     const viewport = page.viewportSize();
     expect(box.width).toBeGreaterThan(viewport.width * 0.7);
-  });
-
-  test('services grid is single-column on mobile', async ({ page, isMobile }) => {
-    test.skip(!isMobile, 'mobile-only test');
-    await page.goto('/');
-    const gridColumns = await page.locator('.services-list').evaluate(el =>
-      getComputedStyle(el).gridTemplateColumns
-    );
-    // single-column → only one track value
-    expect(gridColumns.trim().split(/\s+/).length).toBe(1);
   });
 });
 
@@ -245,15 +289,23 @@ test.describe('Desktop Layout', () => {
     await expect(page.locator('#term-trigger')).toBeVisible();
   });
 
-  test('tamagotchi mascot is visible', async ({ page, isMobile }) => {
+  test('light craft theme is applied (not dark Inter/amber)', async ({ page, isMobile }) => {
     test.skip(isMobile, 'desktop-only test');
     await page.goto('/');
-    await expect(page.locator('#tama')).toBeVisible();
-  });
-
-  test('fixed CTA is visible', async ({ page, isMobile }) => {
-    test.skip(isMobile, 'desktop-only test');
-    await page.goto('/');
-    await expect(page.locator('#fixed-cta')).toBeVisible();
+    const styles = await page.evaluate(() => {
+      const cs = getComputedStyle(document.body);
+      return {
+        bg: cs.backgroundColor,
+        font: cs.fontFamily,
+        accent: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
+      };
+    });
+    expect(styles.font.toLowerCase()).not.toContain('inter');
+    expect(styles.accent.toLowerCase()).not.toBe('#f59e0b');
+    // light background: rgb channels should be high
+    const m = styles.bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    expect(m).toBeTruthy();
+    const [, r, g, b] = m.map(Number);
+    expect((r + g + b) / 3).toBeGreaterThan(180);
   });
 });
