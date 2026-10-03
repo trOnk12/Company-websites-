@@ -71,9 +71,21 @@ test.describe('Hero Section', () => {
     await expect(cta).toContainText(/get in touch/i);
   });
 
-  test('availability line mentions remote EU', async ({ page }) => {
+  test('availability eyebrow sits above the name and mentions remote EU', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.hero-avail')).toContainText(/remote EU/i);
+    const eyebrow = page.locator('.hero-eyebrow');
+    await expect(eyebrow).toContainText(/remote EU/i);
+    const eyebrowBox = await eyebrow.boundingBox();
+    const nameBox = await page.locator('#hero-name').boundingBox();
+    expect(eyebrowBox.y).toBeLessThan(nameBox.y);
+  });
+
+  test('hero status ledger exposes recruiter facts', async ({ page }) => {
+    await page.goto('/');
+    const status = page.locator('.hero-status');
+    await expect(status).toContainText(/EasyPark/i);
+    await expect(status).toContainText(/Santander/i);
+    await expect(status).toContainText(/EN \/ PL \/ NL/i);
   });
 
   test('LinkedIn link is present in hero', async ({ page }) => {
@@ -99,6 +111,44 @@ test.describe('Selected Work', () => {
     const names = await page.locator('#work .work-name').allTextContents();
     expect(names.some(n => /FitCrony/i.test(n))).toBe(false);
   });
+
+  test('outcomes lead with scannable metrics', async ({ page }) => {
+    await page.goto('/');
+    const metrics = await page.locator('#work .work-outcomes strong').allTextContents();
+    expect(metrics.length).toBeGreaterThanOrEqual(5);
+    expect(metrics.some(m => /40\+/.test(m))).toBe(true);
+    expect(metrics.some(m => /300\+/.test(m))).toBe(true);
+  });
+
+  test('intro sentences stay short enough to scan', async ({ page }) => {
+    await page.goto('/');
+    const descs = await page.locator('#work .work-desc').allTextContents();
+    for (const d of descs) {
+      expect(d.split(/\s+/).length, `too long: ${d}`).toBeLessThanOrEqual(26);
+    }
+  });
+});
+
+// ─── Contrast ──────────────────────────────────────────────────────────────
+
+test.describe('Contrast', () => {
+  test('small accent text meets WCAG AA against the page background', async ({ page }) => {
+    await page.goto('/');
+    const ratio = await page.evaluate(() => {
+      const root = getComputedStyle(document.documentElement);
+      const parse = v => {
+        const hex = v.trim().replace('#', '');
+        return [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16) / 255);
+      };
+      const lum = ch => ch.map(c => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4))
+        .reduce((a, c, i) => a + c * [0.2126, 0.7152, 0.0722][i], 0);
+      const l1 = lum(parse(root.getPropertyValue('--accent-deep')));
+      const l2 = lum(parse(root.getPropertyValue('--bg')));
+      const [hi, lo] = l1 > l2 ? [l1, l2] : [l2, l1];
+      return (hi + 0.05) / (lo + 0.05);
+    });
+    expect(ratio, `--accent-deep contrast ratio ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
+  });
 });
 
 // ─── Raise the bar ─────────────────────────────────────────────────────────
@@ -109,16 +159,57 @@ test.describe('Raise the bar', () => {
     await expect(page.locator('#bar-heading')).toContainText(/raise the bar/i);
   });
 
-  test('lists five focus areas including AI-assisted engineering', async ({ page }) => {
+  test('architecture leads; AI-assisted engineering is present but not ranked first', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('#bar .bar-item')).toHaveCount(5);
     const names = await page.locator('#bar .bar-name').allTextContents();
-    expect(names.some(n => /AI-assisted/i.test(n))).toBe(true);
+    expect(names[0]).toMatch(/Architecture/i);
+    const aiIndex = names.findIndex(n => /AI-assisted/i.test(n));
+    expect(aiIndex).toBeGreaterThan(0);
+    expect(aiIndex).toBeLessThanOrEqual(2);
   });
+});
 
-  test('hero mentions daily Claude Code / AI workflow', async ({ page }) => {
+// ─── AI positioning ────────────────────────────────────────────────────────
+
+test.describe('AI positioning', () => {
+  test('hero mentions daily Claude Code workflow', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('.hero-sub')).toContainText(/Claude Code/i);
+  });
+
+  test('Claude Code is present but not over-repeated', async ({ page }) => {
+    await page.goto('/');
+    const text = await page.locator('body').innerText();
+    const mentions = (text.match(/claude code/gi) || []).length;
+    expect(mentions, 'AI should read as practice, not positioning').toBeGreaterThanOrEqual(2);
+    expect(mentions, 'too many Claude Code mentions reads as hype').toBeLessThanOrEqual(5);
+  });
+
+  test('no defensive AI phrasing', async ({ page }) => {
+    await page.goto('/');
+    const text = await page.locator('body').innerText();
+    expect(text).not.toMatch(/not a demo habit/i);
+    expect(text).not.toMatch(/not a side experiment/i);
+  });
+});
+
+// ─── Navigation ────────────────────────────────────────────────────────────
+
+test.describe('Navigation', () => {
+  test('sticky nav links to the main sections', async ({ page }) => {
+    await page.goto('/');
+    const nav = page.locator('#site-nav');
+    await expect(nav).toBeVisible();
+    for (const href of ['#work', '#stack', '#timeline', '#contact']) {
+      await expect(nav.locator(`a[href="${href}"]`)).toBeAttached();
+    }
+  });
+
+  test('nav stays visible after scrolling', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#contact').scrollIntoViewIfNeeded();
+    await expect(page.locator('#site-nav')).toBeInViewport();
   });
 });
 
@@ -276,14 +367,23 @@ test.describe('Mobile Layout', () => {
     await expect(page.locator('#term-trigger')).toBeHidden();
   });
 
-  test('hero CTA is full-width on mobile', async ({ page, isMobile }) => {
+  test('hero CTA is tappable and left-aligned, not full-bleed', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'mobile-only test');
     await page.goto('/');
     const cta = page.locator('.hero-cta');
     await expect(cta).toBeVisible();
     const box = await cta.boundingBox();
     const viewport = page.viewportSize();
-    expect(box.width).toBeGreaterThan(viewport.width * 0.7);
+    expect(box.height, 'CTA should meet touch target height').toBeGreaterThanOrEqual(44);
+    expect(box.width, 'CTA should not span the full viewport').toBeLessThan(viewport.width * 0.9);
+  });
+
+  test('secondary CTA shares the left axis with the name', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'mobile-only test');
+    await page.goto('/');
+    const secondary = await page.locator('.hero-secondary').boundingBox();
+    const name = await page.locator('#hero-name').boundingBox();
+    expect(Math.abs(secondary.x - name.x)).toBeLessThan(8);
   });
 });
 
