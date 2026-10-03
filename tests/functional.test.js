@@ -109,9 +109,16 @@ test.describe('Raise the bar', () => {
     await expect(page.locator('#bar-heading')).toContainText(/raise the bar/i);
   });
 
-  test('lists four focus areas', async ({ page }) => {
+  test('lists five focus areas including AI-assisted engineering', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#bar .bar-item')).toHaveCount(4);
+    await expect(page.locator('#bar .bar-item')).toHaveCount(5);
+    const names = await page.locator('#bar .bar-name').allTextContents();
+    expect(names.some(n => /AI-assisted/i.test(n))).toBe(true);
+  });
+
+  test('hero mentions daily Claude Code / AI workflow', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.hero-sub')).toContainText(/Claude Code/i);
   });
 });
 
