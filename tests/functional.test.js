@@ -140,7 +140,7 @@ test.describe('Contact Section', () => {
   test('exposes email, phone, and LinkedIn', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('#contact a[href="mailto:mateusz@pachulski.dev"]')).toBeAttached();
-    await expect(page.locator('#contact a[href="tel:+48513890663"]')).toBeAttached();
+    await expect(page.locator('#contact a[href="tel:+47789174023"]')).toBeAttached();
     await expect(page.locator('#contact a[href*="linkedin.com/in/mateusz-pachulski"]')).toBeAttached();
   });
 

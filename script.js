@@ -156,7 +156,7 @@ const TERM_COMMANDS = {
   },
   contact: () => {
     appendTermLine('mateusz@pachulski.dev');
-    appendTermLine('+48 513 890 663');
+    appendTermLine('+47 789 174 023');
     appendTermLine('linkedin.com/in/mateusz-pachulski');
   },
   clear: () => {
