@@ -225,10 +225,34 @@ test.describe('Signal & Lab', () => {
     expect(firstHref).toMatch(/^https?:\/\//);
   });
 
-  test('Lab strip has experiment items', async ({ page }) => {
+  test('Lab bench lists concrete experiments', async ({ page }) => {
     await page.goto('/');
-    const count = await page.locator('#lab .lab-item').count();
-    expect(count).toBeGreaterThanOrEqual(2);
+    const items = page.locator('#lab .lab-item');
+    const count = await items.count();
+    expect(count).toBeGreaterThanOrEqual(3);
+
+    // Every experiment carries an honest status, a next step, and tech tags
+    for (let i = 0; i < count; i++) {
+      const item = items.nth(i);
+      await expect(item.locator('.lab-status')).toHaveText(/building|exploring|archived|live/i);
+      const next = (await item.locator('.lab-next').innerText()).replace(/^next\s*/i, '').trim();
+      expect(next.length, 'each experiment needs a concrete next step').toBeGreaterThan(30);
+      expect(await item.locator('.lab-tags li').count()).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  test('Lab avoids placeholder filler language', async ({ page }) => {
+    await page.goto('/');
+    const text = await page.locator('#lab').innerText();
+    expect(text).not.toMatch(/scratchpad|coming soon|TBD|lorem/i);
+  });
+
+  test('Lab claims no links it does not have', async ({ page }) => {
+    await page.goto('/');
+    const hrefs = await page.locator('#lab .lab-item a').evaluateAll(els => els.map(e => e.href));
+    for (const href of hrefs) {
+      expect(href, 'Lab links must be real, not placeholders').not.toMatch(/example\.com|#$|javascript:/);
+    }
   });
 });
 

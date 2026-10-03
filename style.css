@@ -1,4 +1,43 @@
 /* =====================
+   SELF-HOSTED TYPE (latin subset)
+   ===================== */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("fonts/bricolage-grotesque-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 100 1000;
+  font-display: swap;
+  src: url("fonts/dm-sans-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/ibm-plex-mono-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fonts/ibm-plex-mono-500.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* =====================
    CSS VARIABLES & RESET
    ===================== */
 :root {
@@ -449,7 +488,13 @@ section {
   letter-spacing: 0.03em;
 }
 
-.work-role { color: var(--accent-deep); }
+.work-domain {
+  color: var(--accent-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.work-scope { color: var(--muted); }
 
 .work-name {
   font-family: var(--font-display);
@@ -695,48 +740,153 @@ section {
 }
 
 /* =====================
-   LAB
+   LAB — the bench
    ===================== */
-#lab { background: var(--bg); }
-
-.lab-strip {
-  display: grid;
-  gap: 1.75rem;
+#lab {
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
 }
 
-@media (min-width: 768px) {
-  .lab-strip {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+/* Blueprint texture, echoing the hero grid */
+#lab::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(26, 35, 50, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 35, 50, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 80% at 85% 50%, rgba(0, 0, 0, 0.9), transparent 70%);
+}
+
+#lab .section-inner { position: relative; z-index: 1; }
+
+.lab-bench-wrap {
+  display: grid;
+  border-top: 1px solid var(--border);
+}
+
+.lab-bench {
+  list-style: none;
+  display: contents;
+}
+
+@media (min-width: 900px) {
+  .lab-bench-wrap {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 3rem;
   }
 }
 
 .lab-item {
-  padding-top: 1rem;
-  border-top: 2px solid var(--accent);
+  padding: 1.5rem 0 1.65rem;
+  border-bottom: 1px solid var(--border);
+  align-content: start;
+}
+
+.lab-head {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 0.65rem;
+}
+
+.lab-index {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
 }
 
 .lab-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
-  display: block;
-  margin-bottom: 0.55rem;
+  color: var(--ink-soft);
+  border: 1px solid var(--border-strong);
+  padding: 0.2rem 0.5rem;
+}
+
+.lab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.is-building .lab-dot {
+  background: var(--green);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+.is-exploring .lab-dot {
+  background: transparent;
+  border: 1px solid var(--muted);
 }
 
 .lab-name {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.018em;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.5rem;
+  max-width: 22rem;
 }
 
 .lab-desc {
   color: var(--muted);
-  font-size: 0.97rem;
+  font-size: 0.98rem;
+  max-width: 30rem;
+  margin-bottom: 0.85rem;
+}
+
+.lab-next {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 30rem;
+  margin-bottom: 1rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--accent);
+}
+
+.lab-next-label {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-right: 0.5rem;
+}
+
+.lab-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.lab-tags li {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 0.25rem 0.55rem;
+  border: 1px solid var(--border);
+}
+
+.lab-note {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 0 1.65rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 30rem;
 }
 
 /* =====================
