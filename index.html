@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mateusz Pachulski – Senior Android &amp; KMP Engineer with 7+ years delivering complex mobile products for fintech and secure messaging. Santander · Wire · Erste. Available for remote EU roles and contracts." />
+  <meta name="description" content="Mateusz Pachulski – Senior Android &amp; KMP engineer with 8+ years shipping fintech, mobility, and realtime mobile products. Santander · Wire · EasyPark. Open to remote EU — permanent or B2B. EN / PL / NL." />
   <meta property="og:title" content="Mateusz Pachulski – Senior Android &amp; KMP Engineer" />
-  <meta property="og:description" content="7+ years shipping fintech and high-scale Android apps for Santander, Wire &amp; Erste. Android architecture, Kotlin Multiplatform, Jetpack Compose. Available for remote EU roles and contracts." />
+  <meta property="og:description" content="8+ years shipping fintech, mobility, and realtime Android apps for Santander, Wire &amp; EasyPark. Kotlin Multiplatform, Jetpack Compose, release quality. Open to remote EU — permanent or B2B." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://pachulski.dev" />
   <meta property="og:image" content="https://pachulski.dev/og-image.png" />
@@ -15,21 +15,19 @@
   <meta property="og:site_name" content="Mateusz Pachulski" />
   <meta property="og:locale" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mateusz Pachulski – Senior Android &amp; KMP Engineer" />
+  <meta name="twitter:description" content="8+ years shipping fintech, mobility, and realtime Android apps. Santander · Wire · EasyPark. Open to remote EU." />
+  <meta name="twitter:image" content="https://pachulski.dev/og-image.png" />
   <meta name="author" content="Mateusz Pachulski">
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.clarity.ms https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://api.emailjs.com; frame-ancestors 'none'; base-uri 'self'; object-src 'none'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.clarity.ms; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://www.clarity.ms; frame-ancestors 'none'; base-uri 'self'; object-src 'none'" />
   <title>Mateusz Pachulski – Senior Android &amp; KMP Engineer</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='3' fill='%230D0D0D'/><text x='16' y='23' font-family='Georgia,serif' font-size='16' font-weight='900' fill='%23F59E0B' text-anchor='middle'>MP</text></svg>" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://pachulski.dev/" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231A2332'/><text x='16' y='22' font-family='Georgia,serif' font-size='15' font-weight='900' fill='%230D9B8A' text-anchor='middle'>MP</text></svg>" />
+  <link rel="preload" as="font" type="font/woff2" href="fonts/bricolage-grotesque-var.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="fonts/dm-sans-var.woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
-  <!-- ── Analytics ─────────────────────────────────────────────────────────── -->
-  <!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID.    -->
-  <!-- Get it at: https://analytics.google.com → Admin → Data Streams.        -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <!-- Microsoft Clarity — https://clarity.microsoft.com                        -->
   <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
       c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -40,25 +38,31 @@
 </head>
 <body>
 
-  <!-- Custom cursor -->
-  <div id="cursor" aria-hidden="true"></div>
+  <a class="skip-link" href="#hero">Skip to content</a>
 
-  <!-- Fixed top-left availability badge -->
-      <div id="avail-badge">🟢 Available now &middot; €600/day &middot; Remote EU</div>
+  <!-- ===== STICKY NAV ===== -->
+  <header id="site-nav" aria-label="Section navigation">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#hero">MP</a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#work">Work</a>
+        <a href="#bar">On a team</a>
+        <a href="#stack">Stack</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <p class="nav-avail">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span>Open to remote EU</span>
+      </p>
+    </div>
+  </header>
 
-  <!-- Fixed bottom-right CTA -->
-  <a href="#contact" id="fixed-cta" aria-label="Book a call">Book a call &rarr;</a>
-
-  <!-- Keyboard shortcuts toast -->
-  <div id="kbd-toast" role="status" aria-live="polite">[ esc &middot; 1&ndash;6 navigate &middot; B book ]</div>
-
-  <!-- Terminal trigger (desktop only) -->
-  <button id="term-trigger" aria-label="Open terminal emulator" aria-expanded="false">&gt;_ terminal</button>
-
-  <!-- Terminal Easter Egg (desktop only) -->
+  <!-- Subtle terminal Easter egg (desktop) -->
+  <button id="term-trigger" aria-label="Open terminal emulator" aria-expanded="false">&gt;_</button>
   <div id="terminal" role="dialog" aria-modal="true" aria-label="Terminal emulator" aria-hidden="true">
     <div id="term-header">
-      <span id="term-title">~/portfolio &mdash; bash</span>
+      <span id="term-title">~/pachulski.dev</span>
       <button id="term-close" aria-label="Close terminal">&times;</button>
     </div>
     <div id="term-output" role="log" aria-live="polite"></div>
@@ -70,183 +74,160 @@
 
   <!-- ===== HERO ===== -->
   <section id="hero" aria-labelledby="hero-name">
-    <div class="section-inner">
-      <div class="avail-hero" aria-label="Availability status">
-        <span class="pulse-dot" aria-hidden="true"></span>
-        <span>Available for remote EU roles and contracts</span>
-      </div>
-      <h1 id="hero-name" class="hero-name">Mateusz<br>Pachulski</h1>
-      <p class="hero-title">Senior Android &amp; KMP Engineer for complex mobile products</p>
-      <p class="hero-sub">I help teams ship fintech, realtime, and high-scale mobile apps &mdash; from architecture and migrations to release quality.</p>
-      <div class="typewriter-wrap" aria-live="polite" aria-label="Experience highlights">
-        <span id="typewriter-text" class="typewriter-text"></span><span class="cursor-blink" aria-hidden="true">|</span>
-      </div>
-      <p class="hero-dutch">🇳🇱 Dutch fluent &middot; English &middot; Polish &middot; EU timezone</p>
-      <div class="hero-cta-row">
-        <a href="#contact" class="hero-cta">Book a call</a>
-        <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer" class="hero-linkedin" aria-label="LinkedIn profile">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-      </div>
-      <div class="hero-meta" aria-label="Quick facts">
-        <span class="hero-meta-item"><strong>7+</strong> years</span>
-        <span class="hero-meta-item" title="incl. Netherlands"><strong>4</strong> countries</span>
-        <span class="hero-meta-item"><strong>3</strong> industries</span>
-        <span class="hero-meta-item"><strong>6+</strong> apps shipped</span>
-      </div>
-      <pre class="hero-code-deco" aria-hidden="true">// Mateusz.kt
-class SeniorEngineer(
-  val name: String = "Mateusz Pachulski",
-  val stack: List<String> = listOf(
-    "Kotlin", "Jetpack Compose",
-    "KMP", "Clean Architecture",
-    "gRPC", "SQLDelight"
-  ),
-  val experience: String = "7+ years",
-  val focus: String = "fintech · messaging · realtime",
-  val available: Boolean = true
-)</pre>
-    </div>
-  </section>
-
-  <!-- ===== CASE STUDIES ===== -->
-  <section id="case-studies" aria-labelledby="cs-heading">
-    <div class="section-inner">
-      <p class="section-label" aria-hidden="true">02 &mdash; Case Studies</p>
-      <h2 id="cs-heading" class="section-heading">Selected Work</h2>
-
-      <div class="case-study">
-        <div class="cs-stat" data-target="40" data-suffix="+" aria-label="40 plus UI regressions caught">40+</div>
-        <div class="cs-content fade-up">
-          <h3 class="cs-name">Santander / Erste Bank</h3>
-          <p class="cs-desc">Following a multi-country acquisition, the banking app needed a full rebranding and migration across 4 markets — with no tolerance for regressions in production. I joined the core team to drive the Android rebranding effort: 30+ XML-to-Compose migrations, WCAG accessibility rollout, monorepo Gradle alignment, and introduced ADRs to improve architectural decisions. Caught and resolved 40+ UI regressions before they reached users.</p>
-          <div class="cs-tags" aria-label="Technologies">
-            <span class="tag">Rebranding</span>
-            <span class="tag">WCAG</span>
-            <span class="tag">CI/CD</span>
-            <span class="tag">Kotlin</span>
-            <span class="tag">Jetpack Compose</span>
-          </div>
+    <div class="hero-atmosphere" aria-hidden="true"></div>
+    <div class="section-inner hero-inner">
+      <div class="hero-lead">
+        <p class="hero-eyebrow">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span class="nowrap">Open to remote EU</span>
+          <span aria-hidden="true">·</span>
+          <span class="nowrap">permanent or B2B</span>
+        </p>
+        <h1 id="hero-name" class="hero-name">Mateusz<br>Pachulski</h1>
+        <p class="hero-headline">I build mobile systems that stay correct under pressure.</p>
+        <p class="hero-sub">Senior Android &amp; Kotlin Multiplatform engineer, eight years across fintech, mobility, and realtime — shipping Android, Swift, and Node with Claude Code in the daily loop.</p>
+        <div class="hero-cta-row">
+          <a href="#contact" class="hero-cta">Get in touch</a>
+          <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer" class="hero-secondary">LinkedIn</a>
         </div>
       </div>
 
-      <div class="case-study">
-        <div class="cs-stat" aria-label="100 percent uptime during migration">100%</div>
-        <div class="cs-content fade-up">
-          <h3 class="cs-name">Wire Messenger</h3>
-          <p class="cs-desc">Wire needed a full rewrite of its Android app to modern standards while keeping millions of users unaffected. I built the app from scratch using Jetpack Compose and designed the shared KMP business logic layer — covering networking (gRPC), data persistence (SQLDelight), and domain models shared with iOS. The migration completed with zero downtime, and KMP became the architectural foundation across both platforms.</p>
-          <div class="cs-tags" aria-label="Technologies">
-            <span class="tag">Jetpack Compose</span>
-            <span class="tag">KMP</span>
-            <span class="tag">gRPC</span>
-            <span class="tag">E2E Encryption</span>
-            <span class="tag">SQLDelight</span>
-          </div>
+      <dl class="hero-status" aria-label="At a glance">
+        <div class="hero-status-row">
+          <dt>Now</dt>
+          <dd>Arrive / EasyPark — Android, Swift, Node BFF</dd>
         </div>
-      </div>
+        <div class="hero-status-row">
+          <dt>Before</dt>
+          <dd>Santander · Erste · Wire</dd>
+        </div>
+        <div class="hero-status-row">
+          <dt>Focus</dt>
+          <dd>KMP · Compose · release quality</dd>
+        </div>
+        <div class="hero-status-row">
+          <dt>Languages</dt>
+          <dd>EN / PL / NL</dd>
+        </div>
+      </dl>
 
-      <div class="case-study">
-        <div class="cs-stat" aria-label="4 months from concept to launch">4mo</div>
-        <div class="cs-content fade-up">
-          <h3 class="cs-name">FitCrony</h3>
-          <p class="cs-desc">Needed a fully working fitness app shipped to Google Play on a tight timeline with a single-person team. As sole developer, I handled architecture, UI, and release management end-to-end — delivering a complete Flutter fitness product from concept to production in 4 months.</p>
-          <div class="cs-tags" aria-label="Technologies">
-            <span class="tag">Flutter</span>
-            <span class="tag">Dart</span>
-            <span class="tag">Health</span>
-            <span class="tag">MVP</span>
-            <span class="tag">Google Play</span>
-          </div>
-        </div>
-      </div>
+      <a class="hero-scroll" href="#work" aria-label="Scroll to selected work">01 — Selected work <span aria-hidden="true">↓</span></a>
     </div>
   </section>
 
-  <!-- ===== SERVICES ===== -->
-  <section id="services" aria-labelledby="svc-heading">
+  <!-- ===== SELECTED WORK ===== -->
+  <section id="work" aria-labelledby="work-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">03 &mdash; How I Help</p>
-      <h2 id="svc-heading" class="section-heading">How I Help</h2>
-      <p class="section-sub">Banking apps, encrypted messengers, trading platforms. I&rsquo;ve shipped them all &mdash; here&rsquo;s where I add the most value.</p>
+      <p class="section-label" aria-hidden="true">01 — Selected work</p>
+      <h2 id="work-heading" class="section-heading">Products that had to hold up</h2>
+      <p class="section-sub">Three products, three domains, and what actually changed. Dates and the full run live in the <a href="#timeline">timeline</a>.</p>
 
-      <ol class="services-list" aria-label="Services">
-        <li class="service-item fade-up">
-          <span class="svc-num" aria-hidden="true">01</span>
-          <div class="svc-body">
-            <span class="svc-name">Android Architecture &amp; Delivery</span>
-            <p class="svc-desc">Bring structure to complex Android codebases. Clean module boundaries, MVI, Kotlin Coroutines, and testable code that teams can confidently maintain and extend at scale.</p>
-            <div class="svc-tags"><span>Kotlin</span><span>Jetpack Compose</span><span>Clean Architecture</span><span>Coroutines</span></div>
-          </div>
-        </li>
-        <li class="service-item fade-up">
-          <span class="svc-num" aria-hidden="true">02</span>
-          <div class="svc-body">
-            <span class="svc-name">Kotlin Multiplatform Shared Logic</span>
-            <p class="svc-desc">Replace duplicated platform code with a single shared business logic layer. Networking, persistence, and domain models that work reliably on both Android and iOS — proven at Wire Messenger.</p>
-            <div class="svc-tags"><span>KMP</span><span>Ktor</span><span>SQLDelight</span><span>Koin</span></div>
-          </div>
-        </li>
-        <li class="service-item fade-up">
-          <span class="svc-num" aria-hidden="true">03</span>
-          <div class="svc-body">
-            <span class="svc-name">Compose &amp; Legacy-to-Modern Migrations</span>
-            <p class="svc-desc">Migrate View-based UIs to Jetpack Compose incrementally, without breaking existing features. Delivered 30+ XML-to-Compose migrations at Santander across a multi-country monorepo.</p>
-            <div class="svc-tags"><span>Jetpack Compose</span><span>ADR</span><span>Monorepo</span><span>Gradle</span></div>
-          </div>
-        </li>
-        <li class="service-item fade-up">
-          <span class="svc-num" aria-hidden="true">04</span>
-          <div class="svc-body">
-            <span class="svc-name">Release Readiness &amp; Production Quality</span>
-            <p class="svc-desc">Raise the quality bar before shipping: snapshot testing, WCAG accessibility, CI/CD pipelines, performance profiling, and release management. Fewer regressions in production, more confidence in every release.</p>
-            <div class="svc-tags"><span>CI/CD</span><span>Snapshot Testing</span><span>WCAG</span><span>Performance</span></div>
-          </div>
-        </li>
-      </ol>
+      <article class="work-item fade-up">
+        <div class="work-meta">
+          <span class="work-domain">Mobility</span>
+          <span class="work-scope">Android · iOS · Node BFF</span>
+        </div>
+        <h3 class="work-name">Arrive / EasyPark</h3>
+        <p class="work-desc">EasyPark for Business product team — Android-first, and also shipping the iOS client and the Node BFF.</p>
+        <ul class="work-outcomes">
+          <li><strong>~10 screens per platform</strong> gated by a business-feature availability module I delivered end-to-end on Android, iOS, and backend — including checks that hold when the feature-flag service is down.</li>
+          <li><strong>Server-driven Expenses</strong> on Android, with an extended expense API and notes on parking purchases.</li>
+          <li><strong>300+ module Gradle monorepo</strong> hygiene, analytics corrected during loading and error states, and incident-manager rotation.</li>
+        </ul>
+        <ul class="work-tags" aria-label="Focus areas">
+          <li>Android</li>
+          <li>Swift</li>
+          <li>Node.js BFF</li>
+          <li>Server-driven UI</li>
+          <li>Analytics</li>
+          <li>Monorepo</li>
+        </ul>
+      </article>
+
+      <article class="work-item fade-up">
+        <div class="work-meta">
+          <span class="work-domain">Retail banking</span>
+          <span class="work-scope">Android · accessibility at scale</span>
+        </div>
+        <h3 class="work-name">Santander / Erste</h3>
+        <p class="work-desc">Two chapters in European retail banking, from group-wide accessibility work to a full rebrand.</p>
+        <ul class="work-outcomes">
+          <li><strong>40+ UI regressions</strong> caught and fixed during the Erste rebrand before they reached users.</li>
+          <li><strong>XML → Jetpack Compose migrations</strong> delivered alongside feature work, not as a frozen roadmap.</li>
+          <li><strong>100+ engineers, five Scrum squads</strong> supported with TalkBack, contrast, and WCAG guidance plus backlog quality.</li>
+        </ul>
+        <ul class="work-tags" aria-label="Focus areas">
+          <li>Jetpack Compose</li>
+          <li>Rebranding</li>
+          <li>WCAG</li>
+          <li>Release quality</li>
+          <li>Fintech</li>
+        </ul>
+      </article>
+
+      <article class="work-item fade-up">
+        <div class="work-meta">
+          <span class="work-domain">Secure messaging</span>
+          <span class="work-scope">Android · KMP</span>
+        </div>
+        <h3 class="work-name">Wire <span class="work-via">via AppUnite</span></h3>
+        <p class="work-desc">A security-sensitive messenger at scale, rebuilt on Compose with shared logic across platforms.</p>
+        <ul class="work-outcomes">
+          <li><strong>Compose Android rewrite</strong> of a production messenger used by security-conscious organisations.</li>
+          <li><strong>KMP shared business logic</strong> — networking, persistence, and domain models that had to stay correct under encryption and high concurrency.</li>
+        </ul>
+        <ul class="work-tags" aria-label="Focus areas">
+          <li>Jetpack Compose</li>
+          <li>KMP</li>
+          <li>gRPC</li>
+          <li>SQLDelight</li>
+          <li>E2E encryption</li>
+        </ul>
+      </article>
     </div>
   </section>
 
-  <!-- ===== HOW I WORK ===== -->
-  <section id="how-i-work" aria-labelledby="hiw-heading">
+  <!-- ===== RAISE THE BAR ===== -->
+  <section id="bar" aria-labelledby="bar-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">04 &mdash; Process</p>
-      <h2 id="hiw-heading" class="section-heading">How I Work</h2>
-      <p class="section-sub">No surprises, no scope creep. Here&rsquo;s exactly what working together looks like &mdash; from first call to shipped product.</p>
+      <p class="section-label" aria-hidden="true">02 — On a team</p>
+      <h2 id="bar-heading" class="section-heading">How I raise the bar</h2>
+      <p class="section-sub">Not a service menu — the ways I make a mobile team sharper, calmer, and harder to break in production.</p>
 
-      <ol class="process-steps" aria-label="Work process">
-        <li class="process-step fade-up">
-          <span class="step-num" aria-hidden="true">01</span>
-          <div class="step-body">
-            <h3 class="step-name">Discovery Call</h3>
-            <p class="step-desc">30 minutes to understand your problem, goals, and constraints. We align on scope before a single line of code is written.</p>
+      <ol class="bar-list" aria-label="How I raise the bar">
+        <li class="bar-item fade-up">
+          <span class="bar-num" aria-hidden="true">01</span>
+          <div class="bar-body">
+            <h3 class="bar-name">Architecture &amp; delivery</h3>
+            <p class="bar-desc">Clean module boundaries, MVI, coroutines, and testable seams so features ship without turning the monorepo into folklore.</p>
           </div>
         </li>
-        <li class="process-step fade-up">
-          <span class="step-num" aria-hidden="true">02</span>
-          <div class="step-body">
-            <h3 class="step-name">Proposal &amp; Architecture</h3>
-            <p class="step-desc">I write down what we&rsquo;re building, how, and when &mdash; just enough to move with confidence. No 40-page documents, just a clear plan we both agree on before anything starts.</p>
+        <li class="bar-item fade-up">
+          <span class="bar-num" aria-hidden="true">02</span>
+          <div class="bar-body">
+            <h3 class="bar-name">AI-assisted engineering, daily</h3>
+            <p class="bar-desc">Claude Code is part of how I ship — Android, Swift, and Node in the same week. It widens the surface area I can cover; the architecture decisions and the verification stay mine.</p>
           </div>
         </li>
-        <li class="process-step fade-up">
-          <span class="step-num" aria-hidden="true">03</span>
-          <div class="step-body">
-            <h3 class="step-name">Sprint-Based Delivery</h3>
-            <p class="step-desc">You get a weekly update and something you can actually test. Real progress, not slide decks. Modern tooling keeps delivery fast without cutting corners on quality.</p>
+        <li class="bar-item fade-up">
+          <span class="bar-num" aria-hidden="true">03</span>
+          <div class="bar-body">
+            <h3 class="bar-name">Kotlin Multiplatform</h3>
+            <p class="bar-desc">Shared business logic for networking, persistence, and domain models — proven at Wire, useful wherever Android and iOS should stop drifting.</p>
           </div>
         </li>
-        <li class="process-step fade-up">
-          <span class="step-num" aria-hidden="true">04</span>
-          <div class="step-body">
-            <h3 class="step-name">Ship &amp; Handover</h3>
-            <p class="step-desc">CI/CD set up, docs written, and I walk your team through what was built. You own it from day one &mdash; not just the files, but the understanding of why things are the way they are.</p>
+        <li class="bar-item fade-up">
+          <span class="bar-num" aria-hidden="true">04</span>
+          <div class="bar-body">
+            <h3 class="bar-name">Compose migrations</h3>
+            <p class="bar-desc">Incremental XML → Compose without freezing the roadmap. Migrations ride alongside feature work, not as a year-long rewrite theater.</p>
           </div>
         </li>
-        <li class="process-step fade-up">
-          <span class="step-num" aria-hidden="true">05</span>
-          <div class="step-body">
-            <h3 class="step-name">Post-Launch Support</h3>
-            <p class="step-desc">Optional retainer or bug-fix period. I stay reachable after delivery &mdash; not just until the invoice clears.</p>
+        <li class="bar-item fade-up">
+          <span class="bar-num" aria-hidden="true">05</span>
+          <div class="bar-body">
+            <h3 class="bar-name">Release quality, a11y &amp; team lift</h3>
+            <p class="bar-desc">WCAG, TalkBack, analytics correctness, Gradle hygiene, and the quiet habits that keep incidents rare — plus lifting the people around the code.</p>
           </div>
         </li>
       </ol>
@@ -256,47 +237,48 @@ class SeniorEngineer(
   <!-- ===== STACK ===== -->
   <section id="stack" aria-labelledby="stack-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">05 &mdash; Stack</p>
-      <h2 id="stack-heading" class="section-heading">My Stack</h2>
-      <p class="section-sub">7 years building real things. Banking apps across 4 countries, an encrypted messenger for millions, a BLE mesh SDK from scratch &mdash; the stack reflects the work.</p>
+      <p class="section-label" aria-hidden="true">03 — Stack</p>
+      <h2 id="stack-heading" class="section-heading">Tools I actually ship with</h2>
+      <p class="section-sub">Languages carry equal weight. Tooling earns its place by what it lets me verify, not by what it promises.</p>
 
       <div class="stack-grid">
         <div class="stack-group fade-up">
-          <p class="stack-label">Android</p>
-          <div class="stack-chips">
-            <span class="chip">Kotlin</span><span class="chip">Jetpack Compose</span><span class="chip">Android SDK</span>
-            <span class="chip">Clean Architecture</span><span class="chip">MVI</span><span class="chip">Coroutines</span>
-            <span class="chip">Dependency Injection</span><span class="chip">Java</span><span class="chip">Reactive Programming</span>
-          </div>
-        </div>
-        <div class="stack-group fade-up">
-          <p class="stack-label">Platform &amp; Connectivity</p>
-          <div class="stack-chips">
-            <span class="chip">Kotlin Multiplatform</span><span class="chip">Ktor</span><span class="chip">SQLDelight</span>
-            <span class="chip">Koin</span><span class="chip">Protobuf</span><span class="chip">gRPC</span>
-            <span class="chip">BLE</span><span class="chip">Encryption</span>
-          </div>
-        </div>
-        <div class="stack-group fade-up">
-          <p class="stack-label">Tooling &amp; Quality</p>
-          <div class="stack-chips">
-            <span class="chip">Snapshot Testing</span><span class="chip">WCAG / Accessibility</span>
-            <span class="chip">ADR</span><span class="chip">Gradle</span><span class="chip">CI/CD</span><span class="chip">On-device ML</span>
-          </div>
-        </div>
-        <div class="stack-group fade-up">
           <p class="stack-label">Languages</p>
           <div class="stack-chips">
-            <span class="chip">Dutch (fluent)</span>
-            <span class="chip">English (professional)</span>
-            <span class="chip">Polish (native)</span>
+            <span class="chip">Kotlin</span>
+            <span class="chip">Swift</span>
+            <span class="chip">TypeScript / Node</span>
+            <span class="chip">Java</span>
           </div>
         </div>
         <div class="stack-group fade-up">
-          <p class="stack-label">Dev Tooling</p>
+          <p class="stack-label">Android &amp; multiplatform</p>
           <div class="stack-chips">
-            <span class="chip">Cursor</span><span class="chip">GitHub Copilot</span>
-            <span class="chip">LLM APIs</span>
+            <span class="chip">Jetpack Compose</span>
+            <span class="chip">Kotlin Multiplatform</span>
+            <span class="chip">Coroutines</span>
+            <span class="chip">Clean Architecture / MVI</span>
+            <span class="chip">Ktor</span>
+            <span class="chip">SQLDelight</span>
+            <span class="chip">gRPC / Protobuf</span>
+          </div>
+        </div>
+        <div class="stack-group fade-up">
+          <p class="stack-label">Quality &amp; tooling</p>
+          <div class="stack-chips">
+            <span class="chip">WCAG / TalkBack</span>
+            <span class="chip">CI/CD</span>
+            <span class="chip">Gradle monorepos</span>
+            <span class="chip">Snapshot testing</span>
+            <span class="chip">Claude Code (daily)</span>
+          </div>
+        </div>
+        <div class="stack-group fade-up">
+          <p class="stack-label">Spoken</p>
+          <div class="stack-chips">
+            <span class="chip">English</span>
+            <span class="chip">Polish</span>
+            <span class="chip">Dutch</span>
           </div>
         </div>
       </div>
@@ -306,80 +288,161 @@ class SeniorEngineer(
   <!-- ===== TIMELINE ===== -->
   <section id="timeline" aria-labelledby="timeline-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">06 &mdash; Experience</p>
-      <h2 id="timeline-heading" class="section-heading">Timeline</h2>
+      <p class="section-label" aria-hidden="true">04 — Timeline</p>
+      <h2 id="timeline-heading" class="section-heading">git log --oneline</h2>
 
       <div class="git-log" role="list" aria-label="Work history">
         <div class="git-entry fade-up" role="listitem">
           <div class="git-line">
             <span class="git-graph">*</span>
-            <span class="git-hash">f9e0a1b</span>
-            <span class="git-branch">(HEAD &rarr; main)</span>
-            <span class="git-msg">Independent Consulting &amp; Side Projects</span>
-            <span class="git-tag">[2025&ndash;Present]</span>
+            <span class="git-hash">c4f8a21</span>
+            <span class="git-branch">(origin/arrive)</span>
+            <span class="git-msg">Senior Software Engineer (Android) @ Arrive / EasyPark</span>
+            <span class="git-tag">[Jun 2026–Present]</span>
           </div>
-          <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Available for remote EU roles and contracts. Building side projects, exploring KMP opportunities, and applying modern tooling (AI-assisted development, Cursor, LLM APIs) to sharpen delivery speed without compromising quality.</p>
+          <div class="git-connector" aria-hidden="true">│</div>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
           <div class="git-line">
             <span class="git-graph">*</span>
-            <span class="git-hash">a1b2c3d</span>
-            <span class="git-branch">(origin/santander)</span>
-            <span class="git-msg">Senior Android Developer @ Santander / Erste</span>
-            <span class="git-tag">[2023&ndash;2025]</span>
+            <span class="git-hash">b7e3d90</span>
+            <span class="git-branch">(origin/santander-pl)</span>
+            <span class="git-msg">Senior Android Engineer @ Santander Bank Polska (Erste)</span>
+            <span class="git-tag">[Aug 2025–May 2026]</span>
           </div>
-          <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Hired into the core team delivering features across 4 countries; 30+ XML &rarr; Compose migrations, WCAG accessibility rollout, monorepo Gradle alignment, introduced ADRs. Acted as bridge between the Polish business unit and Santander Digital Services. Later led the Poland mono repo migration and the full rebranding to Erste following the acquisition.</p>
+          <div class="git-connector" aria-hidden="true">│</div>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
           <div class="git-line">
             <span class="git-graph">*</span>
-            <span class="git-hash">d4e5f6b</span>
+            <span class="git-hash">a1c9e44</span>
+            <span class="git-branch">(origin/scfgs)</span>
+            <span class="git-msg">Senior Android Engineer @ Santander Consumer Finance Global Services</span>
+            <span class="git-tag">[Nov 2023–Aug 2025]</span>
+          </div>
+          <div class="git-connector" aria-hidden="true">│</div>
+        </div>
+
+        <div class="git-entry fade-up" role="listitem">
+          <div class="git-line">
+            <span class="git-graph">*</span>
+            <span class="git-hash">9f2b6c8</span>
             <span class="git-branch">(origin/wire)</span>
-            <span class="git-msg">Senior Android Developer @ Wire Messenger</span>
-            <span class="git-tag">[2021&ndash;2023]</span>
+            <span class="git-msg">Senior Android Engineer @ Wire (via AppUnite)</span>
+            <span class="git-tag">[Feb 2022–Nov 2023]</span>
           </div>
-          <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Built Wire Messenger from scratch with Jetpack Compose &mdash; end-to-end architecture decisions, daily collaboration with designers on product direction, E2E-encrypted features over gRPC, and shared business logic via KMP (Ktor / Koin / SQLDelight).</p>
+          <div class="git-connector" aria-hidden="true">│</div>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
           <div class="git-line">
             <span class="git-graph">*</span>
-            <span class="git-hash">g7h8i9c</span>
+            <span class="git-hash">7d4a1e2</span>
             <span class="git-branch">(origin/appunite)</span>
-            <span class="git-msg">Senior Android Developer @ AppUnite</span>
-            <span class="git-tag">[2019&ndash;2021]</span>
+            <span class="git-msg">Android Developer @ AppUnite</span>
+            <span class="git-tag">[Dec 2020–Nov 2023]</span>
           </div>
-          <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Multi-client Android delivery: AlleFolders Dutch brochure-browsing app (bug fixes &amp; features), BlockTrade crypto platform with live prices and real-time graphs (RxJava, reactive programming), multiple radio app releases, and FitCrony fitness app built solo in Flutter.</p>
+          <div class="git-connector" aria-hidden="true">│</div>
+          <p class="git-detail">Client delivery including FitCrony, Alle Folders, and Blocktrade.</p>
         </div>
 
         <div class="git-entry fade-up" role="listitem">
           <div class="git-line">
             <span class="git-graph">*</span>
-            <span class="git-hash">j0k1l2d</span>
-            <span class="git-branch">(origin/bright)</span>
-            <span class="git-msg">Android SDK Engineer @ Bright Inventions, Gda&#324;sk</span>
-            <span class="git-tag">[2017&ndash;2019]</span>
-          </div>
-          <div class="git-connector" aria-hidden="true">&#9474;</div>
-          <p class="git-detail">Built a BLE-mesh Android SDK as sole engineer &mdash; replicating the iOS implementation through unit tests with full documentation. The SDK powered a BLE mesh where dedicated devices exchanged data with phones acting as radars for BLE signals. Ran in parallel with a companion pet-tracking demo app.</p>
-        </div>
-
-        <div class="git-entry fade-up" role="listitem">
-          <div class="git-line">
-            <span class="git-graph">*</span>
-            <span class="git-hash">n3o4p5e</span>
+            <span class="git-hash">3e8c0b5</span>
             <span class="git-branch">(origin/edu)</span>
             <span class="git-msg">B.Eng Electrical &amp; Electronics @ Hanze University, Groningen</span>
-            <span class="git-tag">[2014&ndash;2019]</span>
+            <span class="git-tag">[2014–2019]</span>
           </div>
-          <p class="git-detail">Electrical &amp; Electronics Engineering &mdash; foundation in embedded systems, signal processing, and hardware-software integration. Originally from Poland; studied and lived in the Netherlands for 14 years.</p>
+          <p class="git-detail">Electronics and BLE background. Studied in the Netherlands; NL / EN / PL.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SIGNAL ===== -->
+  <section id="signal" aria-labelledby="signal-heading">
+    <div class="section-inner">
+      <p class="section-label" aria-hidden="true">05 — Signal</p>
+      <h2 id="signal-heading" class="section-heading">What I keep open in the tabs</h2>
+      <p class="section-sub">Curated reading on Compose, KMP, architecture, and accessibility — annotated in my voice.</p>
+      <ul id="signal-list" class="signal-list" aria-label="Curated reading list">
+        <!-- Populated from signal.json; noscript fallback below -->
+      </ul>
+      <noscript>
+        <ul class="signal-list">
+          <li><a href="https://developer.android.com/jetpack/compose">Jetpack Compose</a> — still the clearest path off XML debt.</li>
+          <li><a href="https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html">Kotlin Multiplatform</a> — share the boring correct parts; keep UI native.</li>
+        </ul>
+      </noscript>
+    </div>
+  </section>
+
+  <!-- ===== LAB ===== -->
+  <section id="lab" aria-labelledby="lab-heading">
+    <div class="section-inner">
+      <p class="section-label" aria-hidden="true">06 — Lab</p>
+      <h2 id="lab-heading" class="section-heading">On the bench</h2>
+      <p class="section-sub">Three problems I hit at work often enough to start solving them properly. Status is honest — nothing here is pretending to be a finished product.</p>
+
+      <div class="lab-bench-wrap">
+      <ol class="lab-bench" role="list" aria-label="Current experiments">
+        <li class="lab-item fade-up">
+          <div class="lab-head">
+            <span class="lab-index" aria-hidden="true">01</span>
+            <span class="lab-status is-building">
+              <span class="lab-dot" aria-hidden="true"></span>Building
+            </span>
+          </div>
+          <h3 class="lab-name">Verification gate for AI drafts</h3>
+          <p class="lab-desc">I already read every Claude Code draft against the contract it is supposed to satisfy. This makes that mechanical instead of disciplined — so the habit survives a bad week.</p>
+          <p class="lab-next"><span class="lab-next-label">Next</span> a Gradle task that fails the build when a changed module ships without a new or updated test.</p>
+          <ul class="lab-tags" aria-label="Technologies">
+            <li>Kotlin</li>
+            <li>Gradle</li>
+            <li>CI</li>
+          </ul>
+        </li>
+
+        <li class="lab-item fade-up">
+          <div class="lab-head">
+            <span class="lab-index" aria-hidden="true">02</span>
+            <span class="lab-status is-building">
+              <span class="lab-dot" aria-hidden="true"></span>Building
+            </span>
+          </div>
+          <h3 class="lab-name">KMP shared-logic reference</h3>
+          <p class="lab-desc">The networking, persistence, and domain wiring I keep rebuilding from scratch on every multiplatform project, written down once as something forkable.</p>
+          <p class="lab-next"><span class="lab-next-label">Next</span> an ergonomics pass on what the shared module actually feels like to consume from Swift.</p>
+          <ul class="lab-tags" aria-label="Technologies">
+            <li>Kotlin Multiplatform</li>
+            <li>Ktor</li>
+            <li>SQLDelight</li>
+            <li>Koin</li>
+          </ul>
+        </li>
+
+        <li class="lab-item fade-up">
+          <div class="lab-head">
+            <span class="lab-index" aria-hidden="true">03</span>
+            <span class="lab-status is-exploring">
+              <span class="lab-dot" aria-hidden="true"></span>Exploring
+            </span>
+          </div>
+          <h3 class="lab-name">Accessibility checks that fail CI</h3>
+          <p class="lab-desc">Years of TalkBack and contrast review in banking taught me that manual a11y passes decay. I want the regression caught by the pipeline, not by me on a good day.</p>
+          <p class="lab-next"><span class="lab-next-label">Next</span> a Compose semantics snapshot test that breaks on missing labels or failing contrast.</p>
+          <ul class="lab-tags" aria-label="Technologies">
+            <li>Jetpack Compose</li>
+            <li>WCAG</li>
+            <li>Instrumented tests</li>
+          </ul>
+        </li>
+      </ol>
+
+      <p class="lab-note">No links yet — these go public when the code is worth reading, not when it would look good here.</p>
       </div>
     </div>
   </section>
@@ -387,75 +450,34 @@ class SeniorEngineer(
   <!-- ===== CONTACT ===== -->
   <section id="contact" aria-labelledby="contact-heading">
     <div class="section-inner">
-      <p class="section-label" aria-hidden="true">07 &mdash; Contact</p>
-      <h2 id="contact-heading" class="section-heading">Let&rsquo;s Work Together</h2>
-      <p class="section-sub">Looking to hire a Senior Android or KMP engineer for a remote EU role or contract? Let&rsquo;s talk.</p>
+      <p class="section-label" aria-hidden="true">07 — Contact</p>
+      <h2 id="contact-heading" class="section-heading">Let’s talk</h2>
+      <p class="section-sub">Hiring a Senior Android or KMP engineer for a remote EU role — permanent or B2B? Reach out directly.</p>
 
-      <div class="contact-grid">
-        <div class="contact-info fade-up">
-          <div class="contact-avail">
-            <span class="pulse-dot" aria-hidden="true"></span>
-            <span>Currently available &mdash; responses within 24 hours</span>
-          </div>
-          <ul class="contact-list" aria-label="Contact details">
-            <li>
-              <span class="contact-label">Email</span>
-              <a href="mailto:mateusz@pachulski.dev" class="contact-link">mateusz@pachulski.dev</a>
-            </li>
-            <li>
-              <span class="contact-label">Phone</span>
-              <a href="tel:+48513890663" class="contact-link">+48 513 890 663</a>
-            </li>
-            <li>
-              <span class="contact-label">LinkedIn</span>
-              <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer" class="contact-link">linkedin.com/in/mateusz-pachulski</a>
-            </li>
-            <li>
-              <span class="contact-label">Location</span>
-              <span class="contact-link">Poland &middot; EU timezone &middot; Remote worldwide</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="contact-form-wrap fade-up">
-          <form id="contactForm" novalidate aria-label="Contact form">
-            <div class="form-row">
-              <div class="form-field">
-                <label for="firstName">First Name <abbr title="required">*</abbr></label>
-                <input type="text" id="firstName" name="firstName" required autocomplete="given-name">
-              </div>
-              <div class="form-field">
-                <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" autocomplete="family-name">
-              </div>
-            </div>
-            <div class="form-field">
-              <label for="email">Email <abbr title="required">*</abbr></label>
-              <input type="email" id="email" name="email" required autocomplete="email">
-            </div>
-            <div class="form-field">
-              <label for="service">Service</label>
-              <select id="service" name="service">
-                <option value="">Select a service...</option>
-                <option value="android">Android Development</option>
-                <option value="kmp">Kotlin Multiplatform</option>
-                <option value="architecture">Architecture Consulting</option>
-                <option value="fintech">FinTech &amp; Banking Apps</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="message">Message <abbr title="required">*</abbr></label>
-              <textarea id="message" name="message" rows="5" required placeholder="Tell me about your project..."></textarea>
-            </div>
-            <button type="submit" class="submit-btn">Send Message &rarr;</button>
-          </form>
-          <div id="formSuccess" hidden role="status" aria-live="polite">
-            <p>&#10003; Message sent! I&rsquo;ll get back to you within 24 hours.</p>
-          </div>
-          <div id="formError" hidden role="alert" aria-live="assertive">
-            <p>&#9888; Something went wrong. Please try again or email me directly at <a href="mailto:mateusz@pachulski.dev">mateusz@pachulski.dev</a>.</p>
-          </div>
-        </div>
+      <div class="contact-block fade-up">
+        <p class="contact-avail">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span>Open to remote EU · responses within 24 hours</span>
+        </p>
+        <ul class="contact-list" aria-label="Contact details">
+          <li>
+            <span class="contact-label">Email</span>
+            <a href="mailto:mateusz@pachulski.dev" class="contact-link">mateusz@pachulski.dev</a>
+          </li>
+          <li>
+            <span class="contact-label">Phone</span>
+            <a href="tel:+47789174023" class="contact-link">+47 789 174 023</a>
+          </li>
+          <li>
+            <span class="contact-label">LinkedIn</span>
+            <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer" class="contact-link">linkedin.com/in/mateusz-pachulski</a>
+          </li>
+          <li>
+            <span class="contact-label">Location</span>
+            <span class="contact-link">Poland · EU timezone · Remote EU</span>
+          </li>
+        </ul>
+        <a href="mailto:mateusz@pachulski.dev?subject=Role%20inquiry%20%E2%80%94%20pachulski.dev" class="contact-cta">Email Mateusz →</a>
       </div>
     </div>
   </section>
@@ -464,50 +486,19 @@ class SeniorEngineer(
   <footer id="footer" aria-label="Site footer">
     <div class="section-inner footer-inner">
       <p class="footer-logo">Mateusz Pachulski</p>
-      <p class="footer-copy">&copy; <span id="year"></span> Mateusz Pachulski. All rights reserved.</p>
+      <p class="footer-copy">&copy; <span id="year"></span> Mateusz Pachulski</p>
       <nav class="footer-nav" aria-label="Footer links">
-        <a href="#services">How I Help</a>
-        <a href="#how-i-work">Process</a>
+        <a href="#work">Work</a>
+        <a href="#bar">On a team</a>
         <a href="#stack">Stack</a>
+        <a href="#signal">Signal</a>
+        <a href="#lab">Lab</a>
         <a href="#contact">Contact</a>
-        <a href="mailto:mateusz@pachulski.dev">Email</a>
         <a href="https://linkedin.com/in/mateusz-pachulski" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </nav>
-      <div class="kbd-map" aria-label="Keyboard shortcuts">
-        <span class="kbd-key">1&ndash;6</span> navigate &nbsp;
-        <span class="kbd-key">B</span> book &nbsp;
-        <span class="kbd-key">`</span> terminal &nbsp;
-        <span class="kbd-key">esc</span> close
-      </div>
     </div>
   </footer>
 
-  <!-- ===== PIXEL TAMAGOTCHI ===== -->
-  <div id="tama" data-theme="default" role="img" aria-label="Interactive pixel mascot — click to interact, double-click to change skin, right-click for a challenge">
-    <div id="tama-bubble" aria-live="polite" aria-atomic="true"></div>
-    <canvas id="tama-canvas" width="64" height="64" aria-hidden="true"></canvas>
-    <div id="tama-bar" title="Mood" aria-label="Mascot mood bar">
-      <div id="tama-bar-fill"></div>
-    </div>
-  </div>
-
-  <!-- ===== QUICK BRIEF WIDGET ===== -->
-  <button id="qb-trigger" aria-label="Open quick brief panel" aria-expanded="false">&#9889; Quick Brief</button>
-  <div id="qb-panel" role="dialog" aria-modal="true" aria-label="Quick Brief" aria-hidden="true">
-    <div id="qb-head">
-      <span>&#9889; Quick Brief</span>
-      <button id="qb-close" aria-label="Close quick brief">&times;</button>
-    </div>
-    <p id="qb-hint">Describe your project in plain English — I&rsquo;ll detect what you need and send a formatted brief straight to my inbox or LinkedIn.</p>
-    <textarea id="qb-input" rows="4" placeholder="E.g. I need an Android developer to rebuild our banking app in Jetpack Compose…" aria-label="Project description"></textarea>
-    <div id="qb-result" aria-live="polite" aria-atomic="true"></div>
-    <button id="qb-analyze" type="button">Analyze &amp; Send &#8594;</button>
-  </div>
-
-  <!-- ── EmailJS ──────────────────────────────────────────────────────────── -->
-  <!-- Used to deliver contact-form submissions to your inbox without a back-end. -->
-  <!-- Docs: https://www.emailjs.com/docs/sdk/installation/                        -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Jetpack Compose",
+    "url": "https://developer.android.com/jetpack/compose",
+    "take": "Still the cleanest off-ramp from XML debt — migrate feature by feature, keep shipping."
+  },
+  {
+    "title": "Kotlin Multiplatform",
+    "url": "https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html",
+    "take": "Share the boring correct parts — networking, persistence, domain — and keep UI native."
+  },
+  {
+    "title": "Guide to app architecture",
+    "url": "https://developer.android.com/topic/architecture",
+    "take": "The Android architecture guide aged well: clear layers beat clever frameworks every time."
+  },
+  {
+    "title": "Compose accessibility",
+    "url": "https://developer.android.com/develop/ui/compose/accessibility",
+    "take": "Semantics and TalkBack aren’t polish — they’re part of shipping banking-grade UI."
+  },
+  {
+    "title": "Make apps more accessible",
+    "url": "https://developer.android.com/guide/topics/ui/accessibility/apps",
+    "take": "Contrast, focus order, content descriptions — the checklist I still run before release."
+  },
+  {
+    "title": "Now in Android (sample)",
+    "url": "https://github.com/android/nowinandroid",
+    "take": "A living reference for modularization and modern Android patterns — useful when arguing structure."
+  },
+  {
+    "title": "Claude Code overview",
+    "url": "https://docs.anthropic.com/en/docs/claude-code/overview",
+    "take": "Daily driver for Android, Swift, and Node — accelerates drafting, never replaces design or verification."
+  },
+  {
+    "title": "Android developers blog",
+    "url": "https://android-developers.googleblog.com/",
+    "take": "Signal for platform shifts before they show up in the next rebrand or monorepo migration."
+  }
+]
