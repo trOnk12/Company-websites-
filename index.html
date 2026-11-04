@@ -135,6 +135,7 @@
         <p>Most of my Android work predates these tools. At Arrive I use AI every day: to read documentation, to build features, and to write the iOS and Node parts of my work.</p>
         <p>It fails in predictable ways. It sometimes gets the definition of done wrong, and where the context doesn’t have the answer, it fills the gap with something plausible. And a passing test, AI-written or not, doesn’t prove that it checks anything. So:</p>
         <ul class="checks">
+          <li><b>Approved tools, clean prompts.</b> Only AI tools the client has approved, and no secrets, credentials or customer data in prompts.</li>
           <li><b>Spec first.</b> We collect the specs and documents and give the model all of it, so it has less to invent.</li>
           <li><b>I read every line</b> before it goes up for review, and iOS changes go through iOS engineers.</li>
           <li><b>Tests get tested.</b> I run mutation testing on AI-written tests: the tool plants small bugs, and a test that still passes is missing an assertion.</li>
