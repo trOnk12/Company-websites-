@@ -155,8 +155,8 @@ const TERM_COMMANDS = {
     appendTermLine('Kotlin · Compose · KMP · Swift · Node · WCAG');
   },
   contact: () => {
-    appendTermLine('mateusz@pachulski.dev');
-    appendTermLine('+47 789 174 023');
+    appendTermLine('m.pachulski94@gmail.com');
+    appendTermLine('+48 789 174 023');
     appendTermLine('linkedin.com/in/mateusz-pachulski');
   },
   clear: () => {
