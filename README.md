@@ -6,10 +6,6 @@ A single static GitHub Pages page: `index.html` and `style.css`, with self-hoste
 fonts in `fonts/` (Atkinson Hyperlegible Next, Literata, JetBrains Mono; all SIL OFL).
 No JavaScript, no cookies, no third-party requests.
 
-The hero map is one real trip from the ECML/PKDD 2015 Porto taxi dataset
-(CC BY 4.0) drawn over OpenStreetMap roads (© OpenStreetMap contributors, ODbL).
-Benchmark numbers come from the Driftless real-trace report of 2026-09-27.
-
 ```bash
 npm install
 npx playwright install chromium

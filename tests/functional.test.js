@@ -24,7 +24,7 @@ test.describe('Structure', () => {
 
   test('main sections are present', async ({ page }) => {
     await page.goto('/');
-    for (const id of ['top', 'work', 'driftless', 'ai', 'contact']) {
+    for (const id of ['top', 'work', 'ai', 'contact']) {
       await expect(page.locator(`#${id}`), `#${id} should exist`).toBeAttached();
     }
   });
@@ -40,7 +40,7 @@ test.describe('Structure', () => {
   test('header and footer navigation link to the sections', async ({ page }) => {
     await page.goto('/');
     for (const nav of ['nav[aria-label="Sections"]', 'nav[aria-label="Footer"]']) {
-      for (const href of ['#work', '#driftless', '#ai', '#contact']) {
+      for (const href of ['#work', '#ai', '#contact']) {
         await expect(page.locator(`${nav} a[href="${href}"]`)).toBeAttached();
       }
     }
@@ -100,18 +100,15 @@ test.describe('Claims', () => {
     await expect(page.locator('footer')).toContainText('Written with AI help');
   });
 
+  test('no side-project case studies until they are written up', async ({ page }) => {
+    await page.goto('/');
+    expect(await page.locator('body').innerText()).not.toMatch(/Driftless/);
+  });
+
   test('AI tool vendors are not used as a headline skill', async ({ page }) => {
     await page.goto('/');
     const hero = await page.locator('.hero').innerText();
     expect(hero).not.toMatch(/Claude|ChatGPT|Copilot/i);
-  });
-
-  test('benchmark results include the case where map matching did worse', async ({ page }) => {
-    await page.goto('/');
-    const d = page.locator('#driftless');
-    await expect(d.locator('table')).toContainText('38 m');
-    await expect(d).toContainText('got worse');
-    await expect(d).toContainText('inconclusive');
   });
 });
 
@@ -129,15 +126,6 @@ test.describe('Hero', () => {
     await page.goto('/');
     await expect(page.locator('.hero .button.primary'))
       .toHaveAttribute('href', 'mailto:m.pachulski94@gmail.com');
-  });
-
-  test('GPS trace figure is an accessible image with data credits', async ({ page }) => {
-    await page.goto('/');
-    const svg = page.locator('svg.trace');
-    await expect(svg).toHaveAttribute('role', 'img');
-    await expect(svg.locator('title')).toHaveCount(1);
-    expect(await svg.locator('.fixes circle').count()).toBeGreaterThan(3);
-    await expect(page.locator('.hero figcaption')).toContainText('OpenStreetMap');
   });
 });
 
@@ -179,7 +167,7 @@ test.describe('Accessibility', () => {
     await page.goto('/');
     const v = await page.evaluate(() => {
       const r = getComputedStyle(document.documentElement);
-      return ['--bg', '--bg-band', '--ink', '--muted', '--accent-deep', '--fix']
+      return ['--bg', '--bg-band', '--ink', '--muted', '--accent-deep']
         .reduce((o, k) => ({ ...o, [k]: r.getPropertyValue(k).trim() }), {});
     });
     for (const bg of ['--bg', '--bg-band']) {
@@ -187,8 +175,6 @@ test.describe('Accessibility', () => {
         const ratio = contrast(v[fg], v[bg]);
         expect(ratio, `${fg} on ${bg}: ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
       }
-      // GPS-fix dots are graphics: 3:1 is the WCAG non-text threshold.
-      expect(contrast(v['--fix'], v[bg])).toBeGreaterThanOrEqual(3);
     }
   });
 
@@ -197,13 +183,6 @@ test.describe('Accessibility', () => {
     for (const box of await page.locator('.button').evaluateAll(els => els.map(e => e.getBoundingClientRect().height))) {
       expect(box).toBeGreaterThanOrEqual(44);
     }
-  });
-
-  test('results table scrolls inside its own region on small screens', async ({ page }) => {
-    await page.goto('/');
-    const region = page.locator('.table-scroll');
-    await expect(region).toHaveAttribute('tabindex', '0');
-    await expect(region).toHaveAttribute('aria-label', /benchmark/i);
   });
 });
 
