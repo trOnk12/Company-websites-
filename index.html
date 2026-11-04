@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mateusz Pachulski – Senior Android &amp; Kotlin Multiplatform engineer in Poland. 7 years in software, most recently Wire, Santander and EasyPark. Open to remote EU roles – employment or B2B. English, Polish, Dutch.">
+  <meta name="description" content="Mateusz Pachulski – Senior Android &amp; Kotlin Multiplatform engineer in Poland. 7 years of commercial experience, most recently Wire, Santander and EasyPark. Open to remote EU roles – employment or B2B. English, Polish, Dutch.">
   <meta property="og:title" content="Mateusz Pachulski – Senior Android &amp; KMP Engineer">
-  <meta property="og:description" content="Senior Android &amp; Kotlin Multiplatform engineer. 7 years in software, most recently Wire, Santander and EasyPark. Open to remote EU roles.">
+  <meta property="og:description" content="Senior Android &amp; Kotlin Multiplatform engineer. 7 years of commercial experience, most recently Wire, Santander and EasyPark. Open to remote EU roles.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://pachulski.dev">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
@@ -16,7 +16,7 @@
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Mateusz Pachulski – Senior Android &amp; KMP Engineer">
-  <meta name="twitter:description" content="7 years in software (6+ in Android): Wire, Santander, EasyPark. Open to remote EU roles.">
+  <meta name="twitter:description" content="7 years commercial (6+ in Android): Wire, Santander, EasyPark. Open to remote EU roles.">
   <meta name="twitter:image" content="https://pachulski.dev/og-image.png">
   <meta name="author" content="Mateusz Pachulski">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -51,7 +51,7 @@
         <div class="hero-text">
           <p class="eyebrow">Available from December · remote in the EU · English, Polish or Dutch</p>
           <h1 id="hero-heading">I build Android apps, and I care what they do when the network or the flag service fails.</h1>
-          <p class="lede">Senior Android and Kotlin Multiplatform engineer in Zielona Góra, Poland. Seven years in software, most recently on a secure messenger, banking apps and a parking app. I studied electronics in Groningen, so I like knowing what happens below the API.</p>
+          <p class="lede">Senior Android and Kotlin Multiplatform engineer in Zielona Góra, Poland. Seven years as a commercial engineer, most recently on a secure messenger, banking apps and a parking app. I studied electronics in Groningen, so I like knowing what happens below the API.</p>
           <p class="actions">
             <a class="button primary" href="mailto:m.pachulski94@gmail.com">Email me</a>
             <a class="button" href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a>
@@ -68,11 +68,13 @@
           <li class="log-entry">
             <p class="log-date"><time datetime="2026-06">Jun 2026</time> – now</p>
             <div class="log-body">
-              <h3>Arrive / EasyPark <span class="role">Senior Software Engineer (Android)</span></h3>
+              <h3>Arrive / EasyPark &amp; ParkMobile <span class="role">Senior Software Engineer (Android) · B2B</span></h3>
               <ul>
-                <li>Built a business-feature availability module for EasyPark for Business. I did the Android side, and the iOS and Node BFF parts with AI assistance; every iOS change was reviewed by the iOS team. It keeps working when the feature-flag service is down.</li>
-                <li>Built server-driven Expenses on Android.</li>
-                <li>Worked in a 300+ module Gradle monorepo: corrected analytics and took part in incident rotation.</li>
+                <li>Drove a feature-flag rollout that hides the Business offering where it is not available: discovery, an implementation plan, and a shared availability module on Android and iOS that gates about ten entry points per platform, with a fail-open check on the backend. About 20 pull requests across Android, iOS and the BFF.</li>
+                <li>Worked on A/B experiments in the business sign-up funnel: variant gating, analytics that record which variant a user saw, and cleaning up flags once an experiment ends. When funnel data showed taps that never converted, I traced it to a broken redirect and fixed it with a teammate.</li>
+                <li>Fixed the funnel analytics on Android and iOS: no more screen views counted for screens that never rendered, and one resolved entry point passed through navigation, shipped as a stack of small pull requests.</li>
+                <li>Built mandatory and optional expense notes for one market end to end without changing behaviour elsewhere, and caught a bug that silently dropped notes before release.</li>
+                <li>74 merged pull requests in about four and a half months: 49 Android, 17 iOS (Swift, written with AI assistance and reviewed by the iOS team) and 6 for the Node.js BFF, in a Gradle monorepo of about 650 modules. Three rotations as incident manager.</li>
               </ul>
             </div>
           </li>
