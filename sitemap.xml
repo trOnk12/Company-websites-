@@ -11,6 +11,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/learning/ble-uuid-says-what-not-which</loc>
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/learning/gradle-api-vs-implementation</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
@@ -23,13 +29,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/learning/mcp-is-json-rpc-over-a-pipe</loc>
+    <loc>https://pachulski.dev/learning/objects-dont-run-threads-do</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/learning/robolectric-runs-the-real-framework</loc>
+    <loc>https://pachulski.dev/learning/swift-loses-the-type-of-a-kotlin-flow</loc>
     <lastmod>2026-11-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

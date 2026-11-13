@@ -9,3 +9,4 @@ _learning/experiments/**/build/
 _learning/experiments/**/.gradle/
 _learning/experiments/**/.venv/
 _learning/experiments/**/.jars/
+_learning/experiments/**/.out/

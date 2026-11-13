@@ -59,6 +59,14 @@
         <li class="log-entry">
           <p class="log-date"><time datetime="2026-11-13">2026-11-13</time></p>
           <div class="log-body">
+            <h3><a href="ble-uuid-says-what-not-which.html">A BLE UUID says what kind of data, not which device</a></h3>
+            <p>In BLE, a UUID names a kind of service or characteristic and is the same on every device of that model. The device address is what tells two devices apart.</p>
+            <p class="small"><span class="status status-seedling">seedling</span> · ble, android</p>
+          </div>
+        </li>
+        <li class="log-entry">
+          <p class="log-date"><time datetime="2026-11-13">2026-11-13</time></p>
+          <div class="log-body">
             <h3><a href="gradle-api-vs-implementation.html">A green build doesn't prove implementation() is right</a></h3>
             <p>If a module's public API uses a type from another module, that dependency has to be api(). The modules that use it today can hide the mistake.</p>
             <p class="small"><span class="status status-budding">budding</span> · gradle, modularisation</p>
@@ -75,17 +83,17 @@
         <li class="log-entry">
           <p class="log-date"><time datetime="2026-11-13">2026-11-13</time></p>
           <div class="log-body">
-            <h3><a href="mcp-is-json-rpc-over-a-pipe.html">A local MCP server is JSON-RPC lines over stdin and stdout</a></h3>
-            <p>Under the SDKs, a local MCP server is a process that reads JSON-RPC messages from stdin and writes them to stdout, one per line. That's also why one stray print() can break it.</p>
-            <p class="small"><span class="status status-budding">budding</span> · ai-agents, mcp</p>
+            <h3><a href="objects-dont-run-threads-do.html">Objects don't run on threads. Whoever calls them does.</a></h3>
+            <p>An object doesn't belong to a thread. Its method runs on whichever thread calls it, which is why &quot;run this on the main thread&quot; means putting a message in the main thread's queue.</p>
+            <p class="small"><span class="status status-budding">budding</span> · android, threading</p>
           </div>
         </li>
         <li class="log-entry">
           <p class="log-date"><time datetime="2026-11-13">2026-11-13</time></p>
           <div class="log-body">
-            <h3><a href="robolectric-runs-the-real-framework.html">Robolectric runs the real Android framework, and fakes only the native parts</a></h3>
-            <p>The android.jar you compile against is only stubs. Robolectric runs a jar with the real framework code instead, and swaps in Java fakes (&quot;shadows&quot;) where Android would call native code.</p>
-            <p class="small"><span class="status status-budding">budding</span> · android, testing, robolectric</p>
+            <h3><a href="swift-loses-the-type-of-a-kotlin-flow.html">Swift loses the type of a Kotlin Flow, because Flow is an interface</a></h3>
+            <p>Kotlin/Native talks to Swift through an Objective-C header, and Objective-C only puts generics on classes. Flow is an interface, so its element type doesn't survive the trip.</p>
+            <p class="small"><span class="status status-seedling">seedling</span> · kmp, ios</p>
           </div>
         </li>
         </ol>

@@ -51,7 +51,7 @@
       <p class="lede">The java-test-fixtures plugin gives a module a third source set for fakes and builders. Other modules' tests can use it, and it stays out of the production jar.</p>
       <section aria-labelledby="the-gap">
         <h2 id="the-gap">The gap</h2>
-<p>The same fake repository was copied into the tests of several modules. Putting it in <code>main</code> would ship test code, and copying it meant every interface change broke it in several places.</p>
+<p>I kept seeing <code>testFixtures(project(...))</code> in our modules' test dependencies and couldn't say what it actually published, who could use it, or why the fakes didn't just live in <code>main</code>.</p>
       </section>
       <section aria-labelledby="the-pieces">
         <h2 id="the-pieces">The pieces</h2>

@@ -8,7 +8,7 @@ summary: The java-test-fixtures plugin gives a module a third source set for fak
 
 ## The gap
 
-The same fake repository was copied into the tests of several modules. Putting it in `main` would ship test code, and copying it meant every interface change broke it in several places.
+I kept seeing `testFixtures(project(...))` in our modules' test dependencies and couldn't say what it actually published, who could use it, or why the fakes didn't just live in `main`.
 
 ## The pieces
 
