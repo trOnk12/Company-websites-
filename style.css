@@ -136,3 +136,156 @@ pre code { background: none; padding: 0; overflow-wrap: normal; }
 .recall[open] summary { border-bottom: 1px solid var(--rule); }
 .recall p { margin: 0; padding: 0.7rem 1rem; }
 .log-body h3 a { color: var(--ink); }
+
+
+/* ── Course (generated pages in course/) ─────────────────────────────── */
+.course-top { padding-top: 2.25rem; }
+.progress { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0 0 1.5rem; padding: 0; }
+.progress a { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; min-height: 2.75rem; border: 1.5px solid var(--rule); border-radius: 999px; color: var(--muted); text-decoration: none; font-family: var(--mono); font-size: 0.9rem; }
+.progress a[aria-current="page"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+.progress a.done { border-color: var(--ink); color: var(--ink); }
+.puzzle > section { margin-top: 2.25rem; }
+.puzzle h2 { font-size: 1.4rem; margin-bottom: 0.75rem; }
+.puzzle ul, .puzzle ol { padding-left: 1.1rem; }
+.puzzle li { margin: 0.35rem 0; }
+.puzzle table { border-collapse: collapse; width: 100%; font-size: 0.95rem; margin: 0 0 1rem; display: block; overflow-x: auto; }
+.puzzle th, .puzzle td { border-bottom: 1px solid var(--rule); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; font-family: var(--sans); }
+.puzzle th { color: var(--muted); }
+.pager { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); }
+.pager .button { min-width: 10rem; justify-content: center; }
+.takeaway { background: var(--bg-band); border-left: 4px solid var(--accent-deep); padding: 0.9rem 1.1rem; border-radius: 0 4px 4px 0; }
+.takeaway p { margin: 0; }
+.modules { list-style: none; padding: 0; margin: 0; }
+.modules > li { border-top: 1px solid var(--rule); padding: 1.25rem 0; }
+.modules ol { margin: 0.5rem 0 0; padding-left: 1.4rem; }
+.modules li li { margin: 0.3rem 0; }
+.soon { color: var(--muted); }
+
+/* Step-through diagrams: one hidden radio per step, no JavaScript. */
+.stepper { position: relative; margin: 1rem 0 0; border: 1px solid var(--rule); border-radius: 6px; background: #FBF9F4; padding: 0.75rem; }
+.stepper > input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.stepper:has(> input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+.stage svg { display: block; width: 100%; height: auto; }
+.stage .step { opacity: 0; transition: opacity 0.45s ease, transform 0.45s ease; }
+.stage .s1 { opacity: 1; }
+.caps { list-style: none; margin: 0.75rem 0 0; padding: 0; }
+.caps > li { display: none; }
+.caps p { margin: 0 0 0.75rem; }
+.stepnav { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+.stepnav label { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border: 1.5px solid var(--ink); border-radius: 4px; font-weight: 700; cursor: pointer; user-select: none; }
+.stepnav label:hover { background: var(--bg-band); }
+.stepnav label.next { background: var(--ink); color: var(--bg); }
+.stepnav .count { font-family: var(--mono); font-size: 0.9rem; color: var(--muted); }
+.stepnav .spacer { min-width: 5.5rem; }
+.dots { display: flex; gap: 0.35rem; justify-content: center; margin-top: 0.6rem; }
+.dots label { width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.dots label::before { content: ""; width: 0.65rem; height: 0.65rem; border-radius: 999px; border: 1.5px solid var(--ink); }
+/* diagram parts */
+.d-box { fill: var(--bg); stroke: var(--ink); stroke-width: 2; }
+.d-band { fill: var(--bg-band); stroke: var(--rule); stroke-width: 1.5; }
+.d-hl { fill: #DCE8F6; stroke: var(--accent-deep); stroke-width: 2.5; }
+.d-bad { fill: #F7DEDA; stroke: #A3341F; stroke-width: 2.5; }
+.d-line { fill: none; stroke: var(--ink); stroke-width: 2; }
+.d-dash { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 5; }
+.d-acc { fill: none; stroke: var(--accent-deep); stroke-width: 3; }
+.d-red { fill: none; stroke: #A3341F; stroke-width: 3.5; }
+.d-t { font-family: var(--sans); font-size: 19px; fill: var(--ink); }
+.d-b { font-family: var(--serif); font-size: 21px; font-weight: 600; fill: var(--ink); }
+.d-m { font-family: var(--mono); font-size: 16px; fill: var(--muted); }
+.d-mi { font-family: var(--mono); font-size: 16px; fill: var(--ink); }
+.d-a { font-family: var(--sans); font-size: 18px; fill: var(--accent-deep); font-weight: 700; }
+.d-r { font-family: var(--sans); font-size: 18px; fill: #A3341F; font-weight: 700; }
+.d-dot { fill: var(--accent-deep); }
+.d-reddot { fill: #A3341F; }
+@media (prefers-reduced-motion: reduce) { .stage .moving { display: none; } .stage .step { transition: none; } }
+.stepper > input:nth-of-type(1):checked ~ .caps > li:nth-child(1) { display: block; }
+.stepper > input:nth-of-type(1):checked ~ .dots label:nth-child(1)::before { background: var(--ink); }
+.stepper > input:nth-of-type(1):checked ~ .stage .only-1 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .caps > li:nth-child(2) { display: block; }
+.stepper > input:nth-of-type(2):checked ~ .dots label:nth-child(2)::before { background: var(--ink); }
+.stepper > input:nth-of-type(2):checked ~ .stage .only-2 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .s2 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .caps > li:nth-child(3) { display: block; }
+.stepper > input:nth-of-type(3):checked ~ .dots label:nth-child(3)::before { background: var(--ink); }
+.stepper > input:nth-of-type(3):checked ~ .stage .only-3 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .s2 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .s3 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .caps > li:nth-child(4) { display: block; }
+.stepper > input:nth-of-type(4):checked ~ .dots label:nth-child(4)::before { background: var(--ink); }
+.stepper > input:nth-of-type(4):checked ~ .stage .only-4 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .s2 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .s3 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .s4 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .caps > li:nth-child(5) { display: block; }
+.stepper > input:nth-of-type(5):checked ~ .dots label:nth-child(5)::before { background: var(--ink); }
+.stepper > input:nth-of-type(5):checked ~ .stage .only-5 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .s2 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .s3 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .s4 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .s5 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .caps > li:nth-child(6) { display: block; }
+.stepper > input:nth-of-type(6):checked ~ .dots label:nth-child(6)::before { background: var(--ink); }
+.stepper > input:nth-of-type(6):checked ~ .stage .only-6 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .s2 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .s3 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .s4 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .s5 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .s6 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .caps > li:nth-child(7) { display: block; }
+.stepper > input:nth-of-type(7):checked ~ .dots label:nth-child(7)::before { background: var(--ink); }
+.stepper > input:nth-of-type(7):checked ~ .stage .only-7 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .s2 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .s3 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .s4 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .s5 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .s6 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .s7 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .caps > li:nth-child(8) { display: block; }
+.stepper > input:nth-of-type(8):checked ~ .dots label:nth-child(8)::before { background: var(--ink); }
+.stepper > input:nth-of-type(8):checked ~ .stage .only-8 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .s2 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .s3 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .s4 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .s5 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .s6 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .s7 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .s8 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-1 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-2 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .upto-2 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-3 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .upto-3 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .upto-3 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-4 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .upto-4 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .upto-4 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .upto-4 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-5 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .upto-5 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .upto-5 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .upto-5 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .upto-5 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-6 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .upto-6 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .upto-6 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .upto-6 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .upto-6 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .upto-6 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-7 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .upto-7 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .upto-7 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .upto-7 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .upto-7 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .upto-7 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .upto-7 { opacity: 1; }
+.stepper > input:nth-of-type(1):checked ~ .stage .upto-8 { opacity: 1; }
+.stepper > input:nth-of-type(2):checked ~ .stage .upto-8 { opacity: 1; }
+.stepper > input:nth-of-type(3):checked ~ .stage .upto-8 { opacity: 1; }
+.stepper > input:nth-of-type(4):checked ~ .stage .upto-8 { opacity: 1; }
+.stepper > input:nth-of-type(5):checked ~ .stage .upto-8 { opacity: 1; }
+.stepper > input:nth-of-type(6):checked ~ .stage .upto-8 { opacity: 1; }
+.stepper > input:nth-of-type(7):checked ~ .stage .upto-8 { opacity: 1; }
+.stepper > input:nth-of-type(8):checked ~ .stage .upto-8 { opacity: 1; }
+.d-ah { fill: var(--ink); }
+.d-aha { fill: var(--accent-deep); }
+.d-ahr { fill: #A3341F; }

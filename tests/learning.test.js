@@ -81,7 +81,8 @@ test.describe('Learning log', () => {
     expect(xml).toContain('<feed xmlns="http://www.w3.org/2005/Atom">');
     for (const c of CARDS) expect(xml).toContain(`<id>https://pachulski.dev/learning/${c}</id>`);
     await page.goto('/learning/');
-    await expect(page.locator('link[rel="alternate"][type="application/atom+xml"]')).toHaveAttribute('href', 'feed.xml');
+    const href = await page.$eval('link[rel="alternate"][type="application/atom+xml"]', el => el.href);
+    expect(href).toMatch(/\/learning\/feed\.xml$/);
   });
 
   test('sitemap lists the learning pages', async ({ request }) => {

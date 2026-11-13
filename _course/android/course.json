@@ -1,0 +1,27 @@
+{
+  "title": "Android from the foundation",
+  "minutes": 45,
+  "intro": "Lifecycle, process death, ANRs, Context leaks: most of Android's hard parts come from one idea. This course builds that idea up one small puzzle at a time, with diagrams you click through, until the rest stops being a list of rules and starts making sense.",
+  "how": "Each puzzle starts with a problem Android had to solve, then gives you one building block, a picture to remember it by, and a diagram you step through. It ends with a few questions: try to answer before you open them. Every puzzle builds on the one before, so go in order.",
+  "modules": [
+    {
+      "title": "Module 1: How your app really runs",
+      "blurb": "Processes, the runtime, Zygote, system_server, Binder and the main thread: the four characters every later puzzle uses.",
+      "puzzles": [
+        "00-the-core-idea.md",
+        "01-an-app-is-a-linux-process.md",
+        "02-art-runs-your-code.md",
+        "03-zygote-why-apps-start-fast.md",
+        "04-system-server-the-town-hall.md",
+        "05-binder-the-post-office.md",
+        "06-the-main-thread.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    { "title": "Module 2: Screens and their lives", "topics": "Context, Intents, PendingIntent, the Activity lifecycle, tasks and the back stack, process death and saved state." },
+    { "title": "Module 3: Work without a screen", "topics": "Services, broadcasts, ContentProviders and startup order, Doze and WorkManager, permissions." },
+    { "title": "Module 4: Threads, coroutines and Flow", "topics": "What really runs where, cancellation and errors, cold and hot streams." },
+    { "title": "Module 5: Pixels and performance", "topics": "How a frame gets on screen, Compose internals, memory and leaks, startup and jank." }
+  ]
+}

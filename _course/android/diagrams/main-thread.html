@@ -1,0 +1,24 @@
+<!-- label: The main thread's queue -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mt-t"><title id="mt-t">The main thread takes messages from its queue one at a time; a Binder thread posts a lifecycle message; a slow message blocks everything behind it until the system shows an ANR</title>
+<defs><marker id="mt-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker></defs>
+<g class="step s1"><rect class="d-box" x="16" y="14" width="170" height="150" rx="8"/><text class="d-b" x="32" y="48">Main thread</text><text class="d-m" x="32" y="76">the clerk</text><text class="d-mi" x="32" y="104">Looper.loop()</text></g>
+<text class="step s1 d-m" x="214" y="34">MessageQueue: one at a time →</text>
+<g class="step s1"><rect class="d-band" x="214" y="52" width="96" height="58" rx="6"/><text class="d-t" x="228" y="88">touch</text>
+<rect class="d-band" x="320" y="52" width="96" height="58" rx="6"/><text class="d-t" x="334" y="88">frame</text>
+<rect class="d-band" x="426" y="52" width="96" height="58" rx="6"/><text class="d-t" x="440" y="88">post{}</text></g>
+<g class="step s2"><rect class="d-hl" x="532" y="52" width="96" height="58" rx="6"/><text class="d-a" x="540" y="88">resume</text></g>
+<g class="step s2"><rect class="d-box" x="420" y="214" width="208" height="88" rx="8"/><text class="d-b" x="436" y="250">Binder thread</text><text class="d-mi" x="436" y="280">handler.post(…)</text></g>
+<path class="step s2 d-acc" d="M580,210 L580,116" marker-end="url(#mt-ah)"/>
+<path class="step only-3 d-acc" d="M212,81 L190,81" marker-end="url(#mt-ah)"/>
+<text class="step only-3 d-a" x="32" y="140">running: touch</text>
+<g class="step s4"><rect class="d-bad" x="16" y="190" width="370" height="58" rx="6"/><text class="d-r" x="30" y="226">running: Thread.sleep(6000)</text></g>
+<g class="step s4"><rect class="d-bad" x="214" y="52" width="96" height="58" rx="6" fill-opacity="0.5"/><text class="d-r" x="214" y="140">waiting…</text></g>
+<g class="step s5"><rect class="d-bad" x="16" y="272" width="370" height="96" rx="8"/><text class="d-r" x="30" y="306">App isn't responding</text><text class="d-mi" x="30" y="336">touch not handled in 5 s</text><text class="d-m" x="30" y="360">→ ANR</text></g>
+</svg>
+<ol class="caps">
+<li><p>The UI toolkit isn't thread-safe, so everything UI-related happens on <b>one thread</b>, in order. That thread runs an endless loop (the <b>Looper</b>): take the next message from the <b>MessageQueue</b>, run it fully, repeat. Touches, frames and your own posted code are all messages.</p></li>
+<li><p>Remember the Binder thread from puzzle 5? When system_server says "resume your screen", the message arrives on a Binder thread, which drops it into the main queue with a <b>Handler</b>.</p></li>
+<li><p>The clerk takes the first message and handles it completely before looking at the next one. That's why you never need locks for your views.</p></li>
+<li><p>Now one message is slow: code on the main thread sleeps, reads a big file, or waits on the network. Everything behind it waits too, including the user's <b>touch</b>.</p></li>
+<li><p>If a touch isn't handled within <b>5 seconds</b>, Android shows the <b>ANR</b> dialog: Application Not Responding. Long before that, every 16 ms frame that can't be drawn is a dropped frame: jank.</p></li>
+</ol>

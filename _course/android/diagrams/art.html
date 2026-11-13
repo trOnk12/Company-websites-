@@ -1,0 +1,23 @@
+<!-- label: From Kotlin to machine code -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="art-t"><title id="art-t">Kotlin compiles to DEX in the APK; on the phone ART interprets it, JIT-compiles hot code, records a profile, and compiles ahead of time from the profile</title>
+<defs><marker id="art-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ah" d="M0,0 L10,5 L0,10z"/></marker></defs>
+<g class="step s1"><rect class="d-box" x="16" y="14" width="200" height="74" rx="8"/><text class="d-b" x="34" y="58">Kotlin code</text></g>
+<path class="step s1 d-line" d="M220,51 L300,51" marker-end="url(#art-ah)"/>
+<text class="step s1 d-m" x="226" y="38">build</text>
+<g class="step s1"><rect class="d-box" x="306" y="14" width="318" height="74" rx="8"/><text class="d-b" x="324" y="48">DEX bytecode</text><text class="d-m" x="324" y="76">inside your one APK</text></g>
+<g class="step s2"><rect class="d-band" x="16" y="116" width="608" height="250" rx="10"/><text class="d-m" x="32" y="352">on the phone: ART, in your process</text></g>
+<g class="step s2"><rect class="d-box" x="32" y="162" width="180" height="80" rx="8"/><text class="d-b" x="50" y="198">Interpreter</text><text class="d-m" x="50" y="226">runs DEX as is</text></g>
+<path class="step s2 d-line" d="M400,92 L122,158" marker-end="url(#art-ah)"/>
+<g class="step s3"><rect class="d-box" x="230" y="162" width="180" height="80" rx="8"/><text class="d-b" x="248" y="198">JIT</text><text class="d-m" x="248" y="226">hot code, now</text></g>
+<g class="step s3"><rect class="d-hl" x="230" y="268" width="180" height="40" rx="6"/><text class="d-a" x="250" y="294">profile file</text></g>
+<path class="step s3 d-acc" d="M320,246 L320,264" />
+<g class="step s4"><rect class="d-box" x="428" y="162" width="180" height="80" rx="8"/><text class="d-b" x="446" y="198">AOT</text><text class="d-m" x="446" y="226">dex2oat, later</text></g>
+<path class="step s4 d-acc" d="M414,288 L512,288 L512,246"/>
+<g class="step s4"><rect class="d-hl" x="428" y="318" width="180" height="40" rx="6"/><text class="d-a" x="440" y="344">machine code</text></g>
+</svg>
+<ol class="caps">
+<li><p>Phones use different CPUs, but you ship one APK. So your Kotlin isn't compiled to machine code at build time. It becomes <b>DEX bytecode</b>, an instruction format for Android.</p></li>
+<li><p>On the phone, <b>ART</b> (the Android Runtime) runs inside your app's own process. At first it can simply <b>interpret</b> the DEX: correct, but slow.</p></li>
+<li><p>Code that runs often ("hot" code) gets compiled to machine code <b>just in time</b> (JIT), while the app runs. ART also writes down which code was hot in a <b>profile</b>.</p></li>
+<li><p>Later, in the background, <code>dex2oat</code> uses that profile to compile the hot code <b>ahead of time</b> (AOT), so next time it starts fast. A <b>Baseline Profile</b> ships that list with your app, so users get the speed from the first launch.</p></li>
+</ol>

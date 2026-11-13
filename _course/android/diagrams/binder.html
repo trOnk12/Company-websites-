@@ -1,0 +1,25 @@
+<!-- label: A Binder call, step by step -->
+<svg viewBox="0 0 640 390" role="img" aria-labelledby="bd-t"><title id="bd-t">Your app calls a proxy, which packs a Parcel; the kernel's Binder driver copies it to system_server, stamps the caller's UID, and a Binder thread runs the real method</title>
+<defs><marker id="bd-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker><marker id="bd-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ahr" d="M0,0 L10,5 L0,10z"/></marker></defs>
+<g class="step s1"><rect class="d-box" x="16" y="14" width="270" height="200" rx="8"/><text class="d-b" x="34" y="48">Your app</text><text class="d-mi" x="34" y="84">startActivity(intent)</text>
+<rect class="d-hl" x="34" y="104" width="200" height="50" rx="6"/><text class="d-a" x="50" y="136">proxy</text></g>
+<g class="step s1"><rect class="d-box" x="354" y="14" width="270" height="200" rx="8"/><text class="d-b" x="372" y="48">system_server</text><text class="d-m" x="372" y="84">the real service</text></g>
+<g class="step s1"><rect class="d-band" x="16" y="268" width="608" height="110" rx="8"/><text class="d-b" x="34" y="302">Kernel: Binder driver</text><text class="d-m" x="34" y="330">the only one that can reach both</text></g>
+<g class="step s2"><rect class="d-hl" x="174" y="226" width="96" height="34" rx="4"/><text class="d-a" x="186" y="250">Parcel</text></g>
+<path class="step s2 d-acc" d="M150,158 L180,222" marker-end="url(#bd-ah)"/>
+<path class="step s3 d-acc" d="M270,250 L300,300 L392,300 L456,222" marker-end="url(#bd-ah)"/>
+<circle class="step only-3 moving d-dot" r="9"><animateMotion dur="1.8s" repeatCount="indefinite" path="M272,252 L300,300 L392,300 L452,226"/></circle>
+<text class="step s3 d-a" x="34" y="362">+ stamped: caller UID 10101</text>
+<g class="step s4"><rect class="d-hl" x="372" y="100" width="234" height="44" rx="6"/><text class="d-a" x="386" y="128">Binder thread → stub</text><text class="d-mi" x="372" y="180">real startActivity()</text></g>
+<path class="step s5 d-dash" d="M352,190 L292,190" marker-end="url(#bd-ah)"/>
+<text class="step s5 d-m" x="298" y="178">reply</text>
+<g class="step s6"><rect class="d-bad" x="430" y="282" width="186" height="88" rx="6"/><text class="d-r" x="444" y="310">~1 MB buffer,</text><text class="d-r" x="444" y="334">shared: 3 MB</text><text class="d-r" x="444" y="358">doesn't fit</text></g>
+</svg>
+<ol class="caps">
+<li><p>Your app wants system_server to do something, but they're separate processes. Your code calls a <b>proxy</b>: a local object that looks exactly like the service.</p></li>
+<li><p>The proxy packs the method's arguments into a <b>Parcel</b>, a flat buffer of bytes. Objects can't cross processes; bytes can.</p></li>
+<li><p>The kernel's <b>Binder driver</b> copies the Parcel into system_server, and stamps it with <b>your app's UID</b>. The receiver can't be fooled about who's calling: that's what permission checks rely on.</p></li>
+<li><p>In system_server, one of its <b>Binder threads</b> wakes up. A <b>stub</b> unpacks the Parcel and calls the real method.</p></li>
+<li><p>The <b>reply</b> travels back the same way, and your proxy call returns.</p></li>
+<li><p>The catch: each process has a Binder buffer of about <b>1 MB, shared by all calls in flight</b>. Put a 3 MB bitmap in an Intent and it doesn't fit: <code>TransactionTooLargeException</code>.</p></li>
+</ol>
