@@ -2,3 +2,8 @@ node_modules/
 test-results/
 playwright-report/
 .playwright/
+
+# Private words that must never reach a public learning card
+_learning/.private-terms
+_learning/experiments/**/build/
+_learning/experiments/**/.gradle/

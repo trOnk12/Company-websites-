@@ -25,7 +25,9 @@ const MIME_TYPES = {
 const server = http.createServer((req, res) => {
   const safePath = path.normalize(req.url.split('?')[0]);
   // Resolve to an absolute path and verify it stays inside ROOT
-  const filePath = path.resolve(ROOT, safePath === '/' ? 'index.html' : safePath.replace(/^\//, ''));
+  // Directory URLs serve their index.html, as GitHub Pages does.
+  const rel = safePath.replace(/^\//, '');
+  const filePath = path.resolve(ROOT, rel === '' || rel.endsWith('/') ? rel + 'index.html' : rel);
 
   // Prevent directory traversal
   if (!filePath.startsWith(ROOT + path.sep)) {
