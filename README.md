@@ -25,5 +25,6 @@ committed, so GitHub Pages needs no build step. `_learning/README.md` is the pla
 
 ```bash
 npm run build:learning   # after adding or editing a card
+npm run og:learning      # link-preview image for new cards (Playwright Chromium)
 npm run check:learning   # fails if learning/ is out of date (also part of npm test)
 ```

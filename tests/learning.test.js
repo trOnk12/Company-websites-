@@ -65,6 +65,25 @@ test.describe('Learning log', () => {
     }
   });
 
+  test('every card has its own link-preview image', async ({ page, request }) => {
+    for (const c of CARDS) {
+      await page.goto(`/learning/${c}.html`);
+      const img = await page.$eval('meta[property="og:image"]', el => el.content);
+      expect(img).toBe(`https://pachulski.dev/learning/og/${c}.png`);
+      const res = await request.get(`/learning/og/${c}.png`);
+      expect(res.ok(), `learning/og/${c}.png is missing: run npm run og:learning`).toBeTruthy();
+      expect(res.headers()['content-type']).toMatch(/image\/png/);
+    }
+  });
+
+  test('Atom feed lists every card and is linked from the pages', async ({ page, request }) => {
+    const xml = await (await request.get('/learning/feed.xml')).text();
+    expect(xml).toContain('<feed xmlns="http://www.w3.org/2005/Atom">');
+    for (const c of CARDS) expect(xml).toContain(`<id>https://pachulski.dev/learning/${c}</id>`);
+    await page.goto('/learning/');
+    await expect(page.locator('link[rel="alternate"][type="application/atom+xml"]')).toHaveAttribute('href', 'feed.xml');
+  });
+
   test('sitemap lists the learning pages', async ({ request }) => {
     const xml = await (await request.get('/sitemap.xml')).text();
     expect(xml).toContain('https://pachulski.dev/learning/');

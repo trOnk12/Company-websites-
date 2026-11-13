@@ -7,3 +7,5 @@ playwright-report/
 _learning/.private-terms
 _learning/experiments/**/build/
 _learning/experiments/**/.gradle/
+_learning/experiments/**/.venv/
+_learning/experiments/**/.jars/

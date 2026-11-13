@@ -31,11 +31,14 @@ playbook and the format, and it wins over this file if they disagree.
    - Check yourself: 2–4 `Question::Answer` lines, each answer one sentence.
    - Link related existing cards with `[[file-name]]` (`ls _learning/*.md`).
    - `date`: today. `status`: `seedling`, or `budding` if the check was a real experiment.
-5. **Build and test.** `npm run build:learning`, then `npm test`. Fix whatever the build refuses.
+5. **Build and test.** `npm run build:learning`, `npm run og:learning` (the link-preview image), then `npm test`. Fix whatever the build refuses.
    Don't weaken a check to get it through.
 6. **Hand it to him.** Show the card text and the How I checked it section. His name is on the
    site, so he confirms it's true and safe to publish before you push. Then commit the card,
-   the generated `learning/` pages and `sitemap.xml` together, and push.
+   the generated `learning/` pages, its `learning/og/` image and `sitemap.xml` together, and push.
+7. **Draft the LinkedIn post.** Short: the gap as a hook, the click in two or three lines, one
+   Check yourself question for people to answer in the comments, the card's URL last. Plain
+   text, no hashtag walls, at most three tags. He posts it himself.
 
 ## Don't
 

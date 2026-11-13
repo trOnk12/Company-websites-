@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mateusz Pachulski – Learning</title>
+  <subtitle>Short cards on things I learned: the gap, what made it click, and how I checked it.</subtitle>
+  <link href="https://pachulski.dev/learning/feed.xml" rel="self"/>
+  <link href="https://pachulski.dev/learning/"/>
+  <id>https://pachulski.dev/learning/</id>
+  <updated>2026-11-13T00:00:00Z</updated>
+  <author><name>Mateusz Pachulski</name></author>
+  <entry>
+    <title>A green build doesn't prove implementation() is right</title>
+    <link href="https://pachulski.dev/learning/gradle-api-vs-implementation"/>
+    <id>https://pachulski.dev/learning/gradle-api-vs-implementation</id>
+    <updated>2026-11-13T00:00:00Z</updated>
+    <summary>If a module's public API uses a type from another module, that dependency has to be api(). The modules that use it today can hide the mistake.</summary>
+    <category term="gradle"/>
+    <category term="modularisation"/>
+  </entry>
+  <entry>
+    <title>testFixtures share fakes between modules without shipping them</title>
+    <link href="https://pachulski.dev/learning/gradle-test-fixtures"/>
+    <id>https://pachulski.dev/learning/gradle-test-fixtures</id>
+    <updated>2026-11-13T00:00:00Z</updated>
+    <summary>The java-test-fixtures plugin gives a module a third source set for fakes and builders. Other modules' tests can use it, and it stays out of the production jar.</summary>
+    <category term="gradle"/>
+    <category term="testing"/>
+    <category term="modularisation"/>
+  </entry>
+  <entry>
+    <title>A local MCP server is JSON-RPC lines over stdin and stdout</title>
+    <link href="https://pachulski.dev/learning/mcp-is-json-rpc-over-a-pipe"/>
+    <id>https://pachulski.dev/learning/mcp-is-json-rpc-over-a-pipe</id>
+    <updated>2026-11-13T00:00:00Z</updated>
+    <summary>Under the SDKs, a local MCP server is a process that reads JSON-RPC messages from stdin and writes them to stdout, one per line. That's also why one stray print() can break it.</summary>
+    <category term="ai-agents"/>
+    <category term="mcp"/>
+  </entry>
+  <entry>
+    <title>Robolectric runs the real Android framework, and fakes only the native parts</title>
+    <link href="https://pachulski.dev/learning/robolectric-runs-the-real-framework"/>
+    <id>https://pachulski.dev/learning/robolectric-runs-the-real-framework</id>
+    <updated>2026-11-13T00:00:00Z</updated>
+    <summary>The android.jar you compile against is only stubs. Robolectric runs a jar with the real framework code instead, and swaps in Java fakes (&quot;shadows&quot;) where Android would call native code.</summary>
+    <category term="android"/>
+    <category term="testing"/>
+    <category term="robolectric"/>
+  </entry>
+</feed>

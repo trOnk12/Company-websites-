@@ -11,8 +11,11 @@ served by GitHub Pages, so this folder is the source, not the site.
 2. **Card** — `/learning-card` turns that one piece into a card here, through the airlock below.
 3. **Check** — I check it myself: run it, read the primary source. The card says how, in
    **How I checked it**. If I can't check it, it stays a `seedling` or isn't published.
-4. **Publish** — `npm run build:learning && npm test`, commit, push. GitHub Pages serves it.
-5. **Revisit** — the **Check yourself** questions are spaced-repetition cards. When I come back
+4. **Publish** — `npm run build:learning && npm run og:learning && npm test`, commit, push.
+   GitHub Pages serves the card, its link-preview image and the Atom feed (`learning/feed.xml`).
+5. **Share** — a short LinkedIn post that links to the card. The site is the home; LinkedIn is
+   where the readers are.
+6. **Revisit** — the **Check yourself** questions are spaced-repetition cards. When I come back
    to one and it holds, the status goes `seedling` → `budding` → `evergreen`.
 
 ## The airlock: private vault → public card
