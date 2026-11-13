@@ -26,9 +26,11 @@ The town hall keeps the official register of every flat and resident. You don't 
 
 ## Check yourself
 
-- Your app opens its own next screen with `startActivity()`. Does that call stay inside your process?::No. It goes to system_server, which checks it, records it, and then tells your process to create the new screen.
-- Where is the official list of your app's open screens kept?::In system_server, not in your app.
-- Why must system_server be a separate, trusted process?::Because it decides things for all apps (screens, permissions, killing). No app's sandbox could see or be trusted with all of that.
+Answer all three to unlock the next puzzle.
+
+- Your app opens its own next screen with `startActivity()`. Does that call stay inside your process?::*No, it goes to system_server, which then tells your app to create the screen||Yes, your own screens never leave your app::Even your own screens go through the town hall: it checks, records, and then tells your process what to create.
+- Where is the official list of your app's open screens kept?::*In system_server||In your app's memory::system_server keeps the register of every screen of every app.
+- Why must system_server be a separate, trusted process?::*It decides things for all apps, which no single app's sandbox could see or be trusted with||It makes apps start faster::Screens, permissions and which app to kill affect every app, so one trusted process has to decide.
 
 ## Sources
 

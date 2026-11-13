@@ -15,6 +15,8 @@ const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, '_learning');
 const OUT = path.join(ROOT, 'learning');
 const SITE = 'https://pachulski.dev';
+// Anonymous, cookie-free visit counts (goatcounter.com). The no-JS pages load a 1×1 image; course.js sends its own.
+const GOATCOUNTER = 'https://pachulski.goatcounter.com';
 const STATUSES = ['seedling', 'budding', 'evergreen'];
 const REQUIRED = ['The gap', 'The click', 'How I checked it', 'Check yourself', 'Sources'];
 
@@ -148,7 +150,7 @@ function checkCard(card, terms) {
 
 const FAVICON = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>`;
 
-function page({ title, description, canonical, body, image = `${SITE}/og-image.png`, imageAlt = 'Mateusz Pachulski – Senior Android &amp; KMP Engineer', base = '../', current = 'learning', feed = true, footer }) {
+function page({ title, description, canonical, body, image = `${SITE}/og-image.png`, imageAlt = 'Mateusz Pachulski – Senior Android &amp; KMP Engineer', base = '../', current = 'learning', feed = true, footer, script }) {
   const nav = [['Work', `${base}#work`], ['AI', `${base}#ai`], ['Course', `${base}course/`], ['Learning', `${base}learning/`], ['Contact', `${base}#contact`]]
     .map(([n, h]) => `<li><a href="${h}"${n.toLowerCase() === current ? ' aria-current="page"' : ''}>${n}</a></li>`).join('\n          ');
   return `<!DOCTYPE html>
@@ -171,13 +173,13 @@ function page({ title, description, canonical, body, image = `${SITE}/og-image.p
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src ${script ? "'self'" : "'none'"}; style-src 'self'; font-src 'self'; img-src 'self' data: ${GOATCOUNTER}; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>${esc(title)}</title>
   <link rel="canonical" href="${canonical}">
 ${feed ? `  <link rel="alternate" type="application/atom+xml" title="Mateusz Pachulski – Learning" href="${base}learning/feed.xml">\n` : ''}  <link rel="icon" href="${FAVICON}">
   <link rel="preload" as="font" type="font/woff2" href="${base}fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="${base}fonts/literata-600.woff2" crossorigin>
-  <link rel="stylesheet" href="${base}style.css">
+  <link rel="stylesheet" href="${base}style.css">${script ? `\n  <script src="${script}" defer></script>` : ''}
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -196,6 +198,7 @@ ${feed ? `  <link rel="alternate" type="application/atom+xml" title="Mateusz Pac
   <main id="main">
 ${body}
   </main>
+  ${script ? '<noscript>' : ''}<img class="gc" src="${GOATCOUNTER}/count?p=${encodeURIComponent(new URL(canonical).pathname)}" alt="" width="1" height="1">${script ? '</noscript>' : ''}
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
@@ -375,6 +378,6 @@ function main() {
   console.log(`Built ${out.size - 3} cards into learning/.`);
 }
 
-module.exports = { build, SRC, ROOT, SITE, parseFrontmatter, parseBody, renderBlocks, inline, esc, page, privateTerms, TICKET_KEY, NOT_TICKETS };
+module.exports = { build, SRC, ROOT, SITE, GOATCOUNTER, parseFrontmatter, parseBody, renderBlocks, inline, esc, page, privateTerms, TICKET_KEY, NOT_TICKETS };
 
 if (require.main === module) main();

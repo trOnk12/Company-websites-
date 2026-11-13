@@ -18,13 +18,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>An app is a Linux process with its own user – Android from the foundation – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/01-an-app-is-a-linux-process">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -45,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow">
+    <article class="puzzle course-top wrap narrow" data-course="android" data-n="1" data-prev="00-the-core-idea.html" data-prev-title="The one idea behind everything">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" aria-current="page" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 1 of 6</p>
       <h1>An app is a Linux process with its own user</h1>
@@ -74,7 +75,7 @@
 <li><p>Apps can still share, but only through <b>official doors</b> that the system controls, like Intents and ContentProviders. Who runs those doors? That's the town hall, in puzzle 4.</p><div class="stepnav"><label for="st-sandbox-2">← Back</label><span class="count">Step 3 of 3</span><label for="st-sandbox-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-sandbox-1" title="Step 1"></label><label for="st-sandbox-2" title="Step 2"></label><label for="st-sandbox-3" title="Step 3"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/sandbox.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
@@ -87,21 +88,42 @@
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<details class="recall"><summary>An app wants to read another app's database file directly. Possible?</summary><p>No. The file belongs to another UID and the kernel refuses. Apps share data only through official channels such as ContentProviders and Intents.</p></details>
-<details class="recall"><summary>Who enforces the sandbox: the app, or the kernel?</summary><p>The kernel. That's why an app can't simply turn it off.</p></details>
-<details class="recall"><summary>Two apps run at the same time. Do they share one process?</summary><p>No. Each app runs in its own process, with its own memory.</p></details>
+<p>Answer all three to unlock the next puzzle.</p>
+<fieldset class="quiz">
+<legend>A game wants to read the bank app's database file directly. Does it work?</legend>
+<input type="radio" name="q-01-an-app-is-a-linux-process-1" id="q-01-an-app-is-a-linux-process-1-1"><label for="q-01-an-app-is-a-linux-process-1-1">Yes, as long as both apps are installed</label>
+<input type="radio" name="q-01-an-app-is-a-linux-process-1" id="q-01-an-app-is-a-linux-process-1-2" data-ok><label for="q-01-an-app-is-a-linux-process-1-2">No, the kernel refuses: the file belongs to another UID</label>
+<p class="fb ok"><b>Right.</b> Each app is a separate Linux user, and the kernel checks the UID on every file. Apps share only through official doors like Intents and ContentProviders.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Who enforces the sandbox?</legend>
+<input type="radio" name="q-01-an-app-is-a-linux-process-2" id="q-01-an-app-is-a-linux-process-2-1" data-ok><label for="q-01-an-app-is-a-linux-process-2-1">The Linux kernel</label>
+<input type="radio" name="q-01-an-app-is-a-linux-process-2" id="q-01-an-app-is-a-linux-process-2-2"><label for="q-01-an-app-is-a-linux-process-2-2">Each app, by being careful</label>
+<p class="fb ok"><b>Right.</b> The kernel enforces it, which is why a buggy or hostile app can't switch it off.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Two apps run at the same time. Do they share one process?</legend>
+<input type="radio" name="q-01-an-app-is-a-linux-process-3" id="q-01-an-app-is-a-linux-process-3-1"><label for="q-01-an-app-is-a-linux-process-3-1">Yes, all apps share one Android process</label>
+<input type="radio" name="q-01-an-app-is-a-linux-process-3" id="q-01-an-app-is-a-linux-process-3-2" data-ok><label for="q-01-an-app-is-a-linux-process-3-2">No, each app runs in its own process</label>
+<p class="fb ok"><b>Right.</b> Each app gets its own process, with its own memory that other apps can't read.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://source.android.com/docs/security/app-sandbox">Android Open Source Project: Application sandbox</a></li><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Your app is a house with its own key (a UID) and its own walls (a process). To get anything from another app, you go through official doors, never straight in.</p></div></section>
+      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-the-core-idea.html">← Start</a>
         <a class="button primary" href="02-art-runs-your-code.html">Puzzle 2: ART →</a>
       </nav>
     </article>
   </main>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F01-an-app-is-a-linux-process" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

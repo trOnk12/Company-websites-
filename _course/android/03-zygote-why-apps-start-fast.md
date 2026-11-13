@@ -32,9 +32,11 @@ A shared textbook. Every student "has a copy", but they're all reading the same 
 
 ## Check yourself
 
-- Why is heavy work in `Application.onCreate()` bad?::It runs on every cold start, on the main thread, before any screen is shown, so users stare at a blank screen.
-- Ten apps are running. How many copies of the preloaded framework are in RAM?::Mostly one. The forked apps share Zygote's pages until they write to them.
-- What's the difference between a warm and a cold start?::A cold start has to create the process (fork from Zygote) first; a warm start reuses the living process and only recreates the Activity.
+Answer all three to unlock the next puzzle.
+
+- Why is heavy work in `Application.onCreate()` bad?::*It runs on every cold start, on the main thread, before any screen shows||It runs again on every screen rotation||It slows down Zygote for every app::Users stare at a blank screen while it runs, every time the app starts from scratch.
+- Ten apps are running. How many copies of the preloaded framework are in RAM?::*Mostly one: the apps share Zygote's pages until they write to them||Ten: every app gets its own copy::A fork shares the parent's memory pages; only a page someone writes to gets copied (copy-on-write).
+- What's the difference between a cold and a warm start?::*A cold start must create the process first by forking Zygote; a warm start reuses the living process||A warm start skips creating the Activity::Warm: the process is alive but the Activity is created again. Cold: no process yet, so fork first.
 
 ## Sources
 

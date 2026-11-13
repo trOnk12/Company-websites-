@@ -46,6 +46,16 @@ function courseUrls() {
     .filter((u, i, a) => a.indexOf(u) === i);
 }
 
+function gifSize(id, name) {
+  const b = fs.readFileSync(path.join(OUT, id, 'gifs', `${name}.gif`));
+  return [b.readUInt16LE(6), b.readUInt16LE(8)];
+}
+
+function gifLink(course, name) {
+  return fs.existsSync(path.join(OUT, course.id, 'gifs', `${name}.gif`))
+    ? `<p class="gif-link"><a href="gifs/${name}.gif" download>Save this diagram as a GIF</a></p>` : '';
+}
+
 function diagram(course, name, file) {
   const f = path.join(course.dir, 'diagrams', `${name}.html`);
   if (!fs.existsSync(f)) { fail(file, `unknown diagram ${name}`); return ''; }
@@ -68,6 +78,31 @@ ${items}
 </figure>`;
 }
 
+// "Question::*Right||Wrong||Wrong::Why" → a quiz that grades itself with CSS (and JS, when present).
+function quiz(p, items, ctx) {
+  return items.map((it, qi) => {
+    const parts = it.split('::');
+    const opts = (parts[1] || '').split('||').map(o => o.trim());
+    if (parts.length !== 3 || opts.length < 2 || opts.filter(o => o.startsWith('*')).length !== 1) {
+      fail(p.file, `question needs "Question::*Right||Wrong::Why": ${it}`); return '';
+    }
+    // Stable shuffle, so the right answer isn't always first but the page doesn't change between builds.
+    let h = 0; for (const ch of parts[0]) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    const order = opts.map((o, i) => ({ o, k: (h + i * 2654435761) >>> 0 })).sort((a, b) => a.k - b.k).map(x => x.o);
+    const name = `q-${p.slug}-${qi + 1}`;
+    const inputs = order.map((o, i) => {
+      const ok = o.startsWith('*');
+      return `<input type="radio" name="${name}" id="${name}-${i + 1}"${ok ? ' data-ok' : ''}><label for="${name}-${i + 1}">${L.inline(ok ? o.slice(1).trim() : o, ctx)}</label>`;
+    }).join('\n');
+    return `<fieldset class="quiz">
+<legend>${L.inline(parts[0].trim(), ctx)}</legend>
+${inputs}
+<p class="fb ok"><b>Right.</b> ${L.inline(parts[2].trim(), ctx)}</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>`;
+  }).join('\n');
+}
+
 function renderPuzzle(course, p, terms) {
   const ctx = { file: p.file, cards: new Map(course.puzzles.map(q => [q.slug, q])), links: new Set() };
   const sections = L.parseBody(p.body, ctx);
@@ -79,8 +114,10 @@ function renderPuzzle(course, p, terms) {
 
   const body = sections.map(s => {
     const sid = s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const html = s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
-      ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file)
+    const html = s.title === 'Check yourself'
+      ? s.blocks.map(b => b.type === 'ul' ? quiz(p, b.items, ctx) : L.renderBlocks([b], ctx)).join('\n')
+      : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
+      ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
       : L.renderBlocks([b], ctx, { recall: s.title === 'Check yourself' })).join('\n');
     return `      <section aria-labelledby="${sid}">
         <h2 id="${sid}">${L.inline(s.title, ctx)}</h2>
@@ -96,16 +133,17 @@ ${html}
     title: `${p.meta.title} – ${course.meta.title} – Mateusz Pachulski`,
     description: p.meta.summary,
     canonical: `${L.SITE}/course/${course.id}/${p.slug}`,
-    base: '../../', current: 'course', feed: false,
+    base: '../../', current: 'course', feed: false, script: '../course.js',
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
       <p class="small"><a href="../">Course overview</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
-    body: `    <article class="puzzle course-top wrap narrow">
+    body: `    <article class="puzzle course-top wrap narrow" data-course="${course.id}" data-n="${p.n}" data-prev="${prev ? `${prev.slug}.html` : ''}" data-prev-title="${prev ? L.esc(prev.meta.title) : ''}">
       <nav aria-label="Puzzles"><ol class="progress">${progress}</ol></nav>
       <p class="eyebrow">${L.esc(course.meta.title)} · ${label}</p>
       <h1>${L.esc(p.meta.title)}</h1>
       <p class="lede">${L.inline(p.meta.summary, ctx)}</p>
 ${body}
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>${L.inline(p.meta.takeaway, ctx)}</p></div></section>
+      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         ${prev ? `<a class="button" href="${prev.slug}.html">← ${prev.n === 0 ? 'Start' : `Puzzle ${prev.n}`}</a>` : '<a class="button" href="../">← Overview</a>'}
         ${next ? `<a class="button primary" href="${next.slug}.html">Puzzle ${next.n}: ${L.esc(next.meta.short || next.meta.title)} →</a>` : '<a class="button primary" href="../">Back to the overview →</a>'}
@@ -118,7 +156,7 @@ function renderIndex(cs) {
   const blocks = cs.map(c => {
     let i = 0;
     const modules = c.meta.modules.map(m => {
-      const items = m.puzzles.map(() => c.puzzles[i++]).map(p => `<li><a href="${c.id}/${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}</span></li>`).join('');
+      const items = m.puzzles.map(() => c.puzzles[i++]).map(p => `<li data-course="${c.id}" data-n="${p.n}"><a href="${c.id}/${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}</span></li>`).join('');
       return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')}</p><ol start="0">${items}</ol></li>`;
     }).join('\n');
     const soon = (c.meta.upcoming || []).map(m => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(coming next)</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
@@ -127,7 +165,8 @@ function renderIndex(cs) {
         <p class="eyebrow">Free course · ${c.puzzles.length - 1} puzzles so far · about ${c.meta.minutes} minutes</p>
         <h1 id="course-heading">${L.esc(c.meta.title)}</h1>
         <p class="lede">${L.esc(c.meta.intro)}</p>
-        <p class="actions"><a class="button primary" href="${c.id}/${c.puzzles[0].slug}.html">Start the first puzzle →</a></p>
+        <p class="actions"><a class="button primary" href="${c.id}/${c.puzzles[0].slug}.html" data-resume="${c.id}">Start the first puzzle →</a></p>
+        ${fs.existsSync(path.join(OUT, c.id, 'gifs', 'chain.gif')) ? `<img class="hero-gif" src="${c.id}/gifs/chain.gif" width="${gifSize(c.id, 'chain')[0]}" height="${gifSize(c.id, 'chain')[1]}" alt="Animated diagram: system_server decides, Binder carries the message, the main thread receives it, and your callback runs.">` : ''}
       </div>
     </section>
     <section class="section" aria-labelledby="how-heading">
@@ -150,8 +189,8 @@ ${soon}
     title: `Course: ${cs[0].meta.title} – Mateusz Pachulski`,
     description: cs[0].meta.intro,
     canonical: `${L.SITE}/course/`,
-    base: '../', current: 'course', feed: false,
-    footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
+    base: '../', current: 'course', feed: false, script: 'course.js',
+    footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page. Your progress is saved only in this browser.</p>
       <p class="small"><a href="../learning/">Learning log</a> · <a href="../">pachulski.dev</a></p>`,
     body: blocks,
   });

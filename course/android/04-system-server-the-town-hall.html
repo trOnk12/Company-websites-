@@ -18,13 +18,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>system_server is the town hall – Android from the foundation – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/04-system-server-the-town-hall">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -45,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow">
+    <article class="puzzle course-top wrap narrow" data-course="android" data-n="4" data-prev="03-zygote-why-apps-start-fast.html" data-prev-title="Zygote is why apps start fast">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" class="done" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" aria-current="page" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 4 of 6</p>
       <h1>system_server is the town hall</h1>
@@ -80,7 +81,7 @@
 <li><p>Only then does it tell your app: <b>"create B"</b>. Your app builds Screen B because it was told to. Your screens' lives are recorded and decided outside your app.</p><div class="stepnav"><label for="st-town-hall-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-town-hall-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-town-hall-1" title="Step 1"></label><label for="st-town-hall-2" title="Step 2"></label><label for="st-town-hall-3" title="Step 3"></label><label for="st-town-hall-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/town-hall.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
@@ -93,21 +94,42 @@
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<details class="recall"><summary>Your app opens its own next screen with <code>startActivity()</code>. Does that call stay inside your process?</summary><p>No. It goes to system_server, which checks it, records it, and then tells your process to create the new screen.</p></details>
-<details class="recall"><summary>Where is the official list of your app's open screens kept?</summary><p>In system_server, not in your app.</p></details>
-<details class="recall"><summary>Why must system_server be a separate, trusted process?</summary><p>Because it decides things for all apps (screens, permissions, killing). No app's sandbox could see or be trusted with all of that.</p></details>
+<p>Answer all three to unlock the next puzzle.</p>
+<fieldset class="quiz">
+<legend>Your app opens its own next screen with <code>startActivity()</code>. Does that call stay inside your process?</legend>
+<input type="radio" name="q-04-system-server-the-town-hall-1" id="q-04-system-server-the-town-hall-1-1"><label for="q-04-system-server-the-town-hall-1-1">Yes, your own screens never leave your app</label>
+<input type="radio" name="q-04-system-server-the-town-hall-1" id="q-04-system-server-the-town-hall-1-2" data-ok><label for="q-04-system-server-the-town-hall-1-2">No, it goes to system_server, which then tells your app to create the screen</label>
+<p class="fb ok"><b>Right.</b> Even your own screens go through the town hall: it checks, records, and then tells your process what to create.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Where is the official list of your app's open screens kept?</legend>
+<input type="radio" name="q-04-system-server-the-town-hall-2" id="q-04-system-server-the-town-hall-2-1" data-ok><label for="q-04-system-server-the-town-hall-2-1">In system_server</label>
+<input type="radio" name="q-04-system-server-the-town-hall-2" id="q-04-system-server-the-town-hall-2-2"><label for="q-04-system-server-the-town-hall-2-2">In your app's memory</label>
+<p class="fb ok"><b>Right.</b> system_server keeps the register of every screen of every app.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Why must system_server be a separate, trusted process?</legend>
+<input type="radio" name="q-04-system-server-the-town-hall-3" id="q-04-system-server-the-town-hall-3-1"><label for="q-04-system-server-the-town-hall-3-1">It makes apps start faster</label>
+<input type="radio" name="q-04-system-server-the-town-hall-3" id="q-04-system-server-the-town-hall-3-2" data-ok><label for="q-04-system-server-the-town-hall-3-2">It decides things for all apps, which no single app's sandbox could see or be trusted with</label>
+<p class="fb ok"><b>Right.</b> Screens, permissions and which app to kill affect every app, so one trusted process has to decide.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://developer.android.com/guide/components/activities/process-lifecycle">Android Developers: Processes and app lifecycle</a></li><li><a href="https://developer.android.com/guide/components/activities/tasks-and-back-stack">Android Developers: Tasks and the back stack</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Your Activity's life is decided in system_server. startActivity(), even for your own screen, is a request to the town hall, which answers by telling your app what to create.</p></div></section>
+      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-zygote-why-apps-start-fast.html">← Puzzle 3</a>
         <a class="button primary" href="05-binder-the-post-office.html">Puzzle 5: Binder →</a>
       </nav>
     </article>
   </main>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F04-system-server-the-town-hall" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

@@ -28,9 +28,11 @@ An apartment block. Each app has its own flat and its own key. Neighbours can't 
 
 ## Check yourself
 
-- An app wants to read another app's database file directly. Possible?::No. The file belongs to another UID and the kernel refuses. Apps share data only through official channels such as ContentProviders and Intents.
-- Who enforces the sandbox: the app, or the kernel?::The kernel. That's why an app can't simply turn it off.
-- Two apps run at the same time. Do they share one process?::No. Each app runs in its own process, with its own memory.
+Answer all three to unlock the next puzzle.
+
+- A game wants to read the bank app's database file directly. Does it work?::*No, the kernel refuses: the file belongs to another UID||Yes, as long as both apps are installed::Each app is a separate Linux user, and the kernel checks the UID on every file. Apps share only through official doors like Intents and ContentProviders.
+- Who enforces the sandbox?::*The Linux kernel||Each app, by being careful::The kernel enforces it, which is why a buggy or hostile app can't switch it off.
+- Two apps run at the same time. Do they share one process?::*No, each app runs in its own process||Yes, all apps share one Android process::Each app gets its own process, with its own memory that other apps can't read.
 
 ## Sources
 

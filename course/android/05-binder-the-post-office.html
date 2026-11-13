@@ -18,13 +18,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Binder is the post office between processes – Android from the foundation – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/05-binder-the-post-office">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -45,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow">
+    <article class="puzzle course-top wrap narrow" data-course="android" data-n="5" data-prev="04-system-server-the-town-hall.html" data-prev-title="system_server is the town hall">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" class="done" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" class="done" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" aria-current="page" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 5 of 6</p>
       <h1>Binder is the post office between processes</h1>
@@ -82,7 +83,7 @@
 <li><p>The catch: each process has a Binder buffer of about <b>1 MB, shared by all calls in flight</b>. Put a 3 MB bitmap in an Intent and it doesn't fit: <code>TransactionTooLargeException</code>.</p><div class="stepnav"><label for="st-binder-5">← Back</label><span class="count">Step 6 of 6</span><label for="st-binder-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-binder-1" title="Step 1"></label><label for="st-binder-2" title="Step 2"></label><label for="st-binder-3" title="Step 3"></label><label for="st-binder-4" title="Step 4"></label><label for="st-binder-5" title="Step 5"></label><label for="st-binder-6" title="Step 6"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/binder.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
@@ -96,21 +97,43 @@
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<details class="recall"><summary>You put a 3 MB bitmap into an Intent extra and start an Activity. What happens?</summary><p>The Intent travels over Binder, so it exceeds the ~1 MB buffer and fails with <code>TransactionTooLargeException</code>. Pass a file URI or an ID instead.</p></details>
-<details class="recall"><summary>Can an app lie to a system service about who it is?</summary><p>No. The kernel stamps the real caller UID on every Binder call.</p></details>
-<details class="recall"><summary>On which thread does a Binder call arrive in the receiving process?</summary><p>On one of its Binder threads, not its main thread.</p></details>
+<p>Answer all three to unlock the next puzzle.</p>
+<fieldset class="quiz">
+<legend>You put a 3 MB bitmap into an Intent extra and start an Activity. What happens?</legend>
+<input type="radio" name="q-05-binder-the-post-office-1" id="q-05-binder-the-post-office-1-1"><label for="q-05-binder-the-post-office-1-1">Android compresses it automatically</label>
+<input type="radio" name="q-05-binder-the-post-office-1" id="q-05-binder-the-post-office-1-2"><label for="q-05-binder-the-post-office-1-2">It works: Intents can carry any size</label>
+<input type="radio" name="q-05-binder-the-post-office-1" id="q-05-binder-the-post-office-1-3" data-ok><label for="q-05-binder-the-post-office-1-3">It fails with <code>TransactionTooLargeException</code></label>
+<p class="fb ok"><b>Right.</b> The Intent travels over Binder, whose buffer is about 1 MB per process, shared by all calls in flight. Pass a file URI or an ID instead.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Can an app lie to a system service about who it is?</legend>
+<input type="radio" name="q-05-binder-the-post-office-2" id="q-05-binder-the-post-office-2-1" data-ok><label for="q-05-binder-the-post-office-2-1">No, the kernel stamps the real caller UID on every Binder call</label>
+<input type="radio" name="q-05-binder-the-post-office-2" id="q-05-binder-the-post-office-2-2"><label for="q-05-binder-the-post-office-2-2">Yes, by writing another UID into the Parcel</label>
+<p class="fb ok"><b>Right.</b> The UID comes from the kernel, not from the data, so the receiver can trust it for permission checks.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>On which thread does a Binder call arrive in the receiving process?</legend>
+<input type="radio" name="q-05-binder-the-post-office-3" id="q-05-binder-the-post-office-3-1"><label for="q-05-binder-the-post-office-3-1">On its main thread</label>
+<input type="radio" name="q-05-binder-the-post-office-3" id="q-05-binder-the-post-office-3-2" data-ok><label for="q-05-binder-the-post-office-3-2">On one of its Binder threads</label>
+<p class="fb ok"><b>Right.</b> Binder threads receive calls; to touch the UI, they post a message to the main thread.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://developer.android.com/reference/android/os/TransactionTooLargeException">Android reference: TransactionTooLargeException</a></li><li><a href="https://developer.android.com/reference/android/os/Binder">Android reference: Binder</a></li><li><a href="https://developer.android.com/reference/android/os/Parcel">Android reference: Parcel</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>proxy → Parcel → kernel (Binder) → Binder thread → stub → real method, and back. Every Intent, every startActivity(), every system service call travels this way, with a buffer of about 1 MB.</p></div></section>
+      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="04-system-server-the-town-hall.html">← Puzzle 4</a>
         <a class="button primary" href="06-the-main-thread.html">Puzzle 6: The main thread →</a>
       </nav>
     </article>
   </main>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F05-binder-the-post-office" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

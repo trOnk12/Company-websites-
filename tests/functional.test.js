@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 
 // WCAG contrast ratio between two #RRGGBB colours.
 function contrast(a, b) {
@@ -148,15 +148,16 @@ test.describe('Contact and privacy', () => {
     expect(await page.locator('body').innerText()).not.toMatch(/€|PLN|per day/i);
   });
 
-  test('page loads nothing from third parties and runs no scripts', async ({ page }) => {
+  test('page loads nothing from third parties but the visit counter, and runs no scripts', async ({ page }) => {
     const external = [];
     page.on('request', req => {
       const u = new URL(req.url());
-      if (!['localhost', '127.0.0.1'].includes(u.hostname) && u.protocol.startsWith('http')) external.push(req.url());
+      if (!['localhost', '127.0.0.1'].includes(u.hostname) && u.protocol.startsWith('http')) external.push(u.hostname + u.pathname);
     });
     await page.goto('/', { waitUntil: 'load' });
-    expect(external).toEqual([]);
+    expect(external).toEqual(['pachulski.goatcounter.com/count']);
     await expect(page.locator('script')).toHaveCount(0);
+    await expect(page.locator('footer')).toContainText('counted anonymously with GoatCounter');
   });
 });
 

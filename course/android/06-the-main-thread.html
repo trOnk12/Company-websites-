@@ -18,13 +18,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>The main thread is one clerk with one queue – Android from the foundation – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/06-the-main-thread">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -45,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow">
+    <article class="puzzle course-top wrap narrow" data-course="android" data-n="6" data-prev="05-binder-the-post-office.html" data-prev-title="Binder is the post office between processes">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" class="done" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" class="done" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" class="done" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" aria-current="page" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 6 of 6</p>
       <h1>The main thread is one clerk with one queue</h1>
@@ -81,7 +82,7 @@
 <li><p>If a touch isn't handled within <b>5 seconds</b>, Android shows the <b>ANR</b> dialog: Application Not Responding. Long before that, every 16 ms frame that can't be drawn is a dropped frame: jank.</p><div class="stepnav"><label for="st-main-thread-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-main-thread-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-main-thread-1" title="Step 1"></label><label for="st-main-thread-2" title="Step 2"></label><label for="st-main-thread-3" title="Step 3"></label><label for="st-main-thread-4" title="Step 4"></label><label for="st-main-thread-5" title="Step 5"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/main-thread.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
@@ -98,21 +99,43 @@ main.postDelayed({ hideHint() }, 2_000)     // runs about 2 s later</code></pre>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<details class="recall"><summary><code>onCreate()</code> calls <code>Thread.sleep(6000)</code> and the user taps the screen. What happens?</summary><p>The tap waits in the queue behind <code>onCreate</code>, isn't handled within 5 seconds, and the system shows an ANR.</p></details>
-<details class="recall"><summary>What does <code>handler.post { … }</code> do?</summary><p>It adds the code as a message to that Handler's Looper's queue, so that thread runs it when it gets there.</p></details>
-<details class="recall"><summary>Why don't you need locks to update views?</summary><p>Because only the main thread touches them, one message at a time.</p></details>
+<p>Answer all three to unlock the next puzzle.</p>
+<fieldset class="quiz">
+<legend><code>onCreate()</code> calls <code>Thread.sleep(6000)</code> and the user taps the screen. What happens?</legend>
+<input type="radio" name="q-06-the-main-thread-1" id="q-06-the-main-thread-1-1"><label for="q-06-the-main-thread-1-1">The tap is handled on another thread</label>
+<input type="radio" name="q-06-the-main-thread-1" id="q-06-the-main-thread-1-2" data-ok><label for="q-06-the-main-thread-1-2">The tap waits in the queue, isn't handled within 5 seconds, and the system shows an ANR</label>
+<input type="radio" name="q-06-the-main-thread-1" id="q-06-the-main-thread-1-3"><label for="q-06-the-main-thread-1-3">Android cancels onCreate()</label>
+<p class="fb ok"><b>Right.</b> One message at a time: the touch waits behind the sleeping onCreate().</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>What does <code>handler.post { … }</code> do?</legend>
+<input type="radio" name="q-06-the-main-thread-2" id="q-06-the-main-thread-2-1" data-ok><label for="q-06-the-main-thread-2-1">It adds the code to that Handler's queue; its thread runs it when it gets there</label>
+<input type="radio" name="q-06-the-main-thread-2" id="q-06-the-main-thread-2-2"><label for="q-06-the-main-thread-2-2">It runs the code immediately on a new thread</label>
+<p class="fb ok"><b>Right.</b> A Handler is the slot into one Looper's queue. Nothing runs until that thread reaches the message.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Why don't you need locks to update views?</legend>
+<input type="radio" name="q-06-the-main-thread-3" id="q-06-the-main-thread-3-1"><label for="q-06-the-main-thread-3-1">Views lock themselves internally</label>
+<input type="radio" name="q-06-the-main-thread-3" id="q-06-the-main-thread-3-2" data-ok><label for="q-06-the-main-thread-3-2">Only the main thread touches them, one message at a time</label>
+<p class="fb ok"><b>Right.</b> Single-threaded by design: the main thread handles one message fully before the next.</p>
+<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+</fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a></li><li><a href="https://developer.android.com/topic/performance/vitals/anr">Android Developers: ANRs</a></li><li><a href="https://developer.android.com/reference/android/os/Handler">Android reference: Handler</a></li><li><a href="https://developer.android.com/reference/android/os/Looper">Android reference: Looper</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The full chain: system_server decides → Binder carries the message → a Binder thread posts it with a Handler → the main thread's Looper runs it → your callback. Keep every main-thread message short.</p></div></section>
+      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="05-binder-the-post-office.html">← Puzzle 5</a>
         <a class="button primary" href="../">Back to the overview →</a>
       </nav>
     </article>
   </main>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F06-the-main-thread" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

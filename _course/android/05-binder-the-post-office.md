@@ -29,9 +29,11 @@ A TV remote. You press a button on the remote (the proxy); the TV (the real obje
 
 ## Check yourself
 
-- You put a 3 MB bitmap into an Intent extra and start an Activity. What happens?::The Intent travels over Binder, so it exceeds the ~1 MB buffer and fails with `TransactionTooLargeException`. Pass a file URI or an ID instead.
-- Can an app lie to a system service about who it is?::No. The kernel stamps the real caller UID on every Binder call.
-- On which thread does a Binder call arrive in the receiving process?::On one of its Binder threads, not its main thread.
+Answer all three to unlock the next puzzle.
+
+- You put a 3 MB bitmap into an Intent extra and start an Activity. What happens?::*It fails with `TransactionTooLargeException`||It works: Intents can carry any size||Android compresses it automatically::The Intent travels over Binder, whose buffer is about 1 MB per process, shared by all calls in flight. Pass a file URI or an ID instead.
+- Can an app lie to a system service about who it is?::*No, the kernel stamps the real caller UID on every Binder call||Yes, by writing another UID into the Parcel::The UID comes from the kernel, not from the data, so the receiver can trust it for permission checks.
+- On which thread does a Binder call arrive in the receiving process?::*On one of its Binder threads||On its main thread::Binder threads receive calls; to touch the UI, they post a message to the main thread.
 
 ## Sources
 

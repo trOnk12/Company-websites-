@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');

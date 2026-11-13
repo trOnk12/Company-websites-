@@ -24,9 +24,11 @@ A recipe written in a common language (DEX). The first time, the cook reads it l
 
 ## Check yourself
 
-- Is there one shared ART for all apps on the phone?::No. Each app process has its own ART running inside it, with its own heap and garbage collector.
-- Why can an app get faster a few days after install?::ART records hot code in a profile, and later compiles that code ahead of time.
-- What does a Baseline Profile change?::It ships the list of important code with the app, so ART can compile it ahead of time before the first launch, instead of learning it from use.
+Answer all three to unlock the next puzzle.
+
+- Is there one shared ART for all apps on the phone?::*No, each app's process has its own ART||Yes, one ART runs every app::ART runs inside each app's process, with its own heap and garbage collector.
+- Why can an app get faster a few days after install?::*ART recorded the hot code in a profile and compiled it ahead of time||The Play Store sends faster machine code later||The garbage collector learns the app::The JIT writes a profile of hot code, and dex2oat later compiles that code ahead of time.
+- What does a Baseline Profile change?::*It ships the list of important code, so ART can compile it before the first launch||It makes the JIT compiler faster||It removes the interpreter from the phone::Instead of learning what's hot from use, ART gets the list with the app and compiles it ahead of time.
 
 ## Sources
 

@@ -36,9 +36,11 @@ One clerk at a desk with an in-tray. The clerk takes one letter at a time and fi
 
 ## Check yourself
 
-- `onCreate()` calls `Thread.sleep(6000)` and the user taps the screen. What happens?::The tap waits in the queue behind `onCreate`, isn't handled within 5 seconds, and the system shows an ANR.
-- What does `handler.post { … }` do?::It adds the code as a message to that Handler's Looper's queue, so that thread runs it when it gets there.
-- Why don't you need locks to update views?::Because only the main thread touches them, one message at a time.
+Answer all three to unlock the next puzzle.
+
+- `onCreate()` calls `Thread.sleep(6000)` and the user taps the screen. What happens?::*The tap waits in the queue, isn't handled within 5 seconds, and the system shows an ANR||The tap is handled on another thread||Android cancels onCreate()::One message at a time: the touch waits behind the sleeping onCreate().
+- What does `handler.post { … }` do?::*It adds the code to that Handler's queue; its thread runs it when it gets there||It runs the code immediately on a new thread::A Handler is the slot into one Looper's queue. Nothing runs until that thread reaches the message.
+- Why don't you need locks to update views?::*Only the main thread touches them, one message at a time||Views lock themselves internally::Single-threaded by design: the main thread handles one message fully before the next.
 
 ## Sources
 

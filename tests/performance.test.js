@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 
 /**
  * Collect Core Web Vitals after page has loaded and settled.

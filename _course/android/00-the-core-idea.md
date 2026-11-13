@@ -25,9 +25,11 @@ Every puzzle in this course uses these four. Learn the picture once and you can 
 
 ## Check yourself
 
-- Who decides that your Activity should be created: your app, or another process?::Another process, system_server. Your app is told, and your callback runs.
-- Can system_server call a method on your Activity object directly?::No. It lives in a different process and can't touch your memory, so it sends a message through Binder.
-- Which thread runs `onCreate()`?::Your app's main thread, when it reaches that message in its queue.
+Answer all three to unlock the next puzzle.
+
+- Who decides that your Activity should be created?::*Another process, system_server||Your app, in its own code||The kernel's Binder driver::system_server decides. Binder only carries the message, and your app is told.
+- Can system_server call a method on your Activity object directly?::*No, it has to send a message through Binder||Yes, it keeps a reference to your Activity::It lives in a different process and can't touch your app's memory, so the request travels through Binder.
+- Which thread runs `onCreate()`?::*Your app's main thread||A thread inside system_server::The message lands in your main thread's inbox, and the main thread runs your callback when it gets there.
 
 ## Sources
 

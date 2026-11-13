@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('./fixtures');
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -40,7 +40,8 @@ test.describe('Course', () => {
   for (const slug of PUZZLES) {
     test(`puzzle "${slug}" steps through its diagram without JavaScript`, async ({ page }) => {
       await page.goto(`/course/android/${slug}.html`);
-      expect(await page.locator('script').count()).toBe(0);
+      // Only the course's own player script, from this site.
+      for (const src of await page.locator('script').evaluateAll(ss => ss.map(s => s.getAttribute('src')))) expect(src).toBe('../course.js');
       const stepper = page.locator('.stepper');
       await expect(stepper).toHaveCount(1);
       const steps = await stepper.locator('> input').count();
@@ -53,11 +54,61 @@ test.describe('Course', () => {
         await expect(caps.nth(k)).toBeVisible();
         await expect(caps.nth(k - 1)).toBeHidden();
       }
-      // Every check is a question that opens to its answer.
-      expect(await page.locator('details.recall').count()).toBeGreaterThan(0);
+      // Every check is a question with exactly one right answer.
+      const quizzes = page.locator('fieldset.quiz');
+      expect(await quizzes.count()).toBeGreaterThan(0);
+      for (const q of await quizzes.all()) expect(await q.locator('input[data-ok]').count()).toBe(1);
       for (const a of await page.locator('#sources ~ ul a').evaluateAll(as => as.map(a => a.href))) expect(a).toMatch(/^https:\/\//);
     });
   }
+
+  test('every page counts visits with GoatCounter and nothing else external', async ({ page }) => {
+    const pages = ['/', '/learning/', '/course/', ...PUZZLES.map(s => `/course/android/${s}.html`)];
+    for (const p of pages) {
+      const hosts = new Set();
+      page.on('request', req => { const u = new URL(req.url()); if (!['localhost', '127.0.0.1'].includes(u.hostname)) hosts.add(u.hostname); });
+      await page.goto(p);
+      const html = await page.content();
+      expect(html, p).toContain('pachulski.goatcounter.com/count?p=');
+      for (const h of hosts) expect(h, p).toBe('pachulski.goatcounter.com');
+      page.removeAllListeners('request');
+    }
+  });
+
+  test('a puzzle unlocks the next one only when every answer is right', async ({ page }) => {
+    await page.goto(`/course/android/${PUZZLES[0]}.html`);
+    const next = page.locator('.pager a.primary');
+    await expect(next).toHaveAttribute('aria-disabled', 'true');
+    const quizzes = page.locator('fieldset.quiz');
+    const n = await quizzes.count();
+    // A wrong answer shows "Not quite" and keeps the lock.
+    await quizzes.nth(0).locator('input:not([data-ok]) + label').first().click();
+    await expect(quizzes.nth(0).locator('.fb.no')).toBeVisible();
+    await expect(next).toHaveAttribute('aria-disabled', 'true');
+    for (let i = 0; i < n; i++) await quizzes.nth(i).locator('input[data-ok] + label').click();
+    await expect(quizzes.nth(0).locator('.fb.ok')).toBeVisible();
+    await expect(next).toHaveAttribute('aria-disabled', 'false');
+    // Progress is remembered: the overview now shows puzzle 0 done and offers to continue.
+    await page.goto('/course/');
+    await expect(page.locator(`.modules li[data-n="0"]`)).toHaveAttribute('data-state', 'done');
+    await expect(page.locator('[data-resume]')).toContainText('Continue: puzzle 1');
+  });
+
+  test('opening a puzzle early points back to the one it builds on', async ({ page }) => {
+    await page.goto(`/course/android/${PUZZLES[3]}.html`);
+    await expect(page.locator('.gate')).toContainText('builds on the previous one');
+    await expect(page.locator('.gate a')).toHaveAttribute('href', `${PUZZLES[2]}.html`);
+  });
+
+  test('the diagram player plays on its own and can be paused', async ({ page }) => {
+    await page.goto(`/course/android/${PUZZLES[0]}.html`);
+    const play = page.locator('.player .play');
+    await play.scrollIntoViewIfNeeded();
+    await expect(play).toHaveAttribute('aria-pressed', 'true', { timeout: 5000 });
+    await expect(page.locator('.stepper .caps > li').nth(1)).toBeVisible({ timeout: 12000 });
+    await play.click();
+    await expect(play).toHaveAttribute('aria-pressed', 'false');
+  });
 
   test('course pages fit a phone screen', async ({ page }) => {
     for (const p of ['/course/', ...PUZZLES.map(s => `/course/android/${s}.html`)]) {
