@@ -18,6 +18,8 @@ If every app is locked in its own sandbox, who decides which app is on screen, w
 
 **system_server** is a process started at boot that runs as long as the phone is on. Inside it live the **system services**: the activity and task managers (screens, tasks, process priority), the package manager (installed apps, their components, permissions), the window manager (what's on screen and who gets touches), and many more.
 
+It starts in `SystemServer.main()`. When your app calls `startActivity()`, the request arrives in `ActivityTaskManagerService.startActivity()`.
+
 It keeps a record of every screen of every app, and tells your app when to create, pause, stop or destroy one.
 
 ## The analogy

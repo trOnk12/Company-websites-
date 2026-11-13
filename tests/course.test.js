@@ -110,6 +110,16 @@ test.describe('Course', () => {
     await expect(play).toHaveAttribute('aria-pressed', 'false');
   });
 
+  test('code names open the real source, pinned to a commit', async ({ page }) => {
+    await page.goto(`/course/android/06-the-main-thread.html`);
+    const ref = page.locator('.ref').filter({ hasText: 'Looper.loop()' }).first();
+    await expect(ref.locator('.pop')).toBeHidden();
+    await ref.hover();
+    await expect(ref.locator('.pop')).toBeVisible();
+    await expect(ref.locator('.pop-code')).toContainText('for (;;)');
+    expect(await ref.locator('.pop a').getAttribute('href')).toMatch(/github\.com\/aosp-mirror\/platform_frameworks_base\/blob\/[0-9a-f]{40}\/.+#L\d+$/);
+  });
+
   test('course pages fit a phone screen', async ({ page }) => {
     for (const p of ['/course/', ...PUZZLES.map(s => `/course/android/${s}.html`)]) {
       await page.goto(p);

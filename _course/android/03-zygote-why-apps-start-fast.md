@@ -18,6 +18,8 @@ Starting ART and loading the Android framework's thousands of classes takes seco
 
 **Zygote** ("the first cell") starts at boot, loads ART and the common framework code and resources, then waits. To launch an app, the system asks Zygote to **fork**. The child already has everything loaded; it switches to the app's user ID and loads the app's code.
 
+In the source, `ZygoteInit.main()` does exactly this: preload, start system_server, then wait for "fork an app" requests.
+
 Because Linux implements fork with **copy-on-write** pages, the framework's memory is shared across all apps until one of them writes to a page.
 
 ## The analogy

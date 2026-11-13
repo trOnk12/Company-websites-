@@ -2,7 +2,7 @@
   "title": "Android from the foundation",
   "minutes": 45,
   "intro": "Lifecycle, process death, ANRs, Context leaks: most of Android's hard parts come from one idea. This course builds that idea up one small puzzle at a time, with diagrams you click through, until the rest stops being a list of rules and starts making sense.",
-  "how": "Each puzzle starts with a problem Android had to solve, then gives you one building block, a picture to remember it by, and a diagram you step through. It ends with a few questions: try to answer before you open them. Every puzzle builds on the one before, so go in order.",
+  "how": "Each puzzle starts with a problem Android had to solve, then gives you one building block, a picture to remember it by, and a diagram that plays itself (or step through it yourself). It ends with three questions: answer them all correctly to unlock the next puzzle, so no gap carries forward. Code names with a dotted underline open the real Android or Linux source: hover or tap them.",
   "modules": [
     {
       "title": "Module 1: How your app really runs",
@@ -19,9 +19,26 @@
     }
   ],
   "upcoming": [
-    { "title": "Module 2: Screens and their lives", "topics": "Context, Intents, PendingIntent, the Activity lifecycle, tasks and the back stack, process death and saved state." },
-    { "title": "Module 3: Work without a screen", "topics": "Services, broadcasts, ContentProviders and startup order, Doze and WorkManager, permissions." },
-    { "title": "Module 4: Threads, coroutines and Flow", "topics": "What really runs where, cancellation and errors, cold and hot streams." },
-    { "title": "Module 5: Pixels and performance", "topics": "How a frame gets on screen, Compose internals, memory and leaks, startup and jank." }
-  ]
+    {
+      "title": "Module 2: Screens and their lives",
+      "topics": "Context, Intents, PendingIntent, the Activity lifecycle, tasks and the back stack, process death and saved state."
+    },
+    {
+      "title": "Module 3: Work without a screen",
+      "topics": "Services, broadcasts, ContentProviders and startup order, Doze and WorkManager, permissions."
+    },
+    {
+      "title": "Module 4: Threads, coroutines and Flow",
+      "topics": "What really runs where, cancellation and errors, cold and hot streams."
+    },
+    {
+      "title": "Module 5: Pixels and performance",
+      "topics": "How a frame gets on screen, Compose internals, memory and leaks, startup and jank."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  }
 }

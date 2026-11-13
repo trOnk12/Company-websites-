@@ -46,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-course="android" data-n="3" data-prev="02-art-runs-your-code.html" data-prev-title="ART is what runs your code">
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="3" data-prev="02-art-runs-your-code.html" data-prev-title="ART is what runs your code">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" aria-current="page" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 3 of 6</p>
       <h1>Zygote is why apps start fast</h1>
@@ -84,6 +84,13 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p><b>Zygote</b> (&quot;the first cell&quot;) starts at boot, loads ART and the common framework code and resources, then waits. To launch an app, the system asks Zygote to <b>fork</b>. The child already has everything loaded; it switches to the app's user ID and loads the app's code.</p>
+<p>In the source, <span class="ref" tabindex="0" aria-describedby="ref-1"><code>ZygoteInit.main()</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">Zygote's main: preload the framework, fork system_server, then wait for &quot;fork an app&quot; requests.</span><span class="pop-code">  817  public static void main(String[] argv) {
+    …
+  885              preload(bootTimingsTraceLog);
+    …
+  905              Runnable r = forkSystemServer(abiList, zygoteSocketName, zygoteServer);
+    …
+  919          caller = zygoteServer.runSelectLoop(abiList);</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/com/android/internal/os/ZygoteInit.java#L817">ZygoteInit.java, line 817 · AOSP frameworks/base ↗</a></span></span> does exactly this: preload, start system_server, then wait for &quot;fork an app&quot; requests.</p>
 <p>Because Linux implements fork with <b>copy-on-write</b> pages, the framework's memory is shared across all apps until one of them writes to a page.</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -125,6 +132,7 @@
 <ul><li><a href="https://developer.android.com/topic/performance/memory-overview">Android Developers: Overview of memory management (sharing memory)</a></li><li><a href="https://man7.org/linux/man-pages/man2/fork.2.html">Linux man page: fork(2), copy-on-write</a></li><li><a href="https://developer.android.com/topic/performance/vitals/launch-time">Android Developers: App startup time</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Cold start = fork from Zygote, then create your Application, then your first Activity. Anything slow in Application.onCreate() is paid on every cold start, before the user sees anything.</p></div></section>
+      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-art-runs-your-code.html">← Puzzle 2</a>

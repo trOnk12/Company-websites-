@@ -1,0 +1,85 @@
+{
+ "pinned": {
+  "frameworks_base": "1cdfff555f4a21f71ccc978290e2e212e2f8b168",
+  "linux": "7e1392a42ea288d70a266f6553fe06f57f8647ea"
+ },
+ "refs": {
+  "ActivityThread.main()": {
+   "what": "The real entry point of every app process: it prepares the main Looper, says hello to system_server, then loops forever.",
+   "code": " 8907  public static void main(String[] args) {\n    …\n 8927      Looper.prepareMainLooper();\n    …\n 8943      thread.attach(false, startSeq);\n    …\n 8956      Looper.loop();",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/ActivityThread.java#L8907",
+   "where": "ActivityThread.java, line 8907",
+   "repo": "AOSP frameworks/base"
+  },
+  "Looper.loop()": {
+   "what": "The main thread's endless loop: take one message, run it, repeat.",
+   "code": "  304  public static void loop() {\n    …\n  327      for (;;) {\n  328          if (!loopOnce(me, ident, thresholdOverride)) {\n  329              return;\n  330          }\n  331      }",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Looper.java#L304",
+   "where": "Looper.java, line 304",
+   "repo": "AOSP frameworks/base"
+  },
+  "handler.post { … }": {
+   "what": "post() wraps your code in a Message and puts it in this Handler's queue.",
+   "code": "  438  public final boolean post(@NonNull Runnable r) {\n  439     return  sendMessageDelayed(getPostMessage(r), 0);\n  440  }\n    …\n  782  private boolean enqueueMessage(@NonNull MessageQueue queue, @NonNull Message msg,\n  783          long uptimeMillis) {\n  784      msg.target = this;\n    …\n  789      }",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Handler.java#L438",
+   "where": "Handler.java, line 438",
+   "repo": "AOSP frameworks/base"
+  },
+  "MessageQueue": {
+   "what": "When nothing is due, the queue sleeps in native code until a message arrives or a timer fires.",
+   "code": "  387  nativePollOnce(ptr, nextPollTimeoutMillis);",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/LegacyMessageQueue/MessageQueue.java#L387",
+   "where": "MessageQueue.java, line 387",
+   "repo": "AOSP frameworks/base"
+  },
+  "Binder.getCallingUid()": {
+   "what": "Native: the UID the kernel stamped on the call. The caller can't fake it.",
+   "code": "  338  public static final native int getCallingUid();",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Binder.java#L338",
+   "where": "Binder.java, line 338",
+   "repo": "AOSP frameworks/base"
+  },
+  "ZygoteInit.main()": {
+   "what": "Zygote's main: preload the framework, fork system_server, then wait for \"fork an app\" requests.",
+   "code": "  817  public static void main(String[] argv) {\n    …\n  885              preload(bootTimingsTraceLog);\n    …\n  905              Runnable r = forkSystemServer(abiList, zygoteSocketName, zygoteServer);\n    …\n  919          caller = zygoteServer.runSelectLoop(abiList);",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/com/android/internal/os/ZygoteInit.java#L817",
+   "where": "ZygoteInit.java, line 817",
+   "repo": "AOSP frameworks/base"
+  },
+  "SystemServer.main()": {
+   "what": "system_server's entry point: it starts the bootstrap services (activities, packages, power…).",
+   "code": "  684  public static void main(String[] args) {\n  685      new SystemServer().run();\n    …\n  976          startBootstrapServices(t);",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/services/java/com/android/server/SystemServer.java#L684",
+   "where": "SystemServer.java, line 684",
+   "repo": "AOSP frameworks/base"
+  },
+  "ActivityTaskManagerService.startActivity()": {
+   "what": "Where your startActivity() lands inside system_server, after crossing Binder.",
+   "code": " 1226  public final int startActivity(IApplicationThread caller, String callingPackage,\n    …\n 1230      return startActivityAsUser(caller, callingPackage, callingFeatureId, intent, resolvedType,",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/services/core/java/com/android/server/wm/ActivityTaskManagerService.java#L1226",
+   "where": "ActivityTaskManagerService.java, line 1226",
+   "repo": "AOSP frameworks/base"
+  },
+  "onCreate()": {
+   "what": "Your override of this method is what the main thread calls when system_server says \"create\".",
+   "code": " 1864  protected void onCreate(@Nullable Bundle savedInstanceState) {",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/Activity.java#L1864",
+   "where": "Activity.java, line 1864",
+   "repo": "AOSP frameworks/base"
+  },
+  "Parcel": {
+   "what": "The flat byte buffer that carries arguments across processes.",
+   "code": "  237  public final class Parcel {",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Parcel.java#L237",
+   "where": "Parcel.java, line 237",
+   "repo": "AOSP frameworks/base"
+  },
+  "drivers/android/binder": {
+   "what": "The Binder driver in mainline Linux (now written in Rust) stamps the sender's user ID on every transaction. Android phones run Android's own kernel branches, which may still use the older C driver.",
+   "code": "  392  from_parent,\n  393  sender_euid: Kuid::current_euid(),",
+   "url": "https://github.com/torvalds/linux/blob/7e1392a42ea288d70a266f6553fe06f57f8647ea/drivers/android/binder/transaction.rs#L392",
+   "where": "transaction.rs, line 392",
+   "repo": "Linux kernel"
+  }
+ }
+}

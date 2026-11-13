@@ -46,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-course="android" data-n="4" data-prev="03-zygote-why-apps-start-fast.html" data-prev-title="Zygote is why apps start fast">
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="4" data-prev="03-zygote-why-apps-start-fast.html" data-prev-title="Zygote is why apps start fast">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" class="done" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" aria-current="page" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 4 of 6</p>
       <h1>system_server is the town hall</h1>
@@ -86,6 +86,12 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p><b>system_server</b> is a process started at boot that runs as long as the phone is on. Inside it live the <b>system services</b>: the activity and task managers (screens, tasks, process priority), the package manager (installed apps, their components, permissions), the window manager (what's on screen and who gets touches), and many more.</p>
+<p>It starts in <span class="ref" tabindex="0" aria-describedby="ref-1"><code>SystemServer.main()</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">system_server's entry point: it starts the bootstrap services (activities, packages, power…).</span><span class="pop-code">  684  public static void main(String[] args) {
+  685      new SystemServer().run();
+    …
+  976          startBootstrapServices(t);</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/services/java/com/android/server/SystemServer.java#L684">SystemServer.java, line 684 · AOSP frameworks/base ↗</a></span></span>. When your app calls <code>startActivity()</code>, the request arrives in <span class="ref" tabindex="0" aria-describedby="ref-2"><code>ActivityTaskManagerService.startActivity()</code><span class="pop" role="tooltip" id="ref-2"><span class="pop-what">Where your startActivity() lands inside system_server, after crossing Binder.</span><span class="pop-code"> 1226  public final int startActivity(IApplicationThread caller, String callingPackage,
+    …
+ 1230      return startActivityAsUser(caller, callingPackage, callingFeatureId, intent, resolvedType,</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/services/core/java/com/android/server/wm/ActivityTaskManagerService.java#L1226">ActivityTaskManagerService.java, line 1226 · AOSP frameworks/base ↗</a></span></span>.</p>
 <p>It keeps a record of every screen of every app, and tells your app when to create, pause, stop or destroy one.</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -122,6 +128,7 @@
 <ul><li><a href="https://developer.android.com/guide/components/activities/process-lifecycle">Android Developers: Processes and app lifecycle</a></li><li><a href="https://developer.android.com/guide/components/activities/tasks-and-back-stack">Android Developers: Tasks and the back stack</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Your Activity's life is decided in system_server. startActivity(), even for your own screen, is a request to the town hall, which answers by telling your app what to create.</p></div></section>
+      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-zygote-why-apps-start-fast.html">← Puzzle 3</a>

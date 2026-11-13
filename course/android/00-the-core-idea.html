@@ -46,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-course="android" data-n="0" data-prev="" data-prev-title="">
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="0" data-prev="" data-prev-title="">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" aria-current="page" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Start here</p>
       <h1>The one idea behind everything</h1>
@@ -80,7 +80,7 @@
 <li><p>That decision is made in another process, <b>system_server</b>. Think of it as the town hall: it keeps the official register of every app and every screen, and it decides "start screen X now".</p><div class="stepnav"><label for="st-chain-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-chain-3">Next →</label></div></li>
 <li><p>The town hall can't reach into your house: processes can't touch each other's memory. So the message goes through the <b>kernel's Binder driver</b>, the post office.</p><div class="stepnav"><label for="st-chain-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-chain-4">Next →</label></div></li>
 <li><p>The letter lands in your <b>main thread's</b> inbox. The main thread is one clerk who handles letters one at a time, in order.</p><div class="stepnav"><label for="st-chain-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-chain-5">Next →</label></div></li>
-<li><p>When the clerk reaches it, <b>your callback runs</b>: <code>onCreate()</code>. You didn't call it. You were called. Remember this chain; every puzzle in this course is one piece of it.</p><div class="stepnav"><label for="st-chain-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-chain-1">↺ Again</label></div></li>
+<li><p>When the clerk reaches it, <b>your callback runs</b>: <span class="ref" tabindex="0" aria-describedby="ref-1"><code>onCreate()</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">Your override of this method is what the main thread calls when system_server says &quot;create&quot;.</span><span class="pop-code"> 1864  protected void onCreate(@Nullable Bundle savedInstanceState) {</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/Activity.java#L1864">Activity.java, line 1864 · AOSP frameworks/base ↗</a></span></span>. You didn't call it. You were called. Remember this chain; every puzzle in this course is one piece of it.</p><div class="stepnav"><label for="st-chain-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-chain-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-chain-1" title="Step 1"></label><label for="st-chain-2" title="Step 2"></label><label for="st-chain-3" title="Step 3"></label><label for="st-chain-4" title="Step 4"></label><label for="st-chain-5" title="Step 5"></label></div>
 </figure><p class="gif-link"><a href="gifs/chain.gif" download>Save this diagram as a GIF</a></p>
@@ -109,7 +109,7 @@
 <p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Which thread runs <code>onCreate()</code>?</legend>
+<legend>Which thread runs <span class="ref" tabindex="0" aria-describedby="ref-2"><code>onCreate()</code><span class="pop" role="tooltip" id="ref-2"><span class="pop-what">Your override of this method is what the main thread calls when system_server says &quot;create&quot;.</span><span class="pop-code"> 1864  protected void onCreate(@Nullable Bundle savedInstanceState) {</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/Activity.java#L1864">Activity.java, line 1864 · AOSP frameworks/base ↗</a></span></span>?</legend>
 <input type="radio" name="q-00-the-core-idea-3" id="q-00-the-core-idea-3-1"><label for="q-00-the-core-idea-3-1">A thread inside system_server</label>
 <input type="radio" name="q-00-the-core-idea-3" id="q-00-the-core-idea-3-2" data-ok><label for="q-00-the-core-idea-3-2">Your app's main thread</label>
 <p class="fb ok"><b>Right.</b> The message lands in your main thread's inbox, and the main thread runs your callback when it gets there.</p>
@@ -121,6 +121,7 @@
 <ul><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a></li><li><a href="https://source.android.com/docs/security/app-sandbox">Android Open Source Project: Application sandbox</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>system_server decides → Binder carries the message → your main thread receives it → your callback runs. You don't call onCreate(); you get called.</p></div></section>
+      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="../">← Overview</a>

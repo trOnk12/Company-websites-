@@ -332,3 +332,24 @@ pre code { background: none; padding: 0; overflow-wrap: normal; }
 .linklike { background: none; border: 0; padding: 0; color: var(--accent-deep); text-decoration: underline; font: inherit; cursor: pointer; min-height: 2.75rem; }
 .gate .button { cursor: pointer; background: var(--bg); font: 700 1rem var(--sans); }
 .gc { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+/* Source popovers: hover, focus or tap a dotted code name */
+.ref { position: relative; display: inline; cursor: help; }
+.ref > code { text-decoration: underline dotted var(--accent-deep); text-underline-offset: 0.2em; }
+.ref:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+.ref .pop { display: none; position: absolute; z-index: 20; left: 0; top: calc(100% + 0.4rem); width: min(34rem, 80vw); padding: 0.75rem 0.9rem; background: var(--ink); color: #F6F3EC; border-radius: 6px; box-shadow: 0 6px 24px rgba(0,0,0,0.25); font-size: 0.9rem; line-height: 1.45; text-align: left; }
+.ref:hover .pop, .ref:focus .pop, .ref:focus-within .pop { display: block; }
+.ref .pop-what { display: block; margin-bottom: 0.5rem; font-weight: 700; }
+.ref .pop-code { display: block; white-space: pre; overflow-x: auto; font-family: var(--mono); font-size: 0.78rem; background: #2A2F36; color: #E9E5DA; padding: 0.55rem 0.65rem; border-radius: 4px; margin-bottom: 0.55rem; }
+.ref .pop a { color: #9CC3F0; }
+@media (max-width: 40rem) { .ref .pop { position: fixed; left: 1rem; right: 1rem; top: auto; bottom: 1rem; width: auto; max-height: 60vh; overflow: auto; } }
+
+/* Support */
+.support { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; color: var(--muted); }
+.support-puzzle { margin-top: 2rem; }
+.nudge { position: fixed; z-index: 30; right: 1rem; bottom: 1rem; max-width: 22rem; padding: 1rem 1.1rem; background: var(--bg); border: 2px solid var(--ink); border-radius: 8px; box-shadow: 0 8px 28px rgba(0,0,0,0.18); }
+.nudge p { margin: 0 0 0.75rem; }
+.nudge .actions { margin: 0; }
+.nudge .button { cursor: pointer; font: 700 1rem var(--sans); background: var(--bg); }
+.nudge .button.primary { background: var(--ink); color: var(--bg); }
+@media (max-width: 40rem) { .nudge { left: 1rem; right: 1rem; max-width: none; } }

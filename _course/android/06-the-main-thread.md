@@ -18,8 +18,8 @@ The UI toolkit isn't thread-safe: if two threads changed the same view at once, 
 
 Inside your process:
 
-- **MessageQueue**: a list of messages ("run this"), sorted by when they should run.
-- **Looper**: an endless loop on one thread: take the next message, run it, repeat; sleep when the queue is empty.
+- `MessageQueue`: a list of messages ("run this"), sorted by when they should run.
+- **Looper**: `Looper.loop()` is an endless loop on one thread: take the next message, run it, repeat; sleep when the queue is empty.
 - **Handler**: the way to put a message into a particular Looper's queue.
 
 ```kotlin
@@ -27,6 +27,8 @@ val main = Handler(Looper.getMainLooper())
 main.post { textView.text = "Done" }        // runs when the clerk reaches it
 main.postDelayed({ hideHint() }, 2_000)     // runs about 2 s later
 ```
+
+Every app process starts in `ActivityThread.main()`, which prepares this loop for the main thread and runs it forever.
 
 `Dispatchers.Main` in coroutines is built on this same queue.
 

@@ -46,6 +46,21 @@ function courseUrls() {
     .filter((u, i, a) => a.indexOf(u) === i);
 }
 
+// Inline code that names a real source location ("Looper.loop()") becomes a popover with the
+// excerpt and a link pinned to a commit. Works on hover, keyboard focus and tap, without JavaScript.
+function linkRefs(course, html) {
+  const f = path.join(course.dir, 'refs.json');
+  if (!fs.existsSync(f)) return html;
+  const { refs } = JSON.parse(fs.readFileSync(f, 'utf8'));
+  let n = 0;
+  return html.replace(/(<pre>)?<code>([^<]+)<\/code>/g, (m, pre, text) => {
+    const r = refs[text.replace(/&amp;/g, '&')];
+    if (pre || !r) return m;
+    const id = `ref-${++n}`;
+    return `<span class="ref" tabindex="0" aria-describedby="${id}"><code>${text}</code><span class="pop" role="tooltip" id="${id}"><span class="pop-what">${L.esc(r.what)}</span><span class="pop-code">${L.esc(r.code)}</span><a href="${r.url}">${L.esc(r.where)} · ${L.esc(r.repo)} ↗</a></span></span>`;
+  });
+}
+
 function gifSize(id, name) {
   const b = fs.readFileSync(path.join(OUT, id, 'gifs', `${name}.gif`));
   return [b.readUInt16LE(6), b.readUInt16LE(8)];
@@ -103,6 +118,13 @@ ${inputs}
   }).join('\n');
 }
 
+// Support link: shown only once course.json has a real support.url.
+function support(course, where) {
+  const sp = course.meta.support || {};
+  if (!sp.url) return '';
+  return `<p class="support support-${where}">${L.esc(sp.line)} <a class="button" href="${sp.url}" rel="noopener">☕ ${L.esc(sp.label)}</a></p>`;
+}
+
 function renderPuzzle(course, p, terms) {
   const ctx = { file: p.file, cards: new Map(course.puzzles.map(q => [q.slug, q])), links: new Set() };
   const sections = L.parseBody(p.body, ctx);
@@ -126,6 +148,7 @@ ${html}
   }).join('\n');
 
   const all = course.puzzles;
+  const linked = linkRefs(course, body);
   const prev = all[p.n - 1], next = all[p.n + 1];
   const progress = all.map(q => `<li><a href="${q.slug}.html"${q === p ? ' aria-current="page"' : q.n < p.n ? ' class="done"' : ''} title="${L.esc(q.meta.title)}">${q.n}</a></li>`).join('');
   const label = p.n === 0 ? 'Start here' : `Puzzle ${p.n} of ${all.length - 1}`;
@@ -136,13 +159,14 @@ ${html}
     base: '../../', current: 'course', feed: false, script: '../course.js',
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
       <p class="small"><a href="../">Course overview</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
-    body: `    <article class="puzzle course-top wrap narrow" data-course="${course.id}" data-n="${p.n}" data-prev="${prev ? `${prev.slug}.html` : ''}" data-prev-title="${prev ? L.esc(prev.meta.title) : ''}">
+    body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}" data-prev="${prev ? `${prev.slug}.html` : ''}" data-prev-title="${prev ? L.esc(prev.meta.title) : ''}">
       <nav aria-label="Puzzles"><ol class="progress">${progress}</ol></nav>
       <p class="eyebrow">${L.esc(course.meta.title)} · ${label}</p>
       <h1>${L.esc(p.meta.title)}</h1>
       <p class="lede">${L.inline(p.meta.summary, ctx)}</p>
-${body}
+${linked}
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>${L.inline(p.meta.takeaway, ctx)}</p></div></section>
+      ${support(course, 'puzzle')}
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         ${prev ? `<a class="button" href="${prev.slug}.html">← ${prev.n === 0 ? 'Start' : `Puzzle ${prev.n}`}</a>` : '<a class="button" href="../">← Overview</a>'}
@@ -173,6 +197,7 @@ function renderIndex(cs) {
       <div class="wrap narrow">
         <h2 id="how-heading">How it works</h2>
         <p>${L.esc(c.meta.how)}</p>
+        ${support(c, 'overview')}
       </div>
     </section>
     <section class="section" aria-labelledby="modules-heading">

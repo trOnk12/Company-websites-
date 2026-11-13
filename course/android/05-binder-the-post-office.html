@@ -46,7 +46,7 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-course="android" data-n="5" data-prev="04-system-server-the-town-hall.html" data-prev-title="system_server is the town hall">
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="5" data-prev="04-system-server-the-town-hall.html" data-prev-title="system_server is the town hall">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" class="done" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" class="done" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" aria-current="page" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 5 of 6</p>
       <h1>Binder is the post office between processes</h1>
@@ -87,9 +87,10 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p><b>Binder</b> is a driver inside the Linux kernel. The kernel is the only code allowed to touch every process's memory, so it can carry messages across. Your side holds a <b>proxy</b>; the other side has a <b>stub</b> that calls the real object. Arguments travel as a <b>Parcel</b>.</p>
+<p><b>Binder</b> is a driver inside the Linux kernel (<span class="ref" tabindex="0" aria-describedby="ref-1"><code>drivers/android/binder</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">The Binder driver in mainline Linux (now written in Rust) stamps the sender's user ID on every transaction. Android phones run Android's own kernel branches, which may still use the older C driver.</span><span class="pop-code">  392  from_parent,
+  393  sender_euid: Kuid::current_euid(),</span><a href="https://github.com/torvalds/linux/blob/7e1392a42ea288d70a266f6553fe06f57f8647ea/drivers/android/binder/transaction.rs#L392">transaction.rs, line 392 · Linux kernel ↗</a></span></span>). The kernel is the only code allowed to touch every process's memory, so it can carry messages across. Your side holds a <b>proxy</b>; the other side has a <b>stub</b> that calls the real object. Arguments travel as a <span class="ref" tabindex="0" aria-describedby="ref-2"><code>Parcel</code><span class="pop" role="tooltip" id="ref-2"><span class="pop-what">The flat byte buffer that carries arguments across processes.</span><span class="pop-code">  237  public final class Parcel {</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Parcel.java#L237">Parcel.java, line 237 · AOSP frameworks/base ↗</a></span></span>.</p>
 <p>Two facts that come up all the time:</p>
-<ul><li><b>Who's calling</b>: Binder stamps every call with the caller's UID and PID, which is how the receiver checks permissions.</li><li><b>Size limit</b>: the transaction buffer is about 1 MB per process, shared by all transactions in progress.</li></ul>
+<ul><li><b>Who's calling</b>: Binder stamps every call with the caller's UID and PID. The receiver reads it with <span class="ref" tabindex="0" aria-describedby="ref-3"><code>Binder.getCallingUid()</code><span class="pop" role="tooltip" id="ref-3"><span class="pop-what">Native: the UID the kernel stamped on the call. The caller can't fake it.</span><span class="pop-code">  338  public static final native int getCallingUid();</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Binder.java#L338">Binder.java, line 338 · AOSP frameworks/base ↗</a></span></span> to check permissions.</li><li><b>Size limit</b>: the transaction buffer is about 1 MB per process, shared by all transactions in progress.</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -126,6 +127,7 @@
 <ul><li><a href="https://developer.android.com/reference/android/os/TransactionTooLargeException">Android reference: TransactionTooLargeException</a></li><li><a href="https://developer.android.com/reference/android/os/Binder">Android reference: Binder</a></li><li><a href="https://developer.android.com/reference/android/os/Parcel">Android reference: Parcel</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>proxy → Parcel → kernel (Binder) → Binder thread → stub → real method, and back. Every Intent, every startActivity(), every system service call travels this way, with a buffer of about 1 MB.</p></div></section>
+      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="04-system-server-the-town-hall.html">← Puzzle 4</a>

@@ -113,7 +113,7 @@
     const update = () => {
       quizzes.forEach(q => q.classList.toggle('solved', solved(q)));
       const done = quizzes.length > 0 && quizzes.every(solved);
-      if (done && !mastered()) { store.add(course, n); count(`mastered ${course} ${n}`, true, `Mastered puzzle ${n}`); }
+      if (done && !mastered()) { store.add(course, n); count(`mastered ${course} ${n}`, true, `Mastered puzzle ${n}`); nudge(); }
       const open = done || mastered();
       if (next) {
         next.classList.toggle('locked', !open);
@@ -124,6 +124,20 @@
         const left = quizzes.filter(q => !solved(q)).length;
         msg.textContent = `Answer ${left === 1 ? 'the last question' : `the ${left} questions`} above correctly to unlock the next puzzle.`;
       }
+    };
+    // A gentle coffee reminder: only right after a puzzle is mastered, at most once a month.
+    const nudge = () => {
+      const url = puzzle.dataset.support;
+      if (!url) return;
+      try { if (Date.now() - Number(localStorage.getItem('course:nudged') || 0) < 30 * 864e5) return; localStorage.setItem('course:nudged', String(Date.now())); } catch { return; }
+      const card = document.createElement('aside');
+      card.className = 'nudge';
+      card.setAttribute('aria-label', 'Support this course');
+      card.innerHTML = `<p><b>Nice, puzzle mastered.</b> This course is free for everyone. If it's helping, a coffee keeps the next module coming.</p>
+<p class="actions"><a class="button primary" href="${url}" rel="noopener">☕ Buy me a coffee</a><button type="button" class="button">Not now</button></p>`;
+      card.querySelector('button').addEventListener('click', () => card.remove());
+      card.querySelector('a').addEventListener('click', () => count(`coffee ${location.pathname}`, true, 'Clicked buy me a coffee'));
+      document.body.append(card);
     };
     quizzes.forEach(q => q.addEventListener('change', update));
     if (next) next.addEventListener('click', e => {

@@ -16,11 +16,11 @@ Your app (one process) needs system_server (another process) to start a screen. 
 
 ## The building block
 
-**Binder** is a driver inside the Linux kernel. The kernel is the only code allowed to touch every process's memory, so it can carry messages across. Your side holds a **proxy**; the other side has a **stub** that calls the real object. Arguments travel as a **Parcel**.
+**Binder** is a driver inside the Linux kernel (`drivers/android/binder`). The kernel is the only code allowed to touch every process's memory, so it can carry messages across. Your side holds a **proxy**; the other side has a **stub** that calls the real object. Arguments travel as a `Parcel`.
 
 Two facts that come up all the time:
 
-- **Who's calling**: Binder stamps every call with the caller's UID and PID, which is how the receiver checks permissions.
+- **Who's calling**: Binder stamps every call with the caller's UID and PID. The receiver reads it with `Binder.getCallingUid()` to check permissions.
 - **Size limit**: the transaction buffer is about 1 MB per process, shared by all transactions in progress.
 
 ## The analogy
