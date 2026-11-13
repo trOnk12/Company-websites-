@@ -93,27 +93,33 @@ ${items}
 </figure>`;
 }
 
-// "Question::*Right||Wrong||Wrong::Why" → a quiz that grades itself with CSS (and JS, when present).
-function quiz(p, items, ctx) {
+// "Question::*Right||Wrong >> the mismatch behind it >> s3||…::Why the right one is right"
+// Each wrong option names its own misconception and points back to the diagram step (sN) or section
+// that fixes it. Grades itself with CSS; course.js adds the unlock.
+function quiz(p, items, ctx, diagramName) {
+  const { parseQuestion } = require('./lint-course');
   return items.map((it, qi) => {
-    const parts = it.split('::');
-    const opts = (parts[1] || '').split('||').map(o => o.trim());
-    if (parts.length !== 3 || opts.length < 2 || opts.filter(o => o.startsWith('*')).length !== 1) {
-      fail(p.file, `question needs "Question::*Right||Wrong::Why": ${it}`); return '';
+    const q = parseQuestion(it);
+    if (q.parts !== 3 || q.opts.length < 2 || q.opts.filter(o => o.ok).length !== 1) {
+      fail(p.file, `question needs "Question::*Right||Wrong >> mismatch >> pointer::Why": ${it}`); return '';
     }
     // Stable shuffle, so the right answer isn't always first but the page doesn't change between builds.
-    let h = 0; for (const ch of parts[0]) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
-    const order = opts.map((o, i) => ({ o, k: (h + i * 2654435761) >>> 0 })).sort((a, b) => a.k - b.k).map(x => x.o);
+    let h = 0; for (const ch of q.q) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    const order = q.opts.map((o, i) => ({ o, k: (h + i * 2654435761) >>> 0 })).sort((a, b) => a.k - b.k).map(x => x.o);
     const name = `q-${p.slug}-${qi + 1}`;
-    const inputs = order.map((o, i) => {
-      const ok = o.startsWith('*');
-      return `<input type="radio" name="${name}" id="${name}-${i + 1}"${ok ? ' data-ok' : ''}><label for="${name}-${i + 1}">${L.inline(ok ? o.slice(1).trim() : o, ctx)}</label>`;
-    }).join('\n');
+    const inputs = order.map((o, i) => `<input type="radio" name="${name}" id="${name}-${i + 1}"${o.ok ? ' data-ok' : ''}><label for="${name}-${i + 1}">${L.inline(o.text, ctx)}</label>`).join('\n');
+    const pointer = ptr => {
+      const step = (ptr || '').match(/^s(\d)$/);
+      if (step && diagramName) return `<label class="show-me" for="st-${diagramName}-${step[1]}" data-goto="st-${diagramName}">Show me step ${step[1]} again ↑</label>`;
+      return ptr ? `<a class="show-me" href="#${ptr}">Re-read that part ↑</a>` : '';
+    };
+    const fbs = order.map((o, i) => o.ok
+      ? `<p class="fb ok opt-${i + 1}"><b>Right.</b> ${L.inline(q.why, ctx)}</p>`
+      : `<p class="fb no opt-${i + 1}"><b>Not quite.</b> ${L.inline(o.mismatch || 'Step back through the diagram above, then try again.', ctx)} ${pointer(o.pointer)}</p>`).join('\n');
     return `<fieldset class="quiz">
-<legend>${L.inline(parts[0].trim(), ctx)}</legend>
+<legend>${L.inline(q.q, ctx)}</legend>
 ${inputs}
-<p class="fb ok"><b>Right.</b> ${L.inline(parts[2].trim(), ctx)}</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+${fbs}
 </fieldset>`;
   }).join('\n');
 }
@@ -123,6 +129,11 @@ function support(course, where) {
   const sp = course.meta.support || {};
   if (!sp.url) return '';
   return `<p class="support support-${where}">${L.esc(sp.line)} <a class="button" href="${sp.url}" rel="noopener">☕ ${L.esc(sp.label)}</a></p>`;
+}
+
+function diagramOf(p) {
+  const m = p.body.match(/```diagram\s*(\S*)\s*\n\s*(\S*)/);
+  return m ? (m[1] || m[2]) : '';
 }
 
 function renderPuzzle(course, p, terms) {
@@ -137,7 +148,7 @@ function renderPuzzle(course, p, terms) {
   const body = sections.map(s => {
     const sid = s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const html = s.title === 'Check yourself'
-      ? s.blocks.map(b => b.type === 'ul' ? quiz(p, b.items, ctx) : L.renderBlocks([b], ctx)).join('\n')
+      ? s.blocks.map(b => b.type === 'ul' ? quiz(p, b.items, ctx, diagramOf(p)) : L.renderBlocks([b], ctx)).join('\n')
       : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
       ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
       : L.renderBlocks([b], ctx, { recall: s.title === 'Check yourself' })).join('\n');

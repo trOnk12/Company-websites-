@@ -53,69 +53,74 @@
       <p class="lede">Each app gets its own Linux user ID and its own process. The kernel keeps them apart, so one app can't open another's files or read its memory.</p>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>A phone runs dozens of apps from different companies. A banking app must be safe from a game that wants to read its files or its memory. How do you keep them apart without trusting either of them?</p>
+<p>In puzzle 0, your app was a house. But a phone has dozens of houses from different companies, and a banking app must be safe from a game that wants to read its files or its memory. How do you keep them apart without trusting either of them?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Each app in its own sandbox"><input type="radio" name="st-sandbox" id="st-sandbox-1" checked aria-label="Step 1 of 3"><input type="radio" name="st-sandbox" id="st-sandbox-2" aria-label="Step 2 of 3"><input type="radio" name="st-sandbox" id="st-sandbox-3" aria-label="Step 3 of 3">
-<div class="stage"><svg viewBox="0 0 640 370" role="img" aria-labelledby="sb-t"><title id="sb-t">Two apps with their own user IDs; the kernel blocks one from opening the other's file; the official doors are Intents and ContentProviders</title>
-<defs><marker id="sb-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker><marker id="sb-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ahr" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="270" height="168" rx="8"/><text class="d-b" x="34" y="50">Bank app</text><text class="d-mi" x="34" y="80">UID u0_a101</text><rect class="d-band" x="34" y="102" width="150" height="58" rx="4"/><text class="d-mi" x="46" y="138">accounts.db</text></g>
-<g class="step s1"><rect class="d-box" x="354" y="14" width="270" height="168" rx="8"/><text class="d-b" x="372" y="50">Game</text><text class="d-mi" x="372" y="80">UID u0_a202</text><rect class="d-band" x="456" y="102" width="150" height="58" rx="4"/><text class="d-mi" x="476" y="138">save.dat</text></g>
-<g class="step s1"><rect class="d-band" x="16" y="282" width="608" height="74" rx="8"/><text class="d-b" x="34" y="316">Linux kernel</text><text class="d-m" x="34" y="342">checks the UID on every file and process</text></g>
-<path class="step only-2 d-red" d="M410,184 L410,300 L230,300 L230,166" marker-end="url(#sb-ahr)"/>
-<g class="step only-2"><rect class="d-bad" x="278" y="276" width="96" height="44" rx="6"/><text class="d-r" x="292" y="305">denied</text></g>
-<g class="step s3"><rect class="d-hl" x="122" y="204" width="396" height="56" rx="8"/><text class="d-a" x="140" y="238">Official doors: Intent, ContentProvider</text></g>
-<path class="step s3 d-acc" d="M560,184 L560,232 L524,232" marker-end="url(#sb-ah)"/>
-<path class="step s3 d-acc" d="M116,232 L80,232 L80,186" marker-end="url(#sb-ah)"/>
+<figure class="stepper" aria-label="Each app is its own house with its own key"><input type="radio" name="st-sandbox" id="st-sandbox-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-sandbox" id="st-sandbox-2" aria-label="Step 2 of 4"><input type="radio" name="st-sandbox" id="st-sandbox-3" aria-label="Step 3 of 4"><input type="radio" name="st-sandbox" id="st-sandbox-4" aria-label="Step 4 of 4">
+<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sb-t"><title id="sb-t">Two app houses with different keys (UIDs); the game's key doesn't fit the bank's door, so the kernel refuses; the official way is a letter through the town hall</title>
+<g class="step s1"><polygon class="d-roof" points="30,130 160,72 290,130"/><rect class="d-paper" x="40" y="130" width="240" height="142"/><rect class="d-wood" x="190" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="224" cy="238" r="4"/><rect class="d-paper" x="58" y="168" width="54" height="70" rx="3"/><line class="d-line" x1="66" y1="186" x2="104" y2="186"/><line class="d-line" x1="66" y1="200" x2="104" y2="200"/><line class="d-line" x1="66" y1="214" x2="96" y2="214"/><text class="d-mi" x="56" y="156">UID 10101</text><text class="d-b" x="40" y="298">Bank app</text></g>
+<g class="step s1"><polygon class="d-roof" points="350,130 480,72 610,130"/><rect class="d-paper" x="360" y="130" width="240" height="142"/><rect class="d-wood" x="510" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="544" cy="238" r="4"/><text class="d-mi" x="376" y="156">UID 10202</text><text class="d-b" x="360" y="298">Game</text></g>
+<g class="step s1"><rect class="d-band" x="10" y="312" width="620" height="56" rx="8"/><text class="d-m" x="26" y="346">kernel: checks the key</text><rect class="d-ink" x="314" y="140" width="12" height="172" rx="3"/></g>
+<!-- the game's key tries the bank's door -->
+<g class="step only-2" data-move="1:440,226 2:236,226"><circle class="d-hl" cx="14" cy="14" r="12"/><rect class="d-hl" x="24" y="10" width="30" height="8" rx="2"/></g>
+<g class="step only-2" data-pulse="2"><circle class="d-bad" cx="212" cy="190" r="22"/><path class="d-red" d="M200,178 L224,202 M224,178 L200,202"/></g>
+<!-- the official way: a letter through the town hall -->
+<g class="step s3" data-pulse="3"><polygon class="d-roof" points="262,44 320,12 378,44"/><rect class="d-paper" x="272" y="44" width="96" height="40"/><text class="d-tiny" x="270" y="108">town hall</text></g>
+<g class="step s3 actor-letter" data-move="2:420,170 3:288,40 4:150,152"><rect class="d-paper" x="0" y="0" width="60" height="40" rx="3"/><polyline class="d-line" points="0,0 30,20 60,0"/></g>
 </svg></div>
 <ol class="caps">
-<li><p>When you install an app, Android gives it its own <b>Linux user ID</b> (UID), and runs it in its own process. The bank app and the game are two different "users" as far as Linux is concerned.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 3</span><label class="next" for="st-sandbox-2">Next →</label></div></li>
-<li><p>The game tries to open the bank's <code>accounts.db</code> directly. The file belongs to another UID, so the <b>kernel refuses</b>. The game can't read the bank's memory either: it's a different process. This is the <b>sandbox</b>.</p><div class="stepnav"><label for="st-sandbox-1">← Back</label><span class="count">Step 2 of 3</span><label class="next" for="st-sandbox-3">Next →</label></div></li>
-<li><p>Apps can still share, but only through <b>official doors</b> that the system controls, like Intents and ContentProviders. Who runs those doors? That's the town hall, in puzzle 4.</p><div class="stepnav"><label for="st-sandbox-2">← Back</label><span class="count">Step 3 of 3</span><label for="st-sandbox-1">↺ Again</label></div></li>
+<li><p>Android installs each app as its own Linux user, with its own <b>UID</b> (user ID): its own key. Each app runs in its own process, a house with its own memory.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-sandbox-2">Next →</label></div></li>
+<li><p>The game tries to open the bank's file with its own key. It doesn't fit: the <b>kernel</b> checks the UID on every file and every process, and refuses. <i>Predict: so how can apps share anything?</i></p><div class="stepnav"><label for="st-sandbox-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-sandbox-3">Next →</label></div></li>
+<li><p>Through official doors. The game writes a letter (an Intent) to the town hall, system_server, which checks it…</p><div class="stepnav"><label for="st-sandbox-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-sandbox-4">Next →</label></div></li>
+<li><p>…and delivers it to the bank if it's allowed. Apps never walk into each other's houses; the system carries what they share.</p><div class="stepnav"><label for="st-sandbox-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-sandbox-1">↺ Again</label></div></li>
 </ol>
-<div class="dots" aria-hidden="true"><label for="st-sandbox-1" title="Step 1"></label><label for="st-sandbox-2" title="Step 2"></label><label for="st-sandbox-3" title="Step 3"></label></div>
+<div class="dots" aria-hidden="true"><label for="st-sandbox-1" title="Step 1"></label><label for="st-sandbox-2" title="Step 2"></label><label for="st-sandbox-3" title="Step 3"></label><label for="st-sandbox-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/sandbox.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Android is built on Linux, and Linux already knows how to keep <em>users</em> apart. So Android turns each app into its own user: at install time the app gets a unique <b>user ID</b> (UID), and it runs in its own <b>process</b>.</p>
-<ul><li>Files the app creates belong to its UID; other apps can't open them.</li><li>Processes can't read each other's memory.</li><li>The kernel enforces both, so a buggy or hostile app can't switch them off.</li></ul>
+<p>Android is built on Linux, and Linux already knows how to keep <em>users</em> apart. So Android turns each app into its own user: at install time the app gets a unique user ID (UID), and it runs in its own process.</p>
+<ul><li>Files the app creates belong to its UID; other apps can't open them.</li><li>A process can't read another process's memory.</li><li>The kernel enforces both, so a buggy or hostile app can't switch them off.</li></ul>
+<p>You'll see the same UID written two ways: <code>10101</code> is the number, <code>u0_a101</code> is its name in tools like <code>ps</code>. The kernel guards files and memory; in puzzle 5 you'll see how system_server guards everything else, using the same UID.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>An apartment block. Each app has its own flat and its own key. Neighbours can't walk in. To ask for something, they go through the building's official channels.</p>
+<p>Every app is a house with its own key. The kernel is the lock on every door: it only opens for the right key. Neighbours who want something send a letter through the town hall.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<p>Answer all three to unlock the next puzzle.</p>
 <fieldset class="quiz">
 <legend>A game wants to read the bank app's database file directly. Does it work?</legend>
-<input type="radio" name="q-01-an-app-is-a-linux-process-1" id="q-01-an-app-is-a-linux-process-1-1"><label for="q-01-an-app-is-a-linux-process-1-1">Yes, as long as both apps are installed</label>
-<input type="radio" name="q-01-an-app-is-a-linux-process-1" id="q-01-an-app-is-a-linux-process-1-2" data-ok><label for="q-01-an-app-is-a-linux-process-1-2">No, the kernel refuses: the file belongs to another UID</label>
-<p class="fb ok"><b>Right.</b> Each app is a separate Linux user, and the kernel checks the UID on every file. Apps share only through official doors like Intents and ContentProviders.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<input type="radio" name="q-01-an-app-is-a-linux-process-1" id="q-01-an-app-is-a-linux-process-1-1"><label for="q-01-an-app-is-a-linux-process-1-1">Yes, because both apps run on the same phone</label>
+<input type="radio" name="q-01-an-app-is-a-linux-process-1" id="q-01-an-app-is-a-linux-process-1-2"><label for="q-01-an-app-is-a-linux-process-1-2">Yes, if the game asks for storage permission</label>
+<input type="radio" name="q-01-an-app-is-a-linux-process-1" id="q-01-an-app-is-a-linux-process-1-3" data-ok><label for="q-01-an-app-is-a-linux-process-1-3">No: the file belongs to another UID, and the kernel refuses</label>
+<p class="fb no opt-1"><b>Not quite.</b> Same phone, different users. Linux keeps users apart even on one machine. <label class="show-me" for="st-sandbox-1" data-goto="st-sandbox">Show me step 1 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Permissions don't let one app into another app's private files. The key (UID) has to match the door, and it never does. <label class="show-me" for="st-sandbox-2" data-goto="st-sandbox">Show me step 2 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> Each app is a separate Linux user, and the kernel checks the UID on every file. Apps share only through official doors like Intents.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Who enforces the sandbox?</legend>
 <input type="radio" name="q-01-an-app-is-a-linux-process-2" id="q-01-an-app-is-a-linux-process-2-1" data-ok><label for="q-01-an-app-is-a-linux-process-2-1">The Linux kernel</label>
-<input type="radio" name="q-01-an-app-is-a-linux-process-2" id="q-01-an-app-is-a-linux-process-2-2"><label for="q-01-an-app-is-a-linux-process-2-2">Each app, by being careful</label>
-<p class="fb ok"><b>Right.</b> The kernel enforces it, which is why a buggy or hostile app can't switch it off.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<input type="radio" name="q-01-an-app-is-a-linux-process-2" id="q-01-an-app-is-a-linux-process-2-2"><label for="q-01-an-app-is-a-linux-process-2-2">system_server, the town hall</label>
+<input type="radio" name="q-01-an-app-is-a-linux-process-2" id="q-01-an-app-is-a-linux-process-2-3"><label for="q-01-an-app-is-a-linux-process-2-3">Each app, by being careful</label>
+<p class="fb ok opt-1"><b>Right.</b> The kernel enforces it, which is why a buggy or hostile app can't switch it off.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The town hall carries letters between apps (step 4), but the walls around files and memory are the kernel's job. <label class="show-me" for="st-sandbox-4" data-goto="st-sandbox">Show me step 4 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> If apps had to behave, a hostile app simply wouldn't. The walls hold because the kernel checks every access, whatever the app does. <label class="show-me" for="st-sandbox-2" data-goto="st-sandbox">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Two apps run at the same time. Do they share one process?</legend>
-<input type="radio" name="q-01-an-app-is-a-linux-process-3" id="q-01-an-app-is-a-linux-process-3-1"><label for="q-01-an-app-is-a-linux-process-3-1">Yes, all apps share one Android process</label>
-<input type="radio" name="q-01-an-app-is-a-linux-process-3" id="q-01-an-app-is-a-linux-process-3-2" data-ok><label for="q-01-an-app-is-a-linux-process-3-2">No, each app runs in its own process</label>
-<p class="fb ok"><b>Right.</b> Each app gets its own process, with its own memory that other apps can't read.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<legend>How should a game get data from the bank app?</legend>
+<input type="radio" name="q-01-an-app-is-a-linux-process-3" id="q-01-an-app-is-a-linux-process-3-1"><label for="q-01-an-app-is-a-linux-process-3-1">Read the bank's memory while both are running</label>
+<input type="radio" name="q-01-an-app-is-a-linux-process-3" id="q-01-an-app-is-a-linux-process-3-2" data-ok><label for="q-01-an-app-is-a-linux-process-3-2">Ask through an official door, like an Intent the system delivers</label>
+<p class="fb no opt-1"><b>Not quite.</b> Running at the same time doesn't open the walls: each app's memory belongs to its own process. <label class="show-me" for="st-sandbox-2" data-goto="st-sandbox">Show me step 2 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Apps never reach into each other. They send letters, and the system decides whether to deliver them.</p>
 </fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://source.android.com/docs/security/app-sandbox">Android Open Source Project: Application sandbox</a></li><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a></li></ul>
       </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Your app is a house with its own key (a UID) and its own walls (a process). To get anything from another app, you go through official doors, never straight in.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Your app is a house with its own key (a UID) and its own walls (a process). The kernel checks the key on every file. To get anything from another app, you send a letter through the town hall.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

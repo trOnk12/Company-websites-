@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="One long-running process holds Android's system services. It keeps the register of every app and screen, and it decides their lifecycle, not your app.">
+  <meta name="description" content="One long-running process holds Android's system services. It keeps the register of every app's screens and decides their lifecycle, not your app.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="system_server is the town hall – Android from the foundation – Mateusz Pachulski">
-  <meta property="og:description" content="One long-running process holds Android's system services. It keeps the register of every app and screen, and it decides their lifecycle, not your app.">
+  <meta property="og:description" content="One long-running process holds Android's system services. It keeps the register of every app's screens and decides their lifecycle, not your app.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/android/04-system-server-the-town-hall">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -50,84 +50,78 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" class="done" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" aria-current="page" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 4 of 6</p>
       <h1>system_server is the town hall</h1>
-      <p class="lede">One long-running process holds Android's system services. It keeps the register of every app and screen, and it decides their lifecycle, not your app.</p>
+      <p class="lede">One long-running process holds Android's system services. It keeps the register of every app's screens and decides their lifecycle, not your app.</p>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>If every app is locked in its own sandbox, who decides which app is on screen, who may use the camera, which app handles a link, and which app to kill when memory runs low? It has to be one trusted place that sees everything.</p>
+<p>In puzzle 3, Zygote also started system_server. Why does Android need it? If every app is locked in its own house, someone has to decide which app is on screen, which app opens a link, and which screens exist. It has to be one trusted place that sees all the houses.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Even your own screens go through system_server"><input type="radio" name="st-town-hall" id="st-town-hall-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-town-hall" id="st-town-hall-2" aria-label="Step 2 of 4"><input type="radio" name="st-town-hall" id="st-town-hall-3" aria-label="Step 3 of 4"><input type="radio" name="st-town-hall" id="st-town-hall-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="th-t"><title id="th-t">Your app asks system_server to start screen B; system_server checks and records it, then tells your app to create it</title>
-<defs><marker id="th-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="250" height="352" rx="8"/><text class="d-b" x="34" y="50">Your app</text><rect class="d-band" x="34" y="72" width="214" height="80" rx="6"/><text class="d-t" x="50" y="118">Screen A</text></g>
-<g class="step s1"><rect class="d-box" x="374" y="14" width="250" height="352" rx="8"/><text class="d-b" x="392" y="50">system_server</text>
-<text class="d-mi" x="392" y="90">ActivityTaskManager</text><text class="d-mi" x="392" y="118">PackageManager</text><text class="d-mi" x="392" y="146">WindowManager</text><text class="d-m" x="392" y="174">…</text>
-<text class="d-m" x="392" y="222">register of screens:</text><text class="d-mi" x="392" y="250">• your app: A</text></g>
-<path class="step s2 d-acc" d="M270,110 L368,110" marker-end="url(#th-ah)"/>
-<text class="step s2 d-a" x="270" y="98">start B</text>
-<circle class="step only-2 moving d-dot" r="9"><animateMotion dur="1.3s" repeatCount="indefinite" path="M272,110 L364,110"/></circle>
-<rect class="step s3 d-acc" x="384" y="70" width="232" height="30" rx="4"/>
-<text class="step s3 d-a" x="392" y="278">• your app: A, B</text>
-<path class="step s4 d-acc" d="M370,300 L272,300" marker-end="url(#th-ah)"/>
-<text class="step s4 d-a" x="288" y="288">create B</text>
-<circle class="step only-4 moving d-dot" r="9"><animateMotion dur="1.3s" repeatCount="indefinite" path="M368,300 L276,300"/></circle>
-<g class="step s4"><rect class="d-hl" x="34" y="182" width="214" height="80" rx="6"/><text class="d-t" x="50" y="228">Screen B</text></g>
+<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="th-t"><title id="th-t">Your app sends "start B" to system_server; system_server checks it and adds B to its register; then it sends "create B" back and your app creates the screen</title>
+<g class="step s1"><polygon class="d-roof" points="10,110 155,56 300,110"/><rect class="d-paper" x="20" y="110" width="270" height="250"/><text class="d-b" x="40" y="146">your app</text>
+<rect class="d-band" x="44" y="168" width="96" height="70" rx="6"/><text class="d-b" x="82" y="212">A</text></g>
+<g class="step s1"><polygon class="d-roof" points="340,110 485,56 630,110"/><rect class="d-paper" x="350" y="110" width="270" height="250"/><rect class="d-wood" x="368" y="122" width="12" height="60"/><rect class="d-wood" x="590" y="122" width="12" height="60"/><text class="d-b" x="396" y="150">system_server</text>
+<rect class="d-paper" x="378" y="196" width="214" height="120" rx="4"/><text class="d-tiny" x="392" y="222">register</text></g><text class="step upto-2 d-mi" x="392" y="252">your app: A</text>
+<g class="step s3" data-pulse="3"><text class="d-a" x="392" y="252">your app: A, B</text><text class="d-a" x="520" y="346">✓ checked</text></g>
+<!-- letter out: start B -->
+<g class="step s2 actor-letter" data-move="1:150,180 2:362,312"><rect class="d-paper" x="0" y="0" width="76" height="44" rx="3"/><polyline class="d-line" points="0,0 38,22 76,0"/><text class="d-tiny" x="8" y="38">start B</text></g>
+<!-- letter back: create B -->
+<g class="step s4 actor-letter" data-move="3:430,300 4:170,290"><rect class="d-paper" x="0" y="0" width="84" height="44" rx="3"/><polyline class="d-line" points="0,0 42,22 84,0"/><text class="d-tiny" x="8" y="38">create B</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="160" y="168" width="96" height="70" rx="6"/><text class="d-a" x="198" y="212">B</text></g>
 </svg></div>
 <ol class="caps">
-<li><p>Every app lives in its own sandbox. So who decides which app is on screen, which app opens a link, which app gets killed when memory runs low? One trusted process that sees everything: <b>system_server</b>, the town hall.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-town-hall-2">Next →</label></div></li>
-<li><p>Your app calls <code>startActivity()</code> to open its <i>own</i> next screen. Even so, the request leaves your process and goes to the town hall's <b>ActivityTaskManager</b>.</p><div class="stepnav"><label for="st-town-hall-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-town-hall-3">Next →</label></div></li>
-<li><p>The town hall checks the request (does this screen exist? may you open it?) and writes it in its <b>register</b>: it now knows your app has screens A and B, in that order.</p><div class="stepnav"><label for="st-town-hall-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-town-hall-4">Next →</label></div></li>
-<li><p>Only then does it tell your app: <b>"create B"</b>. Your app builds Screen B because it was told to. Your screens' lives are recorded and decided outside your app.</p><div class="stepnav"><label for="st-town-hall-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-town-hall-1">↺ Again</label></div></li>
+<li><p>Your app shows screen A. The town hall, <b>system_server</b>, keeps the official <b>register</b> of every app's screens. Right now it says: your app, A.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-town-hall-2">Next →</label></div></li>
+<li><p>Your app calls <code>startActivity()</code> to open its own screen B. Even so, the request leaves your house and goes to the town hall (by Binder, the post office from puzzle 5).</p><div class="stepnav"><label for="st-town-hall-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-town-hall-3">Next →</label></div></li>
+<li><p>The town hall checks it: does B exist, may you open it? Then it writes B in the register. <i>Predict: has screen B been created yet?</i></p><div class="stepnav"><label for="st-town-hall-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-town-hall-4">Next →</label></div></li>
+<li><p>Not until now: the town hall sends back "create B", and only then does your app build the screen. Your screens' lives are decided outside your app.</p><div class="stepnav"><label for="st-town-hall-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-town-hall-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-town-hall-1" title="Step 1"></label><label for="st-town-hall-2" title="Step 2"></label><label for="st-town-hall-3" title="Step 3"></label><label for="st-town-hall-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/town-hall.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p><b>system_server</b> is a process started at boot that runs as long as the phone is on. Inside it live the <b>system services</b>: the activity and task managers (screens, tasks, process priority), the package manager (installed apps, their components, permissions), the window manager (what's on screen and who gets touches), and many more.</p>
+<p><b>system_server</b> starts at boot and runs as long as the phone is on. Inside it live the <b>system services</b>. The one that manages screens is ActivityTaskManagerService: it keeps a record of every Activity of every app, and tells each app when to create, pause, stop or destroy one. Other services handle installed apps, windows, notifications and more.</p>
 <p>It starts in <span class="ref" tabindex="0" aria-describedby="ref-1"><code>SystemServer.main()</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">system_server's entry point: it starts the bootstrap services (activities, packages, power…).</span><span class="pop-code">  684  public static void main(String[] args) {
   685      new SystemServer().run();
     …
   976          startBootstrapServices(t);</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/services/java/com/android/server/SystemServer.java#L684">SystemServer.java, line 684 · AOSP frameworks/base ↗</a></span></span>. When your app calls <code>startActivity()</code>, the request arrives in <span class="ref" tabindex="0" aria-describedby="ref-2"><code>ActivityTaskManagerService.startActivity()</code><span class="pop" role="tooltip" id="ref-2"><span class="pop-what">Where your startActivity() lands inside system_server, after crossing Binder.</span><span class="pop-code"> 1226  public final int startActivity(IApplicationThread caller, String callingPackage,
     …
  1230      return startActivityAsUser(caller, callingPackage, callingFeatureId, intent, resolvedType,</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/services/core/java/com/android/server/wm/ActivityTaskManagerService.java#L1226">ActivityTaskManagerService.java, line 1226 · AOSP frameworks/base ↗</a></span></span>.</p>
-<p>It keeps a record of every screen of every app, and tells your app when to create, pause, stop or destroy one.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>The town hall keeps the official register of every flat and resident. You don't issue your own building permit; you ask, and they send you the decision.</p>
+<p>The town hall keeps the official register of every house and every room. You don't add a room on your own; you send a request, and they send you the decision.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<p>Answer all three to unlock the next puzzle.</p>
 <fieldset class="quiz">
 <legend>Your app opens its own next screen with <code>startActivity()</code>. Does that call stay inside your process?</legend>
-<input type="radio" name="q-04-system-server-the-town-hall-1" id="q-04-system-server-the-town-hall-1-1"><label for="q-04-system-server-the-town-hall-1-1">Yes, your own screens never leave your app</label>
-<input type="radio" name="q-04-system-server-the-town-hall-1" id="q-04-system-server-the-town-hall-1-2" data-ok><label for="q-04-system-server-the-town-hall-1-2">No, it goes to system_server, which then tells your app to create the screen</label>
-<p class="fb ok"><b>Right.</b> Even your own screens go through the town hall: it checks, records, and then tells your process what to create.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<input type="radio" name="q-04-system-server-the-town-hall-1" id="q-04-system-server-the-town-hall-1-1"><label for="q-04-system-server-the-town-hall-1-1">Yes: your own screens never leave your app</label>
+<input type="radio" name="q-04-system-server-the-town-hall-1" id="q-04-system-server-the-town-hall-1-2" data-ok><label for="q-04-system-server-the-town-hall-1-2">No: it goes to system_server, which then tells your app to create the screen</label>
+<p class="fb no opt-1"><b>Not quite.</b> Even your own screens go through the town hall. Watch where the &quot;start B&quot; letter goes. <label class="show-me" for="st-town-hall-2" data-goto="st-town-hall">Show me step 2 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Every screen change goes through the town hall: it checks, records, and then tells your process what to create.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Where is the official list of your app's open screens kept?</legend>
-<input type="radio" name="q-04-system-server-the-town-hall-2" id="q-04-system-server-the-town-hall-2-1" data-ok><label for="q-04-system-server-the-town-hall-2-1">In system_server</label>
-<input type="radio" name="q-04-system-server-the-town-hall-2" id="q-04-system-server-the-town-hall-2-2"><label for="q-04-system-server-the-town-hall-2-2">In your app's memory</label>
-<p class="fb ok"><b>Right.</b> system_server keeps the register of every screen of every app.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<legend>Right after your app asks for screen B, has B been created yet?</legend>
+<input type="radio" name="q-04-system-server-the-town-hall-2" id="q-04-system-server-the-town-hall-2-1"><label for="q-04-system-server-the-town-hall-2-1">Yes: <code>startActivity()</code> creates the screen immediately</label>
+<input type="radio" name="q-04-system-server-the-town-hall-2" id="q-04-system-server-the-town-hall-2-2" data-ok><label for="q-04-system-server-the-town-hall-2-2">No: first system_server checks and records it, then tells your app to create it</label>
+<p class="fb no opt-1"><b>Not quite.</b> <code>startActivity()</code> only sends the request. The screen is created later, when the &quot;create B&quot; letter arrives. <label class="show-me" for="st-town-hall-4" data-goto="st-town-hall">Show me step 4 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Screens are created only when the town hall says so.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Why must system_server be a separate, trusted process?</legend>
-<input type="radio" name="q-04-system-server-the-town-hall-3" id="q-04-system-server-the-town-hall-3-1"><label for="q-04-system-server-the-town-hall-3-1">It makes apps start faster</label>
-<input type="radio" name="q-04-system-server-the-town-hall-3" id="q-04-system-server-the-town-hall-3-2" data-ok><label for="q-04-system-server-the-town-hall-3-2">It decides things for all apps, which no single app's sandbox could see or be trusted with</label>
-<p class="fb ok"><b>Right.</b> Screens, permissions and which app to kill affect every app, so one trusted process has to decide.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<legend>Where is the official list of your app's screens kept?</legend>
+<input type="radio" name="q-04-system-server-the-town-hall-3" id="q-04-system-server-the-town-hall-3-1" data-ok><label for="q-04-system-server-the-town-hall-3-1">In system_server</label>
+<input type="radio" name="q-04-system-server-the-town-hall-3" id="q-04-system-server-the-town-hall-3-2"><label for="q-04-system-server-the-town-hall-3-2">In your app's memory</label>
+<p class="fb ok opt-1"><b>Right.</b> system_server keeps the register of every screen of every app; your app holds the objects.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Your Activity objects live in your memory, but the official record that decides their lives is in the town hall. <label class="show-me" for="st-town-hall-1" data-goto="st-town-hall">Show me step 1 again ↑</label></p>
 </fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://developer.android.com/guide/components/activities/process-lifecycle">Android Developers: Processes and app lifecycle</a></li><li><a href="https://developer.android.com/guide/components/activities/tasks-and-back-stack">Android Developers: Tasks and the back stack</a></li></ul>
       </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Your Activity's life is decided in system_server. startActivity(), even for your own screen, is a request to the town hall, which answers by telling your app what to create.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>startActivity(), even for your own screen, is a letter to the town hall. It checks, writes the screen in its register, and only then tells your app to create it.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

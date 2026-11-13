@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Your Kotlin ships as DEX bytecode. ART, inside each app's process, interprets it, compiles hot code while it runs, and compiles ahead of time from a profile.">
+  <meta name="description" content="Your Kotlin ships as DEX bytecode. ART, inside each app's process, reads it line by line, compiles hot code while it runs, and the system compiles more of it ahead of time later.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="ART is what runs your code – Android from the foundation – Mateusz Pachulski">
-  <meta property="og:description" content="Your Kotlin ships as DEX bytecode. ART, inside each app's process, interprets it, compiles hot code while it runs, and compiles ahead of time from a profile.">
+  <meta property="og:description" content="Your Kotlin ships as DEX bytecode. ART, inside each app's process, reads it line by line, compiles hot code while it runs, and the system compiles more of it ahead of time later.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/android/02-art-runs-your-code">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -50,79 +50,83 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" aria-current="page" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 2 of 6</p>
       <h1>ART is what runs your code</h1>
-      <p class="lede">Your Kotlin ships as DEX bytecode. ART, inside each app's process, interprets it, compiles hot code while it runs, and compiles ahead of time from a profile.</p>
+      <p class="lede">Your Kotlin ships as DEX bytecode. ART, inside each app's process, reads it line by line, compiles hot code while it runs, and the system compiles more of it ahead of time later.</p>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Android runs on many kinds of CPU, but you upload one APK. Machine code for one CPU won't run on another. So what's actually inside the APK, and who turns it into something the phone can run?</p>
+<p>In puzzle 1, each app became its own house. But what actually runs inside the house? Android runs on many kinds of CPU, yet you upload one APK, and machine code for one CPU won't run on another. So the APK must hold something more general, and someone in the house has to translate it.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="From Kotlin to machine code"><input type="radio" name="st-art" id="st-art-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-art" id="st-art-2" aria-label="Step 2 of 4"><input type="radio" name="st-art" id="st-art-3" aria-label="Step 3 of 4"><input type="radio" name="st-art" id="st-art-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="art-t"><title id="art-t">Kotlin compiles to DEX in the APK; on the phone ART interprets it, JIT-compiles hot code, records a profile, and compiles ahead of time from the profile</title>
-<defs><marker id="art-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ah" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="200" height="74" rx="8"/><text class="d-b" x="34" y="58">Kotlin code</text></g>
-<path class="step s1 d-line" d="M220,51 L300,51" marker-end="url(#art-ah)"/>
-<text class="step s1 d-m" x="226" y="38">build</text>
-<g class="step s1"><rect class="d-box" x="306" y="14" width="318" height="74" rx="8"/><text class="d-b" x="324" y="48">DEX bytecode</text><text class="d-m" x="324" y="76">inside your one APK</text></g>
-<g class="step s2"><rect class="d-band" x="16" y="116" width="608" height="250" rx="10"/><text class="d-m" x="32" y="352">on the phone: ART, in your process</text></g>
-<g class="step s2"><rect class="d-box" x="32" y="162" width="180" height="80" rx="8"/><text class="d-b" x="50" y="198">Interpreter</text><text class="d-m" x="50" y="226">runs DEX as is</text></g>
-<path class="step s2 d-line" d="M400,92 L122,158" marker-end="url(#art-ah)"/>
-<g class="step s3"><rect class="d-box" x="230" y="162" width="180" height="80" rx="8"/><text class="d-b" x="248" y="198">JIT</text><text class="d-m" x="248" y="226">hot code, now</text></g>
-<g class="step s3"><rect class="d-hl" x="230" y="268" width="180" height="40" rx="6"/><text class="d-a" x="250" y="294">profile file</text></g>
-<path class="step s3 d-acc" d="M320,246 L320,264" />
-<g class="step s4"><rect class="d-box" x="428" y="162" width="180" height="80" rx="8"/><text class="d-b" x="446" y="198">AOT</text><text class="d-m" x="446" y="226">dex2oat, later</text></g>
-<path class="step s4 d-acc" d="M414,288 L512,288 L512,246"/>
-<g class="step s4"><rect class="d-hl" x="428" y="318" width="180" height="40" rx="6"/><text class="d-a" x="440" y="344">machine code</text></g>
+<figure class="stepper" aria-label="ART translates your app's code, now and later"><input type="radio" name="st-art" id="st-art-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-art" id="st-art-2" aria-label="Step 2 of 5"><input type="radio" name="st-art" id="st-art-3" aria-label="Step 3 of 5"><input type="radio" name="st-art" id="st-art-4" aria-label="Step 4 of 5"><input type="radio" name="st-art" id="st-art-5" aria-label="Step 5 of 5">
+<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="art-t"><title id="art-t">DEX code from the APK goes to ART inside your app's process; ART reads it line by line, compiles hot code right away (JIT) and notes it in a profile; dex2oat later compiles from the profile; a Baseline Profile ships that list in the APK</title>
+<g class="step s1"><rect class="d-roof" x="16" y="120" width="140" height="130" rx="8"/><text class="d-b" x="56" y="110">APK</text></g>
+<g class="step s1"><polygon class="d-roof" points="186,96 404,46 624,96"/><rect class="d-paper" x="196" y="96" width="418" height="226"/><text class="d-m" x="210" y="312">your app's process</text>
+<circle class="d-skin" cx="262" cy="150" r="16"/><rect class="d-roof" x="240" y="168" width="44" height="32" rx="12"/><rect class="d-wood" x="212" y="202" width="140" height="12" rx="3"/><text class="d-tiny" x="246" y="236">ART</text></g>
+<!-- the DEX scroll -->
+<g class="step s1" data-move="1:40,150 2:300,146"><rect class="d-paper" x="0" y="0" width="74" height="48" rx="6"/><text class="d-tiny" x="16" y="30">DEX</text></g>
+<g class="step only-2"><rect class="d-paper" x="300" y="106" width="150" height="30" rx="14"/><text class="d-tiny" x="312" y="127">line by line…</text></g>
+<!-- JIT: hot code, now -->
+<g class="step s3"><rect class="d-band" x="400" y="130" width="96" height="96" rx="6"/><text class="d-b" x="428" y="156">JIT</text></g>
+<g class="step s3" data-move="2:262,150 3:411,172"><rect class="d-bad" x="0" y="0" width="74" height="38" rx="6"/><text class="d-r" x="12" y="26">hot!</text></g>
+<g class="step s3" data-move="3:300,236 4:410,240 5:58,160"><rect class="d-paper" x="0" y="0" width="54" height="44" rx="3"/><line class="d-line" x1="8" y1="14" x2="46" y2="14"/><line class="d-line" x1="8" y1="26" x2="40" y2="26"/><text class="d-tiny" x="0" y="62">profile</text></g>
+<!-- dex2oat: later, at night -->
+<g class="step s4" data-pulse="4"><path class="d-hl" d="M600,16 a20,20 0 1,0 0,40 a15,15 0 1,1 0,-40 Z"/><rect class="d-band" x="486" y="236" width="112" height="56" rx="6"/><text class="d-mi" x="496" y="270">dex2oat</text></g>
+<g class="step s3"><rect class="d-hl" x="510" y="150" width="86" height="58" rx="6"/><text class="d-a" x="522" y="186">fast</text></g>
+<text class="step s5 d-a" x="18" y="276">Baseline Profile</text>
 </svg></div>
 <ol class="caps">
-<li><p>Phones use different CPUs, but you ship one APK. So your Kotlin isn't compiled to machine code at build time. It becomes <b>DEX bytecode</b>, an instruction format for Android.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-art-2">Next →</label></div></li>
-<li><p>On the phone, <b>ART</b> (the Android Runtime) runs inside your app's own process. At first it can simply <b>interpret</b> the DEX: correct, but slow.</p><div class="stepnav"><label for="st-art-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-art-3">Next →</label></div></li>
-<li><p>Code that runs often ("hot" code) gets compiled to machine code <b>just in time</b> (JIT), while the app runs. ART also writes down which code was hot in a <b>profile</b>.</p><div class="stepnav"><label for="st-art-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-art-4">Next →</label></div></li>
-<li><p>Later, in the background, <code>dex2oat</code> uses that profile to compile the hot code <b>ahead of time</b> (AOT), so next time it starts fast. A <b>Baseline Profile</b> ships that list with your app, so users get the speed from the first launch.</p><div class="stepnav"><label for="st-art-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-art-1">↺ Again</label></div></li>
+<li><p>You ship one APK for every kind of phone, so it can't hold machine code for one CPU. It holds <b>DEX</b>: instructions for Android's runtime, ART, a translator that lives inside each app's process.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-art-2">Next →</label></div></li>
+<li><p>At first, ART reads the DEX <b>line by line</b> (interpreting): it works, but it's slow.</p><div class="stepnav"><label for="st-art-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-art-3">Next →</label></div></li>
+<li><p>Code that runs often is "hot". ART compiles it to machine code <b>right now</b>, while the app runs (JIT), and writes it in a notebook: the <b>profile</b>.</p><div class="stepnav"><label for="st-art-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-art-4">Next →</label></div></li>
+<li><p>Later, about once a day while the phone is idle and charging, the system's <code>dex2oat</code> tool compiles the profiled code <b>ahead of time</b> (AOT). Next start, it's already fast.</p><div class="stepnav"><label for="st-art-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-art-5">Next →</label></div></li>
+<li><p>A <b>Baseline Profile</b> is that notebook written in advance and shipped inside the APK, so the important code is compiled before your first launch.</p><div class="stepnav"><label for="st-art-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-art-1">↺ Again</label></div></li>
 </ol>
-<div class="dots" aria-hidden="true"><label for="st-art-1" title="Step 1"></label><label for="st-art-2" title="Step 2"></label><label for="st-art-3" title="Step 3"></label><label for="st-art-4" title="Step 4"></label></div>
+<div class="dots" aria-hidden="true"><label for="st-art-1" title="Step 1"></label><label for="st-art-2" title="Step 2"></label><label for="st-art-3" title="Step 3"></label><label for="st-art-4" title="Step 4"></label><label for="st-art-5" title="Step 5"></label></div>
 </figure><p class="gif-link"><a href="gifs/art.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Your Kotlin compiles to <b>DEX bytecode</b>. <b>ART</b> (the Android Runtime) runs inside your app's process and executes it. Each method can be in one of three states: interpreted, JIT-compiled, or AOT-compiled. ART also runs the <b>garbage collector</b> that frees your app's unused objects.</p>
+<p>Your Kotlin compiles to <b>DEX bytecode</b>: compact instructions that aren't tied to any CPU. <b>ART</b> (the Android Runtime) runs inside your app's process and turns them into work. Each piece of code can be in one of three states:</p>
+<ul><li>interpreted: read one instruction at a time (slow, works immediately);</li><li>JIT-compiled: compiled to machine code <em>now</em>, while the app runs, because it's hot;</li><li>AOT-compiled: compiled <em>ahead of time</em>, later, by the system's <code>dex2oat</code> tool, using the profile ART wrote.</li></ul>
+<p>ART also runs your app's garbage collector, which frees objects you no longer use. That's for another module.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>A recipe written in a common language (DEX). The first time, the cook reads it line by line (interpreting). Dishes ordered often get memorised (JIT), and the cook writes down which ones those were (the profile). On a quiet day, those recipes are learned by heart for good (AOT).</p>
+<p>A translator lives in your house. The first time, they read your recipe word by word. Recipes you ask for often, they translate on the spot and note in a notebook. Once a day, at night, a professional translates everything in the notebook properly.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<p>Answer all three to unlock the next puzzle.</p>
 <fieldset class="quiz">
 <legend>Is there one shared ART for all apps on the phone?</legend>
 <input type="radio" name="q-02-art-runs-your-code-1" id="q-02-art-runs-your-code-1-1"><label for="q-02-art-runs-your-code-1-1">Yes, one ART runs every app</label>
-<input type="radio" name="q-02-art-runs-your-code-1" id="q-02-art-runs-your-code-1-2" data-ok><label for="q-02-art-runs-your-code-1-2">No, each app's process has its own ART</label>
-<p class="fb ok"><b>Right.</b> ART runs inside each app's process, with its own heap and garbage collector.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<input type="radio" name="q-02-art-runs-your-code-1" id="q-02-art-runs-your-code-1-2" data-ok><label for="q-02-art-runs-your-code-1-2">No, each app's process runs its own ART</label>
+<p class="fb no opt-1"><b>Not quite.</b> ART is the translator living in each house, not a central office. Each process has its own, with its own memory. <label class="show-me" for="st-art-1" data-goto="st-art">Show me step 1 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> ART runs inside each app's process, with its own memory and garbage collector.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Why can an app get faster a few days after install?</legend>
-<input type="radio" name="q-02-art-runs-your-code-2" id="q-02-art-runs-your-code-2-1"><label for="q-02-art-runs-your-code-2-1">The garbage collector learns the app</label>
-<input type="radio" name="q-02-art-runs-your-code-2" id="q-02-art-runs-your-code-2-2"><label for="q-02-art-runs-your-code-2-2">The Play Store sends faster machine code later</label>
-<input type="radio" name="q-02-art-runs-your-code-2" id="q-02-art-runs-your-code-2-3" data-ok><label for="q-02-art-runs-your-code-2-3">ART recorded the hot code in a profile and compiled it ahead of time</label>
-<p class="fb ok"><b>Right.</b> The JIT writes a profile of hot code, and dex2oat later compiles that code ahead of time.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<legend>Your app gets faster a few days after install. Why?</legend>
+<input type="radio" name="q-02-art-runs-your-code-2" id="q-02-art-runs-your-code-2-1"><label for="q-02-art-runs-your-code-2-1">The app downloaded faster code in an update</label>
+<input type="radio" name="q-02-art-runs-your-code-2" id="q-02-art-runs-your-code-2-2"><label for="q-02-art-runs-your-code-2-2">The JIT keeps its compiled code in the APK</label>
+<input type="radio" name="q-02-art-runs-your-code-2" id="q-02-art-runs-your-code-2-3" data-ok><label for="q-02-art-runs-your-code-2-3">ART noted the hot code in a profile, and <code>dex2oat</code> later compiled it ahead of time</label>
+<p class="fb no opt-1"><b>Not quite.</b> No update needed: the same DEX gets compiled better on the phone, from the profile. <label class="show-me" for="st-art-4" data-goto="st-art">Show me step 4 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> JIT code lives in memory while the app runs; it's lost when the app stops. What survives is the notebook (profile). <label class="show-me" for="st-art-3" data-goto="st-art">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> The JIT writes a profile of hot code, and the system's <code>dex2oat</code> later compiles that code ahead of time.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What does a Baseline Profile change?</legend>
-<input type="radio" name="q-02-art-runs-your-code-3" id="q-02-art-runs-your-code-3-1"><label for="q-02-art-runs-your-code-3-1">It removes the interpreter from the phone</label>
-<input type="radio" name="q-02-art-runs-your-code-3" id="q-02-art-runs-your-code-3-2"><label for="q-02-art-runs-your-code-3-2">It makes the JIT compiler faster</label>
-<input type="radio" name="q-02-art-runs-your-code-3" id="q-02-art-runs-your-code-3-3" data-ok><label for="q-02-art-runs-your-code-3-3">It ships the list of important code, so ART can compile it before the first launch</label>
-<p class="fb ok"><b>Right.</b> Instead of learning what's hot from use, ART gets the list with the app and compiles it ahead of time.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<legend>What's the difference between JIT and AOT?</legend>
+<input type="radio" name="q-02-art-runs-your-code-3" id="q-02-art-runs-your-code-3-1"><label for="q-02-art-runs-your-code-3-1">JIT is for Kotlin, AOT is for Java</label>
+<input type="radio" name="q-02-art-runs-your-code-3" id="q-02-art-runs-your-code-3-2"><label for="q-02-art-runs-your-code-3-2">Where: JIT runs on your laptop, AOT on the phone</label>
+<input type="radio" name="q-02-art-runs-your-code-3" id="q-02-art-runs-your-code-3-3" data-ok><label for="q-02-art-runs-your-code-3-3">When: JIT compiles hot code now while the app runs; AOT compiles it ahead of time, later</label>
+<p class="fb no opt-1"><b>Not quite.</b> Both work on DEX, which Kotlin and Java both compile to. <label class="show-me" for="st-art-1" data-goto="st-art">Show me step 1 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Both happen on the phone. The difference is when, not where. <label class="show-me" for="st-art-3" data-goto="st-art">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> Both turn DEX into machine code. JIT does it on the spot for hot code; AOT does it later from the profile.</p>
 </fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
-<ul><li><a href="https://source.android.com/docs/core/runtime">Android Open Source Project: Android runtime and Dalvik</a></li><li><a href="https://source.android.com/docs/core/runtime/jit-compiler">Android Open Source Project: Implement ART just-in-time compiler</a></li><li><a href="https://developer.android.com/topic/performance/baselineprofiles/overview">Android Developers: Baseline Profiles overview</a></li></ul>
+<ul><li><a href="https://source.android.com/docs/core/runtime">Android Open Source Project: Android runtime and Dalvik</a></li><li><a href="https://source.android.com/docs/core/runtime/jit-compiler">Android Open Source Project: Implement ART just-in-time compiler</a></li><li><a href="https://source.android.com/docs/core/runtime/configure/art-service">Android Open Source Project: ART Service configuration (background dexopt)</a></li><li><a href="https://developer.android.com/topic/performance/baselineprofiles/overview">Android Developers: Baseline Profiles overview</a></li></ul>
       </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Each app process has its own ART, with its own heap and garbage collector. Code starts slow and gets faster as ART learns what's hot, unless a Baseline Profile tells it up front.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>JIT = compile hot code now, while the app runs. AOT = compile it ahead of time, later, from the profile. A Baseline Profile moves &quot;later&quot; to &quot;before the first launch&quot;.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

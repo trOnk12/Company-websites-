@@ -51,8 +51,8 @@ function serve() {
   // Moving dots are hidden (reduced motion) because a still frame can't show motion.
   const ctx = await browser.newContext({ viewport: { width: 720, height: 1000 }, deviceScaleFactor: 1, reducedMotion: 'reduce', bypassCSP: true });
   const page = await ctx.newPage();
-  // Block the player script: frames show the plain steps (Playwright needs page JS for addStyleTag).
-  await page.route('**/course.js', r => r.abort());
+  // course.js runs (it moves the diagram's parts); reduced motion makes it jump straight to each step.
+  await page.route(/goatcounter/, r => r.abort());
   const courseDir = path.join(ROOT, 'course');
   for (const c of fs.readdirSync(courseDir).filter(d => fs.statSync(path.join(courseDir, d)).isDirectory())) {
     const outDir = path.join(courseDir, c, 'gifs');
@@ -66,7 +66,7 @@ function serve() {
         const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'gif-'));
         const frames = [], durations = [];
         for (let k = 1; k <= n; k++) {
-          await fig.locator('input[type=radio]').nth(k - 1).evaluate(el => { el.checked = true; });
+          await fig.locator('input[type=radio]').nth(k - 1).evaluate(el => { el.checked = true; el.dispatchEvent(new Event('change', { bubbles: true })); });
           await page.waitForTimeout(650);
           const file = path.join(tmp, `${k}.png`);
           await fig.screenshot({ path: file });

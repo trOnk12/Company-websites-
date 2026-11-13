@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="One process, started at boot, preloads the runtime and the framework. Every app is a fork of it, and shares its memory until it writes.">
+  <meta name="description" content="One process, started at boot, preloads ART and the framework. Every app is forked from it and shares its memory until it writes.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Zygote is why apps start fast – Android from the foundation – Mateusz Pachulski">
-  <meta property="og:description" content="One process, started at boot, preloads the runtime and the framework. Every app is a fork of it, and shares its memory until it writes.">
+  <meta property="og:description" content="One process, started at boot, preloads ART and the framework. Every app is forked from it and shares its memory until it writes.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/android/03-zygote-why-apps-start-fast">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -50,40 +50,43 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-the-core-idea.html" class="done" title="The one idea behind everything">0</a></li><li><a href="01-an-app-is-a-linux-process.html" class="done" title="An app is a Linux process with its own user">1</a></li><li><a href="02-art-runs-your-code.html" class="done" title="ART is what runs your code">2</a></li><li><a href="03-zygote-why-apps-start-fast.html" aria-current="page" title="Zygote is why apps start fast">3</a></li><li><a href="04-system-server-the-town-hall.html" title="system_server is the town hall">4</a></li><li><a href="05-binder-the-post-office.html" title="Binder is the post office between processes">5</a></li><li><a href="06-the-main-thread.html" title="The main thread is one clerk with one queue">6</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 3 of 6</p>
       <h1>Zygote is why apps start fast</h1>
-      <p class="lede">One process, started at boot, preloads the runtime and the framework. Every app is a fork of it, and shares its memory until it writes.</p>
+      <p class="lede">One process, started at boot, preloads ART and the framework. Every app is forked from it and shares its memory until it writes.</p>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Starting ART and loading the Android framework's thousands of classes takes seconds. If every app launch did that from scratch, every tap on an icon would be painfully slow, and every app would use its own copy of the same framework in RAM.</p>
+<p>In puzzle 2, ART moved into every house. But starting ART and loading the thousands of framework classes takes seconds. If every app launch did that from scratch, every tap on an icon would be slow, and every app would hold its own copy of the same framework in memory.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Zygote forks apps that share its memory"><input type="radio" name="st-zygote" id="st-zygote-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-zygote" id="st-zygote-2" aria-label="Step 2 of 4"><input type="radio" name="st-zygote" id="st-zygote-3" aria-label="Step 3 of 4"><input type="radio" name="st-zygote" id="st-zygote-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="zy-t"><title id="zy-t">Zygote preloads framework pages; forked apps share them; a page is copied only when an app writes to it</title>
-<defs><marker id="zy-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="250" height="352" rx="8"/><text class="d-b" x="34" y="50">Zygote</text><text class="d-m" x="34" y="78">started at boot</text>
-<text class="d-m" x="34" y="120">preloaded framework</text>
-<rect class="d-hl" x="34" y="136" width="64" height="56" rx="4"/><rect class="d-hl" x="108" y="136" width="64" height="56" rx="4"/><rect class="d-hl" x="182" y="136" width="64" height="56" rx="4"/>
-<rect class="d-hl" x="34" y="202" width="64" height="56" rx="4"/><rect class="d-hl" x="108" y="202" width="64" height="56" rx="4"/><rect class="d-hl" x="182" y="202" width="64" height="56" rx="4"/>
-<text class="d-m" x="34" y="290">ART + thousands of</text><text class="d-m" x="34" y="314">classes, ready to go</text></g>
-<g class="step s2"><rect class="d-box" x="374" y="14" width="250" height="150" rx="8"/><text class="d-b" x="392" y="50">Your app</text><text class="d-mi" x="392" y="80">fork() → your UID</text><text class="d-m" x="392" y="110">owns no copies yet</text></g>
-<path class="step s2 d-dash" d="M250,164 L370,90"/><path class="step s2 d-dash" d="M250,230 L370,110"/>
-<path class="step s2 d-acc" d="M270,40 L368,40" marker-end="url(#zy-ah)"/>
-<g class="step s3"><rect class="d-box" x="374" y="214" width="250" height="152" rx="8"/><text class="d-b" x="392" y="250">Another app</text><text class="d-mi" x="392" y="280">fork() → its UID</text><text class="d-m" x="392" y="310">shares the same pages</text></g>
-<path class="step s3 d-dash" d="M250,170 L370,270"/><path class="step s3 d-dash" d="M250,236 L370,290"/>
-<g class="step s4"><rect class="d-bad" x="572" y="122" width="40" height="34" rx="4"/><text class="d-r" x="392" y="146">writes → copy</text></g>
+<figure class="stepper" aria-label="Zygote forks new app processes that share its memory"><input type="radio" name="st-zygote" id="st-zygote-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-zygote" id="st-zygote-2" aria-label="Step 2 of 4"><input type="radio" name="st-zygote" id="st-zygote-3" aria-label="Step 3 of 4"><input type="radio" name="st-zygote" id="st-zygote-4" aria-label="Step 4 of 4">
+<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="zy-t"><title id="zy-t">Zygote starts at boot with the framework loaded; forking makes a new app process that shares Zygote's memory pages; a page is copied only when the app writes to it</title>
+<g class="step s1" data-pulse="1"><polygon class="d-roof" points="10,110 135,60 260,110"/><rect class="d-paper" x="20" y="110" width="230" height="232"/><text class="d-b" x="40" y="146">Zygote</text>
+<rect class="d-hl" x="44" y="170" width="50" height="34" rx="4"/><rect class="d-hl" x="104" y="170" width="50" height="34" rx="4"/><rect class="d-hl" x="164" y="170" width="50" height="34" rx="4"/>
+<rect class="d-hl" x="44" y="214" width="50" height="34" rx="4"/><rect class="d-hl" x="104" y="214" width="50" height="34" rx="4"/><rect class="d-hl" x="164" y="214" width="50" height="34" rx="4"/>
+<text class="d-m" x="40" y="290">ART + framework</text></g>
+<!-- fork: a new house slides out of Zygote -->
+<g class="step s2" data-move="1:20,60 2:390,14"><polygon class="d-roof" points="0,40 115,0 230,40"/><rect class="d-paper" x="10" y="40" width="210" height="112"/></g>
+<g class="step s2"><text class="d-b" x="410" y="96">your app</text><text class="d-m" x="410" y="126">shares pages</text></g>
+<path class="step s2 d-dash" d="M216,187 L398,112"/>
+<g class="step s3" data-move="2:20,60 3:390,204"><polygon class="d-roof" points="0,40 115,0 230,40"/><rect class="d-paper" x="10" y="40" width="210" height="112"/></g>
+<g class="step s3"><text class="d-b" x="410" y="286">another app</text><text class="d-m" x="410" y="316">shares them too</text></g>
+<path class="step s3 d-dash" d="M216,231 L398,300"/>
+<!-- copy-on-write: one page is copied when written -->
+<g class="step s4" data-move="3:104,170 4:556,100"><rect class="d-bad" x="0" y="0" width="50" height="34" rx="4"/></g>
+<text class="step s4 d-r" x="540" y="154">copied</text>
 </svg></div>
 <ol class="caps">
-<li><p>Starting ART and loading thousands of framework classes takes seconds. So at boot, Android starts one process, <b>Zygote</b>, does all of that once, and then waits.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-zygote-2">Next →</label></div></li>
-<li><p>You tap an app icon. Zygote <b>forks</b>: it copies itself into a new process, which switches to your app's UID and loads your code. Everything else is already loaded, so it starts fast.</p><div class="stepnav"><label for="st-zygote-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-zygote-3">Next →</label></div></li>
-<li><p>Every app is forked the same way. They don't each get their own copy of the framework: a fork <b>shares</b> the parent's memory pages. Dozens of apps, one framework in RAM.</p><div class="stepnav"><label for="st-zygote-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-zygote-4">Next →</label></div></li>
-<li><p>Only when an app <b>writes</b> to a shared page does Linux make a private copy of that one page for it. This is called <b>copy-on-write</b>.</p><div class="stepnav"><label for="st-zygote-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-zygote-1">↺ Again</label></div></li>
+<li><p>At boot, Android starts one process, <b>Zygote</b>, and loads ART and the framework into its memory once. Then it waits.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-zygote-2">Next →</label></div></li>
+<li><p>You tap an icon. Zygote <b>forks</b>: the kernel makes a new process that starts as a copy of Zygote, switches it to your app's UID, and loads your code.</p><div class="stepnav"><label for="st-zygote-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-zygote-3">Next →</label></div></li>
+<li><p>The new process doesn't get its own copy of the framework: it <b>shares</b> Zygote's memory pages. So does every other app. <i>Predict: what if your app changes a shared page?</i></p><div class="stepnav"><label for="st-zygote-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-zygote-4">Next →</label></div></li>
+<li><p>Only then does the kernel copy that one page for your app: <b>copy-on-write</b>. Everything you don't change stays shared.</p><div class="stepnav"><label for="st-zygote-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-zygote-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-zygote-1" title="Step 1"></label><label for="st-zygote-2" title="Step 2"></label><label for="st-zygote-3" title="Step 3"></label><label for="st-zygote-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/zygote.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p><b>Zygote</b> (&quot;the first cell&quot;) starts at boot, loads ART and the common framework code and resources, then waits. To launch an app, the system asks Zygote to <b>fork</b>. The child already has everything loaded; it switches to the app's user ID and loads the app's code.</p>
+<p>The kernel hands out memory in small fixed-size blocks called <b>pages</b>. To <b>fork</b> is to ask the kernel for a new process that starts as a copy of an existing one. The copy is cheap because the kernel doesn't duplicate the pages: parent and child share them, and a page is only copied when one of them writes to it (copy-on-write).</p>
+<p><b>Zygote</b> (&quot;the first cell&quot;) starts at boot, loads ART and the common framework code, then waits. It also forks system_server, the town hall. When you launch an app, system_server asks Zygote to fork; the child switches to the app's UID and loads the app's code.</p>
 <p>In the source, <span class="ref" tabindex="0" aria-describedby="ref-1"><code>ZygoteInit.main()</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">Zygote's main: preload the framework, fork system_server, then wait for &quot;fork an app&quot; requests.</span><span class="pop-code">  817  public static void main(String[] argv) {
     …
   885              preload(bootTimingsTraceLog);
@@ -91,47 +94,51 @@
   905              Runnable r = forkSystemServer(abiList, zygoteSocketName, zygoteServer);
     …
   919          caller = zygoteServer.runSelectLoop(abiList);</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/com/android/internal/os/ZygoteInit.java#L817">ZygoteInit.java, line 817 · AOSP frameworks/base ↗</a></span></span> does exactly this: preload, start system_server, then wait for &quot;fork an app&quot; requests.</p>
-<p>Because Linux implements fork with <b>copy-on-write</b> pages, the framework's memory is shared across all apps until one of them writes to a page.</p>
+      </section>
+      <section aria-labelledby="in-practice-cold-warm-hot-start">
+        <h2 id="in-practice-cold-warm-hot-start">In practice: cold, warm, hot start</h2>
+<p>Your app has one <code>Application</code> object per process; its <code>Application.onCreate()</code> runs before any screen exists. Then come the screens (Activities).</p>
+<ul><li>Cold start: no process yet. Fork from Zygote, create the Application, then the first Activity.</li><li>Warm start: the process is alive, but the Activity has to be created again.</li><li>Hot start: process and Activity are alive; the app just comes back to the front. (Nothing to do with &quot;hot code&quot; in puzzle 2.)</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>A shared textbook. Every student &quot;has a copy&quot;, but they're all reading the same book. Only when a student writes a note on a page do they get a photocopy of that one page.</p>
-      </section>
-      <section aria-labelledby="in-practice-cold-warm-hot">
-        <h2 id="in-practice-cold-warm-hot">In practice: cold, warm, hot</h2>
-<ul><li><b>Cold start</b>: no process yet. Fork from Zygote, create the Application, create the Activity.</li><li><b>Warm start</b>: the process is alive, but the Activity has to be created again.</li><li><b>Hot start</b>: process and Activity are alive; the app just comes back to the front.</li></ul>
+<p>Zygote is a show house, fully furnished at boot. Each new app house is a copy of it, but the furniture isn't duplicated: every house uses the show house's furniture until it repaints a chair. Only then does it get its own copy of that chair.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
-<p>Answer all three to unlock the next puzzle.</p>
 <fieldset class="quiz">
 <legend>Why is heavy work in <code>Application.onCreate()</code> bad?</legend>
-<input type="radio" name="q-03-zygote-why-apps-start-fast-1" id="q-03-zygote-why-apps-start-fast-1-1"><label for="q-03-zygote-why-apps-start-fast-1-1">It slows down Zygote for every app</label>
-<input type="radio" name="q-03-zygote-why-apps-start-fast-1" id="q-03-zygote-why-apps-start-fast-1-2"><label for="q-03-zygote-why-apps-start-fast-1-2">It runs again on every screen rotation</label>
-<input type="radio" name="q-03-zygote-why-apps-start-fast-1" id="q-03-zygote-why-apps-start-fast-1-3" data-ok><label for="q-03-zygote-why-apps-start-fast-1-3">It runs on every cold start, on the main thread, before any screen shows</label>
-<p class="fb ok"><b>Right.</b> Users stare at a blank screen while it runs, every time the app starts from scratch.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-1" id="q-03-zygote-why-apps-start-fast-1-1"><label for="q-03-zygote-why-apps-start-fast-1-1">It slows down the framework for all apps</label>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-1" id="q-03-zygote-why-apps-start-fast-1-2"><label for="q-03-zygote-why-apps-start-fast-1-2">It runs again every time Zygote forks any app</label>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-1" id="q-03-zygote-why-apps-start-fast-1-3" data-ok><label for="q-03-zygote-why-apps-start-fast-1-3">It runs on every cold start, before any screen appears</label>
+<p class="fb no opt-1"><b>Not quite.</b> The framework pages are shared, but your code runs only in your process. It's your users who wait. <label class="show-me" for="st-zygote-3" data-goto="st-zygote">Show me step 3 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Zygote's fork only copies Zygote. Your Application is created in your own process, after the fork. <label class="show-me" for="st-zygote-2" data-goto="st-zygote">Show me step 2 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> On a cold start your Application is created before the first screen, so users stare at a blank screen while it runs.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Ten apps are running. How many copies of the preloaded framework are in RAM?</legend>
-<input type="radio" name="q-03-zygote-why-apps-start-fast-2" id="q-03-zygote-why-apps-start-fast-2-1"><label for="q-03-zygote-why-apps-start-fast-2-1">Ten: every app gets its own copy</label>
-<input type="radio" name="q-03-zygote-why-apps-start-fast-2" id="q-03-zygote-why-apps-start-fast-2-2" data-ok><label for="q-03-zygote-why-apps-start-fast-2-2">Mostly one: the apps share Zygote's pages until they write to them</label>
-<p class="fb ok"><b>Right.</b> A fork shares the parent's memory pages; only a page someone writes to gets copied (copy-on-write).</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<legend>Ten apps are running. How many copies of the preloaded framework are in memory?</legend>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-2" id="q-03-zygote-why-apps-start-fast-2-1"><label for="q-03-zygote-why-apps-start-fast-2-1">Ten: forking copies all of Zygote's memory</label>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-2" id="q-03-zygote-why-apps-start-fast-2-2" data-ok><label for="q-03-zygote-why-apps-start-fast-2-2">Mostly one, shared from Zygote</label>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-2" id="q-03-zygote-why-apps-start-fast-2-3"><label for="q-03-zygote-why-apps-start-fast-2-3">One per app that was opened recently</label>
+<p class="fb no opt-1"><b>Not quite.</b> Fork starts the child as a copy, but the kernel shares the pages instead of duplicating them. <label class="show-me" for="st-zygote-3" data-goto="st-zygote">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Forked apps share Zygote's pages until they write to them (copy-on-write).</p>
+<p class="fb no opt-3"><b>Not quite.</b> Recency doesn't matter: every forked app shares Zygote's pages. <label class="show-me" for="st-zygote-3" data-goto="st-zygote">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What's the difference between a cold and a warm start?</legend>
-<input type="radio" name="q-03-zygote-why-apps-start-fast-3" id="q-03-zygote-why-apps-start-fast-3-1"><label for="q-03-zygote-why-apps-start-fast-3-1">A warm start skips creating the Activity</label>
-<input type="radio" name="q-03-zygote-why-apps-start-fast-3" id="q-03-zygote-why-apps-start-fast-3-2" data-ok><label for="q-03-zygote-why-apps-start-fast-3-2">A cold start must create the process first by forking Zygote; a warm start reuses the living process</label>
-<p class="fb ok"><b>Right.</b> Warm: the process is alive but the Activity is created again. Cold: no process yet, so fork first.</p>
-<p class="fb no"><b>Not quite.</b> Step back through the diagram above, then try again.</p>
+<legend>Your app changes one shared page. What happens?</legend>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-3" id="q-03-zygote-why-apps-start-fast-3-1" data-ok><label for="q-03-zygote-why-apps-start-fast-3-1">The kernel copies just that page for your app</label>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-3" id="q-03-zygote-why-apps-start-fast-3-2"><label for="q-03-zygote-why-apps-start-fast-3-2">The whole framework gets copied into your app</label>
+<input type="radio" name="q-03-zygote-why-apps-start-fast-3" id="q-03-zygote-why-apps-start-fast-3-3"><label for="q-03-zygote-why-apps-start-fast-3-3">Zygote's page changes for every app</label>
+<p class="fb ok opt-1"><b>Right.</b> Copy-on-write copies only the page that's written, and only for the process that wrote it.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Only the page you write to is copied; everything else stays shared. <label class="show-me" for="st-zygote-4" data-goto="st-zygote">Show me step 4 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> That's exactly what copy-on-write prevents: your change goes into your own copy. <label class="show-me" for="st-zygote-4" data-goto="st-zygote">Show me step 4 again ↑</label></p>
 </fieldset>
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://developer.android.com/topic/performance/memory-overview">Android Developers: Overview of memory management (sharing memory)</a></li><li><a href="https://man7.org/linux/man-pages/man2/fork.2.html">Linux man page: fork(2), copy-on-write</a></li><li><a href="https://developer.android.com/topic/performance/vitals/launch-time">Android Developers: App startup time</a></li></ul>
       </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Cold start = fork from Zygote, then create your Application, then your first Activity. Anything slow in Application.onCreate() is paid on every cold start, before the user sees anything.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Cold start = fork Zygote, create your Application, create your first Activity. Anything slow in Application.onCreate() is paid on every cold start, before the user sees anything.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

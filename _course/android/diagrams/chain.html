@@ -1,25 +1,24 @@
 <!-- label: How the system tells your app what to do -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="chain-t"><title id="chain-t">system_server decides, Binder carries the message, the main thread receives it, your callback runs</title>
-<defs><marker id="chain-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<rect class="step s1 d-band" x="8" y="208" width="624" height="164" rx="10"/>
-<text class="step s1 d-m" x="22" y="364">your app's process (your house)</text>
-<g class="step s1"><rect class="d-box" x="24" y="224" width="260" height="110" rx="8"/><text class="d-b" x="44" y="264">Your code</text><text class="d-mi" x="44" y="296">onCreate() { … }</text></g>
-<g class="step s1"><rect class="d-box" x="356" y="224" width="260" height="110" rx="8"/><text class="d-b" x="376" y="264">Main thread</text><text class="d-m" x="376" y="296">the one clerk</text></g>
-<g class="step s2"><rect class="d-hl" x="24" y="14" width="260" height="120" rx="8"/><text class="d-b" x="44" y="54">system_server</text><text class="d-m" x="44" y="84">the town hall</text><text class="d-a" x="44" y="116">"Start screen X"</text></g>
-<g class="step s3"><rect class="d-box" x="356" y="14" width="260" height="120" rx="8"/><text class="d-b" x="376" y="54">Kernel: Binder</text><text class="d-m" x="376" y="84">the post office</text></g>
-<path class="step s3 d-acc" d="M288,74 L350,74" marker-end="url(#chain-ah)"/>
-<circle class="step only-3 moving d-dot" r="9"><animateMotion dur="1.4s" repeatCount="indefinite" path="M290,74 L346,74"/></circle>
-<path class="step s4 d-acc" d="M486,138 L486,218" marker-end="url(#chain-ah)"/>
-<circle class="step only-4 moving d-dot" r="9"><animateMotion dur="1.4s" repeatCount="indefinite" path="M486,140 L486,214"/></circle>
-<rect class="step s4 d-acc" x="356" y="224" width="260" height="110" rx="8"/>
-<path class="step s5 d-acc" d="M352,279 L290,279" marker-end="url(#chain-ah)"/>
-<rect class="step s5 d-acc" x="24" y="224" width="260" height="110" rx="8"/>
-<text class="step s5 d-a" x="44" y="322">runs now</text>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="chain-t"><title id="chain-t">The town hall (system_server) writes a letter; the post office (Binder, in the kernel) carries it into your app's house; the clerk (main thread) takes it from the in-tray and runs onCreate()</title>
+<!-- your app: a house -->
+<g class="step s1"><polygon class="d-roof" points="20,236 320,190 620,236"/><rect class="d-paper" x="20" y="236" width="600" height="136"/><text class="d-m" x="36" y="364">your app (a process)</text></g>
+<g class="step s1"><rect class="d-paper" x="60" y="258" width="220" height="70" rx="6"/><text class="d-mi" x="76" y="300">onCreate() { … }</text></g>
+<g class="step s1"><rect class="d-wood" x="400" y="320" width="200" height="14" rx="3"/><circle class="d-skin" cx="470" cy="274" r="16"/><rect class="d-roof" x="448" y="292" width="44" height="30" rx="12"/><rect class="d-wood" x="540" y="304" width="56" height="16" rx="3"/><text class="d-tiny" x="410" y="356">main thread</text></g>
+<!-- the town hall -->
+<g class="step s2" data-pulse="2"><polygon class="d-roof" points="30,62 130,16 230,62"/><rect class="d-paper" x="40" y="62" width="180" height="70"/><rect class="d-wood" x="58" y="72" width="12" height="52"/><rect class="d-wood" x="100" y="72" width="12" height="52"/><rect class="d-wood" x="148" y="72" width="12" height="52"/><rect class="d-wood" x="190" y="72" width="12" height="52"/><text class="d-b" x="40" y="160">system_server</text></g>
+<!-- the post office (Binder, in the kernel) -->
+<g class="step s3" data-pulse="3"><rect class="d-roof" x="420" y="30" width="200" height="16" rx="3"/><rect class="d-paper" x="430" y="46" width="180" height="86"/><rect class="d-paper" x="490" y="66" width="60" height="40" rx="3"/><polyline class="d-line" points="490,66 520,88 550,66"/><text class="d-b" x="430" y="160">Binder</text></g>
+<path class="step s3 d-dash" d="M226,98 L424,88"/>
+<path class="step s4 d-dash" d="M540,136 L566,296"/>
+<!-- the letter travels -->
+<g class="step s2 actor-letter" data-move="2:96,84 3:490,70 4:536,262 5:300,270"><rect class="d-paper" x="0" y="0" width="68" height="44" rx="3"/><polyline class="d-line" points="0,0 34,22 68,0"/><text class="d-tiny" x="8" y="39">start X</text></g>
+<!-- your code runs -->
+<g class="step s5" data-pulse="5"><rect class="d-acc" x="56" y="254" width="228" height="78" rx="8"/><text class="d-a" x="190" y="248">runs!</text></g>
 </svg>
 <ol class="caps">
-<li><p>This is your app: a process with your code in it and one <b>main thread</b>. Now notice what's <i>missing</i>: nothing in here decides when your screen starts, pauses or dies.</p></li>
-<li><p>That decision is made in another process, <b>system_server</b>. Think of it as the town hall: it keeps the official register of every app and every screen, and it decides "start screen X now".</p></li>
-<li><p>The town hall can't reach into your house: processes can't touch each other's memory. So the message goes through the <b>kernel's Binder driver</b>, the post office.</p></li>
-<li><p>The letter lands in your <b>main thread's</b> inbox. The main thread is one clerk who handles letters one at a time, in order.</p></li>
-<li><p>When the clerk reaches it, <b>your callback runs</b>: <code>onCreate()</code>. You didn't call it. You were called. Remember this chain; every puzzle in this course is one piece of it.</p></li>
+<li><p>Your app is a house with one clerk inside: the <b>main thread</b>. Your code waits on the desk. Notice what's missing: nothing in the house decides when your screen starts.</p></li>
+<li><p>That decision is made in another process, <b>system_server</b>: the town hall. It writes the order "start screen X". <i>Predict: can the town hall just walk into your house?</i></p></li>
+<li><p>No: processes can't touch each other's memory. The letter goes through <b>Binder</b>, a driver in the kernel: the post office, the only one allowed into every house.</p></li>
+<li><p>The letter lands in the clerk's in-tray. The clerk handles letters <b>one at a time</b>, in order. (A small helper actually carries it in; you'll meet it in puzzle 6.) <i>Predict: what happens next?</i></p></li>
+<li><p>The clerk runs your code: <code>onCreate()</code>. You didn't call it. You were called. Every puzzle in this course is one piece of this chain.</p></li>
 </ol>

@@ -4,6 +4,7 @@
 (() => {
   'use strict';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('js'); // moving parts only show when this script runs
 
   // Anonymous, cookie-free counts with GoatCounter (a 1×1 image request; no third-party script).
   // Events show how far people get: started, played a diagram, mastered puzzle N.
@@ -14,6 +15,23 @@
     new Image().src = `https://pachulski.goatcounter.com/count?${q}`;
   };
   count(location.pathname);
+
+  // ── Actors: SVG parts that move between steps ─────────────────────────────────
+  // data-move="2:40,20 3:440,20" → at step 2 the part sits at (40,20), at step 3 it travels to (440,20).
+  // data-pulse="3"               → the part bounces when step 3 arrives.
+  const actors = (fig, step, animate) => {
+    for (const el of fig.querySelectorAll('[data-move]')) {
+      const stops = el.dataset.move.trim().split(/\s+/).map(t => { const [k, xy] = t.split(':'); const [x, y] = xy.split(',').map(Number); return { k: Number(k), x, y }; });
+      const at = stops.filter(s => s.k <= step).pop() || stops[0];
+      const to = `translate(${at.x}px, ${at.y}px)`;
+      const from = el.style.transform || to;
+      el.style.transform = to;
+      if (animate && !reduce && from !== to) el.animate([{ transform: from }, { transform: to }], { duration: 950, easing: 'cubic-bezier(.45,.05,.25,1)' });
+    }
+    if (animate && !reduce) for (const el of fig.querySelectorAll(`[data-pulse~="${step}"]`)) {
+      el.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 650, easing: 'ease-out' });
+    }
+  };
 
   for (const fig of document.querySelectorAll('.stepper')) {
     const radios = [...fig.querySelectorAll(':scope > input[type=radio]')];
@@ -28,6 +46,7 @@
     const go = i => {
       const n = (i + radios.length) % radios.length;
       radios[n].checked = true;
+      actors(fig, n + 1, true);
       fig.style.setProperty('--dwell', `${dwell(n)}ms`);
       fig.classList.remove('tick'); void fig.offsetWidth; fig.classList.add('tick'); // restart the progress bar
     };
@@ -58,6 +77,8 @@
     };
     btn.addEventListener('click', () => { touched = true; setPlaying(!playing); if (playing) count(`play ${location.pathname}`, true, 'Played a diagram'); });
 
+    actors(fig, current() + 1, false);
+    for (const r of radios) r.addEventListener('change', () => actors(fig, current() + 1, true));
     // Any manual step change takes over from autoplay.
     for (const r of radios) r.addEventListener('change', () => {
       if (playing && fig.dataset.auto !== '1') { touched = true; setPlaying(false); }
@@ -91,6 +112,14 @@
         else if (!entry.isIntersecting && playing) setPlaying(false);
       }, { threshold: 0.6 }).observe(fig);
     }
+  }
+
+  // "Show me step N again": the label already selects the step; bring the diagram into view.
+  for (const l of document.querySelectorAll('.show-me[data-goto]')) {
+    l.addEventListener('click', () => {
+      const fig = document.getElementById(`${l.dataset.goto}-1`)?.closest('.stepper');
+      if (fig) setTimeout(() => fig.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }), 0);
+    });
   }
 
   // ── Mastery: answer every question correctly to unlock the next puzzle ──────────

@@ -1,23 +1,19 @@
 <!-- label: Even your own screens go through system_server -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="th-t"><title id="th-t">Your app asks system_server to start screen B; system_server checks and records it, then tells your app to create it</title>
-<defs><marker id="th-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="250" height="352" rx="8"/><text class="d-b" x="34" y="50">Your app</text><rect class="d-band" x="34" y="72" width="214" height="80" rx="6"/><text class="d-t" x="50" y="118">Screen A</text></g>
-<g class="step s1"><rect class="d-box" x="374" y="14" width="250" height="352" rx="8"/><text class="d-b" x="392" y="50">system_server</text>
-<text class="d-mi" x="392" y="90">ActivityTaskManager</text><text class="d-mi" x="392" y="118">PackageManager</text><text class="d-mi" x="392" y="146">WindowManager</text><text class="d-m" x="392" y="174">…</text>
-<text class="d-m" x="392" y="222">register of screens:</text><text class="d-mi" x="392" y="250">• your app: A</text></g>
-<path class="step s2 d-acc" d="M270,110 L368,110" marker-end="url(#th-ah)"/>
-<text class="step s2 d-a" x="270" y="98">start B</text>
-<circle class="step only-2 moving d-dot" r="9"><animateMotion dur="1.3s" repeatCount="indefinite" path="M272,110 L364,110"/></circle>
-<rect class="step s3 d-acc" x="384" y="70" width="232" height="30" rx="4"/>
-<text class="step s3 d-a" x="392" y="278">• your app: A, B</text>
-<path class="step s4 d-acc" d="M370,300 L272,300" marker-end="url(#th-ah)"/>
-<text class="step s4 d-a" x="288" y="288">create B</text>
-<circle class="step only-4 moving d-dot" r="9"><animateMotion dur="1.3s" repeatCount="indefinite" path="M368,300 L276,300"/></circle>
-<g class="step s4"><rect class="d-hl" x="34" y="182" width="214" height="80" rx="6"/><text class="d-t" x="50" y="228">Screen B</text></g>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="th-t"><title id="th-t">Your app sends "start B" to system_server; system_server checks it and adds B to its register; then it sends "create B" back and your app creates the screen</title>
+<g class="step s1"><polygon class="d-roof" points="10,110 155,56 300,110"/><rect class="d-paper" x="20" y="110" width="270" height="250"/><text class="d-b" x="40" y="146">your app</text>
+<rect class="d-band" x="44" y="168" width="96" height="70" rx="6"/><text class="d-b" x="82" y="212">A</text></g>
+<g class="step s1"><polygon class="d-roof" points="340,110 485,56 630,110"/><rect class="d-paper" x="350" y="110" width="270" height="250"/><rect class="d-wood" x="368" y="122" width="12" height="60"/><rect class="d-wood" x="590" y="122" width="12" height="60"/><text class="d-b" x="396" y="150">system_server</text>
+<rect class="d-paper" x="378" y="196" width="214" height="120" rx="4"/><text class="d-tiny" x="392" y="222">register</text></g><text class="step upto-2 d-mi" x="392" y="252">your app: A</text>
+<g class="step s3" data-pulse="3"><text class="d-a" x="392" y="252">your app: A, B</text><text class="d-a" x="520" y="346">✓ checked</text></g>
+<!-- letter out: start B -->
+<g class="step s2 actor-letter" data-move="1:150,180 2:362,312"><rect class="d-paper" x="0" y="0" width="76" height="44" rx="3"/><polyline class="d-line" points="0,0 38,22 76,0"/><text class="d-tiny" x="8" y="38">start B</text></g>
+<!-- letter back: create B -->
+<g class="step s4 actor-letter" data-move="3:430,300 4:170,290"><rect class="d-paper" x="0" y="0" width="84" height="44" rx="3"/><polyline class="d-line" points="0,0 42,22 84,0"/><text class="d-tiny" x="8" y="38">create B</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="160" y="168" width="96" height="70" rx="6"/><text class="d-a" x="198" y="212">B</text></g>
 </svg>
 <ol class="caps">
-<li><p>Every app lives in its own sandbox. So who decides which app is on screen, which app opens a link, which app gets killed when memory runs low? One trusted process that sees everything: <b>system_server</b>, the town hall.</p></li>
-<li><p>Your app calls <code>startActivity()</code> to open its <i>own</i> next screen. Even so, the request leaves your process and goes to the town hall's <b>ActivityTaskManager</b>.</p></li>
-<li><p>The town hall checks the request (does this screen exist? may you open it?) and writes it in its <b>register</b>: it now knows your app has screens A and B, in that order.</p></li>
-<li><p>Only then does it tell your app: <b>"create B"</b>. Your app builds Screen B because it was told to. Your screens' lives are recorded and decided outside your app.</p></li>
+<li><p>Your app shows screen A. The town hall, <b>system_server</b>, keeps the official <b>register</b> of every app's screens. Right now it says: your app, A.</p></li>
+<li><p>Your app calls <code>startActivity()</code> to open its own screen B. Even so, the request leaves your house and goes to the town hall (by Binder, the post office from puzzle 5).</p></li>
+<li><p>The town hall checks it: does B exist, may you open it? Then it writes B in the register. <i>Predict: has screen B been created yet?</i></p></li>
+<li><p>Not until now: the town hall sends back "create B", and only then does your app build the screen. Your screens' lives are decided outside your app.</p></li>
 </ol>

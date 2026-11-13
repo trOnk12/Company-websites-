@@ -1,17 +1,18 @@
-<!-- label: Each app in its own sandbox -->
-<svg viewBox="0 0 640 370" role="img" aria-labelledby="sb-t"><title id="sb-t">Two apps with their own user IDs; the kernel blocks one from opening the other's file; the official doors are Intents and ContentProviders</title>
-<defs><marker id="sb-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker><marker id="sb-ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ahr" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="270" height="168" rx="8"/><text class="d-b" x="34" y="50">Bank app</text><text class="d-mi" x="34" y="80">UID u0_a101</text><rect class="d-band" x="34" y="102" width="150" height="58" rx="4"/><text class="d-mi" x="46" y="138">accounts.db</text></g>
-<g class="step s1"><rect class="d-box" x="354" y="14" width="270" height="168" rx="8"/><text class="d-b" x="372" y="50">Game</text><text class="d-mi" x="372" y="80">UID u0_a202</text><rect class="d-band" x="456" y="102" width="150" height="58" rx="4"/><text class="d-mi" x="476" y="138">save.dat</text></g>
-<g class="step s1"><rect class="d-band" x="16" y="282" width="608" height="74" rx="8"/><text class="d-b" x="34" y="316">Linux kernel</text><text class="d-m" x="34" y="342">checks the UID on every file and process</text></g>
-<path class="step only-2 d-red" d="M410,184 L410,300 L230,300 L230,166" marker-end="url(#sb-ahr)"/>
-<g class="step only-2"><rect class="d-bad" x="278" y="276" width="96" height="44" rx="6"/><text class="d-r" x="292" y="305">denied</text></g>
-<g class="step s3"><rect class="d-hl" x="122" y="204" width="396" height="56" rx="8"/><text class="d-a" x="140" y="238">Official doors: Intent, ContentProvider</text></g>
-<path class="step s3 d-acc" d="M560,184 L560,232 L524,232" marker-end="url(#sb-ah)"/>
-<path class="step s3 d-acc" d="M116,232 L80,232 L80,186" marker-end="url(#sb-ah)"/>
+<!-- label: Each app is its own house with its own key -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sb-t"><title id="sb-t">Two app houses with different keys (UIDs); the game's key doesn't fit the bank's door, so the kernel refuses; the official way is a letter through the town hall</title>
+<g class="step s1"><polygon class="d-roof" points="30,130 160,72 290,130"/><rect class="d-paper" x="40" y="130" width="240" height="142"/><rect class="d-wood" x="190" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="224" cy="238" r="4"/><rect class="d-paper" x="58" y="168" width="54" height="70" rx="3"/><line class="d-line" x1="66" y1="186" x2="104" y2="186"/><line class="d-line" x1="66" y1="200" x2="104" y2="200"/><line class="d-line" x1="66" y1="214" x2="96" y2="214"/><text class="d-mi" x="56" y="156">UID 10101</text><text class="d-b" x="40" y="298">Bank app</text></g>
+<g class="step s1"><polygon class="d-roof" points="350,130 480,72 610,130"/><rect class="d-paper" x="360" y="130" width="240" height="142"/><rect class="d-wood" x="510" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="544" cy="238" r="4"/><text class="d-mi" x="376" y="156">UID 10202</text><text class="d-b" x="360" y="298">Game</text></g>
+<g class="step s1"><rect class="d-band" x="10" y="312" width="620" height="56" rx="8"/><text class="d-m" x="26" y="346">kernel: checks the key</text><rect class="d-ink" x="314" y="140" width="12" height="172" rx="3"/></g>
+<!-- the game's key tries the bank's door -->
+<g class="step only-2" data-move="1:440,226 2:236,226"><circle class="d-hl" cx="14" cy="14" r="12"/><rect class="d-hl" x="24" y="10" width="30" height="8" rx="2"/></g>
+<g class="step only-2" data-pulse="2"><circle class="d-bad" cx="212" cy="190" r="22"/><path class="d-red" d="M200,178 L224,202 M224,178 L200,202"/></g>
+<!-- the official way: a letter through the town hall -->
+<g class="step s3" data-pulse="3"><polygon class="d-roof" points="262,44 320,12 378,44"/><rect class="d-paper" x="272" y="44" width="96" height="40"/><text class="d-tiny" x="270" y="108">town hall</text></g>
+<g class="step s3 actor-letter" data-move="2:420,170 3:288,40 4:150,152"><rect class="d-paper" x="0" y="0" width="60" height="40" rx="3"/><polyline class="d-line" points="0,0 30,20 60,0"/></g>
 </svg>
 <ol class="caps">
-<li><p>When you install an app, Android gives it its own <b>Linux user ID</b> (UID), and runs it in its own process. The bank app and the game are two different "users" as far as Linux is concerned.</p></li>
-<li><p>The game tries to open the bank's <code>accounts.db</code> directly. The file belongs to another UID, so the <b>kernel refuses</b>. The game can't read the bank's memory either: it's a different process. This is the <b>sandbox</b>.</p></li>
-<li><p>Apps can still share, but only through <b>official doors</b> that the system controls, like Intents and ContentProviders. Who runs those doors? That's the town hall, in puzzle 4.</p></li>
+<li><p>Android installs each app as its own Linux user, with its own <b>UID</b> (user ID): its own key. Each app runs in its own process, a house with its own memory.</p></li>
+<li><p>The game tries to open the bank's file with its own key. It doesn't fit: the <b>kernel</b> checks the UID on every file and every process, and refuses. <i>Predict: so how can apps share anything?</i></p></li>
+<li><p>Through official doors. The game writes a letter (an Intent) to the town hall, system_server, which checks it…</p></li>
+<li><p>…and delivers it to the bank if it's allowed. Apps never walk into each other's houses; the system carries what they share.</p></li>
 </ol>

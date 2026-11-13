@@ -1,21 +1,23 @@
-<!-- label: Zygote forks apps that share its memory -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="zy-t"><title id="zy-t">Zygote preloads framework pages; forked apps share them; a page is copied only when an app writes to it</title>
-<defs><marker id="zy-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-aha" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="250" height="352" rx="8"/><text class="d-b" x="34" y="50">Zygote</text><text class="d-m" x="34" y="78">started at boot</text>
-<text class="d-m" x="34" y="120">preloaded framework</text>
-<rect class="d-hl" x="34" y="136" width="64" height="56" rx="4"/><rect class="d-hl" x="108" y="136" width="64" height="56" rx="4"/><rect class="d-hl" x="182" y="136" width="64" height="56" rx="4"/>
-<rect class="d-hl" x="34" y="202" width="64" height="56" rx="4"/><rect class="d-hl" x="108" y="202" width="64" height="56" rx="4"/><rect class="d-hl" x="182" y="202" width="64" height="56" rx="4"/>
-<text class="d-m" x="34" y="290">ART + thousands of</text><text class="d-m" x="34" y="314">classes, ready to go</text></g>
-<g class="step s2"><rect class="d-box" x="374" y="14" width="250" height="150" rx="8"/><text class="d-b" x="392" y="50">Your app</text><text class="d-mi" x="392" y="80">fork() → your UID</text><text class="d-m" x="392" y="110">owns no copies yet</text></g>
-<path class="step s2 d-dash" d="M250,164 L370,90"/><path class="step s2 d-dash" d="M250,230 L370,110"/>
-<path class="step s2 d-acc" d="M270,40 L368,40" marker-end="url(#zy-ah)"/>
-<g class="step s3"><rect class="d-box" x="374" y="214" width="250" height="152" rx="8"/><text class="d-b" x="392" y="250">Another app</text><text class="d-mi" x="392" y="280">fork() → its UID</text><text class="d-m" x="392" y="310">shares the same pages</text></g>
-<path class="step s3 d-dash" d="M250,170 L370,270"/><path class="step s3 d-dash" d="M250,236 L370,290"/>
-<g class="step s4"><rect class="d-bad" x="572" y="122" width="40" height="34" rx="4"/><text class="d-r" x="392" y="146">writes → copy</text></g>
+<!-- label: Zygote forks new app processes that share its memory -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="zy-t"><title id="zy-t">Zygote starts at boot with the framework loaded; forking makes a new app process that shares Zygote's memory pages; a page is copied only when the app writes to it</title>
+<g class="step s1" data-pulse="1"><polygon class="d-roof" points="10,110 135,60 260,110"/><rect class="d-paper" x="20" y="110" width="230" height="232"/><text class="d-b" x="40" y="146">Zygote</text>
+<rect class="d-hl" x="44" y="170" width="50" height="34" rx="4"/><rect class="d-hl" x="104" y="170" width="50" height="34" rx="4"/><rect class="d-hl" x="164" y="170" width="50" height="34" rx="4"/>
+<rect class="d-hl" x="44" y="214" width="50" height="34" rx="4"/><rect class="d-hl" x="104" y="214" width="50" height="34" rx="4"/><rect class="d-hl" x="164" y="214" width="50" height="34" rx="4"/>
+<text class="d-m" x="40" y="290">ART + framework</text></g>
+<!-- fork: a new house slides out of Zygote -->
+<g class="step s2" data-move="1:20,60 2:390,14"><polygon class="d-roof" points="0,40 115,0 230,40"/><rect class="d-paper" x="10" y="40" width="210" height="112"/></g>
+<g class="step s2"><text class="d-b" x="410" y="96">your app</text><text class="d-m" x="410" y="126">shares pages</text></g>
+<path class="step s2 d-dash" d="M216,187 L398,112"/>
+<g class="step s3" data-move="2:20,60 3:390,204"><polygon class="d-roof" points="0,40 115,0 230,40"/><rect class="d-paper" x="10" y="40" width="210" height="112"/></g>
+<g class="step s3"><text class="d-b" x="410" y="286">another app</text><text class="d-m" x="410" y="316">shares them too</text></g>
+<path class="step s3 d-dash" d="M216,231 L398,300"/>
+<!-- copy-on-write: one page is copied when written -->
+<g class="step s4" data-move="3:104,170 4:556,100"><rect class="d-bad" x="0" y="0" width="50" height="34" rx="4"/></g>
+<text class="step s4 d-r" x="540" y="154">copied</text>
 </svg>
 <ol class="caps">
-<li><p>Starting ART and loading thousands of framework classes takes seconds. So at boot, Android starts one process, <b>Zygote</b>, does all of that once, and then waits.</p></li>
-<li><p>You tap an app icon. Zygote <b>forks</b>: it copies itself into a new process, which switches to your app's UID and loads your code. Everything else is already loaded, so it starts fast.</p></li>
-<li><p>Every app is forked the same way. They don't each get their own copy of the framework: a fork <b>shares</b> the parent's memory pages. Dozens of apps, one framework in RAM.</p></li>
-<li><p>Only when an app <b>writes</b> to a shared page does Linux make a private copy of that one page for it. This is called <b>copy-on-write</b>.</p></li>
+<li><p>At boot, Android starts one process, <b>Zygote</b>, and loads ART and the framework into its memory once. Then it waits.</p></li>
+<li><p>You tap an icon. Zygote <b>forks</b>: the kernel makes a new process that starts as a copy of Zygote, switches it to your app's UID, and loads your code.</p></li>
+<li><p>The new process doesn't get its own copy of the framework: it <b>shares</b> Zygote's memory pages. So does every other app. <i>Predict: what if your app changes a shared page?</i></p></li>
+<li><p>Only then does the kernel copy that one page for your app: <b>copy-on-write</b>. Everything you don't change stays shared.</p></li>
 </ol>

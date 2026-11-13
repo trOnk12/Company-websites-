@@ -314,7 +314,6 @@ pre code { background: none; padding: 0; overflow-wrap: normal; }
 .quiz > input:not([data-ok]):checked + label { border-color: #A3341F; background: #F7DEDA; }
 .quiz .fb { display: none; margin: 0.6rem 0 0.4rem; }
 .quiz > input[data-ok]:checked ~ .fb.ok { display: block; color: #2F6B3A; }
-.quiz > input:not([data-ok]):checked ~ .fb.no { display: block; color: #A3341F; }
 .quiz .fb b { color: inherit; }
 .quiz.solved { border-color: #2F6B3A; }
 /* Gating (only when course.js runs) */
@@ -353,3 +352,21 @@ pre code { background: none; padding: 0; overflow-wrap: normal; }
 .nudge .button { cursor: pointer; font: 700 1rem var(--sans); background: var(--bg); }
 .nudge .button.primary { background: var(--ink); color: var(--bg); }
 @media (max-width: 40rem) { .nudge { left: 1rem; right: 1rem; max-width: none; } }
+
+/* Actors moved by course.js: SVG transforms in user units */
+.stage [data-move], .stage [data-pulse] { transform-box: fill-box; transform-origin: center; }
+.stage .actor-letter { filter: drop-shadow(0 3px 3px rgba(0,0,0,0.18)); }
+.d-skin { fill: #E8C7A4; stroke: var(--ink); stroke-width: 2; }
+.d-wood { fill: #D9C6A5; stroke: var(--ink); stroke-width: 2; }
+.d-paper { fill: #FFFDF7; stroke: var(--ink); stroke-width: 2; }
+.d-roof { fill: #C9D9EC; stroke: var(--ink); stroke-width: 2; }
+.d-ink { fill: var(--ink); }
+.d-tiny { font-family: var(--sans); font-size: 15px; fill: var(--ink); font-weight: 700; }
+html:not(.js) .stage [data-move] { display: none; }
+.quiz > input:nth-of-type(1):checked ~ .fb.opt-1 { display: block; }
+.quiz > input:nth-of-type(2):checked ~ .fb.opt-2 { display: block; }
+.quiz > input:nth-of-type(3):checked ~ .fb.opt-3 { display: block; }
+.quiz > input:nth-of-type(4):checked ~ .fb.opt-4 { display: block; }
+.quiz .fb.no { color: #8A2B19; }
+.quiz .show-me { display: inline-flex; align-items: center; min-height: 2.75rem; margin-left: 0.25rem; padding: 0 0.8rem; border: 1.5px solid currentColor; border-radius: 4px; font-weight: 700; color: var(--accent-deep); text-decoration: none; cursor: pointer; }
+.quiz .show-me:hover { background: #EEF3FA; }

@@ -1,23 +1,24 @@
-<!-- label: From Kotlin to machine code -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="art-t"><title id="art-t">Kotlin compiles to DEX in the APK; on the phone ART interprets it, JIT-compiles hot code, records a profile, and compiles ahead of time from the profile</title>
-<defs><marker id="art-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-ah" d="M0,0 L10,5 L0,10z"/></marker></defs>
-<g class="step s1"><rect class="d-box" x="16" y="14" width="200" height="74" rx="8"/><text class="d-b" x="34" y="58">Kotlin code</text></g>
-<path class="step s1 d-line" d="M220,51 L300,51" marker-end="url(#art-ah)"/>
-<text class="step s1 d-m" x="226" y="38">build</text>
-<g class="step s1"><rect class="d-box" x="306" y="14" width="318" height="74" rx="8"/><text class="d-b" x="324" y="48">DEX bytecode</text><text class="d-m" x="324" y="76">inside your one APK</text></g>
-<g class="step s2"><rect class="d-band" x="16" y="116" width="608" height="250" rx="10"/><text class="d-m" x="32" y="352">on the phone: ART, in your process</text></g>
-<g class="step s2"><rect class="d-box" x="32" y="162" width="180" height="80" rx="8"/><text class="d-b" x="50" y="198">Interpreter</text><text class="d-m" x="50" y="226">runs DEX as is</text></g>
-<path class="step s2 d-line" d="M400,92 L122,158" marker-end="url(#art-ah)"/>
-<g class="step s3"><rect class="d-box" x="230" y="162" width="180" height="80" rx="8"/><text class="d-b" x="248" y="198">JIT</text><text class="d-m" x="248" y="226">hot code, now</text></g>
-<g class="step s3"><rect class="d-hl" x="230" y="268" width="180" height="40" rx="6"/><text class="d-a" x="250" y="294">profile file</text></g>
-<path class="step s3 d-acc" d="M320,246 L320,264" />
-<g class="step s4"><rect class="d-box" x="428" y="162" width="180" height="80" rx="8"/><text class="d-b" x="446" y="198">AOT</text><text class="d-m" x="446" y="226">dex2oat, later</text></g>
-<path class="step s4 d-acc" d="M414,288 L512,288 L512,246"/>
-<g class="step s4"><rect class="d-hl" x="428" y="318" width="180" height="40" rx="6"/><text class="d-a" x="440" y="344">machine code</text></g>
+<!-- label: ART translates your app's code, now and later -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="art-t"><title id="art-t">DEX code from the APK goes to ART inside your app's process; ART reads it line by line, compiles hot code right away (JIT) and notes it in a profile; dex2oat later compiles from the profile; a Baseline Profile ships that list in the APK</title>
+<g class="step s1"><rect class="d-roof" x="16" y="120" width="140" height="130" rx="8"/><text class="d-b" x="56" y="110">APK</text></g>
+<g class="step s1"><polygon class="d-roof" points="186,96 404,46 624,96"/><rect class="d-paper" x="196" y="96" width="418" height="226"/><text class="d-m" x="210" y="312">your app's process</text>
+<circle class="d-skin" cx="262" cy="150" r="16"/><rect class="d-roof" x="240" y="168" width="44" height="32" rx="12"/><rect class="d-wood" x="212" y="202" width="140" height="12" rx="3"/><text class="d-tiny" x="246" y="236">ART</text></g>
+<!-- the DEX scroll -->
+<g class="step s1" data-move="1:40,150 2:300,146"><rect class="d-paper" x="0" y="0" width="74" height="48" rx="6"/><text class="d-tiny" x="16" y="30">DEX</text></g>
+<g class="step only-2"><rect class="d-paper" x="300" y="106" width="150" height="30" rx="14"/><text class="d-tiny" x="312" y="127">line by line…</text></g>
+<!-- JIT: hot code, now -->
+<g class="step s3"><rect class="d-band" x="400" y="130" width="96" height="96" rx="6"/><text class="d-b" x="428" y="156">JIT</text></g>
+<g class="step s3" data-move="2:262,150 3:411,172"><rect class="d-bad" x="0" y="0" width="74" height="38" rx="6"/><text class="d-r" x="12" y="26">hot!</text></g>
+<g class="step s3" data-move="3:300,236 4:410,240 5:58,160"><rect class="d-paper" x="0" y="0" width="54" height="44" rx="3"/><line class="d-line" x1="8" y1="14" x2="46" y2="14"/><line class="d-line" x1="8" y1="26" x2="40" y2="26"/><text class="d-tiny" x="0" y="62">profile</text></g>
+<!-- dex2oat: later, at night -->
+<g class="step s4" data-pulse="4"><path class="d-hl" d="M600,16 a20,20 0 1,0 0,40 a15,15 0 1,1 0,-40 Z"/><rect class="d-band" x="486" y="236" width="112" height="56" rx="6"/><text class="d-mi" x="496" y="270">dex2oat</text></g>
+<g class="step s3"><rect class="d-hl" x="510" y="150" width="86" height="58" rx="6"/><text class="d-a" x="522" y="186">fast</text></g>
+<text class="step s5 d-a" x="18" y="276">Baseline Profile</text>
 </svg>
 <ol class="caps">
-<li><p>Phones use different CPUs, but you ship one APK. So your Kotlin isn't compiled to machine code at build time. It becomes <b>DEX bytecode</b>, an instruction format for Android.</p></li>
-<li><p>On the phone, <b>ART</b> (the Android Runtime) runs inside your app's own process. At first it can simply <b>interpret</b> the DEX: correct, but slow.</p></li>
-<li><p>Code that runs often ("hot" code) gets compiled to machine code <b>just in time</b> (JIT), while the app runs. ART also writes down which code was hot in a <b>profile</b>.</p></li>
-<li><p>Later, in the background, <code>dex2oat</code> uses that profile to compile the hot code <b>ahead of time</b> (AOT), so next time it starts fast. A <b>Baseline Profile</b> ships that list with your app, so users get the speed from the first launch.</p></li>
+<li><p>You ship one APK for every kind of phone, so it can't hold machine code for one CPU. It holds <b>DEX</b>: instructions for Android's runtime, ART, a translator that lives inside each app's process.</p></li>
+<li><p>At first, ART reads the DEX <b>line by line</b> (interpreting): it works, but it's slow.</p></li>
+<li><p>Code that runs often is "hot". ART compiles it to machine code <b>right now</b>, while the app runs (JIT), and writes it in a notebook: the <b>profile</b>.</p></li>
+<li><p>Later, about once a day while the phone is idle and charging, the system's <code>dex2oat</code> tool compiles the profiled code <b>ahead of time</b> (AOT). Next start, it's already fast.</p></li>
+<li><p>A <b>Baseline Profile</b> is that notebook written in advance and shipped inside the APK, so the important code is compiled before your first launch.</p></li>
 </ol>

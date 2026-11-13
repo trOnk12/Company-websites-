@@ -81,9 +81,9 @@ test.describe('Course', () => {
     await expect(next).toHaveAttribute('aria-disabled', 'true');
     const quizzes = page.locator('fieldset.quiz');
     const n = await quizzes.count();
-    // A wrong answer shows "Not quite" and keeps the lock.
+    // A wrong answer shows its own "Not quite" explanation (only that one) and keeps the lock.
     await quizzes.nth(0).locator('input:not([data-ok]) + label').first().click();
-    await expect(quizzes.nth(0).locator('.fb.no')).toBeVisible();
+    await expect(quizzes.nth(0).locator('.fb.no:visible')).toHaveCount(1);
     await expect(next).toHaveAttribute('aria-disabled', 'true');
     for (let i = 0; i < n; i++) await quizzes.nth(i).locator('input[data-ok] + label').click();
     await expect(quizzes.nth(0).locator('.fb.ok')).toBeVisible();
@@ -92,6 +92,25 @@ test.describe('Course', () => {
     await page.goto('/course/');
     await expect(page.locator(`.modules li[data-n="0"]`)).toHaveAttribute('data-state', 'done');
     await expect(page.locator('[data-resume]')).toContainText('Continue: puzzle 1');
+  });
+
+  test('the clarity lint is clean', () => {
+    execFileSync('node', ['scripts/lint-course.js'], { cwd: ROOT, stdio: 'pipe' });
+  });
+
+  test('a wrong answer names the mismatch and "Show me" jumps to the step that fixes it', async ({ page }) => {
+    await page.goto(`/course/android/${PUZZLES[0]}.html`);
+    const q = page.locator('fieldset.quiz').first();
+    const wrong = q.locator('input:not([data-ok])').first();
+    await page.locator(`label[for="${await wrong.getAttribute('id')}"]`).click();
+    const fb = q.locator('.fb.no:visible');
+    await expect(fb).toContainText('Not quite.');
+    const show = fb.locator('.show-me');
+    const target = await show.getAttribute('for');
+    await show.click();
+    await expect(page.locator(`#${target}`)).toBeChecked();
+    const step = Number(target.split('-').pop());
+    await expect(page.locator('.stepper .caps > li').nth(step - 1)).toBeVisible();
   });
 
   test('opening a puzzle early points back to the one it builds on', async ({ page }) => {
