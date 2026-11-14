@@ -104,6 +104,86 @@ function lint(id) {
   return problems;
 }
 
+// ── Vocabulary: no term before its puzzle; one concept per step ─────────────────
+// Page order as the learner reads it: title, subtitle, sections (diagram captions in place), questions.
+function segments(p) {
+  const segs = [{ where: 'title', text: p.fm.title || '' }, { where: 'subtitle', text: p.fm.summary || '' }];
+  for (const s of p.sections) {
+    if (s.title === 'Sources') continue;
+    segs.push({ where: 'heading', text: s.title });
+    for (const b of s.blocks) {
+      if (b.type === 'code' && b.lang.startsWith('diagram')) {
+        const d = p.diagrams.find(x => x.name === (b.text.trim() || b.lang.split(/\s+/)[1]));
+        if (!d) continue;
+        // Labels appear with their step, next to that step's caption.
+        const labels = {};
+        for (const m of d.src.matchAll(/<(g|text)\b[^>]*class="[^"]*\b(?:s|only-|upto-)(\d)\b[^"]*"[^>]*>([\s\S]*?)<\/\1>/g)) {
+          const words = m[1] === 'text' ? m[3] : [...m[3].matchAll(/<text[^>]*>([^<]*)<\/text>/g)].map(t => t[1]).join(' · ');
+          labels[m[2]] = (labels[m[2]] || '') + ' · ' + words;
+        }
+        d.caps.forEach((c, i) => segs.push({ where: `step ${i + 1}`, text: c.replace(/<\/?b>/g, '**').replace(/<\/?code>/g, '`').replace(/<[^>]+>/g, '') + (labels[i + 1] || '') }));
+      } else if (b.type === 'code') segs.push({ where: 'code', text: b.text, code: true });
+      else if (s.title === 'Check yourself' && b.type === 'ul') b.items.forEach((it, i) => {
+        const q = parseQuestion(it);
+        segs.push({ where: `question ${i + 1}`, text: [q.q, ...q.opts.flatMap(o => [o.text, o.mismatch || '']), q.why].join(' · ') });
+      });
+      else segs.push({ where: s.title, text: b.items ? b.items.join(' · ') : (b.text || '') });
+    }
+  }
+  return segs;
+}
+
+function vocabulary(id, puzzles) {
+  const problems = [];
+  const gf = path.join(SRC, id, 'glossary.json');
+  if (!fs.existsSync(gf)) return [`${id}: missing glossary.json`];
+  const g = JSON.parse(fs.readFileSync(gf, 'utf8'));
+  const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const terms = Object.entries(g.terms).map(([t, v]) => {
+    const names = [t, ...(v.aliases || [])];
+    const rx = names.map(n => {
+      const cs = /[A-Z]/.test(n) || /[(_.]/.test(n); // capitalised and code names match exactly
+      return new RegExp(`(?<![\\w-])${esc(n)}${/\w$/.test(n) ? 's?' : ''}(?![\\w-])`, cs ? '' : 'i');
+    });
+    return { t, in: Number(v.in), kind: v.kind || 'concept', rx, names };
+  });
+  const known = new Set([...g.baseline.words, ...terms.flatMap(t => t.names)].map(w => w.toLowerCase()));
+  const norm = c => c.replace(/\(.*?\)/g, '()').replace(/\s*\{.*$/, '').trim();
+  const isKnown = c => { const n = norm(c).toLowerCase(); return known.has(n) || known.has(n.replace(/\(\)$/, '')) || known.has(n + '()'); };
+
+  for (const p of puzzles) {
+    const n = Number(p.f.slice(0, 2));
+    const at = msg => problems.push(`${id}/${p.f}: ${msg}`);
+    const segs = segments(p);
+    // A: no term before the puzzle that teaches it.
+    for (const t of terms) if (t.in > n) {
+      const hit = segs.find(s => t.rx.some(r => r.test(s.text)));
+      if (hit) at(`uses "${t.t}" (${hit.where}) before puzzle ${t.in} teaches it`);
+    }
+    // B: a term taught here is first met in the body, bold, not in the subtitle or a question.
+    const here = terms.filter(t => t.in === n);
+    for (const t of here) {
+      const first = segs.find(s => s.where !== 'title' && t.rx.some(r => r.test(s.text)));
+      if (!first) { at(`glossary says "${t.t}" is taught here, but it never appears`); continue; }
+      if (first.where === 'subtitle' || first.where.startsWith('question')) at(`"${t.t}" first appears in the ${first.where}, before it's explained`);
+      else if (t.kind === 'concept' && !t.names.some(nm => new RegExp(`\\*\\*[^*]*${esc(nm)}[^*]*\\*\\*`, 'i').test(first.text))) at(`"${t.t}" is new here: its first mention (${first.where}) must be its bold definition`);
+    }
+    // C: at most 6 new concepts per puzzle.
+    const concepts = here.filter(t => t.kind === 'concept');
+    if (concepts.length > 6) at(`teaches ${concepts.length} new concepts (max 6): ${concepts.map(t => t.t).join(', ')}. Split the puzzle.`);
+    // D: no jargon outside the glossary (code names, acronyms, CamelCase, snake_case).
+    const unknown = new Set();
+    for (const s of segs.filter(s => !s.code)) {
+      for (const m of s.text.matchAll(/`([^`]+)`|\b([A-Z][a-z]+[A-Z]\w*)\b|\b([A-Z]{2,}s?)\b|\b([a-z0-9]+_[a-z0-9_]+)\b/g)) {
+        const c = m[1] || m[2] || m[3] || m[4];
+        if (c && !isKnown(c)) unknown.add(`${c} (${s.where})`);
+      }
+    }
+    for (const u of unknown) at(`unknown term ${u}: add it to glossary.json with the puzzle that teaches it, or say it in plain words`);
+  }
+  return problems;
+}
+
 function text(id) {
   for (const p of loadCourse(id)) {
     console.log(`\n========== Puzzle ${p.n}: ${p.fm.title} ==========\n${p.fm.summary}\n`);
@@ -127,7 +207,7 @@ function text(id) {
 if (require.main === module) {
   const i = process.argv.indexOf('--text');
   if (i > 0) { text(process.argv[i + 1] || 'android'); return; }
-  const problems = fs.readdirSync(SRC).filter(d => fs.existsSync(path.join(SRC, d, 'course.json'))).flatMap(lint);
+  const problems = fs.readdirSync(SRC).filter(d => fs.existsSync(path.join(SRC, d, 'course.json'))).flatMap(id => [...lint(id), ...vocabulary(id, loadCourse(id))]);
   if (problems.length) { problems.forEach(p => console.error(p)); console.error(`\n${problems.length} clarity problem(s).`); process.exit(1); }
   console.log('Course clarity lint: clean.');
 }

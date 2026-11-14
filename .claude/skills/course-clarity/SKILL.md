@@ -14,7 +14,20 @@ and Mateusz's teaching playbook (the `foundation-first-teaching` skill). The rul
 
 ## Pass 1 — the lint (mechanical, must be clean)
 
-`npm run lint:course`. It fails on:
+`npm run lint:course`. Vocabulary rules (from `_course/<course>/glossary.json`):
+
+- a glossary term used before the puzzle that teaches it (title excepted; subtitle, diagram labels,
+  captions, code and every question option count);
+- a term taught in a puzzle whose first mention isn't its **bold** definition (in the body or that
+  step's caption), or that first appears in the subtitle or a question;
+- more than 6 new concepts in one puzzle (split it);
+- any code name, acronym, CamelCase or snake_case word that is neither in the glossary nor in `baseline`.
+
+When the fresh learner (pass 2) finds an undefined plain word ("framework", "lifecycle"), add it to the
+glossary with the puzzle that should teach it: from then on the lint enforces it. That's how the lint
+learns.
+
+Structure and quality rules:
 
 - a question without exactly one right answer, or with fewer than 2 / more than 4 options;
 - a wrong option without its own **mismatch** feedback and a **pointer** (`s3` = diagram step 3, or a section id)
@@ -33,7 +46,8 @@ the puzzles in order (`node scripts/lint-course.js --text <course>` prints it: c
 questions with options, but not the answers' explanations). Ask it to read as a beginner Android developer
 who knows Kotlin but nothing about Android internals, and to report, per puzzle:
 
-1. **Undefined terms**: every term used before it was explained (quote it, say where).
+1. **Undefined terms**: every term used before it was explained (quote it, say where), including subtitles,
+   diagram labels and question options. Score each puzzle 1–10 for "a beginner can follow this alone".
 2. **Leaps**: every diagram step where it couldn't predict the next one, or didn't see why it happened.
 3. **Text vs picture**: steps where it had to read the caption to understand the picture (the picture alone
    should make the point; the caption names it).
@@ -58,6 +72,12 @@ For each puzzle, check and write down pass/fail:
 - **Checks are binary or A/B**, test the *why* not only the *what*, and each wrong option maps to one real
   misconception with feedback that names it and a pointer to the step that fixes it.
 - **Ties back** to the previous puzzle in the first lines.
+
+## Pass bar
+
+A puzzle ships only when the lint is clean **and** the fresh learner scores it at least 8/10 for
+"a beginner can follow this without outside help", with no undefined terms and no question answerable
+by copying a caption.
 
 ## Output
 
