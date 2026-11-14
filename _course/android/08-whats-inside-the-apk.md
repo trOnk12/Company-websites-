@@ -7,7 +7,7 @@ takeaway: Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside y
 
 ## The problem
 
-You upload one APK, and it runs on phones with very different CPUs. But a CPU only runs instructions (the tiny steps a program is made of) written for that kind of CPU. So what's in the APK, and who makes it run?
+You upload one APK (the single file your app is packaged into) to the store, and it runs on phones with very different CPUs. But a CPU only runs instructions (the tiny steps a program is made of) written for that kind of CPU. So what's in the APK, and who makes it run?
 
 ## See it
 

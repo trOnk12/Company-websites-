@@ -1,13 +1,13 @@
 ---
 title: Inside a Binder call
 short: Inside Binder
-summary: In puzzle 4, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes, stamped, and picked up by a waiting thread.
+summary: In puzzle 4, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes (raw data), stamped, and picked up by a waiting thread.
 takeaway: proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.
 ---
 
 ## The problem
 
-When your app calls `startActivity()`, the method that sends an Intent, it looks like an ordinary method call. But the method that does the work lives in system_server, another process. And objects can't leave a process: they live in its memory (puzzle 0). So how does a call cross from your app to the town hall and back? The answer: each "message" from puzzle 4 is really a method call on an object in another process.
+When your app calls `startActivity()`, the method that sends an Intent, it looks like an ordinary method call. But the method that does the work lives in system_server, another process. And objects, like all of a process's data, live in its memory (puzzle 0), so they can't leave it. So how does a call cross from your app to the town hall and back? The answer: each "message" from puzzle 4 is really a method call on an object in another process.
 
 ## See it
 
@@ -16,7 +16,7 @@ When your app calls `startActivity()`, the method that sends an Intent, it looks
 
 ## The building block
 
-On your side sits a **proxy**: an object that looks exactly like the object in the other process that does the work. You never write it: Android's own code hands it to your app. Calling it packs the arguments into a **Parcel**, a flat envelope of bytes (a byte is the smallest unit of data a program stores). Binder carries the Parcel across, and stamps it with your app's UID.
+On your side sits a **proxy**: an object that looks exactly like the object in the other process that does the work. You never write it: Android's own code hands it to your app. Calling it packs the arguments into a **Parcel**, a flat envelope of bytes. Binder carries the Parcel across, and stamps it with your app's UID.
 
 Binder itself lives in the kernel. A **Binder thread** is different: an ordinary thread inside a process, one of a few that wait for Binder to hand them calls. In the receiving process, one of them unpacks the Parcel and calls the real method. Meanwhile the thread in your app that made the call waits (if that's the main thread, the screen waits too); the reply comes back the same way, and only then does the call return.
 

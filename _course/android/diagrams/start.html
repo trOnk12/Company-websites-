@@ -17,5 +17,5 @@
 <li><p>Opening an app can need three things: a process, one instance of your app's <code>Application</code> class (one per process, for setup the whole app needs), and the Activity on screen.</p></li>
 <li><p><b>Cold start</b>: no process yet (never started, or Android ended it to free memory). Fork from Zygote, create the Application (its <code>Application.onCreate()</code> runs), then the Activity. The slowest.</p></li>
 <li><p>Warm start: the process is alive, but the Activity was destroyed. Only the Activity is created again. <i>Predict: what's left to do if both are alive?</i></p></li>
-<li><p>Nothing to create. Hot start: system_server just brings the screen back to the front and moves it to resumed.</p></li>
+<li><p>Nothing to create. Hot start: system_server just brings the screen back to the front: started, then resumed.</p></li>
 </ol>
