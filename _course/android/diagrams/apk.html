@@ -2,7 +2,7 @@
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="apk-t"><title id="apk-t">The APK holds DEX; it travels into two phones with different CPUs; ART inside each app's process reads it one instruction at a time</title>
 <g class="step s1"><rect class="d-paper" x="20" y="150" width="270" height="214" rx="22"/><text class="d-tiny" x="155" y="352" text-anchor="middle">phone A</text>
 <rect class="d-paper" x="350" y="150" width="270" height="214" rx="22"/><text class="d-tiny" x="485" y="352" text-anchor="middle">phone B</text></g>
-<x-chip class="step s1" x="206" y="196" label="A"/><x-chip class="step s1" x="536" y="196" label="B"/>
+<x-chip class="step s1" x="206" y="196" label="CPU A"/><x-chip class="step s1" x="536" y="196" label="CPU B"/>
 <g class="step s1" data-pulse="1"><rect class="d-roof" x="250" y="10" width="140" height="100" rx="8"/><text class="d-b" x="320" y="38" text-anchor="middle">APK</text></g>
 <x-arrow class="step only-2" tone="path" d="M270,96 C200,110 120,130 84,176"/>
 <x-arrow class="step only-2" tone="path" d="M372,96 C440,110 420,140 410,176"/>
@@ -16,7 +16,7 @@
 <g class="step s4"><x-arrow tone="acc" d="M76,244 C76,300 200,320 232,248"/><x-arrow tone="acc" d="M406,244 C406,300 530,320 562,248"/><text class="d-a" x="155" y="334" text-anchor="middle">one by one</text><text class="d-a" x="485" y="334" text-anchor="middle">one by one</text></g>
 </svg>
 <ol class="caps">
-<li><p>Your Kotlin compiles to <b>DEX</b>: instructions (the tiny steps a program is made of) written for Android, not for any one CPU. That's what's inside your APK.</p></li>
+<li><p>Your Kotlin compiles to <b>DEX</b>: instructions written for Android, not for any one CPU. That's what's inside your APK.</p></li>
 <li><p>The same APK goes to phones with different CPUs. Each kind of CPU understands only its own set of instructions, its <b>machine code</b>. <i>Predict: so who runs the DEX?</i></p></li>
 <li><p><b>ART</b>, the Android Runtime. It lives inside each app's process, on every phone.</p></li>
 <li><p>The simplest thing ART can do is <b>interpreting</b>: reading the DEX one instruction at a time. It always works, but it's slow.</p></li>

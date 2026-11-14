@@ -386,6 +386,7 @@ html:not(.js) .stage [data-move] { display: none; }
 .d-sun { fill: #F6D67A; stroke: var(--ink); stroke-width: 2; }
 .d-ray { stroke: #D8A93A; stroke-width: 3; stroke-linecap: round; }
 .d-night { fill: #2E3A55; }
+.d-dusk { fill: #2E3A55; opacity: 0.28; }
 .d-arr-ink { fill: none; stroke: var(--ink); stroke-width: 2.5; }
 .d-arr-acc { fill: none; stroke: var(--accent-deep); stroke-width: 3; }
 .d-arr-red { fill: none; stroke: #A3341F; stroke-width: 3; }
@@ -430,3 +431,4 @@ html:not(.js) .stage [data-move] { display: none; }
 .stepper > input:nth-of-type(8):checked ~ .stage .step.hide-6 { opacity: 0; }
 .stepper > input:nth-of-type(8):checked ~ .stage .step.hide-7 { opacity: 0; }
 .stepper > input:nth-of-type(8):checked ~ .stage .step.hide-8 { opacity: 0; }
+.d-share { fill: #EEF3FA; stroke: var(--accent-deep); stroke-width: 1.5; stroke-dasharray: 4 3; }

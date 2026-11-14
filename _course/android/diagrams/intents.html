@@ -1,26 +1,27 @@
 <!-- label: An Intent is a letter, checked by the town hall -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="in-t"><title id="in-t">A chat app sends an Intent to system_server, which checks the permission list and delivers it to the camera app; a request without permission comes back refused</title>
 <x-ground class="step s1" y="300" label="kernel"/>
-<x-postoffice class="step s1" data-pulse="2" x="255" y="316" w="130" h="56" label="" flag="0"/>
-<text class="step s1 d-b" x="400" y="352">Binder</text>
-<x-townhall class="step s1" data-pulse="3" x="210" y="70" w="220" h="120"/>
-<x-house class="step s1" x="20" y="190" w="170" h="110" label="Chat"/>
-<x-house class="step s1" data-pulse="4" x="460" y="190" w="160" h="110" label="Camera"/>
-<x-house class="step s1" x="250" y="232" w="140" h="68" label="Game"/>
-<g class="step s3" data-pulse="3"><rect class="d-paper" x="262" y="108" width="116" height="64" rx="4"/><text class="d-a" x="272" y="133">Chat ✓</text><text class="d-r" x="272" y="161">Game ✗</text></g>
-<x-arrow class="step only-2" tone="path" d="M124,286 C130,346 200,352 250,344"/>
-<x-arrow class="step only-3" tone="path" d="M390,334 C440,320 446,220 470,150"/>
-<x-arrow class="step only-4" tone="path" d="M440,150 C420,250 410,320 392,340"/>
-<x-arrow class="step only-4" tone="path" d="M390,356 C450,356 500,330 512,292"/>
-<g class="step s4" data-pulse="4"><circle class="d-paper" cx="594" cy="276" r="18"/><circle class="d-ink" cx="594" cy="276" r="8"/></g>
-<x-letter class="step s1" data-move="1:86,234 2:283,322 3:440,100 4:476,236" x="0" y="0" label="Intent"/>
-<x-arrow class="step only-5" tone="red" d="M330,300 C370,350 440,330 456,152"/>
-<x-letter class="step s5" data-move="4:286,250 5:440,100" x="0" y="0" tone="bad" label="✗ no"/>
+<x-postoffice class="step s1" data-pulse="2" x="330" y="316" w="130" h="56" label="" flag="0"/>
+<text class="step s1 d-b" x="474" y="352">Binder</text>
+<x-townhall class="step s1" data-pulse="3" x="190" y="70" w="270" h="120"/>
+<x-house class="step s1" x="20" y="190" w="160" h="110" label="Chat"/>
+<x-house class="step s1" x="200" y="232" w="110" h="68" label="Game"/>
+<x-house class="step s1" data-pulse="4" x="476" y="190" w="150" h="110" label="Camera"/>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="240" y="108" width="100" height="64" rx="4"/><text class="d-a" x="250" y="133">Chat ✓</text><text class="d-r" x="250" y="161">Game ✗</text></g>
+<x-arrow class="step only-2" tone="path" d="M120,290 C150,350 280,352 322,346"/>
+<x-arrow class="step only-3" tone="path" d="M396,312 C400,280 392,230 384,176"/>
+<x-arrow class="step only-4" tone="path" d="M372,176 C372,240 380,280 386,308"/>
+<x-arrow class="step only-4" tone="path" d="M462,344 C520,344 546,320 550,294"/>
+<g class="step s4" data-pulse="4"><circle class="d-paper" cx="596" cy="270" r="18"/><circle class="d-ink" cx="596" cy="270" r="8"/></g>
+<x-letter class="step s1 hide-5" data-move="1:80,236 2:358,322 3:350,116 4:496,240" x="0" y="0" w="62" label="Intent"/>
+<x-arrow class="step only-5" tone="red" d="M250,296 C270,350 300,350 322,346"/>
+<x-arrow class="step only-5" tone="red" d="M396,312 C400,280 392,230 384,176"/>
+<x-letter class="step s5" data-move="4:224,250 5:350,116" x="0" y="0" w="62" tone="bad" label="✗ no"/>
 </svg>
 <ol class="caps">
 <li><p>The chat app wants a photo. It can't reach into the camera app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to open the camera's screen.</p></li>
 <li><p>The Intent goes to the town hall, system_server, by Binder, like every message to it.</p></li>
 <li><p>The town hall checks its list: has Chat been granted the camera <b>permission</b>, the right to use the camera? <i>Predict: what if it hadn't?</i></p></li>
-<li><p>Chat is allowed, so the town hall delivers the request, and the camera screen opens. The photo comes back to Chat the same way.</p></li>
+<li><p>Chat is allowed, so the town hall delivers the request, again by Binder, and the camera screen opens. The photo comes back to Chat the same way.</p></li>
 <li><p>A game without the permission asks the same: the town hall refuses.</p></li>
 </ol>

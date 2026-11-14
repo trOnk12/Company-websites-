@@ -257,19 +257,19 @@
    ]
   },
   "Binder buffer": {
-   "in": "13",
+   "in": "16",
    "def": "The mailbox each process has for incoming Binder calls: about 1 MB, shared by all calls in progress.",
    "aliases": [
     "mailbox"
    ]
   },
   "TransactionTooLargeException": {
-   "in": "13",
+   "in": "16",
    "def": "Thrown when a call doesn't fit the Binder buffer.",
    "kind": "code"
   },
   "transaction": {
-   "in": "13",
+   "in": "16",
    "def": "One Binder call, carried from one process to another.",
    "aliases": [
     "transactions"

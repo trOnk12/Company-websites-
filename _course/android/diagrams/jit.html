@@ -1,28 +1,28 @@
 <!-- label: Hot code is translated now (JIT) and later (AOT) -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="jit-t"><title id="jit-t">ART translates hot code right away (JIT) and notes it in a profile; at night dex2oat translates the profiled code ahead of time (AOT); a Baseline Profile ships the notes in the APK</title>
+<g class="step s4 hide-5" data-pulse="4"><rect class="d-dusk" x="0" y="0" width="640" height="300"/><x-moon x="580" y="56"/></g>
 <x-ground class="step s1" y="300" label="kernel"/>
 <x-sun class="step s1 hide-4" x="580" y="56"/>
 <x-sun class="step s5" x="580" y="56"/>
-<g class="step s4 hide-5" data-pulse="4"><rect class="d-night" x="480" y="8" width="152" height="110" rx="10"/><x-moon x="560" y="62"/></g>
 <g class="step s1"><rect class="d-roof" x="16" y="150" width="110" height="110" rx="8"/><text class="d-b" x="71" y="140" text-anchor="middle">APK</text><rect class="d-paper" x="30" y="160" width="82" height="28" rx="4"/><text class="d-tiny" x="71" y="180" text-anchor="middle">DEX</text></g>
 <x-house class="step s1" x="150" y="110" w="320" h="190" label="your app"/>
 <x-machine class="step s1" x="166" y="160" w="76" label="ART"/>
-<g class="step s1 hide-5" data-pulse="1"><rect class="d-bad" x="262" y="156" width="74" height="38" rx="6"/><text class="d-r" x="299" y="182" text-anchor="middle">hot!</text></g>
-<g class="step s2 hide-5"><x-arrow tone="acc" d="M338,175 L366,175"/><text class="d-a" x="352" y="150" text-anchor="middle">JIT</text></g>
-<g class="step s2 hide-5" data-move="1:262,156 2:372,156"><rect class="d-ink" x="0" y="0" width="80" height="38" rx="6"/><text class="d-inv" x="40" y="25" text-anchor="middle">fast</text></g>
-<g class="step s3 hide-5" data-pulse="3" data-move="2:274,214 3:274,214 4:500,140"><x-sheet x="0" y="0" w="46" h="52" lines="3"/><text class="d-tiny" x="60" y="32">profile</text></g>
-<x-machine class="step s4 hide-5" x="500" y="216" w="122" label="dex2oat"/>
-<x-arrow class="step s4 hide-5" tone="path" d="M498,250 C470,250 450,250 436,250"/>
+<g class="step s1 hide-4" data-pulse="1"><rect class="d-bad" x="262" y="156" width="74" height="38" rx="6"/><text class="d-r" x="299" y="182" text-anchor="middle">hot!</text></g>
+<g class="step s2 hide-4"><x-arrow tone="acc" d="M338,175 L366,175"/><text class="d-a" x="352" y="150" text-anchor="middle">JIT</text></g>
+<g class="step s2 hide-4" data-move="1:262,156 2:372,156"><rect class="d-ink" x="0" y="0" width="80" height="38" rx="6"/><text class="d-inv" x="40" y="25" text-anchor="middle">fast</text></g>
+<g class="step s3 hide-5" data-pulse="3" data-move="2:274,214 3:274,214 4:520,170"><x-sheet x="0" y="0" w="46" h="52" lines="3"/><text class="d-tiny" x="60" y="32">profile</text></g>
+<x-machine class="step s4 hide-5" x="500" y="246" w="122" label="dex2oat"/>
+<x-arrow class="step only-4" tone="path" d="M440,190 C470,170 490,170 512,176"/><x-arrow class="step only-4" tone="path" d="M560,240 C540,280 470,260 440,252"/>
 <g class="step s4 hide-5" data-pulse="4" data-move="3:520,330 4:330,232"><rect class="d-ink" x="0" y="0" width="104" height="38" rx="6"/><text class="d-inv" x="52" y="25" text-anchor="middle">AOT: kept</text></g>
 <g class="step s5" data-pulse="5"><x-sheet x="44" y="196" w="50" h="56" lines="3"/><text class="d-a" x="71" y="284" text-anchor="middle">Baseline Profile</text></g>
-<x-arrow class="step s5" tone="path" d="M128,226 C200,250 260,250 304,236"/>
-<g class="step s5" data-move="4:40,200 5:310,214"><rect class="d-ink" x="0" y="0" width="80" height="38" rx="6"/><text class="d-inv" x="40" y="25" text-anchor="middle">fast</text></g>
-<text class="step s5 d-a" x="350" y="282" text-anchor="middle">first launch</text>
+<x-arrow class="step s5" tone="path" d="M128,226 C180,250 220,250 256,236"/>
+<g class="step s5" data-move="4:40,200 5:262,214"><rect class="d-ink" x="0" y="0" width="80" height="38" rx="6"/><text class="d-inv" x="40" y="25" text-anchor="middle">fast</text></g>
+<text class="step s5 d-a" x="302" y="282" text-anchor="middle">first launch</text>
 </svg>
 <ol class="caps">
 <li><p>Some of your code runs over and over: it's "hot". Interpreting it every time is wasteful.</p></li>
 <li><p>So ART translates hot code into machine code right away, while the app runs: <b>JIT</b>, just-in-time.</p></li>
 <li><p>ART also notes the hot code in a notebook: the <b>profile</b>. <i>Predict: what's the notebook for?</i></p></li>
 <li><p>About once a day, while the phone is idle and charging, <code>dex2oat</code>, a program that's part of Android, translates the profiled code and keeps it: <b>AOT</b>, ahead-of-time.</p></li>
-<li><p>A <b>Baseline Profile</b> is that notebook written by the app's developers and shipped in the APK, so it works from the first launch.</p></li>
+<li><p>A <b>Baseline Profile</b> is that notebook written by the app's developers and shipped in the APK. The phone translates that code at install, so it's fast from the first launch.</p></li>
 </ol>

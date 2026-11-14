@@ -7,7 +7,7 @@ takeaway: Every app gets its own UID, its key. The kernel checks that key on eve
 
 ## The problem
 
-In puzzle 0, two running apps couldn't touch each other's memory. But apps also keep files on the phone, like a bank's saved accounts. When the bank app isn't even running, what stops a game from opening its files?
+In puzzle 0, two running apps couldn't touch each other's memory. But apps also keep files on the phone, like a bank app's saved login and balance. When the bank app isn't even running, what stops a game from opening its files?
 
 ## See it
 

@@ -1,34 +1,33 @@
 <!-- label: A Binder call, from your house to the town hall -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="bd-t"><title id="bd-t">Your app hands a packed letter (Parcel) to its proxy; the kernel's Binder driver carries it, stamping your UID; a Binder thread in system_server takes it to the real method; a reply comes back; a 3 MB parcel doesn't fit the receiver's 1 MB mailbox</title>
-<x-ground class="step s1" y="270" label="kernel"/>
-<x-postoffice class="step s1" data-pulse="3" x="245" y="292" w="150" h="76" label=""/>
-<text class="step s1 d-b" x="410" y="336">Binder</text>
-<x-house class="step s1" x="20" y="80" w="220" h="190" label="your app"/>
-<g class="step s1"><rect class="d-hl" x="38" y="128" width="100" height="38" rx="6"/><text class="d-a" x="88" y="153" text-anchor="middle">proxy</text></g>
-<x-townhall class="step s1" x="395" y="100" w="230" h="170"/>
-<g class="step s1"><rect class="d-hl" x="450" y="138" width="120" height="38" rx="6"/><text class="d-a" x="510" y="163" text-anchor="middle">real one</text></g>
-<x-arrow class="step s3 hide-5" tone="path" d="M180,262 C200,300 230,316 262,318"/>
-<x-arrow class="step s4 hide-5" tone="path" d="M398,312 C440,310 460,280 470,246"/>
-<x-person class="step s4" data-pulse="4" x="556" y="196" label=""/>
-<text class="step s4 d-tiny" x="556" y="294" text-anchor="middle">Binder thread</text>
-<g class="step s2 hide-5" data-move="1:52,176 2:150,190 3:283,300 4:448,196"><x-letter x="0" y="0" w="74" h="44" label="Parcel"/><g class="step s3"><rect class="d-bad" x="46" y="-14" width="40" height="22" rx="3"/><text class="d-rt" x="66" y="3" text-anchor="middle">UID</text></g></g>
-<x-arrow class="step only-5" tone="acc" d="M440,262 C420,300 360,306 320,306 C260,306 220,300 190,268"/>
-<x-letter class="step s5 hide-6" data-move="4:448,196 5:150,190" x="0" y="0" tone="hl" label="reply"/>
-<g class="step s7" data-pulse="7"><rect class="d-band" x="446" y="190" width="70" height="44" rx="4"/><text class="d-tiny" x="481" y="217" text-anchor="middle">1 MB</text></g>
-<g class="step s7" data-move="6:40,190 7:250,180"><rect class="d-bad" x="0" y="0" width="110" height="64" rx="6"/><text class="d-r" x="55" y="40" text-anchor="middle">3 MB</text></g>
-<g class="step s7"><x-arrow tone="red" d="M366,212 C400,206 420,206 438,210"/><text class="d-r" x="305" y="166" text-anchor="middle">too big</text></g>
-<g class="step s6 hide-7" data-pulse="6"><rect class="d-hl" x="446" y="190" width="80" height="34" rx="5"/><text class="d-a" x="486" y="213" text-anchor="middle">proxy</text></g>
-<x-person class="step s6 hide-7" data-pulse="6" x="196" y="200" label=""/>
-<text class="step s6 hide-7 d-tiny" x="190" y="294" text-anchor="middle">Binder thread</text>
-<x-arrow class="step s6 hide-7" tone="acc" d="M450,236 C420,330 280,340 214,262"/>
-<x-letter class="step s6 hide-7" data-move="5:446,232 6:56,196" x="0" y="0" tone="hl" label="resume"/>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="bd-t"><title id="bd-t">Your app's thread calls the proxy, which packs a Parcel; Binder in the kernel carries it and stamps your UID; a Binder thread in system_server calls the real method; the reply comes back while your thread waits; it works the other way too</title>
+<x-ground class="step s1" y="286" label="kernel"/>
+<x-postoffice class="step s1" data-pulse="3" x="245" y="304" w="150" h="70" label="" flag="0"/>
+<text class="step s1 d-b" x="410" y="346">Binder</text>
+<x-house class="step s1" x="20" y="80" w="220" h="206" label="your app"/>
+<g class="step s1"><rect class="d-hl" x="38" y="124" width="100" height="36" rx="6"/><text class="d-a" x="88" y="148" text-anchor="middle">proxy</text></g>
+<x-townhall class="step s1" x="380" y="96" w="250" h="190"/>
+<g class="step s1"><rect class="d-hl" x="440" y="134" width="104" height="36" rx="6"/><text class="d-a" x="492" y="158" text-anchor="middle">real one</text></g>
+<x-person class="step s1" data-pulse="2 5" x="80" y="196" label=""/>
+<text class="step s2 hide-5 d-rt" x="80" y="268" text-anchor="middle">waiting…</text>
+<text class="step s5 d-a" x="80" y="268" text-anchor="middle">goes on</text>
+<x-person class="step s4" data-pulse="4" x="560" y="186" label=""/>
+<g class="step s4"><text class="d-tiny" x="560" y="250" text-anchor="middle">Binder</text><text class="d-tiny" x="560" y="266" text-anchor="middle">thread</text></g>
+<x-arrow class="step only-3" tone="path" d="M200,280 C220,320 240,330 262,332"/>
+<x-arrow class="step only-4" tone="path" d="M398,330 C450,330 470,300 480,240"/>
+<x-arrow class="step only-5" tone="path" d="M470,240 C470,330 400,342 320,340 C240,338 210,320 196,250"/>
+<g class="step s2 hide-5" data-move="1:52,170 2:140,190 3:283,316 4:448,186"><x-letter x="0" y="0" w="74" h="44" label="Parcel"/><g class="step s3"><rect class="d-bad" x="46" y="-14" width="40" height="22" rx="3"/><text class="d-rt" x="66" y="3" text-anchor="middle">UID</text></g></g>
+<x-letter class="step s5 hide-6" data-move="4:448,186 5:140,190" x="0" y="0" tone="hl" label="reply"/>
+<g class="step s6" data-pulse="6"><rect class="d-hl" x="440" y="186" width="80" height="34" rx="5"/><text class="d-a" x="480" y="209" text-anchor="middle">proxy</text></g>
+<x-person class="step s6" data-pulse="6" x="186" y="196" label=""/>
+<g class="step s6"><text class="d-tiny" x="186" y="260" text-anchor="middle">Binder</text><text class="d-tiny" x="186" y="276" text-anchor="middle">thread</text></g>
+<x-arrow class="step s6" tone="path" d="M470,240 C470,330 400,342 320,340 C240,338 220,320 206,252"/>
+<x-letter class="step s6" data-move="5:448,224 6:150,124" x="0" y="0" tone="hl" label="resume"/>
 </svg>
 <ol class="caps">
 <li><p>Your app calls a method that lives in system_server. In your process sits a <b>proxy</b>: an object that looks exactly like the one in system_server.</p></li>
-<li><p>Objects can't leave a process; bytes can. The proxy packs the arguments into a <b>Parcel</b>: a flat envelope of bytes.</p></li>
-<li><p>Binder carries the Parcel and stamps it with your app's UID, its key. <i>Predict: who picks it up at the town hall?</i></p></li>
-<li><p>A courier: one of system_server's <b>Binder threads</b>, waiting for calls. It unpacks the Parcel and calls the real method.</p></li>
-<li><p>The reply travels back the same way, and the call in your app returns.</p></li>
+<li><p>Objects can't leave a process; bytes can. The proxy packs the arguments into a <b>Parcel</b>: a flat envelope of bytes. Your thread that called now waits.</p></li>
+<li><p>Binder, in the kernel, carries the Parcel and stamps it with your app's UID, its key. <i>Predict: who picks it up at the town hall?</i></p></li>
+<li><p>One of system_server's <b>Binder threads</b>: ordinary threads inside a process that wait for Binder to hand them calls. It unpacks the Parcel and calls the real method.</p></li>
+<li><p>The reply travels back the same way, and only now does your waiting thread go on. If it was the main thread, the screen waited too.</p></li>
 <li><p>It works both ways: system_server holds a proxy for your app too, and its calls, like "resume", arrive on your app's own Binder threads. Puzzle 14 follows one.</p></li>
-<li><p>Calls into system_server wait in its <b>Binder buffer</b>, a fixed-size area of its memory: about 1 MB, shared by every call in progress. An Intent can carry data, but a 3 MB photo doesn't fit: the call fails.</p></li>
 </ol>

@@ -35,7 +35,8 @@
       "puzzles": [
         "13-inside-a-binder-call.md",
         "14-the-main-threads-queue.md",
-        "15-frames-jank-and-anrs.md"
+        "15-frames-jank-and-anrs.md",
+        "16-how-big-can-a-binder-call-be.md"
       ]
     }
   ],

@@ -13,6 +13,6 @@
 <ol class="caps">
 <li><p>The town hall, system_server, and your app are two separate processes, both standing on the kernel.</p></li>
 <li><p>The town hall writes a message: "resume your screen". But it can't reach into your app's memory. <i>Predict: who can?</i></p></li>
-<li><p>Only the kernel reaches every process. It's built from parts that each do one job, called a <b>driver</b>; the one that carries messages is <b>Binder</b>: the post office. It carries them both ways.</p></li>
+<li><p>Only the kernel reaches every process. It's built from parts that each do one job; each such part is called a <b>driver</b>. The one that carries messages is <b>Binder</b>: the post office. It carries them both ways.</p></li>
 <li><p>Binder delivers the message into your app. Every message between your app and the town hall travels this way.</p></li>
 </ol>
