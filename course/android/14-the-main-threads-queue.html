@@ -113,7 +113,7 @@
 <legend>Two Binder threads receive a message for your screen at the same moment. Can your buttons and text be changed by both at once?</legend>
 <input type="radio" name="q-14-the-main-threads-queue-1" id="q-14-the-main-threads-queue-1-1"><label for="q-14-the-main-threads-queue-1-1">Yes, so each thread must first stop the other</label>
 <input type="radio" name="q-14-the-main-threads-queue-1" id="q-14-the-main-threads-queue-1-2" data-ok><label for="q-14-the-main-threads-queue-1-2">No: both are put in the main thread's queue and run one after the other</label>
-<p class="fb no opt-1"><b>Not quite.</b> Neither Binder thread touches the views: they post to the queue, and only the main thread runs it. <label class="show-me" for="st-main-thread-2" data-goto="st-main-thread">Show me step 2 again ↑</label></p>
+<p class="fb no opt-1"><b>Not quite.</b> Neither Binder thread touches the screen: they post to the queue, and only the main thread runs it. <label class="show-me" for="st-main-thread-2" data-goto="st-main-thread">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The queue turns many senders into one worker, in order.</p>
 </fieldset>
 <fieldset class="quiz">
@@ -143,7 +143,7 @@
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a></li><li><a href="https://developer.android.com/reference/android/os/Handler">Android reference: Handler</a></li><li><a href="https://developer.android.com/reference/android/os/Looper">Android reference: Looper</a></li></ul>
       </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Binder thread → Handler → the main thread's message queue → the Looper runs it. One message at a time, in order, so views never need locks.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Binder thread → Handler → the main thread's message queue → the Looper runs it. One message at a time, in order, so buttons and text never need locks.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

@@ -57,6 +57,24 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
   (`sN` = diagram step, or a section id) to where it's fixed.
 - Only taught words, in the question and in every option.
 
+## 4b. Lessons the reviews taught (each one cost a review round)
+
+- **Define a term where the learner meets it.** If a caption shows it before the building block explains
+  it, the caption defines it inline ("a **driver**, a part of the kernel that does one job").
+- **One word, one meaning.** A taught word never gets a second sense: "user" (Linux account vs the person),
+  "hot" (hot code vs hot start), "Activity" (screen vs the class): say which one, or pick another word.
+- **Name the actor.** Never "the system", "Android decides": say system_server, the kernel, or Binder.
+  The avoid list in glossary.json enforces the worst offenders.
+- **Count what you list.** "The four characters" followed by five broke trust in a whole puzzle.
+- **Flag every simplification** where it's made, with the puzzle that gives the full picture.
+- **Resolve apparent contradictions out loud** (shared pages vs "processes can't touch each other's
+  memory"). A careful learner will notice; say why both are true.
+- **Predict, then reveal in the next step.** A caption that asks "Predict…" and answers in the same
+  breath gives the learner no time to think.
+- **Every right answer has a sentence on the page behind it.** If the learner has to guess "why", the
+  page is missing that sentence.
+- **Don't cite the source as a word** ("in the source…"): say what it is ("Android's code is public; in it…").
+
 ## 5. Facts
 
 Verify every claim against a primary source in this session (fetch it, quote it). Code names that
@@ -67,8 +85,14 @@ point at real source go into `refs.json` with a pinned commit and real line numb
 ```
 npm run build:course
 npm run lint:course        # must be clean
+npm run shots:course       # look at .shots/<course>/sheet.png: nothing covered, nothing stranded
 /course-clarity            # fresh learner ≥ 8/10 on every puzzle, zero undefined terms
 npm run gifs:course
 npm test
 ```
-Then commit and deploy. Note in the commit what the fresh learner found and what changed.
+Then add a row to `_course/<course>/REVIEW.md`, commit and deploy. Note in the commit what the fresh
+learner found and what changed.
+
+Diagram gotchas: moving parts (`data-move`) must not carry the class `moving` (reduced-motion CSS hides
+it); no inline `style` attributes (the CSP blocks them); a part that should vanish after its step uses
+`only-N`, not `sN`.

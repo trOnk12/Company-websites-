@@ -337,5 +337,17 @@
    "in": "01",
    "def": "A free operating system, first made for computers shared by many people; Android is built on it."
   }
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what. The lint fails on them (any page text, labels, questions); say the named actor or the plain word instead.",
+  "phrases": {
+   "the system": "name the actor: system_server, the kernel, or Binder",
+   "views": "say buttons and text, or the screen (View isn't taught)",
+   "lost focus": "say: another app is in front",
+   "service": "say: the object in system_server that does the work (system service is taught in module 4)",
+   "simply": "cut it: it makes a learner who's stuck feel slow",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is"
+  }
  }
 }

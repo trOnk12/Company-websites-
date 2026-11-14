@@ -57,7 +57,7 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="How the system tells your app what to do"><input type="radio" name="st-chain" id="st-chain-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-chain" id="st-chain-2" aria-label="Step 2 of 5"><input type="radio" name="st-chain" id="st-chain-3" aria-label="Step 3 of 5"><input type="radio" name="st-chain" id="st-chain-4" aria-label="Step 4 of 5"><input type="radio" name="st-chain" id="st-chain-5" aria-label="Step 5 of 5">
+<figure class="stepper" aria-label="How system_server tells your app what to do"><input type="radio" name="st-chain" id="st-chain-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-chain" id="st-chain-2" aria-label="Step 2 of 5"><input type="radio" name="st-chain" id="st-chain-3" aria-label="Step 3 of 5"><input type="radio" name="st-chain" id="st-chain-4" aria-label="Step 4 of 5"><input type="radio" name="st-chain" id="st-chain-5" aria-label="Step 5 of 5">
 <div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="chain-t"><title id="chain-t">The town hall (system_server) writes a letter; the post office (Binder, in the kernel) carries it into your app's house; the clerk (main thread) takes it from the in-tray and runs onCreate()</title>
 <!-- your app: a house -->
 <g class="step s1"><polygon class="d-roof" points="20,236 320,190 620,236"/><rect class="d-paper" x="20" y="236" width="600" height="136"/><text class="d-m" x="36" y="364">your app</text></g>
@@ -100,7 +100,7 @@
 <legend>Your app calls <span class="ref" tabindex="0" aria-describedby="ref-5"><code>onCreate()</code><span class="pop" role="tooltip" id="ref-5"><span class="pop-what">Your override of this method is what the main thread calls when system_server says &quot;create&quot;.</span><span class="pop-code"> 1864  protected void onCreate(@Nullable Bundle savedInstanceState) {</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/Activity.java#L1864">Activity.java, line 1864 · AOSP frameworks/base ↗</a></span></span> on its own Activity, by hand. What have you done?</legend>
 <input type="radio" name="q-05-you-dont-call-youre-called-1" id="q-05-you-dont-call-youre-called-1-1" data-ok><label for="q-05-you-dont-call-youre-called-1-1">Run your setup code, without system_server knowing: the screen still isn't created or shown</label>
 <input type="radio" name="q-05-you-dont-call-youre-called-1" id="q-05-you-dont-call-youre-called-1-2"><label for="q-05-you-dont-call-youre-called-1-2">Created and shown the screen</label>
-<p class="fb ok opt-1"><b>Right.</b> A callback is called by the system when the time comes. Calling it yourself doesn't change what system_server decided.</p>
+<p class="fb ok opt-1"><b>Right.</b> A callback is run by your main thread when system_server says it's time. Calling it yourself doesn't change what system_server decided.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only system_server moves an Activity through its lifecycle. Calling the callback yourself just runs your method. <label class="show-me" for="st-chain-2" data-goto="st-chain">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">

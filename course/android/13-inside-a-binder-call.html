@@ -100,7 +100,7 @@
 <fieldset class="quiz">
 <legend>You put a 3 MB photo into an Intent and start an Activity. What happens?</legend>
 <input type="radio" name="q-13-inside-a-binder-call-1" id="q-13-inside-a-binder-call-1-1"><label for="q-13-inside-a-binder-call-1-1">It works, just more slowly</label>
-<input type="radio" name="q-13-inside-a-binder-call-1" id="q-13-inside-a-binder-call-1-2"><label for="q-13-inside-a-binder-call-1-2">It works: the Intent object is simply handed over</label>
+<input type="radio" name="q-13-inside-a-binder-call-1" id="q-13-inside-a-binder-call-1-2"><label for="q-13-inside-a-binder-call-1-2">It works: the Intent object is handed over as it is</label>
 <input type="radio" name="q-13-inside-a-binder-call-1" id="q-13-inside-a-binder-call-1-3" data-ok><label for="q-13-inside-a-binder-call-1-3">It fails with <code>TransactionTooLargeException</code></label>
 <p class="fb no opt-1"><b>Not quite.</b> The buffer has a fixed size of about 1 MB. A Parcel that doesn't fit fails. <label class="show-me" for="st-binder-6" data-goto="st-binder">Show me step 6 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Objects can't leave a process: the Intent is packed into a Parcel and must fit the receiver's Binder buffer. <label class="show-me" for="st-binder-6" data-goto="st-binder">Show me step 6 again ↑</label></p>

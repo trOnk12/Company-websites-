@@ -27,7 +27,7 @@ Every house has its own key. The kernel is the lock on every door: it opens only
 ## Check yourself
 
 - The bank app isn't running. Can the game open the bank's saved files now?::*No: the files still belong to the bank's UID, and the kernel checks it||Yes: nobody is there to guard them >> The walls aren't guarded by the bank app; the kernel checks the key on every file, running or not. >> s2::The kernel checks the UID whether or not the owner is running.
-- Who enforces the sandbox?::*The kernel||Each app, by being careful >> If apps had to behave, a hostile app simply wouldn't. The kernel checks every access, whatever the app does. >> s2||system_server >> The town hall manages screens. The walls around files and memory are the kernel's job. >> s3::The kernel enforces it, so no app can switch it off.
+- Who enforces the sandbox?::*The kernel||Each app, by being careful >> If apps had to behave, a hostile app wouldn't. The kernel checks every access, whatever the app does. >> s2||system_server >> The town hall manages screens. The walls around files and memory are the kernel's job. >> s3::The kernel enforces it, so no app can switch it off.
 - What's the difference between a UID and a process?::*A UID is an app's identity, kept as long as the app is installed; a process exists only while the app runs||They're the same thing >> The UID is the key, given at install. The process is the running house, started and ended many times. >> s1::One app, one UID; its process comes and goes.
 
 ## Sources

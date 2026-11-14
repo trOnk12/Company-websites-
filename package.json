@@ -10,6 +10,7 @@
     "check:course": "node scripts/build-course.js --check",
     "gifs:course": "node scripts/course-gifs.js",
     "lint:course": "node scripts/lint-course.js",
+    "shots:course": "node scripts/shoot-course.js",
     "og:learning": "node scripts/og-learning.js",
     "test:perf": "playwright test tests/performance.test.js",
     "test:functional": "playwright test tests/functional.test.js",

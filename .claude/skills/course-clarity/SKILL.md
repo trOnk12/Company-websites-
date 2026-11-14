@@ -34,7 +34,8 @@ Structure and quality rules:
   that exists on the page;
 - a caption over 45 words, or a diagram step that adds more than 12 words of SVG text
   (the picture must show, not tell);
-- a diagram with no moving part (`data-move` / `moving`) in at least one step;
+- a diagram with no moving part (`data-move`) in at least one step;
+- a word from the glossary's avoid list ("the system", "views", "simply"…): name the actor or say it plainly;
 - an inline code name in a question that appears nowhere earlier in the course
   (a question may only use what was taught: "pre-check the check");
 - more than 6 new **bold** terms in one puzzle (one new term per step).
@@ -58,6 +59,27 @@ who knows Kotlin but nothing about Android internals, and to report, per puzzle:
 6. One sentence: what the puzzle's single core idea is, in its own words. If that sentence is wrong or vague,
    the puzzle has no clear core.
 
+### The prompt (use it verbatim, so scores are comparable between rounds)
+
+> You are a beginner reviewing an online course for clarity. Read ONLY this file, all of it, with the Read
+> tool: `<path>`. Do not read other files, search the web, or use outside knowledge to fill gaps.
+> Persona: you know basic Kotlin and have built a simple Android app (the words in the glossary's baseline),
+> but you know NOTHING about operating systems or Android internals. Read the puzzles in order; you only
+> know what earlier puzzles taught. Hard rule: no technical term may be used before it is explained. Be
+> strict, including subtitles, diagram labels and question options. For EACH puzzle: score 1–10 ("a
+> beginner can follow this without outside help"); terms used before being explained (quote + where) or
+> "none"; the biggest remaining gap; any question whose right answer is NOT supported by the page. Then the
+> fixes needed to bring every puzzle to at least 8/10, most important first. Under 1100 words.
+
+Run it in the background while you do pass 3 and the visual check. After fixing, re-run it on the
+puzzles that were under 8 only (targeted re-review), not the whole course.
+
+## Pass 2b — the visual check
+
+`npm run shots:course` and look at `.shots/<course>/sheet.png`: one row per diagram, one column per step,
+after the motion settles. Fix labels covered by moving parts, parts stranded after their step, text
+running out of its box, and steps where nothing visibly changes.
+
 ## Pass 3 — the playbook rubric (you, against Mateusz's rules)
 
 For each puzzle, check and write down pass/fail:
@@ -80,6 +102,9 @@ A puzzle ships only when the lint is clean **and** the fresh learner scores it a
 by copying a caption.
 
 ## Output
+
+Add a row to `_course/<course>/REVIEW.md` (date, version, lint, the scores, what was found → what
+changed): that file is how we know the course is getting better, not just different.
 
 A table per puzzle: lint ✓/✗, each learner finding, each rubric line. Then fix every ✗ and every learner
 finding (or say why not), rebuild (`npm run build:course`), and run passes 1–2 again. Report what changed.

@@ -180,6 +180,12 @@ function vocabulary(id, puzzles) {
       }
     }
     for (const u of unknown) at(`unknown term ${u}: add it to glossary.json with the puzzle that teaches it, or say it in plain words`);
+    // E: words a beginner misreads or that hide who acts (glossary.json → avoid).
+    for (const [phrase, fix] of Object.entries((g.avoid || {}).phrases || {})) {
+      const rx = new RegExp(`(?<![\\w-])${esc(phrase)}(?![\\w-])`, 'i');
+      const hit = segs.find(s => !s.code && rx.test(s.text));
+      if (hit) at(`avoid "${phrase}" (${hit.where}): ${fix}`);
+    }
   }
   return problems;
 }

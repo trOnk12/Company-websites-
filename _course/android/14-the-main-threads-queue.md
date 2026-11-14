@@ -2,7 +2,7 @@
 title: The main thread's queue
 short: The queue
 summary: Messages arrive on Binder threads, but screen code must run on the main thread. So everything for the screen waits in one line, and the main thread takes it one by one.
-takeaway: Binder thread → Handler → the main thread's message queue → the Looper runs it. One message at a time, in order, so views never need locks.
+takeaway: Binder thread → Handler → the main thread's message queue → the Looper runs it. One message at a time, in order, so buttons and text never need locks.
 ---
 
 ## The problem
@@ -26,7 +26,7 @@ The clerk at the front desk has an in-tray. Couriers drop letters in through the
 
 ## Check yourself
 
-- Two Binder threads receive a message for your screen at the same moment. Can your buttons and text be changed by both at once?::*No: both are put in the main thread's queue and run one after the other||Yes, so each thread must first stop the other >> Neither Binder thread touches the views: they post to the queue, and only the main thread runs it. >> s2::The queue turns many senders into one worker, in order.
+- Two Binder threads receive a message for your screen at the same moment. Can your buttons and text be changed by both at once?::*No: both are put in the main thread's queue and run one after the other||Yes, so each thread must first stop the other >> Neither Binder thread touches the screen: they post to the queue, and only the main thread runs it. >> s2::The queue turns many senders into one worker, in order.
 - What does `handler.post { … }` do?::*Adds your code to the queue; the main thread runs it when it gets there||Runs your code right away on a new thread >> A Handler starts nothing: it drops a message into one queue. >> s2::A Handler is the slot into the queue.
 - What's the difference between a Binder thread and the main thread?::*A Binder thread receives incoming calls; the main thread runs all screen code from the queue||They're the same thread >> The courier receives; the clerk does the work. The Binder thread hands over through the queue. >> s2::Couriers receive; one clerk works.
 
