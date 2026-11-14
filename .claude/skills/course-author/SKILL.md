@@ -46,7 +46,19 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
   (`data-pulse`). At most 12 words of labels per step; the caption names what the picture shows.
 - Each step introduces at most one new term, **bold in that step's caption**.
 - At least one caption asks the reader to *Predict* the next step.
-- Reuse the world's shapes (house, town hall, post office, clerk, letter, courier) so pictures connect.
+- **Draw with the shared shapes, never by hand** (`scripts/course-shapes.js`, expanded at build time):
+  `<x-ground y label="kernel"/>`, `<x-house x y w h label/>`, `<x-townhall x y w h/>` (system_server),
+  `<x-postoffice x y w h label="" flag="0"/>` (Binder, in the ground), `<x-person x y desk="1" label/>`
+  (a thread; desk = the main thread), `<x-machine x y w label/>` (a program such as ART or dex2oat: never a
+  person), `<x-letter x y label tone/>`, `<x-chip/>`, `<x-sheet/>`, `<x-arrow d tone="path|acc|red"/>`,
+  `<x-sun/>`, `<x-moon/>`. Any `class`/`data-*` passes through, so `class="step s2"` and `data-move` work.
+- **The world's rules** (each one cost a picture review): houses stand on the kernel ground (from puzzle 1 on;
+  puzzle 0's ground has no label); every message after puzzle 4 travels **through the post office**, with a
+  dotted arrow; people are threads and never leave their house; programs are machines; doors only where a
+  door matters.
+- **Every step changes something visible**; old arrows leave (`only-N`), parts that are done leave (`hide-N`:
+  `class="step s2 hide-4"` = visible in steps 2–3). Show the change instead of labelling it (a pile that grows,
+  a clock hand that moves, the clerk holding the letter).
 
 ## 4. Questions
 
@@ -73,6 +85,8 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
   breath gives the learner no time to think.
 - **Every right answer has a sentence on the page behind it.** If the learner has to guess "why", the
   page is missing that sentence.
+- **A word defined but never used again is noise** ("transaction"): use it, or cut it.
+- **Split a step that packs several ideas** (accounts, then UIDs, then the key) into one step each.
 - **Don't cite the source as a word** ("in the source…"): say what it is ("Android's code is public; in it…").
 
 ## 5. Facts
@@ -85,7 +99,7 @@ point at real source go into `refs.json` with a pinned commit and real line numb
 ```
 npm run build:course
 npm run lint:course        # must be clean
-npm run shots:course       # look at .shots/<course>/sheet.png: nothing covered, nothing stranded
+npm run shots:course       # look at .shots/<course>/sheet.png and strips/: nothing covered, nothing stranded
 /course-clarity            # fresh learner ≥ 8/10 on every puzzle, zero undefined terms
 npm run gifs:course
 npm test

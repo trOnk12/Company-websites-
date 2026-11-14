@@ -1,16 +1,26 @@
 <!-- label: An Intent is a letter, checked by the town hall -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="in-t"><title id="in-t">A chat app sends an Intent to system_server, which checks the permission list and delivers it to the camera app; a request without permission comes back refused</title>
-<g class="step s1"><polygon class="d-roof" points="10,190 110,140 210,190"/><rect class="d-paper" x="20" y="190" width="180" height="120"/><text class="d-b" x="40" y="226">Chat</text>
-<polygon class="d-roof" points="430,190 530,140 630,190"/><rect class="d-paper" x="440" y="190" width="180" height="120"/><text class="d-b" x="460" y="226">Camera</text>
-<polygon class="d-roof" points="220,62 320,18 420,62"/><rect class="d-paper" x="230" y="62" width="180" height="80"/><text class="d-b" x="242" y="96">system_server</text></g>
-<g class="step s1" data-move="1:60,250 2:300,104 3:300,104 4:490,250"><rect class="d-paper" x="0" y="0" width="76" height="44" rx="3"/><polyline class="d-line" points="0,0 38,22 76,0"/><text class="d-tiny" x="6" y="38">Intent</text></g>
-<g class="step s3" data-pulse="3"><rect class="d-paper" x="244" y="152" width="152" height="74" rx="4"/><text class="d-tiny" x="256" y="176">Chat: camera ✓</text><text class="d-tiny" x="256" y="204">Game: camera ✗</text></g>
-<g class="step s5" data-move="4:20,330 5:300,250"><rect class="d-bad" x="0" y="0" width="76" height="44" rx="3"/><text class="d-r" x="8" y="28">Game ✗</text></g>
+<x-ground class="step s1" y="300" label="kernel"/>
+<x-postoffice class="step s1" data-pulse="2" x="255" y="316" w="130" h="56" label="" flag="0"/>
+<text class="step s1 d-b" x="400" y="352">Binder</text>
+<x-townhall class="step s1" data-pulse="3" x="210" y="70" w="220" h="120"/>
+<x-house class="step s1" x="20" y="190" w="170" h="110" label="Chat"/>
+<x-house class="step s1" data-pulse="4" x="460" y="190" w="160" h="110" label="Camera"/>
+<x-house class="step s1" x="250" y="232" w="140" h="68" label="Game"/>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="262" y="108" width="116" height="64" rx="4"/><text class="d-a" x="272" y="133">Chat ✓</text><text class="d-r" x="272" y="161">Game ✗</text></g>
+<x-arrow class="step only-2" tone="path" d="M124,286 C130,346 200,352 250,344"/>
+<x-arrow class="step only-3" tone="path" d="M390,334 C440,320 446,220 470,150"/>
+<x-arrow class="step only-4" tone="path" d="M440,150 C420,250 410,320 392,340"/>
+<x-arrow class="step only-4" tone="path" d="M390,356 C450,356 500,330 512,292"/>
+<g class="step s4" data-pulse="4"><circle class="d-paper" cx="594" cy="276" r="18"/><circle class="d-ink" cx="594" cy="276" r="8"/></g>
+<x-letter class="step s1" data-move="1:86,234 2:283,322 3:440,100 4:476,236" x="0" y="0" label="Intent"/>
+<x-arrow class="step only-5" tone="red" d="M330,300 C370,350 440,330 456,152"/>
+<x-letter class="step s5" data-move="4:286,250 5:440,100" x="0" y="0" tone="bad" label="✗ no"/>
 </svg>
 <ol class="caps">
 <li><p>The chat app wants a photo. It can't reach into the camera app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to open the camera's screen.</p></li>
 <li><p>The Intent goes to the town hall, system_server, by Binder, like every message to it.</p></li>
 <li><p>The town hall checks its list: has Chat been granted the camera <b>permission</b>, the right to use the camera? <i>Predict: what if it hadn't?</i></p></li>
-<li><p>Chat is allowed, so the town hall delivers the request, and the camera screen opens.</p></li>
+<li><p>Chat is allowed, so the town hall delivers the request, and the camera screen opens. The photo comes back to Chat the same way.</p></li>
 <li><p>A game without the permission asks the same: the town hall refuses.</p></li>
 </ol>

@@ -1,11 +1,13 @@
 <!-- label: Each running app is a process with its own memory -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="pr-t"><title id="pr-t">Two running apps are two processes, each with its own memory; one crashes and the other keeps running</title>
-<g class="step s1"><rect class="d-roof" x="246" y="300" width="148" height="56" rx="8"/><text class="d-tiny" x="262" y="334">installed apps</text></g>
-<g class="step s1" data-pulse="2"><polygon class="d-roof" points="20,120 150,62 280,120"/><rect class="d-paper" x="30" y="120" width="240" height="160"/><text class="d-b" x="50" y="156">Notes</text></g>
-<g class="step s2" data-pulse="2"><polygon class="d-roof" points="360,120 490,62 620,120"/><rect class="d-paper" x="370" y="120" width="240" height="160"/><text class="d-b" x="390" y="156">Music</text></g>
-<g class="step s3"><rect class="d-band" x="50" y="176" width="200" height="86" rx="6"/><text class="d-m" x="62" y="200">memory</text><rect class="d-band" x="390" y="176" width="200" height="86" rx="6"/><text class="d-m" x="402" y="200">memory</text><rect class="d-hl" x="404" y="216" width="70" height="30" rx="4"/></g>
-<g class="step s3" data-move="2:120,300 3:66,214"><rect class="d-paper" x="0" y="0" width="86" height="34" rx="4"/><text class="d-tiny" x="8" y="23">"Buy milk"</text></g>
-<g class="step s4" data-pulse="4"><rect class="d-bad" x="370" y="120" width="240" height="160" opacity="0.85"/><text class="d-r" x="440" y="210">crashed</text></g>
+<x-ground class="step s1" y="310"/>
+<x-house class="step s1" data-pulse="1 4" x="30" y="130" w="240" h="180" label="Notes"/>
+<x-house class="step s2" data-pulse="2" x="370" y="130" w="240" h="180" label="Music"/>
+<g class="step s3"><rect class="d-band" x="50" y="180" width="200" height="110" rx="6"/><text class="d-m" x="62" y="204">memory</text><rect class="d-band" x="390" y="180" width="200" height="110" rx="6"/><text class="d-m" x="402" y="204">memory</text></g>
+<g class="step s3" data-move="2:66,120 3:66,216"><rect class="d-paper" x="0" y="0" width="96" height="34" rx="4"/><text class="d-tiny" x="10" y="23">"Buy milk"</text></g>
+<g class="step s3" data-move="2:406,120 3:406,216"><rect class="d-paper" x="0" y="0" width="86" height="34" rx="4"/><text class="d-tiny" x="12" y="23">♪ song</text></g>
+<g class="step s4" data-pulse="4"><polygon class="d-bad" points="360,130 490,78 620,130"/><rect class="d-bad" x="370" y="130" width="240" height="180"/><text class="d-b" x="384" y="160">Music</text><rect class="d-paper" x="420" y="196" width="140" height="44" rx="6"/><text class="d-r" x="490" y="225" text-anchor="middle">crashed</text></g>
+<g class="step s4"><rect class="d-hl" x="58" y="256" width="150" height="28" rx="6"/><text class="d-a" x="68" y="276">still running</text></g>
 </svg>
 <ol class="caps">
 <li><p>On the phone, an app you've installed is just files. Tap the Notes icon, and the phone starts it running: Notes is now a <b>process</b>.</p></li>

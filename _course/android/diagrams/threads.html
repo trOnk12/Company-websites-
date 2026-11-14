@@ -1,11 +1,18 @@
 <!-- label: Threads are the workers inside a process -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="th2-t"><title id="th2-t">Inside an app's process, several threads work; the main thread at the front desk draws the screen and handles taps; while it is busy, a tap waits</title>
-<g class="step s1"><polygon class="d-roof" points="10,90 320,30 630,90"/><rect class="d-paper" x="20" y="90" width="600" height="270"/><text class="d-m" x="36" y="350">one app's process</text></g>
-<g class="step s1"><circle class="d-skin" cx="440" cy="170" r="16"/><rect class="d-roof" x="418" y="188" width="44" height="32" rx="12"/><circle class="d-skin" cx="540" cy="170" r="16"/><rect class="d-roof" x="518" y="188" width="44" height="32" rx="12"/><text class="d-tiny" x="430" y="246">threads</text></g>
-<g class="step s2"><rect class="d-band" x="470" y="110" width="110" height="34" rx="4"/><text class="d-tiny" x="484" y="133">download…</text></g>
-<g class="step s2" data-pulse="2"><circle class="d-skin" cx="120" cy="170" r="18"/><rect class="d-hl" x="96" y="190" width="48" height="34" rx="12"/><rect class="d-wood" x="50" y="226" width="160" height="12" rx="3"/><rect class="d-paper" x="60" y="110" width="120" height="40" rx="4"/><text class="d-tiny" x="76" y="136">the screen</text><text class="d-tiny" x="66" y="270">main thread</text></g>
-<g class="step s3" data-move="2:240,320 3:220,180 4:220,180"><circle class="d-hl" cx="16" cy="16" r="16"/><text class="d-tiny" x="36" y="22">tap</text></g>
-<g class="step s4" data-pulse="4"><rect class="d-bad" x="40" y="290" width="200" height="34" rx="4"/><text class="d-r" x="52" y="313">busy: tap waits</text></g>
+<x-ground class="step s1" y="310" label="kernel"/>
+<x-house class="step s1" x="20" y="80" w="600" h="230"/>
+<text class="step s1 d-m" x="604" y="300" text-anchor="end">one app's process</text>
+<x-person class="step s1" x="450" y="160"/><x-person class="step s1" x="550" y="160"/>
+<text class="step s1 d-tiny" x="500" y="240" text-anchor="middle">threads</text>
+<g class="step s2"><rect class="d-band" x="452" y="96" width="100" height="32" rx="4"/><text class="d-tiny" x="464" y="118">download…</text></g>
+<g class="step s2"><rect class="d-paper" x="50" y="96" width="130" height="38" rx="4"/><text class="d-tiny" x="66" y="121">the screen</text></g>
+<x-person class="step s2" data-pulse="2" x="100" y="166" tone="hl" desk="1" label="main thread"/>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="132" y="200" width="62" height="12" rx="2"/><rect class="d-paper" x="136" y="188" width="58" height="12" rx="2"/><rect class="d-paper" x="130" y="176" width="64" height="12" rx="2"/><rect class="d-paper" x="134" y="164" width="58" height="12" rx="2"/></g>
+<g class="step s3" data-move="2:300,330 3:226,184"><circle class="d-hl" cx="16" cy="16" r="16"/><text class="d-tiny" x="38" y="22">tap</text></g>
+<g class="step s4"><x-arrow tone="red" d="M426,196 C380,200 330,206 290,204"/><circle class="d-bad" cx="358" cy="200" r="15"/><path class="d-red" d="M350,192 L366,208 M366,192 L350,208"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-paper" x="132" y="152" width="62" height="12" rx="2"/><rect class="d-paper" x="136" y="140" width="56" height="12" rx="2"/><rect class="d-paper" x="130" y="128" width="64" height="12" rx="2"/><rect class="d-paper" x="134" y="116" width="58" height="12" rx="2"/></g>
+<g class="step s4"><rect class="d-bad" x="196" y="232" width="110" height="30" rx="4"/><text class="d-r" x="206" y="254">tap waits</text><rect class="d-bad" x="50" y="96" width="130" height="38" rx="4" opacity="0.9"/><text class="d-r" x="80" y="121">frozen</text></g>
 </svg>
 <ol class="caps">
 <li><p>Inside a process, the work is done by <b>threads</b>: workers that run code one step after another. A process can have several.</p></li>

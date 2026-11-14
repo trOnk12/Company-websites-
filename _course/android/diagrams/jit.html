@@ -1,14 +1,23 @@
 <!-- label: Hot code is translated now (JIT) and later (AOT) -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="jit-t"><title id="jit-t">ART translates hot code right away (JIT) and notes it in a profile; at night dex2oat translates the profiled code ahead of time (AOT); a Baseline Profile ships the notes in the APK</title>
-<g class="step s1"><rect class="d-roof" x="16" y="120" width="140" height="130" rx="8"/><text class="d-b" x="56" y="110">APK</text>
-<polygon class="d-roof" points="186,96 404,46 624,96"/><rect class="d-paper" x="196" y="96" width="418" height="226"/>
-<circle class="d-skin" cx="262" cy="150" r="16"/><rect class="d-roof" x="240" y="168" width="44" height="32" rx="12"/><rect class="d-wood" x="212" y="202" width="140" height="12" rx="3"/><text class="d-tiny" x="246" y="236">ART</text></g>
-<g class="step s1" data-pulse="1"><rect class="d-bad" x="300" y="146" width="74" height="38" rx="6"/><text class="d-r" x="312" y="172">hot!</text></g>
-<g class="step s2"><rect class="d-band" x="400" y="130" width="96" height="96" rx="6"/><text class="d-b" x="428" y="156">JIT</text><rect class="d-hl" x="510" y="150" width="86" height="58" rx="6"/><text class="d-a" x="522" y="186">fast</text></g>
-<g class="step s2" data-move="1:300,146 2:411,172"><rect class="d-hl" x="0" y="0" width="74" height="38" rx="6"/><text class="d-a" x="10" y="26">code</text></g>
-<g class="step s3" data-move="2:300,236 3:300,236 4:410,240 5:58,160"><rect class="d-paper" x="0" y="0" width="54" height="44" rx="3"/><line class="d-line" x1="8" y1="14" x2="46" y2="14"/><line class="d-line" x1="8" y1="26" x2="40" y2="26"/><text class="d-tiny" x="0" y="62">profile</text></g>
-<g class="step s4" data-pulse="4"><path class="d-hl" d="M600,16 a20,20 0 1,0 0,40 a15,15 0 1,1 0,-40 Z"/><rect class="d-band" x="486" y="236" width="112" height="56" rx="6"/><text class="d-mi" x="496" y="270">dex2oat</text></g>
-<text class="step s5 d-a" x="18" y="276">Baseline Profile</text>
+<x-ground class="step s1" y="300" label="kernel"/>
+<x-sun class="step s1 hide-4" x="580" y="56"/>
+<x-sun class="step s5" x="580" y="56"/>
+<g class="step s4 hide-5" data-pulse="4"><rect class="d-night" x="480" y="8" width="152" height="110" rx="10"/><x-moon x="560" y="62"/></g>
+<g class="step s1"><rect class="d-roof" x="16" y="150" width="110" height="110" rx="8"/><text class="d-b" x="71" y="140" text-anchor="middle">APK</text><rect class="d-paper" x="30" y="160" width="82" height="28" rx="4"/><text class="d-tiny" x="71" y="180" text-anchor="middle">DEX</text></g>
+<x-house class="step s1" x="150" y="110" w="320" h="190" label="your app"/>
+<x-machine class="step s1" x="166" y="160" w="76" label="ART"/>
+<g class="step s1 hide-5" data-pulse="1"><rect class="d-bad" x="262" y="156" width="74" height="38" rx="6"/><text class="d-r" x="299" y="182" text-anchor="middle">hot!</text></g>
+<g class="step s2 hide-5"><x-arrow tone="acc" d="M338,175 L366,175"/><text class="d-a" x="352" y="150" text-anchor="middle">JIT</text></g>
+<g class="step s2 hide-5" data-move="1:262,156 2:372,156"><rect class="d-ink" x="0" y="0" width="80" height="38" rx="6"/><text class="d-inv" x="40" y="25" text-anchor="middle">fast</text></g>
+<g class="step s3 hide-5" data-pulse="3" data-move="2:274,214 3:274,214 4:500,140"><x-sheet x="0" y="0" w="46" h="52" lines="3"/><text class="d-tiny" x="60" y="32">profile</text></g>
+<x-machine class="step s4 hide-5" x="500" y="216" w="122" label="dex2oat"/>
+<x-arrow class="step s4 hide-5" tone="path" d="M498,250 C470,250 450,250 436,250"/>
+<g class="step s4 hide-5" data-pulse="4" data-move="3:520,330 4:330,232"><rect class="d-ink" x="0" y="0" width="104" height="38" rx="6"/><text class="d-inv" x="52" y="25" text-anchor="middle">AOT: kept</text></g>
+<g class="step s5" data-pulse="5"><x-sheet x="44" y="196" w="50" h="56" lines="3"/><text class="d-a" x="71" y="284" text-anchor="middle">Baseline Profile</text></g>
+<x-arrow class="step s5" tone="path" d="M128,226 C200,250 260,250 304,236"/>
+<g class="step s5" data-move="4:40,200 5:310,214"><rect class="d-ink" x="0" y="0" width="80" height="38" rx="6"/><text class="d-inv" x="40" y="25" text-anchor="middle">fast</text></g>
+<text class="step s5 d-a" x="350" y="282" text-anchor="middle">first launch</text>
 </svg>
 <ol class="caps">
 <li><p>Some of your code runs over and over: it's "hot". Interpreting it every time is wasteful.</p></li>

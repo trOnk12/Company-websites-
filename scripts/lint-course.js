@@ -41,11 +41,34 @@ function loadCourse(id) {
       .map(b => {
         const name = b.text.trim() || b.lang.split(/\s+/)[1];
         const file = path.join(dir, 'diagrams', `${name}.html`);
-        const src = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+        const src = fs.existsSync(file) ? require('./course-shapes').expand(fs.readFileSync(file, 'utf8'), name) : '';
         return { name, src, caps: [...src.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(m => m[1]) };
       });
     return { n, f, raw, fm, sections, diagrams };
   });
+}
+
+// Words of SVG text each step adds: text inside a <g>/<text> whose class says when it appears (sN, only-N),
+// nesting-aware (shapes from course-shapes.js put their labels in nested groups).
+function stepWords(svg) {
+  const per = {};
+  const stack = [];
+  let inText = 0;
+  for (const m of svg.matchAll(/<(\/?)([a-zA-Z]+)\b([^>]*?)(\/?)>|([^<]+)/g)) {
+    if (m[5] !== undefined) {
+      const k = inText && stack.filter(Boolean).pop();
+      if (k) per[k] = (per[k] || 0) + words(m[5]);
+      continue;
+    }
+    const [, close, tag, attrs, self] = m;
+    if (tag !== 'g' && tag !== 'text') continue;
+    if (close) { stack.pop(); if (tag === 'text') inText--; continue; }
+    if (self) continue;
+    const cls = (attrs.match(/class="([^"]*)"/) || [])[1] || '';
+    stack.push((cls.match(/\b(?:s|only-)(\d)\b/) || [])[1] || null);
+    if (tag === 'text') inText++;
+  }
+  return per;
 }
 
 function lint(id) {
@@ -62,10 +85,7 @@ function lint(id) {
     for (const d of p.diagrams) {
       if (!d.src) { at(`diagram ${d.name} not found`); continue; }
       d.caps.forEach((c, i) => { if (words(c) > MAX_CAPTION_WORDS) at(`diagram ${d.name} step ${i + 1}: caption has ${words(c)} words (max ${MAX_CAPTION_WORDS})`); });
-      const perStep = {};
-      for (const m of d.src.matchAll(/<(g|text)\b[^>]*class="[^"]*\b(?:s|only-)(\d)\b[^"]*"[^>]*>([\s\S]*?)<\/\1>/g)) {
-        perStep[m[2]] = (perStep[m[2]] || 0) + words([...m[3].matchAll(/<text[^>]*>([^<]*)<\/text>/g)].map(t => t[1]).join(' ') || (m[1] === 'text' ? m[3] : ''));
-      }
+      const perStep = stepWords(d.src);
       for (const [k, w] of Object.entries(perStep)) if (w > MAX_SVG_WORDS_PER_STEP) at(`diagram ${d.name} step ${k}: ${w} words of text in the picture (max ${MAX_SVG_WORDS_PER_STEP}): show it, don't write it`);
       if (!/data-move|class="[^"]*\bmoving\b/.test(d.src)) at(`diagram ${d.name}: nothing moves; show the mechanism in motion`);
     }

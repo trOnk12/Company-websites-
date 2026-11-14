@@ -82,6 +82,8 @@ left to right) and the picture world (houses = apps, columned building = system_
 post office = Binder, little people = threads, clerk at a desk = main thread, envelopes = messages). It
 scores each diagram 1–10 for "could a beginner understand what happens from the pictures alone", and
 reports covered labels, leftovers from earlier steps, unclear movement, and labels doing a picture's job.
+Tell it what the shapes mean (see course-author §3: town hall, post office in the ground, machines with a gear),
+and which puzzle introduces the kernel and Binder, so it doesn't flag a deliberate absence.
 
 Bar: every diagram ≥ 8. Look at `.shots/<course>/sheet.png` yourself too before shipping.
 

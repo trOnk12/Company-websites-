@@ -7,7 +7,7 @@ takeaway: Processes never deal with the CPU or memory directly. They ask the ker
 
 ## The problem
 
-In puzzle 0, every running app was its own process with its own memory. But the phone has one CPU and one pool of memory for all of them. Who decides which process runs right now, and who hands out the memory?
+In puzzle 0, every running app was its own process with its own memory. But the phone has one CPU (the chip that runs a program's instructions, one after another; real phones have a few, but picture one) and one pool of memory for all of them. Who decides which process runs right now, and who hands out the memory?
 
 ## See it
 

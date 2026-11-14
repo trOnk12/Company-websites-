@@ -7,7 +7,7 @@ takeaway: system_server is the town hall. It keeps the register of every app's s
 
 ## The problem
 
-In puzzle 2, the main thread drew your app's screen. But many apps are running, and only one can be on screen. Someone has to decide which screen is in front, which ones are paused in the background, and which ones are closed. That can't be each app for itself.
+In puzzle 2, the main thread drew your app's screen. But many apps are running, and only one can be on screen. Someone has to decide which screen is in front, which ones are covered or hidden, and which ones are closed. That can't be each app for itself.
 
 ## See it
 

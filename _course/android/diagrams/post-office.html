@@ -1,11 +1,14 @@
 <!-- label: Binder carries system_server's message into your app -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="po-t"><title id="po-t">system_server writes a message; it can't reach into your app, so Binder in the kernel carries it there</title>
-<g class="step s1"><polygon class="d-roof" points="20,62 150,18 280,62"/><rect class="d-paper" x="30" y="62" width="240" height="110"/><rect class="d-wood" x="46" y="72" width="12" height="50"/><rect class="d-wood" x="242" y="72" width="12" height="50"/><text class="d-b" x="70" y="104">system_server</text>
-<polygon class="d-roof" points="360,62 490,18 620,62"/><rect class="d-paper" x="370" y="62" width="240" height="110"/><text class="d-b" x="390" y="104">your app</text></g>
-<g class="step s1"><rect class="d-band" x="10" y="270" width="620" height="100" rx="8"/><text class="d-b" x="26" y="304">kernel</text></g>
-<path class="step only-2 d-red" d="M274,110 L360,110"/><g class="step only-2" data-pulse="2"><circle class="d-bad" cx="316" cy="110" r="18"/><path class="d-red" d="M306,100 L326,120 M326,100 L306,120"/></g>
-<g class="step s3" data-pulse="3"><rect class="d-hl" x="260" y="286" width="150" height="68" rx="6"/><rect class="d-paper" x="300" y="296" width="44" height="30" rx="3"/><polyline class="d-line" points="300,296 322,312 344,296"/><text class="d-a" x="276" y="344">Binder</text></g>
-<g class="step s2" data-move="1:110,124 2:110,124 3:330,236 4:470,120"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="3"/><polyline class="d-line" points="0,0 37,22 74,0"/><text class="d-tiny" x="8" y="38">resume</text></g>
+<x-ground class="step s1" y="250" label="kernel"/>
+<x-townhall class="step s1" x="30" y="100" w="230" h="150"/>
+<x-house class="step s1" data-pulse="4" x="390" y="100" w="220" h="150" label="your app"/>
+<g class="step only-2"><x-arrow tone="red" d="M266,176 L380,176"/><circle class="d-bad" cx="322" cy="176" r="17"/><path class="d-red" d="M313,167 L331,185 M331,167 L313,185"/></g>
+<x-postoffice class="step s3" data-pulse="3" x="245" y="290" w="150" h="76" label=""/>
+<text class="step s3 d-b" x="414" y="340">Binder</text>
+<x-arrow class="step s3" tone="path" d="M150,246 C160,300 210,318 274,318"/>
+<x-arrow class="step s4" tone="path" d="M370,300 C420,290 450,260 466,224"/>
+<x-letter class="step s2" data-move="1:108,150 2:108,150 3:283,300 4:430,176" x="0" y="0" label="resume"/>
 </svg>
 <ol class="caps">
 <li><p>The town hall, system_server, and your app are two separate processes, both standing on the kernel.</p></li>

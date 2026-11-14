@@ -74,7 +74,7 @@ function gifLink(course, name) {
 function diagram(course, name, file) {
   const f = path.join(course.dir, 'diagrams', `${name}.html`);
   if (!fs.existsSync(f)) { fail(file, `unknown diagram ${name}`); return ''; }
-  const src = fs.readFileSync(f, 'utf8');
+  const src = require('./course-shapes').expand(fs.readFileSync(f, 'utf8'), name);
   const svg = src.match(/<svg[\s\S]*<\/svg>/);
   const caps = [...src.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(m => m[1].trim());
   const label = (src.match(/<!--\s*label:\s*(.*?)\s*-->/) || [])[1] || name;

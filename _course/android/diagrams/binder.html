@@ -1,24 +1,34 @@
 <!-- label: A Binder call, from your house to the town hall -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="bd-t"><title id="bd-t">Your app hands a packed letter (Parcel) to its proxy; the kernel's Binder driver carries it, stamping your UID; a Binder thread in system_server takes it to the real method; a reply comes back; a 3 MB parcel doesn't fit the receiver's 1 MB mailbox</title>
-<g class="step s1"><polygon class="d-roof" points="10,74 130,30 250,74"/><rect class="d-paper" x="20" y="74" width="220" height="150"/><text class="d-b" x="38" y="108">your app</text><rect class="d-hl" x="38" y="150" width="96" height="44" rx="6"/><text class="d-a" x="52" y="179">proxy</text></g>
-<g class="step s1"><polygon class="d-roof" points="390,74 510,30 630,74"/><rect class="d-paper" x="400" y="74" width="220" height="150"/><text class="d-b" x="414" y="108">system_server</text><rect class="d-band" x="410" y="188" width="76" height="22" rx="3"/><text class="d-tiny" x="418" y="205">buffer</text></g>
-<g class="step s1"><rect class="d-band" x="10" y="284" width="620" height="86" rx="8"/><text class="d-b" x="26" y="318">Binder</text><text class="d-m" x="26" y="346">in the kernel</text></g>
-<!-- the letter -->
-<g class="step s2 actor-letter" data-move="1:46,154 2:150,150 3:300,300 4:500,136 5:150,150"><rect class="d-paper" x="0" y="0" width="70" height="44" rx="3"/><polyline class="d-line" points="0,0 35,22 70,0"/><text class="d-tiny" x="8" y="39">Parcel</text><text class="step s3 d-r" x="-4" y="62">UID 10101</text></g>
-<g class="step only-3" data-move="2:340,180 3:360,282" data-pulse="3"><circle class="d-bad" cx="20" cy="20" r="18"/></g>
-<!-- the courier: a Binder thread -->
-<g class="step s4"><circle class="d-skin" cx="440" cy="132" r="13"/><rect class="d-roof" x="424" y="146" width="32" height="26" rx="10"/><text class="d-tiny" x="404" y="250">Binder thread</text></g>
-<g class="step only-4"><text class="d-a" x="500" y="124">real method</text></g>
-<g class="step only-5"><text class="d-a" x="260" y="140">reply ←</text></g>
-<!-- too big for the mailbox -->
-<g class="step s6" data-move="5:150,236 6:396,166"><rect class="d-bad" x="0" y="0" width="120" height="74" rx="6"/><text class="d-r" x="32" y="44">3 MB</text></g>
-<g class="step s6" data-pulse="6"><text class="d-r" x="408" y="276">~1 MB buffer: too big</text></g>
+<x-ground class="step s1" y="270" label="kernel"/>
+<x-postoffice class="step s1" data-pulse="3" x="245" y="292" w="150" h="76" label=""/>
+<text class="step s1 d-b" x="410" y="336">Binder</text>
+<x-house class="step s1" x="20" y="80" w="220" h="190" label="your app"/>
+<g class="step s1"><rect class="d-hl" x="38" y="128" width="100" height="38" rx="6"/><text class="d-a" x="88" y="153" text-anchor="middle">proxy</text></g>
+<x-townhall class="step s1" x="395" y="100" w="230" h="170"/>
+<g class="step s1"><rect class="d-hl" x="450" y="138" width="120" height="38" rx="6"/><text class="d-a" x="510" y="163" text-anchor="middle">real one</text></g>
+<x-arrow class="step s3 hide-5" tone="path" d="M180,262 C200,300 230,316 262,318"/>
+<x-arrow class="step s4 hide-5" tone="path" d="M398,312 C440,310 460,280 470,246"/>
+<x-person class="step s4" data-pulse="4" x="556" y="196" label=""/>
+<text class="step s4 d-tiny" x="556" y="294" text-anchor="middle">Binder thread</text>
+<g class="step s2 hide-5" data-move="1:52,176 2:150,190 3:283,300 4:448,196"><x-letter x="0" y="0" w="74" h="44" label="Parcel"/><g class="step s3"><rect class="d-bad" x="46" y="-14" width="40" height="22" rx="3"/><text class="d-rt" x="66" y="3" text-anchor="middle">UID</text></g></g>
+<x-arrow class="step only-5" tone="acc" d="M440,262 C420,300 360,306 320,306 C260,306 220,300 190,268"/>
+<x-letter class="step s5 hide-6" data-move="4:448,196 5:150,190" x="0" y="0" tone="hl" label="reply"/>
+<g class="step s7" data-pulse="7"><rect class="d-band" x="446" y="190" width="70" height="44" rx="4"/><text class="d-tiny" x="481" y="217" text-anchor="middle">1 MB</text></g>
+<g class="step s7" data-move="6:40,190 7:250,180"><rect class="d-bad" x="0" y="0" width="110" height="64" rx="6"/><text class="d-r" x="55" y="40" text-anchor="middle">3 MB</text></g>
+<g class="step s7"><x-arrow tone="red" d="M366,212 C400,206 420,206 438,210"/><text class="d-r" x="305" y="166" text-anchor="middle">too big</text></g>
+<g class="step s6 hide-7" data-pulse="6"><rect class="d-hl" x="446" y="190" width="80" height="34" rx="5"/><text class="d-a" x="486" y="213" text-anchor="middle">proxy</text></g>
+<x-person class="step s6 hide-7" data-pulse="6" x="196" y="200" label=""/>
+<text class="step s6 hide-7 d-tiny" x="190" y="294" text-anchor="middle">Binder thread</text>
+<x-arrow class="step s6 hide-7" tone="acc" d="M450,236 C420,330 280,340 214,262"/>
+<x-letter class="step s6 hide-7" data-move="5:446,232 6:56,196" x="0" y="0" tone="hl" label="resume"/>
 </svg>
 <ol class="caps">
 <li><p>Your app calls a method that lives in system_server. In your process sits a <b>proxy</b>: an object that looks exactly like the one in system_server.</p></li>
 <li><p>Objects can't leave a process; bytes can. The proxy packs the arguments into a <b>Parcel</b>: a flat envelope of bytes.</p></li>
-<li><p>Binder carries the Parcel and stamps it with your app's UID. <i>Predict: who picks it up at the town hall?</i></p></li>
+<li><p>Binder carries the Parcel and stamps it with your app's UID, its key. <i>Predict: who picks it up at the town hall?</i></p></li>
 <li><p>A courier: one of system_server's <b>Binder threads</b>, waiting for calls. It unpacks the Parcel and calls the real method.</p></li>
 <li><p>The reply travels back the same way, and the call in your app returns.</p></li>
-<li><p>Incoming calls wait in the receiver's <b>Binder buffer</b>, a fixed-size area of its memory: about 1 MB, shared by every call in progress. An Intent carrying a 3 MB photo doesn't fit.</p></li>
+<li><p>It works both ways: system_server holds a proxy for your app too, and its calls, like "resume", arrive on your app's own Binder threads. Puzzle 14 follows one.</p></li>
+<li><p>Calls into system_server wait in its <b>Binder buffer</b>, a fixed-size area of its memory: about 1 MB, shared by every call in progress. An Intent can carry data, but a 3 MB photo doesn't fit: the call fails.</p></li>
 </ol>

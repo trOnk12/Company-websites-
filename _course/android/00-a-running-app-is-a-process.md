@@ -18,7 +18,7 @@ You've built an app. But what actually happens when someone taps its icon? And w
 
 A **process** is a running program. When you tap an app's icon, the phone starts it as a process; when the phone closes it, the process ends. The app's files stay installed either way.
 
-Each process has its own **memory**: the data the program keeps while it runs, like the text you're typing or the list on the screen. One process can't see or change another process's memory.
+Each process has its own **memory**: the data the program keeps while it runs, like the text you're typing or the list on the screen. One process can't see or change another process's own data in memory.
 
 ## The analogy
 

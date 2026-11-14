@@ -20,7 +20,7 @@ The screen is redrawn about 60 times a second. Each redraw is a **frame**, and e
 
 If a message takes longer than that, the frames behind it come late, and the app visibly stutters: **jank**.
 
-If a touch waits in the queue for 5 seconds, system_server notices and shows the "App isn't responding" dialog: an **ANR**. That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.
+system_server sent each touch, and waits for your app to say it was handled. If a touch waits in the queue for 5 seconds with no answer, system_server shows the "App isn't responding" dialog: an **ANR** (Application Not Responding). That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.
 
 ## The analogy
 

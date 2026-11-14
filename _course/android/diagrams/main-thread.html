@@ -1,18 +1,19 @@
 <!-- label: The main thread works through its queue, one letter at a time -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="mt-t"><title id="mt-t">Letters wait in the main thread's queue; a Binder thread drops a new one in with a Handler; the main thread takes one at a time; a slow one blocks the touch behind it until the system shows an ANR</title>
-<g class="step s1"><rect class="d-paper" x="10" y="20" width="620" height="350" rx="8"/><text class="d-m" x="24" y="44">your app</text>
-<circle class="d-skin" cx="70" cy="160" r="16"/><rect class="d-roof" x="48" y="178" width="44" height="34" rx="12"/><rect class="d-wood" x="30" y="214" width="200" height="12" rx="3"/><text class="d-tiny" x="40" y="250">main thread</text>
-<rect class="d-wood" x="236" y="150" width="390" height="10" rx="3"/><text class="d-m" x="250" y="84">queue →</text></g>
-<!-- letters in the queue -->
-<g class="step s1 actor-letter" data-move="1:250,100 3:120,166 4:20,300"><rect class="d-paper" x="0" y="0" width="80" height="44" rx="3"/><text class="d-tiny" x="16" y="28">draw</text></g>
-<g class="step s1 actor-letter" data-move="1:350,100 3:250,100 4:120,166"><rect class="d-paper" x="0" y="0" width="90" height="44" rx="3"/><text class="d-tiny" x="8" y="28">onCreate</text></g>
-<g class="step s1 actor-letter" data-move="1:460,100 3:360,100"><rect class="d-paper" x="0" y="0" width="80" height="44" rx="3"/><text class="d-tiny" x="14" y="28">touch</text></g>
-<!-- a courier drops a new letter -->
-<g class="step s2"><circle class="d-skin" cx="572" cy="268" r="14"/><rect class="d-roof" x="554" y="284" width="36" height="28" rx="10"/><text class="d-tiny" x="488" y="336">Binder thread</text></g>
-<g class="step s2 actor-letter" data-move="1:540,252 2:550,100 3:460,100"><rect class="d-hl" x="0" y="0" width="80" height="44" rx="3"/><text class="d-a" x="8" y="28">resume</text></g>
+<x-ground class="step s1" y="300" label="kernel"/>
+<x-house class="step s1" x="10" y="74" w="620" h="226" label="your app"/>
+<x-person class="step s1" x="70" y="160" desk="1" label="main thread"/>
+<g class="step s1"><x-arrow tone="ink" d="M500,132 L200,132"/><text class="d-m" x="350" y="122" text-anchor="middle">queue: next in line ←</text></g>
+<x-letter class="step s1" data-move="1:186,148 3:96,178" x="0" y="0" label="draw"/>
+<x-letter class="step s1" data-move="1:286,148 3:186,148" x="0" y="0" w="90" label="onCreate"/>
+<x-letter class="step s1" data-move="1:396,148 3:296,148" x="0" y="0" label="touch"/>
+<x-person class="step s2" data-pulse="2" x="580" y="214" label=""/>
+<text class="step s2 d-tiny" x="560" y="292" text-anchor="middle">Binder thread</text>
+<x-arrow class="step s2 hide-3" tone="path" d="M560,206 C540,206 530,204 524,198"/>
+<x-letter class="step s2" data-move="1:546,226 2:496,148 3:396,148" x="0" y="0" tone="hl" label="resume"/>
 </svg>
 <ol class="caps">
 <li><p>The main thread works from an in-tray: its <b>message queue</b>. Draw the screen, run <code>onCreate</code>, handle a touch: each is a message, waiting its turn.</p></li>
-<li><p>A Binder thread receives "resume" from the town hall. It doesn't touch the screen: it drops the message at the end of the queue with a <code>Handler</code>, the slot into the queue. <i>Predict: when will it run?</i></p></li>
+<li><p>A Binder thread receives "resume" from the town hall. It doesn't touch the screen: it drops the message at the end of the queue with a <code>Handler</code>: an object tied to the main thread's queue that drops messages into it. <i>Predict: when will it run?</i></p></li>
 <li><p>When its turn comes. The main thread takes the first message, runs it to the end, and the line moves up: one at a time, in order.</p></li>
 </ol>

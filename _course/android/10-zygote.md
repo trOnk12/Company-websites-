@@ -18,9 +18,9 @@ In puzzle 8, ART lived inside every app's process. But every app also uses Andro
 
 The phone starting up is called **boot**. Android's own code that every app uses, like the `Activity` class that every screen is built from, is called the **framework**.
 
-At boot, Android starts one process, **Zygote**, which starts ART, puts the framework into its memory, and then waits. When you open an app, Zygote asks the kernel to **fork**: to make a new process that starts as a copy of Zygote. The copy already has ART and the framework loaded. It switches to the app's UID and loads the app's own code. Zygote also forked system_server at boot, so the town hall starts fast too.
+At boot, Android starts one process, **Zygote**, which starts ART, puts the framework into its memory, and then waits. When you open an app, system_server asks Zygote for a new process, and Zygote asks the kernel to **fork**: to make a new process that starts as a copy of Zygote. The copy already has ART and the framework loaded. It switches to the app's UID and loads the app's own code (its DEX, plus any code already translated ahead of time). Zygote also forked system_server at boot, so the town hall starts fast too.
 
-Android's code is public. In it, `ZygoteInit.main()` does exactly this: load, start system_server, then wait for "start an app" requests.
+Android's code is public. In it, `ZygoteInit.main()` (`main()` is where a program starts running) does exactly this: load, start system_server, then wait for "start an app" requests.
 
 ## The analogy
 

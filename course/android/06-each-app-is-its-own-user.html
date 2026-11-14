@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="The kernel keeps processes apart while they run. Android also keeps each app's files apart, by giving every app its own identity.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="Each app is its own user – Android from the foundation – Mateusz Pachulski">
+  <meta property="og:title" content="Each app gets its own account – Android from the foundation – Mateusz Pachulski">
   <meta property="og:description" content="The kernel keeps processes apart while they run. Android also keeps each app's files apart, by giving every app its own identity.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/android/06-each-app-is-its-own-user">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>Each app is its own user – Android from the foundation – Mateusz Pachulski</title>
+  <title>Each app gets its own account – Android from the foundation – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/06-each-app-is-its-own-user">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -47,9 +47,9 @@
 
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="6" data-prev="05-you-dont-call-youre-called.html" data-prev-title="You don't call. You're called.">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-the-town-hall-decides.html" class="done" title="Who decides about your screens">3</a></li><li><a href="04-the-post-office-carries-letters.html" class="done" title="The post office carries letters">4</a></li><li><a href="05-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">5</a></li><li><a href="06-each-app-is-its-own-user.html" aria-current="page" title="Each app is its own user">6</a></li><li><a href="07-letters-between-apps.html" title="Letters between apps">7</a></li><li><a href="08-whats-inside-the-apk.html" title="What's inside the APK">8</a></li><li><a href="09-faster-code-now-and-later.html" title="Faster code, now and later">9</a></li><li><a href="10-zygote.html" title="Zygote, the process every app starts from">10</a></li><li><a href="11-sharing-memory.html" title="Sharing memory without sharing mistakes">11</a></li><li><a href="12-starting-an-app.html" title="Starting an app, cold, warm and hot">12</a></li><li><a href="13-inside-a-binder-call.html" title="Inside a Binder call">13</a></li><li><a href="14-the-main-threads-queue.html" title="The main thread's queue">14</a></li><li><a href="15-frames-jank-and-anrs.html" title="Frames, jank and ANRs">15</a></li></ol></nav>
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-the-town-hall-decides.html" class="done" title="Who decides about your screens">3</a></li><li><a href="04-the-post-office-carries-letters.html" class="done" title="The post office carries letters">4</a></li><li><a href="05-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">5</a></li><li><a href="06-each-app-is-its-own-user.html" aria-current="page" title="Each app gets its own account">6</a></li><li><a href="07-letters-between-apps.html" title="Letters between apps">7</a></li><li><a href="08-whats-inside-the-apk.html" title="What's inside the APK">8</a></li><li><a href="09-faster-code-now-and-later.html" title="Faster code, now and later">9</a></li><li><a href="10-zygote.html" title="Zygote, the process every app starts from">10</a></li><li><a href="11-sharing-memory.html" title="Sharing memory without sharing mistakes">11</a></li><li><a href="12-starting-an-app.html" title="Starting an app, cold, warm and hot">12</a></li><li><a href="13-inside-a-binder-call.html" title="Inside a Binder call">13</a></li><li><a href="14-the-main-threads-queue.html" title="The main thread's queue">14</a></li><li><a href="15-frames-jank-and-anrs.html" title="Frames, jank and ANRs">15</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 6 of 15</p>
-      <h1>Each app is its own user</h1>
+      <h1>Each app gets its own account</h1>
       <p class="lede">The kernel keeps processes apart while they run. Android also keeps each app's files apart, by giving every app its own identity.</p>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -57,21 +57,26 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Each app is its own user, with its own key"><input type="radio" name="st-sandbox" id="st-sandbox-1" checked aria-label="Step 1 of 3"><input type="radio" name="st-sandbox" id="st-sandbox-2" aria-label="Step 2 of 3"><input type="radio" name="st-sandbox" id="st-sandbox-3" aria-label="Step 3 of 3">
+<figure class="stepper" aria-label="Each app is its own user, with its own key"><input type="radio" name="st-sandbox" id="st-sandbox-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-sandbox" id="st-sandbox-2" aria-label="Step 2 of 4"><input type="radio" name="st-sandbox" id="st-sandbox-3" aria-label="Step 3 of 4"><input type="radio" name="st-sandbox" id="st-sandbox-4" aria-label="Step 4 of 4">
 <div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sb-t"><title id="sb-t">Two apps, each with its own key (UID); the game's key doesn't open the bank's files, because the kernel checks the key</title>
-<g class="step s1"><polygon class="d-roof" points="30,130 160,72 290,130"/><rect class="d-paper" x="40" y="130" width="240" height="142"/><rect class="d-wood" x="190" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="224" cy="238" r="4"/><rect class="d-paper" x="58" y="168" width="54" height="70" rx="3"/><line class="d-line" x1="66" y1="186" x2="104" y2="186"/><line class="d-line" x1="66" y1="200" x2="104" y2="200"/><line class="d-line" x1="66" y1="214" x2="96" y2="214"/><text class="d-mi" x="56" y="156">UID 10101</text><text class="d-b" x="40" y="298">Bank app</text></g>
-<g class="step s1"><polygon class="d-roof" points="350,130 480,72 610,130"/><rect class="d-paper" x="360" y="130" width="240" height="142"/><rect class="d-wood" x="510" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="544" cy="238" r="4"/><text class="d-mi" x="376" y="156">UID 10202</text><text class="d-b" x="360" y="298">Game</text></g>
-<g class="step s2"><rect class="d-band" x="10" y="312" width="620" height="56" rx="8"/><text class="d-m" x="26" y="346">kernel: checks the key</text><rect class="d-ink" x="314" y="140" width="12" height="172" rx="3"/></g>
-<g class="step only-2" data-move="1:440,226 2:236,226"><circle class="d-hl" cx="14" cy="14" r="12"/><rect class="d-hl" x="24" y="10" width="30" height="8" rx="2"/></g>
-<g class="step only-2" data-pulse="2"><circle class="d-bad" cx="212" cy="190" r="22"/><path class="d-red" d="M200,178 L224,202 M224,178 L200,202"/></g>
-<g class="step s3" data-pulse="3"><rect class="d-acc" x="34" y="124" width="252" height="154" rx="4"/><rect class="d-acc" x="354" y="124" width="252" height="154" rx="4"/><text class="d-a" x="230" y="64">sandbox</text></g>
+<g class="step s1"><rect class="d-soil" x="0" y="300" width="640" height="80"/><ellipse class="d-pebble" cx="90" cy="344" rx="7" ry="4"/><ellipse class="d-pebble" cx="170" cy="364" rx="7" ry="4"/><ellipse class="d-pebble" cx="300" cy="336" rx="7" ry="4"/><ellipse class="d-pebble" cx="380" cy="360" rx="7" ry="4"/><ellipse class="d-pebble" cx="470" cy="340" rx="7" ry="4"/><ellipse class="d-pebble" cx="560" cy="356" rx="7" ry="4"/><ellipse class="d-pebble" cx="610" cy="328" rx="7" ry="4"/><line class="d-grass" x1="0" y1="300" x2="640" y2="300"/><text class="d-b" x="16" y="330">kernel</text></g>
+<g class="step s1"><polygon class="d-roof" points="20,120 150,76 280,120"/><rect class="d-paper" x="30" y="120" width="240" height="180"/><rect class="d-wood" x="224" y="250" width="30" height="50" rx="3"/><circle class="d-ink" cx="248" cy="276" r="3"/><text class="d-b" x="44" y="150">Bank app</text></g>
+<g class="step s1"><polygon class="d-roof" points="360,120 490,76 620,120"/><rect class="d-paper" x="370" y="120" width="240" height="180"/><rect class="d-wood" x="564" y="250" width="30" height="50" rx="3"/><circle class="d-ink" cx="588" cy="276" r="3"/><text class="d-b" x="384" y="150">Game</text></g>
+<g class="step s1" data-pulse="1"><g><rect class="d-paper" x="50" y="168" width="54" height="64" rx="3"/><line class="d-line" x1="58" y1="182" x2="96" y2="182"/><line class="d-line" x1="58" y1="195" x2="88" y2="195"/><line class="d-line" x1="58" y1="208" x2="96" y2="208"/><line class="d-line" x1="58" y1="221" x2="88" y2="221"/></g></g>
+<g class="step s1 hide-2"><rect class="d-paper" x="44" y="242" width="104" height="24" rx="4"/><text class="d-tiny" x="96" y="259" text-anchor="middle">owner: Bank</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="44" y="242" width="104" height="24" rx="4"/><text class="d-a" x="96" y="259" text-anchor="middle">10101</text><text class="d-mi" x="124" y="196">UID 10101</text><text class="d-mi" x="464" y="196">UID 10202</text></g>
+<g class="step s3 hide-4" data-move="2:520,250 3:300,262"><circle class="d-hl" cx="40" cy="0" r="11"/><rect class="d-hl" x="0" y="-4" width="30" height="8" rx="2"/><rect class="d-hl" x="2" y="2" width="6" height="8"/><text class="d-mi" x="4" y="-16">10202</text></g>
+<g class="step s3 hide-4" data-move="2:262,320 3:262,226"><rect class="d-bad" x="-8" y="0" width="16" height="74" rx="3"/><path class="d-red" d="M-8,14 L8,4 M-8,34 L8,24 M-8,54 L8,44"/><text class="d-rt" x="0" y="-8" text-anchor="middle">kernel</text></g>
+<g class="step only-3" data-pulse="3"><circle class="d-bad" cx="320" cy="222" r="14"/><path class="d-red" d="M312,214 L328,230 M328,214 L312,230"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-acc" x="18" y="66" width="264" height="228" rx="10"/><rect class="d-acc" x="358" y="66" width="264" height="228" rx="10"/><text class="d-a" x="28" y="90">sandbox</text><text class="d-a" x="368" y="90">sandbox</text></g>
 </svg></div>
 <ol class="caps">
-<li><p>Linux keeps accounts apart: identities the kernel uses to decide who owns which files. At install, every app gets its own account, with its own user ID: its <b>UID</b>, the app's key. Its processes carry it.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 3</span><label class="next" for="st-sandbox-2">Next →</label></div></li>
-<li><p>The game tries the bank's door with its own key. The kernel checks which UID each file belongs to, and refuses. <i>Predict: does this depend on the bank app running?</i></p><div class="stepnav"><label for="st-sandbox-1">← Back</label><span class="count">Step 2 of 3</span><label class="next" for="st-sandbox-3">Next →</label></div></li>
-<li><p>No: the kernel checks every time. Each app lives inside walls it can't switch off: its <b>sandbox</b>.</p><div class="stepnav"><label for="st-sandbox-2">← Back</label><span class="count">Step 3 of 3</span><label for="st-sandbox-1">↺ Again</label></div></li>
+<li><p>Linux keeps accounts apart. An account is an identity the kernel uses to decide who owns which files: every file is marked with its owner.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-sandbox-2">Next →</label></div></li>
+<li><p>At install, every app gets its own account (Linux calls accounts users), with its own number: its user ID, or <b>UID</b>. It's the app's key, and the app's process carries it.</p><div class="stepnav"><label for="st-sandbox-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-sandbox-3">Next →</label></div></li>
+<li><p>The game's key tries the bank's files. The kernel compares the key with the files' owner, and refuses. <i>Predict: does this depend on the bank app running?</i></p><div class="stepnav"><label for="st-sandbox-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-sandbox-4">Next →</label></div></li>
+<li><p>No: the kernel checks every time. Each app lives inside walls it can't switch off: its <b>sandbox</b>.</p><div class="stepnav"><label for="st-sandbox-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-sandbox-1">↺ Again</label></div></li>
 </ol>
-<div class="dots" aria-hidden="true"><label for="st-sandbox-1" title="Step 1"></label><label for="st-sandbox-2" title="Step 2"></label><label for="st-sandbox-3" title="Step 3"></label></div>
+<div class="dots" aria-hidden="true"><label for="st-sandbox-1" title="Step 1"></label><label for="st-sandbox-2" title="Step 2"></label><label for="st-sandbox-3" title="Step 3"></label><label for="st-sandbox-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/sandbox.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
@@ -89,7 +94,7 @@
 <legend>The bank app isn't running. Can the game open the bank's saved files now?</legend>
 <input type="radio" name="q-06-each-app-is-its-own-user-1" id="q-06-each-app-is-its-own-user-1-1"><label for="q-06-each-app-is-its-own-user-1-1">Yes: nobody is there to guard them</label>
 <input type="radio" name="q-06-each-app-is-its-own-user-1" id="q-06-each-app-is-its-own-user-1-2" data-ok><label for="q-06-each-app-is-its-own-user-1-2">No: the files still belong to the bank's UID, and the kernel checks it</label>
-<p class="fb no opt-1"><b>Not quite.</b> The walls aren't guarded by the bank app; the kernel checks the key on every file, running or not. <label class="show-me" for="st-sandbox-2" data-goto="st-sandbox">Show me step 2 again ↑</label></p>
+<p class="fb no opt-1"><b>Not quite.</b> The walls aren't guarded by the bank app; the kernel checks the key on every file, running or not. <label class="show-me" for="st-sandbox-3" data-goto="st-sandbox">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The kernel checks the UID whether or not the owner is running.</p>
 </fieldset>
 <fieldset class="quiz">
@@ -98,15 +103,15 @@
 <input type="radio" name="q-06-each-app-is-its-own-user-2" id="q-06-each-app-is-its-own-user-2-2"><label for="q-06-each-app-is-its-own-user-2-2">system_server</label>
 <input type="radio" name="q-06-each-app-is-its-own-user-2" id="q-06-each-app-is-its-own-user-2-3"><label for="q-06-each-app-is-its-own-user-2-3">Each app, by being careful</label>
 <p class="fb ok opt-1"><b>Right.</b> The kernel enforces it, so no app can switch it off.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The town hall manages screens. The walls around files and memory are the kernel's job. <label class="show-me" for="st-sandbox-3" data-goto="st-sandbox">Show me step 3 again ↑</label></p>
-<p class="fb no opt-3"><b>Not quite.</b> If apps had to behave, a hostile app wouldn't. The kernel checks every access, whatever the app does. <label class="show-me" for="st-sandbox-2" data-goto="st-sandbox">Show me step 2 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> The town hall manages screens. The walls around files and memory are the kernel's job. <label class="show-me" for="st-sandbox-4" data-goto="st-sandbox">Show me step 4 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> If apps had to behave, a hostile app wouldn't. The kernel checks every access, whatever the app does. <label class="show-me" for="st-sandbox-3" data-goto="st-sandbox">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a UID and a process?</legend>
 <input type="radio" name="q-06-each-app-is-its-own-user-3" id="q-06-each-app-is-its-own-user-3-1" data-ok><label for="q-06-each-app-is-its-own-user-3-1">A UID is an app's identity, kept as long as the app is installed; a process exists only while the app runs</label>
 <input type="radio" name="q-06-each-app-is-its-own-user-3" id="q-06-each-app-is-its-own-user-3-2"><label for="q-06-each-app-is-its-own-user-3-2">They're the same thing</label>
 <p class="fb ok opt-1"><b>Right.</b> One app, one UID; its process comes and goes.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The UID is the key, given at install. The process is the running house, started and ended many times. <label class="show-me" for="st-sandbox-1" data-goto="st-sandbox">Show me step 1 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> The UID is the key, given at install. The process is the running house, started and ended many times. <label class="show-me" for="st-sandbox-2" data-goto="st-sandbox">Show me step 2 again ↑</label></p>
 </fieldset>
       </section>
       <section aria-labelledby="sources">

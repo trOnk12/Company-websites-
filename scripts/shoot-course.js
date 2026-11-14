@@ -36,7 +36,8 @@ function serve() {
 (async () => {
   const srv = await serve();
   const base = `http://127.0.0.1:${srv.address().port}`;
-  const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
+  const exe = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : '');
+  const browser = await chromium.launch(exe ? { executablePath: exe } : {});
   const ctx = await browser.newContext({ viewport: { width: 760, height: 900 } });
   await ctx.route(/goatcounter/, r => r.abort());
   const page = await ctx.newPage();
@@ -64,6 +65,7 @@ function serve() {
       img{width:300px;border:1px solid #ddd}</style>` +
       rows.map((r, i) => `<div class="row" id="r${i}"><b>${r.f}</b>${r.shots.map(s => `<img src="${s}">`).join('')}</div>`).join('');
     fs.writeFileSync(path.join(dir, 'sheet.html'), html);
+    await page.setViewportSize({ width: 200 + 312 * Math.max(...rows.map(r => r.shots.length)), height: 900 }); // every step in view
     await page.goto(`file://${path.join(dir, 'sheet.html')}`);
     await page.screenshot({ path: path.join(dir, 'sheet.png'), fullPage: true });
     // One strip per diagram, for the picture-only review (course-clarity pass 2b).

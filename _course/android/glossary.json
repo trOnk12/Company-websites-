@@ -207,6 +207,11 @@
    "def": "Zygote's starting point in the Android source.",
    "kind": "code"
   },
+  "main()": {
+   "in": "10",
+   "def": "The method where a program starts running.",
+   "kind": "code"
+  },
   "page": {
    "in": "11",
    "def": "A small fixed-size block of memory: the unit the kernel hands out.",
@@ -262,6 +267,13 @@
    "in": "13",
    "def": "Thrown when a call doesn't fit the Binder buffer.",
    "kind": "code"
+  },
+  "transaction": {
+   "in": "13",
+   "def": "One Binder call, carried from one process to another.",
+   "aliases": [
+    "transactions"
+   ]
   },
   "Binder.getCallingUid()": {
    "in": "13",
