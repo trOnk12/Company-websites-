@@ -74,11 +74,16 @@ who knows Kotlin but nothing about Android internals, and to report, per puzzle:
 Run it in the background while you do pass 3 and the visual check. After fixing, re-run it on the
 puzzles that were under 8 only (targeted re-review), not the whole course.
 
-## Pass 2b — the visual check
+## Pass 2b — the pictures (a second fresh reviewer who sees only the diagrams)
 
-`npm run shots:course` and look at `.shots/<course>/sheet.png`: one row per diagram, one column per step,
-after the motion settles. Fix labels covered by moving parts, parts stranded after their step, text
-running out of its box, and steps where nothing visibly changes.
+The text reviewer never sees motion. So: `npm run shots:course`, then spawn a second general-purpose agent,
+in the background, and give it ONLY the folder `.shots/<course>/strips/` (one image per diagram, its steps
+left to right) and the picture world (houses = apps, columned building = system_server, ground = kernel,
+post office = Binder, little people = threads, clerk at a desk = main thread, envelopes = messages). It
+scores each diagram 1–10 for "could a beginner understand what happens from the pictures alone", and
+reports covered labels, leftovers from earlier steps, unclear movement, and labels doing a picture's job.
+
+Bar: every diagram ≥ 8. Look at `.shots/<course>/sheet.png` yourself too before shipping.
 
 ## Pass 3 — the playbook rubric (you, against Mateusz's rules)
 
@@ -97,7 +102,7 @@ For each puzzle, check and write down pass/fail:
 
 ## Pass bar
 
-A puzzle ships only when the lint is clean **and** the fresh learner scores it at least 8/10 for
+A puzzle ships only when the lint is clean, its diagram scores at least 8/10 in the picture review, **and** the fresh learner scores it at least 8/10 for
 "a beginner can follow this without outside help", with no undefined terms and no question answerable
 by copying a caption.
 

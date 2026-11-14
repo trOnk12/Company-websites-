@@ -16,7 +16,7 @@ In puzzle 0, two running apps couldn't touch each other's memory. But apps also 
 
 ## The building block
 
-Linux was built for computers shared by many people, so it keeps accounts apart. A Linux account isn't necessarily a person: it's an identity the kernel uses to decide who owns which files. Android reuses that: at install time, every app gets its own account, with its own user ID, or **UID**. The UID stays the same for as long as the app is installed. Files the app creates belong to its UID, and every process of the app carries that UID, so the kernel always knows who's asking.
+Linux was built for computers shared by many people, so it keeps accounts apart. A Linux account isn't necessarily a person: it's an identity the kernel uses to decide who owns which files. Android reuses that: at install time, every app gets its own account, with its own user ID, or **UID**. The UID stays the same for as long as the app is installed. Files the app creates belong to its UID. And for every process, the kernel keeps a record of which UID it runs as: when that process opens a file, the kernel compares the file's UID with the process's UID. Match: the door opens. No match: refused.
 
 The kernel checks the UID on every file and every process. The result is the **sandbox**: walls around each app's files and memory that no app can switch off, because the kernel enforces them.
 

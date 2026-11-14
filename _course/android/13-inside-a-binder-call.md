@@ -16,7 +16,7 @@ When your app calls `startActivity()`, the method that sends an Intent, it looks
 
 ## The building block
 
-On your side sits a **proxy**: an object that looks exactly like the object in the other process that does the work. Calling it packs the arguments into a **Parcel**, a flat envelope of bytes. Binder carries the Parcel across, and stamps it with your app's UID. In the receiving process, a **Binder thread**, one of a few threads waiting for incoming calls, unpacks it and calls the real method. Meanwhile the thread in your app that made the call waits (if that's the main thread, the screen waits too); the reply comes back the same way, and only then does the call return.
+On your side sits a **proxy**: an object that looks exactly like the object in the other process that does the work. You never write it: Android's own code hands it to your app. Calling it packs the arguments into a **Parcel**, a flat envelope of bytes. Binder carries the Parcel across, and stamps it with your app's UID. In the receiving process, a **Binder thread**, one of a few threads waiting for incoming calls, unpacks it and calls the real method. Meanwhile the thread in your app that made the call waits (if that's the main thread, the screen waits too); the reply comes back the same way, and only then does the call return.
 
 `startActivity()` sends your Intent to system_server, so it lands there. Incoming calls land in the receiver's **Binder buffer**: a fixed-size area of the receiver's memory, set up by the kernel, where incoming calls wait to be picked up. It's about 1 MB, shared by every call in progress. A call that doesn't fit fails with `TransactionTooLargeException`.
 

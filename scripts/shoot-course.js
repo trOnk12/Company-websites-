@@ -6,7 +6,8 @@
 // per course: one row per puzzle, one column per step. Look for labels covered by moving parts, parts left
 // where they shouldn't be, text running out of its box, and steps where nothing changes.
 //
-//   npm run shots:course            → .shots/<course>/sheet.png   (CHROMIUM_PATH=… to use an installed Chromium)
+//   npm run shots:course            → .shots/<course>/sheet.png and .shots/<course>/strips/<puzzle>.png
+//                                     (CHROMIUM_PATH=… to use an installed Chromium)
 
 const fs = require('fs');
 const path = require('path');
@@ -61,10 +62,15 @@ function serve() {
     const html = `<!doctype html><meta charset="utf-8"><style>body{margin:0;font:14px sans-serif;background:#fff}
       .row{display:flex;gap:6px;padding:6px;border-bottom:1px solid #ccc}.row b{width:180px;flex:none}
       img{width:300px;border:1px solid #ddd}</style>` +
-      rows.map(r => `<div class="row"><b>${r.f}</b>${r.shots.map(s => `<img src="${s}">`).join('')}</div>`).join('');
+      rows.map((r, i) => `<div class="row" id="r${i}"><b>${r.f}</b>${r.shots.map(s => `<img src="${s}">`).join('')}</div>`).join('');
     fs.writeFileSync(path.join(dir, 'sheet.html'), html);
     await page.goto(`file://${path.join(dir, 'sheet.html')}`);
     await page.screenshot({ path: path.join(dir, 'sheet.png'), fullPage: true });
+    // One strip per diagram, for the picture-only review (course-clarity pass 2b).
+    fs.mkdirSync(path.join(dir, 'strips'), { recursive: true });
+    for (let i = 0; i < rows.length; i++) {
+      await page.locator(`#r${i}`).screenshot({ path: path.join(dir, 'strips', rows[i].f.replace(/\.html$/, '.png')) });
+    }
     console.log(`Wrote .shots/${c}/sheet.png (${rows.length} diagrams)`);
   }
   await browser.close();

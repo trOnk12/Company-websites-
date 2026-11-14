@@ -169,6 +169,18 @@
       document.body.append(card);
     };
     quizzes.forEach(q => q.addEventListener('change', update));
+    // Which wrong answers do real learners pick? Count each wrong choice once per question per visit
+    // (anonymous: puzzle, question and the option's first words, nothing about the person).
+    const counted = new Set();
+    quizzes.forEach((q, qi) => q.addEventListener('change', e => {
+      const input = e.target;
+      if (!input.matches('input[type=radio]') || input.hasAttribute('data-ok')) return;
+      const key = `${qi}:${input.id}`;
+      if (counted.has(key)) return;
+      counted.add(key);
+      const label = (q.querySelector(`label[for="${input.id}"]`)?.textContent || '').trim().slice(0, 60);
+      count(`wrong ${course} ${n} q${qi + 1}: ${label}`, true, `Wrong answer, puzzle ${n} question ${qi + 1}`);
+    }));
     if (next) next.addEventListener('click', e => {
       if (next.classList.contains('locked')) {
         e.preventDefault();
