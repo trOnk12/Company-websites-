@@ -187,6 +187,23 @@ ${linked}
   });
 }
 
+// Courses that aren't written yet: _course/catalog.json.
+function catalog() {
+  const f = path.join(SRC, 'catalog.json');
+  if (!fs.existsSync(f)) return '';
+  const c = JSON.parse(fs.readFileSync(f, 'utf8'));
+  return `
+    <section class="section" aria-labelledby="catalog-heading">
+      <div class="wrap narrow">
+        <h2 id="catalog-heading">${L.esc(c.title)}</h2>
+        <p>${L.esc(c.intro)}</p>
+        <ul class="modules">
+${c.upcoming.map(m => `<li class="soon"><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n')}
+        </ul>
+      </div>
+    </section>`;
+}
+
 function renderIndex(cs) {
   const blocks = cs.map(c => {
     let i = 0;
@@ -220,7 +237,7 @@ ${soon}
         </ul>
       </div>
     </section>`;
-  }).join('\n');
+  }).join('\n') + catalog();
   return L.page({
     title: `Course: ${cs[0].meta.title} – Mateusz Pachulski`,
     description: cs[0].meta.intro,

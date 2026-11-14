@@ -42,19 +42,23 @@
   "upcoming": [
     {
       "title": "Module 4: Screens and their lives",
-      "topics": "Context, rotation, saved state, process death, tasks and the back stack."
+      "topics": "Context, why each lifecycle callback exists, rotation, ViewModel and the ViewModelStore that keeps it alive, saved state, process death, tasks and the back stack."
     },
     {
       "title": "Module 5: Work without a screen",
-      "topics": "Services, broadcasts, ContentProviders, Doze and WorkManager."
+      "topics": "Services, broadcasts, PendingIntent, process priority and the low-memory killer, Doze and standby buckets, WorkManager."
     },
     {
       "title": "Module 6: Threads, coroutines and Flow",
-      "topics": "What really runs where, cancellation, cold and hot streams."
+      "topics": "How a coroutine actually waits, dispatchers, cancellation, cold and hot streams, StateFlow."
     },
     {
       "title": "Module 7: Pixels and performance",
-      "topics": "How a frame is drawn, Compose internals, memory and leaks."
+      "topics": "From Choreographer to the GPU, how Compose knows what to redraw, garbage collection, memory leaks."
+    },
+    {
+      "title": "Module 8: Libraries under the hood",
+      "topics": "Dependency injection (Dagger, Hilt, Koin), OkHttp and Retrofit, Room and SQLite, R8 and startup."
     }
   ],
   "support": {
