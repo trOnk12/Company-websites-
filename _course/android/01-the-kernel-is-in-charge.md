@@ -22,7 +22,7 @@ At its core is the **kernel**. It shares the CPU between processes, switching be
 
 ## The analogy
 
-The processes are houses on a street. The kernel is the street's management: it decides who gets electricity right now, hands out building space, and is the only one with a key to every house.
+The processes are houses on a street. The kernel is the street's management: it decides who gets electricity right now, hands out building space, and is the only one who can enter every house.
 
 ## Check yourself
 

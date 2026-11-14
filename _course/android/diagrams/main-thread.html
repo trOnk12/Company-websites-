@@ -13,7 +13,7 @@
 <x-letter class="step s2" data-move="1:546,226 2:496,148 3:396,148" x="0" y="0" tone="hl" label="resume"/>
 </svg>
 <ol class="caps">
-<li><p>The main thread works from an in-tray: its <b>message queue</b>. Draw the screen, run <code>onCreate</code>, handle a touch: each is a message, waiting its turn.</p></li>
+<li><p>The main thread works from an in-tray: its <b>message queue</b>. Draw the screen, run <code>onCreate</code>, handle a touch (a tap): each is a message, waiting its turn.</p></li>
 <li><p>A Binder thread receives "resume" from the town hall. It doesn't touch the screen: it drops the message at the end of the queue with a <code>Handler</code>: an object tied to the main thread's queue that drops messages into it. <i>Predict: when will it run?</i></p></li>
-<li><p>When its turn comes. The main thread takes the first message, runs it to the end, and the line moves up: one at a time, in order.</p></li>
+<li><p>When its turn comes. The main thread takes the first message, runs it to the end, and the line moves up: one at a time, in order. This endless take, run, repeat is the <b>Looper</b>.</p></li>
 </ol>

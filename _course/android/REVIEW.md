@@ -16,6 +16,7 @@ puzzle ≥ 8.
 | 2026-11-14 | v8 | clean | text: 9 · 9 · 9 · 8 · 8 · 8 · 8 · 8 · 8 · 8 · 8 · 9 · 7.5 · 6 · 8 · 8.5 — pictures: 8 · 7 · 7 · 7 · 8 · 8 · 6 · 6 · 7 · 6 · 7 · 6 · 7 · 5 · 8 · 6 | P13 taught 7 terms in 7 steps. → Split: P13 the call itself; new P16 "How big can a Binder call be?" (buffer, 1 MB, TransactionTooLargeException), placed at the end so no puzzle number changes. |
 | 2026-11-14 | v9 | clean | text: 9 · 9 · 9 · 8 · 9 · 8 · 9 · 8 · 8 · 9 · 8 · 9 · 8 · 7 · 8 · 9 · 6 — pictures: 9 · 8 · 6 · 7 · 8 · 8 · 7 · 7 · 7 · 6 · 8 · 6 · 7 · 6 · 8 · 7 · 6 | P16's units (MB, KB, ID) unexplained; P13 had two calls in one strip; P11's houses stacked. → Units defined where used; one call per strip; P11 on one street; moving things drawn moving. |
 | 2026-11-14 | v10 | clean | text: 9 · 9 · 9 · 9 · 9 · 8 · 9 · 7 · 8 · 9 · 8 · 9 · 9 · 8 · 8 · 7 · 7 — pictures: 8 · 7.5 · 6.5 · 7 · 7 · 8 · 7 · 7 · 7 · 7 · 7 · 6 · 7 · 7 · 8 · 7 · 7 | Real logic bugs: P7 checked the camera permission on the app that only opened the camera's screen; P15 tapped a screen still in onCreate(); P16's "save a file" seemed to break the sandbox. → P7 rebuilt on ACTION_CALL / CALL_PHONE (checked in the docs); P15 sleeps in a click handler; P16 says it's within your own app; "Binder" label inside the post office. |
+| 2026-11-14 | v11 (published) | clean | text: 9 · 8 · 9 · 8 · 9 · 9 · 9 · 7 · 8 · 8 · 9 · 9 · 8 · 7 · 7 · 8 · 8 — pictures: 8.5 · 8 · 7.5 · 7.5 · 8 · 8.5 · 7 · 6.5 · 7 · 7 · 7.5 · 7 · 7 · 7.5 · 8 · 7.5 · 7 | P7, P13, P14 at 7: permission defined two ways, Looper only in the text, code vs objects mixed. → One permission definition (granted at install, or by tapping Allow); Looper named in the diagram's step 3; P13's extra code names moved to a "for the curious" line; "Binder" moved onto the post office's sign so letters never cover it. Not re-scored after these fixes. |
 
 ## Known limits
 
@@ -23,3 +24,5 @@ puzzle ≥ 8.
   motion itself, and each round is a fresh reviewer who finds new nits, so picture scores move slowly.
   Real learners are the real check: GoatCounter counts puzzles mastered, skips ahead, and every wrong answer
   (puzzle, question, option), so the misconceptions people actually hold show up in the dashboard.
+- Not yet at the bar: pictures are mostly 7–8 (07 is 6.5), text has three puzzles at 7. Next round: redraw 07 with
+  three equal houses and the refusal travelling back to Game; frames on a timeline in 15; Zygote's fork in 12's cold start.

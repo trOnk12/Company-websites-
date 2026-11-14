@@ -18,7 +18,7 @@ In puzzle 6, the sandbox kept every app inside its walls. But a link in a chat o
 
 An app sends an **Intent**: a message to system_server asking it to open a screen, in another app or in your own. It travels by Binder, like every message to the town hall.
 
-Opening another app's screen often needs nothing special: a link in a chat opens the browser for anyone. But some actions need a **permission**: a right the app has to be granted. Starting a phone call without the user confirming it in the phone app needs the phone-call permission, because calls can cost money. Some permissions are granted at install; risky ones, like this one, the user grants while the app runs. system_server checks them before it acts. It knows which app sent the Intent from the app's UID, which Binder tells it (puzzle 13 shows how).
+Opening another app's screen often needs nothing special: a link in a chat opens the browser for anyone. But some actions need a **permission**: a right the app has to be granted. Placing a call straight away needs the phone-call permission, because calls can cost money. Some permissions are granted at install; risky ones, like this one, the user grants by tapping Allow in a prompt. system_server checks them before it acts. It knows which app sent the Intent from the app's UID, which Binder tells it (puzzle 13 shows how).
 
 ## The analogy
 

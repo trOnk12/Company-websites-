@@ -1,13 +1,13 @@
 ---
 title: Inside a Binder call
 short: Inside Binder
-summary: In puzzle 4, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes (raw data), stamped, and picked up by a waiting thread.
+summary: In puzzle 4, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes, marked with the sender's identity, and picked up by a waiting thread.
 takeaway: proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.
 ---
 
 ## The problem
 
-When your app calls `startActivity()`, the method that sends an Intent, it looks like an ordinary method call. But the method that does the work lives in system_server, another process. And objects, like all of a process's data, live in its memory (puzzle 0), so they can't leave it. So how does a call cross from your app to the town hall and back? The answer: each "message" from puzzle 4 is really a method call on an object in another process.
+When your app calls `startActivity()`, the method that sends an Intent, it looks like an ordinary method call. But the object that does the work lives in system_server's memory, another process. And an object is data in a process's memory (puzzle 0), so it can't leave that process. So how does a call cross from your app to the town hall and back? The answer: each "message" from puzzle 4 is really a method call on an object in another process.
 
 ## See it
 
@@ -22,7 +22,7 @@ Binder itself lives in the kernel. A **Binder thread** is different: an ordinary
 
 It works both ways: system_server holds proxies for your app's objects too, and its calls arrive on your app's own Binder threads.
 
-The stamp is how permission checks from puzzle 7 work: the receiver reads it with `Binder.getCallingUid()`, and your app can't change it. Binder's code is public too, in the Linux kernel's code under `drivers/android/binder`.
+The stamp is how permission checks from puzzle 7 work, and your app can't change it. (For the curious: the receiver reads it with `Binder.getCallingUid()`; Binder's own code is in the Linux kernel, under `drivers/android/binder`.)
 
 ## The analogy
 

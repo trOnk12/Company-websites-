@@ -51,7 +51,7 @@ const SHAPES = {
     return flag +
       `<rect class="d-paper" x="${x}" y="${y}" width="${w}" height="${h}"/><rect class="d-po" x="${x - 8}" y="${y - 14}" width="${w + 16}" height="16" rx="3"/>` +
       `<rect class="d-ink" x="${x + w / 2 - 26}" y="${y + 14}" width="52" height="8" rx="3"/>` +
-      txt('d-b', x + w / 2, y + h - 16, a.label === undefined ? 'Binder' : a.label, 'middle');
+      txt('d-sign', x + w / 2, y - 1, a.label === undefined ? 'Binder' : a.label, 'middle');
   },
   person(a) {
     const x = n(a, 'x', 0), y = n(a, 'y', 0);

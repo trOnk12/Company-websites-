@@ -15,13 +15,12 @@
 <x-letter class="step s1 hide-5" data-move="1:80,236 2:358,322 3:350,116 4:496,240" x="0" y="0" w="62" label="Intent"/>
 <x-arrow class="step only-5" tone="red" d="M250,296 C270,350 300,350 322,346"/>
 <x-arrow class="step only-5" tone="red" d="M396,312 C400,280 392,230 384,176"/>
-<x-letter class="step s1 hide-5" x="240" y="268" w="62" h="30" label=""/>
 <x-letter class="step s5" data-move="4:240,268 5:350,116" x="0" y="0" w="62" tone="bad" label="✗ no"/>
 </svg>
 <ol class="caps">
-<li><p>The chat app wants to call a friend. It can't reach into the phone app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to the town hall: "start this call".</p></li>
+<li><p>The chat app wants to call a friend. It can't reach into the phone app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to the town hall: "open the Phone app's call screen and call this number".</p></li>
 <li><p>The Intent goes to the town hall, system_server, by Binder, like every message to it.</p></li>
-<li><p>A call can cost money, so it needs a <b>permission</b>, a right the user grants. The town hall checks its list: has Chat been granted the phone-call permission? <i>Predict: what if it hadn't?</i></p></li>
+<li><p>A call can cost money, so it needs a <b>permission</b>: a right an app must be granted, here by the user tapping Allow. The town hall checks its list: has Chat been granted the phone-call permission? <i>Predict: what if it hadn't?</i></p></li>
 <li><p>Chat is allowed, so the town hall delivers the request, again by Binder, and the call starts in the phone app.</p></li>
 <li><p>A game without the permission asks the same: the town hall refuses.</p></li>
 </ol>

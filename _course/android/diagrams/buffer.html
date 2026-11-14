@@ -20,5 +20,5 @@
 <li><p>Calls into system_server wait in its <b>Binder buffer</b>, an area of its memory set up by the kernel, until a Binder thread is free.</p></li>
 <li><p>Its size is fixed: about 1 MB (a megabyte, about a million bytes), shared by every call in progress, from every app. <i>Predict: your app sends an Intent carrying a 3 MB photo. What happens?</i></p></li>
 <li><p>It doesn't fit, so the call fails with <code>TransactionTooLargeException</code>. A <b>transaction</b> is one Binder call.</p></li>
-<li><p>The fix: save the photo to a file and send only its name, a few bytes. The other side reads the file itself.</p></li>
+<li><p>The fix: save the photo to a file and send only its name, a few bytes. Your other screen reads the file itself: same app, same UID, so the sandbox allows it.</p></li>
 </ol>

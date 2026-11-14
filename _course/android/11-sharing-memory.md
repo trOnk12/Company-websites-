@@ -20,7 +20,7 @@ The kernel hands out memory in small fixed-size blocks called **pages**.
 
 When a process forks, the kernel doesn't copy the pages. The original (Zygote) and the new process share them. Only when one of them writes to a page, that is, changes it, does the kernel make a private copy of that one page for the writer: that's **copy-on-write**. Everything nobody changes stays shared, so twenty apps cost little more than one framework.
 
-That doesn't break puzzle 0's rule. The shared pages hold only what came from Zygote, the same ART and framework every app has: never one app's own data. They're only ever read; the moment a process writes, it writes into its own copy. So no process can see or change another's own data.
+That doesn't break puzzle 0's rule. The shared pages hold only what came from Zygote, the same ART and framework every app has: never one app's own data. Nobody writes to a shared page itself: a write goes to a private copy. So no process can see or change another's own data.
 
 ## The analogy
 
