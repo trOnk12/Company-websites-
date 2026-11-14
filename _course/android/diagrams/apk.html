@@ -1,0 +1,17 @@
+<!-- label: One APK, many CPUs: ART makes DEX run -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="apk-t"><title id="apk-t">The APK holds DEX; it travels into two phones with different CPUs; ART inside each app's process reads it one instruction at a time</title>
+<g class="step s1"><rect class="d-roof" x="250" y="16" width="140" height="96" rx="8"/><text class="d-b" x="296" y="48">APK</text></g>
+<g class="step s1" data-move="1:282,58 2:120,186 3:120,186"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="6"/><text class="d-tiny" x="16" y="28">DEX</text></g>
+<g class="step s2"><rect class="d-paper" x="16" y="150" width="280" height="210" rx="16"/><text class="d-tiny" x="30" y="350">phone with CPU type A</text>
+<rect class="d-paper" x="344" y="150" width="280" height="210" rx="16"/><text class="d-tiny" x="358" y="350">phone with CPU type B</text></g>
+<g class="step s2" data-move="1:282,58 2:450,186"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="6"/><text class="d-tiny" x="16" y="28">DEX</text></g>
+<g class="step s3" data-pulse="3"><circle class="d-skin" cx="60" cy="214" r="16"/><rect class="d-roof" x="38" y="232" width="44" height="30" rx="12"/><text class="d-tiny" x="44" y="286">ART</text>
+<circle class="d-skin" cx="390" cy="214" r="16"/><rect class="d-roof" x="368" y="232" width="44" height="30" rx="12"/><text class="d-tiny" x="374" y="286">ART</text></g>
+<g class="step s4"><rect class="d-hl" x="130" y="250" width="150" height="40" rx="14"/><text class="d-a" x="140" y="276">one by one…</text></g>
+</svg>
+<ol class="caps">
+<li><p>Your Kotlin compiles to <b>DEX</b>: instructions written for Android, not for any one CPU. That's what's inside your APK.</p></li>
+<li><p>The same APK goes to phones with different CPUs. Each CPU only runs its own <b>machine code</b>. <i>Predict: so who runs the DEX?</i></p></li>
+<li><p><b>ART</b>, the Android Runtime. It lives inside each app's process, on every phone.</p></li>
+<li><p>The simplest thing ART can do is <b>interpreting</b>: reading the DEX one instruction at a time. It always works, but it's slow.</p></li>
+</ol>

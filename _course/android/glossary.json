@@ -1,63 +1,341 @@
 {
-  "_about": "Every technical term in the course: where it is taught and its one-line meaning. scripts/lint-course.js fails if a term is used before its puzzle, if a puzzle teaches more than 6 new concepts, or if a code name, acronym or CamelCase word appears that is neither here nor in baseline. Add a term here BEFORE writing a puzzle that needs it.",
-  "baseline": {
-    "_about": "What the learner already knows: a Kotlin developer who has built a simple Android app.",
-    "words": ["app", "screen", "button", "Kotlin", "Java", "Android", "Linux", "phone", "code", "class", "object", "method", "function", "APK", "compile", "install", "UI", "ID", "MB", "CPU", "file", "bitmap", "val", "Thread.sleep()", "textView.text"]
+ "_about": "Every technical term in the course: where it is taught and its one-line meaning. scripts/lint-course.js fails if a term is used before its puzzle, if a puzzle teaches more than 6 new concepts, or if a code name, acronym or CamelCase word appears that is neither here nor in baseline. Add a term here BEFORE writing a puzzle that needs it.",
+ "baseline": {
+  "_about": "What the learner already knows: a Kotlin developer who has built a simple Android app.",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Java",
+   "Android",
+   "phone",
+   "code",
+   "program",
+   "data",
+   "class",
+   "object",
+   "method",
+   "function",
+   "APK",
+   "compile",
+   "install",
+   "UI",
+   "ID",
+   "MB",
+   "KB",
+   "ms",
+   "CPU",
+   "file",
+   "bitmap",
+   "val",
+   "Thread.sleep()",
+   "textView.text",
+   "hideHint()",
+   "bytes",
+   "byte"
+  ]
+ },
+ "terms": {
+  "process": {
+   "in": "00",
+   "def": "A running program, with its own private memory.",
+   "aliases": [
+    "processes"
+   ]
   },
-  "terms": {
-    "process":            { "in": "00", "def": "A running program with its own private memory." },
-    "memory":             { "in": "00", "def": "A program's data while it runs. A process can only touch its own." },
-    "kernel":             { "in": "00", "def": "The core of the operating system; the only code that can reach into every process." },
-    "thread":             { "in": "00", "def": "One worker inside a process that runs code, one instruction after another." },
-    "Activity":           { "in": "00", "aliases": ["Activities"], "def": "One screen of an Android app." },
-    "onCreate()":         { "in": "00", "kind": "code", "aliases": ["onCreate"], "def": "The method that sets up an Activity. You write it; the system calls it." },
-    "system_server":      { "in": "00", "def": "The long-running Android process that keeps the register of every app and screen: the town hall." },
-    "Binder":             { "in": "00", "def": "The kernel's messenger between processes: the post office." },
-    "main thread":        { "in": "00", "def": "The one thread in your app that runs all screen code, one message at a time: the clerk." },
-
-    "UID":                { "in": "01", "aliases": ["user ID"], "def": "The Linux user ID Android gives each app at install: its key." },
-    "Intent":             { "in": "01", "def": "A letter one app sends through the system to start a screen in another (or its own) app." },
-    "permission":         { "in": "01", "def": "A right the system grants an app, such as using the camera." },
-
-    "DEX":                { "in": "02", "aliases": ["DEX bytecode", "bytecode"], "def": "The CPU-independent instructions your Kotlin compiles to, shipped in the APK." },
-    "ART":                { "in": "02", "aliases": ["Android Runtime"], "def": "The Android Runtime: the translator inside each app's process that runs DEX." },
-    "machine code":       { "in": "02", "def": "Instructions one specific CPU can run directly." },
-    "JIT":                { "in": "02", "def": "Just-in-time: ART compiles hot code to machine code while the app runs." },
-    "AOT":                { "in": "02", "def": "Ahead-of-time: the system compiles code to machine code before it's needed, later." },
-    "profile":            { "in": "02", "def": "ART's notebook of which code was hot." },
-    "dex2oat":            { "in": "02", "kind": "code", "def": "The system tool that compiles DEX ahead of time." },
-    "Baseline Profile":   { "in": "02", "def": "A profile written in advance and shipped in the APK." },
-
-    "page":               { "in": "03", "aliases": ["pages"], "def": "A small fixed-size block of memory, the unit the kernel hands out." },
-    "fork":               { "in": "03", "aliases": ["forks", "forked", "forking"], "def": "Asking the kernel for a new process that starts as a copy of an existing one." },
-    "copy-on-write":      { "in": "03", "def": "Shared pages are copied only when someone writes to them." },
-    "Zygote":             { "in": "03", "def": "The process started at boot with ART and the framework loaded; every app is forked from it." },
-    "framework":          { "in": "03", "def": "Android's own code that every app uses, such as the Activity class." },
-    "Application":        { "in": "03", "kind": "code", "def": "Your app's one object per process, created before any screen." },
-    "Application.onCreate()": { "in": "03", "kind": "code", "def": "Runs once per process, before the first screen." },
-    "ZygoteInit.main()":  { "in": "03", "kind": "code", "def": "Zygote's starting point in the Android source." },
-    "cold start":         { "in": "03", "aliases": ["warm start", "hot start"], "def": "Starting an app with no process yet (warm: process alive; hot: screen alive too)." },
-
-    "system service":     { "in": "04", "aliases": ["system services"], "def": "A manager inside system_server, such as the one for screens." },
-    "ActivityTaskManagerService": { "in": "04", "kind": "code", "aliases": ["ActivityTaskManagerService.startActivity()"], "def": "The system service that keeps the register of screens." },
-    "startActivity()":    { "in": "04", "kind": "code", "def": "How your app asks the town hall to open a screen." },
-    "SystemServer.main()": { "in": "04", "kind": "code", "def": "system_server's starting point in the Android source." },
-
-    "proxy":              { "in": "05", "def": "A local stand-in that looks like a service in another process." },
-    "Parcel":             { "in": "05", "def": "The flat envelope of bytes that carries a call's arguments between processes." },
-    "Binder thread":      { "in": "05", "aliases": ["Binder threads"], "def": "A thread each process keeps waiting for incoming Binder calls: a courier." },
-    "PID":                { "in": "05", "def": "A process's number." },
-    "Binder.getCallingUid()": { "in": "05", "kind": "code", "def": "Reads the UID the kernel stamped on the current call." },
-    "TransactionTooLargeException": { "in": "05", "kind": "code", "def": "Thrown when a call's data doesn't fit the ~1 MB Binder buffer." },
-    "drivers/android/binder": { "in": "05", "kind": "code", "def": "Where the Binder driver lives in the Linux source." },
-
-    "thread-safe":        { "in": "06", "def": "Safe to use from several threads at once." },
-    "MessageQueue":       { "in": "06", "kind": "code", "def": "The main thread's in-tray of messages." },
-    "Looper":             { "in": "06", "kind": "code", "aliases": ["Looper.loop()", "Looper.getMainLooper()"], "def": "The endless loop that takes the next message and runs it." },
-    "Handler":            { "in": "06", "kind": "code", "aliases": ["handler.post { … }", "handler.post", "main.post", "main.postDelayed"], "def": "The slot that drops a message into one Looper's queue." },
-    "ActivityThread.main()": { "in": "06", "kind": "code", "def": "Where every app process starts; it runs the main thread's loop." },
-    "frame":              { "in": "06", "aliases": ["frames"], "def": "One redraw of the screen, about every 16 ms." },
-    "jank":               { "in": "06", "def": "Visible stutter when frames are skipped." },
-    "ANR":                { "in": "06", "aliases": ["ANRs", "Application Not Responding"], "def": "Application Not Responding: the dialog shown when the main thread is stuck too long." }
+  "memory": {
+   "in": "00",
+   "def": "The data a program keeps while it runs; each process has its own."
+  },
+  "kernel": {
+   "in": "01",
+   "def": "The core of the operating system: it shares the CPU, memory and files among processes, and is the only code that can reach into any process."
+  },
+  "operating system": {
+   "in": "01",
+   "def": "The software that runs the phone itself and lets apps run on it; Android is one, built on Linux."
+  },
+  "thread": {
+   "in": "02",
+   "def": "One worker inside a process that runs code, one step after another.",
+   "aliases": [
+    "threads"
+   ]
+  },
+  "main thread": {
+   "in": "02",
+   "def": "The one thread in your app that runs all screen code: the clerk."
+  },
+  "system_server": {
+   "in": "03",
+   "def": "The Android process that keeps the register of every app and screen and decides what happens to them: the town hall."
+  },
+  "Activity": {
+   "in": "03",
+   "def": "One screen of an Android app.",
+   "aliases": [
+    "Activities"
+   ]
+  },
+  "lifecycle": {
+   "in": "03",
+   "def": "The stages a screen goes through (created, started, resumed, paused, stopped, destroyed), each decided by system_server."
+  },
+  "Binder": {
+   "in": "04",
+   "def": "The kernel's way of carrying messages between processes: the post office."
+  },
+  "driver": {
+   "in": "04",
+   "def": "A part of the kernel that does one job, like carrying Binder messages."
+  },
+  "callback": {
+   "in": "05",
+   "def": "A method you write that someone else calls when it's time.",
+   "aliases": [
+    "callbacks"
+   ]
+  },
+  "onCreate()": {
+   "in": "05",
+   "def": "The callback that sets up an Activity. You write it; the system calls it.",
+   "aliases": [
+    "onCreate"
+   ],
+   "kind": "code"
+  },
+  "UID": {
+   "in": "06",
+   "def": "The Linux user ID Android gives each app at install: its key.",
+   "aliases": [
+    "user ID"
+   ]
+  },
+  "sandbox": {
+   "in": "06",
+   "def": "The walls the kernel keeps around each app's files and memory."
+  },
+  "Intent": {
+   "in": "07",
+   "def": "A letter asking system_server to open a screen, in another app or your own.",
+   "aliases": [
+    "Intents"
+   ]
+  },
+  "permission": {
+   "in": "07",
+   "def": "A right an app must be granted, such as using the camera; system_server checks it.",
+   "aliases": [
+    "permissions"
+   ]
+  },
+  "DEX": {
+   "in": "08",
+   "def": "The instructions your Kotlin compiles to: not tied to any CPU, shipped in the APK.",
+   "aliases": [
+    "bytecode"
+   ]
+  },
+  "ART": {
+   "in": "08",
+   "def": "The Android Runtime: the translator inside each app's process that runs DEX.",
+   "aliases": [
+    "Android Runtime"
+   ]
+  },
+  "machine code": {
+   "in": "08",
+   "def": "Instructions one particular CPU runs directly."
+  },
+  "interpreting": {
+   "in": "08",
+   "def": "Running DEX one instruction at a time, without translating it first.",
+   "aliases": [
+    "interpreter",
+    "interprets",
+    "interpreted"
+   ]
+  },
+  "JIT": {
+   "in": "09",
+   "def": "Just-in-time: ART translates busy (hot) code to machine code while the app runs."
+  },
+  "AOT": {
+   "in": "09",
+   "def": "Ahead-of-time: code is translated to machine code before it's needed, by a system tool."
+  },
+  "profile": {
+   "in": "09",
+   "def": "ART's notebook of which code was hot."
+  },
+  "Baseline Profile": {
+   "in": "09",
+   "def": "A profile written by the app's developers and shipped inside the APK."
+  },
+  "dex2oat": {
+   "in": "09",
+   "def": "The system tool that translates DEX ahead of time.",
+   "kind": "code"
+  },
+  "boot": {
+   "in": "10",
+   "def": "The phone starting up.",
+   "aliases": [
+    "boots"
+   ]
+  },
+  "framework": {
+   "in": "10",
+   "def": "Android's own code that every app uses, such as the Activity class."
+  },
+  "Zygote": {
+   "in": "10",
+   "def": "The process Android starts at boot with ART and the framework loaded; every app starts as a copy of it."
+  },
+  "fork": {
+   "in": "10",
+   "def": "Asking the kernel for a new process that starts as a copy of an existing one.",
+   "aliases": [
+    "forks",
+    "forked",
+    "forking"
+   ]
+  },
+  "ZygoteInit.main()": {
+   "in": "10",
+   "def": "Zygote's starting point in the Android source.",
+   "kind": "code"
+  },
+  "page": {
+   "in": "11",
+   "def": "A small fixed-size block of memory: the unit the kernel hands out.",
+   "aliases": [
+    "pages"
+   ]
+  },
+  "copy-on-write": {
+   "in": "11",
+   "def": "Shared pages are copied only when one process writes to them."
+  },
+  "Application": {
+   "in": "12",
+   "def": "Your app's one object per process, created before any screen.",
+   "kind": "code"
+  },
+  "Application.onCreate()": {
+   "in": "12",
+   "def": "The callback that runs once per process, before the first screen.",
+   "kind": "code"
+  },
+  "cold start": {
+   "in": "12",
+   "def": "Starting an app that has no process yet.",
+   "aliases": [
+    "warm start",
+    "hot start"
+   ]
+  },
+  "proxy": {
+   "in": "13",
+   "def": "A stand-in in your process that looks like a service in another process."
+  },
+  "Parcel": {
+   "in": "13",
+   "def": "The flat envelope of bytes that carries a call's arguments between processes."
+  },
+  "Binder thread": {
+   "in": "13",
+   "def": "A thread each process keeps waiting for incoming Binder calls: a courier.",
+   "aliases": [
+    "Binder threads"
+   ]
+  },
+  "Binder buffer": {
+   "in": "13",
+   "def": "The mailbox each process has for incoming Binder calls: about 1 MB, shared by all calls in progress.",
+   "aliases": [
+    "mailbox"
+   ]
+  },
+  "TransactionTooLargeException": {
+   "in": "13",
+   "def": "Thrown when a call doesn't fit the Binder buffer.",
+   "kind": "code"
+  },
+  "Binder.getCallingUid()": {
+   "in": "13",
+   "def": "Reads the UID the kernel stamped on the current call.",
+   "kind": "code"
+  },
+  "drivers/android/binder": {
+   "in": "13",
+   "def": "Where the Binder driver lives in the Linux source.",
+   "kind": "code"
+  },
+  "startActivity()": {
+   "in": "13",
+   "def": "How your app asks system_server to open a screen.",
+   "kind": "code"
+  },
+  "thread-safe": {
+   "in": "14",
+   "def": "Safe to use from several threads at the same moment."
+  },
+  "message queue": {
+   "in": "14",
+   "def": "The main thread's in-tray: the list of messages waiting to run.",
+   "aliases": [
+    "MessageQueue"
+   ]
+  },
+  "Looper": {
+   "in": "14",
+   "def": "The endless loop that takes the next message and runs it.",
+   "aliases": [
+    "Looper.loop()",
+    "Looper.getMainLooper()"
+   ],
+   "kind": "code"
+  },
+  "Handler": {
+   "in": "14",
+   "def": "The slot that drops a message into one thread's queue.",
+   "aliases": [
+    "handler.post { … }",
+    "handler.post",
+    "main.post",
+    "main.postDelayed"
+   ],
+   "kind": "code"
+  },
+  "ActivityThread.main()": {
+   "in": "14",
+   "def": "Where every app process starts; it runs the main thread's loop.",
+   "kind": "code"
+  },
+  "frame": {
+   "in": "15",
+   "def": "One redraw of the screen, about every 16 ms.",
+   "aliases": [
+    "frames"
+   ]
+  },
+  "jank": {
+   "in": "15",
+   "def": "Visible stutter when frames are skipped."
+  },
+  "ANR": {
+   "in": "15",
+   "def": "Application Not Responding: the dialog shown when a touch waits too long.",
+   "aliases": [
+    "ANRs",
+    "Application Not Responding"
+   ]
+  },
+  "Linux": {
+   "in": "01",
+   "def": "A free operating system, first made for computers shared by many people; Android is built on it."
   }
+ }
 }

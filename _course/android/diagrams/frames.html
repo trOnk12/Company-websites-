@@ -1,0 +1,15 @@
+<!-- label: Frames every 16 ms, and what a slow message does -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="fr-t"><title id="fr-t">A timeline of frames every 16 ms; a slow message blocks the main thread, frames are missed, a touch waits, and after 5 seconds an ANR dialog appears</title>
+<g class="step s1"><text class="d-b" x="20" y="40">main thread, over time →</text><line class="d-line" x1="20" y1="120" x2="620" y2="120"/>
+<rect class="d-hl" x="30" y="96" width="30" height="48" rx="3"/><rect class="d-hl" x="80" y="96" width="30" height="48" rx="3"/><rect class="d-hl" x="130" y="96" width="30" height="48" rx="3"/><text class="d-tiny" x="30" y="170">frame · 16 ms</text></g>
+<g class="step s2"><rect class="d-bad" x="180" y="96" width="300" height="48" rx="3"/><text class="d-r" x="196" y="126">slow message</text>
+<rect class="d-paper" x="230" y="190" width="30" height="48" rx="3" opacity="0.6"/><rect class="d-paper" x="280" y="190" width="30" height="48" rx="3" opacity="0.6"/><rect class="d-paper" x="330" y="190" width="30" height="48" rx="3" opacity="0.6"/><text class="d-r" x="230" y="264">late: jank</text></g>
+<g class="step s3" data-move="2:520,330 3:490,196"><circle class="d-hl" cx="16" cy="16" r="16"/><text class="d-tiny" x="36" y="22">touch waits</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="180" y="290" width="280" height="76" rx="8"/><text class="d-r" x="196" y="322">App isn't responding</text><text class="d-mi" x="196" y="350">after 5 s: ANR</text></g>
+</svg>
+<ol class="caps">
+<li><p>The screen is redrawn 60 times a second; each redraw is a <b>frame</b>, due about every 16 ms. Each frame is a message in the main thread's queue.</p></li>
+<li><p>One message takes too long. The frames behind it can't be drawn in time, and the app stutters: <b>jank</b>.</p></li>
+<li><p>The user taps. The touch waits in the queue too. <i>Predict: what if it waits much longer?</i></p></li>
+<li><p>After 5 seconds system_server shows "App isn't responding": an <b>ANR</b>.</p></li>
+</ol>

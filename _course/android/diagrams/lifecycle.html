@@ -1,0 +1,16 @@
+<!-- label: system_server moves each screen through its lifecycle -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="lc-t"><title id="lc-t">The town hall (system_server) keeps a register and moves your app's screen along the lifecycle: created, started, resumed, paused, stopped, destroyed</title>
+<g class="step s1"><polygon class="d-roof" points="10,96 150,40 290,96"/><rect class="d-paper" x="20" y="96" width="260" height="150"/><text class="d-b" x="40" y="132">your app</text><rect class="d-hl" x="40" y="150" width="110" height="74" rx="6"/><text class="d-a" x="54" y="194">screen</text></g>
+<g class="step s2" data-pulse="2"><polygon class="d-roof" points="350,96 490,40 630,96"/><rect class="d-paper" x="360" y="96" width="260" height="150"/><rect class="d-wood" x="374" y="106" width="12" height="60"/><rect class="d-wood" x="594" y="106" width="12" height="60"/><text class="d-b" x="400" y="136">system_server</text><rect class="d-paper" x="400" y="156" width="180" height="70" rx="4"/><text class="d-tiny" x="414" y="182">register</text></g>
+<g class="step s3"><line class="d-line" x1="40" y1="310" x2="600" y2="310"/>
+<circle class="d-paper" cx="60" cy="310" r="8"/><circle class="d-paper" cx="164" cy="310" r="8"/><circle class="d-paper" cx="268" cy="310" r="8"/><circle class="d-paper" cx="372" cy="310" r="8"/><circle class="d-paper" cx="476" cy="310" r="8"/><circle class="d-paper" cx="580" cy="310" r="8"/>
+<text class="d-tiny" x="32" y="346">created</text><text class="d-tiny" x="138" y="346">started</text><text class="d-tiny" x="238" y="346">resumed</text><text class="d-tiny" x="344" y="346">paused</text><text class="d-tiny" x="446" y="346">stopped</text><text class="d-tiny" x="540" y="346">destroyed</text></g>
+<g class="step s3" data-move="2:60,262 3:268,270 4:476,270 5:580,270"><circle class="d-hl" cx="0" cy="0" r="16"/><polygon class="d-aha" points="-8,14 8,14 0,30"/></g>
+</svg>
+<ol class="caps">
+<li><p>Each screen of your app is an <b>Activity</b>. Your app shows one now.</p></li>
+<li><p>Android runs a process of its own, <b>system_server</b>: the town hall. It keeps the register of every Activity of every app.</p></li>
+<li><p>It moves each Activity along a path of stages, the <b>lifecycle</b>: created, started, resumed. Resumed means on screen and ready for taps. <i>Predict: what happens when the user switches to another app?</i></p></li>
+<li><p>system_server moves your Activity to paused, then stopped. Your app doesn't choose this; it's told.</p></li>
+<li><p>When the screen is closed for good, system_server moves it to destroyed.</p></li>
+</ol>

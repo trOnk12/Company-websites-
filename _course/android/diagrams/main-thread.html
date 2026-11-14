@@ -1,24 +1,18 @@
 <!-- label: The main thread works through its queue, one letter at a time -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="mt-t"><title id="mt-t">Letters wait in the main thread's queue; a Binder thread drops a new one in with a Handler; the main thread takes one at a time; a slow one blocks the touch behind it until the system shows an ANR</title>
-<g class="step s1"><rect class="d-paper" x="10" y="20" width="620" height="350" rx="8"/><text class="d-m" x="24" y="44">your app's process</text>
+<g class="step s1"><rect class="d-paper" x="10" y="20" width="620" height="350" rx="8"/><text class="d-m" x="24" y="44">your app</text>
 <circle class="d-skin" cx="70" cy="160" r="16"/><rect class="d-roof" x="48" y="178" width="44" height="34" rx="12"/><rect class="d-wood" x="30" y="214" width="200" height="12" rx="3"/><text class="d-tiny" x="40" y="250">main thread</text>
 <rect class="d-wood" x="236" y="150" width="390" height="10" rx="3"/><text class="d-m" x="250" y="84">queue →</text></g>
 <!-- letters in the queue -->
-<g class="step s1 actor-letter" data-move="1:250,100 3:120,166 4:20,300"><rect class="d-paper" x="0" y="0" width="80" height="44" rx="3"/><text class="d-tiny" x="12" y="28">frame</text></g>
+<g class="step s1 actor-letter" data-move="1:250,100 3:120,166 4:20,300"><rect class="d-paper" x="0" y="0" width="80" height="44" rx="3"/><text class="d-tiny" x="16" y="28">draw</text></g>
 <g class="step s1 actor-letter" data-move="1:350,100 3:250,100 4:120,166"><rect class="d-paper" x="0" y="0" width="90" height="44" rx="3"/><text class="d-tiny" x="8" y="28">onCreate</text></g>
 <g class="step s1 actor-letter" data-move="1:460,100 3:360,100"><rect class="d-paper" x="0" y="0" width="80" height="44" rx="3"/><text class="d-tiny" x="14" y="28">touch</text></g>
 <!-- a courier drops a new letter -->
 <g class="step s2"><circle class="d-skin" cx="572" cy="268" r="14"/><rect class="d-roof" x="554" y="284" width="36" height="28" rx="10"/><text class="d-tiny" x="488" y="336">Binder thread</text></g>
 <g class="step s2 actor-letter" data-move="1:540,252 2:550,100 3:460,100"><rect class="d-hl" x="0" y="0" width="80" height="44" rx="3"/><text class="d-a" x="8" y="28">resume</text></g>
-<!-- slow: everything waits -->
-<g class="step s4" data-pulse="4"><path class="d-red" d="M150,120 L176,120 L150,150 L176,150 Z"/><text class="d-r" x="186" y="140">6 s…</text></g>
-<rect class="step s4 d-red" x="356" y="96" width="88" height="52" rx="5"/>
-<g class="step s5" data-pulse="5"><rect class="d-bad" x="200" y="200" width="270" height="92" rx="8"/><text class="d-r" x="216" y="236">App isn't responding</text><text class="d-mi" x="216" y="270">touch waited 5 s</text></g>
 </svg>
 <ol class="caps">
-<li><p>Inside your app, the main thread works through a <b>queue</b> of letters: draw a frame, run your <code>onCreate</code>, handle a touch. One at a time, in order.</p></li>
-<li><p>Remember the couriers from puzzle 5? When the town hall says "resume", a <b>Binder thread</b> receives it and drops it at the end of the queue with a <b>Handler</b>, the slot into this queue.</p></li>
-<li><p>The clerk takes the first letter, finishes it, and the queue moves up. <i>Predict: what if the next letter takes a long time?</i></p></li>
-<li><p>Your <code>onCreate</code> calls <code>Thread.sleep(6000)</code>: it blocks for 6 seconds. Everything behind it waits, including the user's <b>touch</b>: the clerk only does one thing at a time.</p></li>
-<li><p>If a touch isn't handled within 5 seconds, the system shows <b>App isn't responding</b> (an ANR). Long before that, the screen stops being redrawn: the UI freezes.</p></li>
+<li><p>The main thread works from an in-tray: its <b>message queue</b>. Draw the screen, run <code>onCreate</code>, handle a touch: each is a message, waiting its turn.</p></li>
+<li><p>A Binder thread receives "resume" from the town hall. It doesn't touch the screen: it drops the message at the end of the queue with a <code>Handler</code>, the slot into the queue. <i>Predict: when will it run?</i></p></li>
+<li><p>When its turn comes. The main thread takes the first message, runs it to the end, and the line moves up: one at a time, in order.</p></li>
 </ol>

@@ -1,0 +1,19 @@
+<!-- label: Hot code is translated now (JIT) and later (AOT) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="jit-t"><title id="jit-t">ART translates hot code right away (JIT) and notes it in a profile; at night dex2oat translates the profiled code ahead of time (AOT); a Baseline Profile ships the notes in the APK</title>
+<g class="step s1"><rect class="d-roof" x="16" y="120" width="140" height="130" rx="8"/><text class="d-b" x="56" y="110">APK</text>
+<polygon class="d-roof" points="186,96 404,46 624,96"/><rect class="d-paper" x="196" y="96" width="418" height="226"/>
+<circle class="d-skin" cx="262" cy="150" r="16"/><rect class="d-roof" x="240" y="168" width="44" height="32" rx="12"/><rect class="d-wood" x="212" y="202" width="140" height="12" rx="3"/><text class="d-tiny" x="246" y="236">ART</text></g>
+<g class="step s1" data-pulse="1"><rect class="d-bad" x="300" y="146" width="74" height="38" rx="6"/><text class="d-r" x="312" y="172">hot!</text></g>
+<g class="step s2"><rect class="d-band" x="400" y="130" width="96" height="96" rx="6"/><text class="d-b" x="428" y="156">JIT</text><rect class="d-hl" x="510" y="150" width="86" height="58" rx="6"/><text class="d-a" x="522" y="186">fast</text></g>
+<g class="step s2" data-move="1:300,146 2:411,172"><rect class="d-hl" x="0" y="0" width="74" height="38" rx="6"/><text class="d-a" x="10" y="26">code</text></g>
+<g class="step s3" data-move="2:300,236 3:300,236 4:410,240 5:58,160"><rect class="d-paper" x="0" y="0" width="54" height="44" rx="3"/><line class="d-line" x1="8" y1="14" x2="46" y2="14"/><line class="d-line" x1="8" y1="26" x2="40" y2="26"/><text class="d-tiny" x="0" y="62">profile</text></g>
+<g class="step s4" data-pulse="4"><path class="d-hl" d="M600,16 a20,20 0 1,0 0,40 a15,15 0 1,1 0,-40 Z"/><rect class="d-band" x="486" y="236" width="112" height="56" rx="6"/><text class="d-mi" x="496" y="270">dex2oat</text></g>
+<text class="step s5 d-a" x="18" y="276">Baseline Profile</text>
+</svg>
+<ol class="caps">
+<li><p>Some of your code runs over and over: it's "hot". Interpreting it every time is wasteful.</p></li>
+<li><p>So ART translates hot code into machine code right away, while the app runs: <b>JIT</b>, just-in-time.</p></li>
+<li><p>ART also notes the hot code in a notebook: the <b>profile</b>. <i>Predict: what's the notebook for?</i></p></li>
+<li><p>About once a day, while the phone is idle and charging, <code>dex2oat</code>, a program that's part of Android, translates the profiled code and keeps it: <b>AOT</b>, ahead-of-time.</p></li>
+<li><p>A <b>Baseline Profile</b> is that notebook written by the app's developers and shipped in the APK, so it works from the first launch.</p></li>
+</ol>

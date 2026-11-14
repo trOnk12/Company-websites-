@@ -1,39 +1,60 @@
 {
   "title": "Android from the foundation",
-  "minutes": 45,
-  "intro": "Lifecycle, process death, ANRs, Context leaks: most of Android's hard parts come from one idea. This course builds that idea up one small puzzle at a time, with diagrams you click through, until the rest stops being a list of rules and starts making sense.",
+  "minutes": 90,
+  "intro": "Lifecycle, process death, ANRs, frozen screens: most of Android's hard parts come from a handful of ideas. This course builds them from the ground up, one small puzzle at a time, with pictures that move, until the rules stop being rules and start making sense.",
   "how": "Each puzzle starts with a problem Android had to solve, then gives you one building block, a picture to remember it by, and a diagram that plays itself (or step through it yourself). It ends with three questions: answer them all correctly to unlock the next puzzle, so no gap carries forward. Code names with a dotted underline open the real Android or Linux source: hover or tap them.",
   "modules": [
     {
-      "title": "Module 1: How your app really runs",
-      "blurb": "Processes, the runtime, Zygote, system_server, Binder and the main thread: the four characters every later puzzle uses.",
+      "title": "Module 1: The ground floor",
+      "blurb": "What a running app is, who's in charge of the phone, and the four characters every later puzzle uses: your app, the kernel, the town hall and the post office.",
       "puzzles": [
-        "00-the-core-idea.md",
-        "01-an-app-is-a-linux-process.md",
-        "02-art-runs-your-code.md",
-        "03-zygote-why-apps-start-fast.md",
-        "04-system-server-the-town-hall.md",
-        "05-binder-the-post-office.md",
-        "06-the-main-thread.md"
+        "00-a-running-app-is-a-process.md",
+        "01-the-kernel-is-in-charge.md",
+        "02-threads-are-the-workers.md",
+        "03-the-town-hall-decides.md",
+        "04-the-post-office-carries-letters.md",
+        "05-you-dont-call-youre-called.md"
+      ]
+    },
+    {
+      "title": "Module 2: Apps and their code",
+      "blurb": "Why apps can't touch each other, how they still talk, what's inside an APK, and how an app starts so fast.",
+      "puzzles": [
+        "06-each-app-is-its-own-user.md",
+        "07-letters-between-apps.md",
+        "08-whats-inside-the-apk.md",
+        "09-faster-code-now-and-later.md",
+        "10-zygote.md",
+        "11-sharing-memory.md",
+        "12-starting-an-app.md"
+      ]
+    },
+    {
+      "title": "Module 3: The machinery",
+      "blurb": "Inside a Binder call, the main thread's queue, and why one slow line freezes the screen.",
+      "puzzles": [
+        "13-inside-a-binder-call.md",
+        "14-the-main-threads-queue.md",
+        "15-frames-jank-and-anrs.md"
       ]
     }
   ],
   "upcoming": [
     {
-      "title": "Module 2: Screens and their lives",
-      "topics": "Context, Intents, PendingIntent, the Activity lifecycle, tasks and the back stack, process death and saved state."
+      "title": "Module 4: Screens and their lives",
+      "topics": "Context, rotation, saved state, process death, tasks and the back stack."
     },
     {
-      "title": "Module 3: Work without a screen",
-      "topics": "Services, broadcasts, ContentProviders and startup order, Doze and WorkManager, permissions."
+      "title": "Module 5: Work without a screen",
+      "topics": "Services, broadcasts, ContentProviders, Doze and WorkManager."
     },
     {
-      "title": "Module 4: Threads, coroutines and Flow",
-      "topics": "What really runs where, cancellation and errors, cold and hot streams."
+      "title": "Module 6: Threads, coroutines and Flow",
+      "topics": "What really runs where, cancellation, cold and hot streams."
     },
     {
-      "title": "Module 5: Pixels and performance",
-      "topics": "How a frame gets on screen, Compose internals, memory and leaks, startup and jank."
+      "title": "Module 7: Pixels and performance",
+      "topics": "How a frame is drawn, Compose internals, memory and leaks."
     }
   ],
   "support": {

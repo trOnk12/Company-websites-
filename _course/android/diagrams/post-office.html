@@ -1,0 +1,15 @@
+<!-- label: Binder carries system_server's message into your app -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="po-t"><title id="po-t">system_server writes a message; it can't reach into your app, so Binder in the kernel carries it there</title>
+<g class="step s1"><polygon class="d-roof" points="20,62 150,18 280,62"/><rect class="d-paper" x="30" y="62" width="240" height="110"/><rect class="d-wood" x="46" y="72" width="12" height="50"/><rect class="d-wood" x="242" y="72" width="12" height="50"/><text class="d-b" x="70" y="104">system_server</text>
+<polygon class="d-roof" points="360,62 490,18 620,62"/><rect class="d-paper" x="370" y="62" width="240" height="110"/><text class="d-b" x="390" y="104">your app</text></g>
+<g class="step s1"><rect class="d-band" x="10" y="270" width="620" height="100" rx="8"/><text class="d-b" x="26" y="304">kernel</text></g>
+<path class="step only-2 d-red" d="M274,110 L360,110"/><g class="step only-2" data-pulse="2"><circle class="d-bad" cx="316" cy="110" r="18"/><path class="d-red" d="M306,100 L326,120 M326,100 L306,120"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="260" y="286" width="150" height="68" rx="6"/><rect class="d-paper" x="300" y="296" width="44" height="30" rx="3"/><polyline class="d-line" points="300,296 322,312 344,296"/><text class="d-a" x="276" y="344">Binder</text></g>
+<g class="step s2" data-move="1:110,124 2:110,124 3:330,236 4:470,120"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="3"/><polyline class="d-line" points="0,0 37,22 74,0"/><text class="d-tiny" x="8" y="38">resume</text></g>
+</svg>
+<ol class="caps">
+<li><p>The town hall, system_server, and your app are two separate processes, both standing on the kernel.</p></li>
+<li><p>The town hall writes a message: "resume your screen". But it can't reach into your app's memory. <i>Predict: who can?</i></p></li>
+<li><p>Only the kernel reaches every process. It's built from parts that each do one job, called a <b>driver</b>; the one that carries messages is <b>Binder</b>: the post office. It carries them both ways.</p></li>
+<li><p>Binder delivers the message into your app. Every message between your app and the town hall travels this way.</p></li>
+</ol>

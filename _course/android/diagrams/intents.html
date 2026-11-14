@@ -1,0 +1,16 @@
+<!-- label: An Intent is a letter, checked by the town hall -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="in-t"><title id="in-t">A chat app sends an Intent to system_server, which checks the permission list and delivers it to the camera app; a request without permission comes back refused</title>
+<g class="step s1"><polygon class="d-roof" points="10,190 110,140 210,190"/><rect class="d-paper" x="20" y="190" width="180" height="120"/><text class="d-b" x="40" y="226">Chat</text>
+<polygon class="d-roof" points="430,190 530,140 630,190"/><rect class="d-paper" x="440" y="190" width="180" height="120"/><text class="d-b" x="460" y="226">Camera</text>
+<polygon class="d-roof" points="220,62 320,18 420,62"/><rect class="d-paper" x="230" y="62" width="180" height="80"/><text class="d-b" x="242" y="96">system_server</text></g>
+<g class="step s1" data-move="1:60,250 2:300,104 3:300,104 4:490,250"><rect class="d-paper" x="0" y="0" width="76" height="44" rx="3"/><polyline class="d-line" points="0,0 38,22 76,0"/><text class="d-tiny" x="6" y="38">Intent</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="244" y="152" width="152" height="74" rx="4"/><text class="d-tiny" x="256" y="176">Chat: camera ✓</text><text class="d-tiny" x="256" y="204">Game: camera ✗</text></g>
+<g class="step s5" data-move="4:20,330 5:300,250"><rect class="d-bad" x="0" y="0" width="76" height="44" rx="3"/><text class="d-r" x="8" y="28">Game ✗</text></g>
+</svg>
+<ol class="caps">
+<li><p>The chat app wants a photo. It can't reach into the camera app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to open the camera's screen.</p></li>
+<li><p>The Intent goes to the town hall, system_server, by Binder, like every message to it.</p></li>
+<li><p>The town hall checks its list: has Chat been granted the camera <b>permission</b>, the right to use the camera? <i>Predict: what if it hadn't?</i></p></li>
+<li><p>Chat is allowed, so the town hall delivers the request, and the camera screen opens.</p></li>
+<li><p>A game without the permission asks the same: the town hall refuses.</p></li>
+</ol>

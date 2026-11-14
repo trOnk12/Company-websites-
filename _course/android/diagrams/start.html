@@ -1,0 +1,15 @@
+<!-- label: Cold, warm and hot start -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">Three rows: cold start forks a process, creates the Application and the Activity; warm start only creates the Activity; hot start creates nothing and brings the screen to the front</title>
+<g class="step s1"><text class="d-b" x="20" y="40">what gets created</text><text class="d-tiny" x="190" y="76">process</text><text class="d-tiny" x="330" y="76">Application</text><text class="d-tiny" x="490" y="76">Activity</text></g>
+<g class="step s2"><text class="d-b" x="20" y="126">cold</text><rect class="d-hl" x="180" y="100" width="110" height="40" rx="6"/><rect class="d-hl" x="320" y="100" width="130" height="40" rx="6"/><rect class="d-hl" x="480" y="100" width="110" height="40" rx="6"/></g>
+<g class="step s2" data-move="1:180,100 2:600,104"><circle class="d-dot" cx="8" cy="16" r="8"/></g>
+<g class="step s3"><text class="d-b" x="20" y="206">warm</text><rect class="d-band" x="180" y="180" width="110" height="40" rx="6"/><rect class="d-band" x="320" y="180" width="130" height="40" rx="6"/><rect class="d-hl" x="480" y="180" width="110" height="40" rx="6"/></g>
+<g class="step s3" data-move="2:480,184 3:600,184"><circle class="d-dot" cx="8" cy="16" r="8"/></g>
+<g class="step s4"><text class="d-b" x="20" y="286">hot</text><rect class="d-band" x="180" y="260" width="110" height="40" rx="6"/><rect class="d-band" x="320" y="260" width="130" height="40" rx="6"/><rect class="d-band" x="480" y="260" width="110" height="40" rx="6"/><text class="d-a" x="190" y="340">just bring it to the front</text></g>
+</svg>
+<ol class="caps">
+<li><p>Opening an app can need three things: a process, your app's <code>Application</code> object (one per process, for setup the whole app needs), and the Activity on screen.</p></li>
+<li><p><b>Cold start</b>: nothing exists yet. Fork from Zygote, create the Application (its <code>Application.onCreate()</code> runs), then the Activity. The slowest.</p></li>
+<li><p>Warm start: the process is alive, but the Activity was destroyed. Only the Activity is created again. <i>Predict: what's left to do if both are alive?</i></p></li>
+<li><p>Nothing to create. Hot start: system_server just brings the screen back to the front.</p></li>
+</ol>

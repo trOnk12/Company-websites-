@@ -46,37 +46,82 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/00-the-core-idea</loc>
+    <loc>https://pachulski.dev/course/android/00-a-running-app-is-a-process</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/01-an-app-is-a-linux-process</loc>
+    <loc>https://pachulski.dev/course/android/01-the-kernel-is-in-charge</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/02-art-runs-your-code</loc>
+    <loc>https://pachulski.dev/course/android/02-threads-are-the-workers</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/03-zygote-why-apps-start-fast</loc>
+    <loc>https://pachulski.dev/course/android/03-the-town-hall-decides</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/04-system-server-the-town-hall</loc>
+    <loc>https://pachulski.dev/course/android/04-the-post-office-carries-letters</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/05-binder-the-post-office</loc>
+    <loc>https://pachulski.dev/course/android/05-you-dont-call-youre-called</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/06-the-main-thread</loc>
+    <loc>https://pachulski.dev/course/android/06-each-app-is-its-own-user</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/07-letters-between-apps</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/08-whats-inside-the-apk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/09-faster-code-now-and-later</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/10-zygote</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/11-sharing-memory</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/12-starting-an-app</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/13-inside-a-binder-call</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/14-the-main-threads-queue</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/15-frames-jank-and-anrs</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

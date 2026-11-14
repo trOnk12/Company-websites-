@@ -370,3 +370,4 @@ html:not(.js) .stage [data-move] { display: none; }
 .quiz .fb.no { color: #8A2B19; }
 .quiz .show-me { display: inline-flex; align-items: center; min-height: 2.75rem; margin-left: 0.25rem; padding: 0 0.8rem; border: 1.5px solid currentColor; border-radius: 4px; font-weight: 700; color: var(--accent-deep); text-decoration: none; cursor: pointer; }
 .quiz .show-me:hover { background: #EEF3FA; }
+.d-inv { font-family: var(--sans); font-size: 15px; font-weight: 700; fill: #F6F3EC; }

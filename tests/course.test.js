@@ -130,8 +130,8 @@ test.describe('Course', () => {
   });
 
   test('code names open the real source, pinned to a commit', async ({ page }) => {
-    await page.goto(`/course/android/06-the-main-thread.html`);
-    const ref = page.locator('.ref').filter({ hasText: 'Looper.loop()' }).first();
+    await page.goto(`/course/android/14-the-main-threads-queue.html`);
+    const ref = page.locator('.ref', { has: page.locator(':scope > code', { hasText: /^Looper\.loop\(\)$/ }) }).first();
     await expect(ref.locator('.pop')).toBeHidden();
     await ref.hover();
     await expect(ref.locator('.pop')).toBeVisible();

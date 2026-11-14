@@ -1,18 +1,14 @@
-<!-- label: Each app is its own house with its own key -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="sb-t"><title id="sb-t">Two app houses with different keys (UIDs); the game's key doesn't fit the bank's door, so the kernel refuses; the official way is a letter through the town hall</title>
+<!-- label: Each app is its own user, with its own key -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sb-t"><title id="sb-t">Two apps, each with its own key (UID); the game's key doesn't open the bank's files, because the kernel checks the key</title>
 <g class="step s1"><polygon class="d-roof" points="30,130 160,72 290,130"/><rect class="d-paper" x="40" y="130" width="240" height="142"/><rect class="d-wood" x="190" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="224" cy="238" r="4"/><rect class="d-paper" x="58" y="168" width="54" height="70" rx="3"/><line class="d-line" x1="66" y1="186" x2="104" y2="186"/><line class="d-line" x1="66" y1="200" x2="104" y2="200"/><line class="d-line" x1="66" y1="214" x2="96" y2="214"/><text class="d-mi" x="56" y="156">UID 10101</text><text class="d-b" x="40" y="298">Bank app</text></g>
 <g class="step s1"><polygon class="d-roof" points="350,130 480,72 610,130"/><rect class="d-paper" x="360" y="130" width="240" height="142"/><rect class="d-wood" x="510" y="200" width="44" height="72" rx="3"/><circle class="d-ink" cx="544" cy="238" r="4"/><text class="d-mi" x="376" y="156">UID 10202</text><text class="d-b" x="360" y="298">Game</text></g>
-<g class="step s1"><rect class="d-band" x="10" y="312" width="620" height="56" rx="8"/><text class="d-m" x="26" y="346">kernel: checks the key</text><rect class="d-ink" x="314" y="140" width="12" height="172" rx="3"/></g>
-<!-- the game's key tries the bank's door -->
+<g class="step s2"><rect class="d-band" x="10" y="312" width="620" height="56" rx="8"/><text class="d-m" x="26" y="346">kernel: checks the key</text><rect class="d-ink" x="314" y="140" width="12" height="172" rx="3"/></g>
 <g class="step only-2" data-move="1:440,226 2:236,226"><circle class="d-hl" cx="14" cy="14" r="12"/><rect class="d-hl" x="24" y="10" width="30" height="8" rx="2"/></g>
 <g class="step only-2" data-pulse="2"><circle class="d-bad" cx="212" cy="190" r="22"/><path class="d-red" d="M200,178 L224,202 M224,178 L200,202"/></g>
-<!-- the official way: a letter through the town hall -->
-<g class="step s3" data-pulse="3"><polygon class="d-roof" points="262,44 320,12 378,44"/><rect class="d-paper" x="272" y="44" width="96" height="40"/><text class="d-tiny" x="270" y="108">town hall</text></g>
-<g class="step s3 actor-letter" data-move="2:420,170 3:288,40 4:150,152"><rect class="d-paper" x="0" y="0" width="60" height="40" rx="3"/><polyline class="d-line" points="0,0 30,20 60,0"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-acc" x="34" y="124" width="252" height="154" rx="4"/><rect class="d-acc" x="354" y="124" width="252" height="154" rx="4"/><text class="d-a" x="230" y="64">sandbox</text></g>
 </svg>
 <ol class="caps">
-<li><p>Android installs each app as its own Linux user, with its own <b>UID</b> (user ID): its own key. Each app runs in its own process, a house with its own memory.</p></li>
-<li><p>The game tries to open the bank's file with its own key. It doesn't fit: the <b>kernel</b> checks the UID on every file and every process, and refuses. <i>Predict: so how can apps share anything?</i></p></li>
-<li><p>Through official doors. The game writes a letter (an Intent) to the town hall, system_server, which checks it…</p></li>
-<li><p>…and delivers it to the bank if it's allowed. Apps never walk into each other's houses; the system carries what they share.</p></li>
+<li><p>Linux keeps accounts apart: identities the kernel uses to decide who owns which files. At install, every app gets its own account, with its own user ID: its <b>UID</b>, the app's key. Its processes carry it.</p></li>
+<li><p>The game tries the bank's door with its own key. The kernel checks which UID each file belongs to, and refuses. <i>Predict: does this depend on the bank app running?</i></p></li>
+<li><p>No: the kernel checks every time. Each app lives inside walls it can't switch off: its <b>sandbox</b>.</p></li>
 </ol>

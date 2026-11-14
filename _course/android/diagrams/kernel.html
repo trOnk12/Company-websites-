@@ -1,0 +1,15 @@
+<!-- label: The kernel shares the CPU and memory between processes -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="kn-t"><title id="kn-t">Two app processes stand on the kernel; the kernel moves the CPU between them and hands memory to one that asks</title>
+<g class="step s1"><polygon class="d-roof" points="20,110 150,52 280,110"/><rect class="d-paper" x="30" y="110" width="240" height="150"/><text class="d-b" x="50" y="146">Notes</text>
+<polygon class="d-roof" points="360,110 490,52 620,110"/><rect class="d-paper" x="370" y="110" width="240" height="150"/><text class="d-b" x="390" y="146">Music</text></g>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="10" y="282" width="620" height="88" rx="8"/><text class="d-b" x="26" y="316">kernel</text><text class="d-m" x="26" y="346">the core of the operating system</text></g>
+<g class="step s2" data-move="1:400,300 2:100,180 3:440,180"><rect class="d-ink" x="0" y="0" width="64" height="44" rx="6"/><text x="12" y="28" class="d-inv">CPU</text></g>
+<g class="step s3" data-move="2:540,312 3:540,312 4:180,200"><rect class="d-hl" x="0" y="0" width="60" height="40" rx="4"/><text class="d-a" x="6" y="26">+ mem</text></g>
+<text class="step s3 d-tiny" x="440" y="240">now Music runs</text>
+</svg>
+<ol class="caps">
+<li><p>Under all the processes runs the phone's own software, the <b>operating system</b> (Android, built on <b>Linux</b>). Its core is the <b>kernel</b>: the ground every house stands on.</p></li>
+<li><p>There's one CPU. The kernel gives it to Notes for a moment…</p></li>
+<li><p>…then to Music, then back, many times a second, so both seem to run at once. <i>Predict: Notes needs more memory. Who does it ask?</i></p></li>
+<li><p>The kernel. It hands out memory, and it's the only one that can reach into every process.</p></li>
+</ol>

@@ -1,0 +1,15 @@
+<!-- label: Threads are the workers inside a process -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="th2-t"><title id="th2-t">Inside an app's process, several threads work; the main thread at the front desk draws the screen and handles taps; while it is busy, a tap waits</title>
+<g class="step s1"><polygon class="d-roof" points="10,90 320,30 630,90"/><rect class="d-paper" x="20" y="90" width="600" height="270"/><text class="d-m" x="36" y="350">one app's process</text></g>
+<g class="step s1"><circle class="d-skin" cx="440" cy="170" r="16"/><rect class="d-roof" x="418" y="188" width="44" height="32" rx="12"/><circle class="d-skin" cx="540" cy="170" r="16"/><rect class="d-roof" x="518" y="188" width="44" height="32" rx="12"/><text class="d-tiny" x="430" y="246">threads</text></g>
+<g class="step s2"><rect class="d-band" x="470" y="110" width="110" height="34" rx="4"/><text class="d-tiny" x="484" y="133">download…</text></g>
+<g class="step s2" data-pulse="2"><circle class="d-skin" cx="120" cy="170" r="18"/><rect class="d-hl" x="96" y="190" width="48" height="34" rx="12"/><rect class="d-wood" x="50" y="226" width="160" height="12" rx="3"/><rect class="d-paper" x="60" y="110" width="120" height="40" rx="4"/><text class="d-tiny" x="76" y="136">the screen</text><text class="d-tiny" x="66" y="270">main thread</text></g>
+<g class="step s3" data-move="2:240,320 3:220,180 4:220,180"><circle class="d-hl" cx="16" cy="16" r="16"/><text class="d-tiny" x="36" y="22">tap</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="40" y="290" width="200" height="34" rx="4"/><text class="d-r" x="52" y="313">busy: tap waits</text></g>
+</svg>
+<ol class="caps">
+<li><p>Inside a process, the work is done by <b>threads</b>: workers that run code one step after another. A process can have several.</p></li>
+<li><p>One of them is special: the <b>main thread</b>, at the front desk. It draws the screen and handles taps, while other threads download or calculate in the back.</p></li>
+<li><p>A tap arrives, but the main thread is busy. <i>Predict: can a worker from the back handle it?</i></p></li>
+<li><p>No: taps are the main thread's job. The tap waits, and the screen seems frozen until the main thread is free.</p></li>
+</ol>

@@ -1,0 +1,16 @@
+<!-- label: Forked processes share pages until one writes -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="pg-t"><title id="pg-t">Zygote's memory is made of pages; forked apps share them; when one app writes to a page, only that page is copied for it</title>
+<g class="step s1"><polygon class="d-roof" points="10,110 135,60 260,110"/><rect class="d-paper" x="20" y="110" width="230" height="232"/><text class="d-b" x="40" y="146">Zygote</text></g>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="44" y="170" width="50" height="34" rx="4"/><rect class="d-hl" x="104" y="170" width="50" height="34" rx="4"/><rect class="d-hl" x="164" y="170" width="50" height="34" rx="4"/><rect class="d-hl" x="44" y="214" width="50" height="34" rx="4"/><rect class="d-hl" x="104" y="214" width="50" height="34" rx="4"/><rect class="d-hl" x="164" y="214" width="50" height="34" rx="4"/><text class="d-m" x="44" y="290">pages</text></g>
+<g class="step s2"><polygon class="d-roof" points="390,54 505,14 620,54"/><rect class="d-paper" x="400" y="54" width="210" height="112"/><text class="d-b" x="414" y="94">your app</text>
+<polygon class="d-roof" points="390,244 505,204 620,244"/><rect class="d-paper" x="400" y="244" width="210" height="112"/><text class="d-b" x="414" y="284">another app</text></g>
+<path class="step s2 d-dash" d="M216,187 L398,112"/><path class="step s2 d-dash" d="M216,231 L398,300"/><text class="step s2 d-tiny" x="290" y="200">shared</text>
+<g class="step s3" data-move="2:104,170 3:540,104"><rect class="d-bad" x="0" y="0" width="50" height="34" rx="4"/></g>
+<text class="step s3 d-r" x="414" y="150">writes → own copy</text>
+</svg>
+<ol class="caps">
+<li><p>The kernel hands out memory in small blocks of the same size: <b>pages</b>. Zygote's ART and framework fill many of them.</p></li>
+<li><p>After a fork, the new processes don't get their own copies: they share Zygote's pages. <i>Predict: what if your app changes one?</i></p></li>
+<li><p>Then, and only then, the kernel copies that one page for your app. The others keep the original: <b>copy-on-write</b>.</p></li>
+<li><p>Most pages are never changed, so they stay shared: twenty apps cost little more than one framework.</p></li>
+</ol>

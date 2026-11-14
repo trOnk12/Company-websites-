@@ -32,7 +32,7 @@ function parseQuestion(line) {
 function loadCourse(id) {
   const dir = path.join(SRC, id);
   const meta = JSON.parse(fs.readFileSync(path.join(dir, 'course.json'), 'utf8'));
-  return meta.modules.flatMap(m => m.puzzles).map((f, n) => {
+  return meta.modules.flatMap(m => m.puzzles).filter(f => fs.existsSync(path.join(dir, f))).map((f, n) => {
     const raw = fs.readFileSync(path.join(dir, f), 'utf8');
     const { meta: fm, body } = L.parseFrontmatter(raw, f);
     const ctx = { file: f, cards: new Map(), links: new Set() };
@@ -149,7 +149,7 @@ function vocabulary(id, puzzles) {
   });
   const known = new Set([...g.baseline.words, ...terms.flatMap(t => t.names)].map(w => w.toLowerCase()));
   const norm = c => c.replace(/\(.*?\)/g, '()').replace(/\s*\{.*$/, '').trim();
-  const isKnown = c => { const n = norm(c).toLowerCase(); return known.has(n) || known.has(n.replace(/\(\)$/, '')) || known.has(n + '()'); };
+  const isKnown = c => { const n = norm(c).toLowerCase(); return [n, n.replace(/\(\)$/, ''), n + '()', n.replace(/s$/, '')].some(x => known.has(x)); };
 
   for (const p of puzzles) {
     const n = Number(p.f.slice(0, 2));
