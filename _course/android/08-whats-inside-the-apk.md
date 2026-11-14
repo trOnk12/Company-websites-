@@ -1,7 +1,7 @@
 ---
 title: What's inside the APK
 short: DEX and ART
-summary: Phones have different CPUs, but you ship one APK. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.
+summary: Phones have different CPUs, but you ship one APK, one file for every phone. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.
 takeaway: Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.
 ---
 

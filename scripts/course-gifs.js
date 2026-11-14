@@ -47,7 +47,8 @@ function serve() {
 (async () => {
   const srv = await serve();
   const base = `http://127.0.0.1:${srv.address().port}`;
-  const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
+  const exe = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : '');
+  const browser = await chromium.launch(exe ? { executablePath: exe } : {});
   // Moving dots are hidden (reduced motion) because a still frame can't show motion.
   const ctx = await browser.newContext({ viewport: { width: 720, height: 1000 }, deviceScaleFactor: 1, reducedMotion: 'reduce', bypassCSP: true });
   const page = await ctx.newPage();

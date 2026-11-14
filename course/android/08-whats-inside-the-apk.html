@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Phones have different CPUs, but you ship one APK. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.">
+  <meta name="description" content="Phones have different CPUs, but you ship one APK, one file for every phone. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="What's inside the APK – Android from the foundation – Mateusz Pachulski">
-  <meta property="og:description" content="Phones have different CPUs, but you ship one APK. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.">
+  <meta property="og:description" content="Phones have different CPUs, but you ship one APK, one file for every phone. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/android/08-whats-inside-the-apk">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -50,7 +50,7 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-the-town-hall-decides.html" class="done" title="Who decides about your screens">3</a></li><li><a href="04-the-post-office-carries-letters.html" class="done" title="The post office carries letters">4</a></li><li><a href="05-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">5</a></li><li><a href="06-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">6</a></li><li><a href="07-letters-between-apps.html" class="done" title="Letters between apps">7</a></li><li><a href="08-whats-inside-the-apk.html" aria-current="page" title="What's inside the APK">8</a></li><li><a href="09-faster-code-now-and-later.html" title="Faster code, now and later">9</a></li><li><a href="10-zygote.html" title="Zygote, the process every app starts from">10</a></li><li><a href="11-sharing-memory.html" title="Sharing memory without sharing mistakes">11</a></li><li><a href="12-starting-an-app.html" title="Starting an app, cold, warm and hot">12</a></li><li><a href="13-inside-a-binder-call.html" title="Inside a Binder call">13</a></li><li><a href="14-the-main-threads-queue.html" title="The main thread's queue">14</a></li><li><a href="15-frames-jank-and-anrs.html" title="Frames, jank and ANRs">15</a></li><li><a href="16-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">16</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 8 of 16</p>
       <h1>What's inside the APK</h1>
-      <p class="lede">Phones have different CPUs, but you ship one APK. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.</p>
+      <p class="lede">Phones have different CPUs, but you ship one APK, one file for every phone. So the APK can't hold code for just one kind of CPU, and something on the phone has to run it.</p>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>You upload one APK (the single file your app is packaged into) to the store, and it runs on phones with very different CPUs. But a CPU only runs instructions (the tiny steps a program is made of) written for that kind of CPU. So what's in the APK, and who makes it run?</p>
@@ -73,10 +73,10 @@
 <g class="step s4" data-move="3:80,300 4:96,300"><rect class="d-hl" x="0" y="0" width="22" height="16" rx="3"/><rect class="d-hl" x="330" y="0" width="22" height="16" rx="3"/></g>
 <g class="step s4" data-move="3:80,300 4:136,300"><rect class="d-hl" x="0" y="0" width="22" height="16" rx="3"/><rect class="d-hl" x="330" y="0" width="22" height="16" rx="3"/></g>
 <g class="step s4" data-move="3:80,300 4:176,300"><rect class="d-hl" x="0" y="0" width="22" height="16" rx="3"/><rect class="d-hl" x="330" y="0" width="22" height="16" rx="3"/></g>
-<g class="step s4"><path class="d-arr-acc" d="M76,244 C76,300 200,320 232,248" marker-end="url(#ah-apk-acc)"/><path class="d-arr-acc" d="M406,244 C406,300 530,320 562,248" marker-end="url(#ah-apk-acc)"/><text class="d-a" x="155" y="334" text-anchor="middle">one by one</text><text class="d-a" x="485" y="334" text-anchor="middle">one by one</text></g>
+<g class="step s4"><path class="d-arr-acc" d="M96,236 C110,250 130,250 140,246" marker-end="url(#ah-apk-acc)"/><path class="d-arr-acc" d="M190,246 C200,252 214,250 224,244" marker-end="url(#ah-apk-acc)"/><path class="d-arr-acc" d="M426,236 C440,250 460,250 470,246" marker-end="url(#ah-apk-acc)"/><path class="d-arr-acc" d="M520,246 C530,252 544,250 554,244" marker-end="url(#ah-apk-acc)"/><text class="d-a" x="155" y="334" text-anchor="middle">one by one</text><text class="d-a" x="485" y="334" text-anchor="middle">one by one</text></g>
 </svg></div>
 <ol class="caps">
-<li><p>Your Kotlin compiles to <b>DEX</b>: instructions written for Android, not for any one CPU. That's what's inside your APK.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-apk-2">Next →</label></div></li>
+<li><p>On your computer, your Kotlin compiles to <b>DEX</b>: instructions written for Android, not for any one CPU. That's what's inside your APK.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-apk-2">Next →</label></div></li>
 <li><p>The same APK goes to phones with different CPUs. Each kind of CPU understands only its own set of instructions, its <b>machine code</b>. <i>Predict: so who runs the DEX?</i></p><div class="stepnav"><label for="st-apk-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-apk-3">Next →</label></div></li>
 <li><p><b>ART</b>, the Android Runtime. It lives inside each app's process, on every phone.</p><div class="stepnav"><label for="st-apk-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-apk-4">Next →</label></div></li>
 <li><p>The simplest thing ART can do is <b>interpreting</b>: reading the DEX one instruction at a time. It always works, but it's slow.</p><div class="stepnav"><label for="st-apk-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-apk-1">↺ Again</label></div></li>

@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Apps can't reach into each other, but they can ask the town hall to deliver a request. The town hall checks whether the app is allowed first.">
+  <meta name="description" content="Apps can't reach into each other, but they can ask the town hall to deliver a request. For some requests, the town hall first checks whether the app is allowed.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Letters between apps – Android from the foundation – Mateusz Pachulski">
-  <meta property="og:description" content="Apps can't reach into each other, but they can ask the town hall to deliver a request. The town hall checks whether the app is allowed first.">
+  <meta property="og:description" content="Apps can't reach into each other, but they can ask the town hall to deliver a request. For some requests, the town hall first checks whether the app is allowed.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/android/07-letters-between-apps">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -50,28 +50,27 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-the-town-hall-decides.html" class="done" title="Who decides about your screens">3</a></li><li><a href="04-the-post-office-carries-letters.html" class="done" title="The post office carries letters">4</a></li><li><a href="05-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">5</a></li><li><a href="06-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">6</a></li><li><a href="07-letters-between-apps.html" aria-current="page" title="Letters between apps">7</a></li><li><a href="08-whats-inside-the-apk.html" title="What's inside the APK">8</a></li><li><a href="09-faster-code-now-and-later.html" title="Faster code, now and later">9</a></li><li><a href="10-zygote.html" title="Zygote, the process every app starts from">10</a></li><li><a href="11-sharing-memory.html" title="Sharing memory without sharing mistakes">11</a></li><li><a href="12-starting-an-app.html" title="Starting an app, cold, warm and hot">12</a></li><li><a href="13-inside-a-binder-call.html" title="Inside a Binder call">13</a></li><li><a href="14-the-main-threads-queue.html" title="The main thread's queue">14</a></li><li><a href="15-frames-jank-and-anrs.html" title="Frames, jank and ANRs">15</a></li><li><a href="16-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">16</a></li></ol></nav>
       <p class="eyebrow">Android from the foundation · Puzzle 7 of 16</p>
       <h1>Letters between apps</h1>
-      <p class="lede">Apps can't reach into each other, but they can ask the town hall to deliver a request. The town hall checks whether the app is allowed first.</p>
+      <p class="lede">Apps can't reach into each other, but they can ask the town hall to deliver a request. For some requests, the town hall first checks whether the app is allowed.</p>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>In puzzle 6, the sandbox kept every app inside its walls. But a chat app still opens the camera, and a link in a message opens the browser. If apps can't reach each other, how do they work together?</p>
+<p>In puzzle 6, the sandbox kept every app inside its walls. But a link in a chat opens the browser, and a chat app can start a phone call. If apps can't reach each other, how do they work together?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="An Intent is a letter, checked by the town hall"><input type="radio" name="st-intents" id="st-intents-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-intents" id="st-intents-2" aria-label="Step 2 of 5"><input type="radio" name="st-intents" id="st-intents-3" aria-label="Step 3 of 5"><input type="radio" name="st-intents" id="st-intents-4" aria-label="Step 4 of 5"><input type="radio" name="st-intents" id="st-intents-5" aria-label="Step 5 of 5">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="in-t"><title id="in-t">A chat app sends an Intent to system_server, which checks the permission list and delivers it to the camera app; a request without permission comes back refused</title><defs><marker id="ah-intents-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-intents-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-intents-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-intents-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="in-t"><title id="in-t">A chat app sends an Intent to start a call; Binder carries it to system_server, which checks the phone-call permission and delivers it to the phone app; a game without the permission is refused</title><defs><marker id="ah-intents-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-intents-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-intents-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-intents-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <g class="step s1"><rect class="d-soil" x="0" y="300" width="640" height="80"/><ellipse class="d-pebble" cx="90" cy="344" rx="7" ry="4"/><ellipse class="d-pebble" cx="170" cy="364" rx="7" ry="4"/><ellipse class="d-pebble" cx="300" cy="336" rx="7" ry="4"/><ellipse class="d-pebble" cx="380" cy="360" rx="7" ry="4"/><ellipse class="d-pebble" cx="470" cy="340" rx="7" ry="4"/><ellipse class="d-pebble" cx="560" cy="356" rx="7" ry="4"/><ellipse class="d-pebble" cx="610" cy="328" rx="7" ry="4"/><line class="d-grass" x1="0" y1="300" x2="640" y2="300"/><text class="d-b" x="16" y="330">kernel</text></g>
-<g class="step s1" data-pulse="2"><rect class="d-paper" x="330" y="316" width="130" height="56"/><rect class="d-po" x="322" y="302" width="146" height="16" rx="3"/><rect class="d-ink" x="369" y="330" width="52" height="8" rx="3"/></g>
-<text class="step s1 d-b" x="474" y="352">Binder</text>
+<g class="step s1" data-pulse="2"><rect class="d-paper" x="330" y="316" width="130" height="56"/><rect class="d-po" x="322" y="302" width="146" height="16" rx="3"/><rect class="d-ink" x="369" y="330" width="52" height="8" rx="3"/><text class="d-b" x="395" y="356" text-anchor="middle">Binder</text></g>
 <g class="step s1" data-pulse="3"><polygon class="d-stone" points="182,70 325,34 468,70"/><rect class="d-paper" x="196" y="100" width="258" height="76"/><rect class="d-col" x="204" y="100" width="12" height="76"/><rect class="d-col" x="224" y="100" width="12" height="76"/><rect class="d-col" x="414" y="100" width="12" height="76"/><rect class="d-col" x="434" y="100" width="12" height="76"/><rect class="d-stone" x="190" y="70" width="270" height="30"/><rect class="d-stone" x="184" y="176" width="282" height="7"/><rect class="d-stone" x="178" y="183" width="294" height="7"/><text class="d-hall" x="325" y="92" text-anchor="middle">system_server</text></g>
 <g class="step s1"><polygon class="d-roof" points="10,190 100,155 190,190"/><rect class="d-paper" x="20" y="190" width="160" height="110"/><text class="d-b" x="34" y="220">Chat</text></g>
 <g class="step s1"><polygon class="d-roof" points="190,232 255,208 320,232"/><rect class="d-paper" x="200" y="232" width="110" height="68"/><text class="d-b" x="214" y="262">Game</text></g>
-<g class="step s1" data-pulse="4"><polygon class="d-roof" points="466,190 551,157 636,190"/><rect class="d-paper" x="476" y="190" width="150" height="110"/><text class="d-b" x="490" y="220">Camera</text></g>
+<g class="step s1" data-pulse="4"><polygon class="d-roof" points="466,190 551,157 636,190"/><rect class="d-paper" x="476" y="190" width="150" height="110"/><text class="d-b" x="490" y="220">Phone</text></g>
 <g class="step s3" data-pulse="3"><rect class="d-paper" x="240" y="108" width="100" height="64" rx="4"/><text class="d-a" x="250" y="133">Chat ✓</text><text class="d-r" x="250" y="161">Game ✗</text></g>
 <path class="step only-2 d-arr-path" d="M120,290 C150,350 280,352 322,346" marker-end="url(#ah-intents-path)"/>
 <path class="step only-3 d-arr-path" d="M396,312 C400,280 392,230 384,176" marker-end="url(#ah-intents-path)"/>
 <path class="step only-4 d-arr-path" d="M372,176 C372,240 380,280 386,308" marker-end="url(#ah-intents-path)"/>
 <path class="step only-4 d-arr-path" d="M462,344 C520,344 546,320 550,294" marker-end="url(#ah-intents-path)"/>
-<g class="step s4" data-pulse="4"><circle class="d-paper" cx="596" cy="270" r="18"/><circle class="d-ink" cx="596" cy="270" r="8"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="568" y="250" width="50" height="28" rx="14"/><text class="d-a" x="593" y="270" text-anchor="middle">call</text></g>
 <g class="step s1 hide-5" data-move="1:80,236 2:358,322 3:350,116 4:496,240"><rect class="d-paper" x="0" y="0" width="62" height="44" rx="3"/><polyline class="d-line" points="0,0 31,18 62,0"/><text class="d-tiny" x="31" y="38" text-anchor="middle">Intent</text></g>
 <path class="step only-5 d-arr-red" d="M250,296 C270,350 300,350 322,346" marker-end="url(#ah-intents-red)"/>
 <path class="step only-5 d-arr-red" d="M396,312 C400,280 392,230 384,176" marker-end="url(#ah-intents-red)"/>
@@ -79,10 +78,10 @@
 <g class="step s5" data-move="4:240,268 5:350,116"><rect class="d-bad" x="0" y="0" width="62" height="44" rx="3"/><polyline class="d-line" points="0,0 31,18 62,0"/><text class="d-rt" x="31" y="38" text-anchor="middle">✗ no</text></g>
 </svg></div>
 <ol class="caps">
-<li><p>The chat app wants a photo. It can't reach into the camera app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to open the camera's screen.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-intents-2">Next →</label></div></li>
+<li><p>The chat app wants to call a friend. It can't reach into the phone app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to the town hall: "start this call".</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-intents-2">Next →</label></div></li>
 <li><p>The Intent goes to the town hall, system_server, by Binder, like every message to it.</p><div class="stepnav"><label for="st-intents-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-intents-3">Next →</label></div></li>
-<li><p>The town hall checks its list: has Chat been granted the camera <b>permission</b>, the right to use the camera? <i>Predict: what if it hadn't?</i></p><div class="stepnav"><label for="st-intents-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-intents-4">Next →</label></div></li>
-<li><p>Chat is allowed, so the town hall delivers the request, again by Binder, and the camera screen opens. The photo comes back to Chat the same way.</p><div class="stepnav"><label for="st-intents-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-intents-5">Next →</label></div></li>
+<li><p>A call can cost money, so it needs a <b>permission</b>, a right the user grants. The town hall checks its list: has Chat been granted the phone-call permission? <i>Predict: what if it hadn't?</i></p><div class="stepnav"><label for="st-intents-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-intents-4">Next →</label></div></li>
+<li><p>Chat is allowed, so the town hall delivers the request, again by Binder, and the call starts in the phone app.</p><div class="stepnav"><label for="st-intents-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-intents-5">Next →</label></div></li>
 <li><p>A game without the permission asks the same: the town hall refuses.</p><div class="stepnav"><label for="st-intents-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-intents-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-intents-1" title="Step 1"></label><label for="st-intents-2" title="Step 2"></label><label for="st-intents-3" title="Step 3"></label><label for="st-intents-4" title="Step 4"></label><label for="st-intents-5" title="Step 5"></label></div>
@@ -91,19 +90,19 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>An app sends an <b>Intent</b>: a message to system_server asking it to open a screen, in another app or in your own. It travels by Binder, like every message to the town hall.</p>
-<p>Some actions need a <b>permission</b>: a right the app has to be granted, like using the camera. Some are granted at install, others the user grants while the app runs. system_server checks them before it acts. It knows which app sent the Intent from the app's UID, which Binder tells it (puzzle 13 shows how).</p>
+<p>Opening another app's screen often needs nothing special: a link in a chat opens the browser for anyone. But some actions need a <b>permission</b>: a right the app has to be granted. Starting a phone call without the user confirming it in the phone app needs the phone-call permission, because calls can cost money. Some permissions are granted at install; risky ones, like this one, the user grants while the app runs. system_server checks them before it acts. It knows which app sent the Intent from the app's UID, which Binder tells it (puzzle 13 shows how).</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>You can't walk into the neighbour's house, but you can send the town hall a letter: &quot;please open the photo room for me&quot;. The town hall checks its list of who's allowed what, then passes it on, or sends it back.</p>
+<p>You can't walk into the neighbour's house, but you can send the town hall a letter: &quot;please put a call through for me&quot;. The town hall checks its list of who's allowed what, then passes it on, or sends it back.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>A game sends an Intent asking to open the camera, but the user never granted it the camera permission. What happens?</legend>
+<legend>A game sends an Intent asking to start a phone call, but the user never granted it the phone-call permission. What happens?</legend>
 <input type="radio" name="q-07-letters-between-apps-1" id="q-07-letters-between-apps-1-1" data-ok><label for="q-07-letters-between-apps-1-1">system_server refuses the request</label>
 <input type="radio" name="q-07-letters-between-apps-1" id="q-07-letters-between-apps-1-2"><label for="q-07-letters-between-apps-1-2">The kernel blocks the Intent at the game's door</label>
-<input type="radio" name="q-07-letters-between-apps-1" id="q-07-letters-between-apps-1-3"><label for="q-07-letters-between-apps-1-3">The camera app opens anyway, because Intents always get delivered</label>
+<input type="radio" name="q-07-letters-between-apps-1" id="q-07-letters-between-apps-1-3"><label for="q-07-letters-between-apps-1-3">The call starts anyway, because Intents always get delivered</label>
 <p class="fb ok opt-1"><b>Right.</b> system_server checks the sender's permissions before acting.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The kernel guards files and memory. Permissions for actions are checked by system_server. <label class="show-me" for="st-intents-3" data-goto="st-intents">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Delivery isn't automatic: the town hall checks permissions first. <label class="show-me" for="st-intents-3" data-goto="st-intents">Show me step 3 again ↑</label></p>
@@ -125,7 +124,7 @@
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.android.com/guide/components/intents-filters">Android Developers: Intents and intent filters</a></li><li><a href="https://developer.android.com/guide/topics/permissions/overview">Android Developers: Permissions on Android</a></li><li><a href="https://developer.android.com/reference/android/os/Binder">Android reference: Binder</a></li></ul>
+<ul><li><a href="https://developer.android.com/guide/components/intents-filters">Android Developers: Intents and intent filters</a></li><li><a href="https://developer.android.com/guide/topics/permissions/overview">Android Developers: Permissions on Android</a></li><li><a href="https://developer.android.com/reference/android/content/Intent#ACTION_CALL">Android reference: Intent.ACTION_CALL</a> and <a href="https://developer.android.com/reference/android/Manifest.permission#CALL_PHONE">Manifest.permission.CALL_PHONE</a></li><li><a href="https://developer.android.com/reference/android/os/Binder">Android reference: Binder</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An Intent is a letter to the town hall: &quot;open this screen&quot;. system_server checks the sender's permissions, then delivers it, or doesn't.</p></div></section>
       

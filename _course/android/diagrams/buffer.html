@@ -1,21 +1,20 @@
 <!-- label: Calls wait in the receiver's Binder buffer, about 1 MB -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="bf-t"><title id="bf-t">Calls from several apps wait in system_server's Binder buffer; it holds about 1 MB, shared; a 3 MB photo doesn't fit through and is refused; sending a file name instead works</title>
 <x-ground class="step s1" y="286" label="kernel"/>
-<x-postoffice class="step s1" data-pulse="3" x="245" y="304" w="150" h="70" label="" flag="0"/>
-<text class="step s1 d-b" x="410" y="346">Binder</text>
+<x-postoffice class="step s1" data-pulse="3" x="245" y="304" w="150" h="70" flag="0"/>
 <x-house class="step s1" x="20" y="90" w="200" h="196" label="your app"/>
 <x-townhall class="step s1" x="380" y="100" w="250" h="186"/>
 <g class="step s1" data-pulse="1"><rect class="d-band" x="436" y="146" width="138" height="84" rx="6"/></g>
-<g class="step s1" data-move="1:452,196"><x-letter x="0" y="0" w="36" h="26"/></g>
-<g class="step s1" data-move="1:494,196"><x-letter x="0" y="0" w="36" h="26"/></g>
-<g class="step s1 hide-4" data-move="1:536,196"><x-letter x="0" y="0" w="36" h="26"/></g>
-<g class="step s2" data-pulse="2"><rect class="d-acc" x="432" y="142" width="146" height="92" rx="8"/><text class="d-a" x="505" y="256" text-anchor="middle">about 1 MB</text></g>
+<g class="step s1" data-move="1:452,190"><x-letter x="0" y="0" w="36" h="26"/></g>
+<g class="step s1" data-move="1:494,190"><x-letter x="0" y="0" w="36" h="26"/></g>
+<g class="step s1 hide-4" data-move="1:536,190"><x-letter x="0" y="0" w="36" h="26"/></g>
+<g class="step s2" data-pulse="2"><rect class="d-acc" x="432" y="142" width="146" height="92" rx="8"/><text class="d-a" x="505" y="168" text-anchor="middle">about 1 MB</text></g>
 <g class="step s1 hide-4" data-move="2:40,190 3:262,226"><rect class="d-bad" x="0" y="0" width="116" height="64" rx="6"/><text class="d-r" x="58" y="38" text-anchor="middle">3 MB photo</text></g>
 <g class="step only-3" data-pulse="3"><circle class="d-bad" cx="320" cy="312" r="16"/><path class="d-red" d="M311,303 L329,321 M329,303 L311,321"/><text class="d-r" x="320" y="210" text-anchor="middle">doesn't fit</text></g>
 <x-sheet class="step s4" data-pulse="4" x="44" y="130" w="54" h="64" lines="4" label="photo file"/>
 <x-arrow class="step only-4" tone="path" d="M200,262 C220,320 250,330 262,330"/>
 <x-arrow class="step only-4" tone="path" d="M398,330 C460,330 520,300 536,236"/>
-<x-letter class="step s4" data-move="3:120,200 4:520,196" x="0" y="0" w="52" h="30" label="name"/>
+<x-letter class="step s4" data-move="3:120,200 4:504,200" x="0" y="0" w="52" h="28" label="name"/>
 </svg>
 <ol class="caps">
 <li><p>Calls into system_server wait in its <b>Binder buffer</b>, an area of its memory set up by the kernel, until a Binder thread is free.</p></li>

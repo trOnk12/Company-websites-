@@ -1,8 +1,7 @@
 <!-- label: How system_server tells your app what to do -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="chain-t"><title id="chain-t">The town hall (system_server) writes a letter; the post office (Binder, in the kernel) carries it into your app's house; the clerk (main thread) takes it from the in-tray and runs onCreate()</title>
 <x-ground class="step s1" y="300" label="kernel"/>
-<x-postoffice class="step s1" data-pulse="3" x="250" y="322" w="140" h="52" label=""/>
-<text class="step s1 d-b" x="404" y="356">Binder</text>
+<x-postoffice class="step s1" data-pulse="3" x="250" y="322" w="140" h="52"/>
 <x-house class="step s1" x="290" y="86" w="330" h="214" label="your app"/>
 <g class="step s1"><rect class="d-paper" x="306" y="128" width="200" height="48" rx="6"/><text class="d-mi" x="320" y="158">onCreate() { … }</text></g>
 <x-person class="step s1" x="380" y="196" desk="1" label="main thread"/>
@@ -16,6 +15,6 @@
 <li><p>Your app's process, with the main thread at its desk. On the desk: your <code>onCreate()</code>, the method that sets up a screen, waiting.</p></li>
 <li><p>The town hall, system_server, decides: "create screen X". It writes the message.</p></li>
 <li><p>Binder, the post office in the kernel, carries it. <i>Predict: where does it land?</i></p></li>
-<li><p>On the main thread's desk. The main thread handles one message at a time, in order (puzzle 14 shows how).</p></li>
+<li><p>On the main thread's desk (by a route puzzle 14 shows). The main thread handles one message at a time, in order.</p></li>
 <li><p>The main thread runs your code: <code>onCreate()</code>. You wrote it; you never called it. It's a <b>callback</b>.</p></li>
 </ol>

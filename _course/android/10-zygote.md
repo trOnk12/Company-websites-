@@ -1,13 +1,13 @@
 ---
 title: Zygote, the process every app starts from
 short: Zygote
-summary: Starting ART and loading Android's own code takes seconds. Android does it once, when the phone starts, and makes every app a copy of that.
+summary: Starting ART and reading Android's own code into memory takes seconds. Android does it once, when the phone starts, and makes every app a copy of that.
 takeaway: Zygote starts with the phone, with ART and the framework loaded. Every app's process begins as a copy of it, a fork, so apps start fast.
 ---
 
 ## The problem
 
-In puzzle 8, ART lived inside every app's process. But every app also uses Android's own code, thousands of classes like `Activity`. Loading ART and all of that takes seconds. If every app did it from scratch at every tap on an icon, opening apps would be slow.
+In puzzle 8, ART lived inside every app's process. But every app also uses Android's own code, thousands of classes like `Activity`. Starting ART and reading all of that code from files into memory takes seconds. If every app did it from scratch at every tap on an icon, opening apps would be slow.
 
 ## See it
 
@@ -18,7 +18,7 @@ In puzzle 8, ART lived inside every app's process. But every app also uses Andro
 
 The phone starting up is called **boot**. Android's own code that every app uses, like the `Activity` class that every screen is built from, is called the **framework**.
 
-At boot, Android starts one process, **Zygote**, which starts ART, loads the framework (reads its code from files into the process's memory), and then waits. When you open an app, system_server asks Zygote for a new process, and Zygote asks the kernel to **fork**: to make a new process that starts as a copy of Zygote. The copy already has ART and the framework loaded. It switches to the app's UID and loads the app's own code (its DEX, plus any code already translated ahead of time). Zygote also forked system_server at boot, so the town hall starts fast too.
+At boot, Android starts one process, **Zygote**, which starts ART, loads the framework (reads its code from files into the process's memory), and then waits. When you open an app, system_server asks Zygote for a new process, and Zygote asks the kernel to **fork**: to make a new process that starts as a copy of Zygote. The copy already has ART and the framework loaded. It switches to the app's UID (only Zygote's fresh copies may do this, once, before any app code runs) and loads the app's own code (its DEX, plus any code already translated ahead of time). Zygote also forked system_server at boot, so the town hall starts fast too.
 
 Android's code is public. In it, `ZygoteInit.main()` (`main()` is where a program starts running) does exactly this: load, start system_server, then wait for "start an app" requests.
 

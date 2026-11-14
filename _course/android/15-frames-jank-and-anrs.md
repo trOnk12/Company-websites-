@@ -7,7 +7,7 @@ takeaway: A frame is due about every 16 ms. A message that takes longer makes fr
 
 ## The problem
 
-In puzzle 14, the main thread ran messages one at a time. Now suppose one message takes a long time, like reading a big file, or a `Thread.sleep(6000)` in `onCreate()`, which pauses the thread for 6 seconds. What does the user see?
+In puzzle 14, the main thread ran messages one at a time. Now suppose one message takes a long time, like reading a big file, or a `Thread.sleep(6000)` in a button's click code, which pauses the thread for 6 seconds. What does the user see?
 
 ## See it
 
@@ -27,7 +27,7 @@ system_server sent each touch, and waits for your app to say it was handled. If 
 The clerk also has to repaint the shop window 60 times a second. One long phone call, and the window freezes; keep a customer waiting long enough, and the town hall puts up a sign: "not responding".
 
 ## Check yourself
-- `onCreate()` calls `Thread.sleep(6000)` and the user taps the screen right away. What happens?::*The tap waits in the queue; after 5 seconds system_server shows an ANR||The tap is handled on another thread meanwhile >> Touches are messages for the main thread too, so they wait behind the sleeping `onCreate()`. >> s3||Android stops `onCreate()` after 5 seconds >> Nothing is stopped: system_server shows a dialog and the user decides. >> s4::One message at a time: the touch waits behind the sleep, and after 5 seconds comes the ANR.
+- A button's click code calls `Thread.sleep(6000)`, and the user taps the screen again right away. What happens?::*The tap waits in the queue; after 5 seconds system_server shows an ANR||The tap is handled on another thread meanwhile >> Touches are messages for the main thread too, so they wait behind the sleeping `onCreate()`. >> s3||Android stops `onCreate()` after 5 seconds >> Nothing is stopped: system_server shows a dialog and the user decides. >> s4::One message at a time: the touch waits behind the sleep, and after 5 seconds comes the ANR.
 - A message takes 100 ms, and there are no touches. Is that an ANR?::*No, but about six frames come late: the app stutters (jank)||Yes: any slow message is an ANR >> An ANR is about a touch waiting 5 seconds. 100 ms is jank: late frames. >> s2::100 ms ÷ 16 ms ≈ 6 frames late: jank. A touch waiting 5 s means an ANR.
 - Why should file reading go on another thread?::*So the main thread stays free to draw frames and handle touches||Because the main thread can't read files >> It can; it just mustn't, because frames and touches wait behind it. >> s2::Keep every main-thread message short.
 
