@@ -24,7 +24,7 @@ const txt = (cls, x, y, s, anchor) => (s ? `<text class="${cls}" x="${x}" y="${y
 const SHAPES = {
   ground(a) {
     const y = n(a, 'y', 300);
-    const pebbles = [[90, 0.55], [170, 0.8], [300, 0.45], [380, 0.75], [470, 0.5], [560, 0.7], [610, 0.35]]
+    const pebbles = [[210, 0.55], [250, 0.85], [300, 0.45], [380, 0.75], [470, 0.5], [560, 0.7], [610, 0.35]]
       .map(([x, f]) => `<ellipse class="d-pebble" cx="${x}" cy="${Math.round(y + f * (380 - y))}" rx="7" ry="4"/>`).join('');
     return `<rect class="d-soil" x="0" y="${y}" width="640" height="${380 - y}"/>${pebbles}<line class="d-grass" x1="0" y1="${y}" x2="640" y2="${y}"/>` +
       txt('d-b', 16, y + 30, a.label) + txt('d-m', 16, y + 54, a.sub);

@@ -1,20 +1,28 @@
 <!-- label: One APK, many CPUs: ART makes DEX run -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="apk-t"><title id="apk-t">The APK holds DEX; it travels into two phones with different CPUs; ART inside each app's process reads it one instruction at a time</title>
-<g class="step s1"><rect class="d-paper" x="20" y="150" width="270" height="214" rx="22"/><text class="d-tiny" x="155" y="352" text-anchor="middle">phone A</text>
-<rect class="d-paper" x="350" y="150" width="270" height="214" rx="22"/><text class="d-tiny" x="485" y="352" text-anchor="middle">phone B</text></g>
-<x-chip class="step s1" x="206" y="196" label="CPU A"/><x-chip class="step s1" x="536" y="196" label="CPU B"/>
-<g class="step s1" data-pulse="1"><rect class="d-roof" x="250" y="10" width="140" height="100" rx="8"/><text class="d-b" x="320" y="38" text-anchor="middle">APK</text></g>
-<x-arrow class="step only-2" tone="path" d="M270,96 C200,110 120,130 84,176"/>
-<x-arrow class="step only-2" tone="path" d="M372,96 C440,110 420,140 410,176"/>
-<g class="step s1"><rect class="d-paper" x="283" y="52" width="74" height="44" rx="6"/><text class="d-tiny" x="320" y="80" text-anchor="middle">DEX</text></g>
-<g class="step s1" data-move="1:283,52 2:40,192"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="6"/><text class="d-tiny" x="37" y="28" text-anchor="middle">DEX</text></g>
-<g class="step s1" data-move="1:283,52 2:370,192"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="6"/><text class="d-tiny" x="37" y="28" text-anchor="middle">DEX</text></g>
-<g class="step only-2" data-pulse="2"><text class="d-rt" x="160" y="274" text-anchor="middle">CPU can't read DEX</text><text class="d-rt" x="490" y="274" text-anchor="middle">CPU can't read DEX</text></g>
-<x-machine class="step s3" data-pulse="3" x="122" y="190" w="76" label="ART"/><x-machine class="step s3" data-pulse="3" x="452" y="190" w="76" label="ART"/>
-<g class="step s4" data-move="3:80,300 4:96,300"><rect class="d-hl" x="0" y="0" width="22" height="16" rx="3"/><rect class="d-hl" x="330" y="0" width="22" height="16" rx="3"/></g>
-<g class="step s4" data-move="3:80,300 4:136,300"><rect class="d-hl" x="0" y="0" width="22" height="16" rx="3"/><rect class="d-hl" x="330" y="0" width="22" height="16" rx="3"/></g>
-<g class="step s4" data-move="3:80,300 4:176,300"><rect class="d-hl" x="0" y="0" width="22" height="16" rx="3"/><rect class="d-hl" x="330" y="0" width="22" height="16" rx="3"/></g>
-<g class="step s4"><x-arrow tone="acc" d="M96,236 C110,250 130,250 140,246"/><x-arrow tone="acc" d="M190,246 C200,252 214,250 224,244"/><x-arrow tone="acc" d="M426,236 C440,250 460,250 470,246"/><x-arrow tone="acc" d="M520,246 C530,252 544,250 554,244"/><text class="d-a" x="155" y="334" text-anchor="middle">one by one</text><text class="d-a" x="485" y="334" text-anchor="middle">one by one</text></g>
+<g class="step s1"><rect class="d-paper" x="20" y="150" width="270" height="214" rx="22"/><text class="d-tiny" x="155" y="354" text-anchor="middle">phone A</text></g>
+<x-chip class="step s1" x="200" y="282" label="CPU A"/>
+<g class="step only-2" data-pulse="2"><x-arrow tone="red" d="M110,214 C160,230 190,260 206,276"/><circle class="d-bad" cx="158" cy="236" r="13"/><path class="d-red" d="M151,229 L165,243 M165,229 L151,243"/></g>
+<x-machine class="step s3" data-pulse="3" x="120" y="206" w="80" label="ART"/>
+<x-arrow class="step s3" tone="acc" d="M96,212 C100,226 108,232 118,234"/>
+<g class="step s4" data-move="3:150,236 4:202,230"><rect class="d-hl" x="0" y="0" width="14" height="14" rx="3"/></g>
+<g class="step s4" data-move="3:150,236 4:214,246"><rect class="d-hl" x="0" y="0" width="14" height="14" rx="3"/></g>
+<g class="step s4" data-move="3:150,236 4:226,262"><rect class="d-hl" x="0" y="0" width="14" height="14" rx="3"/></g>
+<x-arrow class="step s4" tone="acc" d="M244,250 C246,262 246,270 244,278"/>
+<g class="step s1"><rect class="d-paper" x="350" y="150" width="270" height="214" rx="22"/><text class="d-tiny" x="485" y="354" text-anchor="middle">phone B</text></g>
+<x-chip class="step s1" x="530" y="282" label="CPU B"/>
+<g class="step only-2" data-pulse="2"><x-arrow tone="red" d="M440,214 C490,230 520,260 536,276"/><circle class="d-bad" cx="488" cy="236" r="13"/><path class="d-red" d="M481,229 L495,243 M495,229 L481,243"/></g>
+<x-machine class="step s3" data-pulse="3" x="450" y="206" w="80" label="ART"/>
+<x-arrow class="step s3" tone="acc" d="M426,212 C430,226 438,232 448,234"/>
+<g class="step s4" data-move="3:480,236 4:532,230"><rect class="d-hl" x="0" y="0" width="14" height="14" rx="3"/></g>
+<g class="step s4" data-move="3:480,236 4:544,246"><rect class="d-hl" x="0" y="0" width="14" height="14" rx="3"/></g>
+<g class="step s4" data-move="3:480,236 4:556,262"><rect class="d-hl" x="0" y="0" width="14" height="14" rx="3"/></g>
+<x-arrow class="step s4" tone="acc" d="M574,250 C576,262 576,270 574,278"/>
+<g class="step s1" data-pulse="1"><rect class="d-roof" x="250" y="10" width="140" height="100" rx="8"/><text class="d-b" x="320" y="38" text-anchor="middle">APK</text><rect class="d-paper" x="283" y="52" width="74" height="44" rx="6"/><text class="d-tiny" x="320" y="80" text-anchor="middle">DEX</text></g>
+<x-arrow class="step only-2" tone="path" d="M270,96 C200,110 120,130 84,160"/>
+<x-arrow class="step only-2" tone="path" d="M372,96 C440,110 420,140 414,160"/>
+<g class="step s1" data-move="1:283,52 2:36,166"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="6"/><text class="d-tiny" x="37" y="28" text-anchor="middle">DEX</text></g>
+<g class="step s1" data-move="1:283,52 2:366,166"><rect class="d-paper" x="0" y="0" width="74" height="44" rx="6"/><text class="d-tiny" x="37" y="28" text-anchor="middle">DEX</text></g>
 </svg>
 <ol class="caps">
 <li><p>On your computer, your Kotlin compiles to <b>DEX</b>: instructions written for Android, not for any one CPU. That's what's inside your APK.</p></li>

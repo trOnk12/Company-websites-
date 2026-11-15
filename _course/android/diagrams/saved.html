@@ -4,16 +4,16 @@
 <x-postoffice class="step s1" x="250" y="318" w="130" h="54" flag="0"/>
 <x-townhall class="step s1" x="400" y="130" w="226" h="170"/>
 <g class="step s1 hide-2"><x-house x="20" y="110" w="220" h="190" label="your app"/><rect class="d-band" x="40" y="152" width="180" height="104" rx="8"/><rect class="d-wood" x="56" y="186" width="148" height="56" rx="6"/><text class="d-tiny" x="130" y="202" text-anchor="middle">ViewModel</text><rect class="d-paper" x="66" y="210" width="128" height="24" rx="4"/><text class="d-tiny" x="130" y="227" text-anchor="middle">draft: "Hi Ana"</text></g>
-<g class="step s2 hide-3" data-pulse="2"><polygon class="d-dash" points="10,110 130,62 250,110"/><rect class="d-dash" x="20" y="110" width="220" height="190"/><text class="d-r" x="130" y="200" text-anchor="middle">process ended</text></g>
+<g class="step s2 hide-3" data-pulse="2"><polygon class="d-dash" points="10,110 130,62 250,110"/><rect class="d-dash" x="20" y="110" width="220" height="190"/><rect class="d-dash" x="56" y="186" width="148" height="56" rx="6"/><path class="d-red" d="M60,190 L200,238 M200,190 L60,238"/><text class="d-r" x="130" y="160" text-anchor="middle">process ended</text></g>
 <g class="step s3" data-pulse="3"><x-house x="20" y="110" w="220" h="190" label="new process"/><rect class="d-hl" x="40" y="152" width="180" height="104" rx="8"/><text class="d-a" x="130" y="172" text-anchor="middle">new Activity</text><rect class="d-paper" x="66" y="210" width="128" height="24" rx="4"/><text class="d-tiny" x="130" y="227" text-anchor="middle">draft: "Hi Ana"</text></g>
-<x-arrow class="step only-1" tone="path" d="M180,296 C200,330 220,340 242,342"/>
+<x-arrow class="step only-1" tone="path" d="M196,236 C230,280 236,320 246,338"/>
 <x-arrow class="step only-1" tone="path" d="M388,340 C440,336 470,300 482,270"/>
 <x-arrow class="step only-3" tone="path" d="M470,270 C450,320 420,344 388,346"/>
 <x-arrow class="step only-3" tone="path" d="M250,346 C200,340 190,300 180,262"/>
-<g class="step s1" data-move="1:470,200 3:470,200 4:470,200"><x-letter x="0" y="0" w="92" h="40" label="Bundle"/></g>
-<g class="step s1 hide-3"><text class="d-tiny" x="516" y="262" text-anchor="middle">saved state</text></g>
-<g class="step s3 hide-4" data-move="2:470,200 3:150,262"><x-letter x="0" y="0" w="76" h="30" label="Bundle"/></g>
-<g class="step s4" data-pulse="4"><rect class="d-band" x="40" y="152" width="180" height="104" rx="8"/><text class="d-m" x="130" y="200" text-anchor="middle">screen closed</text><x-arrow tone="red" d="M230,90 C190,80 150,82 110,92"/><text class="d-r" x="236" y="94">Back</text><path class="d-red" d="M466,196 L566,244 M566,196 L466,244"/></g>
+<g class="step s1" data-move="1:458,196 3:458,196 4:458,196"><x-letter x="0" y="0" w="120" h="44" label="Hi Ana"/><text class="d-tiny" x="60" y="-6" text-anchor="middle">Bundle</text></g>
+
+<g class="step s3 hide-4" data-move="2:470,200 3:150,262"><x-letter x="0" y="0" w="76" h="30" label="Hi Ana"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-band" x="40" y="152" width="180" height="104" rx="8"/><text class="d-m" x="130" y="200" text-anchor="middle">screen closed</text><x-arrow tone="red" d="M230,90 C190,80 150,82 110,92"/><text class="d-r" x="236" y="94">Back</text><circle class="d-bad" cx="580" cy="194" r="14"/><path class="d-red" d="M572,186 L588,202 M588,186 L572,202"/></g>
 </svg>
 <ol class="caps">
 <li><p>The user switches apps, so your Activity is stopped. The draft is a value your app chose to save (see the code below), so it's packed into a <b>Bundle</b>, a small map of simple values. Binder carries it to system_server: the screen's <b>saved state</b>.</p></li>

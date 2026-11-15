@@ -439,3 +439,9 @@ html:not(.js) .stage [data-move] { display: none; }
 .table-wrap th, .table-wrap td { border: 1px solid var(--rule); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
 .table-wrap thead th { background: var(--bg-band); }
 .table-wrap tbody th { font-weight: 600; }
+.d-p1 { fill: #DCE8F6; stroke: var(--accent-deep); stroke-width: 2; }
+.d-p2 { fill: #E6F0D9; stroke: #557A2E; stroke-width: 2; }
+.d-p3 { fill: #F6EBD3; stroke: #9A6A1A; stroke-width: 2; }
+.d-g1 { fill: #DCE8F6; stroke: var(--accent-deep); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.d-g2 { fill: #E6F0D9; stroke: #557A2E; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.d-g3 { fill: #F6EBD3; stroke: #9A6A1A; stroke-width: 1.5; stroke-dasharray: 4 3; }
