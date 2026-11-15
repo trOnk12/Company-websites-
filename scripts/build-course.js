@@ -208,13 +208,14 @@ function renderIndex(cs) {
   const blocks = cs.map(c => {
     let i = 0;
     const modules = c.meta.modules.map(m => {
+      const first = i;
       const items = m.puzzles.map(() => c.puzzles[i++]).map(p => `<li data-course="${c.id}" data-n="${p.n}"><a href="${c.id}/${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}</span></li>`).join('');
-      return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')}</p><ol start="0">${items}</ol></li>`;
+      return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')}</p><ol start="${first}">${items}</ol></li>`;
     }).join('\n');
     const soon = (c.meta.upcoming || []).map(m => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(coming next)</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
     return `    <section class="hero" aria-labelledby="course-heading">
       <div class="wrap narrow">
-        <p class="eyebrow">Free course · ${c.puzzles.length - 1} puzzles so far · about ${c.meta.minutes} minutes</p>
+        <p class="eyebrow">Free course · ${c.puzzles.length} puzzles so far · about ${Math.round(c.puzzles.length * 5 / 10) * 10} minutes</p>
         <h1 id="course-heading">${L.esc(c.meta.title)}</h1>
         <p class="lede">${L.esc(c.meta.intro)}</p>
         <p class="actions"><a class="button primary" href="${c.id}/${c.puzzles[0].slug}.html" data-resume="${c.id}">Start the first puzzle →</a></p>
