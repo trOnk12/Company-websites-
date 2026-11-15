@@ -72,7 +72,16 @@ function parseBody(body, ctx) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (/^#\s/.test(line) || /^#{4,}\s/.test(line)) throw new Error(`${ctx.file}: only ## and ### headings are supported`);
-    if (/^\|/.test(line)) throw new Error(`${ctx.file}: tables are not supported`);
+    if (/^\|/.test(line)) {
+      // A simple table: header row, a |---| row, then body rows. No alignment, no nesting.
+      const rows = [line];
+      while (i + 1 < lines.length && /^\|/.test(lines[i + 1])) rows.push(lines[++i]);
+      const cells = r => r.trim().replace(/^\||\|$/g, '').split('|').map(c => c.trim());
+      if (rows.length < 3 || !/^\|[\s:|-]+\|$/.test(rows[1].trim())) throw new Error(`${ctx.file}: a table needs a header row and a |---| row`);
+      if (!cur) throw new Error(`${ctx.file}: text before the first ## heading`);
+      cur.blocks.push({ type: 'table', head: cells(rows[0]), rows: rows.slice(2).map(cells) });
+      continue;
+    }
     const h2 = line.match(/^##\s+(.+)$/);
     if (h2) { cur = { title: h2[1].trim(), blocks: [] }; sections.push(cur); continue; }
     if (!line.trim()) continue;
@@ -108,6 +117,7 @@ function renderBlocks(blocks, ctx, { recall = false } = {}) {
     if (b.type === 'p') return `<p>${inline(b.text, ctx)}</p>`;
     if (b.type === 'h3') return `<h3>${inline(b.text, ctx)}</h3>`;
     if (b.type === 'code') return `<pre><code${b.lang ? ` class="language-${esc(b.lang)}"` : ''}>${esc(b.text)}</code></pre>`;
+    if (b.type === 'table') return `<div class="table-wrap"><table><thead><tr>${b.head.map(h => `<th scope="col">${inline(h, ctx)}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r => `<tr>${r.map((c, k) => k === 0 ? `<th scope="row">${inline(c, ctx)}</th>` : `<td>${inline(c, ctx)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     if (recall) {
       // "Question::Answer" — the same syntax Obsidian's Spaced Repetition plugin reads.
       return b.items.map(it => {

@@ -397,6 +397,33 @@
    "in": "18",
    "def": "Gets this screen's ViewModel from its store, creating it the first time.",
    "kind": "code"
+  },
+  "process death": {
+   "in": "19",
+   "def": "Android ending an app's process, usually in the background to free memory.",
+   "aliases": [
+    "process is ended"
+   ]
+  },
+  "saved state": {
+   "in": "19",
+   "def": "A small Bundle your app hands to system_server to keep, so a screen can be rebuilt after process death.",
+   "aliases": [
+    "saved-state"
+   ]
+  },
+  "Bundle": {
+   "in": "19",
+   "def": "A small map of simple values (text, numbers) that can be packed into a Parcel.",
+   "kind": "code",
+   "aliases": [
+    "Bundles"
+   ]
+  },
+  "SavedStateHandle": {
+   "in": "19",
+   "def": "A map a ViewModel can read and write that is kept in the saved state.",
+   "kind": "code"
   }
  },
  "avoid": {

@@ -434,3 +434,8 @@ html:not(.js) .stage [data-move] { display: none; }
 .d-share { fill: #EEF3FA; stroke: var(--accent-deep); stroke-width: 1.5; stroke-dasharray: 4 3; }
 .d-blank { fill: #FFFDF7; }
 .d-sign { font-family: var(--sans); font-size: 13px; font-weight: 700; fill: var(--ink); letter-spacing: 0.04em; }
+.table-wrap { overflow-x: auto; margin: 1rem 0; }
+.table-wrap table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+.table-wrap th, .table-wrap td { border: 1px solid var(--rule); padding: 0.45rem 0.6rem; text-align: left; vertical-align: top; }
+.table-wrap thead th { background: var(--bg-band); }
+.table-wrap tbody th { font-weight: 600; }

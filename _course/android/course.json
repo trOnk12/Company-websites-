@@ -44,14 +44,15 @@
       "blurb": "What happens to your screen, and your data, when the phone turns, the user leaves, or the process ends.",
       "puzzles": [
         "17-turn-the-phone-lose-the-screen.md",
-        "18-the-viewmodel-outlives-the-screen.md"
+        "18-the-viewmodel-outlives-the-screen.md",
+        "19-when-the-process-is-gone.md"
       ]
     }
   ],
   "upcoming": [
     {
       "title": "Module 4, continued",
-      "topics": "Process death and saved state (what survives when the process is gone), Context, tasks and the back stack."
+      "topics": "Context and why it leaks, tasks and the back stack."
     },
     {
       "title": "Module 5: Work without a screen",

@@ -1,0 +1,23 @@
+<!-- label: Saved state waits in system_server while your process is gone -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sv-t"><title id="sv-t">As the user leaves, your app sends a small Bundle with the draft to system_server by Binder; the process is ended to free memory; when the user comes back, a new process gets the Bundle back; after Back, system_server throws it away</title>
+<x-ground class="step s1" y="300" label="kernel"/>
+<x-postoffice class="step s1" x="250" y="318" w="130" h="54" flag="0"/>
+<x-townhall class="step s1" x="400" y="130" w="226" h="170"/>
+<g class="step s1 hide-2"><x-house x="20" y="110" w="220" h="190" label="your app"/><rect class="d-band" x="40" y="152" width="180" height="104" rx="8"/><rect class="d-wood" x="56" y="186" width="148" height="56" rx="6"/><text class="d-tiny" x="130" y="202" text-anchor="middle">ViewModel</text><rect class="d-paper" x="66" y="210" width="128" height="24" rx="4"/><text class="d-tiny" x="130" y="227" text-anchor="middle">draft: "Hi Ana"</text></g>
+<g class="step s2 hide-3" data-pulse="2"><polygon class="d-dash" points="10,110 130,62 250,110"/><rect class="d-dash" x="20" y="110" width="220" height="190"/><text class="d-r" x="130" y="200" text-anchor="middle">process ended</text></g>
+<g class="step s3" data-pulse="3"><x-house x="20" y="110" w="220" h="190" label="new process"/><rect class="d-hl" x="40" y="152" width="180" height="104" rx="8"/><text class="d-a" x="130" y="172" text-anchor="middle">new Activity</text><rect class="d-paper" x="66" y="210" width="128" height="24" rx="4"/><text class="d-tiny" x="130" y="227" text-anchor="middle">draft: "Hi Ana"</text></g>
+<x-arrow class="step only-1" tone="path" d="M180,296 C200,330 220,340 242,342"/>
+<x-arrow class="step only-1" tone="path" d="M388,340 C440,336 470,300 482,270"/>
+<x-arrow class="step only-3" tone="path" d="M470,270 C450,320 420,344 388,346"/>
+<x-arrow class="step only-3" tone="path" d="M250,346 C200,340 190,300 180,262"/>
+<g class="step s1" data-move="1:470,200 3:470,200 4:470,200"><x-letter x="0" y="0" w="92" h="40" label="Bundle"/></g>
+<g class="step s1 hide-3"><text class="d-tiny" x="516" y="262" text-anchor="middle">saved state</text></g>
+<g class="step s3 hide-4" data-move="2:470,200 3:150,262"><x-letter x="0" y="0" w="76" h="30" label="Bundle"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-band" x="40" y="152" width="180" height="104" rx="8"/><text class="d-m" x="130" y="200" text-anchor="middle">screen closed</text><x-arrow tone="red" d="M230,90 C190,80 150,82 110,92"/><text class="d-r" x="236" y="94">Back</text><path class="d-red" d="M466,196 L566,244 M566,196 L466,244"/></g>
+</svg>
+<ol class="caps">
+<li><p>The user switches to another app, so your Activity is stopped. First your app packs the draft into a <b>Bundle</b>, a small map of simple values, and Binder carries it to system_server: the screen's <b>saved state</b>.</p></li>
+<li><p>Memory runs short, and Android ends your process in the background: <b>process death</b>. The ViewModel and every other object go with it. <i>Predict: the user comes back. Is the draft still there?</i></p></li>
+<li><p>Yes. A new process starts, and system_server hands the Bundle back by Binder. The new Activity reads the draft from it.</p></li>
+<li><p>But if the user closes the screen for good with Back, there's nothing to come back to, so system_server throws the saved state away.</p></li>
+</ol>

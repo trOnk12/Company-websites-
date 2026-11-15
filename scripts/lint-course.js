@@ -147,6 +147,7 @@ function segments(p) {
         const q = parseQuestion(it);
         segs.push({ where: `question ${i + 1}`, text: [q.q, ...q.opts.flatMap(o => [o.text, o.mismatch || '']), q.why].join(' · ') });
       });
+      else if (b.type === 'table') segs.push({ where: `${s.title} (table)`, text: [b.head, ...b.rows].map(r => r.join(' · ')).join(' · ') });
       else segs.push({ where: s.title, text: b.items ? b.items.join(' · ') : (b.text || '') });
     }
   }
@@ -224,6 +225,7 @@ function text(id) {
           d?.caps.forEach((c, i) => console.log(`  step ${i + 1}: ${plain(c)}`));
         } else if (s.title === 'Check yourself' && b.type === 'ul') {
           b.items.forEach((it, i) => { const q = parseQuestion(it); console.log(`  Q${i + 1}. ${q.q}`); const k = (p.n + i) % q.opts.length; [...q.opts.slice(k), ...q.opts.slice(0, k)].forEach((o, j) => console.log(`     ${'ABCD'[j]}) ${o.text}`)); });
+        } else if (b.type === 'table') { console.log([b.head, ...b.rows].map(r => `| ${r.join(' | ')} |`).join('\n'));
         } else console.log(b.items ? b.items.map(x => `  - ${x}`).join('\n') : b.text);
       }
     }
