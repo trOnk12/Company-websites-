@@ -38,12 +38,20 @@
         "15-frames-jank-and-anrs.md",
         "16-how-big-can-a-binder-call-be.md"
       ]
+    },
+    {
+      "title": "Module 4: Screens and their lives",
+      "blurb": "What happens to your screen, and your data, when the phone turns, the user leaves, or the process ends.",
+      "puzzles": [
+        "17-turn-the-phone-lose-the-screen.md",
+        "18-the-viewmodel-outlives-the-screen.md"
+      ]
     }
   ],
   "upcoming": [
     {
-      "title": "Module 4: Screens and their lives",
-      "topics": "Context, why each lifecycle callback exists, rotation, ViewModel and the ViewModelStore that keeps it alive, saved state, process death, tasks and the back stack."
+      "title": "Module 4, continued",
+      "topics": "Process death and saved state (what survives when the process is gone), Context, tasks and the back stack."
     },
     {
       "title": "Module 5: Work without a screen",

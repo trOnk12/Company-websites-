@@ -348,6 +348,55 @@
   "Linux": {
    "in": "01",
    "def": "A free operating system, first made for computers shared by many people; Android is built on it."
+  },
+  "configuration change": {
+   "in": "17",
+   "def": "A change to the phone's setup that can change how screens should look: turning the phone, dark mode, language.",
+   "aliases": [
+    "configuration changes",
+    "configuration"
+   ]
+  },
+  "recreated": {
+   "in": "17",
+   "def": "Destroyed and built again from scratch as a new object.",
+   "aliases": [
+    "recreates",
+    "recreate",
+    "recreation"
+   ]
+  },
+  "ViewModel": {
+   "in": "18",
+   "def": "An object made to hold one screen's data, kept across configuration changes.",
+   "aliases": [
+    "ViewModels",
+    "viewmodel"
+   ]
+  },
+  "ViewModelStore": {
+   "in": "18",
+   "def": "The small map an Activity keeps its ViewModels in: name → ViewModel."
+  },
+  "onCleared()": {
+   "in": "18",
+   "def": "The ViewModel callback that runs when its store is cleared for good.",
+   "kind": "code"
+  },
+  "ActivityThread": {
+   "in": "14",
+   "def": "Android's own code in your process that creates and destroys your Activities on the main thread.",
+   "kind": "code"
+  },
+  "isChangingConfigurations": {
+   "in": "18",
+   "def": "True while an Activity is being destroyed only to be recreated.",
+   "kind": "code"
+  },
+  "viewModels()": {
+   "in": "18",
+   "def": "Gets this screen's ViewModel from its store, creating it the first time.",
+   "kind": "code"
   }
  },
  "avoid": {

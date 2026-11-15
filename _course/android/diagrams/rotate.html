@@ -1,0 +1,20 @@
+<!-- label: Turning the phone destroys the Activity and builds a new one -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ro-t"><title id="ro-t">Your app's Activity holds a counter at 3; the phone turns; system_server sends a message by Binder; the old Activity is destroyed; a new, wider Activity is created and its counter is 0; the house stays</title>
+<x-ground class="step s1" y="300" label="kernel"/>
+<x-postoffice class="step s1" x="300" y="318" w="130" h="54" flag="0"/>
+<x-house class="step s1" x="20" y="90" w="420" h="210" label="your app"/>
+<x-townhall class="step s1" x="462" y="150" w="166" h="150"/>
+<g class="step s1 hide-3" data-pulse="1"><rect class="d-hl" x="60" y="132" width="96" height="150" rx="10"/><text class="d-a" x="108" y="156" text-anchor="middle">Activity</text><rect class="d-paper" x="72" y="196" width="72" height="34" rx="4"/><text class="d-tiny" x="108" y="219" text-anchor="middle">count: 3</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-paper" x="520" y="60" width="50" height="80" rx="8"/><x-arrow tone="acc" d="M590,90 C612,104 612,130 590,146"/><text class="d-a" x="545" y="44" text-anchor="middle">turned</text></g>
+<x-arrow class="step only-2" tone="path" d="M520,300 C510,350 470,352 438,346"/>
+<x-arrow class="step only-2" tone="path" d="M300,340 C250,330 220,300 200,250"/>
+<x-letter class="step s2 hide-3" data-move="1:520,200 2:170,206" x="0" y="0" w="96" h="34" label="new config"/>
+<g class="step s3 hide-4" data-pulse="3"><rect class="d-bad" x="60" y="132" width="96" height="150" rx="10"/><path class="d-red" d="M70,142 L146,272 M146,142 L70,272"/><text class="d-r" x="108" y="160" text-anchor="middle">destroyed</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="60" y="150" width="250" height="110" rx="10"/><text class="d-a" x="185" y="176" text-anchor="middle">new Activity</text><rect class="d-paper" x="148" y="200" width="74" height="34" rx="4"/><text class="d-tiny" x="185" y="223" text-anchor="middle">count: 0</text></g>
+</svg>
+<ol class="caps">
+<li><p>Your app shows an Activity. You tapped a button three times, and a field in the Activity object holds the count: 3.</p></li>
+<li><p>The user turns the phone. Its screen shape is part of its setup, and changing that setup is a <b>configuration change</b>. system_server tells your app by Binder.</p></li>
+<li><p>system_server has your Activity destroyed: the old Activity object is thrown away. <i>Predict: what will the counter show on the new screen?</i></p></li>
+<li><p>0. A brand-new Activity is created for the new shape, and its <code>onCreate()</code> runs again: the Activity was <b>recreated</b>. The house, your process, never went away.</p></li>
+</ol>

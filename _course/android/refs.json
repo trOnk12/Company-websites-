@@ -80,6 +80,13 @@
    "url": "https://github.com/torvalds/linux/blob/7e1392a42ea288d70a266f6553fe06f57f8647ea/drivers/android/binder/transaction.rs#L392",
    "where": "transaction.rs, line 392",
    "repo": "Linux kernel"
+  },
+  "ActivityThread": {
+   "what": "When an Activity is destroyed only to be recreated, ActivityThread keeps what it hands over (including the ViewModelStore), then gives it to the new Activity in attach().",
+   "code": " 6119      if (getNonConfigInstance) {\n 6120          r.lastNonConfigurationInstances = r.activity.retainNonConfigurationInstances();\n    …\n 4180      activity.attach(…, r.lastNonConfigurationInstances, config, …);",
+   "url": "https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/ActivityThread.java#L6120",
+   "where": "ActivityThread.java, lines 6120 and 4180",
+   "repo": "AOSP frameworks/base"
   }
  }
 }
