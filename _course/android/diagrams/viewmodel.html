@@ -2,18 +2,19 @@
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="vm-t"><title id="vm-t">An Activity keeps a ViewModel with count 3 in its ViewModelStore; when the phone turns, ActivityThread holds the store while the old Activity is destroyed, then gives it to the new Activity; when the screen closes for good, the store is emptied</title>
 <x-ground class="step s1" y="300" label="kernel"/>
 <x-house class="step s1" x="20" y="80" w="600" h="220" label="your app"/>
+<g class="step only-2" data-pulse="2"><rect class="d-paper" x="540" y="10" width="64" height="38" rx="7"/><circle class="d-ink" cx="597" cy="29" r="3"/><text class="d-a" x="530" y="34" text-anchor="end">phone turned</text></g>
 <x-machine class="step s1" data-pulse="2" x="250" y="230" w="140" label="ActivityThread"/>
 <g class="step s1 hide-2"><rect class="d-hl" x="50" y="122" width="160" height="104" rx="10"/><text class="d-a" x="130" y="142" text-anchor="middle">Activity</text></g>
 <g class="step s2 hide-3"><rect class="d-bad" x="50" y="122" width="160" height="104" rx="10"/><path class="d-red" d="M60,132 L200,220 M200,132 L60,220"/><text class="d-r" x="130" y="142" text-anchor="middle">destroyed</text></g>
-<g class="step s3" data-pulse="3"><rect class="d-hl" x="400" y="122" width="200" height="104" rx="10"/><text class="d-a" x="500" y="142" text-anchor="middle">new Activity</text></g>
-<g class="step s4" data-pulse="4"><rect class="d-bad" x="400" y="122" width="200" height="104" rx="10"/><text class="d-r" x="500" y="142" text-anchor="middle">closed for good</text><text class="d-rt" x="500" y="244" text-anchor="middle">onCleared()</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="384" y="132" width="226" height="86" rx="10"/><text class="d-a" x="497" y="150" text-anchor="middle">new Activity</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-band" x="384" y="132" width="226" height="86" rx="10"/><text class="d-m" x="497" y="150" text-anchor="middle">screen closed</text><x-arrow tone="red" d="M600,110 C560,96 520,96 480,104"/><text class="d-r" x="604" y="100" text-anchor="end">Back</text><text class="d-rt" x="500" y="244" text-anchor="middle">onCleared()</text></g>
 <x-arrow class="step only-2" tone="acc" d="M150,226 C170,250 210,262 244,260"/>
 <x-arrow class="step only-3" tone="acc" d="M396,250 C430,250 450,240 470,226"/>
-<g class="step s1" data-move="1:66,154 2:262,166 3:436,154 4:436,154"><rect class="d-wood" x="0" y="0" width="128" height="62" rx="6"/><text class="d-tiny" x="64" y="16" text-anchor="middle">ViewModelStore</text><text class="step s4 d-rt" x="64" y="45" text-anchor="middle">empty</text><g class="step s1 hide-4"><rect class="d-paper" x="10" y="24" width="108" height="30" rx="4"/><text class="d-tiny" x="64" y="45" text-anchor="middle">count: 3</text></g></g>
+<g class="step s1" data-move="1:66,154 2:262,166 3:432,158 4:432,158"><rect class="d-wood" x="0" y="0" width="128" height="62" rx="6"/><text class="d-tiny" x="64" y="16" text-anchor="middle">ViewModelStore</text><text class="step s4 d-rt" x="64" y="45" text-anchor="middle">empty</text><g class="step s1 hide-4"><rect class="d-paper" x="10" y="24" width="108" height="30" rx="4"/><text class="d-tiny" x="64" y="45" text-anchor="middle">count: 3</text></g></g>
 </svg>
 <ol class="caps">
 <li><p>Keep the counter in a <b>ViewModel</b>, an object made to hold one screen's data. Each Activity keeps its ViewModels in a <b>ViewModelStore</b>: a small map, name → ViewModel.</p></li>
 <li><p>The phone turns, and the old Activity is destroyed. But first <code>ActivityThread</code>, Android's own code in your process, takes the store and holds it. <i>Predict: what will the new Activity's counter show?</i></p></li>
 <li><p>3. The new Activity is handed the same store, with the same ViewModel inside. Nothing crossed Binder: it all stayed in your process.</p></li>
-<li><p>When the user closes the screen for good, no new Activity is coming. The store is emptied, and each ViewModel's <code>onCleared()</code> runs.</p></li>
+<li><p>When the user leaves the screen for good with Back, no new Activity is coming. The store is emptied, and each ViewModel's <code>onCleared()</code> runs.</p></li>
 </ol>

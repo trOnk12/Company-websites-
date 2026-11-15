@@ -16,24 +16,24 @@ In puzzle 17, a configuration change replaced your Activity with a new one, and 
 
 ## The building block
 
-A **ViewModel** is an object made to hold one screen's data. You write it as a class that extends `ViewModel`:
+A **ViewModel** is an object made to hold one screen's data. You write it as a class built on `ViewModel`, and it can do the slow work itself, like the download:
 
 ```kotlin
-class CounterViewModel : ViewModel() {
-    var count = 0
+class ListViewModel : ViewModel() {
+    val items = download()   // runs once, when the ViewModel is created
 }
 
 // in the Activity:
-val vm: CounterViewModel by viewModels()
+val vm: ListViewModel by viewModels()
 ```
 
-`viewModels()` doesn't create a new one each time. Each Activity keeps its ViewModels in a **ViewModelStore**: a small map from a name to a ViewModel. `viewModels()` looks in the store first and creates the ViewModel only if it isn't there yet.
+The word by in that last line hands the job of finding the ViewModel to `viewModels()`, which doesn't create a new one each time. Each Activity keeps its ViewModels in a **ViewModelStore**: a small map from a name to a ViewModel. `viewModels()` looks in the store first and creates the ViewModel only if it isn't there yet.
 
 The trick is what happens to the store. When the Activity is destroyed only to be recreated, `ActivityThread`, Android's own code in your process that creates and destroys your Activities, keeps the store and hands it to the new Activity. Same store, same ViewModel, same count. Nothing crosses Binder: it all stays in your process's memory.
 
-When the Activity is destroyed for good, for example the user pressed Back, no new Activity is coming. Then the store is cleared, and each ViewModel's `onCleared()` runs. The code that ships with `ViewModel` decides between the two with one check: at destroy, clear the store only if `isChangingConfigurations` is false.
+When the Activity is destroyed for good, for example the user pressed the Back button to leave the screen, no new Activity is coming. Then the store is cleared, and each ViewModel's `onCleared()` runs. The code that ships with `ViewModel` decides between the two with one check: at destroy, clear the store only if `isChangingConfigurations` is false (it's true when this destroy is only to recreate the Activity).
 
-So a ViewModel lives as long as the screen, not as long as one Activity object. But it still lives in your process. If the process itself is gone, so is the ViewModel: the next puzzle is about that.
+So a ViewModel lives as long as the screen, not as long as one Activity object. But it still lives in your process. If the process itself is gone, so is the ViewModel. What survives that is the next part of this module (coming soon).
 
 ## The analogy
 
@@ -41,7 +41,7 @@ Before the room is torn down to be rebuilt, the clerk carries its locker out and
 
 ## Check yourself
 
-- A ViewModel holds a list downloaded from the network. The user turns the phone twice. How many times is the list downloaded?::*Once: the same ViewModel is handed to each new Activity||Three times, once per Activity >> The Activities are new, but the ViewModel waits in the store and is handed over. >> s3||Twice, once after each turn, because turning clears the store >> The store is cleared only when the screen closes for good, not on a configuration change. >> s4::The store survives configuration changes, so the ViewModel and its list do too.
+- A ViewModel downloads a list when it's created, like the one above. The user turns the phone twice. How many times is the list downloaded?::*Once: the same ViewModel is handed to each new Activity||Three times, once per Activity >> The Activities are new, but the ViewModel waits in the store and is handed over. >> s3||Twice, once after each turn, because turning clears the store >> The store is cleared only when the screen closes for good, not on a configuration change. >> s4::The store survives configuration changes, so the ViewModel and its list do too.
 - Why is the store cleared when the user presses Back, but not when they turn the phone?::*After a turn a new Activity is coming to take the store; after Back none is, so keeping it would only waste memory||Because Back ends the process >> The process can live on. Only that screen is finished. >> s4||Because turning is too quick to clear anything >> Speed has nothing to do with it: the code checks whether the Activity is being destroyed only to be recreated. >> the-building-block::Clear the store unless a new Activity will take it.
 - What's the difference between a ViewModel and the ViewModelStore?::*A ViewModel holds one screen's data; the ViewModelStore is the map an Activity keeps its ViewModels in||They're the same object >> The store is a container; the ViewModels are what's inside it. >> s1||The ViewModelStore is kept in system_server >> No: it stays in your own process, handed from the old Activity to the new one. >> s3::One map, many ViewModels, all in your process.
 

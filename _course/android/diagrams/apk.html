@@ -19,6 +19,6 @@
 <ol class="caps">
 <li><p>On your computer, your Kotlin compiles to <b>DEX</b>: instructions written for Android, not for any one CPU. That's what's inside your APK.</p></li>
 <li><p>The same APK goes to phones with different CPUs. Each kind of CPU understands only its own set of instructions, its <b>machine code</b>. <i>Predict: so who runs the DEX?</i></p></li>
-<li><p><b>ART</b>, the Android Runtime. It lives inside each app's process, on every phone.</p></li>
+<li><p><b>ART</b>, the Android Runtime: the part of Android that runs your code. ART itself is already machine code for that phone's CPU, and it lives inside each app's process.</p></li>
 <li><p>The simplest thing ART can do is <b>interpreting</b>: reading the DEX one instruction at a time. It always works, but it's slow.</p></li>
 </ol>

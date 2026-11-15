@@ -78,7 +78,7 @@
 <ol class="caps">
 <li><p>On your computer, your Kotlin compiles to <b>DEX</b>: instructions written for Android, not for any one CPU. That's what's inside your APK.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-apk-2">Next →</label></div></li>
 <li><p>The same APK goes to phones with different CPUs. Each kind of CPU understands only its own set of instructions, its <b>machine code</b>. <i>Predict: so who runs the DEX?</i></p><div class="stepnav"><label for="st-apk-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-apk-3">Next →</label></div></li>
-<li><p><b>ART</b>, the Android Runtime. It lives inside each app's process, on every phone.</p><div class="stepnav"><label for="st-apk-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-apk-4">Next →</label></div></li>
+<li><p><b>ART</b>, the Android Runtime: the part of Android that runs your code. ART itself is already machine code for that phone's CPU, and it lives inside each app's process.</p><div class="stepnav"><label for="st-apk-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-apk-4">Next →</label></div></li>
 <li><p>The simplest thing ART can do is <b>interpreting</b>: reading the DEX one instruction at a time. It always works, but it's slow.</p><div class="stepnav"><label for="st-apk-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-apk-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-apk-1" title="Step 1"></label><label for="st-apk-2" title="Step 2"></label><label for="st-apk-3" title="Step 3"></label><label for="st-apk-4" title="Step 4"></label></div>

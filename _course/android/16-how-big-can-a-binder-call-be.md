@@ -20,7 +20,7 @@ Calls into a process wait in its **Binder buffer**: an area of that process's me
 
 That 1 MB is shared by every call in progress into that process, from every app. So a call can fail even when it's well under 1 MB, if many other calls are waiting at the same moment.
 
-A call that doesn't fit fails with `TransactionTooLargeException` (a transaction is one Binder call). The fix is never a bigger Parcel: save the data somewhere both sides can reach, like a file, and send its name, or a number that identifies it. Inside your own app this just works: all its screens run as the same UID, so the sandbox lets every one of them read the file. (Sharing with another app needs system_server's help: a later puzzle.)
+A call that doesn't fit fails with `TransactionTooLargeException` (a transaction is one Binder call). The fix is never a bigger Parcel: save the data somewhere both sides can reach, like a file, and send its name, or a number that identifies it. Inside your own app this just works: all its screens run as the same UID, so the sandbox lets every one of them read the file. (Sharing with another app needs system_server's help, which this course hasn't covered yet.)
 
 Splitting the data into many smaller calls doesn't help either: they all go through the same shared 1 MB, and the receiver would have to glue the pieces back together.
 
