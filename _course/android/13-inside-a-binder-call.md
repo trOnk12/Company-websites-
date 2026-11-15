@@ -7,7 +7,7 @@ takeaway: proxy → Parcel → Binder stamps your UID → a Binder thread → th
 
 ## The problem
 
-When your app calls `startActivity()`, the method that sends an Intent, it looks like an ordinary method call. But the object that does the work lives in system_server's memory, another process. And an object is data in a process's memory (puzzle 0), so it can't leave that process. So how does a call cross from your app to the town hall and back? The answer: each "message" from puzzle 4 is really a method call on an object in another process.
+When your app calls `startActivity()`, the method that sends an Intent, it looks like an ordinary method call. But the object that does the work lives in system_server's memory, another process. And an object is data in a process's memory, so it can't leave that process. So how does a call cross from your app to the town hall and back? The answer: each "message" from puzzle 4 is really a method call on an object in another process. Your app has such objects too, which system_server calls: that's how the "resume" message from puzzle 4 arrives.
 
 ## See it
 

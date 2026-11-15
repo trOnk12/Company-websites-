@@ -31,9 +31,9 @@ The word by in that last line hands the job of finding the ViewModel to `viewMod
 
 The trick is what happens to the store. When the Activity is destroyed only to be recreated, `ActivityThread`, Android's own code in your process that creates and destroys your Activities, keeps the store and hands it to the new Activity. Same store, same ViewModel, same count. Nothing crosses Binder: it all stays in your process's memory.
 
-When the Activity is destroyed for good, for example the user pressed the Back button to leave the screen, no new Activity is coming. Then the store is cleared, and each ViewModel's `onCleared()` runs. The code that ships with `ViewModel` decides between the two with one check: at destroy, clear the store only if `isChangingConfigurations` is false (it's true when this destroy is only to recreate the Activity).
+When the Activity is destroyed for good, for example the user pressed the Back button to leave the screen, no new Activity is coming. Then the store is cleared, and each ViewModel's `onCleared()` runs: your chance to stop work it started, like an unfinished download. The code that ships with `ViewModel` decides between the two with one check: at destroy, clear the store only if `isChangingConfigurations` is false (it's true when this destroy is only to recreate the Activity).
 
-So a ViewModel lives as long as the screen, not as long as one Activity object. But it still lives in your process. If the process itself is gone, so is the ViewModel. What survives that is the next part of this module (coming soon).
+So a ViewModel lives as long as the user keeps that screen: the screen they see stays the same, while the Activity objects behind it are replaced. But it still lives in your process. If the process itself is gone, so is the ViewModel. What survives that is the next part of this module (coming soon).
 
 ## The analogy
 

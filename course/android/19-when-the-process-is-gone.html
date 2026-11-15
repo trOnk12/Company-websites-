@@ -75,7 +75,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-band" x="40" y="152" width="180" height="104" rx="8"/><text class="d-m" x="130" y="200" text-anchor="middle">screen closed</text><path class="d-arr-red" d="M230,90 C190,80 150,82 110,92" marker-end="url(#ah-saved-red)"/><text class="d-r" x="236" y="94">Back</text><path class="d-red" d="M466,196 L566,244 M566,196 L466,244"/></g>
 </svg></div>
 <ol class="caps">
-<li><p>The user switches to another app, so your Activity is stopped. First your app packs the draft into a <b>Bundle</b>, a small map of simple values, and Binder carries it to system_server: the screen's <b>saved state</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-saved-2">Next →</label></div></li>
+<li><p>The user switches apps, so your Activity is stopped. The draft is a value your app chose to save (see the code below), so it's packed into a <b>Bundle</b>, a small map of simple values. Binder carries it to system_server: the screen's <b>saved state</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-saved-2">Next →</label></div></li>
 <li><p>Memory runs short, and Android ends your process in the background: <b>process death</b>. The ViewModel and every other object go with it. <i>Predict: the user comes back. Is the draft still there?</i></p><div class="stepnav"><label for="st-saved-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-saved-3">Next →</label></div></li>
 <li><p>Yes. A new process starts, and system_server hands the Bundle back by Binder. The new Activity reads the draft from it.</p><div class="stepnav"><label for="st-saved-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-saved-4">Next →</label></div></li>
 <li><p>But if the user closes the screen for good with Back, there's nothing to come back to, so system_server throws the saved state away.</p><div class="stepnav"><label for="st-saved-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-saved-1">↺ Again</label></div></li>
@@ -87,15 +87,16 @@
         <h2 id="the-building-block">The building block</h2>
 <p>When Android ends your process in the background to free memory, that's <b>process death</b>. Nothing inside the process survives it.</p>
 <p>So, before it can happen, your app sends a little of its state somewhere that outlives the process: system_server. Each time your Activity is stopped (the user left it), your app packs what it chose to save into a <b><code>Bundle</code></b>, a small map of simple values like text and numbers, and Binder carries it to system_server. That copy is the screen's <b>saved state</b>. When the user comes back to a process that's gone, a new process starts (a cold start, puzzle 12), and system_server hands the Bundle back to the new Activity.</p>
-<p>Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 16), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes on disk and is loaded again by its ID.</p>
+<p>Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 16), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes in a file on the phone and is read again by its ID.</p>
 <p>A ViewModel can use saved state too, through a <b><code>SavedStateHandle</code></b>: a map that's kept in the saved state.</p>
 <pre><code class="language-kotlin">class DraftViewModel(private val saved: SavedStateHandle) : ViewModel() {
     var draft: String
         get() = saved[&quot;draft&quot;] ?: &quot;&quot;
         set(value) { saved[&quot;draft&quot;] = value }
 }</code></pre>
+<p>Saved state survives turning the phone too: the old Activity is stopped before it's destroyed, so its Bundle is saved and handed to the new Activity.</p>
 <p>Saved state is for coming back. If the user closes the screen for good with Back, there's nothing to come back to, so system_server throws it away.</p>
-<div class="table-wrap"><table><thead><tr><th scope="col">Kept in</th><th scope="col">Survives turning the phone</th><th scope="col">Survives process death</th><th scope="col">Survives Back</th></tr></thead><tbody><tr><th scope="row">a field of the Activity</th><td>no</td><td>no</td><td>no</td></tr><tr><th scope="row">a ViewModel</th><td>yes</td><td>no</td><td>no</td></tr><tr><th scope="row">saved state</th><td>yes</td><td>yes</td><td>no</td></tr><tr><th scope="row">a file on disk</th><td>yes</td><td>yes</td><td>yes</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th scope="col">Kept in</th><th scope="col">Survives turning the phone</th><th scope="col">Survives process death</th><th scope="col">Survives Back</th></tr></thead><tbody><tr><th scope="row">a field of the Activity</th><td>no</td><td>no</td><td>no</td></tr><tr><th scope="row">a ViewModel</th><td>yes</td><td>no</td><td>no</td></tr><tr><th scope="row">saved state</th><td>yes</td><td>yes</td><td>no</td></tr><tr><th scope="row">a file on the phone</th><td>yes</td><td>yes</td><td>yes</td></tr></tbody></table></div>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -108,7 +109,7 @@
 <input type="radio" name="q-19-when-the-process-is-gone-1" id="q-19-when-the-process-is-gone-1-1" data-ok><label for="q-19-when-the-process-is-gone-1-1">An empty message: the ViewModel ended with the process</label>
 <input type="radio" name="q-19-when-the-process-is-gone-1" id="q-19-when-the-process-is-gone-1-2"><label for="q-19-when-the-process-is-gone-1-2">The message, because system_server keeps every ViewModel</label>
 <input type="radio" name="q-19-when-the-process-is-gone-1" id="q-19-when-the-process-is-gone-1-3"><label for="q-19-when-the-process-is-gone-1-3">The message: a ViewModel survives everything</label>
-<p class="fb ok opt-1"><b>Right.</b> Only what was in the saved state (or on disk) comes back.</p>
+<p class="fb ok opt-1"><b>Right.</b> Only what was in the saved state (or in a file) comes back.</p>
 <p class="fb no opt-2"><b>Not quite.</b> system_server keeps only the small Bundle your app sent, never your objects. <label class="show-me" for="st-saved-1" data-goto="st-saved">Show me step 1 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> A ViewModel lives in your process; when the process is gone, so is it. <label class="show-me" for="st-saved-2" data-goto="st-saved">Show me step 2 again ↑</label></p>
 </fieldset>

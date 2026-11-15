@@ -26,7 +26,7 @@ system_server moves each Activity along a fixed path of stages, called the **lif
 - started: visible;
 - resumed: in front, ready for taps;
 - paused: still visible, but no longer in front (a dialog covers it);
-- stopped: not visible anymore (another app is in front);
+- stopped: not visible anymore (another app is in front); if the user comes back, it goes stopped → started → resumed again;
 - destroyed: gone for good.
 
 ## The analogy

@@ -91,7 +91,7 @@
 <p>In Android, each screen of an app is an <b>Activity</b>.</p>
 <p>Android runs one long-lived process of its own, <b>system_server</b>. It keeps a register of every Activity of every app, and it decides what happens to each one.</p>
 <p>system_server moves each Activity along a fixed path of stages, called the <b>lifecycle</b>, and your app is told about every move:</p>
-<ul><li>created: the screen is set up, not yet visible;</li><li>started: visible;</li><li>resumed: in front, ready for taps;</li><li>paused: still visible, but no longer in front (a dialog covers it);</li><li>stopped: not visible anymore (another app is in front);</li><li>destroyed: gone for good.</li></ul>
+<ul><li>created: the screen is set up, not yet visible;</li><li>started: visible;</li><li>resumed: in front, ready for taps;</li><li>paused: still visible, but no longer in front (a dialog covers it);</li><li>stopped: not visible anymore (another app is in front); if the user comes back, it goes stopped → started → resumed again;</li><li>destroyed: gone for good.</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

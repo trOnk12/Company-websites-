@@ -16,7 +16,7 @@ In puzzle 13, a Binder thread picked up the town hall's message. But in puzzle 2
 
 ## The building block
 
-The main thread has an in-tray: its **message queue**. Every piece of screen work waits there as a message: draw the screen, handle a touch, run a lifecycle callback. Touches arrive like lifecycle messages: system_server sends them to your app, and they're posted into the queue.
+The main thread has an in-tray: its **message queue**. (A message from Binder becomes a message in this queue: the Binder thread puts it there.) Every piece of screen work waits there as a message: draw the screen, handle a touch, run a lifecycle callback. Touches arrive like lifecycle messages: system_server sends them to your app, and they're posted into the queue.
 
 The `Looper` is the main thread's endless loop from step 3: take the next message, run it to the end, repeat. A `Handler` is an object tied to one thread's queue that drops messages into it. The ones on this page are tied to the main thread's queue: the Binder thread uses one, then goes back to waiting (it doesn't wait for the main thread), and `handler.post { … }` is how you drop your own code in. Every app process starts in `ActivityThread.main()`, Android's code that sets up your app's main thread, which sets up this loop for the main thread and runs `Looper.loop()` forever.
 
