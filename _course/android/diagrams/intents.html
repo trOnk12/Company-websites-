@@ -1,26 +1,30 @@
 <!-- label: An Intent is a letter, checked by the town hall -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="in-t"><title id="in-t">A chat app sends an Intent to start a call; Binder carries it to system_server, which checks the phone-call permission and delivers it to the phone app; a game without the permission is refused</title>
 <x-ground class="step s1" y="300" label="kernel"/>
-<x-postoffice class="step s1" data-pulse="2" x="330" y="316" w="130" h="56" flag="0"/>
-<x-townhall class="step s1" data-pulse="3" x="190" y="70" w="270" h="120"/>
-<x-house class="step s1" x="20" y="190" w="160" h="110" label="Chat"/>
-<x-house class="step s1" x="200" y="232" w="110" h="68" label="Game"/>
-<x-house class="step s1" data-pulse="4" x="476" y="190" w="150" h="110" label="Phone"/>
-<g class="step s3" data-pulse="3"><rect class="d-paper" x="240" y="108" width="100" height="64" rx="4"/><text class="d-a" x="250" y="133">Chat ✓</text><text class="d-r" x="250" y="161">Game ✗</text></g>
-<x-arrow class="step only-2" tone="path" d="M120,290 C150,350 280,352 322,346"/>
-<x-arrow class="step only-3" tone="path" d="M396,312 C400,280 392,230 384,176"/>
-<x-arrow class="step only-4" tone="path" d="M372,176 C372,240 380,280 386,308"/>
-<x-arrow class="step only-4" tone="path" d="M462,344 C520,344 546,320 550,294"/>
-<g class="step s4" data-pulse="4"><rect class="d-hl" x="568" y="250" width="50" height="28" rx="14"/><text class="d-a" x="593" y="270" text-anchor="middle">call</text></g>
-<x-letter class="step s1 hide-5" data-move="1:80,236 2:358,322 3:350,116 4:496,240" x="0" y="0" w="62" label="Intent"/>
-<x-arrow class="step only-5" tone="red" d="M250,296 C270,350 300,350 322,346"/>
-<x-arrow class="step only-5" tone="red" d="M396,312 C400,280 392,230 384,176"/>
-<x-letter class="step s5" data-move="4:240,268 5:350,116" x="0" y="0" w="62" tone="bad" label="✗ no"/>
+<x-postoffice class="step s1" data-pulse="2" x="255" y="318" w="130" h="54" flag="0"/>
+<x-townhall class="step s1" data-pulse="3" x="200" y="60" w="240" h="110"/>
+<x-house class="step s1" x="20" y="200" w="170" h="100" label="Chat"/>
+<x-house class="step s1" data-pulse="5" x="235" y="200" w="170" h="100" label="Game"/>
+<x-house class="step s1" data-pulse="4" x="450" y="200" w="170" h="100" label="Phone"/>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="250" y="96" width="88" height="58" rx="4"/><text class="d-a" x="258" y="119">Chat ✓</text><text class="d-r" x="258" y="144">Game ✗</text></g>
+<x-arrow class="step only-2" tone="path" d="M110,296 C130,346 210,350 246,344"/>
+<x-arrow class="step only-3" tone="path" d="M394,330 C430,320 432,250 428,176"/>
+<x-arrow class="step only-4" tone="path" d="M420,176 C424,250 420,300 394,332"/>
+<x-arrow class="step only-4" tone="path" d="M394,350 C470,356 520,330 530,300"/>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="556" y="250" width="50" height="28" rx="14"/><text class="d-a" x="581" y="270" text-anchor="middle">call</text></g>
+<x-letter class="step s1 hide-5" data-move="1:70,240 2:286,322 3:344,98 4:470,240" x="0" y="0" w="50" h="34" label="Intent"/>
+<x-arrow class="step only-5" tone="path" d="M320,300 C320,310 320,312 320,316"/>
+<x-arrow class="step only-5" tone="path" d="M394,330 C430,320 432,250 428,176"/>
+<x-letter class="step s5 hide-6" data-move="4:296,240 5:344,98" x="0" y="0" w="50" h="34" label="Intent"/>
+<x-arrow class="step only-6" tone="red" d="M420,176 C424,250 420,300 394,332"/>
+<x-arrow class="step only-6" tone="red" d="M300,316 C300,300 300,290 300,282"/>
+<x-letter class="step s6" data-pulse="6" data-move="5:344,98 6:296,240" x="0" y="0" w="50" h="34" tone="bad" label="✗ no"/>
 </svg>
 <ol class="caps">
 <li><p>The chat app wants to call a friend. It can't reach into the phone app: they're in separate sandboxes. So it writes an <b>Intent</b>, a request to the town hall: "open the Phone app's call screen and call this number".</p></li>
 <li><p>The Intent goes to the town hall, system_server, by Binder, like every message to it.</p></li>
 <li><p>A call can cost money, so it needs a <b>permission</b>: a right an app must be granted, here by the user tapping Allow. The town hall checks its list: has Chat been granted the phone-call permission? <i>Predict: what if it hadn't?</i></p></li>
 <li><p>Chat is allowed, so the town hall delivers the request, again by Binder, and the call starts in the phone app.</p></li>
-<li><p>A game without the permission asks the same: the town hall refuses.</p></li>
+<li><p>A game without the permission sends the same request.</p></li>
+<li><p>The town hall refuses, and the answer travels back to the game by Binder: no call.</p></li>
 </ol>
