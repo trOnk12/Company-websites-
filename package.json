@@ -14,7 +14,8 @@
     "og:learning": "node scripts/og-learning.js",
     "test:perf": "playwright test tests/performance.test.js",
     "test:functional": "playwright test tests/functional.test.js",
-    "install:browsers": "playwright install chromium"
+    "install:browsers": "playwright install chromium",
+    "build:music": "node scripts/build-music.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0"

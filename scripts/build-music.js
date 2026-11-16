@@ -1,0 +1,186 @@
+// Builds the music section from _music/*.md into music/*.html.
+//
+// A recipe is Markdown with frontmatter (title, summary, mood, order) and sections. A section whose body holds a
+// ```settings fence becomes a settings card: one row per control, drawn as the real control is set.
+//
+//   ```settings
+//   DELAY LVL :: 1 o'clock :: Why it's there.
+//   TEXTURE :: [sparse|dense|*diffuse*] :: Why.
+//   PITCH :: step 7/12 :: perfect 5th :: Why.        (a stepped knob: label after the step)
+//   SECONDARY MODE :: Hold PING PONG ~2 s, until the PITCH LED blinks :: Why.
+//   ```
+//
+// Knob values: min, max, noon, or "N o'clock" (7 o'clock = min, 5 o'clock = max). They're drawn as a knob.
+// Run: node scripts/build-music.js [--check]
+
+const fs = require('fs');
+const path = require('path');
+const L = require('./build-learning');
+
+const SRC = path.join(L.ROOT, '_music');
+const OUT = path.join(L.ROOT, 'music');
+
+// 7 o'clock (fully counter-clockwise) → 0, 5 o'clock (fully clockwise) → 1.
+function knobFraction(v) {
+  const s = v.trim().toLowerCase();
+  if (s === 'min' || s === 'minimum' || s === 'fully left') return 0;
+  if (s === 'max' || s === 'maximum' || s === 'fully right') return 1;
+  if (s === 'noon' || s === "12 o'clock") return 0.5;
+  const m = s.match(/^(\d{1,2})(?::(\d{2}))? o'clock$/);
+  if (!m) return null;
+  let h = Number(m[1]) + (m[2] ? Number(m[2]) / 60 : 0);
+  if (h < 7) h += 12; // 1 o'clock → 13
+  const f = (h - 7) / 10;
+  return f >= 0 && f <= 1 ? f : null;
+}
+
+function knobSvg(f, label) {
+  const a = (-150 + 300 * f) * Math.PI / 180; // 0° = straight up
+  const x = n => (20 + n * Math.sin(a)).toFixed(1), y = n => (20 - n * Math.cos(a)).toFixed(1);
+  const arc = r => {
+    const a0 = -150 * Math.PI / 180;
+    const sx = (20 + r * Math.sin(a0)).toFixed(1), sy = (20 - r * Math.cos(a0)).toFixed(1);
+    const ex = (20 + r * Math.sin(a)).toFixed(1), ey = (20 - r * Math.cos(a)).toFixed(1);
+    return f <= 0.001 ? '' : `<path class="k-arc" d="M${sx},${sy} A${r},${r} 0 ${300 * f > 180 ? 1 : 0} 1 ${ex},${ey}"/>`;
+  };
+  const track = `<path class="k-track" d="M${(20 + 17 * Math.sin(-150 * Math.PI / 180)).toFixed(1)},${(20 - 17 * Math.cos(-150 * Math.PI / 180)).toFixed(1)} A17,17 0 1 1 ${(20 + 17 * Math.sin(150 * Math.PI / 180)).toFixed(1)},${(20 - 17 * Math.cos(150 * Math.PI / 180)).toFixed(1)}"/>`;
+  return `<svg class="knob" viewBox="0 0 40 40" role="img" aria-label="${L.esc(label)}">${track}${arc(17)}<circle class="k-body" cx="20" cy="20" r="12"/><line class="k-ptr" x1="${x(3)}" y1="${y(3)}" x2="${x(11)}" y2="${y(11)}"/></svg>`;
+}
+
+function valueHtml(control, v, extra) {
+  const ctx = { file: 'music', cards: new Map(), links: new Set() };
+  const choice = v.match(/^\[(.+)\]$/);
+  if (choice) {
+    const opts = choice[1].split('|').map(o => o.trim());
+    return `<span class="choices">${opts.map(o => { const on = /^\*.*\*$/.test(o); return `<span class="choice${on ? ' on' : ''}">${L.esc(on ? o.slice(1, -1) : o)}</span>`; }).join('')}</span>`;
+  }
+  const step = v.match(/^step (\d+)\/(\d+)$/);
+  if (step) {
+    const [k, n] = [Number(step[1]), Number(step[2])];
+    return `${knobSvg((k - 1) / (n - 1), `${control}: step ${k} of ${n}`)}<span class="v">Step ${k} of ${n}${extra ? `: ${L.inline(extra, ctx)}` : ''}</span>`;
+  }
+  const f = knobFraction(v);
+  if (f !== null) return `${knobSvg(f, `${control} at ${v}`)}<span class="v">${L.esc(v)}</span>`;
+  return `<span class="v text">${L.inline(v, ctx)}</span>`;
+}
+
+function settings(block) {
+  const ctx = { file: 'music', cards: new Map(), links: new Set() };
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(line => {
+    const parts = line.split('::').map(s => s.trim());
+    const [control, value] = parts;
+    const stepped = /^step \d+\/\d+$/.test(value);
+    const extra = stepped ? parts[2] : '';
+    const why = stepped ? parts[3] : parts[2];
+    return `<li class="setting"><span class="control">${L.esc(control)}</span><span class="value">${valueHtml(control, value, extra)}</span>${why ? `<span class="why">${L.inline(why, ctx)}</span>` : ''}</li>`;
+  });
+  return `<ul class="settings">${rows.join('')}</ul>`;
+}
+
+// One section: Markdown, with any ```settings fences drawn as cards.
+function section(title, text) {
+  const ctx = { file: 'music', cards: new Map(), links: new Set() };
+  const parts = text.split(/```settings\n([\s\S]*?)```/);
+  let html = '';
+  parts.forEach((part, i) => {
+    if (i % 2) html += settings(part);
+    else if (part.trim()) html += L.renderBlocks(L.parseBody(`## x\n\n${part.trim()}\n`, ctx)[0].blocks, ctx);
+  });
+  const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return `      <section id="${id}"><h2>${L.inline(title, ctx)}</h2>\n${html}</section>`;
+}
+
+function load() {
+  if (!fs.existsSync(SRC)) return [];
+  return fs.readdirSync(SRC).filter(f => f.endsWith('.md') && !f.startsWith('_')).map(f => {
+    const raw = fs.readFileSync(path.join(SRC, f), 'utf8');
+    const { meta, body } = L.parseFrontmatter(raw, f);
+    return { slug: f.replace(/\.md$/, ''), meta, body };
+  }).sort((a, b) => Number(a.meta.order || 99) - Number(b.meta.order || 99));
+}
+
+function sections(body) {
+  return body.split(/^## /m).slice(1).map(p => { const nl = p.indexOf('\n'); return { title: p.slice(0, nl).trim(), text: p.slice(nl + 1).trim() }; });
+}
+
+const footer = `      <p class="small">Settings are my starting points, to tune by ear; what each control does is checked against the manuals linked on each page.</p>
+      <p class="small"><a href="./">All recipes</a> · <a href="../course/">Courses</a> · <a href="../">pachulski.dev</a></p>`;
+
+function renderRecipe(r, all) {
+  const i = all.indexOf(r);
+  const next = all[i + 1], prev = all[i - 1];
+  const html = sections(r.body).map(s => section(s.title, s.text)).join('\n');
+  return L.page({
+    title: `${r.meta.title}: a recipe for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski`,
+    description: r.meta.summary,
+    canonical: `${L.SITE}/music/${r.slug}`,
+    base: '../', current: 'music', feed: false, footer,
+    body: `    <article class="recipe course-top wrap narrow">
+      <p class="eyebrow"><a href="./">Music recipes</a> · ${L.esc(r.meta.mood || '')}</p>
+      <h1>${L.esc(r.meta.title)}</h1>
+      <p class="lede">${L.esc(r.meta.summary)}</p>
+      <nav class="recipe-toc" aria-label="On this page"><ol>${sections(r.body).map(s => `<li><a href="#${s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}">${L.esc(s.title)}</a></li>`).join('')}</ol></nav>
+${html}
+      <nav class="pager" aria-label="More recipes">${prev ? `<a class="button" href="${prev.slug}.html">← ${L.esc(prev.meta.title)}</a>` : ''}${next ? `<a class="button primary" href="${next.slug}.html">${L.esc(next.meta.title)} →</a>` : `<a class="button" href="./">All recipes</a>`}</nav>
+    </article>`,
+  });
+}
+
+function renderIndex(all) {
+  const intro = fs.existsSync(path.join(SRC, '_index.md')) ? L.parseFrontmatter(fs.readFileSync(path.join(SRC, '_index.md'), 'utf8'), '_index.md') : { meta: {}, body: '' };
+  const html = sections(intro.body).map(s => section(s.title, s.text)).join('\n');
+  const cards = all.map(r => `<li class="course-card"><h3><a href="${r.slug}.html">${L.esc(r.meta.title)}</a></h3><p class="small"><b>${L.esc(r.meta.mood || '')}</b> ${L.esc(r.meta.summary)}</p></li>`).join('\n');
+  return L.page({
+    title: 'Music: sound recipes for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski',
+    description: intro.meta.summary || 'Sound recipes with exact settings.',
+    canonical: `${L.SITE}/music/`,
+    base: '../', current: 'music', feed: false, footer,
+    body: `    <article class="course-top wrap narrow">
+      <p class="eyebrow">Music, my hobby</p>
+      <h1>${L.esc(intro.meta.title || 'Music')}</h1>
+      <p class="lede">${L.esc(intro.meta.summary || '')}</p>
+      <h2>Recipes</h2>
+      <ul class="courses">
+${cards}
+      </ul>
+${html}
+    </article>`,
+  });
+}
+
+function musicUrls() {
+  return load().length ? [`${L.SITE}/music/`, ...load().map(r => `${L.SITE}/music/${r.slug}`)] : [];
+}
+
+function build() {
+  const all = load();
+  const out = new Map();
+  if (!all.length) return out;
+  for (const r of all) out.set(path.join(OUT, `${r.slug}.html`), renderRecipe(r, all));
+  out.set(path.join(OUT, 'index.html'), renderIndex(all));
+  return out;
+}
+
+function main() {
+  const check = process.argv.includes('--check');
+  const out = build();
+  const existing = fs.existsSync(OUT) ? fs.readdirSync(OUT).filter(f => f.endsWith('.html')).map(f => path.join(OUT, f)) : [];
+  const stale = existing.filter(f => !out.has(f));
+  const changed = [...out].filter(([f, h]) => !fs.existsSync(f) || fs.readFileSync(f, 'utf8') !== h).map(([f]) => f);
+  if (check) {
+    if (changed.length || stale.length) {
+      console.error('music/ is out of date. Run: npm run build:music');
+      [...changed, ...stale].forEach(f => console.error(`  ${path.relative(L.ROOT, f)}`));
+      process.exit(1);
+    }
+    console.log(`music/ is up to date (${out.size} pages).`);
+    return;
+  }
+  fs.mkdirSync(OUT, { recursive: true });
+  for (const [f, h] of out) fs.writeFileSync(f, h);
+  for (const f of stale) fs.unlinkSync(f);
+  console.log(`Built ${out.size} music pages.`);
+}
+
+module.exports = { build, musicUrls, knobFraction };
+if (require.main === module) main();
