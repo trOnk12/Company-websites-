@@ -24,6 +24,13 @@ Knows nothing about operating systems or Android internals. Every other word mus
 
 ## 1. Concept map first (before writing any puzzle)
 
+The glossary is also the course's dependency graph: every puzzle's "Builds on" panel and the overview's
+"Builds on 4, 6" are computed from which earlier terms it uses (`blocks()` in `lint-course.js`). So a
+puzzle that builds on many blocks is a warning: it's probably two puzzles. Aim for one or two direct
+blocks per puzzle; check the graph with
+`node -e "console.log(require('./scripts/lint-course').blocks('<course>'))"`.
+
+
 Write the module's concepts into `_course/<course>/glossary.json` **before** writing text:
 - one entry per term: `in` (the puzzle that teaches it), `def` (one plain sentence), `aliases`,
   `kind: "code"` for code names (they don't count as concepts, but must still be introduced in the body);

@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 2 · 3 of 20</p>
       <h1>Threads are the workers</h1>
       <p class="lede">Inside every process, the work is done by workers that run code one step at a time. One of them, in every app, is in charge of the screen.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-2">
+        <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="1"><details><summary><a href="01-the-kernel-is-in-charge.html">Puzzle 1: The kernel is in charge</a></summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 1, the kernel handed the CPU to a process. But a process often needs to do several things at once: download a song, play it, and keep the screen responsive. Who actually runs the code inside a process?</p>

@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 17 · 18 of 20</p>
       <h1>Turn the phone, lose your screen</h1>
       <p class="lede">In puzzle 3, system_server moved each Activity along its lifecycle. Turning the phone sends your Activity all the way to destroyed, and builds a new one.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-17">
+        <p id="builds-on-17"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="5"><details><summary><a href="05-you-dont-call-youre-called.html">Puzzle 5: You don't call. You're called.</a></summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="04-the-post-office-carries-letters.html">4</a> → <a href="05-you-dont-call-youre-called.html">5</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 3, system_server moved your Activity through its lifecycle: created, started, resumed, and in the end destroyed. Usually &quot;destroyed&quot; means the user closed the screen. But a counter you keep in a field of your Activity resets to 0 when the user just turns the phone sideways. Nobody closed anything. Where did it go?</p>

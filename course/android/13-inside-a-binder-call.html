@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 13 · 14 of 20</p>
       <h1>Inside a Binder call</h1>
       <p class="lede">In puzzle 4, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes, marked with the sender's identity, and picked up by a waiting thread.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-13">
+        <p id="builds-on-13"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="7"><details><summary><a href="07-letters-between-apps.html">Puzzle 7: Letters between apps</a></summary><p>An Intent is a letter to the town hall: &quot;open this screen&quot;. system_server checks the sender's permissions, then delivers it, or doesn't.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 7 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="04-the-post-office-carries-letters.html">4</a> → <a href="06-each-app-is-its-own-user.html">6</a> → <a href="07-letters-between-apps.html">7</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>When your app calls <code>startActivity()</code>, the method that sends an Intent, it looks like an ordinary method call. But the object that does the work lives in system_server's memory, another process. And an object is data in a process's memory, so it can't leave that process. So how does a call cross from your app to the town hall and back? The answer: each &quot;message&quot; from puzzle 4 is really a method call on an object in another process. Your app has such objects too, which system_server calls: that's how the &quot;resume&quot; message from puzzle 4 arrives.</p>

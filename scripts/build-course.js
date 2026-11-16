@@ -25,6 +25,9 @@ const REQUIRED = ['The problem', 'Check yourself', 'Sources'];
 
 function fail(file, msg) { console.error(`${path.relative(L.ROOT, file)}: ${msg}`); process.exitCode = 1; }
 
+const blocksOf = {};
+const blocks = id => blocksOf[id] || (blocksOf[id] = require('./lint-course').blocks(id));
+
 function loadCourse(id) {
   const dir = path.join(SRC, id);
   const meta = JSON.parse(fs.readFileSync(path.join(dir, 'course.json'), 'utf8'));
@@ -138,6 +141,24 @@ function diagramOf(p) {
   return m ? (m[1] || m[2]) : '';
 }
 
+// "Builds on": the puzzles this one stands on, each with what it gives you, and the shortest path from zero.
+function buildsOn(course, p) {
+  const b = blocks(course.id);
+  const need = b[p.n] || [];
+  if (!need.length) return '';
+  const path = new Set();
+  const walk = n => { for (const d of b[n] || []) if (!path.has(d)) { path.add(d); walk(d); } };
+  walk(p.n);
+  const ordered = [...path].sort((x, y) => x - y);
+  const q = n => course.puzzles[n];
+  const items = need.map(n => `<li data-block="${n}"><details><summary><a href="${q(n).slug}.html">Puzzle ${n}: ${L.esc(q(n).meta.title)}</a></summary><p>${L.esc(q(n).meta.takeaway)}</p></details></li>`).join('');
+  return `      <aside class="builds-on" aria-labelledby="builds-on-${p.n}">
+        <p id="builds-on-${p.n}"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul>${items}</ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are ${ordered.length} puzzle${ordered.length === 1 ? '' : 's'}: ${ordered.map(n => `<a href="${q(n).slug}.html">${n}</a>`).join(' → ')}. Know them already? Start here.</p>
+      </aside>`;
+}
+
 function renderPuzzle(course, p, terms) {
   const ctx = { file: p.file, cards: new Map(course.puzzles.map(q => [q.slug, q])), links: new Set() };
   const sections = L.parseBody(p.body, ctx);
@@ -179,6 +200,7 @@ ${html}
       <p class="eyebrow">${L.esc(course.meta.title)} · ${label}</p>
       <h1>${L.esc(p.meta.title)}</h1>
       <p class="lede">${L.inline(p.meta.summary, ctx)}</p>
+${buildsOn(course, p)}
 ${linked}
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>${L.inline(p.meta.takeaway, ctx)}</p></div></section>
       ${support(course, 'puzzle')}
@@ -205,7 +227,7 @@ function renderOverview(c) {
   let i = 0;
   const modules = c.meta.modules.map(m => {
     const first = i;
-    const items = m.puzzles.map(() => c.puzzles[i++]).map(p => `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}</span></li>`).join('');
+    const items = m.puzzles.map(() => c.puzzles[i++]).map(p => { const on = blocks(c.id)[p.n] || []; return `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}${on.length ? ` <span class="needs">Builds on ${on.join(', ')}.</span>` : ''}</span></li>`; }).join('');
     return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')}</p><ol start="${first}">${items}</ol></li>`;
   }).join('\n');
   const soon = (c.meta.upcoming || []).map((m, k) => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(${k === 0 ? 'next' : 'later'})</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');

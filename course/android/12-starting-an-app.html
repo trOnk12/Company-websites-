@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 12 · 13 of 20</p>
       <h1>Starting an app, cold, warm and hot</h1>
       <p class="lede">Opening an app can mean very different amounts of work, depending on whether its process and its screen still exist.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-12">
+        <p id="builds-on-12"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="5"><details><summary><a href="05-you-dont-call-youre-called.html">Puzzle 5: You don't call. You're called.</a></summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p></details></li><li data-block="10"><details><summary><a href="10-zygote.html">Puzzle 10: Zygote, the process every app starts from</a></summary><p>Zygote starts with the phone, with ART and the framework loaded. Every app's process begins as a copy of it, a fork, so apps start fast.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 9 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="04-the-post-office-carries-letters.html">4</a> → <a href="05-you-dont-call-youre-called.html">5</a> → <a href="06-each-app-is-its-own-user.html">6</a> → <a href="08-whats-inside-the-apk.html">8</a> → <a href="10-zygote.html">10</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzles 10 and 11, a new app process was forked from Zygote. But is a process forked every time you open an app? Sometimes the app opens instantly, sometimes it takes a second. What's the difference?</p>

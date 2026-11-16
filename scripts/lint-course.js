@@ -247,4 +247,25 @@ if (require.main === module) {
   console.log('Course clarity lint: clean.');
 }
 
-module.exports = { parseQuestion, lint };
+// The building blocks each puzzle stands on: the earlier puzzles whose terms it uses, reduced to the
+// direct ones (if 13 uses 4 and 4 already uses 1, 13 lists 4, not 1). Computed from the glossary, so it
+// can't go stale. Returns { n: [earlier n, …] }.
+function blocks(id) {
+  const g = JSON.parse(fs.readFileSync(path.join(SRC, id, 'glossary.json'), 'utf8'));
+  const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const terms = Object.entries(g.terms).map(([t, v]) => ({ in: Number(v.in), rx: [t, ...(v.aliases || [])].map(nm => new RegExp(`(?<![\\w-])${esc(nm)}${/\w$/.test(nm) ? 's?' : ''}(?![\\w-])`, /[A-Z]/.test(nm) || /[(_.]/.test(nm) ? '' : 'i')) }));
+  const puzzles = loadCourse(id);
+  const direct = {};
+  for (const p of puzzles) {
+    const n = Number(p.f.slice(0, 2));
+    const text = segments(p).filter(s => s.where !== 'title' && !s.where.startsWith('question')).map(s => s.text).join(' ');
+    direct[n] = [...new Set(terms.filter(t => t.in < n && t.rx.some(r => r.test(text))).map(t => t.in))].sort((a, b) => a - b);
+  }
+  const closure = {};
+  const reach = n => closure[n] || (closure[n] = new Set(direct[n].flatMap(d => [d, ...reach(d)])));
+  const out = {};
+  for (const n of Object.keys(direct).map(Number)) out[n] = direct[n].filter(d => !direct[n].some(e => e !== d && reach(e).has(d)));
+  return out;
+}
+
+module.exports = { parseQuestion, lint, blocks };

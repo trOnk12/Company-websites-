@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 4 · 5 of 20</p>
       <h1>The post office carries letters</h1>
       <p class="lede">system_server and your app are separate processes, so the town hall can't just reach in. The kernel carries its messages.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-4">
+        <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="3"><details><summary><a href="03-the-town-hall-decides.html">Puzzle 3: Who decides about your screens</a></summary><p>system_server is the town hall. It keeps the register of every app's screens and moves each screen through its lifecycle. Your app follows.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 3, system_server decided to move your Activity to &quot;resumed&quot;. But system_server is a process, and so is your app, and in puzzle 0 you saw that one process can't touch another's memory. So how does the town hall's decision get into your app?</p>

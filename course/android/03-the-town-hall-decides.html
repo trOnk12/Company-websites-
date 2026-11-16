@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 3 · 4 of 20</p>
       <h1>Who decides about your screens</h1>
       <p class="lede">Your app doesn't decide when its own screens appear or go away. A separate Android process does, and tells your app.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-3">
+        <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="2"><details><summary><a href="02-threads-are-the-workers.html">Puzzle 2: Threads are the workers</a></summary><p>A process can have many threads, but only one, the main thread, draws your screen and handles taps. If it's busy, the screen waits.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 2, the main thread drew your app's screen. But many apps are running, and only one can be on screen. Someone has to decide which screen is in front, which ones are covered or hidden, and which ones are closed. That can't be each app for itself.</p>

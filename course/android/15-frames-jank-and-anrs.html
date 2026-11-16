@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 15 · 16 of 20</p>
       <h1>Frames, jank and ANRs</h1>
       <p class="lede">Drawing the screen is just another message in the main thread's queue. So one slow message doesn't only delay a tap: it stops the screen from being drawn.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-15">
+        <p id="builds-on-15"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="12"><details><summary><a href="12-starting-an-app.html">Puzzle 12: Starting an app, cold, warm and hot</a></summary><p>Cold start = fork Zygote, create your Application, then the first Activity. Warm = process alive, Activity created again. Hot = both alive, just brought to the front.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 10 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="04-the-post-office-carries-letters.html">4</a> → <a href="05-you-dont-call-youre-called.html">5</a> → <a href="06-each-app-is-its-own-user.html">6</a> → <a href="08-whats-inside-the-apk.html">8</a> → <a href="10-zygote.html">10</a> → <a href="12-starting-an-app.html">12</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 14, the main thread ran messages one at a time. Now suppose one message takes a long time, like reading a big file, or a <code>Thread.sleep(6000)</code> in a button's click code, which pauses the thread for 6 seconds. What does the user see?</p>

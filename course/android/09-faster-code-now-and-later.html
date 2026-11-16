@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 9 · 10 of 20</p>
       <h1>Faster code, now and later</h1>
       <p class="lede">Reading DEX one instruction at a time is slow. So ART translates busy code into machine code while the app runs, and the phone translates more of it later.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-9">
+        <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="1"><details><summary><a href="01-the-kernel-is-in-charge.html">Puzzle 1: The kernel is in charge</a></summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p></details></li><li data-block="8"><details><summary><a href="08-whats-inside-the-apk.html">Puzzle 8: What's inside the APK</a></summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="08-whats-inside-the-apk.html">8</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 8, ART ran your DEX by interpreting it, which is slow. But some of your code runs thousands of times: scrolling a list, drawing the screen. Translating that once into machine code would pay off every time it runs again. When should that happen?</p>

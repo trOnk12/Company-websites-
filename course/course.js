@@ -200,6 +200,9 @@
       puzzle.querySelector('nav[aria-label="Puzzles"]').after(gate);
     }
 
+    // Mark the building blocks you've already passed.
+    for (const li of puzzle.querySelectorAll('.builds-on li[data-block]')) if (store.get(course).includes(Number(li.dataset.block))) li.classList.add('done');
+
     // Mark mastered puzzles in the progress bar.
     const have = store.get(course);
     puzzle.querySelectorAll('.progress a').forEach((a, i) => { if (have.includes(i)) a.classList.add('done'); });

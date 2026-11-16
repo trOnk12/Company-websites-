@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 7 · 8 of 20</p>
       <h1>Letters between apps</h1>
       <p class="lede">Apps can't reach into each other, but they can ask the town hall to deliver a request. For some requests, the town hall first checks whether the app is allowed.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-7">
+        <p id="builds-on-7"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="4"><details><summary><a href="04-the-post-office-carries-letters.html">Puzzle 4: The post office carries letters</a></summary><p>Between processes, nothing is reached directly. Binder, a driver in the kernel, carries the message, like a post office.</p></details></li><li data-block="6"><details><summary><a href="06-each-app-is-its-own-user.html">Puzzle 6: Each app gets its own account</a></summary><p>Every app gets its own UID, its key. The kernel checks that key on every file, so one app can never open another's private files: the sandbox.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="04-the-post-office-carries-letters.html">4</a> → <a href="06-each-app-is-its-own-user.html">6</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 6, the sandbox kept every app inside its walls. But a link in a chat opens the browser, and a chat app can start a phone call. If apps can't reach each other, how do they work together?</p>

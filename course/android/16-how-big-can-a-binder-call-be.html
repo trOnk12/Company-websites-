@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 16 · 17 of 20</p>
       <h1>How big can a Binder call be?</h1>
       <p class="lede">In puzzle 13, a call crossed Binder as bytes packed in a Parcel. The receiving process has only so much room for them.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-16">
+        <p id="builds-on-16"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="13"><details><summary><a href="13-inside-a-binder-call.html">Puzzle 13: Inside a Binder call</a></summary><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 8 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="04-the-post-office-carries-letters.html">4</a> → <a href="06-each-app-is-its-own-user.html">6</a> → <a href="07-letters-between-apps.html">7</a> → <a href="13-inside-a-binder-call.html">13</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 13, your call crossed into system_server packed into a Parcel. An Intent can carry data along with it, like a photo. But the Parcel has to wait somewhere in system_server until one of its Binder threads is free. How much room is there?</p>

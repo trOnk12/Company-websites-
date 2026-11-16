@@ -51,6 +51,11 @@
       <p class="eyebrow">Bluetooth Low Energy, from the radio up · Puzzle 4 · 5 of 5</p>
       <h1>Don't ask, get told</h1>
       <p class="lede">In puzzle 3, the phone read the heart rate by asking for it. Asking again and again wastes radio time. Here's how the strap tells the phone instead, and the one step everyone forgets.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-4">
+        <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="3"><details><summary><a href="03-the-filing-cabinet.html">Puzzle 3: The filing cabinet</a></summary><p>GATT organizes a device's data like a filing cabinet: services are drawers, characteristics are folders holding one value, each named by a UUID. The GATT server holds them; the GATT client reads and writes them.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-a-year-on-a-coin-battery.html">0</a> → <a href="01-shouting-into-the-room.html">1</a> → <a href="02-a-timetable-for-two.html">2</a> → <a href="03-the-filing-cabinet.html">3</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 3, the phone read the heart rate by asking: &quot;read 2A37&quot;. To show a live heart rate, it would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and a read waits for the next meeting to ask and another to answer, so the value can be old by the time it arrives. Can the strap just tell the phone when the value changes?</p>

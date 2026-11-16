@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 11 · 12 of 20</p>
       <h1>Sharing memory without sharing mistakes</h1>
       <p class="lede">If every app were a full copy of Zygote, memory would run out fast. The kernel makes the copies share, and copies only what changes.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-11">
+        <p id="builds-on-11"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="10"><details><summary><a href="10-zygote.html">Puzzle 10: Zygote, the process every app starts from</a></summary><p>Zygote starts with the phone, with ART and the framework loaded. Every app's process begins as a copy of it, a fork, so apps start fast.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 7 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="06-each-app-is-its-own-user.html">6</a> → <a href="08-whats-inside-the-apk.html">8</a> → <a href="10-zygote.html">10</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 10, every app process started as a copy of Zygote. But Zygote holds a lot: ART and the whole framework. Twenty apps, twenty full copies? The phone would run out of memory. And yet each app must be able to change its own data without changing anyone else's.</p>

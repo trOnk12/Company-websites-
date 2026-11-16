@@ -51,6 +51,11 @@
       <p class="eyebrow">Android from the foundation · Puzzle 10 · 11 of 20</p>
       <h1>Zygote, the process every app starts from</h1>
       <p class="lede">Starting ART and reading Android's own code into memory takes seconds. Android does it once, when the phone starts, and makes every app a copy of that.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-10">
+        <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="3"><details><summary><a href="03-the-town-hall-decides.html">Puzzle 3: Who decides about your screens</a></summary><p>system_server is the town hall. It keeps the register of every app's screens and moves each screen through its lifecycle. Your app follows.</p></details></li><li data-block="6"><details><summary><a href="06-each-app-is-its-own-user.html">Puzzle 6: Each app gets its own account</a></summary><p>Every app gets its own UID, its key. The kernel checks that key on every file, so one app can never open another's private files: the sandbox.</p></details></li><li data-block="8"><details><summary><a href="08-whats-inside-the-apk.html">Puzzle 8: What's inside the APK</a></summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-the-town-hall-decides.html">3</a> → <a href="06-each-app-is-its-own-user.html">6</a> → <a href="08-whats-inside-the-apk.html">8</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 8, ART lived inside every app's process. But every app also uses Android's own code, thousands of classes like <code>Activity</code>. Starting ART and reading all of that code from files into memory takes seconds. If every app did it from scratch at every tap on an icon, opening apps would be slow.</p>
