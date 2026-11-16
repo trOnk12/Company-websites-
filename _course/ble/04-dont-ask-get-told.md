@@ -7,7 +7,7 @@ takeaway: A notification is the server sending a characteristic's value by itsel
 
 ## The problem
 
-In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a live heart rate, it would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and the answer can be up to a whole connection interval old. Can the strap just tell the phone when the value changes?
+In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a live heart rate, it would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and a read waits for the next meeting to ask and another to answer, so the value can be old by the time it arrives. Can the strap just tell the phone when the value changes?
 
 ## See it
 
@@ -18,17 +18,18 @@ In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a liv
 
 Yes: that's a **notification**. The GATT server sends a characteristic's new value by itself at the next connection event, without being asked. One packet instead of two, and only when there's something new.
 
-But the strap doesn't notify everyone by default. A characteristic can carry extra settings called **descriptors**. One of them, the **CCCD** (its UUID is 2902), holds a switch per client: bit 0 on means "notify me". The client turns notifications on by writing that descriptor on the device.
+But the strap doesn't notify everyone by default. A characteristic can carry extra settings called **descriptors**. Descriptors have UUIDs too, and a client can write them. One of them, the **CCCD** (Client Characteristic Configuration Descriptor, UUID 2902), holds a switch per client: bit 0 on means "notify me". The client turns notifications on by writing that descriptor on the device.
 
-On Android, that's two separate steps:
+On Android, your app gets a `BluetoothGatt` object when it connects: Android's handle for that connection's GATT client. After service discovery you find the characteristic by its UUIDs. Then turning notifications on takes two separate steps:
 
 ```kotlin
+val characteristic = gatt.getService(HEART_RATE).getCharacteristic(MEASUREMENT)   // found by UUID
 gatt.setCharacteristicNotification(characteristic, true)   // 1. on the phone: pass these to my app
-val cccd = characteristic.getDescriptor(CCCD_UUID)
-gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   // 2. on the strap: start sending
+val cccd = characteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"))   // 2902, written in full
+gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   // 2. on the strap: bit 0 on
 ```
 
-`setCharacteristicNotification()` only tells your own phone to hand this characteristic's notifications to your app. It sends nothing to the strap. `writeDescriptor()` is what flips the switch on the strap. Skip it, and the strap never sends a thing: the classic "connected, but no data" bug. (`BluetoothGatt` is Android's object for one connection's GATT client.)
+`setCharacteristicNotification()` only tells your own phone to hand this characteristic's notifications to your app. It sends nothing to the strap. `writeDescriptor()` is what flips the switch on the strap. Skip it, and the strap never sends a thing: the classic "connected, but no data" bug.
 
 ## The analogy
 
@@ -36,9 +37,9 @@ Instead of phoning the newsroom every hour to ask "anything new?", you subscribe
 
 ## Check yourself
 
-- Your app calls `setCharacteristicNotification(characteristic, true)` and nothing else. The heart rate changes. What arrives?::*Nothing: the CCCD on the strap was never written, so the strap doesn't send||Every change, right away >> That call only prepares your own phone. The strap starts sending only when its CCCD is written. >> s4||Only the first change >> No notifications are sent at all until the CCCD is written. >> s3::Two steps: your phone, and the switch on the strap.
-- Why are notifications cheaper than reading again and again?::*One packet only when the value changes, instead of a request and an answer every time||Because notifications skip the connection events >> They still travel at connection events; they just need no request. >> s2||Because notifications are compressed >> Same value, same bytes; the saving is not having to ask. >> s1::No request, and nothing sent when nothing changed.
-- What's the difference between a characteristic and a descriptor?::*A characteristic holds a value; a descriptor is an extra setting attached to it, like the CCCD switch||A descriptor is a second copy of the value >> It's not the value: it describes or configures the characteristic. >> s3::Value vs a setting about that value.
+- Your app calls `setCharacteristicNotification(characteristic, true)` and nothing else. The heart rate changes. What arrives?::*Nothing: the CCCD on the strap was never written, so the strap doesn't send||Every change, right away >> That call only prepares your own phone. The strap starts sending only when its CCCD is written. >> s4||Only the first change >> No notifications are sent at all until the CCCD is written. >> s2::Two steps: your phone, and the switch on the strap.
+- Why are notifications cheaper than reading again and again?::*One packet only when the value changes, instead of a request and an answer every time||Because notifications skip the connection events >> They still travel at connection events; the saving is the request and answer packets, and fresher values. >> s3||Because notifications are compressed >> Same value, same bytes; the saving is not having to ask. >> s1::No request, and nothing sent when nothing changed.
+- What's the difference between a characteristic and a descriptor?::*A characteristic holds a value; a descriptor is an extra setting attached to it, like the CCCD switch||A descriptor is a second copy of the value >> It's not the value: it describes or configures the characteristic. >> s2::Value vs a setting about that value.
 
 ## Sources
 

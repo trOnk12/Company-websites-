@@ -6,12 +6,13 @@
 <g class="step only-2"><x-waves x="150" y="178"/><x-battery x="74" y="236" level="0.08"/><text class="d-r" x="102" y="286" text-anchor="middle">flat in days</text></g>
 <g class="step s2 hide-3"><rect class="d-awake" x="200" y="120" width="400" height="16" rx="3"/><text class="d-tiny" x="400" y="110" text-anchor="middle">radio always on</text></g>
 <g class="step s3" data-pulse="3"><rect class="d-sleep" x="200" y="120" width="400" height="16" rx="3"/><rect class="d-awake" x="232" y="116" width="6" height="24"/><rect class="d-awake" x="332" y="116" width="6" height="24"/><rect class="d-awake" x="432" y="116" width="6" height="24"/><rect class="d-awake" x="532" y="116" width="6" height="24"/><text class="d-tiny" x="400" y="104" text-anchor="middle">asleep, with short wake-ups</text><x-battery x="74" y="236" level="0.95"/></g>
-<g class="step s3" data-move="2:232,150 3:332,150 4:532,150"><x-waves x="4" y="0"/></g>
-<g class="step s4" data-pulse="4"><x-phone x="520" y="190" w="60" h="110" label="phone"/><rect class="d-acc" x="228" y="112" width="14" height="32" rx="3"/><rect class="d-acc" x="328" y="112" width="14" height="32" rx="3"/><rect class="d-acc" x="428" y="112" width="14" height="32" rx="3"/><rect class="d-acc" x="528" y="112" width="14" height="32" rx="3"/><text class="d-a" x="400" y="176" text-anchor="middle">listen here?</text></g>
+<g class="step s3" data-pulse="3 4"><x-waves x="150" y="178"/></g>
+<g class="step s3" data-move="2:235,128 3:335,128 4:435,128"><circle class="d-acc" cx="0" cy="0" r="9"/></g>
+<g class="step s4" data-pulse="4"><x-phone x="520" y="190" w="60" h="110" label="phone"/><rect class="d-acc" x="426" y="110" width="18" height="36" rx="3"/><x-arrow tone="acc" d="M516,220 C480,200 450,170 440,150"/><text class="d-a" x="470" y="250" text-anchor="middle">hears it only here</text></g>
 </svg>
 <ol class="caps">
 <li><p>A heart strap runs on a coin-sized battery. Its <b>radio</b>, the part that sends and listens over the air, is its hungriest part.</p></li>
 <li><p>Keep the radio on all the time, even just listening, and the battery is flat in days. <i>Predict: how can it last for months?</i></p></li>
-<li><p>Sleep. <b>Bluetooth Low Energy</b>, BLE, keeps the radio off almost all the time and wakes it for short, planned moments.</p></li>
-<li><p>Which makes a new problem: a phone has to be listening at exactly those moments to hear it. The next puzzles show how they meet.</p></li>
+<li><p>Sleep. <b>Bluetooth Low Energy</b>, BLE, keeps the radio off almost all the time and wakes it for a few milliseconds at a time.</p></li>
+<li><p>Which makes a new problem: a phone can only hear the strap while it's awake. The next two puzzles show how they find each other, and then meet on time.</p></li>
 </ol>

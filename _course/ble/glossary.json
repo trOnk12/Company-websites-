@@ -39,7 +39,8 @@
    "sensor",
    "iPhone",
    "Wi-Fi",
-   "s"
+   "s",
+   "UUID.randomUUID()"
   ]
  },
  "terms": {

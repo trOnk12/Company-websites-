@@ -68,7 +68,7 @@
 <g class="step s3"><rect class="d-band" x="380" y="176" width="120" height="24" rx="4"/><text class="d-mi" x="440" y="193" text-anchor="middle">UUID 2A37</text></g>
 <g class="step s4" data-pulse="4"><g><rect class="d-paper" x="540" y="120" width="64" height="120" rx="12"/><rect class="d-hl" x="547" y="134" width="50" height="86" rx="4"/><circle class="d-ink" cx="572" cy="230" r="3"/><text class="d-tiny" x="572" y="258" text-anchor="middle">GATT client</text></g></g>
 <g class="step only-4" data-move="3:540,260 4:420,260"><rect class="d-paper" x="0" y="0" width="110" height="40" rx="3"/><polyline class="d-line" points="0,0 55,16 110,0"/><text class="d-tiny" x="55" y="34" text-anchor="middle">read 2A37</text></g>
-<path class="step only-4 d-arr-acc" d="M500,140 C520,140 528,150 534,160" marker-end="url(#ah-gatt-acc)"/>
+<path class="step only-4 d-arr-path" d="M536,240 C470,270 400,240 364,190" marker-end="url(#ah-gatt-path)"/><path class="step only-4 d-arr-acc" d="M500,124 C516,128 528,140 536,150" marker-end="url(#ah-gatt-acc)"/>
 </svg></div>
 <ol class="caps">
 <li><p>The strap keeps its data in a filing cabinet: <b>GATT</b>. The strap is the <b>GATT server</b>, the side that holds the data.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-gatt-2">Next →</label></div></li>
@@ -77,12 +77,13 @@
 <li><p>By that name. The phone is the <b>GATT client</b>: "read 2A37", and the strap answers with the folder's value.</p><div class="stepnav"><label for="st-gatt-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-gatt-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-gatt-1" title="Step 1"></label><label for="st-gatt-2" title="Step 2"></label><label for="st-gatt-3" title="Step 3"></label><label for="st-gatt-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/gatt.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p><b>GATT</b> is the way a BLE device organizes its data, so any phone can find its way around it. The side that holds the data is the <b>GATT server</b>, usually the small device. The side that reads and writes it is the <b>GATT client</b>, usually the phone.</p>
-<p>The data comes in two levels. A <b>service</b> is a group of related values: Heart Rate, or Battery. Inside each service, a <b>characteristic</b> holds one value: the latest heart rate, or the battery level in percent. A client can read a characteristic, write it, or, as the next puzzle shows, be told when it changes. Each service and each characteristic is named by a <b>UUID</b>, a number that's the same on every device of that kind, so an app can look for &quot;the Heart Rate service&quot; on any brand of strap.</p>
+<p><b>GATT</b> (Generic Attribute Profile) is the way a BLE device organizes its data, so any phone can find its way around it. The side that holds the data is the <b>GATT server</b>, usually the small device. The side that reads and writes it is the <b>GATT client</b>, usually the phone.</p>
+<p>The data comes in two levels. A <b>service</b> is a group of related values: Heart Rate, or Battery. Inside each service, a <b>characteristic</b> holds one value: the latest heart rate, or the battery level in percent. A client can read a characteristic, write it, or, as the next puzzle shows, be told when it changes. Each service and each characteristic is named by a <b>UUID</b> (universally unique identifier), a long number. For standard features, the Bluetooth group fixed the UUIDs in advance, so they're the same on every device: unlike the random ones <code>UUID.randomUUID()</code> gives you, these are agreed. They're written in hexadecimal and often shortened, so the heart-rate measurement is 2A37. That lets an app look for &quot;the Heart Rate service&quot; on any brand of strap.</p>
+<p>Right after connecting, the phone asks the strap for its list of services and characteristics: service discovery. Only then does it know which drawers this cabinet has.</p>
 <p>GATT's roles are separate from the roles in puzzle 2. Central and peripheral are about who sets the timing; server and client are about who holds the data. A phone can be a GATT server too, for example when a watch reads the phone's messages.</p>
       </section>
       <section aria-labelledby="the-analogy">

@@ -16,9 +16,11 @@ In puzzle 2, the phone and the strap met on a timetable to exchange packets. But
 
 ## The building block
 
-**GATT** is the way a BLE device organizes its data, so any phone can find its way around it. The side that holds the data is the **GATT server**, usually the small device. The side that reads and writes it is the **GATT client**, usually the phone.
+**GATT** (Generic Attribute Profile) is the way a BLE device organizes its data, so any phone can find its way around it. The side that holds the data is the **GATT server**, usually the small device. The side that reads and writes it is the **GATT client**, usually the phone.
 
-The data comes in two levels. A **service** is a group of related values: Heart Rate, or Battery. Inside each service, a **characteristic** holds one value: the latest heart rate, or the battery level in percent. A client can read a characteristic, write it, or, as the next puzzle shows, be told when it changes. Each service and each characteristic is named by a **UUID**, a number that's the same on every device of that kind, so an app can look for "the Heart Rate service" on any brand of strap.
+The data comes in two levels. A **service** is a group of related values: Heart Rate, or Battery. Inside each service, a **characteristic** holds one value: the latest heart rate, or the battery level in percent. A client can read a characteristic, write it, or, as the next puzzle shows, be told when it changes. Each service and each characteristic is named by a **UUID** (universally unique identifier), a long number. For standard features, the Bluetooth group fixed the UUIDs in advance, so they're the same on every device: unlike the random ones `UUID.randomUUID()` gives you, these are agreed. They're written in hexadecimal and often shortened, so the heart-rate measurement is 2A37. That lets an app look for "the Heart Rate service" on any brand of strap.
+
+Right after connecting, the phone asks the strap for its list of services and characteristics: service discovery. Only then does it know which drawers this cabinet has.
 
 GATT's roles are separate from the roles in puzzle 2. Central and peripheral are about who sets the timing; server and client are about who holds the data. A phone can be a GATT server too, for example when a watch reads the phone's messages.
 

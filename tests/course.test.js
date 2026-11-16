@@ -8,6 +8,9 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const COURSE = JSON.parse(fs.readFileSync(path.join(ROOT, '_course/android/course.json'), 'utf8'));
 const PUZZLES = COURSE.modules.flatMap(m => m.puzzles).map(f => f.replace(/\.md$/, ''));
+// Every live course, for the tests that every puzzle must pass.
+const COURSES = fs.readdirSync(path.join(ROOT, '_course')).filter(d => fs.existsSync(path.join(ROOT, '_course', d, 'course.json')))
+  .map(id => ({ id, puzzles: JSON.parse(fs.readFileSync(path.join(ROOT, '_course', id, 'course.json'), 'utf8')).modules.flatMap(m => m.puzzles).map(f => f.replace(/\.md$/, '')) }));
 
 test.describe('Course', () => {
   test('generated pages match the sources', () => {
@@ -34,18 +37,19 @@ test.describe('Course', () => {
     for (const p of PUZZLES) await expect(page.locator(`.modules a[href="${p}.html"]`)).toHaveCount(1);
   });
 
-  test('puzzles chain in order with next and back links', async ({ page }) => {
-    for (let i = 0; i < PUZZLES.length; i++) {
-      await page.goto(`/course/android/${PUZZLES[i]}.html`);
+  for (const c of COURSES) test(`${c.id}: puzzles chain in order with next and back links`, async ({ page }) => {
+    const P = c.puzzles;
+    for (let i = 0; i < P.length; i++) {
+      await page.goto(`/course/${c.id}/${P[i]}.html`);
       await expect(page.locator('.progress a[aria-current="page"]')).toHaveText(String(i));
-      if (i < PUZZLES.length - 1) await expect(page.locator('.pager a.primary')).toHaveAttribute('href', `${PUZZLES[i + 1]}.html`);
-      if (i > 0) await expect(page.locator('.pager a').first()).toHaveAttribute('href', `${PUZZLES[i - 1]}.html`);
+      if (i < P.length - 1) await expect(page.locator('.pager a.primary')).toHaveAttribute('href', `${P[i + 1]}.html`);
+      if (i > 0) await expect(page.locator('.pager a').first()).toHaveAttribute('href', `${P[i - 1]}.html`);
     }
   });
 
-  for (const slug of PUZZLES) {
-    test(`puzzle "${slug}" steps through its diagram without JavaScript`, async ({ page }) => {
-      await page.goto(`/course/android/${slug}.html`);
+  for (const { id, slug } of COURSES.flatMap(c => c.puzzles.map(slug => ({ id: c.id, slug })))) {
+    test(`${id}: puzzle "${slug}" steps through its diagram without JavaScript`, async ({ page }) => {
+      await page.goto(`/course/${id}/${slug}.html`);
       // Only the course's own player script, from this site.
       for (const src of await page.locator('script').evaluateAll(ss => ss.map(s => s.getAttribute('src')))) expect(src).toBe('../course.js');
       const stepper = page.locator('.stepper');
