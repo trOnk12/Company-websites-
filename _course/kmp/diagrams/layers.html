@@ -1,0 +1,15 @@
+<!-- label: Compose in three layers; only the platform layer is per target -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ly-t"><title id="ly-t">Compose in three layers: the shared compiler and runtime at the bottom, the same ui, foundation and material3 APIs in the middle, using Google's artifacts on Android and JetBrains' builds on iOS, and a platform layer per target at the top</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="60" y="270" width="520" height="60" rx="8"/><text class="d-a" x="320" y="306" text-anchor="middle">compiler + runtime: shared</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-band" x="60" y="180" width="250" height="70" rx="8"/><text class="d-b" x="185" y="208" text-anchor="middle">material3, ui</text><text class="d-tiny" x="185" y="232" text-anchor="middle">Google's, on Android</text><rect class="d-band" x="330" y="180" width="250" height="70" rx="8"/><text class="d-b" x="455" y="208" text-anchor="middle">material3, ui</text><text class="d-tiny" x="455" y="232" text-anchor="middle">JetBrains', on iOS</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-wood" x="60" y="90" width="250" height="70" rx="8"/><text class="d-b" x="185" y="130" text-anchor="middle">Android platform layer</text><rect class="d-wood" x="330" y="90" width="250" height="70" rx="8"/><text class="d-b" x="455" y="130" text-anchor="middle">iOS platform layer</text></g>
+<g class="step s4" data-pulse="4"><x-phone x="155" y="10" w="60" h="70"/><x-phone x="425" y="10" w="60" h="70"/></g>
+<g class="step s1" data-move="1:610,300 2:610,215 3:610,125 4:610,45"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>At the bottom, the Compose compiler and the <b>Compose runtime</b>: they track state and recomposition, know nothing about pixels, and are shared.</p></li>
+<li><p>In the middle, the same APIs: <code>Text</code>, <code>Column</code>, <code>Modifier</code>. Android uses Google's artifacts; iOS uses JetBrains' builds of the same libraries.</p></li>
+<li><p>At the top, the <b>platform layer</b>, one per target: window, touches, drawing surface, text input, accessibility. <i>Predict: where do iOS differences show?</i></p></li>
+<li><p>Here, at the top: your composable runs unchanged, and only the layer that meets the phone was written again.</p></li>
+</ol>

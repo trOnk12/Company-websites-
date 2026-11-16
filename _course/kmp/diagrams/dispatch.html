@@ -1,0 +1,17 @@
+<!-- label: Dispatchers.Main is the main queue on iOS; cancellation doesn't cross the plain bridge -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="dp-t"><title id="dp-t">A coroutine on Dispatchers.IO runs on a Kotlin worker thread and resumes on Dispatchers.Main, which on iOS is the main queue on the main thread; a Swift task is cancelled but the Kotlin coroutine keeps running; closing the shared scope cancels it</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-person class="step s1" x="90" y="170" desk="1" label="main thread"/>
+<g class="step s2"><text class="d-tiny" x="270" y="205" text-anchor="middle">main queue</text><x-arrow tone="ink" d="M340,185 L210,185"/></g>
+<g class="step s1"><x-person x="470" y="170" label="Kotlin worker"/></g>
+<x-letter class="step s1" data-pulse="1" data-move="1:430,100 2:40,70 3:430,100 4:430,100" x="0" y="0" w="110" h="36" label="coroutine"/>
+<g class="step only-2" data-pulse="2"><text class="d-a" x="250" y="60" text-anchor="middle">Dispatchers.Main = main queue</text></g>
+<g class="step s3 hide-4" data-pulse="3"><rect class="d-bad" x="30" y="260" width="170" height="36" rx="6"/><text class="d-rt" x="115" y="283" text-anchor="middle">Swift task: cancelled</text><text class="d-r" x="470" y="290" text-anchor="middle">keeps running</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="40" y="260" width="140" height="36" rx="6"/><text class="d-a" x="110" y="283" text-anchor="middle">viewModel.close()</text><x-arrow tone="acc" d="M184,276 C300,270 400,200 440,140"/><circle class="d-bad" cx="560" cy="116" r="12"/><path class="d-red" d="M553,109 L567,123 M567,109 L553,123"/></g>
+</svg>
+<ol class="caps">
+<li><p>Your coroutine does its network work on <code>Dispatchers.IO</code>: one of Kotlin's own worker threads.</p></li>
+<li><p>It resumes on <code>Dispatchers.Main</code>. On iOS that's backed by the <b>main queue</b>, so it runs on the main thread, like Android's Looper.</p></li>
+<li><p>The Swift task waiting for it is cancelled: the user left. But the plain bridge can't pass <b>cancellation</b> across, and the coroutine keeps running. <i>Predict: what stops it?</i></p></li>
+<li><p>Owning the scope: the shared view model, whose coroutine is still on <code>Dispatchers.IO</code>, exposes <code>close()</code>, the Swift side calls it when the screen goes away, and the coroutine is cancelled.</p></li>
+</ol>

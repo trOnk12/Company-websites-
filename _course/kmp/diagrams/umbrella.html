@@ -1,0 +1,18 @@
+<!-- label: Three frameworks carry three runtimes; one umbrella framework carries one -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="um-t"><title id="um-t">Three Kotlin modules shipped as three frameworks each bring their own runtime and their own copy of User; one umbrella framework brings one runtime; exported modules come in whole</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="550" y="120" w="64" h="120" label="iOS app"/>
+<g class="step s1 hide-3" data-pulse="1"><rect class="d-wood" x="20" y="40" width="180" height="80" rx="8"/><text class="d-tiny" x="110" y="66" text-anchor="middle">network.framework</text><rect class="d-wood" x="20" y="140" width="180" height="80" rx="8"/><text class="d-tiny" x="110" y="166" text-anchor="middle">database.framework</text><rect class="d-wood" x="20" y="240" width="180" height="80" rx="8"/><text class="d-tiny" x="110" y="266" text-anchor="middle">features.framework</text></g>
+<g class="step s2 hide-3" data-pulse="2"><rect class="d-ink" x="60" y="80" width="100" height="24" rx="4"/><text class="d-inv" x="110" y="97" text-anchor="middle">runtime</text><rect class="d-ink" x="60" y="180" width="100" height="24" rx="4"/><text class="d-inv" x="110" y="197" text-anchor="middle">runtime</text><rect class="d-ink" x="60" y="280" width="100" height="24" rx="4"/><text class="d-inv" x="110" y="297" text-anchor="middle">runtime</text><text class="d-r" x="330" y="190" text-anchor="middle">User ≠ User</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-wood" x="190" y="80" width="230" height="210" rx="10"/><text class="d-b" x="305" y="108" text-anchor="middle">umbrella framework</text><rect class="d-ink" x="255" y="250" width="100" height="24" rx="4"/><text class="d-inv" x="305" y="267" text-anchor="middle">one runtime</text><x-arrow tone="acc" d="M424,180 L544,180"/></g>
+<g class="step s3" data-move="2:40,40 3:210,130"><rect class="d-hl" x="0" y="0" width="90" height="30" rx="4"/><text class="d-tiny" x="45" y="20" text-anchor="middle">network</text></g>
+<g class="step s3" data-move="2:40,140 3:310,130"><rect class="d-band" x="0" y="0" width="90" height="30" rx="4"/><text class="d-tiny" x="45" y="20" text-anchor="middle">database</text></g>
+<g class="step s3" data-move="2:40,240 3:210,190"><rect class="d-hl" x="0" y="0" width="90" height="30" rx="4"/><text class="d-tiny" x="45" y="20" text-anchor="middle">features</text></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="305" y="236" text-anchor="middle">exported: whole</text><text class="d-tiny" x="355" y="176" text-anchor="middle">trimmed</text></g>
+</svg>
+<ol class="caps">
+<li><p>Three shared modules, shipped as three frameworks. Each one is imported separately by the iOS app.</p></li>
+<li><p>But each framework carries its own Kotlin runtime and its own copy of every class: to Swift, one framework's <code>User</code> isn't the other's.</p></li>
+<li><p>So ship one <b>umbrella framework</b>: all the modules, one runtime. <i>Predict: what does exporting a module to Swift cost?</i></p></li>
+<li><p>An exported module comes in whole, which turns off <b>dead code elimination</b> for it. Export only what Swift calls; the rest is trimmed.</p></li>
+</ol>

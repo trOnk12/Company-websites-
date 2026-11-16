@@ -256,6 +256,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/kmp/check-2</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/kmp/00-one-kotlin-many-machines</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -277,6 +282,31 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/kmp/04-lost-in-translation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/05-two-ways-to-free-memory</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/06-whose-thread-is-it</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/07-one-framework-not-two</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/08-what-compose-shares</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/09-one-canvas-on-ios</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

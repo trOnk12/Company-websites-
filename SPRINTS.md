@@ -52,12 +52,17 @@ only the blocks they're missing.
 - [x] Cross-course building blocks: a puzzle that builds on another course says so, with a link.
 - [x] Review round (text 6–8, pictures 5–7): actor reentrancy, await, background sessions fixed with sources.
 
+## Sprint 6: KMP module 2, memory, threads, shipping, Compose Multiplatform (done 2026-11-16)
+
+- [x] Five puzzles: a tracing GC meets ARC, Dispatchers.Main on iOS and cancellation from Swift, one umbrella
+  framework, what Compose Multiplatform shares, how it draws on iOS (one canvas, the accessibility tree, UIKitView).
+  Every claim quoted from kotlinlang.org, the kotlinx.coroutines API, the Skiko README or SKIE's docs.
+- [x] Review round (correctness 6–9, clarity 7–9): ten fixes, all applied. Skills updated with the lessons.
+- [ ] Module 3 (touch, scrolling, text input on iOS, SwiftUI interop, resources) stays in the course's upcoming list.
+
 ## Backlog, in order
 
-1. **Sprint 6: KMP module 2 + Compose Multiplatform.** Kotlin/Native memory (a tracing GC meets ARC, from the iOS
-   course), coroutines and threads on iOS, shipping one framework; then what Compose Multiplatform shares, how it
-   draws on iOS (one canvas), touch and text input. Update the skills after.
-2. **Sprint 7: Take it with you.**
+1. **Sprint 7: Take it with you.**
    - Obsidian export per course: one note per puzzle, `[[links]]` for its building blocks (Obsidian's graph view
      becomes the course's knowledge map), flashcards in the Spaced Repetition plugin's `Question::Answer` format.
    - "Continue with Claude": a button that copies a prompt with the course glossary, the puzzles you passed,

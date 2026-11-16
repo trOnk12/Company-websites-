@@ -1,0 +1,18 @@
+<!-- label: Kotlin's GC and Swift's ARC meet; a cycle through both can leak -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ga-t"><title id="ga-t">Kotlin objects live in a shared heap swept by a tracing GC; Swift objects are freed by ARC counts; a Swift object held by Kotlin is freed at the next GC; a cycle through both sides leaks until one link is weak</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1"><rect class="d-band" x="20" y="40" width="290" height="270" rx="10"/><text class="d-b" x="165" y="68" text-anchor="middle">Kotlin: shared heap</text><rect class="d-band" x="330" y="40" width="290" height="270" rx="10"/><text class="d-b" x="475" y="68" text-anchor="middle">Swift: ARC</text></g>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="60" y="110" width="110" height="44" rx="6"/><text class="d-tiny" x="115" y="137" text-anchor="middle">ViewModel</text><rect class="d-hl" x="180" y="200" width="100" height="40" rx="6"/><text class="d-tiny" x="230" y="225" text-anchor="middle">callback</text></g>
+<g class="step s2" data-pulse="2"><x-machine x="40" y="250" w="150" label="tracing GC"/><rect class="d-hl" x="400" y="110" width="140" height="44" rx="6"/><text class="d-tiny" x="470" y="130" text-anchor="middle">Screen</text><text class="d-a" x="470" y="148" text-anchor="middle">count: 1</text></g>
+<x-arrow class="step s3" tone="red" d="M396,126 L174,126"/>
+<x-arrow class="step s3 hide-4" tone="red" d="M284,220 C360,220 420,190 450,158"/>
+<g class="step only-3" data-pulse="3"><text class="d-r" x="320" y="336" text-anchor="middle">a loop through both: leaks</text></g>
+<g class="step s4" data-pulse="4"><x-arrow tone="path" d="M284,224 C360,226 430,196 460,162"/><text class="d-a" x="380" y="250" text-anchor="middle">weak</text><text class="d-a" x="320" y="336" text-anchor="middle">loop broken: both can be freed</text></g>
+<g class="step s1" data-move="1:115,160 2:60,270 3:170,200 4:470,170"><circle class="d-acc" cx="0" cy="0" r="6"/></g>
+</svg>
+<ol class="caps">
+<li><p>Your Kotlin view model lives in Kotlin/Native's <b>shared heap</b>: one pool of objects that any thread can use.</p></li>
+<li><p>A <b>tracing GC</b> sweeps it from time to time, freeing what it can't reach. The Swift screen is freed by ARC instead, at a count of zero.</p></li>
+<li><p>The screen holds the view model; the view model's callback holds the screen. Each side keeps the other alive. <i>Predict: what breaks the loop?</i></p></li>
+<li><p>A weak link, the fix from the iOS course: the callback refers to the screen weakly, and both can be freed.</p></li>
+</ol>

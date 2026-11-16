@@ -121,6 +121,13 @@ first, and don't chase single-reviewer taste.
 After any new puzzle, ask the fresh learner one more thing: "list every place a later puzzle contradicts,
 or quietly redefines, something an earlier puzzle said". Those cost the most trust and are cheap to fix.
 
+## Pass 2d: the expert (correctness)
+
+For any course outside Android internals, spawn one more fresh agent as a senior engineer in that field.
+Give it the puzzle files and diagrams, ask it to flag every wrong, overstated or misleading claim, to check
+that each right answer is right and each wrong answer wrong, and to return exact current text plus a
+replacement. The learner passes find confusion; only this pass finds a confident, clear, wrong sentence.
+
 ## Pass bar
 
 A puzzle ships only when the lint is clean, its diagram scores at least 8/10 in the picture review, **and** the fresh learner scores it at least 8/10 for

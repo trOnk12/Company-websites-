@@ -67,7 +67,60 @@
    "async",
    "throws",
    "if",
-   "Flow&lt;User&gt;"
+   "Flow&lt;User&gt;",
+   "ARC",
+   "GC",
+   "garbage collector",
+   "weak",
+   "weak reference",
+   "Task",
+   "async",
+   "await",
+   "UIKit",
+   "UIView",
+   "Skiko",
+   "SKIE",
+   "closure",
+   "deinit",
+   "XCFramework",
+   "api",
+   "Compose",
+   "Jetpack Compose",
+   "@Composable",
+   "remember",
+   "recomposition",
+   "Modifier",
+   "Text",
+   "Column",
+   "LazyColumn",
+   "Context",
+   "R",
+   "LocalContext",
+   "Metal",
+   "scope",
+   "CoroutineScope",
+   "SupervisorJob",
+   "Dispatchers.Default",
+   "Dispatchers.IO",
+   "Dispatchers.Main",
+   "close()",
+   "URLSession",
+   "Info.plist",
+   "VoiceOver",
+   "ViewModel",
+   "internal",
+   "JetBrains",
+   "material3",
+   "UIStackView",
+   "UIButton",
+   "SwiftUI",
+   "Canvas",
+   "MKMapView",
+   "Google",
+   "clickable",
+   "Modifier.semantics",
+   "contentDescription",
+   "[weak self]"
   ]
  },
  "terms": {
@@ -184,6 +237,79 @@
   "@Throws": {
    "in": "04",
    "def": "Lists which Kotlin exceptions may cross into Swift as errors.",
+   "kind": "code"
+  },
+  "shared heap": {
+   "in": "05",
+   "def": "Kotlin/Native's one pool of objects, reachable from any thread.",
+   "aliases": []
+  },
+  "tracing GC": {
+   "in": "05",
+   "def": "A collector that, from time to time, frees every object it can't reach from the roots.",
+   "aliases": [
+    "tracing garbage collector"
+   ]
+  },
+  "main queue": {
+   "in": "06",
+   "def": "iOS's queue of tasks for the main thread; Dispatchers.Main on iOS is backed by it.",
+   "aliases": []
+  },
+  "cancellation": {
+   "in": "06",
+   "def": "Stopping a coroutine or task before it finishes.",
+   "aliases": [
+    "cancel",
+    "cancelled",
+    "cancelling"
+   ]
+  },
+  "umbrella framework": {
+   "in": "07",
+   "def": "One framework that carries every Kotlin module Swift needs, with one runtime.",
+   "aliases": [
+    "umbrella"
+   ]
+  },
+  "dead code elimination": {
+   "in": "07",
+   "def": "Leaving out compiled code nothing uses, to keep the app small.",
+   "aliases": []
+  },
+  "Compose Multiplatform": {
+   "in": "08",
+   "def": "JetBrains' version of Jetpack Compose that runs on Android, iOS, desktop and web.",
+   "aliases": []
+  },
+  "Compose runtime": {
+   "in": "08",
+   "def": "The part of Compose that tracks state and decides what to recompose; it knows nothing about pixels.",
+   "aliases": []
+  },
+  "platform layer": {
+   "in": "08",
+   "def": "The part written per target: the window, touches, the drawing surface, text input and accessibility.",
+   "aliases": []
+  },
+  "Skia": {
+   "in": "09",
+   "def": "A graphics library that draws shapes and text; on iOS, Compose draws with it through Skiko.",
+   "aliases": []
+  },
+  "ComposeUIViewController": {
+   "in": "09",
+   "def": "Hosts Compose UI inside an iOS app as one UIKit view controller.",
+   "kind": "code"
+  },
+  "accessibility tree": {
+   "in": "09",
+   "def": "The list of on-screen elements, with labels and roles, that VoiceOver reads.",
+   "aliases": []
+  },
+  "UIKitView": {
+   "in": "09",
+   "def": "Places a real UIKit view, such as a map, inside a Compose screen.",
    "kind": "code"
   }
  },

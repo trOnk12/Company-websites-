@@ -115,9 +115,20 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
   ("what survives what").
 - **Don't cite the source as a word** ("in the source…"): say what it is ("Android's code is public; in it…").
 
+- **A summary may only promise what the body delivers.** "Why text input needs a bridge" with no sentence on
+  text input cost a point; check every promise in `summary`/`takeaway` against the building block.
+- **Name real APIs exactly.** `scope.close()` doesn't exist (`cancel()` does): a code label in a diagram is a
+  claim like any other, so check it against the API docs.
+- **Don't overstate the failure.** "Its result goes nowhere" was wrong: Swift kept waiting. Say exactly what
+  happens, not the dramatic version.
+- **Keep layers clean.** When a puzzle sorts things into layers, every example must sit in the right one
+  (`remember` is runtime, not ui), and don't mix two mechanisms (Kotlin `internal` vs framework export).
+- **Show the one line of syntax** a newcomer would need to apply the fix (`[weak self]`, `export(project(...))`).
+
 ## 5. Facts
 
-Verify every claim against a primary source in this session (fetch it, quote it). Code names that
+Verify every claim against a primary source in this session (fetch it, quote it) before writing the
+puzzle, not after: gather the quotes first into the scratchpad, then write only what they support. Code names that
 point at real source go into `refs.json` with a pinned commit and real line numbers.
 
 ## 6. Ship it
