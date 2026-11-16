@@ -211,6 +211,41 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/ios/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ios/check-1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ios/00-frozen-not-stopped</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ios/01-the-run-loop-is-your-looper</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ios/02-queues-not-handlers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ios/03-the-main-actor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ios/04-counting-not-collecting</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/kmp/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

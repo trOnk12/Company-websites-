@@ -107,8 +107,8 @@ test.describe('Course', () => {
   test('every puzzle after the first shows its building blocks, and they link to earlier puzzles', async ({ page }) => {
     for (const c of COURSES) for (const slug of c.puzzles.slice(1)) {
       await page.goto(`/course/${c.id}/${slug}.html`);
+      await expect(page.locator('.builds-on')).toHaveCount(1);
       const links = page.locator('.builds-on li a');
-      expect(await links.count()).toBeGreaterThan(0);
       for (const href of await links.evaluateAll(as => as.map(a => a.getAttribute('href')))) expect(c.puzzles.indexOf(href.replace(/\.html$/, ''))).toBeLessThan(c.puzzles.indexOf(slug));
     }
   });

@@ -1,0 +1,15 @@
+<!-- label: await gives the thread back; an actor lets one task in at a time; the main actor is the main thread -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ac-t"><title id="ac-t">An async function steps away from the main thread at an await; meanwhile the main thread handles a touch; an actor lets one task in at a time; the main actor is the main thread's office</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-person class="step s1" x="90" y="190" desk="1" label="main thread"/>
+<x-letter class="step s1" data-pulse="1" data-move="1:150,150 2:330,60 3:330,60 4:150,150" x="0" y="0" w="120" h="36" label="showProfile()"/>
+<g class="step s2 hide-4" data-pulse="2"><text class="d-a" x="390" y="40" text-anchor="middle">await: waiting for the network</text><x-letter x="150" y="150" w="80" h="36" label="touch"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="420" y="150" width="180" height="140" rx="8"/><text class="d-b" x="510" y="176" text-anchor="middle">actor</text><x-person x="510" y="210" label="one task"/><x-person x="470" y="320" label=""/><x-person x="560" y="320" label=""/></g>
+<g class="step s4" data-pulse="4"><rect class="d-acc" x="30" y="120" width="230" height="170" rx="10"/><text class="d-a" x="145" y="110" text-anchor="middle">main actor</text></g>
+</svg>
+<ol class="caps">
+<li><p><code>showProfile()</code> is an <b>async function</b>, running on the main thread. It needs data from the network.</p></li>
+<li><p>At <code>await</code>, it steps away and gives the main thread back. Meanwhile the main thread handles a touch: no freeze.</p></li>
+<li><p>An <b>actor</b> is a room with one chair: only one task at a time touches its data; the rest wait. <i>Predict: which actor protects the screen?</i></p></li>
+<li><p>The <b>main actor</b>: the main thread's own room. When the data arrives, <code>showProfile()</code> resumes there and updates the screen safely.</p></li>
+</ol>

@@ -92,23 +92,23 @@
 </fieldset></section>
 <section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: Proof of who you are</p>
 <fieldset class="quiz" data-n="4">
-<legend>A listener answers in your server's place and sends its own certificate for your server's name. What does your app see?</legend>
-<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-1"><label for="q-04-proof-of-who-you-are-1-1">A valid certificate, because it has the right name on it</label>
-<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-2" data-ok><label for="q-04-proof-of-who-you-are-1-2">No trusted authority signed it, so the check fails and the app refuses</label>
-<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-3"><label for="q-04-proof-of-who-you-are-1-3">A valid certificate, if the listener copied the server's public key</label>
-<p class="fb no opt-1"><b>Not quite.</b> The name isn't enough: the signature on it must check out with an authority's public key. <a class="show-me" href="04-proof-of-who-you-are.html">Learn it in puzzle 4 →</a></p>
+<legend>A listener makes its own certificate with your server's name and its own public key. What does your app see?</legend>
+<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-1"><label for="q-04-proof-of-who-you-are-1-1">A valid certificate, because the name on it is right</label>
+<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-2" data-ok><label for="q-04-proof-of-who-you-are-1-2">No trusted authority signed it, so the check fails</label>
+<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-3"><label for="q-04-proof-of-who-you-are-1-3">A valid certificate, once the listener signs it itself</label>
+<p class="fb no opt-1"><b>Not quite.</b> The name isn't enough: the certificate must carry a trusted authority's signature. <a class="show-me" href="04-proof-of-who-you-are.html">Learn it in puzzle 4 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Only an authority's signature makes a certificate trusted.</p>
-<p class="fb no opt-3"><b>Not quite.</b> The listener can copy the public key, but can't make the signature without the private key. <a class="show-me" href="04-proof-of-who-you-are.html">Learn it in puzzle 4 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Only a signature from an authority your phone trusts counts, and authorities check who controls the name. <a class="show-me" href="04-proof-of-who-you-are.html">Learn it in puzzle 4 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: &quot;TLS: the blocks together&quot;</p>
+<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: TLS, the blocks together</p>
 <fieldset class="quiz" data-n="5">
 <legend>Your app connects to your server over HTTPS on the café Wi-Fi. A machine in the middle replaces one byte of the response. What happens?</legend>
-<input type="radio" name="q-05-tls-the-blocks-together-1" id="q-05-tls-the-blocks-together-1-1" data-ok><label for="q-05-tls-the-blocks-together-1-1">The check on that record fails, so your app rejects it instead of using it</label>
+<input type="radio" name="q-05-tls-the-blocks-together-1" id="q-05-tls-the-blocks-together-1-1" data-ok><label for="q-05-tls-the-blocks-together-1-1">The keyed check on that record fails, so your app rejects it</label>
 <input type="radio" name="q-05-tls-the-blocks-together-1" id="q-05-tls-the-blocks-together-1-2"><label for="q-05-tls-the-blocks-together-1-2">Nothing, because the change is encrypted too</label>
 <input type="radio" name="q-05-tls-the-blocks-together-1" id="q-05-tls-the-blocks-together-1-3"><label for="q-05-tls-the-blocks-together-1-3">Your app uses the slightly changed response without noticing</label>
 <p class="fb ok opt-1"><b>Right.</b> Every record is checked as well as encrypted.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Encryption alone wouldn't notice; the per-record check is what catches it. <a class="show-me" href="05-tls-the-blocks-together.html">Learn it in puzzle 5 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Every record carries a check value; a changed byte makes it fail. <a class="show-me" href="05-tls-the-blocks-together.html">Learn it in puzzle 5 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Every record carries a keyed check; a changed byte makes it fail, and the listener can't recompute it. <a class="show-me" href="05-tls-the-blocks-together.html">Learn it in puzzle 5 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

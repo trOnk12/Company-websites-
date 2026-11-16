@@ -1,0 +1,15 @@
+<!-- label: ARC counts strong references; a cycle never reaches zero; a weak reference breaks it -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ar-t"><title id="ar-t">An object's count goes up with each strong reference and it is freed at zero; a screen and its view model referring to each other never reach zero; making one reference weak lets both be freed</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1 hide-3" data-pulse="1"><rect class="d-hl" x="250" y="120" width="140" height="70" rx="8"/><text class="d-b" x="320" y="150" text-anchor="middle">object</text><text class="d-a" x="320" y="176" text-anchor="middle">count: 2</text><x-arrow tone="ink" d="M120,100 L244,140"/><x-arrow tone="ink" d="M120,220 L244,170"/><text class="d-tiny" x="90" y="96" text-anchor="middle">variable</text><text class="d-tiny" x="90" y="236" text-anchor="middle">property</text></g>
+<g class="step s2 hide-3" data-pulse="2"><rect class="d-paper" x="250" y="120" width="140" height="70" rx="8"/><text class="d-a" x="320" y="150" text-anchor="middle">count: 0</text><text class="d-r" x="320" y="176" text-anchor="middle">freed now</text></g>
+<g class="step s3 hide-4" data-pulse="3"><rect class="d-hl" x="120" y="130" width="140" height="60" rx="8"/><text class="d-b" x="190" y="166" text-anchor="middle">Screen</text><rect class="d-hl" x="380" y="130" width="140" height="60" rx="8"/><text class="d-b" x="450" y="166" text-anchor="middle">ViewModel</text><x-arrow tone="red" d="M264,146 L374,146"/><x-arrow tone="red" d="M376,176 L266,176"/><text class="d-r" x="320" y="230" text-anchor="middle">count 1 each: never freed</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-paper" x="120" y="130" width="140" height="60" rx="8"/><text class="d-b" x="190" y="166" text-anchor="middle">Screen</text><rect class="d-paper" x="380" y="130" width="140" height="60" rx="8"/><text class="d-b" x="450" y="166" text-anchor="middle">ViewModel</text><x-arrow tone="ink" d="M264,146 L374,146"/><x-arrow tone="path" d="M376,176 L266,176"/><text class="d-a" x="320" y="214" text-anchor="middle">weak</text><text class="d-a" x="320" y="250" text-anchor="middle">both freed</text></g>
+<g class="step s1" data-move="1:320,110 2:320,110 3:320,120 4:320,200"><circle class="d-acc" cx="0" cy="0" r="6"/></g>
+</svg>
+<ol class="caps">
+<li><p><b>ARC</b> counts the <b>strong references</b> to each object: a variable here, a property there. This one has two.</p></li>
+<li><p>When both let go, the count reaches zero, and ARC frees it right away: no collector, no waiting.</p></li>
+<li><p>A screen and its view model hold strong references to each other: a <b>strong reference cycle</b>. Each count stays at one, so neither is ever freed. <i>Predict: what breaks it?</i></p></li>
+<li><p>A <b>weak reference</b> on one side: it doesn't count. When the screen closes, both counts reach zero, and both are freed.</p></li>
+</ol>

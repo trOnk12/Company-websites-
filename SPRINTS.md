@@ -43,13 +43,17 @@ only the blocks they're missing.
 
 - [x] Course "Encryption, from the ground up": read/change/pretend, AES, key exchange, hashes, signatures and
   certificates, TLS. Facts from RFC 8446, NIST FIPS 197 and FIPS 180-4, quoted.
+- [x] Review round (text 5–8, pictures 4–8): correctness fixes to TLS order, AEAD, signatures, AES modes. Re-review running.
+
+## Sprint 5: iOS for Android developers, module 1 (done 2026-11-16)
+
+- [x] Course "iOS for Android developers": suspended apps, the run loop, GCD, async/await and the main actor, ARC.
+  Each puzzle starts from the Android block. Facts from Apple's documentation and the Swift book, quoted.
+- [x] Cross-course building blocks: a puzzle that builds on another course says so, with a link.
 - [ ] Review round (running) and fixes.
 
 ## Backlog, in order
 
-1. **Sprint 5: iOS for Android developers, module 1.** Each iOS block mapped onto the Android one you know: app
-   and scene lifecycle vs Activity; the run loop vs the Looper; GCD and Swift concurrency vs coroutines; ARC vs
-   garbage collection; background limits (Jetsam) vs the low-memory killer. From the iOS track in the notes.
 2. **Sprint 6: KMP module 2 + Compose Multiplatform.** Kotlin/Native memory (GC meets ARC), coroutines on iOS,
    then what Compose Multiplatform shares and how it draws on iOS.
 3. **Sprint 7: Encryption module 2.** Keys on the phone: Android Keystore, encrypted storage, pinning.

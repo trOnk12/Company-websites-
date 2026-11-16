@@ -1,0 +1,18 @@
+<!-- label: The main thread's run loop: handle, then sleep; Android's Looper by another name -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="rl-t"><title id="rl-t">The main thread on iOS takes a touch, a timer and a redraw from its run loop one at a time; with nothing left it sleeps; a slow task blocks the touch behind it, just like Android's Looper</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-person class="step s1" x="90" y="160" desk="1" label="main thread"/>
+<g class="step s1"><text class="d-b" x="430" y="60" text-anchor="middle">run loop</text><x-arrow tone="ink" d="M560,100 L190,100"/></g>
+<x-letter class="step s1" data-move="1:200,130 2:120,166" x="0" y="0" w="70" h="36" label="touch"/>
+<x-letter class="step s1" data-move="1:290,130 2:200,130 3:200,130" x="0" y="0" w="70" h="36" label="timer"/>
+<x-letter class="step s1" data-move="1:380,130 2:290,130 3:290,130" x="0" y="0" w="70" h="36" label="redraw"/>
+<g class="step s3 hide-4" data-pulse="3"><text class="d-tiny" x="430" y="260" text-anchor="middle">Android: Looper · iOS: run loop</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="40" y="250" width="130" height="34" rx="4"/><text class="d-rt" x="105" y="272" text-anchor="middle">2 s file read</text><text class="d-r" x="250" y="300" text-anchor="middle">touch waits: frozen</text></g>
+<g class="step only-2"><text class="d-a" x="360" y="230" text-anchor="middle">one at a time, to the end</text></g>
+</svg>
+<ol class="caps">
+<li><p>The main thread has an in-tray of events: a touch, a timer, a redraw. Its routine is the <b>run loop</b>.</p></li>
+<li><p>Take the next event, handle it to the end, take the next. When the tray is empty, the thread sleeps until something arrives.</p></li>
+<li><p>You know this routine: it's Android's Looper. The app framework starts the main run loop for you at launch. <i>Predict: what does a slow task on it do?</i></p></li>
+<li><p>The same as on Android: everything behind it waits, touches included, and the screen seems frozen.</p></li>
+</ol>

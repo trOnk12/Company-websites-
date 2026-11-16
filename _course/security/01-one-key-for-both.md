@@ -20,9 +20,9 @@ The simplest arrangement: one key, and it works both ways. Encrypt with it, decr
 
 The standard one is **AES**. It takes the data in **blocks of 128 bits** (16 bytes) and scrambles each with the key, in rounds of mixing and substituting, in a way that can only be undone with that same key. Keys come in three sizes: 128, 192 or 256 bits. A 128-bit key has 2^128 possible values: far more than any computer could ever try, which is why guessing it isn't a way in.
 
-AES is fast, and phones have instructions built for it, so it can encrypt everything you send. That's why, as puzzle 5 shows, even HTTPS uses it for all the actual data.
+AES is fast, and phone chips have circuits built for it, so it can encrypt everything you send. (Real use never scrambles each block on its own, which would make two identical blocks look identical: a counter is mixed into every block. And puzzle 5 adds a check against changes.) That's why, as puzzle 5 shows, even HTTPS uses it for all the actual data.
 
-But it leaves one problem. Your app and your server both need the same key. You can't send it over the line from puzzle 0: the listener would copy it, and then decrypt everything. And you can't build one key into every copy of your app: anyone could pull it out of the APK. How do two sides get the same key, when everything they say can be heard? That's puzzle 2.
+But it leaves one problem. Your app and your server both need the same key. You can't send it over the line from puzzle 0: the listener would copy it, and then decrypt everything. And you can't build one key into every copy of your app: anyone could pull it out of the app file. How do two sides get the same key, when everything they say can be heard? That's puzzle 2.
 
 ## The analogy
 

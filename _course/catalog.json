@@ -3,6 +3,11 @@
   "intro": "No dates yet: these are topics from my own learning sessions, roughly in the order I'll turn them into puzzles.",
   "upcoming": [
     {
+      "id": "ios",
+      "title": "iOS for Android developers",
+      "topics": "Lifecycle, run loop, GCD, Swift concurrency, ARC."
+    },
+    {
       "id": "security",
       "title": "Encryption, from the ground up",
       "topics": "Keys, key exchange, hashes, signatures, certificates and TLS."

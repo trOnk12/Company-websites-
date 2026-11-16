@@ -3,18 +3,21 @@
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <x-phone class="step s1" x="30" y="110" w="64" h="120" label="your app"/>
 <x-server class="step s1" x="530" y="100" w="80" h="120" label="your server"/>
-<x-letter class="step s1 hide-3" data-pulse="1" data-move="1:110,110" x="0" y="0" w="180" h="40" label="hello + public A"/>
-<x-arrow class="step only-1" tone="path" d="M100,140 C250,120 400,120 524,140"/>
-<g class="step s2 hide-4" data-pulse="2"><x-letter x="230" y="160" w="290" h="44" label="public B + certificate + signature"/></g>
+<x-arrow class="step only-1" tone="path" d="M100,190 C250,220 400,220 524,190"/>
+<x-letter class="step only-1" data-pulse="1" data-move="1:200,110" x="0" y="0" w="180" h="40" label="hello + public A"/>
 <x-arrow class="step only-2" tone="path" d="M526,190 C420,220 230,220 100,190"/>
-<g class="step s3" data-pulse="3"><text class="d-a" x="320" y="290" text-anchor="middle">certificate ✓ name ✓ signature ✓</text></g>
-<g class="step s4" data-pulse="4"><x-key x="104" y="60" label="keys"/><x-key x="470" y="60" label="keys"/></g>
-<x-letter class="step s4" data-move="3:110,290 4:300,100" x="0" y="0" w="120" h="40" label="x7#Q!f9 ✓"/>
-<x-arrow class="step only-4" tone="acc" d="M100,160 C220,140 400,140 524,160"/>
+<x-letter class="step only-2" data-pulse="2" data-move="1:260,110 2:260,110" x="0" y="0" w="120" h="40" label="public B"/>
+<g class="step s2" data-pulse="2"><x-key x="104" y="60" label="keys"/><x-key x="470" y="60" label="keys"/></g>
+<g class="step only-3" data-pulse="3"><x-arrow tone="path" d="M526,200 C420,240 230,240 100,200"/><x-letter x="230" y="100" w="290" h="44" label="certificate + signature (encrypted)"/></g>
+<g class="step s3"><x-padlock x="300" y="160" fill="d-adv"/></g>
+<g class="step only-3"><text class="d-a" x="320" y="290" text-anchor="middle">check: certificate ✓ name ✓ signature ✓</text></g>
+<x-letter class="step s4" data-move="3:110,290 4:250,100" x="0" y="0" w="140" h="40" label="request + check"/>
+<x-arrow class="step only-4" tone="acc" d="M100,180 C220,220 400,220 524,180"/>
+<g class="step s4"><text class="d-a" x="320" y="290" text-anchor="middle">every record: encrypted and checked</text></g>
 </svg>
 <ol class="caps">
 <li><p><b>TLS</b>, the S in HTTPS, starts with a short exchange: the <b>handshake</b>. Your app says hello and sends its public value (puzzle 2).</p></li>
-<li><p>The server answers with its public value, its certificate, and a signature over the conversation so far (puzzle 4).</p></li>
-<li><p>Your app checks all three: a trusted authority, the right name, a valid signature. <i>Predict: what's left before data can flow?</i></p></li>
-<li><p>Both compute the shared secret and turn it into symmetric keys. Every request now travels encrypted, with a check that catches any change.</p></li>
+<li><p>The server answers with its public value. Both compute the shared secret and derive keys from it: from now on, everything is encrypted.</p></li>
+<li><p>Now, encrypted, the server sends its certificate and a signature over the conversation; your app checks all three. <i>Predict: what protects the data after that?</i></p></li>
+<li><p>Each record of data is encrypted with those keys and carries a keyed check: read, change and pretend are all stopped.</p></li>
 </ol>

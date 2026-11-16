@@ -190,6 +190,14 @@
     "blocks of 128 bits",
     "128-bit blocks"
    ]
+  },
+  "key pair": {
+   "in": "04",
+   "def": "Two keys made together: a private one kept secret and a public one anyone may have.",
+   "aliases": [
+    "key pairs",
+    "asymmetric"
+   ]
   }
  },
  "avoid": {

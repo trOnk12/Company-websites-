@@ -146,7 +146,8 @@ function diagramOf(p) {
 function buildsOn(course, p) {
   const b = blocks(course.id);
   const need = b[p.n] || [];
-  if (!need.length) return '';
+  const assumes = course.meta.assumes;
+  if (!need.length) return assumes && p.n > 0 ? `      <aside class="builds-on" aria-label="Building blocks"><p><b>Builds on</b> what you already know from <a href="${assumes.href}">${L.esc(assumes.title)}</a>, not on an earlier puzzle here: you can start with this one.</p></aside>` : '';
   const path = new Set();
   const walk = n => { for (const d of b[n] || []) if (!path.has(d)) { path.add(d); walk(d); } };
   walk(p.n);

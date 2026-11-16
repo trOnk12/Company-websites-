@@ -1,0 +1,39 @@
+{
+  "title": "iOS for Android developers",
+  "intro": "You already know Android's building blocks. This course maps each one onto its iOS twin, and shows exactly where the twins differ: the app that freezes instead of stopping, the run loop, queues instead of handlers, the main actor, and memory without a garbage collector.",
+  "how": "Each puzzle starts from the Android block you know, gives you the iOS one, shows both in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. Facts come from Apple's documentation and the Swift book, quoted on every page.",
+  "hero": "runloop",
+  "heroAlt": "Animated diagram: the main thread's run loop waits, handles an event, and sleeps again, like Android's Looper.",
+  "modules": [
+    {
+      "title": "Module 1: The Android blocks, on iOS",
+      "blurb": "Lifecycle, threads, queues, concurrency and memory: what's the same, and what isn't.",
+      "puzzles": [
+        "00-frozen-not-stopped.md",
+        "01-the-run-loop-is-your-looper.md",
+        "02-queues-not-handlers.md",
+        "03-the-main-actor.md",
+        "04-counting-not-collecting.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Screens and the system",
+      "topics": "Scenes and windows, SwiftUI's rendering model vs UIKit, background execution and Jetsam, launch time."
+    },
+    {
+      "title": "Module 3: Shipping",
+      "topics": "Xcode builds, signing, frameworks and Swift packages, profiling with Instruments, Swift 6 data-race safety."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  },
+  "assumes": {
+    "title": "Android from the foundation",
+    "href": "../android/"
+  }
+}

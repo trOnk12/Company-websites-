@@ -1,0 +1,17 @@
+<!-- label: On iOS, the app is suspended seconds after it leaves the screen -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">The app is active; the user leaves and it moves to the background with a few seconds to finish; then it is suspended, running no code; then iOS may end it without running any of its code</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1"><rect class="d-sleep" x="40" y="80" width="560" height="14" rx="3"/><text class="d-tiny" x="80" y="70" text-anchor="middle">active</text><text class="d-tiny" x="250" y="70" text-anchor="middle">background</text><text class="d-tiny" x="420" y="70" text-anchor="middle">suspended</text><text class="d-tiny" x="560" y="70" text-anchor="middle">ended</text></g>
+<g class="step s1" data-move="1:80,87 2:250,87 3:420,87 4:560,87"><circle class="d-acc" cx="0" cy="0" r="11"/></g>
+<x-phone class="step s1 hide-2" data-pulse="1" x="40" y="140" w="70" h="130" label="active"/>
+<g class="step s1 hide-2"><x-person x="200" y="190" label="your code runs"/></g>
+<g class="step s2 hide-3" data-pulse="2"><x-person x="250" y="190" label="5 s to finish"/><rect class="d-adv" x="300" y="170" width="70" height="24" rx="4"/><text class="d-tiny" x="335" y="187" text-anchor="middle">upload…</text></g>
+<g class="step s3 hide-4" data-pulse="3"><x-person x="420" y="190" label=""/><rect class="d-dusk" x="380" y="150" width="80" height="110" rx="6"/><text class="d-a" x="420" y="290" text-anchor="middle">frozen: no code</text><rect class="d-bad" x="470" y="170" width="80" height="24" rx="4"/><text class="d-rt" x="510" y="187" text-anchor="middle">upload ✗</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-dash" x="520" y="150" width="80" height="110" rx="6"/><text class="d-r" x="600" y="290" text-anchor="end">ended, no code ran</text></g>
+</svg>
+<ol class="caps">
+<li><p><b>UIKit</b> keeps your app in one of a few <b>app states</b>: from not running to <b>active</b>, in front and taking touches, where your code runs freely; the last is <b>suspended</b>.</p></li>
+<li><p>The user leaves: your app moves to the background, with a few seconds, five at most, to finish crucial work.</p></li>
+<li><p>Then iOS <b>suspends</b> it: still in memory, but no code runs, on any thread. The upload stops. <i>Predict: what if memory is needed?</i></p></li>
+<li><p>iOS ends the app, and no code of yours runs at that moment. Save as you enter the background, not at the end.</p></li>
+</ol>
