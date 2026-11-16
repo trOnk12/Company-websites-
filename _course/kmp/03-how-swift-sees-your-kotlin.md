@@ -20,7 +20,7 @@ For iOS, Kotlin/Native packs your shared code into a **framework**: Apple's form
 
 That description is a **header**: a file that lists every class, function and type, without their code. Kotlin writes it in **Objective-C**, the older language of Apple's platforms, because Swift can call Objective-C directly. Swift has no direct line to Kotlin; it goes through that Objective-C description.
 
-So the iOS team imports the framework, and in Swift your `LoginRules` class looks like any other Objective-C class: Swift reads the header and calls the native code behind it.
+A Gradle task builds the framework (it takes its name from your shared module, often called shared), and the iOS app's project in Xcode, Apple's counterpart of Android Studio, links it in. So the iOS team imports the framework, and in Swift your `LoginRules` class looks like any other Objective-C class: Swift reads the header and calls the native code behind it.
 
 That middle step has a price. Objective-C is older and simpler than both Kotlin and Swift, so some things don't survive the trip. The next puzzle shows which.
 

@@ -78,13 +78,13 @@
 <li><p>The header. Swift sees your Kotlin classes as Objective-C classes, and calls the native code behind them.</p><div class="stepnav"><label for="st-swift-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-swift-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-swift-1" title="Step 1"></label><label for="st-swift-2" title="Step 2"></label><label for="st-swift-3" title="Step 3"></label><label for="st-swift-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/swift.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>For iOS, Kotlin/Native packs your shared code into a <b>framework</b>: Apple's format for a library. A framework holds two things: the compiled code, and a description of what's inside, so other code knows what it can call.</p>
 <p>That description is a <b>header</b>: a file that lists every class, function and type, without their code. Kotlin writes it in <b>Objective-C</b>, the older language of Apple's platforms, because Swift can call Objective-C directly. Swift has no direct line to Kotlin; it goes through that Objective-C description.</p>
-<p>So the iOS team imports the framework, and in Swift your <code>LoginRules</code> class looks like any other Objective-C class: Swift reads the header and calls the native code behind it.</p>
+<p>A Gradle task builds the framework (it takes its name from your shared module, often called shared), and the iOS app's project in Xcode, Apple's counterpart of Android Studio, links it in. So the iOS team imports the framework, and in Swift your <code>LoginRules</code> class looks like any other Objective-C class: Swift reads the header and calls the native code behind it.</p>
 <p>That middle step has a price. Objective-C is older and simpler than both Kotlin and Swift, so some things don't survive the trip. The next puzzle shows which.</p>
       </section>
       <section aria-labelledby="the-analogy">

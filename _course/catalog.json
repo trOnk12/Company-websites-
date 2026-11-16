@@ -3,6 +3,11 @@
   "intro": "No dates yet: these are topics from my own learning sessions, roughly in the order I'll turn them into puzzles.",
   "upcoming": [
     {
+      "id": "security",
+      "title": "Encryption, from the ground up",
+      "topics": "Keys, key exchange, hashes, signatures, certificates and TLS."
+    },
+    {
       "title": "Bluetooth Low Energy, from the radio up",
       "topics": "Radio and channel hopping, advertising and scanning, connections, GATT, pairing and bonding, Android's Bluetooth stack (and its famous status 133), throughput math.",
       "id": "ble"

@@ -18,9 +18,9 @@ Your login rules, your price calculation, your sync logic: in most teams they're
 
 A **compiler** turns your source code into something a machine can run. Kotlin's compiler works in two halves. The **front end** reads your code and checks it: types, nullability, every rule of the language. It's the same whatever you build for. Then a **back end** turns the checked code into output for one kind of machine.
 
-Each platform you build for is a **target**: Android, the JVM, iOS, the web, desktop. Each target has its own back end.
+Each platform you build for is a **target**: Android, the JVM (servers and desktop apps run on it), iOS, the web. Each target has its own back end.
 
-For Android, the back end produces **bytecode**: instructions for a virtual machine, not for any one CPU (on the phone, it's turned into the DEX that ART runs). An iPhone has no virtual machine to run bytecode. So for iOS there's Kotlin/Native: a back end, built on a widely used compiler toolkit, that produces **native code**, machine code for the iPhone's own CPU, which runs directly, with nothing in between.
+For Android, the back end produces **bytecode**: instructions for a virtual machine, not for any one CPU (on the phone, it's turned into the DEX that ART runs; ART is Android's own virtual machine, a close cousin of the JVM, which is why Android and the JVM are separate targets). An iPhone has no virtual machine to run bytecode. So for iOS there's Kotlin/Native: a back end, built on a widely used compiler toolkit, that produces **native code**, machine code for the iPhone's own CPU, which runs directly, with nothing in between.
 
 Same Kotlin, same checks, two kinds of output. That's what makes the rest of this course possible.
 

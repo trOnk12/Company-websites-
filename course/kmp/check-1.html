@@ -63,8 +63,8 @@
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: What every target has</p>
 <fieldset class="quiz" data-n="1">
 <legend>You call <code>java.io.File</code> in <code>commonMain</code>, and the project has Android and iOS targets. What happens when you build for iOS?</legend>
-<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-1"><label for="q-01-what-every-target-has-1-1">It works, but only on Android it reads files</label>
-<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-2"><label for="q-01-what-every-target-has-1-2">It works, because Kotlin turns Java classes into native code</label>
+<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-1"><label for="q-01-what-every-target-has-1-1">It builds, and on iOS the call is skipped at runtime</label>
+<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-2"><label for="q-01-what-every-target-has-1-2">It works: Kotlin/Native turns the Java class into native code too</label>
 <input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-3" data-ok><label for="q-01-what-every-target-has-1-3">It fails: the iPhone has no Java library to provide that class</label>
 <p class="fb no opt-1"><b>Not quite.</b> Common code is compiled for every target; on iOS it can't compile at all. <a class="show-me" href="01-what-every-target-has.html">Learn it in puzzle 1 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> Kotlin/Native compiles your Kotlin; it can't bring along a Java library the iPhone doesn't have. <a class="show-me" href="01-what-every-target-has.html">Learn it in puzzle 1 →</a></p>
@@ -92,9 +92,9 @@
 </fieldset></section>
 <section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: Lost in translation</p>
 <fieldset class="quiz" data-n="4">
-<legend>Your shared code exposes a Flow that carries lists of users. What does Swift see?</legend>
+<legend>Your shared code exposes a <code>Flow&lt;User&gt;</code>. What does Swift see?</legend>
 <input type="radio" name="q-04-lost-in-translation-1" id="q-04-lost-in-translation-1-1"><label for="q-04-lost-in-translation-1-1">Exactly that Flow with its type, because generics always cross</label>
-<input type="radio" name="q-04-lost-in-translation-1" id="q-04-lost-in-translation-1-2" data-ok><label for="q-04-lost-in-translation-1-2">A Flow, without knowing it carries lists of users</label>
+<input type="radio" name="q-04-lost-in-translation-1" id="q-04-lost-in-translation-1-2" data-ok><label for="q-04-lost-in-translation-1-2">A Flow, without knowing it carries users</label>
 <input type="radio" name="q-04-lost-in-translation-1" id="q-04-lost-in-translation-1-3"><label for="q-04-lost-in-translation-1-3">Nothing at all, because Flow can't cross the header</label>
 <p class="fb no opt-1"><b>Not quite.</b> Generics cross only on classes; Flow is an interface, so its type parameter is lost. <a class="show-me" href="04-lost-in-translation.html">Learn it in puzzle 4 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Interface generics are lost in the Objective-C header.</p>

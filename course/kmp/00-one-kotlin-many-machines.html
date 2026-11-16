@@ -72,17 +72,17 @@
 <ol class="caps">
 <li><p>One Kotlin file, with the rules your app follows on every platform.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-targets-2">Next →</label></div></li>
 <li><p>The <b>compiler</b> turns it into something a machine can run. Its <b>front end</b> reads and checks your code, the same for every platform you build for.</p><div class="stepnav"><label for="st-targets-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-targets-3">Next →</label></div></li>
-<li><p>Then a <b>back end</b> per <b>target</b>. For Android: <b>bytecode</b>, instructions for a virtual machine. <i>Predict: what does an iPhone, with no virtual machine, need?</i></p><div class="stepnav"><label for="st-targets-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-targets-4">Next →</label></div></li>
+<li><p>Then a <b>back end</b> for each <b>target</b>, each platform you build for. For Android: <b>bytecode</b>, instructions for a virtual machine. <i>Predict: what does an iPhone, with no virtual machine, need?</i></p><div class="stepnav"><label for="st-targets-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-targets-4">Next →</label></div></li>
 <li><p><b>Native code</b>: machine code for its own CPU, made by Kotlin/Native. Same Kotlin, same checks, two kinds of output.</p><div class="stepnav"><label for="st-targets-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-targets-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-targets-1" title="Step 1"></label><label for="st-targets-2" title="Step 2"></label><label for="st-targets-3" title="Step 3"></label><label for="st-targets-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/targets.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A <b>compiler</b> turns your source code into something a machine can run. Kotlin's compiler works in two halves. The <b>front end</b> reads your code and checks it: types, nullability, every rule of the language. It's the same whatever you build for. Then a <b>back end</b> turns the checked code into output for one kind of machine.</p>
-<p>Each platform you build for is a <b>target</b>: Android, the JVM, iOS, the web, desktop. Each target has its own back end.</p>
-<p>For Android, the back end produces <b>bytecode</b>: instructions for a virtual machine, not for any one CPU (on the phone, it's turned into the DEX that ART runs). An iPhone has no virtual machine to run bytecode. So for iOS there's Kotlin/Native: a back end, built on a widely used compiler toolkit, that produces <b>native code</b>, machine code for the iPhone's own CPU, which runs directly, with nothing in between.</p>
+<p>Each platform you build for is a <b>target</b>: Android, the JVM (servers and desktop apps run on it), iOS, the web. Each target has its own back end.</p>
+<p>For Android, the back end produces <b>bytecode</b>: instructions for a virtual machine, not for any one CPU (on the phone, it's turned into the DEX that ART runs; ART is Android's own virtual machine, a close cousin of the JVM, which is why Android and the JVM are separate targets). An iPhone has no virtual machine to run bytecode. So for iOS there's Kotlin/Native: a back end, built on a widely used compiler toolkit, that produces <b>native code</b>, machine code for the iPhone's own CPU, which runs directly, with nothing in between.</p>
 <p>Same Kotlin, same checks, two kinds of output. That's what makes the rest of this course possible.</p>
       </section>
       <section aria-labelledby="the-analogy">

@@ -1,0 +1,19 @@
+<!-- label: Key exchange: private values stay, public values travel, both compute the same secret -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="kx-t"><title id="kx-t">Each side keeps a private value and sends a public value; each combines its own private value with the other's public value; both get the same shared secret; the listener sees only public values</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="110" w="64" h="120" label="your app"/>
+<x-server class="step s1" x="530" y="100" w="80" h="120" label="your server"/>
+<x-person class="step s1" x="320" y="250" tone="bad" label="listener"/>
+<g class="step s1" data-pulse="1"><circle class="d-bad" cx="62" cy="80" r="16"/><circle class="d-awake" cx="570" cy="70" r="16"/><text class="d-tiny" x="62" y="52" text-anchor="middle">private</text><text class="d-tiny" x="570" y="42" text-anchor="middle">private</text></g>
+<g class="step s2" data-move="1:110,150 2:240,130" data-pulse="2"><rect class="d-adv" x="0" y="0" width="70" height="30" rx="6"/><text class="d-tiny" x="35" y="20" text-anchor="middle">public A</text></g>
+<g class="step s2" data-move="1:450,150 2:330,130" data-pulse="2"><rect class="d-hl" x="0" y="0" width="70" height="30" rx="6"/><text class="d-tiny" x="35" y="20" text-anchor="middle">public B</text></g>
+<g class="step s2"><text class="d-r" x="320" y="200" text-anchor="middle">hears both</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-wood" x="110" y="190" width="90" height="36" rx="8"/><text class="d-tiny" x="155" y="213" text-anchor="middle">secret</text><rect class="d-wood" x="440" y="190" width="90" height="36" rx="8"/><text class="d-tiny" x="485" y="213" text-anchor="middle">secret</text><x-arrow tone="acc" d="M94,96 C120,140 140,170 150,186"/><x-arrow tone="acc" d="M560,96 C530,140 500,170 490,186"/></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="320" y="70" text-anchor="middle">same secret, never sent</text><x-padlock x="304" y="90" fill="d-adv"/></g>
+</svg>
+<ol class="caps">
+<li><p>Each side picks a random number and keeps it: its <b>private value</b>.</p></li>
+<li><p>From it, each makes a <b>public value</b> and sends it openly. The listener hears both.</p></li>
+<li><p>Each combines its own private value with the other's public value. <i>Predict: do the two sides get the same number?</i></p></li>
+<li><p>Yes: the <b>shared secret</b>, never sent. The listener, with only public values, can't compute it. This is a <b>key exchange</b>.</p></li>
+</ol>

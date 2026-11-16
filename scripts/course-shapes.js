@@ -109,6 +109,21 @@ const SHAPES = {
     const drawers = Array.from({ length: k }, (_, i) => `<rect class="d-paper" x="${x + 8}" y="${y + 8 + i * (dh + 6)}" width="${w - 16}" height="${dh}" rx="3"/><rect class="d-ink" x="${x + w / 2 - 12}" y="${y + dh - 2 + i * (dh + 6)}" width="24" height="4" rx="2"/>`).join('');
     return `<rect class="d-wood" x="${x}" y="${y}" width="${w}" height="${16 + k * (dh + 6) - 6}" rx="4"/>${drawers}` + txt('d-tiny', x + w / 2, y - 8, a.label, 'middle');
   },
+  // ── The security world ──
+  padlock(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), cls = a.tone === 'open' ? 'd-dash' : 'd-line';
+    const shackle = a.tone === 'open' ? `M${x + 6},${y} L${x + 6},${y - 14} A10,10 0 0,1 ${x + 26},${y - 14} L${x + 26},${y - 20}` : `M${x + 6},${y} L${x + 6},${y - 12} A10,10 0 0,1 ${x + 26},${y - 12} L${x + 26},${y}`;
+    return `<path class="d-line" d="${shackle}" fill="none"/><rect class="${a.fill || 'd-wood'}" x="${x}" y="${y}" width="32" height="26" rx="4"/><circle class="d-ink" cx="${x + 16}" cy="${y + 12}" r="3"/>` + txt('d-tiny', x + 16, y + 44, a.label, 'middle');
+  },
+  key(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), fill = a.fill || 'd-adv';
+    return `<circle class="${fill}" cx="${x + 10}" cy="${y + 10}" r="10"/><circle class="d-paper" cx="${x + 10}" cy="${y + 10}" r="3"/><rect class="${fill}" x="${x + 18}" y="${y + 7}" width="30" height="6" rx="2"/><rect class="${fill}" x="${x + 40}" y="${y + 12}" width="5" height="7"/><rect class="${fill}" x="${x + 32}" y="${y + 12}" width="4" height="5"/>` + txt('d-tiny', x + 24, y + 36, a.label, 'middle');
+  },
+  server(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), w = n(a, 'w', 80), h = n(a, 'h', 120);
+    const slots = [0, 1, 2].map(i => `<rect class="d-paper" x="${x + 10}" y="${y + 12 + i * 32}" width="${w - 20}" height="22" rx="3"/><circle class="d-ok" cx="${x + w - 20}" cy="${y + 23 + i * 32}" r="4"/>`).join('');
+    return `<rect class="d-wood" x="${x}" y="${y}" width="${w}" height="${h}" rx="6"/>${slots}` + txt('d-tiny', x + w / 2, y + h + 18, a.label, 'middle');
+  },
   moon(a) {
     const x = n(a, 'x', 0), y = n(a, 'y', 0);
     return `<path class="d-moon" d="M${x},${y - 26} a26,26 0 1,0 0,52 a20,20 0 1,1 0,-52 Z"/>`;

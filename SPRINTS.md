@@ -33,14 +33,32 @@ only the blocks they're missing.
   one names the puzzle to start with. Linked from each module on the overview ("Know this already?").
 - [x] Test: the check marks passes and the overview shows the first missed puzzle as next.
 
+## Sprint 3: Kotlin Multiplatform, module 1 (done 2026-11-16)
+
+- [x] Course "Kotlin Multiplatform, from the compiler up": targets, source sets, expect/actual, the framework and its
+  Objective-C header, what's lost in translation. Facts from kotlinlang.org, quoted.
+- [x] Review round (text 6–8, pictures 6–7) and fixes. Re-score next sprint.
+
+## Sprint 4: Encryption, module 1 (done 2026-11-16)
+
+- [x] Course "Encryption, from the ground up": read/change/pretend, AES, key exchange, hashes, signatures and
+  certificates, TLS. Facts from RFC 8446, NIST FIPS 197 and FIPS 180-4, quoted.
+- [ ] Review round (running) and fixes.
+
 ## Backlog, in order
 
-1. **Sprint 3: BLE module 2, fast and reliable.** MTU and the 20-byte payload, Data Length Extension,
+1. **Sprint 5: iOS for Android developers, module 1.** Each iOS block mapped onto the Android one you know: app
+   and scene lifecycle vs Activity; the run loop vs the Looper; GCD and Swift concurrency vs coroutines; ARC vs
+   garbage collection; background limits (Jetsam) vs the low-memory killer. From the iOS track in the notes.
+2. **Sprint 6: KMP module 2 + Compose Multiplatform.** Kotlin/Native memory (GC meets ARC), coroutines on iOS,
+   then what Compose Multiplatform shares and how it draws on iOS.
+3. **Sprint 7: Encryption module 2.** Keys on the phone: Android Keystore, encrypted storage, pinning.
+4. **BLE module 2, fast and reliable.** MTU and the 20-byte payload, Data Length Extension,
    2M PHY, throughput math; Android's one-GATT-operation-at-a-time rule and status 133.
-2. **Sprint 4: Android module 4, continued.** Context and why it leaks; tasks and the back stack.
-3. **Sprint 5: The map.** One page per course drawing the blocks as a graph (puzzles as nodes, "builds
+5. **Android module 4, continued.** Context and why it leaks; tasks and the back stack.
+6. **The map.** One page per course drawing the blocks as a graph (puzzles as nodes, "builds
    on" as edges), coloured by what you've passed.
-4. **Sprint 6: Quiz quality.** The right answer is still the longest option in 48 of 75 questions
+7. **Quiz quality.** The right answer is still the longest option in 48 of 75 questions
    (chance would be ~30): rewrite until it's near chance, and add the lint threshold.
-5. **Later:** courses from the catalog (system design, LLMs and agents, KMP/iOS), as the sessions
+8. **Later:** courses from the catalog (system design, LLMs and agents, KMP/iOS), as the sessions
    behind them land in the notes repo.

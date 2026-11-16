@@ -1,0 +1,21 @@
+<!-- label: Anyone in the middle can read, change or pretend; encryption stops the reading -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="wr-t"><title id="wr-t">A phone sends a password through the café Wi-Fi to a server; a listener at the Wi-Fi reads it; after encryption the listener sees only gibberish</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="110" w="64" h="120" label="your app"/>
+<x-machine class="step s1" x="250" y="140" w="140" label="café Wi-Fi"/>
+<x-server class="step s1" x="530" y="100" w="80" h="120" label="your server"/>
+<line class="d-dash step s1" x1="98" y1="170" x2="246" y2="170"/><line class="d-dash step s1" x1="394" y1="170" x2="526" y2="170"/>
+<x-letter class="step s1 hide-3" data-move="1:110,100 2:282,90" x="0" y="0" w="96" h="40" label="pass: hunter2"/>
+<g class="step s2 hide-3" data-pulse="2"><x-person x="320" y="250" tone="bad" label="listener"/><text class="d-r" x="320" y="62" text-anchor="middle">reads it</text></g>
+<g class="step s3" data-pulse="3"><text class="d-tiny" x="160" y="320" text-anchor="middle">read · change · pretend</text></g>
+<g class="step s3"><x-person x="320" y="250" tone="bad" label="listener"/></g>
+<g class="step s4" data-pulse="4"><x-padlock x="150" y="48" fill="d-adv" label="key"/></g>
+<x-letter class="step s4" data-move="3:110,100 4:282,90" x="0" y="0" w="96" h="40" label="x7#Q!f9"/>
+<g class="step s4"><text class="d-a" x="320" y="62" text-anchor="middle">gibberish</text></g>
+</svg>
+<ol class="caps">
+<li><p>Your app sends a password. It doesn't fly straight to your server: it passes through the café's Wi-Fi and many machines after it.</p></li>
+<li><p>Any of them can read it as it passes: every byte, in plain sight.</p></li>
+<li><p>In fact, any of them could do three things: read it, change it, or pretend to be your server. <i>Predict: what stops the reading?</i></p></li>
+<li><p><b>Encryption</b>: with a secret <b>key</b>, your app turns the data into gibberish, <b>ciphertext</b>. The listener sees bytes that mean nothing.</p></li>
+</ol>

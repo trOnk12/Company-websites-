@@ -1,0 +1,17 @@
+<!-- label: A hash turns any data into a short fingerprint; one changed bit changes it -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="hs-t"><title id="hs-t">Data of any size goes into a hash function and comes out as a short digest; changing one bit gives a completely different digest; comparing digests shows a change</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><x-sheet x="40" y="70" w="90" h="120" lines="7" label="10 MB file"/></g>
+<x-machine class="step s1" x="200" y="100" w="140" label="SHA-256"/>
+<x-arrow class="step s1" tone="acc" d="M136,130 L196,130"/>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="400" y="110" width="200" height="40" rx="6"/><text class="d-mi" x="500" y="136" text-anchor="middle">9f2c…a71e</text><x-arrow tone="acc" d="M344,130 L396,130"/><text class="d-tiny" x="500" y="100" text-anchor="middle">digest: always 256 bits</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-bad" x="70" y="150" width="34" height="14" rx="2"/><text class="d-rt" x="87" y="232" text-anchor="middle">1 bit flipped</text><rect class="d-bad" x="400" y="190" width="200" height="40" rx="6"/><text class="d-mi" x="500" y="216" text-anchor="middle">4be0…07c3</text><x-arrow tone="red" d="M344,150 C370,180 380,200 396,210"/></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="500" y="270" text-anchor="middle">compare: different</text><circle class="d-bad" cx="620" cy="190" r="12"/><path class="d-red" d="M613,183 L627,197 M627,183 L613,197"/></g>
+<g class="step s1" data-move="1:136,130 2:400,130 3:400,210 4:500,250"><circle class="d-acc" cx="0" cy="0" r="6"/></g>
+</svg>
+<ol class="caps">
+<li><p>Any data, a word or a 10 MB file, goes into a <b>hash function</b>. The standard one is <code>SHA-256</code>.</p></li>
+<li><p>Out comes a short <b>digest</b>, always 256 bits: a fingerprint of the data. Same data, same digest, every time.</p></li>
+<li><p>Flip a single bit of the file, and the digest is completely different. <i>Predict: how does that catch a change on the way?</i></p></li>
+<li><p>Hash what arrived and compare with the digest you expected. Different: someone changed the data.</p></li>
+</ol>

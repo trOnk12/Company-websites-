@@ -70,9 +70,9 @@
 <g class="step s1" data-pulse="1"><rect class="d-hl" x="40" y="140" width="170" height="90" rx="8"/><text class="d-a" x="125" y="168" text-anchor="middle">commonMain</text><text class="d-tiny" x="125" y="196" text-anchor="middle">Login rules</text></g>
 <path class="step s1 d-arr-acc" d="M214,170 C330,120 460,90 534,90" marker-end="url(#ah-sourcesets-acc)"/>
 <path class="step s1 d-arr-acc" d="M214,200 C330,240 460,260 534,260" marker-end="url(#ah-sourcesets-acc)"/>
-<g class="step s2" data-pulse="2"><rect class="d-band" x="270" y="30" width="150" height="60" rx="8"/><text class="d-b" x="345" y="66" text-anchor="middle">androidMain</text><path class="d-arr-ink" d="M424,60 C470,60 510,70 534,76" marker-end="url(#ah-sourcesets-ink)"/><rect class="d-band" x="270" y="280" width="150" height="60" rx="8"/><text class="d-b" x="345" y="316" text-anchor="middle">iosMain</text><path class="d-arr-ink" d="M424,310 C470,306 510,290 534,280" marker-end="url(#ah-sourcesets-ink)"/></g>
-<g class="step s3" data-pulse="3"><rect class="d-bad" x="58" y="240" width="134" height="30" rx="4"/><text class="d-rt" x="125" y="260" text-anchor="middle">java.io.File</text><circle class="d-bad" cx="470" cy="236" r="14"/><path class="d-red" d="M462,228 L478,244 M478,228 L462,244"/></g>
-<g class="step s4" data-move="3:110,250 4:290,248" data-pulse="4"><rect class="d-ok" x="0" y="0" width="110" height="24" rx="4"/><text class="d-tiny" x="55" y="17" text-anchor="middle">UIDevice</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-band" x="270" y="30" width="150" height="60" rx="8"/><text class="d-b" x="345" y="66" text-anchor="middle">androidMain</text><path class="d-arr-ink" d="M424,60 C470,60 510,70 534,76" marker-end="url(#ah-sourcesets-ink)"/><rect class="d-band" x="250" y="280" width="250" height="60" rx="8"/><text class="d-b" x="310" y="316" text-anchor="middle">iosMain</text><path class="d-arr-ink" d="M504,306 C516,300 524,292 534,284" marker-end="url(#ah-sourcesets-ink)"/></g>
+<g class="step only-3" data-pulse="3"><rect class="d-bad" x="58" y="240" width="134" height="30" rx="4"/><text class="d-rt" x="125" y="260" text-anchor="middle">java.io.File</text><circle class="d-bad" cx="470" cy="236" r="14"/><path class="d-red" d="M462,228 L478,244 M478,228 L462,244"/></g>
+<g class="step s4" data-move="3:110,250 4:376,300" data-pulse="4"><rect class="d-ok" x="0" y="0" width="110" height="24" rx="4"/><text class="d-tiny" x="55" y="17" text-anchor="middle">UIDevice</text></g>
 </svg></div>
 <ol class="caps">
 <li><p>Code lives in <b>source sets</b>. <code>commonMain</code> holds the <b>common code</b> and is compiled for every target, Android and iPhone alike.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-sourcesets-2">Next →</label></div></li>
@@ -81,13 +81,14 @@
 <li><p>Into <code>iosMain</code>, where Apple's APIs, like <code>UIDevice</code>, are allowed: it's only ever compiled for iOS.</p><div class="stepnav"><label for="st-sourcesets-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-sourcesets-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-sourcesets-1" title="Step 1"></label><label for="st-sourcesets-2" title="Step 2"></label><label for="st-sourcesets-3" title="Step 3"></label><label for="st-sourcesets-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/sourcesets.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A multiplatform project keeps its code in <b>source sets</b>: folders, each compiled for a chosen set of targets.</p>
-<p><b><code>commonMain</code></b> is compiled for every target. Its code is the <b>common code</b>, and it may only use what every target has: the Kotlin standard library and libraries that are multiplatform themselves. <code>java.io.File</code> isn't one of them, because the iPhone has no Java library to provide it.</p>
+<p><b><code>commonMain</code></b> is compiled for every target. Its code is the <b>common code</b>, and it may only use what every target has: the Kotlin standard library, and libraries built for every target themselves, like Kotlin's own coroutines library. <code>java.io.File</code> isn't one of them, because the iPhone has no Java library to provide it.</p>
 <p><b><code>androidMain</code></b> is compiled only for Android, so it can use anything Android and Java offer. <b><code>iosMain</code></b> is compiled only for iOS, so it can use Apple's own APIs, like <code>UIDevice</code>. Common code can't see into either: it doesn't know which platform it will end up on.</p>
+<p>In Gradle, you list the targets in the build file, and each source set is a folder under src, like src/commonMain and src/iosMain.</p>
 <p>The rule is what makes sharing safe: if something compiles in <code>commonMain</code>, it has something to run on, on every target.</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -98,8 +99,8 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>You call <code>java.io.File</code> in <code>commonMain</code>, and the project has Android and iOS targets. What happens when you build for iOS?</legend>
-<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-1"><label for="q-01-what-every-target-has-1-1">It works, but only on Android it reads files</label>
-<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-2"><label for="q-01-what-every-target-has-1-2">It works, because Kotlin turns Java classes into native code</label>
+<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-1"><label for="q-01-what-every-target-has-1-1">It builds, and on iOS the call is skipped at runtime</label>
+<input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-2"><label for="q-01-what-every-target-has-1-2">It works: Kotlin/Native turns the Java class into native code too</label>
 <input type="radio" name="q-01-what-every-target-has-1" id="q-01-what-every-target-has-1-3" data-ok><label for="q-01-what-every-target-has-1-3">It fails: the iPhone has no Java library to provide that class</label>
 <p class="fb no opt-1"><b>Not quite.</b> Common code is compiled for every target; on iOS it can't compile at all. <label class="show-me" for="st-sourcesets-3" data-goto="st-sourcesets">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Kotlin/Native compiles your Kotlin; it can't bring along a Java library the iPhone doesn't have. <label class="show-me" for="st-sourcesets-3" data-goto="st-sourcesets">Show me step 3 again ↑</label></p>

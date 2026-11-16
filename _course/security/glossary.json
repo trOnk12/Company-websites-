@@ -1,0 +1,206 @@
+{
+ "baseline": {
+  "_about": "What the learner already knows: a developer who has built an app that talks to a server over HTTPS, and knows nothing about how the S works.",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Java",
+   "Android",
+   "phone",
+   "code",
+   "program",
+   "data",
+   "class",
+   "object",
+   "method",
+   "function",
+   "APK",
+   "compile",
+   "install",
+   "UI",
+   "ID",
+   "MB",
+   "KB",
+   "ms",
+   "CPU",
+   "file",
+   "bitmap",
+   "val",
+   "Thread.sleep()",
+   "textView.text",
+   "hideHint()",
+   "bytes",
+   "byte",
+   "Wi-Fi",
+   "password",
+   "token",
+   "internet",
+   "HTTPS",
+   "bank",
+   "bit",
+   "bits",
+   "iPhone",
+   "server",
+   "Android",
+   "RSA"
+  ]
+ },
+ "terms": {
+  "encryption": {
+   "in": "00",
+   "def": "Turning data into gibberish that only someone with the right key can turn back.",
+   "aliases": [
+    "encrypt",
+    "encrypted",
+    "encrypts",
+    "decrypt",
+    "decrypted",
+    "decryption"
+   ]
+  },
+  "key": {
+   "in": "00",
+   "def": "The secret number that locks and unlocks data.",
+   "aliases": [
+    "keys"
+   ]
+  },
+  "ciphertext": {
+   "in": "00",
+   "def": "Encrypted data: what a listener sees.",
+   "aliases": []
+  },
+  "symmetric encryption": {
+   "in": "01",
+   "def": "Encryption where the same key locks and unlocks.",
+   "aliases": [
+    "symmetric"
+   ]
+  },
+  "AES": {
+   "in": "01",
+   "def": "The standard symmetric cipher: blocks of 128 bits, keys of 128, 192 or 256 bits.",
+   "aliases": []
+  },
+  "key exchange": {
+   "in": "02",
+   "def": "Two sides agreeing on a shared secret over a line anyone can hear.",
+   "aliases": []
+  },
+  "private value": {
+   "in": "02",
+   "def": "The number each side keeps to itself during a key exchange.",
+   "aliases": [
+    "private values"
+   ]
+  },
+  "public value": {
+   "in": "02",
+   "def": "The number each side sends openly during a key exchange.",
+   "aliases": [
+    "public values"
+   ]
+  },
+  "shared secret": {
+   "in": "02",
+   "def": "The number both sides compute and a listener can't.",
+   "aliases": [
+    "shared secrets"
+   ]
+  },
+  "hash function": {
+   "in": "03",
+   "def": "A function that turns any data into a short, fixed-size fingerprint.",
+   "aliases": [
+    "hash functions",
+    "hash"
+   ]
+  },
+  "digest": {
+   "in": "03",
+   "def": "The fingerprint a hash function produces, like SHA-256's 256 bits.",
+   "aliases": [
+    "digests"
+   ]
+  },
+  "SHA-256": {
+   "in": "03",
+   "def": "A standard hash function with a 256-bit digest.",
+   "kind": "code",
+   "aliases": [
+    "SHA"
+   ]
+  },
+  "private key": {
+   "in": "04",
+   "def": "The half of a key pair its owner keeps secret, used to sign.",
+   "aliases": [
+    "private keys"
+   ]
+  },
+  "public key": {
+   "in": "04",
+   "def": "The half of a key pair anyone may have, used to check signatures.",
+   "aliases": [
+    "public keys"
+   ]
+  },
+  "signature": {
+   "in": "04",
+   "def": "A digest locked with a private key; anyone with the public key can check it.",
+   "aliases": [
+    "signatures",
+    "sign",
+    "signs",
+    "signed"
+   ]
+  },
+  "certificate": {
+   "in": "04",
+   "def": "A server's name and public key, signed by an authority the phone trusts.",
+   "aliases": [
+    "certificates"
+   ]
+  },
+  "certificate authority": {
+   "in": "04",
+   "def": "An organization phones trust to sign certificates.",
+   "aliases": [
+    "certificate authorities"
+   ]
+  },
+  "TLS": {
+   "in": "05",
+   "def": "The protocol behind HTTPS: key exchange, certificate check, then symmetric encryption.",
+   "aliases": []
+  },
+  "handshake": {
+   "in": "05",
+   "def": "The first messages of a TLS connection, where keys are agreed and the server proves who it is.",
+   "aliases": [
+    "handshakes"
+   ]
+  },
+  "128-bit block": {
+   "in": "01",
+   "def": "The fixed-size piece AES encrypts at a time: 128 bits.",
+   "aliases": [
+    "blocks of 128 bits",
+    "128-bit blocks"
+   ]
+  }
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what. The lint fails on them (any page text, labels, questions); say the named actor or the plain word instead.",
+  "phrases": {
+   "the system": "name the actor: system_server, the kernel, or Binder",
+   "views": "say buttons and text, or the screen (View isn't taught)",
+   "lost focus": "say: another app is in front",
+   "simply": "cut it: it makes a learner who's stuck feel slow",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is"
+  }
+ }
+}

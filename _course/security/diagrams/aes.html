@@ -1,0 +1,18 @@
+<!-- label: AES: one key locks and unlocks, block by block -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ae-t"><title id="ae-t">The same key encrypts and decrypts; AES cuts data into 128-bit blocks and scrambles each one; the open problem is getting the same key to both sides</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="110" w="64" h="120" label="your app"/>
+<x-server class="step s1" x="530" y="100" w="80" h="120" label="your server"/>
+<g class="step s1" data-pulse="1"><x-key x="44" y="60" label="key"/><x-key x="544" y="50" label="same key"/></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="150" y="120" width="40" height="34" rx="3"/><rect class="d-hl" x="196" y="120" width="40" height="34" rx="3"/><rect class="d-hl" x="242" y="120" width="40" height="34" rx="3"/><rect class="d-hl" x="288" y="120" width="40" height="34" rx="3"/><text class="d-tiny" x="240" y="108" text-anchor="middle">blocks of 128 bits</text></g>
+<g class="step s2" data-move="1:150,120 2:150,120 3:150,190 4:150,190"><rect class="d-acc" x="-4" y="-4" width="48" height="42" rx="5"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-ink" x="150" y="190" width="40" height="34" rx="3"/><rect class="d-ink" x="196" y="190" width="40" height="34" rx="3"/><rect class="d-ink" x="242" y="190" width="40" height="34" rx="3"/><rect class="d-ink" x="288" y="190" width="40" height="34" rx="3"/><x-arrow tone="acc" d="M240,158 L240,184"/><text class="d-tiny" x="390" y="212">scrambled: AES</text></g>
+<g class="step s4" data-pulse="4"><x-person x="320" y="268" tone="bad" label="listener"/><x-key x="380" y="270" fill="d-bad" label="copy?"/></g>
+<x-arrow class="step only-4" tone="red" d="M100,80 C220,60 300,160 370,268"/>
+</svg>
+<ol class="caps">
+<li><p>One key, and both sides have it: lock with it, unlock with the same key. That's <b>symmetric encryption</b>.</p></li>
+<li><p>The standard, <b>AES</b>, cuts the data into <b>blocks of 128 bits</b>, 16 bytes each.</p></li>
+<li><p>It scrambles every block with the key, in a way only the same key can undo. Fast enough for everything you send. <i>Predict: what's the catch?</i></p></li>
+<li><p>Both sides need that key. Send it over the line, and the listener copies it, then decrypts everything.</p></li>
+</ol>
