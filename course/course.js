@@ -97,7 +97,7 @@
       }
     });
     let x0 = null;
-    fig.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+    fig.addEventListener('touchstart', e => { const st = e.target.closest('.stage'); x0 = st && st.scrollWidth > st.clientWidth ? null : e.touches[0].clientX; }, { passive: true }); // a wide diagram on a phone scrolls instead
     fig.addEventListener('touchend', e => {
       if (x0 === null) return;
       const dx = e.changedTouches[0].clientX - x0; x0 = null;

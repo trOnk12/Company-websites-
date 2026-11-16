@@ -28,7 +28,7 @@ The post office. The town hall writes a letter; it can't walk into your house, b
 
 - system_server wants your Activity to pause. Can it change your app's memory directly?::*No: it sends a message, and Binder carries it into your app||Yes: system_server is part of Android, so it can >> Being Android's own process doesn't give it access to yours. Only the kernel reaches into every process. >> s2::Separate processes never touch each other's memory; Binder carries the message.
 - Why does the message go through the kernel?::*Only the kernel can reach into every process||Because the kernel decides when screens pause >> The kernel only carries the letter. The decision was the town hall's. >> s3::The kernel is the only code that can reach any process, so it does the carrying.
-- What's the difference between Binder and system_server?::*Binder carries messages; system_server decides what they say||Binder is another name for system_server >> Binder is a part of the kernel, the post office. system_server is a process, the town hall. >> s1::The post office delivers; the town hall decides.
+- What's the difference between Binder and system_server?::*Binder carries messages; system_server decides what they say||Binder is the part of system_server that decides what each app does >> Binder is a part of the kernel, the post office. system_server is a process, the town hall. >> s1::The post office delivers; the town hall decides.
 
 ## Sources
 

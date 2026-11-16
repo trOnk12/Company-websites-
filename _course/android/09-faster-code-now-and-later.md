@@ -28,9 +28,9 @@ The translator reads new recipes word by word, but recipes asked for often get t
 
 ## Check yourself
 
-- Your app gets faster a few days after install, without an update. Why?::*ART noted the hot code, and `dex2oat` later translated it ahead of time||The JIT saved its machine code into the APK >> JIT's machine code lives in memory while the app runs and is lost when it stops. The notebook is what's kept. >> s3||The phone's CPU got used to the app >> CPUs don't learn. The difference is which code is already translated. >> s4::The profile survives; AOT translation from it is what makes the next starts faster.
-- Why not translate all the DEX ahead of time, right at install?::*Translating everything takes time and space; the profile says which code is worth it||Because AOT can't translate DEX >> AOT translates DEX, but only what's worth it: the hot code from the profile. >> s4::The profile focuses the work on code that's actually used.
-- What's the difference between JIT and AOT?::*When: JIT translates now, while the app runs; AOT translates ahead of time, later||Where: JIT runs on your computer, AOT on the phone >> Both happen on the phone. The difference is when. >> s2::Same goal, different moment.
+- Your app gets faster a few days after install, without an update. Why?::*ART noted the hot code, and `dex2oat` later translated it ahead of time||The JIT saved its machine code into the APK, so it ran fast on the next start >> JIT's machine code lives in memory while the app runs and is lost when it stops. The notebook is what's kept. >> s3||The phone's CPU learned the app's code and kept it in its cache >> CPUs don't learn. The difference is which code is already translated. >> s4::The profile survives; AOT translation from it is what makes the next starts faster.
+- Why not translate all the DEX ahead of time, right at install?::*Translating everything takes time and space; the profile says which code is worth it||Because AOT can only translate code that has run at least once >> AOT translates DEX, but only what's worth it: the hot code from the profile. >> s4::The profile focuses the work on code that's actually used.
+- What's the difference between JIT and AOT?::*When: JIT translates now, while the app runs; AOT translates ahead of time, later||Where: JIT runs on your computer when you build, AOT on the phone >> Both happen on the phone. The difference is when. >> s2::Same goal, different moment.
 
 ## Sources
 

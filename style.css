@@ -455,3 +455,19 @@ html:not(.js) .stage [data-move] { display: none; }
 .d-adv { fill: #F2D9A0; stroke: #9A6A1A; stroke-width: 1.5; }
 .d-sleep { fill: #E4E1D8; }
 .d-awake { fill: var(--accent-deep); }
+
+/* review fixes */
+.gate .button.primary, .nudge .button.primary { background: var(--ink); color: var(--bg); }
+.quiz legend { float: left; width: 100%; padding: 0; margin: 0 0 0.75rem; }
+.quiz legend + * { clear: both; }
+.quiz > :not(legend):first-of-type { clear: both; }
+pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.modules li[data-state="locked"] > a { color: inherit; }
+.modules li[data-state="locked"] > a::before { content: "○ "; color: var(--muted); }
+.finish { border: 2px solid var(--accent-deep); border-radius: 6px; padding: 1rem 1.1rem; margin: 2rem 0 0; background: #EEF3FA; }
+.finish h2 { margin-top: 0; }
+.fix-link { margin-top: 1.5rem; }
+.home-courses { list-style: none; padding: 0; display: grid; gap: 1rem; margin: 1rem 0 0; }
+@media (min-width: 48rem) { .home-courses { grid-template-columns: 1fr 1fr; } }
+/* phones: keep diagram labels readable; the diagram scrolls sideways inside its frame */
+@media (max-width: 34rem) { .stage { overflow-x: auto; } .stage svg { min-width: 30rem; } }

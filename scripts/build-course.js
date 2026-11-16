@@ -18,6 +18,8 @@ const path = require('path');
 const L = require('./build-learning');
 
 const SRC = path.join(L.ROOT, '_course');
+const CONTACT = 'm.pachulski94@gmail.com'; // the address already shown on the home page
+const LINKEDIN = 'https://www.linkedin.com/in/mateusz-pachulski';
 const OUT = path.join(L.ROOT, 'course');
 const REQUIRED = ['The problem', 'Check yourself', 'Sources'];
 
@@ -42,7 +44,7 @@ function courses() {
 }
 
 function courseUrls() {
-  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/${c.id}/`, ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
+  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/${c.id}/`, ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
     .filter((u, i, a) => a.indexOf(u) === i);
 }
 
@@ -162,7 +164,9 @@ ${html}
   const linked = linkRefs(course, body);
   const prev = all[p.n - 1], next = all[p.n + 1];
   const progress = all.map(q => `<li><a href="${q.slug}.html"${q === p ? ' aria-current="page"' : q.n < p.n ? ' class="done"' : ''} title="${L.esc(q.meta.title)}">${q.n}</a></li>`).join('');
-  const label = p.n === 0 ? 'Start here' : `Puzzle ${p.n} of ${all.length - 1}`;
+  const label = p.n === 0 ? `Start here · 1 of ${all.length}` : `Puzzle ${p.n} · ${p.n + 1} of ${all.length}`;
+  const nextUp = (course.meta.upcoming || [])[0];
+  const fix = `mailto:${CONTACT}?subject=${encodeURIComponent(`Course: ${p.meta.title}`)}&body=${encodeURIComponent('Which part, and what was wrong or unclear?\n\n')}`;
   return L.page({
     title: `${p.meta.title} – ${course.meta.title} – Mateusz Pachulski`,
     description: p.meta.summary,
@@ -181,8 +185,15 @@ ${linked}
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         ${prev ? `<a class="button" href="${prev.slug}.html">← ${prev.n === 0 ? 'Start' : `Puzzle ${prev.n}`}</a>` : '<a class="button" href="./">← Overview</a>'}
-        ${next ? `<a class="button primary" href="${next.slug}.html">Puzzle ${next.n}: ${L.esc(next.meta.short || next.meta.title)} →</a>` : '<a class="button primary" href="./">Back to the overview →</a>'}
+        ${next ? `<a class="button primary" href="${next.slug}.html">Puzzle ${next.n}: ${L.esc(next.meta.short || next.meta.title)} →</a>` : '<a class="button" href="./">Back to the overview →</a>'}
       </nav>
+${next ? '' : `      <section class="finish" aria-labelledby="finish-heading">
+        <h2 id="finish-heading">That's everything published so far</h2>
+        <p>You've reached the last puzzle of <b>${L.esc(course.meta.title)}</b>.${nextUp ? ` Next: ${L.esc(nextUp.title)}, about ${L.esc(nextUp.topics.charAt(0).toLowerCase() + nextUp.topics.slice(1))}` : ''}</p>
+        <p>New puzzles are announced on <a href="${LINKEDIN}">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
+        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+      </section>`}
+      <p class="small fix-link">Something wrong or unclear on this page? <a href="${fix}">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>`,
   });
 }
@@ -197,7 +208,7 @@ function renderOverview(c) {
     const items = m.puzzles.map(() => c.puzzles[i++]).map(p => `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}</span></li>`).join('');
     return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')}</p><ol start="${first}">${items}</ol></li>`;
   }).join('\n');
-  const soon = (c.meta.upcoming || []).map(m => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(coming next)</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
+  const soon = (c.meta.upcoming || []).map((m, k) => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(${k === 0 ? 'next' : 'later'})</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
   const hero = c.meta.hero || 'chain';
   const gif = fs.existsSync(path.join(OUT, c.id, 'gifs', `${hero}.gif`))
     ? `<img class="hero-gif" src="gifs/${hero}.gif" width="${gifSize(c.id, hero)[0]}" height="${gifSize(c.id, hero)[1]}" alt="${L.esc(c.meta.heroAlt || 'Animated diagram from the course.')}">` : '';
@@ -213,13 +224,14 @@ function renderOverview(c) {
     <section class="section" aria-labelledby="how-heading">
       <div class="wrap narrow">
         <h2 id="how-heading">How it works</h2>
-        <p>${L.esc(c.meta.how)}</p>
+        <p>${L.esc(c.meta.how)} <a href="../how-its-made.html">How these courses are made, and how they're checked →</a></p>
         ${support(c, 'overview')}
       </div>
     </section>
     <section class="section" aria-labelledby="modules-heading">
       <div class="wrap narrow">
         <h2 id="modules-heading">Modules</h2>
+        <p class="small">Every puzzle opens: start wherever you like. Each one builds on the ones before it; its check tells you you're ready for the next. ✓ marks the ones you've passed (saved only in this browser).</p>
         <ul class="modules">
 ${modules}
 ${soon}
@@ -234,6 +246,20 @@ ${soon}
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page. Your progress is saved only in this browser.</p>
       <p class="small"><a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
     body,
+  });
+}
+
+// How the courses are made: _course/how-its-made.md → course/how-its-made.html.
+function renderMethod(file) {
+  const raw = fs.readFileSync(file, 'utf8');
+  const { meta, body } = L.parseFrontmatter(raw, file);
+  const ctx = { file, cards: new Map(), links: new Set() };
+  const html = L.parseBody(body, ctx).map(s => `      <section><h2>${L.inline(s.title, ctx)}</h2>\n${L.renderBlocks(s.blocks, ctx)}</section>`).join('\n');
+  return L.page({
+    title: `${meta.title} – Mateusz Pachulski`, description: meta.summary, canonical: `${L.SITE}/course/how-its-made`,
+    base: '../', current: 'course', feed: false,
+    footer: `      <p class="small"><a href="./">All courses</a> · <a href="../learning/">Learning log</a> · <a href="../">pachulski.dev</a></p>`,
+    body: `    <article class="course-top wrap narrow">\n      <p class="eyebrow"><a href="./">Free courses</a></p>\n      <h1>${L.esc(meta.title)}</h1>\n      <p class="lede">${L.esc(meta.summary)}</p>\n${html}\n    </article>`,
   });
 }
 
@@ -252,7 +278,8 @@ function renderIndex(cs) {
       <div class="wrap narrow">
         <p class="eyebrow">Free for everyone · no sign-up</p>
         <h1 id="courses-heading">Courses that build from the foundation</h1>
-        <p class="lede">Each course is a chain of small puzzles. Every puzzle starts with a problem, adds one building block, shows it in a diagram that moves, and ends with a check you have to pass before the next one opens. No term is used before it's explained.</p>
+        <p class="lede">Each course is a chain of small puzzles. Every puzzle starts with a problem, adds one building block, shows it in a diagram that moves, and ends with a check that tells you you're ready for the next. No term is used before it's explained.</p>
+        <p><a href="how-its-made.html">How these courses are made, and how they're checked →</a></p>
       </div>
     </section>
     <section class="section" aria-labelledby="live-heading">
@@ -289,6 +316,8 @@ function build() {
   const cs = courses();
   for (const c of cs) for (const p of c.puzzles) out.set(path.join(OUT, c.id, `${p.slug}.html`), renderPuzzle(c, p, terms));
   for (const c of cs) out.set(path.join(OUT, c.id, 'index.html'), renderOverview(c));
+  const made = path.join(SRC, 'how-its-made.md');
+  if (fs.existsSync(made)) out.set(path.join(OUT, 'how-its-made.html'), renderMethod(made));
   if (cs.length) out.set(path.join(OUT, 'index.html'), renderIndex(cs));
   return out;
 }

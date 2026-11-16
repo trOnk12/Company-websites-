@@ -27,8 +27,8 @@ You can't walk into the neighbour's house, but you can send the town hall a lett
 ## Check yourself
 
 - A game sends an Intent asking to start a phone call, but the user never granted it the phone-call permission. What happens?::*system_server refuses the request||The call starts anyway, because Intents always get delivered >> Delivery isn't automatic: the town hall checks permissions first. >> s3||The kernel blocks the Intent at the game's door >> The kernel guards files and memory. Permissions for actions are checked by system_server. >> s3::system_server checks the sender's permissions before acting.
-- Why does an Intent go to system_server instead of straight to the other app?::*Apps can't reach each other, so the town hall delivers, and can check permissions on the way||Because Intents are too big for apps to send >> Size has nothing to do with it: the sandbox means only the town hall can deliver. >> s2::Only the town hall can deliver between sandboxes, and it checks the sender on the way.
-- What's the difference between the sandbox and a permission?::*The sandbox keeps each app's files and memory closed; a permission lets an app do a specific action||They're the same protection >> The sandbox is walls the kernel enforces for every app; permissions are rights system_server grants per action. >> s1::Walls by the kernel; rights by the town hall.
+- Why does an Intent go to system_server instead of straight to the other app?::*Apps can't reach each other, so the town hall delivers and checks permissions||Because Intents are too big for one app to send straight to another >> Size has nothing to do with it: the sandbox means only the town hall can deliver. >> s2::Only the town hall can deliver between sandboxes, and it checks the sender on the way.
+- What's the difference between the sandbox and a permission?::*The sandbox closes each app off; a permission allows one specific action||They're the same protection, checked by system_server for every app >> The sandbox is walls the kernel enforces for every app; permissions are rights system_server grants per action. >> s1::Walls by the kernel; rights by the town hall.
 
 ## Sources
 

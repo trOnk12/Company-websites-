@@ -37,7 +37,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/" aria-current="page">Course</a></li>
+          <li><a href="../../course/">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../#contact">Contact</a></li>
         </ul>
@@ -48,7 +48,7 @@
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="3" data-prev="02-a-timetable-for-two.html" data-prev-title="A timetable for two">
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" class="done" title="A year on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" class="done" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" class="done" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" aria-current="page" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
-      <p class="eyebrow">Bluetooth Low Energy, from the radio up · Puzzle 3 of 4</p>
+      <p class="eyebrow">Bluetooth Low Energy, from the radio up · Puzzle 3 · 4 of 5</p>
       <h1>The filing cabinet</h1>
       <p class="lede">In puzzle 2, the phone and the strap met on a timetable. Now they need to agree on what the data is: which value is the heart rate, and which is the battery level.</p>
       <section aria-labelledby="the-problem">
@@ -103,16 +103,16 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does GATT group values into services instead of one long list?</legend>
-<input type="radio" name="q-03-the-filing-cabinet-2" id="q-03-the-filing-cabinet-2-1"><label for="q-03-the-filing-cabinet-2-1">Because a packet can only hold one service</label>
-<input type="radio" name="q-03-the-filing-cabinet-2" id="q-03-the-filing-cabinet-2-2" data-ok><label for="q-03-the-filing-cabinet-2-2">So an app can find a whole feature, like Heart Rate, by one name, and ignore the rest</label>
+<input type="radio" name="q-03-the-filing-cabinet-2" id="q-03-the-filing-cabinet-2-1"><label for="q-03-the-filing-cabinet-2-1">Because a packet can only carry one service at a time</label>
+<input type="radio" name="q-03-the-filing-cabinet-2" id="q-03-the-filing-cabinet-2-2" data-ok><label for="q-03-the-filing-cabinet-2-2">So an app can find a whole feature, like Heart Rate, by one name</label>
 <p class="fb no opt-1"><b>Not quite.</b> Services are about organizing data, not packet size. <label class="show-me" for="st-gatt-2" data-goto="st-gatt">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> A service is a feature you can find by name.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a GATT server and a peripheral?</legend>
-<input type="radio" name="q-03-the-filing-cabinet-3" id="q-03-the-filing-cabinet-3-1"><label for="q-03-the-filing-cabinet-3-1">They're always the same device</label>
-<input type="radio" name="q-03-the-filing-cabinet-3" id="q-03-the-filing-cabinet-3-2" data-ok><label for="q-03-the-filing-cabinet-3-2">Peripheral is about who follows the timing; GATT server is about who holds the data, and they can be different devices</label>
-<input type="radio" name="q-03-the-filing-cabinet-3" id="q-03-the-filing-cabinet-3-3"><label for="q-03-the-filing-cabinet-3-3">A GATT server is the central</label>
+<input type="radio" name="q-03-the-filing-cabinet-3" id="q-03-the-filing-cabinet-3-1"><label for="q-03-the-filing-cabinet-3-1">They're always the same device: the peripheral is the server</label>
+<input type="radio" name="q-03-the-filing-cabinet-3" id="q-03-the-filing-cabinet-3-2" data-ok><label for="q-03-the-filing-cabinet-3-2">Peripheral is about timing; GATT server is about data: they can differ</label>
+<input type="radio" name="q-03-the-filing-cabinet-3" id="q-03-the-filing-cabinet-3-3"><label for="q-03-the-filing-cabinet-3-3">A GATT server is the central, since the central sets everything</label>
 <p class="fb no opt-1"><b>Not quite.</b> Usually, but not always: a phone (central) can be a GATT server too. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Timing roles and data roles are separate.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The central sets timing; the server holds data. Those are separate roles. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
@@ -129,6 +129,8 @@
         <a class="button" href="02-a-timetable-for-two.html">← Puzzle 2</a>
         <a class="button primary" href="04-dont-ask-get-told.html">Puzzle 4: Notifications →</a>
       </nav>
+
+      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20The%20filing%20cabinet&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
   <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fble%2F03-the-filing-cabinet" alt="" width="1" height="1"></noscript>

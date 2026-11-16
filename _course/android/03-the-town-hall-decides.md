@@ -36,8 +36,8 @@ system_server is the town hall. It keeps the official register of every house an
 ## Check yourself
 
 - The user switches from your app to another app. Who moves your Activity to "stopped"?::*system_server||Your app, when it notices another app in front >> Your app finds out, but it doesn't make the decision. The town hall moves it. >> s4||The kernel >> The kernel shares the CPU and memory; screens and their stages are system_server's job. >> s4::system_server decides every lifecycle stage; your app is told.
-- Why can't each app decide on its own which screen is in front?::*Only one screen can be in front, so one place that sees all apps has to decide||Because apps aren't allowed to have screens >> Apps have plenty of screens. The question is who decides which one is in front. >> s1::Only something that sees every app can fairly decide which screen is in front.
-- What's the difference between an Activity and system_server?::*An Activity is one screen of your app; system_server is the Android process that manages all of them||They're the same thing >> An Activity lives in your app's process; system_server is a separate process: the town hall. >> s2::Your app holds the screens; the town hall holds the register and the decisions.
+- Why can't each app decide on its own which screen is in front?::*Only one screen can be in front, so one place that sees all apps has to decide||Because only system_server is allowed to draw anything on screen >> Apps have plenty of screens. The question is who decides which one is in front. >> s1::Only something that sees every app can fairly decide which screen is in front.
+- What's the difference between an Activity and system_server?::*An Activity is one screen; system_server is the process that manages them all||They're the same: system_server is the Activity that's in front >> An Activity lives in your app's process; system_server is a separate process: the town hall. >> s2::Your app holds the screens; the town hall holds the register and the decisions.
 
 ## Sources
 

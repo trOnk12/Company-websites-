@@ -98,6 +98,13 @@ function lint(id) {
     // Questions.
     const check = p.sections.find(s => s.title === 'Check yourself');
     const items = check ? check.blocks.filter(b => b.type === 'ul').flatMap(b => b.items) : [];
+    // A right answer that's much longer than every wrong one is guessable ("pick the longest").
+    for (const it of items) {
+      const q = parseQuestion(it);
+      const ok = q.opts.find(o => o.ok);
+      const wrong = q.opts.filter(o => !o.ok).map(o => o.text.length);
+      if (ok && wrong.length && ok.text.length > Math.max(...wrong) * 1.25 + 8) at(`question "${q.q.slice(0, 50)}…": the right answer is much longer than every wrong one, so it can be guessed; make the wrong answers as specific, or the right one shorter`);
+    }
     if (!items.length) at('no questions');
     const steps = p.diagrams[0] ? p.diagrams[0].caps.length : 0;
     const sectionIds = p.sections.map(s => s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));

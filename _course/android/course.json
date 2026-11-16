@@ -1,6 +1,5 @@
 {
   "title": "Android from the foundation",
-  "minutes": 90,
   "intro": "Lifecycle, process death, ANRs, frozen screens: most of Android's hard parts come from a handful of ideas. This course builds them from the ground up, one small puzzle at a time, with pictures that move, until the rules stop being rules and start making sense.",
   "how": "Each puzzle starts with a problem Android had to solve, then gives you one building block, a picture to remember it by, and a diagram that plays itself (or step through it yourself). It ends with three questions: answer them all correctly to unlock the next puzzle, so no gap carries forward. Code names with a dotted underline open the real Android or Linux source: hover or tap them.",
   "modules": [
