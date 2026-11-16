@@ -1,0 +1,16 @@
+<!-- label: A GC root keeps a destroyed Activity and all it retains -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="hp-t"><title id="hp-t">A GC root, a static field, refers to a listener, which refers to an old destroyed Activity, which retains its screen and bitmaps; shallow size is the Activity alone, retained size is the whole group; cutting the listener's reference frees all of it</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-ink" x="20" y="60" width="130" height="44" rx="6"/><text class="d-inv" x="85" y="88" text-anchor="middle">GC root</text><rect class="d-hl" x="200" y="60" width="130" height="44" rx="6"/><text class="d-tiny" x="265" y="88" text-anchor="middle">listener</text><x-arrow tone="ink" d="M150,82 L196,82"/></g>
+<g class="step s2" data-pulse="2"><rect class="d-wood" x="380" y="40" width="240" height="220" rx="10"/><rect class="d-bad" x="400" y="60" width="200" height="44" rx="6"/><text class="d-rt" x="500" y="88" text-anchor="middle">old Activity: 400 B</text><rect class="d-band" x="400" y="130" width="90" height="40" rx="4"/><text class="d-tiny" x="445" y="155" text-anchor="middle">screen</text><rect class="d-band" x="510" y="130" width="90" height="40" rx="4"/><text class="d-tiny" x="555" y="155" text-anchor="middle">bitmaps</text><text class="d-a" x="500" y="230" text-anchor="middle">retained: 12 MB</text></g>
+<x-arrow class="step s3 hide-4" tone="red" d="M330,82 L396,82"/>
+<g class="step only-3" data-pulse="3"><text class="d-r" x="180" y="180" text-anchor="middle">reachable, so never freed</text></g>
+<g class="step s4" data-pulse="4"><path class="d-red" d="M356,70 L372,94 M372,70 L356,94"/><text class="d-a" x="180" y="180" text-anchor="middle">cut one link</text><text class="d-a" x="180" y="210" text-anchor="middle">12 MB freed</text></g>
+<g class="step s1" data-move="1:85,130 2:500,280 3:360,120 4:364,120"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>A <b>GC root</b>, a static field, refers to a listener. Everything reachable from a root stays in memory.</p></li>
+<li><p>The old Activity, destroyed on rotation: <b>shallow size</b> 400 bytes. With its screen and bitmaps, its <b>retained size</b> is 12 MB.</p></li>
+<li><p>The listener still refers to it, so it's reachable, and the collector must keep it: a <b>leak</b>. <i>Predict: what frees the 12 MB?</i></p></li>
+<li><p>Cutting one link: unregister the listener when the Activity is destroyed. The <b>heap dump</b> shows which link.</p></li>
+</ol>

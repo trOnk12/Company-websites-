@@ -1,0 +1,15 @@
+<!-- label: Expected window vs actual work, per frame -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ft-t"><title id="ft-t">Three frames each have an expected window ending at a deadline; the actual work of the first two ends inside it; the third frame's main thread finishes early but its GPU work ends after the deadline, so it is marked late; then you read its threads</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><text class="d-b" x="20" y="60">Expected</text><rect class="d-band" x="140" y="40" width="140" height="30" rx="4"/><rect class="d-band" x="290" y="40" width="140" height="30" rx="4"/><rect class="d-band" x="440" y="40" width="140" height="30" rx="4"/><line class="d-dash" x1="580" y1="30" x2="580" y2="200"/><text class="d-tiny" x="580" y="215" text-anchor="middle">frame 3 deadline</text></g>
+<g class="step s2" data-pulse="2"><text class="d-b" x="20" y="120">Actual</text><rect class="d-ok" x="140" y="100" width="110" height="30" rx="4"/><rect class="d-ok" x="290" y="100" width="120" height="30" rx="4"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-bad" x="440" y="100" width="180" height="30" rx="4"/><text class="d-rt" x="530" y="120" text-anchor="middle">late</text><rect class="d-hl" x="440" y="140" width="80" height="22" rx="4"/><text class="d-tiny" x="480" y="156" text-anchor="middle">main</text><rect class="d-band" x="520" y="140" width="100" height="22" rx="4"/><text class="d-tiny" x="570" y="156" text-anchor="middle">GPU</text><text class="d-r" x="510" y="250" text-anchor="middle">App Deadline Missed</text></g>
+<g class="step s4" data-pulse="4"><x-person x="120" y="250" desk="1" label="main thread"/><x-person x="300" y="250" label="RenderThread"/><text class="d-a" x="480" y="330" text-anchor="middle">states, then flame chart</text></g>
+<g class="step s1" data-move="1:510,20 2:350,90 3:570,190 4:210,330"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Perfetto's <b>FrameTimeline</b> draws two slices per frame. First the <b>Expected Timeline</b>: each frame's window. Its end is the frame's <b>deadline</b>.</p></li>
+<li><p>The <b>Actual Timeline</b>: when each frame's work really ran. The first two end inside their windows: on time.</p></li>
+<li><p>The third: the main thread ends early, but the GPU finishes after the deadline. FrameTimeline marks it late, the app's fault. <i>Predict: where next?</i></p></li>
+<li><p>Into that frame's main thread and RenderThread: their states first, then the flame chart for the Running parts.</p></li>
+</ol>

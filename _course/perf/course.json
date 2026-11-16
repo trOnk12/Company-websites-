@@ -1,0 +1,40 @@
+{
+  "title": "Performance, under the hood",
+  "intro": "What the profiler is really showing you: how a sample differs from a trace, how to read a flame chart, why a slow function isn't always busy, when a frame is late, what the garbage collector actually costs, and what a heap dump proves. Built from the kernel up, one small puzzle at a time.",
+  "how": "Each puzzle starts with something a profiler shows you, gives you the one building block behind it, shows it in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. Facts come from the Android, ART, simpleperf and Perfetto documentation, linked on every page.",
+  "hero": "sampling",
+  "heroAlt": "Animated diagram: the kernel interrupts a running thread every few thousand CPU cycles and writes down its call stack; counting the snapshots shows where the time went.",
+  "assumes": {
+    "title": "Android from the foundation",
+    "href": "../android/"
+  },
+  "modules": [
+    {
+      "title": "Module 1: What the profiler is really showing you",
+      "blurb": "Samples and traces, flame charts, thread states, late frames, the garbage collector and heap dumps.",
+      "puzzles": [
+        "00-a-photo-or-a-diary.md",
+        "01-reading-the-flames.md",
+        "02-slow-is-not-busy.md",
+        "03-the-late-frame.md",
+        "04-what-the-collector-costs.md",
+        "05-what-a-heap-dump-proves.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Measuring for real",
+      "topics": "Macrobenchmark and why one run proves nothing; baseline profiles and what ART compiles ahead of time; startup traced end to end; reading a Perfetto trace with SQL."
+    },
+    {
+      "title": "Module 3: Memory under pressure",
+      "topics": "Native memory and bitmaps, the low memory killer, trimming memory, and allocation tracking."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  }
+}

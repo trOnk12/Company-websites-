@@ -70,22 +70,27 @@ only the blocks they're missing.
   first got wrong, now remembered locally). Copied to the clipboard; nothing is sent anywhere.
 - [x] Tests: the zip is real and has a note per puzzle; the prompt carries progress and weak spots.
 
+## Sprint 8: Performance, under the hood, module 1 (done 2026-11-16)
+
+- [x] New course, six puzzles: samples vs method tracing vs trace sections; call chart vs flame chart, self vs total;
+  thread states (why slow isn't busy); FrameTimeline's expected vs actual; ART's TLAB, Concurrent Copying and young GCs;
+  heap dumps, shallow vs retained size, GC roots and Activity leaks. Sources: simpleperf, Android Studio, AOSP ART
+  and Perfetto docs, quoted.
+- [x] Review round (correctness 6–9, clarity 8–9): twelve fixes applied. Home page now lists all six courses.
+- [ ] Module 2 (Macrobenchmark, baseline profiles, startup end to end, Perfetto SQL) and module 3 (memory pressure).
+
 ## Backlog, in order
 
-1. **Sprint 8: Performance, under the hood.** "What the profiler is really showing you": a CPU sample vs a trace,
-   main-thread slices in Perfetto, GC pauses and allocation cost, heap dumps and leaks, the frame timeline
-   (Choreographer → RenderThread → SurfaceFlinger), Macrobenchmark and Baseline Profiles. Notes: AND02, AND06,
-   AND08, H03, H09, L13. Builds on the Android course (frames, ART, Binder).
-2. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,
+1. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,
    prefill vs decode (time to first token vs tokens per second), the KV cache, streaming and cancellation in the
    UI, cost, on-device models. Notes: the AI and AI-engineering tracks.
-3. **Encryption module 2.** Keys on the phone: Android Keystore, encrypted storage, pinning.
-4. **BLE module 2, fast and reliable.** MTU and the 20-byte payload, Data Length Extension, 2M PHY, throughput math;
+2. **Encryption module 2.** Keys on the phone: Android Keystore, encrypted storage, pinning.
+3. **BLE module 2, fast and reliable.** MTU and the 20-byte payload, Data Length Extension, 2M PHY, throughput math;
    Android's one-GATT-operation-at-a-time rule and status 133.
-5. **Android module 4, continued.** Context and why it leaks; tasks and the back stack.
-6. **The map.** One page per course drawing the blocks as a graph, coloured by what you've passed.
-7. **Quiz quality.** Done in part: two new lint rules (no "X; Y" shape only on the right answer, no "Because" only on the wrong ones; 64 questions fixed). Still: the right answer is the longest option too often.
-8. **Later:** system design, data structures, as the sessions behind them land in the notes repo.
+4. **Android module 4, continued.** Context and why it leaks; tasks and the back stack.
+5. **The map.** One page per course drawing the blocks as a graph, coloured by what you've passed.
+6. **Quiz quality.** Done in part: two new lint rules (no "X; Y" shape only on the right answer, no "Because" only on the wrong ones; 64 questions fixed). Still: the right answer is the longest option too often.
+7. **Later:** system design, data structures, as the sessions behind them land in the notes repo.
 
 ## Why these, for whom
 

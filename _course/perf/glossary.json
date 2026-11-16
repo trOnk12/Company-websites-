@@ -1,0 +1,293 @@
+{
+ "baseline": {
+  "_about": "Words the learner already knows, from Kotlin, everyday Android work, or the Android course.",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Java",
+   "Android",
+   "phone",
+   "code",
+   "program",
+   "data",
+   "class",
+   "object",
+   "method",
+   "function",
+   "APK",
+   "UI",
+   "ID",
+   "MB",
+   "KB",
+   "ms",
+   "CPU",
+   "file",
+   "bitmap",
+   "bytes",
+   "thread",
+   "threads",
+   "main thread",
+   "process",
+   "kernel",
+   "Activity",
+   "ViewModel",
+   "Android Studio",
+   "profiler",
+   "frame",
+   "frames",
+   "jank",
+   "vsync",
+   "Choreographer",
+   "RenderThread",
+   "GPU",
+   "ART",
+   "garbage collector",
+   "Binder",
+   "lock",
+   "network",
+   "disk",
+   "database",
+   "lambda",
+   "trace()",
+   "loadAndProcessData",
+   "queryDatabase",
+   "processData",
+   "onCreate()",
+   "RecyclerView",
+   "ANR",
+   "Perfetto",
+   "Hz",
+   "µs",
+   "fun",
+   "val",
+   "list",
+   "JSON",
+   "parseJson()",
+   "draw()",
+   "measure()",
+   "layout()",
+   "onDraw()",
+   "companion object",
+   "Fragment",
+   "Bitmap",
+   "SurfaceFlinger",
+   "display",
+   "image",
+   "images",
+   "allocation",
+   "allocations",
+   "allocate",
+   "allocates",
+   "allocated",
+   "Thread.sleep()",
+   "synchronized",
+   "StringBuilder",
+   "for loop",
+   "loop",
+   "Compose",
+   "LazyColumn",
+   "Context",
+   "listener",
+   "singleton",
+   "Kotlin object",
+   "onBind()",
+   "format()",
+   "loadUser()",
+   "Choreographer#doFrame",
+   "GC",
+   "heap",
+   "StringBuilder"
+  ]
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what.",
+  "phrases": {
+   "the system": "name the actor: the kernel, SurfaceFlinger, ART",
+   "simply": "cut it",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is"
+  }
+ },
+ "terms": {
+  "call stack": {
+   "in": "00",
+   "def": "The chain of function calls a thread is inside right now, from the first caller to the running function.",
+   "aliases": [
+    "call stacks",
+    "stack"
+   ]
+  },
+  "sample": {
+   "in": "00",
+   "def": "A snapshot of a thread's call stack, taken by the kernel every so many CPU events.",
+   "aliases": [
+    "samples",
+    "sampling",
+    "sampled"
+   ]
+  },
+  "method tracing": {
+   "in": "00",
+   "def": "Recording a timestamp at the start and end of every method call, by instrumenting the code.",
+   "aliases": [
+    "method recording",
+    "method trace"
+   ]
+  },
+  "instrumentation": {
+   "in": "00",
+   "def": "Extra code injected into your app to record what it does; it slows the app down.",
+   "aliases": [
+    "instrumenting",
+    "instrumented"
+   ]
+  },
+  "trace section": {
+   "in": "00",
+   "def": "A named span you mark yourself with trace(\"name\") { }, recorded in a system trace.",
+   "aliases": [
+    "trace sections",
+    "custom trace event"
+   ]
+  },
+  "call chart": {
+   "in": "01",
+   "def": "Each call drawn as a bar along a timeline, callees under their caller.",
+   "aliases": []
+  },
+  "flame chart": {
+   "in": "01",
+   "def": "The call chart with identical call stacks merged; width is total time, not a timeline.",
+   "aliases": [
+    "flame charts"
+   ]
+  },
+  "self time": {
+   "in": "01",
+   "def": "Time a function spent running its own code, not the functions it called.",
+   "aliases": [
+    "self"
+   ]
+  },
+  "total time": {
+   "in": "01",
+   "def": "Self time plus the time spent in everything the function called.",
+   "aliases": []
+  },
+  "thread state": {
+   "in": "02",
+   "def": "What a thread is doing according to the kernel: running, runnable, sleeping, or in uninterruptible sleep.",
+   "aliases": [
+    "thread states"
+   ]
+  },
+  "Running": {
+   "in": "02",
+   "def": "The thread is on a CPU, executing.",
+   "aliases": []
+  },
+  "Runnable": {
+   "in": "02",
+   "def": "The thread is ready to run but waiting for a free CPU.",
+   "aliases": []
+  },
+  "Sleeping": {
+   "in": "02",
+   "def": "The thread is waiting for something: a lock, a Binder reply, a message.",
+   "aliases": []
+  },
+  "Uninterruptible Sleep": {
+   "in": "02",
+   "def": "The thread is waiting inside the kernel, usually for disk I/O.",
+   "aliases": []
+  },
+  "FrameTimeline": {
+   "in": "03",
+   "def": "Perfetto's view of every frame: when it was expected to finish and when it really did.",
+   "aliases": []
+  },
+  "Expected Timeline": {
+   "in": "03",
+   "def": "The time window the app was given to render a frame.",
+   "aliases": []
+  },
+  "Actual Timeline": {
+   "in": "03",
+   "def": "When the app's frame work really started and ended, GPU included.",
+   "aliases": []
+  },
+  "deadline": {
+   "in": "03",
+   "def": "The end of a frame's expected window: finish after it and the frame is late.",
+   "aliases": [
+    "deadlines"
+   ]
+  },
+  "Concurrent Copying": {
+   "in": "04",
+   "def": "ART's default garbage collector since Android 8: it moves live objects while your threads keep running.",
+   "aliases": [
+    "CC"
+   ]
+  },
+  "TLAB": {
+   "in": "04",
+   "def": "A thread's own slice of the heap; allocating there is a pointer bump, with no lock.",
+   "aliases": [
+    "thread-local allocation buffer"
+   ]
+  },
+  "young GC": {
+   "in": "04",
+   "def": "A collection of only recently created objects, which mostly die young; cheap and frequent.",
+   "aliases": [
+    "young generation",
+    "young collection"
+   ]
+  },
+  "allocation churn": {
+   "in": "04",
+   "def": "Creating many short-lived objects, which makes the collector run often.",
+   "aliases": [
+    "churn"
+   ]
+  },
+  "heap dump": {
+   "in": "05",
+   "def": "A snapshot of every object in the app's heap and who refers to whom.",
+   "aliases": [
+    "heap dumps"
+   ]
+  },
+  "GC root": {
+   "in": "05",
+   "def": "A starting point the collector always keeps: a thread's local variables, static fields, and the like.",
+   "aliases": [
+    "GC roots",
+    "root",
+    "roots"
+   ]
+  },
+  "shallow size": {
+   "in": "05",
+   "def": "The memory one object takes by itself.",
+   "aliases": []
+  },
+  "retained size": {
+   "in": "05",
+   "def": "The memory that would be freed if this object were freed: itself plus all it alone keeps alive.",
+   "aliases": []
+  },
+  "leak": {
+   "in": "05",
+   "def": "An object that's no longer needed but is still reachable from a GC root, so it's never freed.",
+   "aliases": [
+    "leaks",
+    "leaked",
+    "leaking"
+   ]
+  }
+ }
+}

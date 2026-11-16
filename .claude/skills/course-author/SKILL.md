@@ -124,6 +124,12 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
 - **Keep layers clean.** When a puzzle sorts things into layers, every example must sit in the right one
   (`remember` is runtime, not ui), and don't mix two mechanisms (Kotlin `internal` vs framework export).
 - **Show the one line of syntax** a newcomer would need to apply the fix (`[weak self]`, `export(project(...))`).
+- **Numbers need a source too.** "Every few thousand cycles" was off by ~100×: quote the default (simpleperf's
+  4,000 samples per second) or don't give a number.
+- **Draw the tool the way the tool draws it.** Android Studio's flame chart has callers at the bottom; a diagram
+  that flips it teaches the learner to misread the real screen.
+- **Check for a newer default.** Docs pages lag (ART's newer collector isn't on the GC page): say "the default since
+  X, newer devices may run Y" rather than "today's".
 
 ## 5. Facts
 

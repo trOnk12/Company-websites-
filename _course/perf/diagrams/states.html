@@ -1,0 +1,18 @@
+<!-- label: One 120 ms span, four thread states underneath -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ts-t"><title id="ts-t">A 120 ms trace section on the main thread; underneath, the thread's state line shows a short Running stretch, a long Sleeping stretch waiting for a lock held by another thread, a Runnable stretch waiting for a CPU, and an Uninterruptible Sleep stretch waiting for the disk</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-person class="step s1" x="70" y="150" desk="1" label="main thread"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="150" y="60" width="460" height="34" rx="4"/><text class="d-a" x="380" y="82" text-anchor="middle">loadUser(): 120 ms</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-ok" x="150" y="104" width="40" height="22"/><rect class="d-band" x="190" y="104" width="250" height="22"/><text class="d-tiny" x="170" y="146" text-anchor="middle">Running</text><text class="d-tiny" x="315" y="146" text-anchor="middle">Sleeping</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-wood" x="440" y="104" width="60" height="22"/><rect class="d-ink" x="500" y="104" width="110" height="22"/><text class="d-tiny" x="470" y="146" text-anchor="middle">Runnable</text><text class="d-tiny" x="555" y="166" text-anchor="middle">Uninterruptible</text></g>
+<g class="step s2 hide-4"><x-person x="250" y="200" label="holds the lock"/><x-arrow tone="red" d="M250,196 L250,132"/></g>
+<g class="step s3 hide-4"><x-chip x="420" y="200" w="70" h="60" label="CPU busy"/><x-sheet x="520" y="200" w="80" h="80" lines="3" label="disk"/></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="380" y="230" text-anchor="middle">only Running is slow code</text><text class="d-tiny" x="380" y="260" text-anchor="middle">so a sample barely sees this span</text></g>
+<g class="step s1" data-move="1:380,40 2:170,115 3:470,115 4:170,115"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Your trace section says <code>loadUser()</code> took 120 ms on the main thread. But was the thread working all that time?</p></li>
+<li><p>The <b>thread state</b> line underneath: <b>Running</b> for 10 ms, then <b>Sleeping</b>: another thread holds a lock the main thread needs.</p></li>
+<li><p>Then <b>Runnable</b>, ready but every CPU is busy, and <b>Uninterruptible Sleep</b>, waiting for the disk. <i>Predict: what does faster code save?</i></p></li>
+<li><p>Only the 10 ms of Running. The rest is waiting, which is also why sampling barely sees this span.</p></li>
+</ol>

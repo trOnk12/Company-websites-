@@ -1,0 +1,24 @@
+<!-- label: A call chart is a timeline; a flame chart merges identical stacks -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="fl-t"><title id="fl-t">A call chart shows onBind calling format three times along a timeline; a flame chart merges the three into one wide bar with no timeline; total time is the whole bar, self time is the part not covered by children</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1 hide-2" data-pulse="1"><text class="d-b" x="20" y="40">call chart: a timeline</text>
+<rect class="d-band" x="40" y="70" width="560" height="34" rx="4"/><text class="d-tiny" x="320" y="92" text-anchor="middle">onBind()</text>
+<rect class="d-hl" x="40" y="108" width="60" height="34" rx="4"/><text class="d-tiny" x="70" y="130" text-anchor="middle">format</text>
+<rect class="d-wood" x="110" y="108" width="300" height="34" rx="4"/><text class="d-tiny" x="260" y="130" text-anchor="middle">parseJson()</text>
+<rect class="d-hl" x="420" y="108" width="60" height="34" rx="4"/><text class="d-tiny" x="450" y="130" text-anchor="middle">format</text>
+<rect class="d-hl" x="490" y="108" width="60" height="34" rx="4"/><text class="d-tiny" x="520" y="130" text-anchor="middle">format</text>
+<text class="d-m" x="320" y="180" text-anchor="middle">time →</text></g>
+<g class="step s2" data-pulse="2"><text class="d-b" x="20" y="40">flame chart: merged, caller at the bottom</text>
+<rect class="d-band" x="40" y="108" width="560" height="34" rx="4"/><text class="d-tiny" x="320" y="130" text-anchor="middle">onBind()</text>
+<rect class="d-wood" x="40" y="70" width="300" height="34" rx="4"/><text class="d-tiny" x="190" y="92" text-anchor="middle">parseJson()</text>
+<rect class="d-hl" x="344" y="70" width="180" height="34" rx="4"/><text class="d-tiny" x="434" y="92" text-anchor="middle">format() ×3</text></g>
+<g class="step only-3" data-pulse="3"><text class="d-r" x="320" y="190" text-anchor="middle">left to right isn't time</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="528" y="70" width="72" height="34" rx="4"/><text class="d-rt" x="564" y="92" text-anchor="middle">self</text><text class="d-a" x="320" y="200" text-anchor="middle">total = the whole bar</text><text class="d-r" x="320" y="230" text-anchor="middle">self = not covered by children</text></g>
+<g class="step s1" data-move="1:70,160 2:434,58 3:434,58 4:564,58"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>The <b>call chart</b>: <code>onBind()</code> along a timeline, calling <code>format()</code>, then <code>parseJson()</code>, then <code>format()</code> twice more.</p></li>
+<li><p>The <b>flame chart</b> merges calls with the same chain of callers: three <code>format()</code> calls become one bar. Android Studio draws it upside down: the caller at the bottom.</p></li>
+<li><p>Widest first: left to right is no longer a timeline. <i>Predict: where is <code>onBind()</code> slow in its own code?</i></p></li>
+<li><p>In the part its children don't cover: its <b>self time</b>. The whole bar is its <b>total time</b>.</p></li>
+</ol>
