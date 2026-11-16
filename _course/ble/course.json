@@ -1,0 +1,36 @@
+{
+  "title": "Bluetooth Low Energy, from the radio up",
+  "intro": "Why a heart-rate strap lasts a year on a coin battery, how your phone finds it, and why your notifications never arrive. BLE's strange rules all come from one idea; this course builds them from it, one small puzzle at a time.",
+  "how": "Each puzzle starts with a problem the radio has to solve, gives you one building block, shows it in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. The numbers come from the Bluetooth Core Specification and Android's documentation, linked on every page.",
+  "minutes": 30,
+  "hero": "advertising",
+  "heroAlt": "Animated diagram: a sensor advertises on three channels and a phone, scanning, hears it.",
+  "modules": [
+    {
+      "title": "Module 1: Over the air",
+      "blurb": "How a device that sleeps almost all the time can still be found, connected to, and heard.",
+      "puzzles": [
+        "00-a-year-on-a-coin-battery.md",
+        "01-shouting-into-the-room.md",
+        "02-a-timetable-for-two.md",
+        "03-the-filing-cabinet.md",
+        "04-dont-ask-get-told.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Making it fast and reliable",
+      "topics": "Why only 20 bytes per packet (MTU, Data Length Extension, 2M PHY), throughput math, Android's one-operation-at-a-time rule and status 133."
+    },
+    {
+      "title": "Module 3: Trust and permissions",
+      "topics": "Pairing and bonding, why \"Just Works\" doesn't stop a man in the middle, Android 12+ and iOS permissions."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  }
+}

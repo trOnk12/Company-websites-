@@ -1,0 +1,218 @@
+{
+ "_about": "Every technical term in the course: where it is taught and its one-line meaning. scripts/lint-course.js fails if a term is used before its puzzle, if a puzzle teaches more than 6 new concepts, or if a code name, acronym or CamelCase word appears that is neither here nor in baseline. Add a term here BEFORE writing a puzzle that needs it.",
+ "baseline": {
+  "_about": "What the learner already knows: a Kotlin developer who has built a simple Android app, and has used Bluetooth headphones.",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Java",
+   "Android",
+   "phone",
+   "code",
+   "program",
+   "data",
+   "class",
+   "object",
+   "method",
+   "function",
+   "APK",
+   "compile",
+   "install",
+   "UI",
+   "ID",
+   "MB",
+   "KB",
+   "ms",
+   "CPU",
+   "file",
+   "bitmap",
+   "val",
+   "Thread.sleep()",
+   "textView.text",
+   "hideHint()",
+   "bytes",
+   "byte",
+   "Bluetooth",
+   "battery",
+   "sensor",
+   "iPhone",
+   "Wi-Fi",
+   "s"
+  ]
+ },
+ "terms": {
+  "radio": {
+   "in": "00",
+   "def": "The part of a device that sends and listens over the air.",
+   "aliases": [
+    "radios"
+   ]
+  },
+  "BLE": {
+   "in": "00",
+   "def": "Bluetooth Low Energy: the kind of Bluetooth built for tiny batteries.",
+   "aliases": [
+    "Bluetooth Low Energy"
+   ]
+  },
+  "packet": {
+   "in": "01",
+   "def": "One short burst of data sent over the air.",
+   "aliases": [
+    "packets"
+   ]
+  },
+  "advertising": {
+   "in": "01",
+   "def": "Sending short packets that say \"I'm here\", over and over, for anyone listening.",
+   "aliases": [
+    "advertises",
+    "advertise",
+    "advertisement",
+    "advertisements",
+    "advertising packet"
+   ]
+  },
+  "advertising interval": {
+   "in": "01",
+   "def": "The time between two advertisements, plus a small random delay.",
+   "aliases": []
+  },
+  "channel": {
+   "in": "01",
+   "def": "One of 40 narrow slices of the airwaves BLE uses; 3 are for advertising.",
+   "aliases": [
+    "channels",
+    "advertising channels"
+   ]
+  },
+  "scanning": {
+   "in": "01",
+   "def": "Listening on the advertising channels for advertisements.",
+   "aliases": [
+    "scans",
+    "scan"
+   ]
+  },
+  "connection": {
+   "in": "02",
+   "def": "Two devices that agreed to meet on a timetable to exchange data.",
+   "aliases": [
+    "connections"
+   ]
+  },
+  "central": {
+   "in": "02",
+   "def": "The side of a connection that sets the timetable: usually the phone.",
+   "aliases": []
+  },
+  "peripheral": {
+   "in": "02",
+   "def": "The other side of a connection: usually the small device.",
+   "aliases": [
+    "peripherals"
+   ]
+  },
+  "connection interval": {
+   "in": "02",
+   "def": "How often the two sides of a connection meet: 7.5 ms to 4 s.",
+   "aliases": []
+  },
+  "connection event": {
+   "in": "02",
+   "def": "One meeting in a connection: both wake, exchange packets, sleep.",
+   "aliases": [
+    "connection events"
+   ]
+  },
+  "GATT": {
+   "in": "03",
+   "def": "The way a BLE device organizes its data: services holding characteristics.",
+   "aliases": []
+  },
+  "GATT server": {
+   "in": "03",
+   "def": "The side that holds the data (usually the small device).",
+   "aliases": [
+    "server"
+   ]
+  },
+  "GATT client": {
+   "in": "03",
+   "def": "The side that reads and writes it (usually the phone).",
+   "aliases": [
+    "client"
+   ]
+  },
+  "service": {
+   "in": "03",
+   "def": "A group of related values, like Heart Rate or Battery.",
+   "aliases": [
+    "services"
+   ]
+  },
+  "characteristic": {
+   "in": "03",
+   "def": "One value inside a service, that a client can read, write or be told about.",
+   "aliases": [
+    "characteristics"
+   ]
+  },
+  "UUID": {
+   "in": "03",
+   "def": "The number that names a service or characteristic.",
+   "aliases": [
+    "UUIDs"
+   ]
+  },
+  "notification": {
+   "in": "04",
+   "def": "A value the server sends by itself when it changes, without a request.",
+   "aliases": [
+    "notifications",
+    "notify",
+    "notified"
+   ]
+  },
+  "descriptor": {
+   "in": "04",
+   "def": "An extra setting attached to a characteristic.",
+   "aliases": [
+    "descriptors"
+   ]
+  },
+  "CCCD": {
+   "in": "04",
+   "def": "The descriptor that switches notifications on or off for one client.",
+   "aliases": []
+  },
+  "setCharacteristicNotification()": {
+   "in": "04",
+   "def": "Android: route this characteristic's notifications to your app.",
+   "kind": "code"
+  },
+  "writeDescriptor()": {
+   "in": "04",
+   "def": "Android: write a descriptor on the device, such as the CCCD.",
+   "kind": "code"
+  },
+  "BluetoothGatt": {
+   "in": "04",
+   "def": "Android's object for one connection's GATT client.",
+   "kind": "code"
+  }
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what. The lint fails on them (any page text, labels, questions); say the named actor or the plain word instead.",
+  "phrases": {
+   "the system": "name the actor: system_server, the kernel, or Binder",
+   "views": "say buttons and text, or the screen (View isn't taught)",
+   "lost focus": "say: another app is in front",
+   "simply": "cut it: it makes a learner who's stuck feel slow",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is"
+  }
+ }
+}

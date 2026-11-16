@@ -102,6 +102,25 @@ For each puzzle, check and write down pass/fail:
   misconception with feedback that names it and a pointer to the step that fixes it.
 - **Ties back** to the previous puzzle in the first lines.
 
+### The picture prompt (use it verbatim, filling in the world)
+
+> You are reviewing the diagrams of a beginner course from the PICTURES ALONE. Look ONLY at the images in
+> `<folder>` (one per diagram, its steps left to right; read them in filename order; you may crop/zoom copies).
+> The picture world: `<one line per shape: what it means>`. Each diagram sits above a one-sentence caption per
+> step; the pictures should carry the idea, the captions name it. For each diagram: score 1–10 for "could a
+> beginner understand what happens from the pictures alone (with the short labels)"; one line on what changes
+> between steps; the problems (labels covered, leftovers, unclear movement, steps where nothing visible changes,
+> labels doing the picture's job, inconsistency with the picture world). Then the top fixes to get every diagram
+> to ≥ 8. Be calibrated: 8 means "a beginner gets it, with small polish left", not "perfect". Under 1100 words.
+
+Each round is a new reviewer that finds new nits, so scores move slowly: fix what two reviewers agree on
+first, and don't chase single-reviewer taste.
+
+## Pass 2c: across puzzles
+
+After any new puzzle, ask the fresh learner one more thing: "list every place a later puzzle contradicts,
+or quietly redefines, something an earlier puzzle said". Those cost the most trust and are cheap to fix.
+
 ## Pass bar
 
 A puzzle ships only when the lint is clean, its diagram scores at least 8/10 in the picture review, **and** the fresh learner scores it at least 8/10 for

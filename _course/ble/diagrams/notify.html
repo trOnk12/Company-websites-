@@ -1,0 +1,18 @@
+<!-- label: Notifications: the strap tells the phone, once the CCCD switch is on -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="nt-t"><title id="nt-t">Reading again and again costs a request and an answer each time; with notifications the strap sends the value when it changes; notifications start only after the phone writes the CCCD descriptor on the strap; turning them on only on the phone sends nothing</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-sensor class="step s1" x="40" y="236" w="80" h="56" label="strap"/>
+<g class="step s1"><x-cabinet x="150" y="200" w="170" drawers="1" label="Heart Rate"/><text class="d-tiny" x="235" y="238" text-anchor="middle">measurement: 72</text></g>
+<x-phone class="step s1" x="540" y="90" w="64" h="120" label="phone"/>
+<g class="step only-1" data-pulse="1"><x-letter x="380" y="96" w="90" h="34" label="read?"/><x-letter x="380" y="150" w="90" h="34" label="72"/><x-letter x="380" y="40" w="90" h="34" label="read?"/><text class="d-r" x="425" y="216" text-anchor="middle">ask, ask, ask</text></g>
+<x-letter class="step s2 hide-3" data-pulse="2" data-move="1:330,210 2:420,130" x="0" y="0" w="90" h="34" label="73!"/>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="330" y="200" width="120" height="44" rx="4"/><text class="d-tiny" x="390" y="216" text-anchor="middle">CCCD switch</text><rect class="d-sleep" x="362" y="224" width="56" height="14" rx="7"/><circle class="d-paper" cx="370" cy="231" r="6"/></g>
+<g class="step only-3"><x-arrow tone="acc" d="M540,190 C500,210 470,220 454,222"/><text class="d-a" x="500" y="260" text-anchor="middle">write: on</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="362" y="224" width="56" height="14" rx="7"/><circle class="d-paper" cx="370" cy="231" r="6"/><text class="d-r" x="390" y="290" text-anchor="middle">switch never written</text><text class="d-r" x="574" y="70" text-anchor="middle">no data</text></g>
+</svg>
+<ol class="caps">
+<li><p>To show a live heart rate by reading, the phone asks at every meeting: a request and an answer each time, even when nothing changed.</p></li>
+<li><p>Instead, the strap sends the new value by itself when it changes: a <b>notification</b>. One packet, only when there's news.</p></li>
+<li><p>But first the phone must turn it on: it writes a switch on the strap, a <b>descriptor</b> called the <b>CCCD</b>. <i>Predict: what if the app only turns notifications on in the phone?</i></p></li>
+<li><p>Nothing arrives. <code>setCharacteristicNotification()</code> only prepares your phone; without <code>writeDescriptor()</code> the strap's switch stays off: "connected, but no data".</p></li>
+</ol>

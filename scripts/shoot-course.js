@@ -46,7 +46,7 @@ function serve() {
     const dir = path.join(OUT, c);
     fs.mkdirSync(dir, { recursive: true });
     const rows = [];
-    for (const f of fs.readdirSync(path.join(courseDir, c)).filter(f => f.endsWith('.html')).sort()) {
+    for (const f of fs.readdirSync(path.join(courseDir, c)).filter(f => f.endsWith('.html') && f !== 'index.html').sort()) {
       await page.goto(`${base}/course/${c}/${f}`);
       await page.locator('.player .play').waitFor();
       const n = await page.locator('.stepper > input').count();

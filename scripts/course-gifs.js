@@ -58,7 +58,7 @@ function serve() {
   for (const c of fs.readdirSync(courseDir).filter(d => fs.statSync(path.join(courseDir, d)).isDirectory())) {
     const outDir = path.join(courseDir, c, 'gifs');
     fs.mkdirSync(outDir, { recursive: true });
-    for (const f of fs.readdirSync(path.join(courseDir, c)).filter(f => f.endsWith('.html')).sort()) {
+    for (const f of fs.readdirSync(path.join(courseDir, c)).filter(f => f.endsWith('.html') && f !== 'index.html').sort()) {
       await page.goto(`${base}/course/${c}/${f}`);
       await page.addStyleTag({ content: '.stepnav,.dots,.player,.gif-link{display:none!important} .stepper{border:0;margin:0} .caps p{font-size:17px}' });
       for (const fig of await page.locator('.stepper').all()) {

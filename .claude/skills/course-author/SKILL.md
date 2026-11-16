@@ -10,6 +10,13 @@ reach the end without outside help. Every rule below exists because a fresh-lear
 Source material: Mateusz's learn/ vault (the notes repository), his foundation-first-teaching playbook,
 and primary sources (AOSP, Android docs, kernel docs).
 
+## Courses
+
+Each course is a folder `_course/<id>/` (`course.json`, `glossary.json`, `refs.json`, `REVIEW.md`, puzzles,
+`diagrams/`), built to `course/<id>/` with its own overview; `/course/` lists every course as a card.
+Courses on the way go in `_course/catalog.json` (give the entry an `id` so it disappears once the course
+is live). A book Mateusz owns goes through `/book-to-course` instead (private by default).
+
 ## 0. The learner
 
 A Kotlin developer who has built a simple Android app. Knows: the words in `glossary.json → baseline`.
@@ -51,7 +58,11 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
   `<x-postoffice x y w h label="" flag="0"/>` (Binder, in the ground), `<x-person x y desk="1" label/>`
   (a thread; desk = the main thread), `<x-machine x y w label/>` (a program such as ART or dex2oat: never a
   person), `<x-letter x y label tone/>`, `<x-chip/>`, `<x-sheet/>`, `<x-arrow d tone="path|acc|red"/>`,
-  `<x-sun/>`, `<x-moon/>`. Any `class`/`data-*` passes through, so `class="step s2"` and `data-move` work.
+  `<x-sun/>`, `<x-moon/>`. The radio world (Bluetooth course): `<x-phone x y w h label/>`,
+  `<x-sensor x y w h label/>`, `<x-waves x y dir/>`, `<x-battery x y level label/>`,
+  `<x-cabinet x y w drawers label/>` (GATT). Any `class`/`data-*` passes through, so `class="step s2"`
+  and `data-move` work. A new course picks one world and keeps it; add shapes to `course-shapes.js`
+  rather than drawing by hand.
 - **The world's rules** (each one cost a picture review): houses stand on the kernel ground (from puzzle 1 on;
   puzzle 0's ground has no label); every message after puzzle 4 travels **through the post office**, with a
   dotted arrow; people are threads and never leave their house; programs are machines; doors only where a
@@ -87,6 +98,14 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
   page is missing that sentence.
 - **A word defined but never used again is noise** ("transaction"): use it, or cut it.
 - **Split a step that packs several ideas** (accounts, then UIDs, then the key) into one step each.
+- **A later puzzle must not quietly contradict an earlier one.** "A ViewModel lives as long as the screen"
+  broke "a screen is an Activity" (P3); say how both are true, in the later puzzle, where it happens.
+- **Don't point at a puzzle for something it never said** ("objects live in memory (puzzle 0)").
+- **No promises to puzzles that don't exist** ("the next puzzle shows…"): say "coming soon" or cut it.
+- **A question's scenario must be possible with what the page taught** (no tapping a screen that's still in
+  `onCreate()`; no permission check on the wrong app). Check every right answer has a sentence behind it.
+- **Tables are allowed** in the building block (`| a | b |`): use one when the lesson is a comparison
+  ("what survives what").
 - **Don't cite the source as a word** ("in the source…"): say what it is ("Android's code is public; in it…").
 
 ## 5. Facts

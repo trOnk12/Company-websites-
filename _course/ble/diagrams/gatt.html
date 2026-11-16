@@ -1,0 +1,19 @@
+<!-- label: GATT is a filing cabinet: services are drawers, characteristics are folders -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="gt-t"><title id="gt-t">The strap holds a filing cabinet (GATT server); drawers are services (Heart Rate, Battery); folders inside are characteristics with one value each, named by a UUID; the phone (GATT client) asks for one by name and gets the value</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-sensor class="step s1" x="40" y="250" w="80" h="56" label="strap"/>
+<path class="step s1 d-dash" d="M120,260 C140,240 150,220 160,214"/>
+<g class="step s1" data-pulse="1"><x-cabinet x="150" y="120" w="210" drawers="2" label="GATT server"/></g>
+<g class="step s2" data-pulse="2"><text class="d-b" x="255" y="148" text-anchor="middle">Heart Rate</text><text class="d-b" x="255" y="194" text-anchor="middle">Battery</text></g>
+<g class="step s3" data-move="2:200,136 3:380,96" data-pulse="3"><rect class="d-paper" x="0" y="0" width="120" height="70" rx="4"/><rect class="d-hl" x="0" y="-12" width="60" height="14" rx="3"/><text class="d-tiny" x="60" y="30" text-anchor="middle">measurement</text><text class="d-b" x="60" y="56" text-anchor="middle">72</text></g>
+<g class="step s3"><rect class="d-band" x="380" y="176" width="120" height="24" rx="4"/><text class="d-mi" x="440" y="193" text-anchor="middle">UUID 2A37</text></g>
+<g class="step s4" data-pulse="4"><x-phone x="540" y="120" w="64" h="120" label="GATT client"/></g>
+<x-letter class="step only-4" data-move="3:540,260 4:420,260" x="0" y="0" w="110" h="40" label="read 2A37"/>
+<x-arrow class="step only-4" tone="acc" d="M500,140 C520,140 528,150 534,160"/>
+</svg>
+<ol class="caps">
+<li><p>The strap keeps its data in a filing cabinet: <b>GATT</b>. The strap is the <b>GATT server</b>, the side that holds the data.</p></li>
+<li><p>Each drawer is a <b>service</b>, a group of related values: Heart Rate, Battery.</p></li>
+<li><p>In a drawer, each folder is a <b>characteristic</b>: one value, like the latest heart rate, 72. Its name is a <b>UUID</b>, a number that's the same on every strap. <i>Predict: how does the phone ask for it?</i></p></li>
+<li><p>By that name. The phone is the <b>GATT client</b>: "read 2A37", and the strap answers with the folder's value.</p></li>
+</ol>

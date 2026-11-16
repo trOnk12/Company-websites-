@@ -83,6 +83,32 @@ const SHAPES = {
     const teeth = Array.from({ length: 8 }, (_, i) => { const t = i * Math.PI / 4; return `<line class="d-line" x1="${(cx + 7 * Math.cos(t)).toFixed(1)}" y1="${(cy + 7 * Math.sin(t)).toFixed(1)}" x2="${(cx + 12 * Math.cos(t)).toFixed(1)}" y2="${(cy + 12 * Math.sin(t)).toFixed(1)}"/>`; }).join('');
     return `<rect class="d-wood" x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>${teeth}<circle class="d-paper" cx="${cx}" cy="${cy}" r="8"/>` + txt('d-tiny', x + 34 + (w - 34) / 2, cy + 5, a.label, 'middle');
   },
+  // ── The radio world (Bluetooth course) ──
+  phone(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), w = n(a, 'w', 70), h = n(a, 'h', 130);
+    return `<rect class="d-paper" x="${x}" y="${y}" width="${w}" height="${h}" rx="12"/><rect class="d-hl" x="${x + 7}" y="${y + 14}" width="${w - 14}" height="${h - 34}" rx="4"/><circle class="d-ink" cx="${x + w / 2}" cy="${y + h - 10}" r="3"/>` +
+      txt('d-tiny', x + w / 2, y + h + 18, a.label, 'middle');
+  },
+  sensor(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), w = n(a, 'w', 64), h = n(a, 'h', 48);
+    return `<rect class="d-wood" x="${x}" y="${y}" width="${w}" height="${h}" rx="12"/><circle class="d-dot" cx="${x + 14}" cy="${y + 14}" r="4"/><line class="d-line" x1="${x + w - 14}" y1="${y}" x2="${x + w - 14}" y2="${y - 14}"/><circle class="d-ink" cx="${x + w - 14}" cy="${y - 16}" r="3"/>` +
+      txt('d-tiny', x + w / 2, y + h + 18, a.label, 'middle');
+  },
+  waves(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), dir = a.dir === 'left' ? -1 : 1;
+    return [14, 26, 38].map(r => `<path class="d-wave" d="M${x + dir * r * 0.6},${y - r} A${r},${r} 0 0,${dir > 0 ? 1 : 0} ${x + dir * r * 0.6},${y + r}"/>`).join('');
+  },
+  battery(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), w = n(a, 'w', 56), h = n(a, 'h', 24), lvl = Math.max(0, Math.min(1, n(a, 'level', 1)));
+    const cls = lvl < 0.25 ? 'd-bad' : 'd-ok';
+    return `<rect class="d-paper" x="${x}" y="${y}" width="${w}" height="${h}" rx="4"/><rect class="d-ink" x="${x + w}" y="${y + h / 3}" width="4" height="${h / 3}"/>` +
+      (lvl > 0 ? `<rect class="${cls}" x="${x + 3}" y="${y + 3}" width="${(w - 6) * lvl}" height="${h - 6}" rx="2"/>` : '') + txt('d-tiny', x + w / 2, y + h + 16, a.label, 'middle');
+  },
+  cabinet(a) {
+    const x = n(a, 'x', 0), y = n(a, 'y', 0), w = n(a, 'w', 120), k = n(a, 'drawers', 2), dh = 40;
+    const drawers = Array.from({ length: k }, (_, i) => `<rect class="d-paper" x="${x + 8}" y="${y + 8 + i * (dh + 6)}" width="${w - 16}" height="${dh}" rx="3"/><rect class="d-ink" x="${x + w / 2 - 12}" y="${y + dh - 2 + i * (dh + 6)}" width="24" height="4" rx="2"/>`).join('');
+    return `<rect class="d-wood" x="${x}" y="${y}" width="${w}" height="${16 + k * (dh + 6) - 6}" rx="4"/>${drawers}` + txt('d-tiny', x + w / 2, y - 8, a.label, 'middle');
+  },
   moon(a) {
     const x = n(a, 'x', 0), y = n(a, 'y', 0);
     return `<path class="d-moon" d="M${x},${y - 26} a26,26 0 1,0 0,52 a20,20 0 1,1 0,-52 Z"/>`;

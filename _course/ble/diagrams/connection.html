@@ -1,0 +1,18 @@
+<!-- label: Two sleeping devices meet on a timetable: connection events -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="cn-t"><title id="cn-t">The phone answers an advertisement with a connect request; they agree a connection interval; both wake at each connection event and sleep in between; each event uses a different channel</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="40" w="64" h="120" label="phone: central"/>
+<x-sensor class="step s1" x="30" y="232" w="72" h="52" label="strap: peripheral"/>
+<x-letter class="step only-1" data-move="1:126,150" x="0" y="0" w="100" h="38" label="connect?"/>
+<x-arrow class="step only-1" tone="path" d="M100,120 C130,170 120,210 100,226"/>
+<g class="step s2" data-pulse="2"><rect class="d-sleep" x="150" y="96" width="460" height="12" rx="3"/><rect class="d-sleep" x="150" y="252" width="460" height="12" rx="3"/><rect class="d-awake" x="170" y="90" width="8" height="24"/><rect class="d-awake" x="280" y="90" width="8" height="24"/><rect class="d-awake" x="390" y="90" width="8" height="24"/><rect class="d-awake" x="500" y="90" width="8" height="24"/><rect class="d-awake" x="170" y="246" width="8" height="24"/><rect class="d-awake" x="280" y="246" width="8" height="24"/><rect class="d-awake" x="390" y="246" width="8" height="24"/><rect class="d-awake" x="500" y="246" width="8" height="24"/><text class="d-tiny" x="225" y="80" text-anchor="middle">← interval →</text></g>
+<g class="step s3" data-pulse="3"><line class="d-dash" x1="174" y1="114" x2="174" y2="244"/><line class="d-dash" x1="284" y1="114" x2="284" y2="244"/><line class="d-dash" x1="394" y1="114" x2="394" y2="244"/><line class="d-dash" x1="504" y1="114" x2="504" y2="244"/></g>
+<g class="step s3" data-move="2:140,160 3:254,160 4:474,160"><rect class="d-hl" x="0" y="0" width="62" height="40" rx="6"/><text class="d-a" x="31" y="25" text-anchor="middle">meet</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-adv" x="160" y="300" width="28" height="18" rx="3"/><rect class="d-adv" x="270" y="300" width="28" height="18" rx="3"/><rect class="d-adv" x="380" y="300" width="28" height="18" rx="3"/><rect class="d-adv" x="490" y="300" width="28" height="18" rx="3"/><text class="d-tiny" x="174" y="334" text-anchor="middle">ch 12</text><text class="d-tiny" x="284" y="334" text-anchor="middle">ch 3</text><text class="d-tiny" x="394" y="334" text-anchor="middle">ch 30</text><text class="d-tiny" x="504" y="334" text-anchor="middle">ch 21</text></g>
+</svg>
+<ol class="caps">
+<li><p>The phone answers an advertisement: "connect?". Now they're in a <b>connection</b>. The phone is the <b>central</b>, which sets the timing; the strap is the <b>peripheral</b>.</p></li>
+<li><p>The central sets a timetable: meet every <b>connection interval</b>, from 7.5 ms up to 4 s. In between, both radios sleep.</p></li>
+<li><p>Each meeting is a <b>connection event</b>: both wake at the agreed moment, exchange packets, and sleep. <i>Predict: is every meeting on the same channel?</i></p></li>
+<li><p>No: each event uses a different channel, picked by a rule both sides know. Noise on one channel only spoils the events that land on it.</p></li>
+</ol>

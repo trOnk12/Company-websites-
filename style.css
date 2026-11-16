@@ -449,3 +449,9 @@ html:not(.js) .stage [data-move] { display: none; }
 .course-card { border: 1px solid var(--rule); border-radius: 6px; padding: 1rem 1.1rem; background: #FBF9F4; }
 .course-card h3 { margin: 0 0 0.4rem; }
 .course-card p { margin: 0 0 0.6rem; }
+.d-wave { fill: none; stroke: var(--accent-deep); stroke-width: 2.5; stroke-linecap: round; }
+.d-ok { fill: #8DBF6A; }
+.d-lane { fill: #EEE9DE; stroke: var(--rule); stroke-width: 1; }
+.d-adv { fill: #F2D9A0; stroke: #9A6A1A; stroke-width: 1.5; }
+.d-sleep { fill: #E4E1D8; }
+.d-awake { fill: var(--accent-deep); }

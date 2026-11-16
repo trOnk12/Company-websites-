@@ -1,0 +1,47 @@
+---
+title: Don't ask, get told
+short: Notifications
+summary: In puzzle 3, the phone read the heart rate by asking for it. Asking again and again wastes radio time. Here's how the strap tells the phone instead, and the one step everyone forgets.
+takeaway: A notification is the server sending a characteristic's value by itself when it changes. It only starts after the client writes the CCCD descriptor on the device. On Android, setCharacteristicNotification() alone isn't enough: you also writeDescriptor() the CCCD.
+---
+
+## The problem
+
+In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a live heart rate, it would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and the answer can be up to a whole connection interval old. Can the strap just tell the phone when the value changes?
+
+## See it
+
+```diagram notify
+```
+
+## The building block
+
+Yes: that's a **notification**. The GATT server sends a characteristic's new value by itself at the next connection event, without being asked. One packet instead of two, and only when there's something new.
+
+But the strap doesn't notify everyone by default. A characteristic can carry extra settings called **descriptors**. One of them, the **CCCD** (its UUID is 2902), holds a switch per client: bit 0 on means "notify me". The client turns notifications on by writing that descriptor on the device.
+
+On Android, that's two separate steps:
+
+```kotlin
+gatt.setCharacteristicNotification(characteristic, true)   // 1. on the phone: pass these to my app
+val cccd = characteristic.getDescriptor(CCCD_UUID)
+gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   // 2. on the strap: start sending
+```
+
+`setCharacteristicNotification()` only tells your own phone to hand this characteristic's notifications to your app. It sends nothing to the strap. `writeDescriptor()` is what flips the switch on the strap. Skip it, and the strap never sends a thing: the classic "connected, but no data" bug. (`BluetoothGatt` is Android's object for one connection's GATT client.)
+
+## The analogy
+
+Instead of phoning the newsroom every hour to ask "anything new?", you subscribe. But the subscription has two halves: you tell your own mailbox to accept the paper, and you send the form to the newspaper. Do only the first, and your mailbox waits forever.
+
+## Check yourself
+
+- Your app calls `setCharacteristicNotification(characteristic, true)` and nothing else. The heart rate changes. What arrives?::*Nothing: the CCCD on the strap was never written, so the strap doesn't send||Every change, right away >> That call only prepares your own phone. The strap starts sending only when its CCCD is written. >> s4||Only the first change >> No notifications are sent at all until the CCCD is written. >> s3::Two steps: your phone, and the switch on the strap.
+- Why are notifications cheaper than reading again and again?::*One packet only when the value changes, instead of a request and an answer every time||Because notifications skip the connection events >> They still travel at connection events; they just need no request. >> s2||Because notifications are compressed >> Same value, same bytes; the saving is not having to ask. >> s1::No request, and nothing sent when nothing changed.
+- What's the difference between a characteristic and a descriptor?::*A characteristic holds a value; a descriptor is an extra setting attached to it, like the CCCD switch||A descriptor is a second copy of the value >> It's not the value: it describes or configures the characteristic. >> s3::Value vs a setting about that value.
+
+## Sources
+
+- [Bluetooth Core Specification 5.4, Vol 3, Part G: GATT](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/host/generic-attribute-profile--gatt-.html) (Client Characteristic Configuration: "Bit 0: Notification. The Characteristic Value shall be notified"; the descriptor value is kept per client)
+- [Bluetooth SIG assigned numbers: descriptors](https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/uuids/descriptors.yaml) (`0x2902`: Client Characteristic Configuration)
+- [Android Developers: Transfer BLE data](https://developer.android.com/develop/connectivity/bluetooth/ble/transfer-ble-data) (the sample calls `setCharacteristicNotification()` and then writes the descriptor with `ENABLE_NOTIFICATION_VALUE`)
