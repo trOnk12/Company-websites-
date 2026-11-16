@@ -172,7 +172,21 @@
    "self",
    "[weak self]",
    "val image = withContext(Dispatchers.IO) { load() }",
-   "IO"
+   "IO",
+   "sceneDidEnterBackground",
+   "beginBackgroundTask",
+   "loadUser()",
+   "closure",
+   "closures",
+   "structs",
+   "enums",
+   "sceneDidEnterBackground",
+   "beginBackgroundTask",
+   "loadUser()",
+   "closure",
+   "closures",
+   "structs",
+   "enums"
   ]
  },
  "terms": {

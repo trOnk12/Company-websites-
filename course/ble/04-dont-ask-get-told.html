@@ -115,7 +115,7 @@ gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   
 <fieldset class="quiz">
 <legend>Why are notifications cheaper than reading again and again?</legend>
 <input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-1"><label for="q-04-dont-ask-get-told-2-1">Because notifications travel outside the connection events</label>
-<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-2" data-ok><label for="q-04-dont-ask-get-told-2-2">One packet only when the value changes, with no request first</label>
+<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-2" data-ok><label for="q-04-dont-ask-get-told-2-2">Because it sends one packet only when the value changes, with no request first</label>
 <input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-3"><label for="q-04-dont-ask-get-told-2-3">Because notifications are compressed into fewer bytes</label>
 <p class="fb no opt-1"><b>Not quite.</b> They still travel at connection events; the saving is the request and answer packets, and fresher values. <label class="show-me" for="st-notify-3" data-goto="st-notify">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> No request, and nothing sent when nothing changed.</p>
@@ -124,7 +124,7 @@ gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   
 <fieldset class="quiz">
 <legend>What's the difference between a characteristic and a descriptor?</legend>
 <input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-1"><label for="q-04-dont-ask-get-told-3-1">A descriptor is a second copy of the value, kept as a backup</label>
-<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-2" data-ok><label for="q-04-dont-ask-get-told-3-2">A characteristic holds a value; a descriptor is a setting attached to it</label>
+<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-2" data-ok><label for="q-04-dont-ask-get-told-3-2">A characteristic holds a value, while a descriptor is a setting attached to it</label>
 <p class="fb no opt-1"><b>Not quite.</b> It's not the value: it describes or configures the characteristic. <label class="show-me" for="st-notify-2" data-goto="st-notify">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Value vs a setting about that value.</p>
 </fieldset>

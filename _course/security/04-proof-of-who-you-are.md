@@ -24,9 +24,9 @@ This needs a different kind of key from puzzle 1. There, one key did both jobs. 
 
 So a signature proves two things at once: who sent it, and that it wasn't changed.
 
-That moves the question: how does your app know which public key is really your server's? A listener could hand over its own. The answer is a **certificate**: a small document with your server's name and its public key, signed by a **certificate authority**, an organization whose public key is already built into your phone. Before it signs, the authority checks that whoever asks really controls that name. Certificates aren't secret: your server shows its certificate to every visitor, so anyone can copy one. Your app checks the authority's signature on the certificate, checks that the name matches the one in the address it asked for, and from then on trusts that public key. Puzzle 5 shows why a copied certificate alone gets the listener nowhere.
+That moves the question: how does your app know which public key is really your server's? A listener could hand over its own. The answer is a **certificate**: a small document with your server's name and its public key, signed by a **certificate authority**, an organization whose public key is already built into your phone. Before it signs, the authority checks that whoever asks really controls that name. Certificates aren't secret: your server shows its certificate to every visitor, so anyone can copy one. A certificate signed by anyone else, including one the server signs itself, fails that check. Your app checks the authority's signature on the certificate, checks that the name matches the one in the address it asked for, and from then on trusts that public key. Puzzle 5 shows why a copied certificate alone gets the listener nowhere.
 
-Note the look-alike from puzzle 2: a key exchange's private value is thrown away after one connection; a server's private key is kept for years and proves who it is.
+Note the look-alike from puzzle 2: a key exchange's private value is thrown away when the connection ends; a server's private key is kept for years and proves who it is.
 
 ## The analogy
 
@@ -35,8 +35,8 @@ A wax seal. Only the king has the seal (private key), but everyone knows what it
 ## Check yourself
 
 - A listener makes its own certificate with your server's name and its own public key. What does your app see?::*No trusted authority signed it, so the check fails||A valid certificate, because the name on it is right >> The name isn't enough: the certificate must carry a trusted authority's signature. >> s4||A valid certificate, once the listener signs it itself >> Only a signature from an authority your phone trusts counts, and authorities check who controls the name. >> the-building-block::Only an authority's signature makes a certificate trusted.
-- Why can't anyone make a signature that checks out with your server's public key?::*It takes the private key, which never leaves the server||Because public keys are kept secret by the phone >> Public keys are meant to be shared; the protection is the private key. >> s1||Because each signature is encrypted again with AES >> Signing doesn't need AES; it's the private key that makes it unforgeable. >> s2::No private key, no valid signature.
-- What's the difference between a server's private key and a key exchange's private value?::*The private key lasts years and proves identity; a private value is used once||They're the same number, used once for the exchange and once to sign >> They're separate: one proves identity, the other makes this connection's secret. >> the-building-block::Long-lived identity vs one-time secret.
+- Why can't anyone make a signature that checks out with your server's public key?::*Because it takes the private key, which never leaves the server||Because public keys are kept secret by the phone >> Public keys are meant to be shared; the protection is the private key. >> s1||Because each signature is encrypted again with AES >> Signing doesn't need AES; it's the private key that makes it unforgeable. >> s2::No private key, no valid signature.
+- What's the difference between a server's private key and a key exchange's private value?::*The private key lasts years and proves identity, while a private value is used once||They're the same number, used once for the exchange and once to sign >> They're separate: one proves identity, the other makes this connection's secret. >> the-building-block::Long-lived identity vs one-time secret.
 
 ## Sources
 

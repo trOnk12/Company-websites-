@@ -50,7 +50,7 @@ only the blocks they're missing.
 - [x] Course "iOS for Android developers": suspended apps, the run loop, GCD, async/await and the main actor, ARC.
   Each puzzle starts from the Android block. Facts from Apple's documentation and the Swift book, quoted.
 - [x] Cross-course building blocks: a puzzle that builds on another course says so, with a link.
-- [ ] Review round (running) and fixes.
+- [x] Review round (text 6–8, pictures 5–7): actor reentrancy, await, background sessions fixed with sources.
 
 ## Backlog, in order
 
@@ -75,7 +75,7 @@ only the blocks they're missing.
    Android's one-GATT-operation-at-a-time rule and status 133.
 7. **Android module 4, continued.** Context and why it leaks; tasks and the back stack.
 8. **The map.** One page per course drawing the blocks as a graph, coloured by what you've passed.
-9. **Quiz quality.** The right answer is still the longest option too often; rewrite until it's near chance.
+9. **Quiz quality.** Done in part: two new lint rules (no "X; Y" shape only on the right answer, no "Because" only on the wrong ones; 64 questions fixed). Still: the right answer is the longest option too often.
 10. **Later:** system design, data structures, as the sessions behind them land in the notes repo.
 
 ## Why these, for whom

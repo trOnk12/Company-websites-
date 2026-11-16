@@ -198,6 +198,14 @@
     "key pairs",
     "asymmetric"
    ]
+  },
+  "keyed check": {
+   "in": "03",
+   "def": "A short value computed from data and a shared secret key; without the key, nobody can make one that matches.",
+   "aliases": [
+    "keyed checks",
+    "MAC"
+   ]
   }
  },
  "avoid": {

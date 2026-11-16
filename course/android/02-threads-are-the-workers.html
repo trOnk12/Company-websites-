@@ -110,14 +110,14 @@
 <fieldset class="quiz">
 <legend>Why put a download on another thread, not the main thread?</legend>
 <input type="radio" name="q-02-threads-are-the-workers-2" id="q-02-threads-are-the-workers-2-1"><label for="q-02-threads-are-the-workers-2-1">Because only other threads can use the internet</label>
-<input type="radio" name="q-02-threads-are-the-workers-2" id="q-02-threads-are-the-workers-2-2" data-ok><label for="q-02-threads-are-the-workers-2-2">So the main thread stays free to draw the screen and handle taps</label>
+<input type="radio" name="q-02-threads-are-the-workers-2" id="q-02-threads-are-the-workers-2-2" data-ok><label for="q-02-threads-are-the-workers-2-2">Because then the main thread stays free for the screen and taps</label>
 <p class="fb no opt-1"><b>Not quite.</b> Any thread can download. The point is to keep the main thread free. <label class="show-me" for="st-threads-2" data-goto="st-threads">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The main thread must stay free for the screen.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a process and a thread?</legend>
 <input type="radio" name="q-02-threads-are-the-workers-3" id="q-02-threads-are-the-workers-3-1"><label for="q-02-threads-are-the-workers-3-1">They're the same thing: each app runs as one thread, and a thread is a process</label>
-<input type="radio" name="q-02-threads-are-the-workers-3" id="q-02-threads-are-the-workers-3-2" data-ok><label for="q-02-threads-are-the-workers-3-2">A process is a running app with its own memory; threads are the workers inside it</label>
+<input type="radio" name="q-02-threads-are-the-workers-3" id="q-02-threads-are-the-workers-3-2" data-ok><label for="q-02-threads-are-the-workers-3-2">A process is a running app with its own memory, while threads are the workers inside it</label>
 <p class="fb no opt-1"><b>Not quite.</b> A process is the house; threads are the people working inside it. One process, many threads. <label class="show-me" for="st-threads-1" data-goto="st-threads">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Threads live inside a process and share its memory.</p>
 </fieldset>

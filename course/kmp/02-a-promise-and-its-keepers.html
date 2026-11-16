@@ -114,7 +114,7 @@ actual fun platformName(): String = UIDevice.currentDevice.systemName() + &quot;
 <fieldset class="quiz">
 <legend>Why mark it <code>expect</code> instead of writing an <code>if</code> that checks the platform in common code?</legend>
 <input type="radio" name="q-02-a-promise-and-its-keepers-2" id="q-02-a-promise-and-its-keepers-2-1"><label for="q-02-a-promise-and-its-keepers-2-1">Because an <code>if</code> in common code would run slower on iOS than a function</label>
-<input type="radio" name="q-02-a-promise-and-its-keepers-2" id="q-02-a-promise-and-its-keepers-2-2" data-ok><label for="q-02-a-promise-and-its-keepers-2-2">Common code can't call either platform's APIs, even inside an <code>if</code></label>
+<input type="radio" name="q-02-a-promise-and-its-keepers-2" id="q-02-a-promise-and-its-keepers-2-2" data-ok><label for="q-02-a-promise-and-its-keepers-2-2">Because common code can't call either platform's APIs, even inside an <code>if</code></label>
 <p class="fb no opt-1"><b>Not quite.</b> Speed isn't it: common code can't reach the platforms' APIs at all. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The platform calls must live where those APIs exist.</p>
 </fieldset>

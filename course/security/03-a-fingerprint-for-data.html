@@ -86,9 +86,10 @@
         <h2 id="the-building-block">The building block</h2>
 <p>A <b>hash function</b> turns any amount of data, a word or a whole video, into a short number of fixed size: its <b>digest</b>, a fingerprint of the data. The standard one, <b><code>SHA-256</code></b>, always produces 256 bits.</p>
 <p>Three properties make it useful:</p>
-<ul><li>the same data always gives the same digest;</li><li>change even one bit of the data, and the digest changes beyond recognition;</li><li>given a digest, nobody can construct data that produces it, and nobody can find two different pieces of data with the same digest. Not &quot;it's hard&quot;: with today's computers, it would take far longer than anyone could wait.</li></ul>
+<ul><li>the same data always gives the same digest;</li><li>change even one bit of the data, and the digest changes beyond recognition;</li><li>given a digest, nobody can construct data that produces it, and nobody can find two different pieces of data with the same digest. Nobody knows a method; trying data at random would take far longer than the age of the universe.</li></ul>
 <p>So if you know the digest the data should have, you can check it: hash what arrived, compare. Different digest: something changed it.</p>
-<p>There's a catch, and it leads straight to the next puzzle. If the attacker can change the data, it can also change a digest sent next to it. A digest helps only if the attacker can't replace it. The next block makes a digest that only the real sender can produce.</p>
+<p>There's a catch. If the attacker can change the data, it can also change a digest sent next to it: it hashes its own version and sends that digest instead. A digest helps only if the attacker can't make a matching one.</p>
+<p>Two ways close that gap. If both sides already share a secret key, they can use a <b>keyed check</b>: a short value computed from the data and the key together, the way a hash is computed from data alone. Without the key, nobody can make a check that matches changed data. That's what protects your data once a connection is set up (puzzle 5). Before there's a shared key, the next block makes a mark that only the real sender can produce.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -108,14 +109,14 @@
 <fieldset class="quiz">
 <legend>Why can't an attacker just make new data that has the expected digest?</legend>
 <input type="radio" name="q-03-a-fingerprint-for-data-2" id="q-03-a-fingerprint-for-data-2-1"><label for="q-03-a-fingerprint-for-data-2-1">Because the digest is encrypted with AES on the way</label>
-<input type="radio" name="q-03-a-fingerprint-for-data-2" id="q-03-a-fingerprint-for-data-2-2" data-ok><label for="q-03-a-fingerprint-for-data-2-2">Nobody knows a way to build data for a given digest in any useful time</label>
+<input type="radio" name="q-03-a-fingerprint-for-data-2" id="q-03-a-fingerprint-for-data-2-2" data-ok><label for="q-03-a-fingerprint-for-data-2-2">Because nobody knows how to build data for a given digest</label>
 <p class="fb no opt-1"><b>Not quite.</b> The digest's strength is in the hash function itself, not in AES. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Going from digest back to data is the hard direction.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a digest and ciphertext?</legend>
 <input type="radio" name="q-03-a-fingerprint-for-data-3" id="q-03-a-fingerprint-for-data-3-1"><label for="q-03-a-fingerprint-for-data-3-1">A digest is ciphertext made with a shorter key</label>
-<input type="radio" name="q-03-a-fingerprint-for-data-3" id="q-03-a-fingerprint-for-data-3-2" data-ok><label for="q-03-a-fingerprint-for-data-3-2">A digest can't be turned back; ciphertext can, with the key</label>
+<input type="radio" name="q-03-a-fingerprint-for-data-3" id="q-03-a-fingerprint-for-data-3-2" data-ok><label for="q-03-a-fingerprint-for-data-3-2">A digest can't be turned back, while ciphertext can, with the key</label>
 <input type="radio" name="q-03-a-fingerprint-for-data-3" id="q-03-a-fingerprint-for-data-3-3"><label for="q-03-a-fingerprint-for-data-3-3">Ciphertext is shorter than a digest</label>
 <p class="fb no opt-1"><b>Not quite.</b> A hash uses no key at all, and there's no way back from a digest. <label class="show-me" for="st-hash-1" data-goto="st-hash">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> A fingerprint vs locked data.</p>

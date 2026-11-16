@@ -7,7 +7,7 @@ takeaway: Grand Central Dispatch runs tasks from dispatch queues on a pool of th
 
 ## The problem
 
-In puzzle 1, slow work on the main run loop froze the screen. On Android you'd move it to another thread, a coroutine on `Dispatchers.IO` for example, and then post the result back to the main thread with a `Handler`. On iOS you don't create threads for this either. Where does the slow work go, and how does the result get back?
+In puzzle 1, slow work on the main run loop froze the screen. On Android you'd move it to another thread, a coroutine on `Dispatchers.IO` for example, and then post the result back to the main thread with a `Handler`. On iOS you don't create those threads yourself either. Where does the slow work go, and how does the result get back?
 
 ## See it
 
@@ -16,11 +16,11 @@ In puzzle 1, slow work on the main run loop froze the screen. On Android you'd m
 
 ## The building block
 
-iOS's answer is **GCD**, Grand Central Dispatch. Instead of threads, you think in **dispatch queues**: first-in, first-out lines of tasks. You add a task, a block of code, to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.
+iOS's answer is **GCD**, Grand Central Dispatch. Instead of threads, you think in **dispatch queues**: first-in, first-out lines of tasks. You add a task, a closure, to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.
 
 A queue is either **serial**, running one task at a time in order, or **concurrent**, able to run several of its tasks at the same time on different threads.
 
-One queue is special: the main queue. It's serial, and its tasks run on the main thread, through the main run loop from puzzle 1. So the iOS pattern is the Android one, with new names:
+One queue is special: the main queue. It's serial, and its tasks run on the main thread: they're one of the kinds of work the main run loop from puzzle 1 picks up, next to touches and timers. The others you'll use most are the global queues: concurrent queues GCD provides, ready to use, for work off the main thread. So the iOS pattern is the Android one, with new names:
 
 ```swift
 DispatchQueue.global().async {          // a concurrent queue: off the main thread
@@ -40,8 +40,8 @@ The clerk from puzzle 1 still has one in-tray: the main queue. But the back offi
 ## Check yourself
 
 - You add three tasks to a serial queue, one after another. How do they run?::*One at a time, in the order you added them||All three at once, each on its own thread >> That's a concurrent queue; a serial one runs one task at a time. >> s2||In any order, whichever thread is free first >> A serial queue keeps the order: first in, first out. >> s2::Serial: one at a time, in order.
-- Why does the image go back through `DispatchQueue.main.async` before it's shown?::*Screen work must run on the main thread, and the main queue runs there||Because the global queue can't hold an image that big >> Size isn't the issue: only the main thread may touch the screen. >> s4||Because GCD deletes a task's results when its queue finishes >> Nothing is deleted; the result has to be used on the main thread. >> s4::Screen work belongs on the main queue.
-- What's the difference between a dispatch queue and a thread?::*A queue is a line of tasks; GCD picks which of its threads runs them||A dispatch queue is GCD's name for one thread >> A concurrent queue can run tasks on several threads; queues and threads aren't one-to-one. >> s3||A thread is a queue that runs on the main run loop >> Only the main queue is tied to the main thread; other queues use GCD's pool. >> s3::Tasks wait in queues; threads run them.
+- Why does the image go back through `DispatchQueue.main.async` before it's shown?::*Because screen work must run on the main thread, and the main queue runs there||Because the global queue can't hold an image that big >> Size isn't the issue: only the main thread may touch the screen. >> s4||Because GCD deletes a task's results when its queue finishes >> Nothing is deleted; the result has to be used on the main thread. >> s4::Screen work belongs on the main queue.
+- What's the difference between a dispatch queue and a thread?::*A queue is a line of tasks, and GCD picks which thread runs each||A dispatch queue is GCD's name for one thread >> A concurrent queue can run tasks on several threads; queues and threads aren't one-to-one. >> s3||A thread is a queue that runs on the main run loop >> Only the main queue is tied to the main thread; other queues use GCD's pool. >> s3::Tasks wait in queues; threads run them.
 
 ## Sources
 

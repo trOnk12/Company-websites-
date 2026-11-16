@@ -29,7 +29,7 @@ A lighthouse keeper on a tiny budget. Leaving the lamp on all night empties the 
 ## Check yourself
 
 - A strap's battery is nearly empty after two days instead of months. What's the most likely cause?::*Its radio is awake far more often than it needs to be||Its battery is too small for BLE >> BLE is built for coin-sized batteries: the size isn't the problem, how long the radio is on is. >> s3||Its battery is a cheap brand that loses charge >> Any coin battery would drain like that; what decides it is how long the radio is awake. >> s2::Battery life is decided by how much of the time the radio is on.
-- Why does BLE save power by sleeping, instead of by sending less data?::*A radio that's on costs a lot even just listening; being off is the saving||Because a sleeping radio sends smaller messages when it wakes >> Sleeping doesn't change the messages; it changes how long the radio is on. >> the-building-block::Being on, even just listening, is the cost; sleeping is the saving.
+- Why does BLE save power by sleeping, instead of by sending less data?::*Because a radio that's on costs a lot even just listening||Because a sleeping radio sends smaller messages when it wakes >> Sleeping doesn't change the messages; it changes how long the radio is on. >> the-building-block::Being on, even just listening, is the cost; sleeping is the saving.
 - What's the difference between BLE and the Bluetooth in your headphones?::*BLE sleeps almost all the time; headphone Bluetooth streams sound nonstop||They're the same Bluetooth; BLE is the newer name for it >> They share the name and the airwaves, but BLE's whole design is about keeping the radio off. >> s3::Same airwaves, different goal: BLE optimizes for battery, not for streaming.
 
 ## Sources

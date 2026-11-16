@@ -116,7 +116,7 @@
 <fieldset class="quiz">
 <legend>Why doesn't the kernel copy every page at fork?</legend>
 <input type="radio" name="q-11-sharing-memory-3" id="q-11-sharing-memory-3-1"><label for="q-11-sharing-memory-3-1">Because the kernel has no way to copy a page between processes</label>
-<input type="radio" name="q-11-sharing-memory-3" id="q-11-sharing-memory-3-2" data-ok><label for="q-11-sharing-memory-3-2">Copying everything would waste memory and time; most pages are never changed</label>
+<input type="radio" name="q-11-sharing-memory-3" id="q-11-sharing-memory-3-2" data-ok><label for="q-11-sharing-memory-3-2">Because copying everything wastes memory, and most pages are never changed</label>
 <p class="fb no opt-1"><b>Not quite.</b> Pages can be copied, and are, when written. Doing it up front would waste memory. <label class="show-me" for="st-pages-4" data-goto="st-pages">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Copy only what changes.</p>
 </fieldset>

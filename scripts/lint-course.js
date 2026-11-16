@@ -103,6 +103,9 @@ function lint(id) {
       const q = parseQuestion(it);
       const ok = q.opts.find(o => o.ok);
       const wrong = q.opts.filter(o => !o.ok).map(o => o.text.length);
+      const others = q.opts.filter(o => !o.ok);
+      if (ok && others.length && others.every(o => /^Because\b/.test(o.text)) && !/^Because\b/.test(ok.text)) at(`question "${q.q.slice(0, 50)}…": every wrong answer starts with "Because" and the right one doesn't, so it can be guessed`);
+      if (ok && others.length && /;/.test(ok.text) && others.every(o => !/;/.test(o.text))) at(`question "${q.q.slice(0, 50)}…": only the right answer has the two-part "X; Y" shape, so it can be guessed`);
       if (ok && wrong.length && ok.text.length > Math.max(...wrong) * 1.25 + 8) at(`question "${q.q.slice(0, 50)}…": the right answer is much longer than every wrong one, so it can be guessed; make the wrong answers as specific, or the right one shorter`);
     }
     if (!items.length) at('no questions');

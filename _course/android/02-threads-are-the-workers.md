@@ -27,8 +27,8 @@ Inside the house work several people. One of them, the clerk at the front desk, 
 ## Check yourself
 
 - The main thread is busy for 3 seconds sorting a huge list. The user taps a button. What happens?::*The tap waits until the main thread is free||Another thread picks up the tap, so the screen answers right away >> Taps and drawing are the main thread's job only. Other threads can't step in. >> s3||The kernel pauses the sorting, handles the tap, then resumes it >> The kernel shares the CPU between threads, but it doesn't take over the main thread's work. >> s3::Only the main thread handles taps and drawing, so while it's busy, the screen waits.
-- Why put a download on another thread, not the main thread?::*So the main thread stays free to draw the screen and handle taps||Because only other threads can use the internet >> Any thread can download. The point is to keep the main thread free. >> s2::The main thread must stay free for the screen.
-- What's the difference between a process and a thread?::*A process is a running app with its own memory; threads are the workers inside it||They're the same thing: each app runs as one thread, and a thread is a process >> A process is the house; threads are the people working inside it. One process, many threads. >> s1::Threads live inside a process and share its memory.
+- Why put a download on another thread, not the main thread?::*Because then the main thread stays free for the screen and taps||Because only other threads can use the internet >> Any thread can download. The point is to keep the main thread free. >> s2::The main thread must stay free for the screen.
+- What's the difference between a process and a thread?::*A process is a running app with its own memory, while threads are the workers inside it||They're the same thing: each app runs as one thread, and a thread is a process >> A process is the house; threads are the people working inside it. One process, many threads. >> s1::Threads live inside a process and share its memory.
 
 ## Sources
 

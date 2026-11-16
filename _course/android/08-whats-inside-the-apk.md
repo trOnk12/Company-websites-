@@ -28,7 +28,7 @@ You write your recipes in one common language, so any kitchen can use them. In e
 
 - You ship the same APK to two phones with different CPUs. Why does it run on both?::*It contains DEX, and ART on each phone runs it||It contains machine code for every CPU >> Then it would only run on the CPUs it was built for. DEX isn't for any CPU. >> s1||Google rebuilds it for each phone >> Nobody rebuilds it: ART on the phone runs the same DEX. >> s3::DEX isn't tied to a CPU; ART on each phone runs it.
 - Is there one ART for all the apps on the phone?::*No: each app's process runs its own ART||Yes: one ART runs every app >> ART lives inside each app's process, like a translator in every house. >> s2::Each process has its own ART.
-- What's the difference between DEX and machine code?::*Machine code is for one kind of CPU; DEX is for any Android phone||They're the same: DEX is machine code for Android phones >> DEX has to be run by ART; machine code runs on the CPU directly. >> s4::DEX needs ART; machine code needs nothing.
+- What's the difference between DEX and machine code?::*Machine code is for one kind of CPU, while DEX is for any Android phone||They're the same: DEX is machine code for Android phones >> DEX has to be run by ART; machine code runs on the CPU directly. >> s4::DEX needs ART; machine code needs nothing.
 
 ## Sources
 

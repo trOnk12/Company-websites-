@@ -32,7 +32,7 @@ Cold: build the house from the show house, move in, set up the room. Warm: the h
 
 - You put slow setup (opening a big saved-data file) in `Application.onCreate()`. Which starts get slower?::*Cold starts only: that's when the Application is created||Every start, including hot: the Application is created each time >> The Application is created once per process. Warm and hot starts reuse the living process. >> s4||Only hot starts, because they skip the Activity and go straight to setup >> Hot starts create nothing new. The Application only appears in a cold start. >> s2::Application.onCreate() runs once per process, in a cold start, before any screen.
 - The user comes back to your app a minute later and it opens instantly. Which kind of start was that likely?::*Hot: process and Activity were still alive||Cold: a fresh fork is always fastest >> A cold start does the most work: fork, Application, Activity. >> s2::Hot starts reuse everything.
-- What's the difference between a warm and a cold start?::*Warm reuses the living process; cold has to fork a new one first||Warm starts skip creating the Activity, so only the screen is redrawn >> That's a hot start. A warm start creates the Activity again. >> s3::Warm: process alive, screen rebuilt. Cold: everything from scratch.
+- What's the difference between a warm and a cold start?::*Warm reuses the living process, while cold has to fork a new one first||Warm starts skip creating the Activity, so only the screen is redrawn >> That's a hot start. A warm start creates the Activity again. >> s3::Warm: process alive, screen rebuilt. Cold: everything from scratch.
 
 ## Sources
 

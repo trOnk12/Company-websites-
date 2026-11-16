@@ -28,7 +28,7 @@ Each running app is a house. Its memory is everything inside the house. Neighbou
 
 - The music app crashes while your notes app is open. What happens to the note you were typing?::*Nothing: the notes app is a separate process with its own memory||It's lost too, because all apps share memory >> Each process has its own memory. A crash ends one process; the others don't even notice. >> s4||It's saved by the music app before it crashes >> The music app can't reach the notes app's memory at all: different houses. >> s3::A crash ends only that process. Other processes keep their own memory.
 - Is an app you installed but haven't opened a process?::*No: it's only files until it's started||Yes: installing an app starts its process >> Installing puts the app's files on the phone. A process exists only while the app runs. >> s1::A process is a running program. Installed but not running means files only.
-- Why can't one app read the text another app is showing?::*It lives in the other process's memory, which only that process can reach||Because each app is written in a different language, so it can't read the other's data >> The language doesn't matter: the walls are around each process's memory. >> s3::Each process's memory is private to that process.
+- Why can't one app read the text another app is showing?::*Because it lives in the other process's memory, which only that process can reach||Because each app is written in a different language, so it can't read the other's data >> The language doesn't matter: the walls are around each process's memory. >> s3::Each process's memory is private to that process.
 
 ## Sources
 

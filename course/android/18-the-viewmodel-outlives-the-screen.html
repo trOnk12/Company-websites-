@@ -124,7 +124,7 @@ val vm: ListViewModel by viewModels()</code></pre>
 <legend>Why is the store cleared when the user presses Back, but not when they turn the phone?</legend>
 <input type="radio" name="q-18-the-viewmodel-outlives-the-screen-2" id="q-18-the-viewmodel-outlives-the-screen-2-1"><label for="q-18-the-viewmodel-outlives-the-screen-2-1">Because a turn is too quick for the store to be cleared in time</label>
 <input type="radio" name="q-18-the-viewmodel-outlives-the-screen-2" id="q-18-the-viewmodel-outlives-the-screen-2-2"><label for="q-18-the-viewmodel-outlives-the-screen-2-2">Because Back ends the whole process, store and all</label>
-<input type="radio" name="q-18-the-viewmodel-outlives-the-screen-2" id="q-18-the-viewmodel-outlives-the-screen-2-3" data-ok><label for="q-18-the-viewmodel-outlives-the-screen-2-3">After a turn a new Activity will take the store; after Back none will</label>
+<input type="radio" name="q-18-the-viewmodel-outlives-the-screen-2" id="q-18-the-viewmodel-outlives-the-screen-2-3" data-ok><label for="q-18-the-viewmodel-outlives-the-screen-2-3">Because after a turn a new Activity will take the store, while after Back none will</label>
 <p class="fb no opt-1"><b>Not quite.</b> Speed has nothing to do with it: the code checks whether the Activity is being destroyed only to be recreated. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The process can live on. Only that screen is finished. <label class="show-me" for="st-viewmodel-4" data-goto="st-viewmodel">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Clear the store unless a new Activity will take it.</p>

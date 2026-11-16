@@ -30,7 +30,7 @@ Every new house uses the show house's furniture. Repaint a chair, and only then 
 
 - Twenty apps are running. How many copies of the framework's pages are in memory?::*Mostly one, shared by all of them||Twenty, one per app, because each app needs its own framework >> Forking shares pages; it doesn't duplicate them. >> s2::Untouched pages stay shared after a fork.
 - Your app changes one shared page. What happens in the other apps?::*Nothing: your app gets its own copy of that page first||They see your change too, since the page is shared >> That's exactly what copy-on-write prevents: you write into your own copy. >> s3||The change is refused >> Writing is allowed; it just goes into a private copy. >> s3::Only the writer gets a copy; everyone else keeps the original.
-- Why doesn't the kernel copy every page at fork?::*Copying everything would waste memory and time; most pages are never changed||Because the kernel has no way to copy a page between processes >> Pages can be copied, and are, when written. Doing it up front would waste memory. >> s4::Copy only what changes.
+- Why doesn't the kernel copy every page at fork?::*Because copying everything wastes memory, and most pages are never changed||Because the kernel has no way to copy a page between processes >> Pages can be copied, and are, when written. Doing it up front would waste memory. >> s4::Copy only what changes.
 
 ## Sources
 

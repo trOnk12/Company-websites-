@@ -84,7 +84,7 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Call any such machine the listener (or the attacker: same machine). It can do three things, and every later puzzle stops one of them:</p>
+<p>Call any such machine the listener (or the attacker: same machine). It can do three things, and the later puzzles build the blocks that stop them:</p>
 <ul><li><b>read</b> what passes by: the password, the token, the card number;</li><li><b>change</b> it on the way: a different amount, a different account;</li><li><b>pretend</b> to be the other side: answer as if it were your server.</li></ul>
 <p>The first block stops the reading. <b>Encryption</b> turns data into gibberish that only someone holding the right <b>key</b>, a secret number, can turn back (decrypt). The gibberish is <b>ciphertext</b>. A machine in the middle still sees every byte, but they mean nothing to it.</p>
 <p>Encryption alone doesn't stop the other two. Someone can still change ciphertext (the result is garbage, or quietly different data, and nobody notices unless something checks), and encryption with someone who is pretending to be your server protects nothing. Puzzles 3 and 4 add those checks. First, though: where does the key come from?</p>
@@ -107,7 +107,7 @@
 <fieldset class="quiz">
 <legend>Why isn't encryption alone enough?</legend>
 <input type="radio" name="q-00-anyone-on-the-line-2" id="q-00-anyone-on-the-line-2-1"><label for="q-00-anyone-on-the-line-2-1">Because the key can always be guessed in the end, given time</label>
-<input type="radio" name="q-00-anyone-on-the-line-2" id="q-00-anyone-on-the-line-2-2" data-ok><label for="q-00-anyone-on-the-line-2-2">It hides the data, but doesn't stop changes or pretending</label>
+<input type="radio" name="q-00-anyone-on-the-line-2" id="q-00-anyone-on-the-line-2-2" data-ok><label for="q-00-anyone-on-the-line-2-2">Because it hides the data, but doesn't stop changes or pretending</label>
 <p class="fb no opt-1"><b>Not quite.</b> A good key can't be guessed in any useful time; the gaps are changes and pretending. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Encryption stops reading, not the other two.</p>
 </fieldset>
@@ -115,7 +115,7 @@
 <legend>What's the difference between a key and ciphertext?</legend>
 <input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-1"><label for="q-00-anyone-on-the-line-3-1">Ciphertext is the key after it's been encrypted</label>
 <input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-2"><label for="q-00-anyone-on-the-line-3-2">The key is part of the ciphertext, sent along with it</label>
-<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-3" data-ok><label for="q-00-anyone-on-the-line-3-3">The key is the secret that unlocks; ciphertext is the locked data</label>
+<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-3" data-ok><label for="q-00-anyone-on-the-line-3-3">The key is the secret that unlocks, while ciphertext is the locked data</label>
 <p class="fb no opt-1"><b>Not quite.</b> Ciphertext is your data, encrypted; the key is what encrypts it. <label class="show-me" for="st-wire-3" data-goto="st-wire">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> The key is never sent with the data; that would unlock it for everyone. <label class="show-me" for="st-wire-3" data-goto="st-wire">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> The secret vs what it locks.</p>

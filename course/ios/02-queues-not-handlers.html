@@ -54,11 +54,11 @@
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-the-run-loop-is-your-looper.html">Puzzle 1: The run loop is your Looper</a></summary><p>Every iOS thread has a run loop: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.</p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="01-the-run-loop-is-your-looper.html">1</a>. Know them already? Start here.</p>
+        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-frozen-not-stopped.html">0</a> → <a href="01-the-run-loop-is-your-looper.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>In puzzle 1, slow work on the main run loop froze the screen. On Android you'd move it to another thread, a coroutine on <code>Dispatchers.IO</code> for example, and then post the result back to the main thread with a <code>Handler</code>. On iOS you don't create threads for this either. Where does the slow work go, and how does the result get back?</p>
+<p>In puzzle 1, slow work on the main run loop froze the screen. On Android you'd move it to another thread, a coroutine on <code>Dispatchers.IO</code> for example, and then post the result back to the main thread with a <code>Handler</code>. On iOS you don't create those threads yourself either. Where does the slow work go, and how does the result get back?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -83,9 +83,9 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>iOS's answer is <b>GCD</b>, Grand Central Dispatch. Instead of threads, you think in <b>dispatch queues</b>: first-in, first-out lines of tasks. You add a task, a block of code, to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.</p>
+<p>iOS's answer is <b>GCD</b>, Grand Central Dispatch. Instead of threads, you think in <b>dispatch queues</b>: first-in, first-out lines of tasks. You add a task, a closure, to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.</p>
 <p>A queue is either <b>serial</b>, running one task at a time in order, or <b>concurrent</b>, able to run several of its tasks at the same time on different threads.</p>
-<p>One queue is special: the main queue. It's serial, and its tasks run on the main thread, through the main run loop from puzzle 1. So the iOS pattern is the Android one, with new names:</p>
+<p>One queue is special: the main queue. It's serial, and its tasks run on the main thread: they're one of the kinds of work the main run loop from puzzle 1 picks up, next to touches and timers. The others you'll use most are the global queues: concurrent queues GCD provides, ready to use, for work off the main thread. So the iOS pattern is the Android one, with new names:</p>
 <pre><code class="language-swift">DispatchQueue.global().async {          // a concurrent queue: off the main thread
     let image = loadBigImage()          // slow work
     DispatchQueue.main.async {          // back to the main queue
@@ -112,7 +112,7 @@
 <fieldset class="quiz">
 <legend>Why does the image go back through <code>DispatchQueue.main.async</code> before it's shown?</legend>
 <input type="radio" name="q-02-queues-not-handlers-2" id="q-02-queues-not-handlers-2-1"><label for="q-02-queues-not-handlers-2-1">Because the global queue can't hold an image that big</label>
-<input type="radio" name="q-02-queues-not-handlers-2" id="q-02-queues-not-handlers-2-2" data-ok><label for="q-02-queues-not-handlers-2-2">Screen work must run on the main thread, and the main queue runs there</label>
+<input type="radio" name="q-02-queues-not-handlers-2" id="q-02-queues-not-handlers-2-2" data-ok><label for="q-02-queues-not-handlers-2-2">Because screen work must run on the main thread, and the main queue runs there</label>
 <input type="radio" name="q-02-queues-not-handlers-2" id="q-02-queues-not-handlers-2-3"><label for="q-02-queues-not-handlers-2-3">Because GCD deletes a task's results when its queue finishes</label>
 <p class="fb no opt-1"><b>Not quite.</b> Size isn't the issue: only the main thread may touch the screen. <label class="show-me" for="st-queues-4" data-goto="st-queues">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Screen work belongs on the main queue.</p>
@@ -122,7 +122,7 @@
 <legend>What's the difference between a dispatch queue and a thread?</legend>
 <input type="radio" name="q-02-queues-not-handlers-3" id="q-02-queues-not-handlers-3-1"><label for="q-02-queues-not-handlers-3-1">A thread is a queue that runs on the main run loop</label>
 <input type="radio" name="q-02-queues-not-handlers-3" id="q-02-queues-not-handlers-3-2"><label for="q-02-queues-not-handlers-3-2">A dispatch queue is GCD's name for one thread</label>
-<input type="radio" name="q-02-queues-not-handlers-3" id="q-02-queues-not-handlers-3-3" data-ok><label for="q-02-queues-not-handlers-3-3">A queue is a line of tasks; GCD picks which of its threads runs them</label>
+<input type="radio" name="q-02-queues-not-handlers-3" id="q-02-queues-not-handlers-3-3" data-ok><label for="q-02-queues-not-handlers-3-3">A queue is a line of tasks, and GCD picks which thread runs each</label>
 <p class="fb no opt-1"><b>Not quite.</b> Only the main queue is tied to the main thread; other queues use GCD's pool. <label class="show-me" for="st-queues-3" data-goto="st-queues">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> A concurrent queue can run tasks on several threads; queues and threads aren't one-to-one. <label class="show-me" for="st-queues-3" data-goto="st-queues">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Tasks wait in queues; threads run them.</p>

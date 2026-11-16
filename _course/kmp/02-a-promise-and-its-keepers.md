@@ -44,7 +44,7 @@ The shared handbook from puzzle 1 says: "Call the local tax office." It doesn't 
 ## Check yourself
 
 - You add a web target. `platformName()` has actuals for Android and iOS only. What happens?::*The web build fails until you add a web actual||It builds, and `platformName()` returns an empty string on the web >> There's no default: the compiler requires an actual for every target. >> s4||It builds, and the web uses the Android actual >> One platform's actual is never used for another; each target needs its own. >> s4::Every target must keep the promise.
-- Why mark it `expect` instead of writing an `if` that checks the platform in common code?::*Common code can't call either platform's APIs, even inside an `if`||Because an `if` in common code would run slower on iOS than a function >> Speed isn't it: common code can't reach the platforms' APIs at all. >> the-building-block::The platform calls must live where those APIs exist.
+- Why mark it `expect` instead of writing an `if` that checks the platform in common code?::*Because common code can't call either platform's APIs, even inside an `if`||Because an `if` in common code would run slower on iOS than a function >> Speed isn't it: common code can't reach the platforms' APIs at all. >> the-building-block::The platform calls must live where those APIs exist.
 - What's the difference between an `expect` declaration and an `actual` one?::*`expect`: the promise in common code. `actual`: a platform keeping it||`expect` is for Android; `actual` is for iOS >> Every platform, Android included, writes its own `actual`. >> s3||`expect` holds a default body the actuals can replace >> An `expect` has no body at all: only the actuals do the work. >> s2::A promise, and its keepers.
 
 ## Sources

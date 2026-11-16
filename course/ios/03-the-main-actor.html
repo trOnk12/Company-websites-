@@ -83,17 +83,17 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Swift's version of a suspend function is an <b>async function</b>. Where it waits, you write <b><code>await</code></b>: at that point the function may give up its thread so other work can run on it, and later it resumes, possibly on a different thread. Like a coroutine, it reads straight down.</p>
-<p>Swift adds one block Kotlin doesn't have built in: the <b>actor</b>. An actor is an object that lets only one task at a time touch its data. Other code that wants in has to <code>await</code> its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock.</p>
-<p>The most important one is the <b>main actor</b>. It protects all the data used to show the UI: code marked <code>@MainActor</code> always runs on the main thread, taking turns with rendering and touch handling. It's Swift's <code>Dispatchers.Main</code>:</p>
+<p>A task is one piece of async work running, like a coroutine. Swift adds one block Kotlin doesn't have built into the language: the <b>actor</b>. An actor is an object that lets only one task at a time touch its data; other code that wants in has to <code>await</code> its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock. One catch: &quot;one at a time&quot; holds between awaits. When code on an actor reaches an <code>await</code>, it steps out, another task may come in and change the data, and when the first resumes, things may have moved on. So check your assumptions again after an <code>await</code>.</p>
+<p>The most important one is the <b>main actor</b>. It protects all the data used to show the UI: code marked <code>@MainActor</code> always runs on the main thread, taking turns with rendering and touch handling. It's Swift's <code>Dispatchers.Main</code>. Note that <code>await</code> itself moves nothing: it frees the thread while waiting. Where <code>loadUser()</code>'s own work runs depends on which actor it belongs to, so heavy work still needs to be put off the main actor on purpose:</p>
 <pre><code class="language-swift">@MainActor
 func showProfile() async {
-    let user = await api.loadUser()   // waits off the main thread, without blocking it
+    let user = await api.loadUser()   // the main thread is free while this waits
     nameLabel.text = user.name        // back on the main actor: safe to touch the screen
 }</code></pre>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>The clerk again. An async function steps away from the desk while it waits for a reply, so the clerk can serve others. An actor is a room with one chair: only one task inside at a time; the rest wait at the door. The main actor is the clerk's own office, where all screen work happens.</p>
+<p>The clerk again. An async function steps away from the desk while it waits for a reply, so the clerk can serve others. An actor is a room with one chair: only one task sits in it at a time; the rest wait at the door. Whoever steps out to wait for something gives up the chair, and may find things moved when they come back. The main actor is the clerk's own office, where all screen work happens.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
@@ -109,14 +109,14 @@ func showProfile() async {
 <fieldset class="quiz">
 <legend>Why can't two tasks change an actor's data at the same moment?</legend>
 <input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-1"><label for="q-03-the-main-actor-2-1">Because every actor runs on the main thread, one thing at a time</label>
-<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-2" data-ok><label for="q-03-the-main-actor-2-2">An actor lets only one task at a time touch its data; the others wait their turn</label>
+<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-2" data-ok><label for="q-03-the-main-actor-2-2">Because an actor lets only one task at a time touch its data</label>
 <p class="fb no opt-1"><b>Not quite.</b> Only the main actor is tied to the main thread; others run anywhere, still one task at a time. <label class="show-me" for="st-actor-3" data-goto="st-actor">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One task inside at a time.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the main actor and the main queue from puzzle 2?</legend>
 <input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-1"><label for="q-03-the-main-actor-3-1">The main actor runs on its own thread, next to the main queue</label>
-<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-2" data-ok><label for="q-03-the-main-actor-3-2">Both run on the main thread; the main actor is how Swift concurrency expresses it</label>
+<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-2" data-ok><label for="q-03-the-main-actor-3-2">Both run on the main thread; the main actor is how async/await code says it</label>
 <input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-3"><label for="q-03-the-main-actor-3-3">The main queue is for UI; the main actor is for data only</label>
 <p class="fb no opt-1"><b>Not quite.</b> The main actor runs on the main thread: that's what makes UI work safe. <label class="show-me" for="st-actor-4" data-goto="st-actor">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Two ways of saying &quot;on the main thread&quot;.</p>

@@ -16,7 +16,7 @@ Your app sends the user's password to your server. It doesn't fly there directly
 
 ## The building block
 
-Call any such machine the listener (or the attacker: same machine). It can do three things, and every later puzzle stops one of them:
+Call any such machine the listener (or the attacker: same machine). It can do three things, and the later puzzles build the blocks that stop them:
 
 - **read** what passes by: the password, the token, the card number;
 - **change** it on the way: a different amount, a different account;
@@ -33,8 +33,8 @@ Sending a postcard through a chain of strangers. Anyone can read it. Write it in
 ## Check yourself
 
 - Your app sends a password, encrypted, over the café Wi-Fi. A machine in the middle copies every byte. What does it learn?::*Nothing useful: it has the ciphertext, not the key||The password, because it saw every byte that passed >> Seeing the bytes isn't enough: without the key, ciphertext is gibberish. >> s3||The password, but only if the Wi-Fi has no password >> The Wi-Fi's own password doesn't matter here: what matters is your data is encrypted. >> s3::Ciphertext without the key means nothing.
-- Why isn't encryption alone enough?::*It hides the data, but doesn't stop changes or pretending||Because the key can always be guessed in the end, given time >> A good key can't be guessed in any useful time; the gaps are changes and pretending. >> the-building-block::Encryption stops reading, not the other two.
-- What's the difference between a key and ciphertext?::*The key is the secret that unlocks; ciphertext is the locked data||The key is part of the ciphertext, sent along with it >> The key is never sent with the data; that would unlock it for everyone. >> s3||Ciphertext is the key after it's been encrypted >> Ciphertext is your data, encrypted; the key is what encrypts it. >> s3::The secret vs what it locks.
+- Why isn't encryption alone enough?::*Because it hides the data, but doesn't stop changes or pretending||Because the key can always be guessed in the end, given time >> A good key can't be guessed in any useful time; the gaps are changes and pretending. >> the-building-block::Encryption stops reading, not the other two.
+- What's the difference between a key and ciphertext?::*The key is the secret that unlocks, while ciphertext is the locked data||The key is part of the ciphertext, sent along with it >> The key is never sent with the data; that would unlock it for everyone. >> s3||Ciphertext is the key after it's been encrypted >> Ciphertext is your data, encrypted; the key is what encrypts it. >> s3::The secret vs what it locks.
 
 ## Sources
 

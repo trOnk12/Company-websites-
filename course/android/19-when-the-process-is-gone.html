@@ -120,7 +120,7 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>Why must saved state be small?</legend>
-<input type="radio" name="q-19-when-the-process-is-gone-2" id="q-19-when-the-process-is-gone-2-1" data-ok><label for="q-19-when-the-process-is-gone-2-1">It crosses Binder's ~1 MB buffer and waits in system_server's memory</label>
+<input type="radio" name="q-19-when-the-process-is-gone-2" id="q-19-when-the-process-is-gone-2-1" data-ok><label for="q-19-when-the-process-is-gone-2-1">Because it crosses Binder's ~1 MB buffer and waits in system_server's memory</label>
 <input type="radio" name="q-19-when-the-process-is-gone-2" id="q-19-when-the-process-is-gone-2-2"><label for="q-19-when-the-process-is-gone-2-2">Because each Bundle can hold only one value</label>
 <input type="radio" name="q-19-when-the-process-is-gone-2" id="q-19-when-the-process-is-gone-2-3"><label for="q-19-when-the-process-is-gone-2-3">Because system_server writes it to a file, and files are slow</label>
 <p class="fb ok opt-1"><b>Right.</b> It crosses Binder, so it has to fit the shared ~1 MB buffer.</p>
@@ -129,7 +129,7 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>A ViewModel and saved state: which survives what?</legend>
-<input type="radio" name="q-19-when-the-process-is-gone-3" id="q-19-when-the-process-is-gone-3-1" data-ok><label for="q-19-when-the-process-is-gone-3-1">A ViewModel survives turning the phone; saved state survives that and process death too</label>
+<input type="radio" name="q-19-when-the-process-is-gone-3" id="q-19-when-the-process-is-gone-3-1" data-ok><label for="q-19-when-the-process-is-gone-3-1">A ViewModel survives turning the phone, while saved state survives that and process death too</label>
 <input type="radio" name="q-19-when-the-process-is-gone-3" id="q-19-when-the-process-is-gone-3-2"><label for="q-19-when-the-process-is-gone-3-2">Saved state also survives Back, so a closed screen comes back as it was</label>
 <input type="radio" name="q-19-when-the-process-is-gone-3" id="q-19-when-the-process-is-gone-3-3"><label for="q-19-when-the-process-is-gone-3-3">Both survive process death, because both are saved by Android</label>
 <p class="fb ok opt-1"><b>Right.</b> Different lifetimes: pick the place by what the data must survive.</p>

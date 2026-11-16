@@ -81,30 +81,30 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p><b><code>UIKit</code></b>, Apple's framework that runs an iOS app's screens, keeps every app in one of a few <b>app states</b>: not running, inactive (in front but not taking touches, like during a phone call banner), <b>active</b> (in front, taking touches), background, and suspended.</p>
-<p>The big difference from Android is the last step. When the user leaves, your app goes to the background and gets a few seconds to finish crucial work: the method that announces it has five seconds to return. Shortly after, iOS <b>suspends</b> the app: its memory stays, but none of its code runs, on any thread. No coroutine, no timer, nothing.</p>
+<p>The big difference from Android is the last step. When the user leaves, your app goes to the background and gets a few seconds to finish crucial work: the callback that announces it (<code>sceneDidEnterBackground</code>) has five seconds to return. Shortly after, iOS <b>suspends</b> the app: its memory stays, but none of its code runs, on any thread. No coroutine, no timer, nothing.</p>
 <p>A suspended app can be woken up again when the user comes back, and resumes as if nothing happened. Or, when memory is needed, iOS ends it, and no code of yours runs at that moment. The &quot;about to terminate&quot; callback isn't called for a suspended app, so it can't be your chance to save.</p>
-<p>So the iOS rule is: save as you enter the background, and if a task truly must finish, ask iOS for extra time explicitly, before you start it.</p>
+<p>So the iOS rule is: save as you enter the background, and if work truly must finish, say so. For a short task, <code>beginBackgroundTask</code> asks iOS for extra time before suspension. For uploads and downloads, a background session hands the transfer to iOS itself, which carries it on in a separate process even while your app is suspended or ended.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>On Android, the clerk from the house keeps working at a back desk after the shop closes, until the town hall decides to end it. On iOS, a few seconds after closing, the whole house is frozen in place: nobody moves until the owner returns, or until the house is quietly torn down.</p>
+<p>On Android, the clerk from the house keeps working at a back desk after the shop closes, until the town hall decides to end it. On iOS, a few seconds after closing, the whole house is frozen in place: nobody moves until the owner returns, or until the house is quietly torn down. (Want something to continue? Hand it to the town's own courier service before you close.)</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>Your iOS app starts a 30-second upload, and the user leaves the app after 5 seconds. You did nothing special. What happens?</legend>
-<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-1"><label for="q-00-frozen-not-stopped-1-1">The upload continues on a background thread, which isn't suspended</label>
-<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-2"><label for="q-00-frozen-not-stopped-1-2">The upload finishes in the background, like a coroutine on Android</label>
-<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-3" data-ok><label for="q-00-frozen-not-stopped-1-3">The app is suspended seconds later, and the upload stops with it</label>
-<p class="fb no opt-1"><b>Not quite.</b> Suspension stops every thread of the app, not only the main one. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
-<p class="fb no opt-2"><b>Not quite.</b> On iOS, a suspended app runs no code at all; the upload stops with it. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
-<p class="fb ok opt-3"><b>Right.</b> Suspended means no code runs, on any thread.</p>
+<legend>Your iOS app starts a 30-second upload in an ordinary session, and the user leaves the app after 5 seconds. You did nothing special. What happens?</legend>
+<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-1"><label for="q-00-frozen-not-stopped-1-1">The upload finishes in the background, like a coroutine on Android</label>
+<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-2" data-ok><label for="q-00-frozen-not-stopped-1-2">The app is suspended seconds later, and the upload stops with it</label>
+<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-3"><label for="q-00-frozen-not-stopped-1-3">The upload continues on a background thread, which isn't suspended</label>
+<p class="fb no opt-1"><b>Not quite.</b> On iOS, a suspended app runs no code at all; the upload stops with it. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Suspended means no code runs, on any thread.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Suspension stops every thread of the app, not only the main one. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why save state when entering the background, not when the app is about to be ended?</legend>
 <input type="radio" name="q-00-frozen-not-stopped-2" id="q-00-frozen-not-stopped-2-1"><label for="q-00-frozen-not-stopped-2-1">Because saving while the app is ending is too slow</label>
 <input type="radio" name="q-00-frozen-not-stopped-2" id="q-00-frozen-not-stopped-2-2"><label for="q-00-frozen-not-stopped-2-2">Because entering the background happens more often than ending</label>
-<input type="radio" name="q-00-frozen-not-stopped-2" id="q-00-frozen-not-stopped-2-3" data-ok><label for="q-00-frozen-not-stopped-2-3">A suspended app is ended without running any of its code</label>
+<input type="radio" name="q-00-frozen-not-stopped-2" id="q-00-frozen-not-stopped-2-3" data-ok><label for="q-00-frozen-not-stopped-2-3">Because a suspended app is ended without running any of its code</label>
 <p class="fb no opt-1"><b>Not quite.</b> It isn't slow: it never gets the chance to run. <label class="show-me" for="st-states-4" data-goto="st-states">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Frequency isn't the point: when a suspended app is ended, no code runs at all. <label class="show-me" for="st-states-4" data-goto="st-states">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> No code runs when a suspended app is ended.</p>

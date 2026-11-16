@@ -18,27 +18,27 @@ In puzzle 2, the image went to a background queue and back to the main queue, by
 
 Swift's version of a suspend function is an **async function**. Where it waits, you write **`await`**: at that point the function may give up its thread so other work can run on it, and later it resumes, possibly on a different thread. Like a coroutine, it reads straight down.
 
-Swift adds one block Kotlin doesn't have built in: the **actor**. An actor is an object that lets only one task at a time touch its data. Other code that wants in has to `await` its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock.
+A task is one piece of async work running, like a coroutine. Swift adds one block Kotlin doesn't have built into the language: the **actor**. An actor is an object that lets only one task at a time touch its data; other code that wants in has to `await` its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock. One catch: "one at a time" holds between awaits. When code on an actor reaches an `await`, it steps out, another task may come in and change the data, and when the first resumes, things may have moved on. So check your assumptions again after an `await`.
 
-The most important one is the **main actor**. It protects all the data used to show the UI: code marked `@MainActor` always runs on the main thread, taking turns with rendering and touch handling. It's Swift's `Dispatchers.Main`:
+The most important one is the **main actor**. It protects all the data used to show the UI: code marked `@MainActor` always runs on the main thread, taking turns with rendering and touch handling. It's Swift's `Dispatchers.Main`. Note that `await` itself moves nothing: it frees the thread while waiting. Where `loadUser()`'s own work runs depends on which actor it belongs to, so heavy work still needs to be put off the main actor on purpose:
 
 ```swift
 @MainActor
 func showProfile() async {
-    let user = await api.loadUser()   // waits off the main thread, without blocking it
+    let user = await api.loadUser()   // the main thread is free while this waits
     nameLabel.text = user.name        // back on the main actor: safe to touch the screen
 }
 ```
 
 ## The analogy
 
-The clerk again. An async function steps away from the desk while it waits for a reply, so the clerk can serve others. An actor is a room with one chair: only one task inside at a time; the rest wait at the door. The main actor is the clerk's own office, where all screen work happens.
+The clerk again. An async function steps away from the desk while it waits for a reply, so the clerk can serve others. An actor is a room with one chair: only one task sits in it at a time; the rest wait at the door. Whoever steps out to wait for something gives up the chair, and may find things moved when they come back. The main actor is the clerk's own office, where all screen work happens.
 
 ## Check yourself
 
 - Inside a `@MainActor` function, you `await` a network call that takes 2 seconds. Does the screen freeze?::*No: while it waits, the function gives up the main thread||Yes: it's on the main actor, so the main thread waits too >> At an await, the function gives up its thread; the main thread keeps handling touches. >> s2||Yes, unless the call is moved to a global dispatch queue first >> No manual queue is needed: await already lets the main thread go. >> s2::await gives the thread back while waiting.
-- Why can't two tasks change an actor's data at the same moment?::*An actor lets only one task at a time touch its data; the others wait their turn||Because every actor runs on the main thread, one thing at a time >> Only the main actor is tied to the main thread; others run anywhere, still one task at a time. >> s3::One task inside at a time.
-- What's the difference between the main actor and the main queue from puzzle 2?::*Both run on the main thread; the main actor is how Swift concurrency expresses it||The main actor runs on its own thread, next to the main queue >> The main actor runs on the main thread: that's what makes UI work safe. >> s4||The main queue is for UI; the main actor is for data only >> The main actor protects UI data, and its code runs on the main thread. >> s4::Two ways of saying "on the main thread".
+- Why can't two tasks change an actor's data at the same moment?::*Because an actor lets only one task at a time touch its data||Because every actor runs on the main thread, one thing at a time >> Only the main actor is tied to the main thread; others run anywhere, still one task at a time. >> s3::One task inside at a time.
+- What's the difference between the main actor and the main queue from puzzle 2?::*Both run on the main thread; the main actor is how async/await code says it||The main actor runs on its own thread, next to the main queue >> The main actor runs on the main thread: that's what makes UI work safe. >> s4||The main queue is for UI; the main actor is for data only >> The main actor protects UI data, and its code runs on the main thread. >> s4::Two ways of saying "on the main thread".
 
 ## Sources
 

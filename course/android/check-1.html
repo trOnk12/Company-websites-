@@ -101,7 +101,7 @@
 <section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: You don't call. You're called.</p>
 <fieldset class="quiz" data-n="5">
 <legend>Your app calls <code>onCreate()</code> on its own Activity, by hand. What have you done?</legend>
-<input type="radio" name="q-05-you-dont-call-youre-called-1" id="q-05-you-dont-call-youre-called-1-1" data-ok><label for="q-05-you-dont-call-youre-called-1-1">Run your setup code; the screen isn't created or shown yet</label>
+<input type="radio" name="q-05-you-dont-call-youre-called-1" id="q-05-you-dont-call-youre-called-1-1" data-ok><label for="q-05-you-dont-call-youre-called-1-1">Run your setup code, before the screen is created or shown</label>
 <input type="radio" name="q-05-you-dont-call-youre-called-1" id="q-05-you-dont-call-youre-called-1-2"><label for="q-05-you-dont-call-youre-called-1-2">Created and shown the screen, because onCreate() is where screens appear</label>
 <p class="fb ok opt-1"><b>Right.</b> A callback is run by your main thread when system_server says it's time. Calling it yourself doesn't change what system_server decided.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only system_server moves an Activity through its lifecycle. Calling the callback yourself just runs your method. <a class="show-me" href="05-you-dont-call-youre-called.html">Learn it in puzzle 5 →</a></p>

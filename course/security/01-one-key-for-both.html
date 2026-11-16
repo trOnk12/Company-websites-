@@ -86,8 +86,8 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>The simplest arrangement: one key, and it works both ways. Encrypt with it, decrypt with the same key. That's <b>symmetric encryption</b>.</p>
-<p>The standard one is <b>AES</b>. It takes the data in <b>blocks of 128 bits</b> (16 bytes) and scrambles each with the key, in rounds of mixing and substituting, in a way that can only be undone with that same key. Keys come in three sizes: 128, 192 or 256 bits. A 128-bit key has 2^128 possible values: far more than any computer could ever try, which is why guessing it isn't a way in.</p>
-<p>AES is fast, and phone chips have circuits built for it, so it can encrypt everything you send. (Real use never scrambles each block on its own, which would make two identical blocks look identical: a counter is mixed into every block. And puzzle 5 adds a check against changes.) That's why, as puzzle 5 shows, even HTTPS uses it for all the actual data.</p>
+<p>The standard one is <b>AES</b>. It takes the data in <b>blocks of 128 bits</b> (16 bytes) and scrambles each with the key, in rounds of mixing and substituting, in a way that can only be undone with that same key. Keys come in three sizes: 128, 192 or 256 bits. A 128-bit key has 2 to the power 128 possible values, a 39-digit number: far more than any computer could ever try, which is why guessing it isn't a way in.</p>
+<p>AES is fast, and phone chips have circuits built for it, so it can encrypt everything you send. (In real use, AES doesn't scramble your data blocks directly, which would make two identical blocks look identical. Instead it scrambles a counter, a number that goes up by one for every block, and the scrambled result is mixed into your data. Same key, a fresh pattern every block. And puzzle 5 adds a check against changes.) That's why, as puzzle 5 shows, even HTTPS uses it for all the actual data.</p>
 <p>But it leaves one problem. Your app and your server both need the same key. You can't send it over the line from puzzle 0: the listener would copy it, and then decrypt everything. And you can't build one key into every copy of your app: anyone could pull it out of the app file. How do two sides get the same key, when everything they say can be heard? That's puzzle 2.</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -98,7 +98,7 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app encrypts a 1 MB photo with AES. Roughly how does AES handle it?</legend>
-<input type="radio" name="q-01-one-key-for-both-1" id="q-01-one-key-for-both-1-1" data-ok><label for="q-01-one-key-for-both-1-1">In 128-bit blocks, one after another, all with the same key</label>
+<input type="radio" name="q-01-one-key-for-both-1" id="q-01-one-key-for-both-1-1" data-ok><label for="q-01-one-key-for-both-1-1">In 128-bit blocks, all with the same key</label>
 <input type="radio" name="q-01-one-key-for-both-1" id="q-01-one-key-for-both-1-2"><label for="q-01-one-key-for-both-1-2">In 128-bit blocks, each with its own new key</label>
 <input type="radio" name="q-01-one-key-for-both-1" id="q-01-one-key-for-both-1-3"><label for="q-01-one-key-for-both-1-3">In one go, because the key is as long as the photo</label>
 <p class="fb ok opt-1"><b>Right.</b> Fixed-size blocks, one key.</p>
@@ -108,7 +108,7 @@
 <fieldset class="quiz">
 <legend>Why can't your app just send the AES key to the server first?</legend>
 <input type="radio" name="q-01-one-key-for-both-2" id="q-01-one-key-for-both-2-1"><label for="q-01-one-key-for-both-2-1">Because AES keys are too long to send in one message</label>
-<input type="radio" name="q-01-one-key-for-both-2" id="q-01-one-key-for-both-2-2" data-ok><label for="q-01-one-key-for-both-2-2">The listener would copy the key, then decrypt everything after it</label>
+<input type="radio" name="q-01-one-key-for-both-2" id="q-01-one-key-for-both-2-2" data-ok><label for="q-01-one-key-for-both-2-2">Because the listener would copy the key, then decrypt everything after it</label>
 <input type="radio" name="q-01-one-key-for-both-2" id="q-01-one-key-for-both-2-3"><label for="q-01-one-key-for-both-2-3">Because the server makes its own AES key, never the app</label>
 <p class="fb no opt-1"><b>Not quite.</b> A key is only 16 to 32 bytes; the problem is who can see it on the way. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Anything sent openly, the listener gets too.</p>
@@ -116,7 +116,7 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a 128-bit block and a 128-bit key?</legend>
-<input type="radio" name="q-01-one-key-for-both-3" id="q-01-one-key-for-both-3-1" data-ok><label for="q-01-one-key-for-both-3-1">The block is data scrambled at a time; the key does the scrambling</label>
+<input type="radio" name="q-01-one-key-for-both-3" id="q-01-one-key-for-both-3-1" data-ok><label for="q-01-one-key-for-both-3-1">The block is the data handled at a time, while the key does the scrambling</label>
 <input type="radio" name="q-01-one-key-for-both-3" id="q-01-one-key-for-both-3-2"><label for="q-01-one-key-for-both-3-2">The key is the first block of the data, reused for the rest</label>
 <p class="fb ok opt-1"><b>Right.</b> Data piece vs secret.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The block is your data; the key is separate, and must stay secret. <label class="show-me" for="st-aes-2" data-goto="st-aes">Show me step 2 again ↑</label></p>

@@ -33,7 +33,7 @@ A company with offices in two countries. Rules in the shared handbook must make 
 ## Check yourself
 
 - You call `java.io.File` in `commonMain`, and the project has Android and iOS targets. What happens when you build for iOS?::*It fails: the iPhone has no Java library to provide that class||It works: Kotlin/Native turns the Java class into native code too >> Kotlin/Native compiles your Kotlin; it can't bring along a Java library the iPhone doesn't have. >> s3||It builds, and on iOS the call is skipped at runtime >> Common code is compiled for every target; on iOS it can't compile at all. >> s3::Common code may only use what every target has.
-- Why can't common code call Android's own APIs?::*It's compiled for every target, and the others don't have those APIs||Because Android's APIs are written in Java, not Kotlin >> The language isn't the problem: those APIs don't exist on the iPhone. >> the-building-block::What every target has is the limit.
+- Why can't common code call Android's own APIs?::*Because it's compiled for every target, and the others lack those APIs||Because Android's APIs are written in Java, not Kotlin >> The language isn't the problem: those APIs don't exist on the iPhone. >> the-building-block::What every target has is the limit.
 - What's the difference between `commonMain` and `iosMain`?::*`commonMain`: every target. `iosMain`: only iOS, with Apple's APIs||`commonMain` is for logic; `iosMain` is for screens >> The split is about which targets the code is compiled for, not about logic versus screens. >> s2||`iosMain` is written in Swift; `commonMain` in Kotlin >> Both are Kotlin; they're compiled for different targets. >> s4::Which targets a source set is compiled for.
 
 ## Sources

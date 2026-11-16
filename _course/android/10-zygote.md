@@ -30,7 +30,7 @@ Zygote is a show house, furnished at boot. Every new house on the street is buil
 
 - You open three apps. How many times does Android load the framework from scratch?::*Once, at boot, in Zygote||Three times, once per app >> Each app is a copy of Zygote, which already has the framework loaded. >> s3||Never: apps don't use the framework >> Every app uses Android's own code, like the Activity class. Zygote loads it once. >> s1::Zygote loads it once; every app process starts as a copy.
 - After the fork, how does the new process become your app and not Zygote?::*It switches to your app's UID and loads your app's own code||It stays Zygote until the user taps something >> The copy changes right away: new key, your code. >> s3::Fork copies, then the copy becomes your app.
-- What's the difference between Zygote and system_server?::*Zygote is the template apps are copied from; system_server decides about screens||They're the same process: Zygote is what system_server is called at boot >> Both start at boot, but Zygote only starts processes, and system_server makes the decisions. >> s4::Different jobs: copying versus deciding.
+- What's the difference between Zygote and system_server?::*Zygote is the template apps are copied from, while system_server decides about screens||They're the same process: Zygote is what system_server is called at boot >> Both start at boot, but Zygote only starts processes, and system_server makes the decisions. >> s4::Different jobs: copying versus deciding.
 
 ## Sources
 
