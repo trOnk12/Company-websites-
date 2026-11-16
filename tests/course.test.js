@@ -21,11 +21,17 @@ test.describe('Course', () => {
     }
   });
 
-  test('overview starts at the first puzzle and lists every puzzle', async ({ page }) => {
+  test('the catalog links every live course', async ({ page }) => {
     await page.goto('/course/');
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('a.button.primary')).toHaveAttribute('href', `android/${PUZZLES[0]}.html`);
-    for (const p of PUZZLES) await expect(page.locator(`.modules a[href="android/${p}.html"]`)).toHaveCount(1);
+    await expect(page.locator('.course-card a[href="android/"]').first()).toBeVisible();
+  });
+
+  test('overview starts at the first puzzle and lists every puzzle', async ({ page }) => {
+    await page.goto('/course/android/');
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('a.button.primary')).toHaveAttribute('href', `${PUZZLES[0]}.html`);
+    for (const p of PUZZLES) await expect(page.locator(`.modules a[href="${p}.html"]`)).toHaveCount(1);
   });
 
   test('puzzles chain in order with next and back links', async ({ page }) => {
@@ -63,7 +69,7 @@ test.describe('Course', () => {
   }
 
   test('every page counts visits with GoatCounter and nothing else external', async ({ page }) => {
-    const pages = ['/', '/learning/', '/course/', ...PUZZLES.map(s => `/course/android/${s}.html`)];
+    const pages = ['/', '/learning/', '/course/', '/course/android/', ...PUZZLES.map(s => `/course/android/${s}.html`)];
     for (const p of pages) {
       const hosts = new Set();
       page.on('request', req => { const u = new URL(req.url()); if (!['localhost', '127.0.0.1'].includes(u.hostname)) hosts.add(u.hostname); });
@@ -89,7 +95,7 @@ test.describe('Course', () => {
     await expect(quizzes.nth(0).locator('.fb.ok')).toBeVisible();
     await expect(next).toHaveAttribute('aria-disabled', 'false');
     // Progress is remembered: the overview now shows puzzle 0 done and offers to continue.
-    await page.goto('/course/');
+    await page.goto('/course/android/');
     await expect(page.locator(`.modules li[data-n="0"]`)).toHaveAttribute('data-state', 'done');
     await expect(page.locator('[data-resume]')).toContainText('Continue: puzzle 1');
   });
@@ -140,7 +146,7 @@ test.describe('Course', () => {
   });
 
   test('course pages fit a phone screen', async ({ page }) => {
-    for (const p of ['/course/', ...PUZZLES.map(s => `/course/android/${s}.html`)]) {
+    for (const p of ['/course/', '/course/android/', ...PUZZLES.map(s => `/course/android/${s}.html`)]) {
       await page.goto(p);
       const [scroll, client] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
       expect(scroll, p).toBeLessThanOrEqual(client);

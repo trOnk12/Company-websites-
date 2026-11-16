@@ -445,3 +445,7 @@ html:not(.js) .stage [data-move] { display: none; }
 .d-g1 { fill: #DCE8F6; stroke: var(--accent-deep); stroke-width: 1.5; stroke-dasharray: 4 3; }
 .d-g2 { fill: #E6F0D9; stroke: #557A2E; stroke-width: 1.5; stroke-dasharray: 4 3; }
 .d-g3 { fill: #F6EBD3; stroke: #9A6A1A; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.courses { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 1rem; }
+.course-card { border: 1px solid var(--rule); border-radius: 6px; padding: 1rem 1.1rem; background: #FBF9F4; }
+.course-card h3 { margin: 0 0 0.4rem; }
+.course-card p { margin: 0 0 0.6rem; }

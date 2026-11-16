@@ -205,6 +205,16 @@
     puzzle.querySelectorAll('.progress a').forEach((a, i) => { if (have.includes(i)) a.classList.add('done'); });
   }
 
+  // ── Course cards on the catalog: how far you got in each course ──
+  for (const card of document.querySelectorAll('[data-progress]')) {
+    const have = store.get(card.dataset.progress).length;
+    const total = Number(card.dataset.total);
+    const mine = card.querySelector('.mine');
+    if (mine && have) mine.textContent = have >= total ? 'completed ✓' : `${have} of ${total} mastered`;
+    const go = card.querySelector('.button.primary');
+    if (go && have) go.textContent = have >= total ? 'Review the course →' : 'Continue →';
+  }
+
   // ── Overview: ✓ mastered, → next, 🔒 not yet; "Continue" resumes where you stopped ──
   const items = [...document.querySelectorAll('.modules li[data-course]')];
   if (items.length) {

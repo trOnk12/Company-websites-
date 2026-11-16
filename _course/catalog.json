@@ -2,11 +2,30 @@
   "title": "More courses on the way",
   "intro": "Same method for each: puzzles from the foundation up, one new idea at a time, a check before you move on.",
   "upcoming": [
-    { "title": "Bluetooth Low Energy, from the radio up", "topics": "Radio and channel hopping, advertising and scanning, connections, GATT, pairing and bonding, Android's Bluetooth stack (and its famous status 133), throughput math." },
-    { "title": "Mobile system design, from a packet to an app", "topics": "TCP and TLS, HTTP and caching, round trips, offline-first with one source of truth, sync, safe rollouts and seeing problems in production." },
-    { "title": "System design: the building blocks", "topics": "Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity." },
-    { "title": "How LLMs and AI agents work", "topics": "Tokens, transformers and attention, the KV cache, sampling, context windows and retrieval, embeddings, agents and tool use, checking AI output, on-device models." },
-    { "title": "Kotlin Multiplatform and iOS for Android developers", "topics": "The K2 compiler, source sets, Kotlin/Native memory, the Objective-C bridge, Swift concurrency, the run loop and app lifecycle on iOS." },
-    { "title": "Data structures that earn their keep", "topics": "Hash tables, heaps, graph search, B-trees and LSM trees, Bloom filters, CRDTs: what real systems use, and why." }
+    {
+      "title": "Bluetooth Low Energy, from the radio up",
+      "topics": "Radio and channel hopping, advertising and scanning, connections, GATT, pairing and bonding, Android's Bluetooth stack (and its famous status 133), throughput math.",
+      "id": "ble"
+    },
+    {
+      "title": "Mobile system design, from a packet to an app",
+      "topics": "TCP and TLS, HTTP and caching, round trips, offline-first with one source of truth, sync, safe rollouts and seeing problems in production."
+    },
+    {
+      "title": "System design: the building blocks",
+      "topics": "Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity."
+    },
+    {
+      "title": "How LLMs and AI agents work",
+      "topics": "Tokens, transformers and attention, the KV cache, sampling, context windows and retrieval, embeddings, agents and tool use, checking AI output, on-device models."
+    },
+    {
+      "title": "Kotlin Multiplatform and iOS for Android developers",
+      "topics": "The K2 compiler, source sets, Kotlin/Native memory, the Objective-C bridge, Swift concurrency, the run loop and app lifecycle on iOS."
+    },
+    {
+      "title": "Data structures that earn their keep",
+      "topics": "Hash tables, heaps, graph search, B-trees and LSM trees, Bloom filters, CRDTs: what real systems use, and why."
+    }
   ]
 }
