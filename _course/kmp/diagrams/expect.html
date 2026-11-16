@@ -1,0 +1,17 @@
+<!-- label: expect is a promise; each platform keeps it with an actual -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ex-t"><title id="ex-t">Common code declares an expect function with no body; androidMain and iosMain each provide an actual; the compiler plugs the right one into each target; a target without an actual fails to build</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="200" y="30" width="240" height="80" rx="8"/><text class="d-a" x="320" y="56" text-anchor="middle">commonMain</text><text class="d-mi" x="320" y="86" text-anchor="middle">expect platformName()</text></g>
+<g class="step s1"><rect class="d-dash" x="270" y="120" width="100" height="34" rx="6"/><text class="d-tiny" x="320" y="142" text-anchor="middle">no body</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-band" x="30" y="200" width="200" height="70" rx="8"/><text class="d-b" x="130" y="228" text-anchor="middle">androidMain</text><text class="d-mi" x="130" y="254" text-anchor="middle">actual: "Android 34"</text>
+<rect class="d-band" x="410" y="200" width="200" height="70" rx="8"/><text class="d-b" x="510" y="228" text-anchor="middle">iosMain</text><text class="d-mi" x="510" y="254" text-anchor="middle">actual: "iOS 17"</text></g>
+<g class="step s3" data-move="2:130,200 3:270,120" data-pulse="3"><rect class="d-ok" x="0" y="0" width="100" height="34" rx="6"/><text class="d-tiny" x="50" y="22" text-anchor="middle">Android 34</text></g>
+<x-arrow class="step only-3" tone="acc" d="M130,196 C160,170 220,150 264,140"/>
+<g class="step s4" data-pulse="4"><rect class="d-paper" x="410" y="290" width="200" height="40" rx="8"/><text class="d-b" x="510" y="316" text-anchor="middle">web: no actual</text><circle class="d-bad" cx="400" cy="310" r="13"/><path class="d-red" d="M392,302 L408,318 M408,302 L392,318"/></g>
+</svg>
+<ol class="caps">
+<li><p>Common code makes a promise: <code>platformName()</code>, marked <b>expect</b>, with no body. It can call it without knowing how it works.</p></li>
+<li><p>Each platform keeps the promise with an <b>actual</b>, written with its own APIs: Android's build number, Apple's system version.</p></li>
+<li><p>When the compiler builds the Android target, it plugs in Android's actual. <i>Predict: what if a target has no actual?</i></p></li>
+<li><p>That target's build fails. The compiler checks every promise is kept, so none can be forgotten.</p></li>
+</ol>

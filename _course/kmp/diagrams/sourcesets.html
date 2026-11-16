@@ -1,0 +1,18 @@
+<!-- label: commonMain goes to every target; androidMain and iosMain to one each -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ss-t"><title id="ss-t">Three folders: commonMain goes to both phones; androidMain only to Android; iosMain only to the iPhone; a Java class in commonMain fails for the iPhone</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="540" y="40" w="56" h="100" label="Android"/>
+<x-phone class="step s1" x="540" y="210" w="56" h="100" label="iPhone"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="40" y="140" width="170" height="90" rx="8"/><text class="d-a" x="125" y="168" text-anchor="middle">commonMain</text><text class="d-tiny" x="125" y="196" text-anchor="middle">Login rules</text></g>
+<x-arrow class="step s1" tone="acc" d="M214,170 C330,120 460,90 534,90"/>
+<x-arrow class="step s1" tone="acc" d="M214,200 C330,240 460,260 534,260"/>
+<g class="step s2" data-pulse="2"><rect class="d-band" x="270" y="30" width="150" height="60" rx="8"/><text class="d-b" x="345" y="66" text-anchor="middle">androidMain</text><x-arrow tone="ink" d="M424,60 C470,60 510,70 534,76"/><rect class="d-band" x="270" y="280" width="150" height="60" rx="8"/><text class="d-b" x="345" y="316" text-anchor="middle">iosMain</text><x-arrow tone="ink" d="M424,310 C470,306 510,290 534,280"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-bad" x="58" y="240" width="134" height="30" rx="4"/><text class="d-rt" x="125" y="260" text-anchor="middle">java.io.File</text><circle class="d-bad" cx="470" cy="236" r="14"/><path class="d-red" d="M462,228 L478,244 M478,228 L462,244"/></g>
+<g class="step s4" data-move="3:110,250 4:290,248" data-pulse="4"><rect class="d-ok" x="0" y="0" width="110" height="24" rx="4"/><text class="d-tiny" x="55" y="17" text-anchor="middle">UIDevice</text></g>
+</svg>
+<ol class="caps">
+<li><p>Code lives in <b>source sets</b>. <code>commonMain</code> holds the <b>common code</b> and is compiled for every target, Android and iPhone alike.</p></li>
+<li><p><code>androidMain</code> is compiled only for Android; <code>iosMain</code> only for iOS. Each can use its own platform's APIs.</p></li>
+<li><p>Common code calls <code>java.io.File</code>. Fine for Android, but the iPhone has no Java library: the iOS build fails. <i>Predict: where does iPhone-only code go?</i></p></li>
+<li><p>Into <code>iosMain</code>, where Apple's APIs, like <code>UIDevice</code>, are allowed: it's only ever compiled for iOS.</p></li>
+</ol>

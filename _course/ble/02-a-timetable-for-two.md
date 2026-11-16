@@ -18,7 +18,7 @@ In puzzle 1, the phone found the strap by listening until an advertisement lande
 
 The phone answers an advertisement with a request to connect, in the moment the strap listens after advertising (puzzle 1). From then on, the two are in a **connection**, and each has a role. The side that sent the request becomes the **central**, which sets the timing: usually the phone, because the phone is the one that goes looking. The side that advertised becomes the **peripheral**, which follows it: usually the small device.
 
-In its request, the central sets a timetable: meet every **connection interval**. The connection interval is a multiple of 1.25 ms, from 7.5 ms up to 4 s. Short means data moves sooner but more radio time; long means slow replies and a longer battery life. The central can change it later.
+In its request, the central sets a timetable: meet every **connection interval**. The same request also carries the rule for picking each meeting's channel, so both sides know it from the start. The connection interval is a multiple of 1.25 ms, from 7.5 ms up to 4 s. Short means data moves sooner but more radio time; long means slow replies and a longer battery life. The central can change it later.
 
 Each meeting is a **connection event**. Both radios wake at the agreed moment, exchange packets, and sleep again until the next one. If neither has anything to say, they swap tiny empty packets, just enough to stay in step. Because both know the timetable, neither has to listen in between.
 
@@ -31,7 +31,7 @@ Two lighthouse keepers who need to talk every night agree on a time: "every hour
 ## Check yourself
 
 - A heart strap's connection interval is 1 s. Your app shows the heart rate. What does the user notice?::*New values arrive only at the meetings, once a second||Nothing: the strap sends each value the moment it's measured >> Packets only travel at connection events; between them both radios sleep. >> s3||The connection drops, because 1 s is longer than BLE allows >> Anything up to 4 s is allowed. It's slow, not broken. >> s2::Data can only move when the two sides meet.
-- Why does the phone, not the strap, set the timetable?::*The phone is the central, and the central decides the timing; the strap follows it||Because the strap's battery is smaller, so it gets to follow >> Battery size isn't what decides it: the roles do. The central sets the timing. >> s1||Because the strap advertised first >> Advertising found the strap; after connecting, the central's role is to set the timing. >> s2::Roles: the central sets the timing, the peripheral follows.
+- Why does the phone, not the strap, set the timetable?::*The phone sent the request, so it's the central, which sets the timing||Because the strap's battery is smaller, so the phone is put in charge >> Battery size isn't what decides it: the roles do. The central sets the timing. >> s1||Because the strap's radio can't keep time on its own >> Both radios keep time; the rule is that the central decides. >> s2::Roles: the central sets the timing, the peripheral follows.
 - What's the difference between a connection interval and an advertising interval?::*One is how often a device shouts to be found; the other, how often two meet||They're the same setting: after connecting, it's renamed >> One is for being found by anyone, the other is a timetable for two devices that already found each other. >> s2::One finds; the other keeps meeting.
 
 ## Sources

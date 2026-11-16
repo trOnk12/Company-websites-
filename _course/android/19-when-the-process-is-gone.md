@@ -22,7 +22,7 @@ So, before it can happen, your app sends a little of its state somewhere that ou
 
 Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 16), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes in a file on the phone and is read again by its ID.
 
-A ViewModel can use saved state too, through a **`SavedStateHandle`**: a map that's kept in the saved state.
+An Activity fills its Bundle itself, in `onSaveInstanceState()`. A ViewModel can use saved state too, through a **`SavedStateHandle`**: a map that's kept in the saved state. `viewModels()` hands one to the ViewModel when it creates it.
 
 ```kotlin
 class DraftViewModel(private val saved: SavedStateHandle) : ViewModel() {
@@ -50,7 +50,7 @@ Before the house can be torn down, the clerk mails the town hall a postcard with
 ## Check yourself
 
 - The user typed a long message, kept only in a ViewModel. They switch apps, and Android ends your process to free memory. They come back. What do they see?::*An empty message: the ViewModel ended with the process||The message: a ViewModel survives everything >> A ViewModel lives in your process; when the process is gone, so is it. >> s2||The message, because system_server keeps every ViewModel >> system_server keeps only the small Bundle your app sent, never your objects. >> s1::Only what was in the saved state (or in a file) comes back.
-- Why must saved state be small?::*It crosses Binder's ~1 MB buffer and waits in system_server's memory||Because system_server writes it to disk, and disk is slow >> It waits in system_server's memory and crosses Binder; the Binder buffer is the limit. >> the-building-block||Because each Bundle can hold only one value >> A Bundle is a map and can hold many values; it's the shared ~1 MB buffer that limits it. >> the-building-block::It crosses Binder, so it has to fit the shared ~1 MB buffer.
+- Why must saved state be small?::*It crosses Binder's ~1 MB buffer and waits in system_server's memory||Because system_server writes it to a file, and files are slow >> It waits in system_server's memory and crosses Binder; the Binder buffer is the limit. >> the-building-block||Because each Bundle can hold only one value >> A Bundle is a map and can hold many values; it's the shared ~1 MB buffer that limits it. >> the-building-block::It crosses Binder, so it has to fit the shared ~1 MB buffer.
 - A ViewModel and saved state: which survives what?::*A ViewModel survives turning the phone; saved state survives that and process death too||Both survive process death, because both are saved by Android >> The ViewModel is an object in your process, so it ends with the process. >> s2||Saved state also survives Back, so a closed screen comes back as it was >> After Back there's nothing to come back to, so system_server throws it away. >> s4::Different lifetimes: pick the place by what the data must survive.
 
 ## Sources

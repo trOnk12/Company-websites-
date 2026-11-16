@@ -20,7 +20,7 @@ The screen is redrawn about 60 times a second. Each redraw is a **frame**, and e
 
 If a message takes longer than that, the frames behind it come late, and the app visibly stutters: **jank**.
 
-system_server sent each touch, and waits for your app to say it was handled. If a touch waits in the queue for 5 seconds with no answer, system_server shows the "App isn't responding" dialog: an **ANR** (Application Not Responding). That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.
+system_server sent each touch down the window's input channel (puzzle 14), and waits for your app to answer "done" on that same line, which it does once the main thread has handled the touch. If a touch waits in the queue for 5 seconds with no answer, system_server shows the "App isn't responding" dialog: an **ANR** (Application Not Responding). That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.
 
 ## The analogy
 
@@ -34,4 +34,5 @@ The clerk also has to repaint the shop window 60 times a second. One long phone 
 ## Sources
 
 - [Android Developers: Slow rendering (jank)](https://developer.android.com/topic/performance/vitals/render)
+- [AOSP: InputChannel.java](https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputChannel.java#L29) ("An input channel specifies the file descriptors used to send input events to a window in another process") and [InputEventReceiver.java](https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputEventReceiver.java#L213) (`finishInputEvent(event, handled)`)
 - [Android Developers: ANRs](https://developer.android.com/topic/performance/vitals/anr)

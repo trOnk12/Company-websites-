@@ -424,6 +424,11 @@
    "in": "19",
    "def": "A map a ViewModel can read and write that is kept in the saved state.",
    "kind": "code"
+  },
+  "onSaveInstanceState()": {
+   "in": "19",
+   "def": "The Activity callback where it fills its Bundle before it's stopped.",
+   "kind": "code"
   }
  },
  "avoid": {

@@ -16,12 +16,12 @@ In puzzles 10 and 11, a new app process was forked from Zygote. But is a process
 
 ## The building block
 
-A process isn't kept forever: when memory runs short, Android ends the processes of apps that aren't on screen (in the background), so coming back to an app can need a fresh one.
+A process isn't kept forever: when memory runs short, Android's low-memory killer ends the processes of apps that aren't on screen (in the background), least important first, so coming back to an app can need a fresh one.
 
 Your app has one instance of its `Application` class per process: a place for setup the whole app needs, like opening the file where the app keeps its saved data. It's created right after the fork, and its callback `Application.onCreate()` runs before any Activity exists.
 
 - **Cold start**: no process yet. Fork from Zygote, create the Application, then create the first Activity.
-- **Warm start**: the process is still alive, but the Activity was destroyed (puzzle 3), for example because the user closed it, so it's created again.
+- **Warm start**: the process is still alive, but the Activity was destroyed (puzzle 3), for example because the user left it with Back, so it's created again.
 - **Hot start**: process and Activity are both alive, stopped in the background; system_server just brings the screen back to the front.
 
 ## The analogy

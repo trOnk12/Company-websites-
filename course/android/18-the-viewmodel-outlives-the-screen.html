@@ -92,7 +92,7 @@
         <h2 id="the-building-block">The building block</h2>
 <p>A <b>ViewModel</b> is an object made to hold one screen's data. You write it as a class built on <code>ViewModel</code>, and it can do the slow work itself, like the download:</p>
 <pre><code class="language-kotlin">class ListViewModel : ViewModel() {
-    val items = download()   // runs once, when the ViewModel is created
+    val items = startDownload()   // starts once, when the ViewModel is created, on another thread (puzzle 15)
 }
 
 // in the Activity:
@@ -101,9 +101,9 @@ val vm: ListViewModel by viewModels()</code></pre>
 <p>The trick is what happens to the store. When the Activity is destroyed only to be recreated, <span class="ref" tabindex="0" aria-describedby="ref-2"><code>ActivityThread</code><span class="pop" role="tooltip" id="ref-2"><span class="pop-what">When an Activity is destroyed only to be recreated, ActivityThread keeps what it hands over (including the ViewModelStore), then gives it to the new Activity in attach().</span><span class="pop-code"> 6119      if (getNonConfigInstance) {
  6120          r.lastNonConfigurationInstances = r.activity.retainNonConfigurationInstances();
     …
- 4180      activity.attach(…, r.lastNonConfigurationInstances, config, …);</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/ActivityThread.java#L6120">ActivityThread.java, lines 6120 and 4180 · AOSP frameworks/base ↗</a></span></span>, Android's own code in your process that creates and destroys your Activities, keeps the store and hands it to the new Activity. Same store, same ViewModel, same count. Nothing crosses Binder: it all stays in your process's memory.</p>
+ 4180      activity.attach(…, r.lastNonConfigurationInstances, config, …);</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/ActivityThread.java#L6120">ActivityThread.java, lines 6120 and 4180 · AOSP frameworks/base ↗</a></span></span> (puzzle 14), Android's code in your process that carries out system_server's orders, like &quot;destroy&quot; and &quot;create&quot;, keeps the store and hands it to the new Activity. Same store, same ViewModel, same count. Nothing crosses Binder: it all stays in your process's memory.</p>
 <p>When the Activity is destroyed for good, for example the user pressed the Back button to leave the screen, no new Activity is coming. Then the store is cleared, and each ViewModel's <code>onCleared()</code> runs: your chance to stop work it started, like an unfinished download. The code that ships with <code>ViewModel</code> decides between the two with one check: at destroy, clear the store only if <code>isChangingConfigurations</code> is false (it's true when this destroy is only to recreate the Activity).</p>
-<p>So a ViewModel lives as long as the user keeps that screen: the screen they see stays the same, while the Activity objects behind it are replaced. But it still lives in your process. If the process itself is gone, so is the ViewModel. What survives that is the next part of this module (coming soon).</p>
+<p>So a ViewModel lives as long as the user keeps that screen: the screen they see stays the same, while the Activity objects behind it are replaced. But it still lives in your process. If the process itself is gone, so is the ViewModel. What survives that is puzzle 19.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -131,11 +131,11 @@ val vm: ListViewModel by viewModels()</code></pre>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a ViewModel and the ViewModelStore?</legend>
-<input type="radio" name="q-18-the-viewmodel-outlives-the-screen-3" id="q-18-the-viewmodel-outlives-the-screen-3-1"><label for="q-18-the-viewmodel-outlives-the-screen-3-1">The store is kept in system_server, so it survives anything</label>
-<input type="radio" name="q-18-the-viewmodel-outlives-the-screen-3" id="q-18-the-viewmodel-outlives-the-screen-3-2"><label for="q-18-the-viewmodel-outlives-the-screen-3-2">They're the same object: the store is the ViewModel's own data</label>
+<input type="radio" name="q-18-the-viewmodel-outlives-the-screen-3" id="q-18-the-viewmodel-outlives-the-screen-3-1"><label for="q-18-the-viewmodel-outlives-the-screen-3-1">The store is a ViewModel that holds the other ViewModels' data</label>
+<input type="radio" name="q-18-the-viewmodel-outlives-the-screen-3" id="q-18-the-viewmodel-outlives-the-screen-3-2"><label for="q-18-the-viewmodel-outlives-the-screen-3-2">A ViewModel lives in the Activity; the store lives in system_server</label>
 <input type="radio" name="q-18-the-viewmodel-outlives-the-screen-3" id="q-18-the-viewmodel-outlives-the-screen-3-3" data-ok><label for="q-18-the-viewmodel-outlives-the-screen-3-3">A ViewModel holds a screen's data; the store is the map that keeps them</label>
-<p class="fb no opt-1"><b>Not quite.</b> No: it stays in your own process, handed from the old Activity to the new one. <label class="show-me" for="st-viewmodel-3" data-goto="st-viewmodel">Show me step 3 again ↑</label></p>
-<p class="fb no opt-2"><b>Not quite.</b> The store is a container; the ViewModels are what's inside it. <label class="show-me" for="st-viewmodel-1" data-goto="st-viewmodel">Show me step 1 again ↑</label></p>
+<p class="fb no opt-1"><b>Not quite.</b> The store holds the ViewModels themselves, as a map; it isn't a ViewModel. <label class="show-me" for="st-viewmodel-1" data-goto="st-viewmodel">Show me step 1 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Both stay in your process; the store is the map the ViewModels live in. <label class="show-me" for="st-viewmodel-1" data-goto="st-viewmodel">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> One map, many ViewModels, all in your process.</p>
 </fieldset>
       </section>

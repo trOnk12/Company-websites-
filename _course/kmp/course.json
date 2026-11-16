@@ -1,0 +1,35 @@
+{
+  "title": "Kotlin Multiplatform, from the compiler up",
+  "intro": "How one Kotlin codebase runs on Android and on an iPhone that has no JVM, what Swift actually sees of your code, and what gets lost on the way. Built from the compiler up, one small puzzle at a time.",
+  "how": "Each puzzle starts with a problem shared code has to solve, gives you one building block, shows it in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. Facts come from Kotlin's own documentation, linked on every page.",
+  "hero": "targets",
+  "heroAlt": "Animated diagram: one Kotlin file goes through the compiler's front end and comes out as JVM bytecode for Android and native code for an iPhone.",
+  "modules": [
+    {
+      "title": "Module 1: One codebase, two worlds",
+      "blurb": "From one source file to two kinds of machine code, and how Swift sees what you built.",
+      "puzzles": [
+        "00-one-kotlin-many-machines.md",
+        "01-what-every-target-has.md",
+        "02-a-promise-and-its-keepers.md",
+        "03-how-swift-sees-your-kotlin.md",
+        "04-lost-in-translation.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Living on iOS",
+      "topics": "Kotlin/Native memory (a tracing GC meets Swift's ARC), coroutines and threads on iOS, shipping one framework, Swift export."
+    },
+    {
+      "title": "Module 3: Compose Multiplatform",
+      "topics": "What is actually shared, how the UI is drawn on iOS (one canvas), touch, text input and accessibility, interop with SwiftUI."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  }
+}

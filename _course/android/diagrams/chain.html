@@ -15,6 +15,6 @@
 <li><p>Your app's process, with the main thread at its desk. On the desk: your <code>onCreate()</code>, the method that sets up a screen, waiting.</p></li>
 <li><p>The town hall, system_server, decides: "create screen X". It writes the message.</p></li>
 <li><p>Binder, the post office in the kernel, carries it. <i>Predict: where does it land?</i></p></li>
-<li><p>On the main thread's desk (by a route puzzle 14 shows). The main thread handles one message at a time, in order.</p></li>
+<li><p>On the main thread's desk (by a route puzzle 14 shows). The main thread handles one message at a time; they wait in line (puzzle 14).</p></li>
 <li><p>The main thread runs your code: <code>onCreate()</code>. You wrote it; you never called it. It's a <b>callback</b>.</p></li>
 </ol>

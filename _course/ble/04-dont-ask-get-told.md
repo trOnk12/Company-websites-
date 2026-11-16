@@ -7,7 +7,7 @@ takeaway: A notification is the server sending a characteristic's value by itsel
 
 ## The problem
 
-In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a live heart rate, it would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and a read waits for the next meeting to ask and another to answer, so the value can be old by the time it arrives. Can the strap just tell the phone when the value changes?
+In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a live heart rate, it would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and each read waits for a meeting to ask and for the answer (puzzle 3), so the value can be old by the time it arrives. Can the strap just tell the phone when the value changes?
 
 ## See it
 
@@ -16,14 +16,14 @@ In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a liv
 
 ## The building block
 
-Yes: that's a **notification**. The GATT server sends a characteristic's new value by itself at the next connection event, without being asked. One packet instead of two, and only when there's something new.
+Yes: that's a **notification**. The GATT server sends a characteristic's new value by itself at the next connection event, without being asked. The meetings still happen; what's saved is the request and answer packets, and the value arrives as soon as it changes.
 
 But the strap doesn't notify everyone by default. A characteristic can carry extra settings called **descriptors**. Descriptors have UUIDs too, and a client can write them. One of them, the **CCCD** (Client Characteristic Configuration Descriptor, UUID 2902), holds a switch per client: bit 0 on means "notify me". The client turns notifications on by writing that descriptor on the device.
 
-On Android, your app gets a `BluetoothGatt` object when it connects: Android's handle for that connection's GATT client. After service discovery you find the characteristic by its UUIDs. Then turning notifications on takes two separate steps:
+On Android, your app gets a `BluetoothGatt` object when it connects: Android's handle for that connection's GATT client. After service discovery you find the characteristic by its UUIDs. Then turning notifications on takes two separate steps: `setCharacteristicNotification()` on the phone, and `writeDescriptor()` to the strap. A short UUID like 2902 is written in full as Bluetooth's standard base number with those four digits in it, which is the long string in the code.
 
 ```kotlin
-val characteristic = gatt.getService(HEART_RATE).getCharacteristic(MEASUREMENT)   // found by UUID
+val characteristic = gatt.getService(HEART_RATE).getCharacteristic(MEASUREMENT)   // HEART_RATE and MEASUREMENT: your UUID constants
 gatt.setCharacteristicNotification(characteristic, true)   // 1. on the phone: pass these to my app
 val cccd = characteristic.getDescriptor(UUID.fromString("00002902-0000-1000-8000-00805f9b34fb"))   // 2902, written in full
 gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   // 2. on the strap: bit 0 on

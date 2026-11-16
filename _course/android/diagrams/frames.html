@@ -10,8 +10,7 @@
 <g class="step s1"><line class="d-line" x1="206" y1="214" x2="420" y2="214"/><line class="d-line" x1="234" y1="208" x2="234" y2="220"/><line class="d-line" x1="284" y1="208" x2="284" y2="220"/><line class="d-line" x1="334" y1="208" x2="334" y2="220"/><line class="d-line" x1="384" y1="208" x2="384" y2="220"/></g>
 <g class="step s2" data-pulse="2"><rect class="d-bad" x="110" y="200" width="70" height="12" rx="2"/><rect class="d-bad" x="114" y="188" width="64" height="12" rx="2"/><rect class="d-bad" x="108" y="176" width="72" height="12" rx="2"/><rect class="d-bad" x="112" y="164" width="66" height="12" rx="2"/><rect class="d-bad" x="110" y="152" width="70" height="12" rx="2"/><rect class="d-bad" x="114" y="140" width="64" height="12" rx="2"/><text class="d-r" x="146" y="132" text-anchor="middle">slow</text></g>
 <g class="step s2"><g><rect class="d-bad" x="214" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="220" y="166" width="28" height="22"/><circle class="d-dot" cx="234" cy="177" r="5"/></g><g><rect class="d-bad" x="264" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="270" y="166" width="28" height="22"/><circle class="d-dot" cx="284" cy="177" r="5"/></g><g><rect class="d-bad" x="314" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="320" y="166" width="28" height="22"/><circle class="d-dot" cx="334" cy="177" r="5"/></g><g><rect class="d-bad" x="364" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="370" y="166" width="28" height="22"/><circle class="d-dot" cx="384" cy="177" r="5"/></g><text class="d-r" x="214" y="240">late: jank</text></g>
-<x-arrow class="step only-3" tone="path" d="M520,300 C520,340 470,348 438,346"/>
-<x-arrow class="step only-3" tone="path" d="M330,318 C330,300 330,284 330,272"/>
+<x-arrow class="step only-3" tone="acc" d="M480,226 C440,236 400,244 376,248"/>
 <x-letter class="step s3" data-move="2:510,200 3:300,232" x="0" y="0" w="70" label="touch"/>
 <g class="step s3"><circle class="d-paper" cx="550" cy="222" r="24"/><circle class="d-ink" cx="550" cy="222" r="3"/></g>
 <path class="step only-3 d-line" d="M550,222 L550,204"/>
@@ -22,6 +21,6 @@
 <ol class="caps">
 <li><p>The screen is redrawn 60 times a second; each redraw is a <b>frame</b>, due about every 16 milliseconds (ms). Each frame is a message in the main thread's queue.</p></li>
 <li><p>One message takes too long. The frames behind it can't be drawn in time, and the app stutters: <b>jank</b>.</p></li>
-<li><p>The user taps. system_server sends the touch, and it waits in the queue too. <i>Predict: what if it waits much longer?</i></p></li>
-<li><p>system_server waits for your app to say, by Binder, that the touch is handled. After 5 seconds with no answer, it shows "App isn't responding": an <b>ANR</b> (Application Not Responding).</p></li>
+<li><p>The user taps. system_server sends the touch down a direct line into your app, and it waits in the queue too. <i>Predict: what if it waits much longer?</i></p></li>
+<li><p>system_server waits for your app to answer "done" on that line, which only happens once the main thread has handled the touch. After 5 seconds with no answer, it shows "App isn't responding": an <b>ANR</b> (Application Not Responding).</p></li>
 </ol>

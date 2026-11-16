@@ -1,0 +1,15 @@
+<!-- label: What survives the Objective-C header, and what doesn't -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="lo-t"><title id="lo-t">Three things cross the Objective-C header: a Flow of User loses its User; a suspend function becomes a completion handler; an exception not listed in Throws ends the app</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1"><rect class="d-wood" x="290" y="30" width="60" height="300" rx="6"/><text class="d-tiny" x="320" y="350" text-anchor="middle">Objective-C header</text><text class="d-b" x="120" y="30" text-anchor="middle">Kotlin</text><text class="d-b" x="520" y="30" text-anchor="middle">Swift</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="30" y="60" width="180" height="40" rx="6"/><text class="d-mi" x="120" y="86" text-anchor="middle">Flow&lt;User&gt;</text><rect class="d-band" x="420" y="60" width="180" height="40" rx="6"/><text class="d-mi" x="510" y="86" text-anchor="middle">Flow</text><x-arrow tone="ink" d="M214,80 L414,80"/></g>
+<g class="step s2" data-move="1:110,70 2:250,140"><rect class="d-bad" x="0" y="0" width="60" height="24" rx="4"/><text class="d-rt" x="30" y="17" text-anchor="middle">User</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="30" y="170" width="180" height="40" rx="6"/><text class="d-mi" x="120" y="196" text-anchor="middle">suspend fun login()</text><rect class="d-hl" x="420" y="170" width="200" height="40" rx="6"/><text class="d-mi" x="520" y="196" text-anchor="middle">login(completion)</text><x-arrow tone="acc" d="M214,190 L414,190"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="30" y="260" width="180" height="40" rx="6"/><text class="d-rt" x="120" y="285" text-anchor="middle">throws IOException</text><x-arrow tone="red" d="M214,280 L414,280"/><rect class="d-bad" x="420" y="260" width="180" height="40" rx="6"/><text class="d-rt" x="510" y="285" text-anchor="middle">app ends</text><text class="d-tiny" x="120" y="320" text-anchor="middle">no @Throws</text></g>
+</svg>
+<ol class="caps">
+<li><p>Everything Swift sees of your Kotlin passes through the Objective-C header from puzzle 3.</p></li>
+<li><p>A <code>Flow&lt;User&gt;</code> crosses, but its <code>User</code> falls off: Objective-C keeps type parameters on classes only, and Flow is an interface.</p></li>
+<li><p>A <code>suspend</code> function becomes a method with a <b>completion handler</b>: "call me back when done". Swift calls it with await. <i>Predict: what about an exception?</i></p></li>
+<li><p>Unless the function lists it with <code>@Throws</code>, a Kotlin exception that reaches Swift ends the app.</p></li>
+</ol>

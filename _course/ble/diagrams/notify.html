@@ -17,5 +17,5 @@
 <li><p>To show a live heart rate by reading, the phone asks at every meeting: a request and an answer each time, even when nothing changed.</p></li>
 <li><p>Instead, the phone flips a switch on the strap: a <b>descriptor</b>, an extra setting attached to the value, called the <b>CCCD</b>. It writes "on".</p></li>
 <li><p>Now, when the value changes, the strap sends it by itself at the next meeting: a <b>notification</b>. <i>Predict: what if the app only turns notifications on in the phone?</i></p></li>
-<li><p>Nothing arrives. <code>setCharacteristicNotification()</code> only prepares your phone; without <code>writeDescriptor()</code> the strap's switch stays off: "connected, but no data".</p></li>
+<li><p>Nothing arrives. Turning it on in the phone only prepares the phone; unless the app also writes the strap's switch, it stays off: "connected, but no data".</p></li>
 </ol>

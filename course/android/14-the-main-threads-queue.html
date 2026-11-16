@@ -86,7 +86,7 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>The main thread has an in-tray: its <b>message queue</b>. (A message from Binder becomes a message in this queue: the Binder thread puts it there.) Every piece of screen work waits there as a message: draw the screen, handle a touch, run a lifecycle callback. Touches arrive like lifecycle messages: system_server sends them to your app, and they're posted into the queue.</p>
+<p>The main thread has an in-tray: its <b>message queue</b>. (A message from Binder becomes a message in this queue: the Binder thread puts it there.) Every piece of screen work waits there as a message: draw the screen, handle a touch, run a lifecycle callback. Touches take a different road: for each window, system_server sets up a direct line into your app, an input channel, and sends every touch down it instead of through Binder. They land in the same queue.</p>
 <p>The <code>Looper</code> is the main thread's endless loop from step 3: take the next message, run it to the end, repeat. A <code>Handler</code> is an object tied to one thread's queue that drops messages into it. The ones on this page are tied to the main thread's queue: the Binder thread uses one, then goes back to waiting (it doesn't wait for the main thread), and <span class="ref" tabindex="0" aria-describedby="ref-1"><code>handler.post { … }</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">post() wraps your code in a Message and puts it in this Handler's queue.</span><span class="pop-code">  438  public final boolean post(@NonNull Runnable r) {
   439     return  sendMessageDelayed(getPostMessage(r), 0);
   440  }
@@ -101,7 +101,10 @@
     …
  8943      thread.attach(false, startSeq);
     …
- 8956      Looper.loop();</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/ActivityThread.java#L8907">ActivityThread.java, line 8907 · AOSP frameworks/base ↗</a></span></span>, Android's code that sets up your app's main thread, which sets up this loop for the main thread and runs <span class="ref" tabindex="0" aria-describedby="ref-3"><code>Looper.loop()</code><span class="pop" role="tooltip" id="ref-3"><span class="pop-what">The main thread's endless loop: take one message, run it, repeat.</span><span class="pop-code">  304  public static void loop() {
+ 8956      Looper.loop();</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/ActivityThread.java#L8907">ActivityThread.java, line 8907 · AOSP frameworks/base ↗</a></span></span>: <span class="ref" tabindex="0" aria-describedby="ref-3"><code>ActivityThread</code><span class="pop" role="tooltip" id="ref-3"><span class="pop-what">When an Activity is destroyed only to be recreated, ActivityThread keeps what it hands over (including the ViewModelStore), then gives it to the new Activity in attach().</span><span class="pop-code"> 6119      if (getNonConfigInstance) {
+ 6120          r.lastNonConfigurationInstances = r.activity.retainNonConfigurationInstances();
+    …
+ 4180      activity.attach(…, r.lastNonConfigurationInstances, config, …);</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/ActivityThread.java#L6120">ActivityThread.java, lines 6120 and 4180 · AOSP frameworks/base ↗</a></span></span> is Android's code in your process that runs the main thread's loop and carries out system_server's orders for your Activities; its <code>main()</code> which sets up this loop for the main thread and runs <span class="ref" tabindex="0" aria-describedby="ref-4"><code>Looper.loop()</code><span class="pop" role="tooltip" id="ref-4"><span class="pop-what">The main thread's endless loop: take one message, run it, repeat.</span><span class="pop-code">  304  public static void loop() {
     …
   327      for (;;) {
   328          if (!loopOnce(me, ident, thresholdOverride)) {
@@ -123,7 +126,7 @@
 <p class="fb ok opt-2"><b>Right.</b> The queue turns many senders into one worker, in order.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What does <span class="ref" tabindex="0" aria-describedby="ref-4"><code>handler.post { … }</code><span class="pop" role="tooltip" id="ref-4"><span class="pop-what">post() wraps your code in a Message and puts it in this Handler's queue.</span><span class="pop-code">  438  public final boolean post(@NonNull Runnable r) {
+<legend>What does <span class="ref" tabindex="0" aria-describedby="ref-5"><code>handler.post { … }</code><span class="pop" role="tooltip" id="ref-5"><span class="pop-what">post() wraps your code in a Message and puts it in this Handler's queue.</span><span class="pop-code">  438  public final boolean post(@NonNull Runnable r) {
   439     return  sendMessageDelayed(getPostMessage(r), 0);
   440  }
     …

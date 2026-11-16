@@ -16,7 +16,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-band" x="40" y="152" width="180" height="104" rx="8"/><text class="d-m" x="130" y="200" text-anchor="middle">screen closed</text><x-arrow tone="red" d="M230,90 C190,80 150,82 110,92"/><text class="d-r" x="236" y="94">Back</text><circle class="d-bad" cx="580" cy="194" r="14"/><path class="d-red" d="M572,186 L588,202 M588,186 L572,202"/></g>
 </svg>
 <ol class="caps">
-<li><p>The user switches apps, so your Activity is stopped. The draft is a value your app chose to save (see the code below), so it's packed into a <b>Bundle</b>, a small map of simple values. Binder carries it to system_server: the screen's <b>saved state</b>.</p></li>
+<li><p>The user switches apps, so your Activity is stopped. The draft is a value your app chose to save (code below), so it's packed into a <b>Bundle</b>, a small map of simple values. Binder carries it to system_server: the screen's <b>saved state</b>.</p></li>
 <li><p>Memory runs short, and Android ends your process in the background: <b>process death</b>. The ViewModel and every other object go with it. <i>Predict: the user comes back. Is the draft still there?</i></p></li>
 <li><p>Yes. A new process starts, and system_server hands the Bundle back by Binder. The new Activity reads the draft from it.</p></li>
 <li><p>But if the user closes the screen for good with Back, there's nothing to come back to, so system_server throws the saved state away.</p></li>

@@ -1,0 +1,201 @@
+{
+ "baseline": {
+  "_about": "What the learner already knows: a Kotlin developer who has built an Android app (Gradle, coroutines, Flow), and has heard iOS apps are written in Swift.",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Java",
+   "Android",
+   "phone",
+   "code",
+   "program",
+   "data",
+   "class",
+   "object",
+   "method",
+   "function",
+   "APK",
+   "compile",
+   "install",
+   "UI",
+   "ID",
+   "MB",
+   "KB",
+   "ms",
+   "CPU",
+   "file",
+   "bitmap",
+   "val",
+   "Thread.sleep()",
+   "textView.text",
+   "hideHint()",
+   "bytes",
+   "byte",
+   "JVM",
+   "iOS",
+   "iPhone",
+   "Swift",
+   "Xcode",
+   "Gradle",
+   "Android",
+   "ART",
+   "DEX",
+   "Kotlin",
+   "String",
+   "suspend",
+   "Flow",
+   "Flow<User>",
+   "List",
+   "User",
+   "interface",
+   "generics",
+   "exception",
+   "null",
+   "println()",
+   "java.io.File",
+   "Build.VERSION.SDK_INT",
+   "UIDevice",
+   "API",
+   "APIs",
+   "platformName()",
+   "LoginRules",
+   "Box<User>",
+   "IOException",
+   "await",
+   "async",
+   "throws",
+   "if",
+   "Flow&lt;User&gt;"
+  ]
+ },
+ "terms": {
+  "compiler": {
+   "in": "00",
+   "def": "The program that turns source code into something a machine can run.",
+   "aliases": [
+    "compilers"
+   ]
+  },
+  "front end": {
+   "in": "00",
+   "def": "The part of the compiler that reads and checks your code, the same for every target.",
+   "aliases": []
+  },
+  "back end": {
+   "in": "00",
+   "def": "The part of the compiler that produces output for one kind of machine.",
+   "aliases": [
+    "back ends"
+   ]
+  },
+  "target": {
+   "in": "00",
+   "def": "A platform Kotlin can compile for: the JVM, Android, iOS, the web, desktop.",
+   "aliases": [
+    "targets"
+   ]
+  },
+  "bytecode": {
+   "in": "00",
+   "def": "Instructions for a virtual machine, like the JVM, not for a CPU.",
+   "aliases": []
+  },
+  "native code": {
+   "in": "00",
+   "def": "Machine code that runs directly on the CPU, with no virtual machine.",
+   "aliases": []
+  },
+  "Kotlin/Native": {
+   "in": "00",
+   "def": "Kotlin's back end that produces native code, built on LLVM.",
+   "aliases": [],
+   "kind": "code"
+  },
+  "source set": {
+   "in": "01",
+   "def": "A folder of code compiled for a chosen set of targets.",
+   "aliases": [
+    "source sets"
+   ]
+  },
+  "commonMain": {
+   "in": "01",
+   "def": "The source set compiled for every target.",
+   "kind": "code"
+  },
+  "androidMain": {
+   "in": "01",
+   "def": "The source set compiled only for Android.",
+   "kind": "code"
+  },
+  "iosMain": {
+   "in": "01",
+   "def": "The source set compiled only for iOS.",
+   "kind": "code"
+  },
+  "common code": {
+   "in": "01",
+   "def": "Code in commonMain: shared by every target.",
+   "aliases": []
+  },
+  "expect": {
+   "in": "02",
+   "def": "A declaration in common code that promises each platform will provide it.",
+   "aliases": [
+    "expected"
+   ]
+  },
+  "actual": {
+   "in": "02",
+   "def": "A platform's implementation of an expect declaration.",
+   "aliases": [
+    "actuals"
+   ]
+  },
+  "framework": {
+   "in": "03",
+   "def": "Apple's package for a library: the compiled code plus a description of its API.",
+   "aliases": [
+    "frameworks"
+   ]
+  },
+  "Objective-C": {
+   "in": "03",
+   "def": "The older language of Apple's platforms, which Swift can call directly.",
+   "aliases": []
+  },
+  "header": {
+   "in": "03",
+   "def": "The file that describes a library's API, without its code.",
+   "aliases": [
+    "headers",
+    "Objective-C header"
+   ]
+  },
+  "completion handler": {
+   "in": "04",
+   "def": "A function you pass in, called later with the result: Objective-C's way of saying \"later\".",
+   "aliases": [
+    "completionHandler"
+   ]
+  },
+  "@Throws": {
+   "in": "04",
+   "def": "Lists which Kotlin exceptions may cross into Swift as errors.",
+   "kind": "code"
+  }
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what. The lint fails on them (any page text, labels, questions); say the named actor or the plain word instead.",
+  "phrases": {
+   "the system": "name the actor: system_server, the kernel, or Binder",
+   "views": "say buttons and text, or the screen (View isn't taught)",
+   "lost focus": "say: another app is in front",
+   "simply": "cut it: it makes a learner who's stuck feel slow",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is"
+  }
+ }
+}

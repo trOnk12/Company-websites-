@@ -74,8 +74,7 @@
 <g class="step s1"><line class="d-line" x1="206" y1="214" x2="420" y2="214"/><line class="d-line" x1="234" y1="208" x2="234" y2="220"/><line class="d-line" x1="284" y1="208" x2="284" y2="220"/><line class="d-line" x1="334" y1="208" x2="334" y2="220"/><line class="d-line" x1="384" y1="208" x2="384" y2="220"/></g>
 <g class="step s2" data-pulse="2"><rect class="d-bad" x="110" y="200" width="70" height="12" rx="2"/><rect class="d-bad" x="114" y="188" width="64" height="12" rx="2"/><rect class="d-bad" x="108" y="176" width="72" height="12" rx="2"/><rect class="d-bad" x="112" y="164" width="66" height="12" rx="2"/><rect class="d-bad" x="110" y="152" width="70" height="12" rx="2"/><rect class="d-bad" x="114" y="140" width="64" height="12" rx="2"/><text class="d-r" x="146" y="132" text-anchor="middle">slow</text></g>
 <g class="step s2"><g><rect class="d-bad" x="214" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="220" y="166" width="28" height="22"/><circle class="d-dot" cx="234" cy="177" r="5"/></g><g><rect class="d-bad" x="264" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="270" y="166" width="28" height="22"/><circle class="d-dot" cx="284" cy="177" r="5"/></g><g><rect class="d-bad" x="314" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="320" y="166" width="28" height="22"/><circle class="d-dot" cx="334" cy="177" r="5"/></g><g><rect class="d-bad" x="364" y="160" width="40" height="40" rx="3"/><rect class="d-paper" x="370" y="166" width="28" height="22"/><circle class="d-dot" cx="384" cy="177" r="5"/></g><text class="d-r" x="214" y="240">late: jank</text></g>
-<path class="step only-3 d-arr-path" d="M520,300 C520,340 470,348 438,346" marker-end="url(#ah-frames-path)"/>
-<path class="step only-3 d-arr-path" d="M330,318 C330,300 330,284 330,272" marker-end="url(#ah-frames-path)"/>
+<path class="step only-3 d-arr-acc" d="M480,226 C440,236 400,244 376,248" marker-end="url(#ah-frames-acc)"/>
 <g class="step s3" data-move="2:510,200 3:300,232"><rect class="d-paper" x="0" y="0" width="70" height="44" rx="3"/><polyline class="d-line" points="0,0 35,18 70,0"/><text class="d-tiny" x="35" y="38" text-anchor="middle">touch</text></g>
 <g class="step s3"><circle class="d-paper" cx="550" cy="222" r="24"/><circle class="d-ink" cx="550" cy="222" r="3"/></g>
 <path class="step only-3 d-line" d="M550,222 L550,204"/>
@@ -86,8 +85,8 @@
 <ol class="caps">
 <li><p>The screen is redrawn 60 times a second; each redraw is a <b>frame</b>, due about every 16 milliseconds (ms). Each frame is a message in the main thread's queue.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-frames-2">Next →</label></div></li>
 <li><p>One message takes too long. The frames behind it can't be drawn in time, and the app stutters: <b>jank</b>.</p><div class="stepnav"><label for="st-frames-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-frames-3">Next →</label></div></li>
-<li><p>The user taps. system_server sends the touch, and it waits in the queue too. <i>Predict: what if it waits much longer?</i></p><div class="stepnav"><label for="st-frames-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-frames-4">Next →</label></div></li>
-<li><p>system_server waits for your app to say, by Binder, that the touch is handled. After 5 seconds with no answer, it shows "App isn't responding": an <b>ANR</b> (Application Not Responding).</p><div class="stepnav"><label for="st-frames-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-frames-1">↺ Again</label></div></li>
+<li><p>The user taps. system_server sends the touch down a direct line into your app, and it waits in the queue too. <i>Predict: what if it waits much longer?</i></p><div class="stepnav"><label for="st-frames-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-frames-4">Next →</label></div></li>
+<li><p>system_server waits for your app to answer "done" on that line, which only happens once the main thread has handled the touch. After 5 seconds with no answer, it shows "App isn't responding": an <b>ANR</b> (Application Not Responding).</p><div class="stepnav"><label for="st-frames-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-frames-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-frames-1" title="Step 1"></label><label for="st-frames-2" title="Step 2"></label><label for="st-frames-3" title="Step 3"></label><label for="st-frames-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/frames.gif" download>Save this diagram as a GIF</a></p>
@@ -96,7 +95,7 @@
         <h2 id="the-building-block">The building block</h2>
 <p>The screen is redrawn about 60 times a second. Each redraw is a <b>frame</b>, and each one must be ready within about 16 milliseconds (1000 ms ÷ 60). Drawing a frame is a message in the main thread's queue too.</p>
 <p>If a message takes longer than that, the frames behind it come late, and the app visibly stutters: <b>jank</b>.</p>
-<p>system_server sent each touch, and waits for your app to say it was handled. If a touch waits in the queue for 5 seconds with no answer, system_server shows the &quot;App isn't responding&quot; dialog: an <b>ANR</b> (Application Not Responding). That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.</p>
+<p>system_server sent each touch down the window's input channel (puzzle 14), and waits for your app to answer &quot;done&quot; on that same line, which it does once the main thread has handled the touch. If a touch waits in the queue for 5 seconds with no answer, system_server shows the &quot;App isn't responding&quot; dialog: an <b>ANR</b> (Application Not Responding). That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -130,7 +129,7 @@
       </section>
       <section aria-labelledby="sources">
         <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.android.com/topic/performance/vitals/render">Android Developers: Slow rendering (jank)</a></li><li><a href="https://developer.android.com/topic/performance/vitals/anr">Android Developers: ANRs</a></li></ul>
+<ul><li><a href="https://developer.android.com/topic/performance/vitals/render">Android Developers: Slow rendering (jank)</a></li><li><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputChannel.java#L29">AOSP: InputChannel.java</a> (&quot;An input channel specifies the file descriptors used to send input events to a window in another process&quot;) and <a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputEventReceiver.java#L213">InputEventReceiver.java</a> (<code>finishInputEvent(event, handled)</code>)</li><li><a href="https://developer.android.com/topic/performance/vitals/anr">Android Developers: ANRs</a></li></ul>
       </section>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A frame is due about every 16 ms. A message that takes longer makes frames late: jank. A touch that waits 5 seconds gets the &quot;App isn't responding&quot; dialog: an ANR.</p></div></section>
       

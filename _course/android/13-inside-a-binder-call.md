@@ -1,7 +1,7 @@
 ---
 title: Inside a Binder call
 short: Inside Binder
-summary: In puzzle 4, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes, marked with the sender's identity, and picked up by a waiting thread.
+summary: In puzzle 4, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes (raw data), marked with the sender's identity, and picked up by a waiting thread.
 takeaway: proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.
 ---
 

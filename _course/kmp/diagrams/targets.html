@@ -1,0 +1,17 @@
+<!-- label: One Kotlin file, one front end, a back end per target -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="tg-t"><title id="tg-t">One Kotlin file goes into the compiler; the front end checks it; one back end makes bytecode for Android; Kotlin/Native makes native code for the iPhone, which has no virtual machine</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><x-sheet x="30" y="140" w="80" h="100" lines="6" label="Login.kt"/></g>
+<g class="step s2" data-pulse="2"><x-machine x="160" y="160" w="130" label="front end"/></g>
+<x-arrow class="step s2" tone="acc" d="M114,190 L154,190"/>
+<g class="step s3" data-pulse="3"><x-machine x="330" y="70" w="120" label="back end"/><x-arrow tone="acc" d="M294,180 C310,150 316,110 326,100"/><rect class="d-paper" x="330" y="140" width="120" height="30" rx="4"/><text class="d-tiny" x="390" y="160" text-anchor="middle">bytecode</text><x-phone x="530" y="40" w="56" h="100" label="Android"/><x-arrow tone="acc" d="M454,155 C490,150 510,120 524,100"/></g>
+<g class="step s4" data-pulse="4"><x-machine x="330" y="230" w="120" label="Kotlin/Native"/><x-arrow tone="acc" d="M294,200 C310,230 316,250 326,258"/><rect class="d-ink" x="330" y="300" width="120" height="30" rx="4"/><text class="d-inv" x="390" y="320" text-anchor="middle">native code</text><x-phone x="530" y="220" w="56" h="100" label="iPhone"/><x-arrow tone="acc" d="M454,315 C490,310 510,290 524,280"/></g>
+<g class="step s4"><text class="d-r" x="514" y="214" text-anchor="end">no virtual machine</text></g>
+<g class="step s1" data-move="1:118,190 2:200,220 3:360,175 4:360,335"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>One Kotlin file, with the rules your app follows on every platform.</p></li>
+<li><p>The <b>compiler</b> turns it into something a machine can run. Its <b>front end</b> reads and checks your code, the same for every platform you build for.</p></li>
+<li><p>Then a <b>back end</b> per <b>target</b>. For Android: <b>bytecode</b>, instructions for a virtual machine. <i>Predict: what does an iPhone, with no virtual machine, need?</i></p></li>
+<li><p><b>Native code</b>: machine code for its own CPU, made by Kotlin/Native. Same Kotlin, same checks, two kinds of output.</p></li>
+</ol>

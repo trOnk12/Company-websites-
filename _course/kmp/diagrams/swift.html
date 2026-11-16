@@ -1,0 +1,15 @@
+<!-- label: Kotlin/Native builds a framework; Swift reads its Objective-C header -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sw-t"><title id="sw-t">Kotlin/Native packs native code into a framework; the framework includes an Objective-C header describing the API; the Swift app reads the header and calls the code</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><x-machine x="30" y="150" w="130" label="Kotlin/Native"/><rect class="d-ink" x="40" y="230" width="110" height="30" rx="4"/><text class="d-inv" x="95" y="250" text-anchor="middle">native code</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-wood" x="200" y="110" width="240" height="200" rx="10"/><text class="d-b" x="320" y="138" text-anchor="middle">Shared.framework</text></g>
+<g class="step s2" data-move="1:40,230 2:265,268"><rect class="d-ink" x="0" y="0" width="110" height="30" rx="4"/><text class="d-inv" x="55" y="20" text-anchor="middle">native code</text></g>
+<g class="step s3" data-pulse="3"><x-sheet x="270" y="152" w="100" h="70" lines="4"/><text class="d-tiny" x="320" y="238" text-anchor="middle">Objective-C header</text></g>
+<g class="step s4" data-pulse="4"><x-phone x="520" y="110" w="70" h="130" label="Swift app"/><x-arrow tone="path" d="M512,160 C470,160 420,170 376,180"/><text class="d-a" x="450" y="148" text-anchor="middle">reads</text></g>
+</svg>
+<ol class="caps">
+<li><p>Kotlin/Native has compiled your shared code to native code. But it's only CPU instructions: no names, no types.</p></li>
+<li><p>So it's packed into a <b>framework</b>, Apple's format for a library: the compiled code plus a description of what's inside.</p></li>
+<li><p>The description is a <b>header</b>, written in <b>Objective-C</b>, the older language Swift can call directly. <i>Predict: what does the Swift app read?</i></p></li>
+<li><p>The header. Swift sees your Kotlin classes as Objective-C classes, and calls the native code behind them.</p></li>
+</ol>

@@ -21,7 +21,8 @@
     },
     {
       "title": "Kotlin Multiplatform and iOS for Android developers",
-      "topics": "The K2 compiler, source sets, Kotlin/Native memory, the Objective-C bridge, Swift concurrency, the run loop and app lifecycle on iOS."
+      "topics": "The K2 compiler, source sets, Kotlin/Native memory, the Objective-C bridge, Swift concurrency, the run loop and app lifecycle on iOS.",
+      "id": "kmp"
     },
     {
       "title": "Data structures that earn their keep",

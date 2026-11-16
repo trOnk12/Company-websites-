@@ -16,13 +16,13 @@ In puzzle 0, the strap's radio slept almost all the time to save its battery. Bu
 
 ## The building block
 
-The strap takes turns being loud for a moment. It wakes, sends a **packet**, one short burst of data, that says "I'm a heart strap, here's my name", listens for a moment in case someone answers (puzzle 2 uses that), and goes back to sleep. Doing that over and over is **advertising**.
+The strap is loud only for moments. It wakes, sends a **packet**, one short burst of data, that says "I'm a heart strap, here's my name", listens for a moment in case someone answers (puzzle 2 uses that), and goes back to sleep. Doing that over and over is **advertising**.
 
 The time between two advertisements is the **advertising interval**: at least 20 ms, and it can be seconds or much longer. Short means found fast; long means a longer battery life. To every interval the radio adds a random delay of 0 to 10 ms. Two packets sent at the same moment on the same channel garble each other: a collision. If two straps happened to start together, the random delays make them drift apart instead of colliding every time.
 
 BLE splits its airwaves into 40 **channels**, like stations on a radio dial: a radio sends or listens on one at a time. Advertising uses only 3 of them, and each advertisement is sent on all 3, one after another. Three is few enough that a listener knows where to listen, and more than one, so noise on a single channel (another radio, like Wi-Fi, sending on the same slice) doesn't hide the strap.
 
-Your phone, meanwhile, is **scanning**: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. When the strap shouts on the channel the phone is listening to, the phone hears it.
+Your phone, meanwhile, is **scanning**: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. Because the strap repeats every interval on all three, sooner or later one of its packets lands on the channel the phone is listening to, and the phone hears it.
 
 ## The analogy
 

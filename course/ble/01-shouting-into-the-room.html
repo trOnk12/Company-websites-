@@ -77,7 +77,7 @@
 </svg></div>
 <ol class="caps">
 <li><p>The strap wakes and sends a <b>packet</b>, one short burst of data: "I'm here". Then it sleeps again. Doing this over and over is <b>advertising</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-advertising-2">Next →</label></div></li>
-<li><p>It repeats at its <b>advertising interval</b>, at least 20 ms apart, plus a random 0 to 10 ms, so two straps don't keep colliding.</p><div class="stepnav"><label for="st-advertising-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-advertising-3">Next →</label></div></li>
+<li><p>It repeats at its <b>advertising interval</b>, at least 20 ms apart, plus a random 0 to 10 ms, so two straps don't keep sending at the same moment and garbling each other.</p><div class="stepnav"><label for="st-advertising-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-advertising-3">Next →</label></div></li>
 <li><p>The airwaves are split into 40 <b>channels</b>. Advertising uses only 3, and each advertisement goes out on all 3. <i>Predict: where does the phone listen?</i></p><div class="stepnav"><label for="st-advertising-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-advertising-4">Next →</label></div></li>
 <li><p>On those 3, one at a time: it's <b>scanning</b>. When a packet lands on the channel it's listening to, the phone hears the strap.</p><div class="stepnav"><label for="st-advertising-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-advertising-1">↺ Again</label></div></li>
 </ol>
@@ -86,10 +86,10 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>The strap takes turns being loud for a moment. It wakes, sends a <b>packet</b>, one short burst of data, that says &quot;I'm a heart strap, here's my name&quot;, listens for a moment in case someone answers (puzzle 2 uses that), and goes back to sleep. Doing that over and over is <b>advertising</b>.</p>
+<p>The strap is loud only for moments. It wakes, sends a <b>packet</b>, one short burst of data, that says &quot;I'm a heart strap, here's my name&quot;, listens for a moment in case someone answers (puzzle 2 uses that), and goes back to sleep. Doing that over and over is <b>advertising</b>.</p>
 <p>The time between two advertisements is the <b>advertising interval</b>: at least 20 ms, and it can be seconds or much longer. Short means found fast; long means a longer battery life. To every interval the radio adds a random delay of 0 to 10 ms. Two packets sent at the same moment on the same channel garble each other: a collision. If two straps happened to start together, the random delays make them drift apart instead of colliding every time.</p>
 <p>BLE splits its airwaves into 40 <b>channels</b>, like stations on a radio dial: a radio sends or listens on one at a time. Advertising uses only 3 of them, and each advertisement is sent on all 3, one after another. Three is few enough that a listener knows where to listen, and more than one, so noise on a single channel (another radio, like Wi-Fi, sending on the same slice) doesn't hide the strap.</p>
-<p>Your phone, meanwhile, is <b>scanning</b>: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. When the strap shouts on the channel the phone is listening to, the phone hears it.</p>
+<p>Your phone, meanwhile, is <b>scanning</b>: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. Because the strap repeats every interval on all three, sooner or later one of its packets lands on the channel the phone is listening to, and the phone hears it.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

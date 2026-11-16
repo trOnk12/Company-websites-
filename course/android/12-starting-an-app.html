@@ -88,9 +88,9 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A process isn't kept forever: when memory runs short, Android ends the processes of apps that aren't on screen (in the background), so coming back to an app can need a fresh one.</p>
+<p>A process isn't kept forever: when memory runs short, Android's low-memory killer ends the processes of apps that aren't on screen (in the background), least important first, so coming back to an app can need a fresh one.</p>
 <p>Your app has one instance of its <code>Application</code> class per process: a place for setup the whole app needs, like opening the file where the app keeps its saved data. It's created right after the fork, and its callback <code>Application.onCreate()</code> runs before any Activity exists.</p>
-<ul><li><b>Cold start</b>: no process yet. Fork from Zygote, create the Application, then create the first Activity.</li><li><b>Warm start</b>: the process is still alive, but the Activity was destroyed (puzzle 3), for example because the user closed it, so it's created again.</li><li><b>Hot start</b>: process and Activity are both alive, stopped in the background; system_server just brings the screen back to the front.</li></ul>
+<ul><li><b>Cold start</b>: no process yet. Fork from Zygote, create the Application, then create the first Activity.</li><li><b>Warm start</b>: the process is still alive, but the Activity was destroyed (puzzle 3), for example because the user left it with Back, so it's created again.</li><li><b>Hot start</b>: process and Activity are both alive, stopped in the background; system_server just brings the screen back to the front.</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

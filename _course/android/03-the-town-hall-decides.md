@@ -27,7 +27,7 @@ system_server moves each Activity along a fixed path of stages, called the **lif
 - resumed: in front, ready for taps;
 - paused: still visible, but no longer in front (a dialog covers it);
 - stopped: not visible anymore (another app is in front); if the user comes back, it goes stopped → started → resumed again;
-- destroyed: gone for good.
+- destroyed: the Activity object is thrown away, usually because the screen was closed (puzzle 17 shows another reason).
 
 ## The analogy
 
