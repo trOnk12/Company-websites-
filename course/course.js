@@ -126,7 +126,16 @@
   const store = {
     get(course) { try { return JSON.parse(localStorage.getItem(`course:${course}:mastered`) || '[]'); } catch { return []; } },
     add(course, n) { try { const s = new Set(store.get(course)); s.add(n); localStorage.setItem(`course:${course}:mastered`, JSON.stringify([...s])); } catch {} },
-    clear(course) { try { localStorage.removeItem(`course:${course}:mastered`); } catch {} },
+    clear(course) { try { localStorage.removeItem(`course:${course}:mastered`); localStorage.removeItem(`course:${course}:missed`); } catch {} },
+    // Questions you first answered wrong: your weak spots, for the tutor prompt. Only in this browser.
+    missed(course) { try { return JSON.parse(localStorage.getItem(`course:${course}:missed`) || '[]'); } catch { return []; } },
+    miss(course, n, q) {
+      try {
+        const m = store.missed(course).filter(x => !(x.n === n && x.q === q));
+        m.push({ n, q });
+        localStorage.setItem(`course:${course}:missed`, JSON.stringify(m.slice(-30)));
+      } catch {}
+    },
   };
 
   const puzzle = document.querySelector('article.puzzle[data-course]');
@@ -179,6 +188,7 @@
       if (counted.has(key)) return;
       counted.add(key);
       const label = (q.querySelector(`label[for="${input.id}"]`)?.textContent || '').trim().slice(0, 60);
+      store.miss(course, n, (q.querySelector('legend')?.textContent || '').trim());
       count(`wrong ${course} ${n} q${qi + 1}: ${label}`, true, `Wrong answer, puzzle ${n} question ${qi + 1}`);
     }));
     if (next) next.addEventListener('click', e => {
@@ -254,5 +264,54 @@
       count.querySelector('button').addEventListener('click', () => { store.clear(course); location.reload(); });
       resume.parentElement.after(count);
     }
+  }
+  // ── Continue with Claude: a tutor prompt built from this course and your progress ──
+  const tutorBtn = document.querySelector('[data-tutor]');
+  const tutorData = document.getElementById('tutor-data');
+  if (tutorBtn && tutorData) {
+    const course = tutorBtn.dataset.tutor;
+    const out = document.querySelector('.tutor-prompt');
+    const status = document.querySelector('.tutor-status');
+    tutorBtn.addEventListener('click', async () => {
+      let d;
+      try { d = JSON.parse(tutorData.textContent); } catch { return; }
+      const have = new Set(store.get(course));
+      const next = d.puzzles.find(p => !have.has(p.n));
+      const known = d.terms.filter(t => have.has(t.in));
+      const missed = store.missed(course).filter(m => d.puzzles[m.n]);
+      const lines = [
+        `Be my tutor for "${d.title}", a free course I'm taking at ${d.url}. Stay with it until I say stop.`,
+        '',
+        'How to teach me:',
+        '- Foundation first: one small idea at a time, each standing on one I already have. If I lack a block, teach that block first.',
+        '- For each idea: a plain explanation, an everyday analogy, then one quick question. Wait for my answer before going on.',
+        '- Use only the words I know (listed below); define any new word the first time you use it.',
+        "- Go under the hood: who does the work, on which thread or process, and why it's built that way.",
+        "- If you're unsure of a fact, say so and point me to a primary source (official docs, the spec, the source code).",
+        '',
+        `The course, in order (✓ = I've passed it):`,
+        ...d.puzzles.map(p => `${have.has(p.n) ? '✓' : '·'} ${p.n}. ${p.title}: ${p.takeaway}`),
+        ...(d.upcoming.length ? ['', 'Not written yet (good places to go next):', ...d.upcoming.map(u => `- ${u}`)] : []),
+        ...(d.assumes ? ['', `The course assumes I know: ${d.assumes}.`] : []),
+        '',
+        known.length ? 'Words I know from it:' : "I haven't passed a puzzle yet, so assume only that I know Kotlin and Android app basics.",
+        ...known.map(t => `- ${t.t}: ${t.def}`),
+        ...(missed.length ? ['', 'Questions I got wrong at first (my weak spots):', ...missed.map(m => `- Puzzle ${m.n}: ${m.q}`)] : []),
+        '',
+        next
+          ? `Where I am: next is puzzle ${next.n}, "${next.title}". Start with one question to check I really have the block it builds on${missed.length ? ', or one of my weak spots' : ''}. Then teach me what it covers, your way, and keep going.`
+          : `I've passed every puzzle. ${missed.length ? 'Start by testing my weak spots. Then' : 'Start with one question on the hardest idea. Then'} take me into the topics that aren't written yet, the same way.`,
+      ];
+      const text = lines.join('\n');
+      out.value = text;
+      out.hidden = false;
+      let copied = false;
+      try { await navigator.clipboard.writeText(text); copied = true; } catch {}
+      if (!copied) { out.focus(); out.select(); }
+      status.textContent = copied
+        ? `Copied (${have.size} of ${d.puzzles.length} puzzles passed${missed.length ? `, ${missed.length} weak spot${missed.length === 1 ? '' : 's'}` : ''}). Open Claude and paste it.`
+        : 'Select the text below and copy it, then paste it into Claude.';
+      count(`tutor ${course}`, true, 'Copied a tutor prompt');
+    });
   }
 })();

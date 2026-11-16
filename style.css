@@ -479,3 +479,10 @@ pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
 .builds-on li.done summary a::after { content: " ✓"; color: #2F6B3A; font-weight: 700; }
 .builds-on details p { margin: 0.35rem 0 0.5rem 1rem; color: var(--muted); }
 .modules .needs { display: block; color: var(--muted); font-style: italic; }
+
+/* Take it with you: tutor prompt and Obsidian vault, side by side on wide screens */
+.take-grid { display: grid; gap: 1.5rem; }
+@media (min-width: 46rem) { .take-grid { grid-template-columns: 1fr 1fr; } }
+.take-grid h3 { margin-top: 0; }
+.tutor-prompt { width: 100%; font: inherit; font-size: .85rem; line-height: 1.45; padding: .75rem; border: 1px solid var(--line, #d8d2c4); border-radius: 8px; background: var(--card, #fff); color: inherit; resize: vertical; }
+.take-grid button.button { font: inherit; font-weight: 600; cursor: pointer; }

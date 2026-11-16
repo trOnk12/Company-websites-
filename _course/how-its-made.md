@@ -32,4 +32,4 @@ If something is wrong or didn't click, every puzzle has a "Tell me" link at the 
 
 ## Free, private, no sign-up
 
-The courses are free. Your progress is saved only in your own browser. Visits are counted without cookies, and wrong answers are counted anonymously (which puzzle, which option, nothing about you) so I can see which puzzles need fixing.
+The courses are free. Your progress is saved only in your own browser. Visits are counted without cookies, and wrong answers are counted anonymously (which puzzle, which option, nothing about you) so I can see which puzzles need fixing. Your own wrong answers are also kept in your browser, as weak spots for the "Continue with Claude" prompt; the prompt is built on your device and only goes where you paste it.

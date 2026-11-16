@@ -60,28 +60,32 @@ only the blocks they're missing.
 - [x] Review round (correctness 6–9, clarity 7–9): ten fixes, all applied. Skills updated with the lessons.
 - [ ] Module 3 (touch, scrolling, text input on iOS, SwiftUI interop, resources) stays in the course's upcoming list.
 
+## Sprint 7: Take it with you (done 2026-11-16)
+
+- [x] Obsidian vault per course (`course/<id>/<id>-obsidian.zip`, built with the pages): a course map, one note per
+  puzzle linked to its building blocks (the graph view is the course map), the diagram as a GIF, every question
+  as a `Question::Answer` flashcard for the Spaced Repetition plugin, and a glossary of flashcards.
+- [x] "Continue with Claude": a button on each overview that builds a tutor prompt in the browser from the course
+  (every puzzle's takeaway, the words taught, what's coming), your progress and your weak spots (questions you
+  first got wrong, now remembered locally). Copied to the clipboard; nothing is sent anywhere.
+- [x] Tests: the zip is real and has a note per puzzle; the prompt carries progress and weak spots.
+
 ## Backlog, in order
 
-1. **Sprint 7: Take it with you.**
-   - Obsidian export per course: one note per puzzle, `[[links]]` for its building blocks (Obsidian's graph view
-     becomes the course's knowledge map), flashcards in the Spaced Repetition plugin's `Question::Answer` format.
-   - "Continue with Claude": a button that copies a prompt with the course glossary, the puzzles you passed,
-     your weak spots (from your own wrong answers), and the foundation-first teaching rules, so Claude carries on
-     as a tutor from exactly where you stopped.
-3. **Sprint 8: Performance, under the hood.** "What the profiler is really showing you": a CPU sample vs a trace,
+1. **Sprint 8: Performance, under the hood.** "What the profiler is really showing you": a CPU sample vs a trace,
    main-thread slices in Perfetto, GC pauses and allocation cost, heap dumps and leaks, the frame timeline
    (Choreographer → RenderThread → SurfaceFlinger), Macrobenchmark and Baseline Profiles. Notes: AND02, AND06,
    AND08, H03, H09, L13. Builds on the Android course (frames, ART, Binder).
-4. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,
+2. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,
    prefill vs decode (time to first token vs tokens per second), the KV cache, streaming and cancellation in the
    UI, cost, on-device models. Notes: the AI and AI-engineering tracks.
-5. **Encryption module 2.** Keys on the phone: Android Keystore, encrypted storage, pinning.
-6. **BLE module 2, fast and reliable.** MTU and the 20-byte payload, Data Length Extension, 2M PHY, throughput math;
+3. **Encryption module 2.** Keys on the phone: Android Keystore, encrypted storage, pinning.
+4. **BLE module 2, fast and reliable.** MTU and the 20-byte payload, Data Length Extension, 2M PHY, throughput math;
    Android's one-GATT-operation-at-a-time rule and status 133.
-7. **Android module 4, continued.** Context and why it leaks; tasks and the back stack.
-8. **The map.** One page per course drawing the blocks as a graph, coloured by what you've passed.
-9. **Quiz quality.** Done in part: two new lint rules (no "X; Y" shape only on the right answer, no "Because" only on the wrong ones; 64 questions fixed). Still: the right answer is the longest option too often.
-10. **Later:** system design, data structures, as the sessions behind them land in the notes repo.
+5. **Android module 4, continued.** Context and why it leaks; tasks and the back stack.
+6. **The map.** One page per course drawing the blocks as a graph, coloured by what you've passed.
+7. **Quiz quality.** Done in part: two new lint rules (no "X; Y" shape only on the right answer, no "Because" only on the wrong ones; 64 questions fixed). Still: the right answer is the longest option too often.
+8. **Later:** system design, data structures, as the sessions behind them land in the notes repo.
 
 ## Why these, for whom
 

@@ -21,6 +21,7 @@ const SRC = path.join(L.ROOT, '_course');
 const CONTACT = 'm.pachulski94@gmail.com'; // the address already shown on the home page
 const LINKEDIN = 'https://www.linkedin.com/in/mateusz-pachulski';
 const OUT = path.join(L.ROOT, 'course');
+const X = require('./export-course');
 const REQUIRED = ['The problem', 'Check yourself', 'Sources'];
 
 function fail(file, msg) { console.error(`${path.relative(L.ROOT, file)}: ${msg}`); process.exitCode = 1; }
@@ -38,7 +39,9 @@ function loadCourse(id) {
     const { meta: fm, body } = L.parseFrontmatter(raw, f);
     return { id, n: i, slug: f.replace(/\.md$/, ''), file, raw, meta: fm, body };
   });
-  return { id, dir, meta, puzzles };
+  const gf = path.join(dir, 'glossary.json');
+  const glossary = fs.existsSync(gf) ? JSON.parse(fs.readFileSync(gf, 'utf8')) : { terms: {} };
+  return { id, dir, meta, puzzles, glossary };
 }
 
 function courses() {
@@ -290,6 +293,26 @@ ${modules}
 ${soon}
         </ul>
       </div>
+    </section>
+    <section class="section take-it" aria-labelledby="take-heading">
+      <div class="wrap narrow">
+        <h2 id="take-heading">Take it with you</h2>
+        <div class="take-grid">
+          <div>
+            <h3>Continue with Claude</h3>
+            <p class="small">Copies a prompt that turns Claude into your tutor for this course: what you've passed, the words you know, the questions you slipped on, and how to teach you, one small block at a time. Paste it into Claude, or any AI assistant. Built in your browser from your progress; nothing is sent anywhere.</p>
+            <p><button type="button" class="button primary" data-tutor="${c.id}">Copy my tutor prompt</button> <a class="button" href="https://claude.ai/new" rel="noopener">Open Claude →</a></p>
+            <p class="tutor-status small" aria-live="polite"></p>
+            <textarea class="tutor-prompt" readonly hidden aria-label="Your tutor prompt" rows="10"></textarea>
+          </div>
+          <div>
+            <h3>Download for Obsidian</h3>
+            <p class="small">The whole course as an Obsidian vault: a note per puzzle linked to the puzzles it builds on (open the graph view to see the building blocks), a glossary, and every question as a flashcard for the Spaced Repetition plugin.</p>
+            <p><a class="button" href="${c.id}-obsidian.zip" download>Download the vault (.zip) ↓</a></p>
+          </div>
+        </div>
+        <script type="application/json" id="tutor-data">${JSON.stringify(X.tutor(c)).replace(/</g, '\\u003c')}</script>
+      </div>
     </section>`;
   return L.page({
     title: `${c.meta.title}: a free course – Mateusz Pachulski`,
@@ -369,6 +392,7 @@ function build() {
   const cs = courses();
   for (const c of cs) for (const p of c.puzzles) out.set(path.join(OUT, c.id, `${p.slug}.html`), renderPuzzle(c, p, terms));
   for (const c of cs) out.set(path.join(OUT, c.id, 'index.html'), renderOverview(c));
+  for (const c of cs) out.set(path.join(OUT, c.id, `${c.id}-obsidian.zip`), X.zip(X.vault(c, blocks(c.id))));
   for (const c of cs) c.meta.modules.forEach((_, k) => out.set(path.join(OUT, c.id, `check-${k + 1}.html`), renderCheck(c, k)));
   const made = path.join(SRC, 'how-its-made.md');
   if (fs.existsSync(made)) out.set(path.join(OUT, 'how-its-made.html'), renderMethod(made));
@@ -382,7 +406,7 @@ function main() {
   if (process.exitCode) process.exit(1);
   const existing = fs.existsSync(OUT) ? fs.readdirSync(OUT, { recursive: true }).map(f => path.join(OUT, f)).filter(f => f.endsWith('.html')) : [];
   const stale = existing.filter(f => !out.has(f));
-  const changed = [...out].filter(([f, h]) => !fs.existsSync(f) || fs.readFileSync(f, 'utf8') !== h).map(([f]) => f);
+  const changed = [...out].filter(([f, h]) => !fs.existsSync(f) || !fs.readFileSync(f).equals(Buffer.isBuffer(h) ? h : Buffer.from(h))).map(([f]) => f);
   if (check) {
     if (changed.length || stale.length) {
       console.error('course/ is out of date. Run: npm run build:course');
@@ -394,7 +418,7 @@ function main() {
   }
   for (const [f, h] of out) { fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, h); }
   for (const f of stale) fs.unlinkSync(f);
-  console.log(`Built ${out.size} course pages.`);
+  console.log(`Built ${[...out.keys()].filter(f => f.endsWith('.html')).length} course pages and ${[...out.keys()].filter(f => f.endsWith('.zip')).length} Obsidian vaults.`);
 }
 
 module.exports = { courseUrls, build };

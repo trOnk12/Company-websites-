@@ -149,6 +149,49 @@ test.describe('Course', () => {
     await expect(page.locator('.gate a')).toHaveAttribute('href', `${PUZZLES[2]}.html`);
   });
 
+  test('every course offers an Obsidian vault that is a real zip with a note per puzzle', async ({ page, request }) => {
+    for (const c of COURSES) {
+      await page.goto(`/course/${c.id}/`);
+      const link = page.locator(`a[href="${c.id}-obsidian.zip"][download]`);
+      await expect(link).toBeVisible();
+      const res = await request.get(`/course/${c.id}/${c.id}-obsidian.zip`);
+      expect(res.status()).toBe(200);
+      const body = await res.body();
+      expect(body.subarray(0, 2).toString()).toBe('PK');
+      // The zip's central directory lists one "NN Title.md" note per puzzle.
+      const names = [];
+      for (let i = body.indexOf('PK\x01\x02', 0, 'latin1'); i !== -1; i = body.indexOf('PK\x01\x02', i + 4, 'latin1')) names.push(body.toString('utf8', i + 46, i + 46 + body.readUInt16LE(i + 28)));
+      expect(names.filter(n => /\/\d\d [^/]+\.md$/.test(n)).length, c.id).toBe(c.puzzles.length);
+    }
+  });
+
+  test('Continue with Claude writes a tutor prompt from your progress and weak spots', async ({ page }) => {
+    await page.goto(`/course/kmp/`);
+    await page.evaluate(() => {
+      localStorage.setItem('course:kmp:mastered', '[0,1]');
+      localStorage.setItem('course:kmp:missed', JSON.stringify([{ n: 1, q: 'A weak spot question?' }]));
+    });
+    await page.reload();
+    await page.locator('[data-tutor="kmp"]').click();
+    const prompt = page.locator('.tutor-prompt');
+    await expect(prompt).toBeVisible();
+    const text = await prompt.inputValue();
+    expect(text).toContain('Kotlin Multiplatform');
+    expect(text).toMatch(/✓ 0\. /);
+    expect(text).toMatch(/· 2\. /);
+    expect(text).toContain('Puzzle 1: A weak spot question?');
+    expect(text).toContain('next is puzzle 2');
+    await expect(page.locator('.tutor-status')).not.toBeEmpty();
+  });
+
+  test('a wrong answer is remembered as a weak spot', async ({ page }) => {
+    await page.goto(`/course/kmp/${COURSES.find(c => c.id === 'kmp').puzzles[0]}.html`);
+    await page.locator('fieldset.quiz').first().locator('input:not([data-ok]) + label').first().click();
+    const missed = await page.evaluate(() => JSON.parse(localStorage.getItem('course:kmp:missed') || '[]'));
+    expect(missed.length).toBe(1);
+    expect(missed[0].n).toBe(0);
+  });
+
   test('the diagram player plays on its own and can be paused', async ({ page }) => {
     await page.goto(`/course/android/${PUZZLES[0]}.html`);
     const play = page.locator('.player .play');
