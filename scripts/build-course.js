@@ -47,7 +47,7 @@ function courses() {
 }
 
 function courseUrls() {
-  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/${c.id}/`, ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
+  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/${c.id}/`, ...c.meta.modules.map((_, k) => `${L.SITE}/course/${c.id}/check-${k + 1}`), ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
     .filter((u, i, a) => a.indexOf(u) === i);
 }
 
@@ -101,7 +101,7 @@ ${items}
 // "Question::*Right||Wrong >> the mismatch behind it >> s3||…::Why the right one is right"
 // Each wrong option names its own misconception and points back to the diagram step (sN) or section
 // that fixes it. Grades itself with CSS; course.js adds the unlock.
-function quiz(p, items, ctx, diagramName) {
+function quiz(p, items, ctx, diagramName, learnAt) {
   const { parseQuestion } = require('./lint-course');
   return items.map((it, qi) => {
     const q = parseQuestion(it);
@@ -115,13 +115,14 @@ function quiz(p, items, ctx, diagramName) {
     const inputs = order.map((o, i) => `<input type="radio" name="${name}" id="${name}-${i + 1}"${o.ok ? ' data-ok' : ''}><label for="${name}-${i + 1}">${L.inline(o.text, ctx)}</label>`).join('\n');
     const pointer = ptr => {
       const step = (ptr || '').match(/^s(\d)$/);
-      if (step && diagramName) return `<label class="show-me" for="st-${diagramName}-${step[1]}" data-goto="st-${diagramName}">Show me step ${step[1]} again ↑</label>`;
+      if (step && diagramName && !learnAt) return `<label class="show-me" for="st-${diagramName}-${step[1]}" data-goto="st-${diagramName}">Show me step ${step[1]} again ↑</label>`;
+      if (learnAt) return `<a class="show-me" href="${learnAt.href}">Learn it in puzzle ${learnAt.n} →</a>`;
       return ptr ? `<a class="show-me" href="#${ptr}">Re-read that part ↑</a>` : '';
     };
     const fbs = order.map((o, i) => o.ok
       ? `<p class="fb ok opt-${i + 1}"><b>Right.</b> ${L.inline(q.why, ctx)}</p>`
       : `<p class="fb no opt-${i + 1}"><b>Not quite.</b> ${L.inline(o.mismatch || 'Step back through the diagram above, then try again.', ctx)} ${pointer(o.pointer)}</p>`).join('\n');
-    return `<fieldset class="quiz">
+    return `<fieldset class="quiz"${learnAt ? ` data-n="${learnAt.n}"` : ''}>
 <legend>${L.inline(q.q, ctx)}</legend>
 ${inputs}
 ${fbs}
@@ -222,13 +223,42 @@ ${next ? '' : `      <section class="finish" aria-labelledby="finish-heading">
 
 const minutes = c => Math.round(c.puzzles.length * 5 / 10) * 10;
 
+// "Know this already?": one question per puzzle of a module. A right answer marks that puzzle passed;
+// a wrong one points to the puzzle that teaches it. course/<id>/check-<k>.html.
+function renderCheck(c, k) {
+  const m = c.meta.modules[k];
+  const first = c.meta.modules.slice(0, k).reduce((a, x) => a + x.puzzles.length, 0);
+  const ps = m.puzzles.map((_, j) => c.puzzles[first + j]);
+  const qs = ps.map(p => {
+    const ctx = { file: p.file, cards: new Map(), links: new Set() };
+    const check = L.parseBody(p.body, ctx).find(s => s.title === 'Check yourself');
+    const item = check.blocks.find(b => b.type === 'ul').items[0];
+    return `<section aria-label="Puzzle ${p.n}"><p class="eyebrow">Puzzle ${p.n}: ${L.esc(p.meta.title)}</p>\n${quiz(p, [item], ctx, null, { n: p.n, href: `${p.slug}.html` })}</section>`;
+  }).join('\n');
+  return L.page({
+    title: `Check: ${m.title} – ${c.meta.title} – Mateusz Pachulski`,
+    description: `Already know ${m.title}? Answer one question per puzzle; each right answer marks that puzzle as passed.`,
+    canonical: `${L.SITE}/course/${c.id}/check-${k + 1}`,
+    base: '../../', current: 'course', feed: false, script: '../course.js',
+    footer: `      <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../">pachulski.dev</a></p>`,
+    body: `    <article class="module-check course-top wrap narrow" data-course="${c.id}">
+      <p class="eyebrow"><a href="./">${L.esc(c.meta.title)}</a> · check</p>
+      <h1>Know ${L.esc(m.title.replace(/^Module \d+:\s*/, ''))} already?</h1>
+      <p class="lede">One question for each of the ${ps.length} puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+${qs}
+      <p class="check-result" aria-live="polite"></p>
+      <p class="actions"><a class="button" href="./">Back to the overview →</a></p>
+    </article>`,
+  });
+}
+
 // One course's overview: course/<id>/index.html.
 function renderOverview(c) {
   let i = 0;
   const modules = c.meta.modules.map(m => {
     const first = i;
     const items = m.puzzles.map(() => c.puzzles[i++]).map(p => { const on = blocks(c.id)[p.n] || []; return `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}${on.length ? ` <span class="needs">Builds on ${on.join(', ')}.</span>` : ''}</span></li>`; }).join('');
-    return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')}</p><ol start="${first}">${items}</ol></li>`;
+    return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')} <a href="check-${c.meta.modules.indexOf(m) + 1}.html">Know this already? Take the check →</a></p><ol start="${first}">${items}</ol></li>`;
   }).join('\n');
   const soon = (c.meta.upcoming || []).map((m, k) => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(${k === 0 ? 'next' : 'later'})</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
   const hero = c.meta.hero || 'chain';
@@ -338,6 +368,7 @@ function build() {
   const cs = courses();
   for (const c of cs) for (const p of c.puzzles) out.set(path.join(OUT, c.id, `${p.slug}.html`), renderPuzzle(c, p, terms));
   for (const c of cs) out.set(path.join(OUT, c.id, 'index.html'), renderOverview(c));
+  for (const c of cs) c.meta.modules.forEach((_, k) => out.set(path.join(OUT, c.id, `check-${k + 1}.html`), renderCheck(c, k)));
   const made = path.join(SRC, 'how-its-made.md');
   if (fs.existsSync(made)) out.set(path.join(OUT, 'how-its-made.html'), renderMethod(made));
   if (cs.length) out.set(path.join(OUT, 'index.html'), renderIndex(cs));

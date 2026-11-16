@@ -208,6 +208,24 @@
     puzzle.querySelectorAll('.progress a').forEach((a, i) => { if (have.includes(i)) a.classList.add('done'); });
   }
 
+  // ── Module check: a right answer marks that puzzle passed ──
+  const mc = document.querySelector('article.module-check[data-course]');
+  if (mc) {
+    const course = mc.dataset.course;
+    const qs = [...mc.querySelectorAll('fieldset.quiz[data-n]')];
+    const out = mc.querySelector('.check-result');
+    const tally = () => {
+      const right = qs.filter(q => q.querySelector('input[data-ok]:checked'));
+      const wrong = qs.filter(q => q.querySelector('input:checked:not([data-ok])'));
+      right.forEach(q => store.add(course, Number(q.dataset.n)));
+      if (out && right.length + wrong.length === qs.length) {
+        out.textContent = wrong.length ? `${right.length} of ${qs.length} right. Start with puzzle ${Math.min(...wrong.map(q => Number(q.dataset.n)))}.` : `All ${qs.length} right: this module is marked as passed.`;
+        count(`check ${course} ${location.pathname.split('/').pop()}: ${right.length}/${qs.length}`, true, 'Took a module check');
+      }
+    };
+    qs.forEach(q => q.addEventListener('change', tally));
+  }
+
   // ── Course cards on the catalog: how far you got in each course ──
   for (const card of document.querySelectorAll('[data-progress]')) {
     const have = store.get(card.dataset.progress).length;

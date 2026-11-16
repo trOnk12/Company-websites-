@@ -113,6 +113,17 @@ test.describe('Course', () => {
     }
   });
 
+  test('a module check marks the puzzles you answered right, and points to the first one you missed', async ({ page }) => {
+    await page.goto('/course/ble/check-1.html');
+    const qs = page.locator('fieldset.quiz');
+    const n = await qs.count();
+    for (let i = 0; i < n; i++) await qs.nth(i).locator(i === 1 ? 'input:not([data-ok]) + label' : 'input[data-ok] + label').first().click();
+    await expect(page.locator('.check-result')).toContainText('Start with puzzle 1');
+    await page.goto('/course/ble/');
+    await expect(page.locator('.modules li[data-n="0"]')).toHaveAttribute('data-state', 'done');
+    await expect(page.locator('.modules li[data-n="1"]')).toHaveAttribute('data-state', 'next');
+  });
+
   test('the clarity lint is clean', () => {
     execFileSync('node', ['scripts/lint-course.js'], { cwd: ROOT, stdio: 'pipe' });
   });

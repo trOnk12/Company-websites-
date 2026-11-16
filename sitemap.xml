@@ -56,6 +56,26 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/android/check-1</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/check-2</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/check-3</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/check-4</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/android/00-a-running-app-is-a-process</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -157,6 +177,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/ble/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ble/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
