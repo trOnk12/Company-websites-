@@ -19,7 +19,7 @@ After rotating the phone ten times, your app uses 80 MB more than at start. The 
 A **heap dump** is a snapshot of every object in your app's heap, with every reference between them. Android Studio lists them by class with two sizes:
 
 - **Shallow size**: the memory one object takes by itself, its own fields. An Activity is a few hundred bytes.
-- **Retained size**: the memory that would be freed if this object were freed: itself, plus everything only it keeps alive. That same Activity can retain megabytes: its screen and its Compose state. (Bitmap pixels live in native memory, shown separately as Native Size.)
+- **Retained size**: the memory that would be freed if this object were freed: itself, plus everything only it keeps alive. That same Activity can retain megabytes: its screen and its Compose state. (Bitmap pixels live in **native memory**, memory outside the heap that the garbage collector doesn't manage, shown separately as Native Size.)
 
 The collector (puzzle 4) starts from **GC roots**, the references it always keeps: local variables of running threads, static fields, and the like. Whatever it reaches stays; the rest is freed. So a **leak** in a garbage-collected app is an object you're finished with that's still reachable from a root.
 

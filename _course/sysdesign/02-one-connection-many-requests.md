@@ -28,7 +28,7 @@ So a first request on a new connection costs about three round trips: 750 ms on 
 
 **HTTP/2** goes further. With HTTP/1.1, a connection carries one request at a time. HTTP/2 does **multiplexing**: many requests and responses interleaved on one connection, all in flight at once. That's what makes "send them together" from puzzle 1 cheap.
 
-In an Android app, OkHttp (under Retrofit) does both for you, with one condition: use **one** `OkHttpClient` for the whole app. Each client keeps its own pool of open connections; a new client per screen, or per request, starts cold and pays the handshakes again. For per-call settings, use `client.newBuilder()`: the new client shares the original's pool. (HTTP/3, over QUIC, goes further and combines both handshakes into one round trip.)
+In an Android app, OkHttp (under Retrofit) does both for you, with one condition: use one `OkHttpClient` for the whole app. Each client keeps its own **connection pool**, the set of connections it keeps open for reuse; a new client per screen, or per request, starts cold and pays the handshakes again. For per-call settings, use `client.newBuilder()`: the new client shares the original's pool. (HTTP/3, over QUIC, goes further and combines both handshakes into one round trip.)
 
 ## The analogy
 

@@ -70,7 +70,6 @@
    "companion object",
    "Fragment",
    "Bitmap",
-   "SurfaceFlinger",
    "display",
    "image",
    "images",
@@ -302,6 +301,29 @@
    "in": "03",
    "def": "The display's regular signal that it's about to show a new frame.",
    "aliases": []
+  },
+  "CPU cycle": {
+   "in": "00",
+   "def": "One tick of the processor's clock.",
+   "aliases": [
+    "CPU cycles"
+   ],
+   "kind": "name"
+  },
+  "scheduler": {
+   "in": "02",
+   "def": "The part of the kernel that decides which thread runs on which CPU.",
+   "aliases": []
+  },
+  "native memory": {
+   "in": "05",
+   "def": "Memory outside the heap that the garbage collector doesn't manage.",
+   "aliases": []
+  },
+  "SurfaceFlinger": {
+   "in": "03",
+   "def": "The system service that combines every app's frames onto the display.",
+   "kind": "name"
   }
  },
  "from": {

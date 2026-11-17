@@ -19,7 +19,7 @@ Users say scrolling stutters, but only sometimes. In a trace there are hundreds 
 In the Android course you saw a frame's work: the main thread measures, lays out and draws, the RenderThread hands it to the GPU, and the result must be ready for the next **vsync**, the display's signal that it's about to show a new frame. Since Android 12, Perfetto's **FrameTimeline** draws that contract for each frame, as two slices under your app:
 
 - **Expected Timeline**: the window the app was given for this frame. It starts when the Choreographer callback was scheduled; its end is the frame's **deadline**.
-- **Actual Timeline**: what really happened. It starts when `Choreographer#doFrame` started running and ends at whichever came later: the frame being posted to SurfaceFlinger (the RenderThread hands the finished frame over), or the GPU finishing.
+- **Actual Timeline**: what really happened. It starts when `Choreographer#doFrame` started running and ends at whichever came later: the frame being posted to **SurfaceFlinger**, Android's service that combines every app's frames onto the display, (the RenderThread hands the finished frame over), or the GPU finishing.
 
 When Actual ends after the deadline, the frame is janky, and FrameTimeline labels whose fault it was. "App Deadline Missed" means your app ran longer than expected. Other labels blame SurfaceFlinger or the display, and "Buffer Stuffing" means your app queued frames faster than they could be shown.
 

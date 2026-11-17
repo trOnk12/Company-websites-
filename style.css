@@ -733,3 +733,17 @@ body:has(article.music) { --type: "JetBrains Mono", ui-monospace, monospace; fon
 .mb-text { font-family: "Caveat", "Segoe Print", cursive; font-weight: 700; font-size: 1.45rem; line-height: 1.1; }
 .mb-kicker { display: block; font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 400; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #6A49B5; }
 @media (prefers-reduced-motion: reduce) { .music-button { transition: none; } }
+
+/* Your learning */
+.me section { margin-top: 2.25rem; }
+.me-next { padding-left: 1.2rem; }
+.me-suggestion { margin-bottom: .9rem; }
+.me-suggestion > a { font-weight: 700; }
+.me-suggestion p { margin: .15rem 0 0; color: var(--muted); }
+.me-courses { list-style: none; padding: 0; display: grid; gap: .55rem; }
+.me-course { display: grid; grid-template-columns: minmax(0, 1fr) 8rem auto; align-items: center; gap: .3rem .8rem; }
+.me-course progress { width: 8rem; height: .6rem; accent-color: var(--accent-deep); }
+@media (max-width: 34rem) { .me-course { grid-template-columns: 1fr auto; } .me-course > a { grid-column: 1 / -1; } }
+.me-weak li { margin-bottom: .4rem; }
+.me label.button { cursor: pointer; }
+.me button.button { font: inherit; font-weight: 700; cursor: pointer; }

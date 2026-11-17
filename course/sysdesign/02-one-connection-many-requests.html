@@ -91,7 +91,7 @@
 <p>So a first request on a new connection costs about three round trips: 750 ms on that network, for a few kilobytes.</p>
 <p><b>Connection reuse</b> keeps the connection open and sends the next request over it. Both handshakes are skipped: one round trip, as in puzzle 1.</p>
 <p><b>HTTP/2</b> goes further. With HTTP/1.1, a connection carries one request at a time. HTTP/2 does <b>multiplexing</b>: many requests and responses interleaved on one connection, all in flight at once. That's what makes &quot;send them together&quot; from puzzle 1 cheap.</p>
-<p>In an Android app, OkHttp (under Retrofit) does both for you, with one condition: use <b>one</b> <code>OkHttpClient</code> for the whole app. Each client keeps its own pool of open connections; a new client per screen, or per request, starts cold and pays the handshakes again. For per-call settings, use <code>client.newBuilder()</code>: the new client shares the original's pool. (HTTP/3, over QUIC, goes further and combines both handshakes into one round trip.)</p>
+<p>In an Android app, OkHttp (under Retrofit) does both for you, with one condition: use one <code>OkHttpClient</code> for the whole app. Each client keeps its own <b>connection pool</b>, the set of connections it keeps open for reuse; a new client per screen, or per request, starts cold and pays the handshakes again. For per-call settings, use <code>client.newBuilder()</code>: the new client shares the original's pool. (HTTP/3, over QUIC, goes further and combines both handshakes into one round trip.)</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

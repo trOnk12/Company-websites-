@@ -7,7 +7,7 @@ takeaway: Data crosses the internet in packets. IP addresses each packet and rou
 
 ## The problem
 
-In your code, a request is one call, and a user object comes back. But the phone and the server are joined by Wi-Fi, a cell tower, cables and a dozen routers, any of which can drop data. How does a request survive that trip, and what does it cost?
+In your code, a request is one call, and a user object comes back. But the phone and the server are joined by Wi-Fi, a cell tower, cables and a dozen **routers**, machines that pass data along toward its address, any of which can drop data. How does a request survive that trip, and what does it cost?
 
 ## See it
 

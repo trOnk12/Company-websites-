@@ -199,6 +199,16 @@
    "in": "05",
    "def": "Android's system service that runs Gemini Nano on the device and keeps it updated.",
    "aliases": []
+  },
+  "obfuscation": {
+   "in": "04",
+   "def": "Scrambling names in code to make it harder to read.",
+   "aliases": []
+  },
+  "quota": {
+   "in": "05",
+   "def": "A cap on how many requests an app may make in a period.",
+   "aliases": []
   }
  }
 }

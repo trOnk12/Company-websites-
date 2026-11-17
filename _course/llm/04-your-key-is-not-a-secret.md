@@ -16,7 +16,7 @@ You put the model provider's key in `BuildConfig`, obfuscated with R8, and call 
 
 ## The building block
 
-An **API key** is a password for your account: whoever sends it, gets served, and you get billed. And an APK is a file anyone can download and unpack. Strings in it can be found; obfuscation renames code but a key is still a string the app must send; and even if you hide it well, the key travels in every request from a phone the attacker controls, where they can intercept their own traffic. Google Cloud's guidance is plain: don't include API keys in client code.
+An **API key** is a password for your account: whoever sends it, gets served, and you get billed. And an APK is a file anyone can download and unpack. Strings in it can be found; **obfuscation**, scrambling names to make code harder to read, renames code but a key is still a string the app must send; and even if you hide it well, the key travels in every request from a phone the attacker controls, where they can intercept their own traffic. Google Cloud's guidance is plain: don't include API keys in client code.
 
 So the key lives on a server you control, a **proxy backend**:
 

@@ -86,7 +86,7 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its <b>thread state</b>, as the kernel's scheduler records it.</p>
+<p>A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its <b>thread state</b>, as the kernel's <b>scheduler</b> (the part that decides which thread runs on which CPU) records it.</p>
 <ul><li><b>Running</b>: the thread is on a CPU, executing. Only this time is &quot;your code being slow&quot;.</li><li><b>Runnable</b>: ready to run, but every CPU is busy with other threads. It waits its turn.</li><li><b>Sleeping</b>: nothing to do until something happens: a lock held by another thread, a Binder reply from another process, a message.</li><li><b>Uninterruptible Sleep</b>: waiting inside the kernel, usually for disk I/O to complete.</li></ul>
 <p>Sampling (puzzle 0) only fires while a thread is on a CPU, so a thread that isn't Running collects almost no samples. That's why your 120 ms span barely shows: most of it the main thread was asleep.</p>
 <p>So before you optimise a slow span, read its states. Mostly Running: make the code faster, the flame chart (puzzle 1) shows where. Mostly Sleeping: find who it's waiting for; the trace shows which thread woke it. Mostly Uninterruptible Sleep: it's reading the disk, so move that off the main thread. Mostly Runnable: other threads, maybe your own, are keeping the CPUs busy.</p>

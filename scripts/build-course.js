@@ -50,7 +50,7 @@ function courses() {
 }
 
 function courseUrls() {
-  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/${c.id}/`, ...c.meta.modules.map((_, k) => `${L.SITE}/course/${c.id}/check-${k + 1}`), ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
+  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/me`, `${L.SITE}/course/${c.id}/`, ...c.meta.modules.map((_, k) => `${L.SITE}/course/${c.id}/check-${k + 1}`), ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
     .filter((u, i, a) => a.indexOf(u) === i);
 }
 
@@ -291,7 +291,7 @@ function renderOverview(c) {
         <p class="eyebrow"><a href="../">Free courses</a> · ${c.puzzles.length} puzzles so far · about ${minutes(c)} minutes</p>
         <h1 id="course-heading">${L.esc(c.meta.title)}</h1>
         <p class="lede">${L.esc(c.meta.intro)}</p>
-        <p class="actions"><a class="button primary" href="${c.puzzles[0].slug}.html" data-resume="${c.id}">Start the first puzzle →</a></p>
+        <p class="actions"><a class="button primary" href="${c.puzzles[0].slug}.html" data-resume="${c.id}">Start the first puzzle →</a> <a class="button" href="../me.html">Your learning →</a></p>
         ${gif}
       </div>
     </section>
@@ -358,6 +358,35 @@ function renderMethod(file) {
 }
 
 // The catalog: course/index.html. Live courses as cards, then the ones on the way.
+// "Your learning": progress across every course, what to learn next (from the building-block graph), weak spots,
+// and export/import of progress. Everything comes from this browser's storage; nothing is sent anywhere.
+function renderMe(cs) {
+  const data = cs.map(c => ({
+    id: c.id, title: c.meta.title, assumes: c.meta.assumes ? (c.meta.assumes.href.match(/\.\.\/([a-z0-9-]+)\//) || [])[1] : null,
+    puzzles: c.puzzles.map(p => ({ n: p.n, slug: p.slug, title: p.meta.title, short: p.meta.short || '', blocks: blocks(c.id)[p.n] || [] })),
+  }));
+  return L.page({
+    title: 'Your learning – Mateusz Pachulski',
+    description: 'Your progress across every course, what to learn next, and the questions you slipped on. Saved only in your browser.',
+    canonical: `${L.SITE}/course/me`,
+    base: '../', current: 'course', feed: false, script: 'course.js',
+    footer: `      <p class="small"><a href="./">All courses</a> · <a href="../">pachulski.dev</a></p>`,
+    body: `    <article class="me course-top wrap narrow">
+      <p class="eyebrow"><a href="./">Free courses</a> · your learning</p>
+      <h1>Your learning</h1>
+      <p class="lede">Where you are in every course, what to learn next, and what to go back to. It's built from your progress in this browser: no account, nothing sent anywhere.</p>
+      <section aria-labelledby="next-heading"><h2 id="next-heading">Learn next</h2><ol class="me-next"><li class="small">Loading…</li></ol></section>
+      <section aria-labelledby="where-heading"><h2 id="where-heading">Where you are</h2><ul class="me-courses"></ul></section>
+      <section aria-labelledby="weak-heading"><h2 id="weak-heading">Go back to</h2><p class="small">Questions you got wrong at first. Re-read the puzzle; it's the fastest way to make it stick.</p><ul class="me-weak"></ul></section>
+      <section aria-labelledby="move-heading"><h2 id="move-heading">Take your progress to another device</h2>
+        <p class="small">Your progress lives in this browser. Save it as a file, then load it on your other phone or laptop.</p>
+        <p class="actions"><button type="button" class="button" data-export>Save my progress</button> <label class="button"><input type="file" accept="application/json" data-import hidden>Load a progress file</label> <span class="me-status small" aria-live="polite"></span></p>
+      </section>
+      <script type="application/json" id="me-data">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>
+    </article>`,
+  });
+}
+
 function renderIndex(cs) {
   const cat = fs.existsSync(path.join(SRC, 'catalog.json')) ? JSON.parse(fs.readFileSync(path.join(SRC, 'catalog.json'), 'utf8')) : null;
   const live = new Set(cs.map(c => c.id));
@@ -374,6 +403,7 @@ function renderIndex(cs) {
         <h1 id="courses-heading">Courses that build from the foundation</h1>
         <p class="lede">Each course is a chain of small puzzles. Every puzzle starts with a problem, adds one building block, shows it in a diagram that moves, and ends with a check that tells you you're ready for the next. No term is used before it's explained.</p>
         <p><a href="how-its-made.html">How these courses are made, and how they're checked →</a></p>
+        <p class="actions"><a class="button primary" href="me.html">Your learning: progress and what to learn next →</a></p>
       </div>
     </section>
     <section class="section" aria-labelledby="live-heading">
@@ -415,6 +445,7 @@ function build() {
   const made = path.join(SRC, 'how-its-made.md');
   if (fs.existsSync(made)) out.set(path.join(OUT, 'how-its-made.html'), renderMethod(made));
   if (cs.length) out.set(path.join(OUT, 'index.html'), renderIndex(cs));
+  if (cs.length) out.set(path.join(OUT, 'me.html'), renderMe(cs));
   return out;
 }
 

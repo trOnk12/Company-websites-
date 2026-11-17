@@ -25,7 +25,6 @@
    "4G",
    "5G",
    "Wi-Fi",
-   "LTE",
    "HTTP",
    "HTTPS",
    "URL",
@@ -256,6 +255,30 @@
    "in": "06",
    "def": "Randomness added to the wait, so clients that failed together don't retry together.",
    "aliases": []
+  },
+  "router": {
+   "in": "00",
+   "def": "A machine that passes data along toward its address.",
+   "aliases": [
+    "routers"
+   ]
+  },
+  "connection pool": {
+   "in": "02",
+   "def": "The set of open connections a client keeps for reuse.",
+   "aliases": []
+  },
+  "LTE": {
+   "in": "03",
+   "def": "Today's 4G mobile network.",
+   "aliases": [],
+   "kind": "name"
+  },
+  "3G": {
+   "in": "03",
+   "def": "The older mobile network before LTE.",
+   "aliases": [],
+   "kind": "name"
   }
  }
 }

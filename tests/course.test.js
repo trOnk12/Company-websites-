@@ -192,6 +192,20 @@ test.describe('Course', () => {
     expect(missed[0].n).toBe(0);
   });
 
+  test('Your learning shows progress, what to learn next, and weak spots', async ({ page }) => {
+    await page.goto('/course/me.html');
+    await expect(page.locator('.me-next li')).not.toHaveCount(0);
+    await page.evaluate(() => {
+      localStorage.setItem('course:kmp:mastered', '[0,1]');
+      localStorage.setItem('course:kmp:missed', JSON.stringify([{ n: 1, q: 'A weak spot?' }]));
+    });
+    await page.reload();
+    await expect(page.locator('.me-next li').first()).toContainText(/./);
+    await expect(page.locator('.me-next a').first()).toHaveAttribute('href', /^kmp\/02-/);
+    await expect(page.locator('.me-weak')).toContainText('A weak spot?');
+    await expect(page.locator('.me-courses progress').first()).toBeAttached();
+  });
+
   test('the diagram player plays on its own and can be paused', async ({ page }) => {
     await page.goto(`/course/android/${PUZZLES[0]}.html`);
     const play = page.locator('.player .play');

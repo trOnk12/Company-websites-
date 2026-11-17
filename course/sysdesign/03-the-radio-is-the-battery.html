@@ -86,9 +86,9 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>The phone's cellular radio has power levels, its <b>radio state</b>. Idle, it sips power and only listens now and then. Connected, it draws a lot: on LTE, roughly a hundred times more, according to High Performance Browser Networking.</p>
+<p>The phone's cellular radio has power levels, its <b>radio state</b>. Idle, it sips power and only listens now and then. Connected, it draws a lot: on LTE, today's 4G mobile network, roughly a hundred times more, according to High Performance Browser Networking.</p>
 <p>Two things make every send expensive:</p>
-<ul><li><b>Waking up takes time</b>, a wake-up delay. Moving from idle to connected costs control messages with the tower before your data can go: that's latency on top of puzzle 1's round trip.</li><li><b>It doesn't fall asleep right away.</b> After the last packet, the radio stays at high power for a <b>tail time</b>, in case more data comes, then steps down. Android's documentation gives an example for a typical 3G device: at least 18 seconds of drawing energy per transfer. On LTE the timers are set by the network and are shorter, but the effect is the same.</li></ul>
+<ul><li><b>Waking up takes time</b>, a wake-up delay. Moving from idle to connected costs control messages with the tower before your data can go: that's latency on top of puzzle 1's round trip.</li><li><b>It doesn't fall asleep right away.</b> After the last packet, the radio stays at high power for a <b>tail time</b>, in case more data comes, then steps down. Android's documentation gives an example for a typical device on 3G, the older mobile network: at least 18 seconds of drawing energy per transfer. On LTE the timers are set by the network and are shorter, but the effect is the same.</li></ul>
 <p>So a 300-byte ping pays almost the same fixed cost, one wake-up and one tail, as a far bigger download. Send a ping about every 20 seconds, and the radio never gets to sleep.</p>
 <p>The fix is <b>batching</b>: queue small work and send it together, so the radio wakes once. Analytics go in a batch every few minutes, or ride along with a request the user is already waiting for. On Android, WorkManager can defer background sync to when the device is on Wi-Fi or charging.</p>
       </section>

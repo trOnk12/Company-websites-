@@ -16,7 +16,7 @@ You wrapped `loadUser()` in a trace section (puzzle 0) and it's 120 ms long, on 
 
 ## The building block
 
-A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its **thread state**, as the kernel's scheduler records it.
+A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its **thread state**, as the kernel's **scheduler** (the part that decides which thread runs on which CPU) records it.
 
 - **Running**: the thread is on a CPU, executing. Only this time is "your code being slow".
 - **Runnable**: ready to run, but every CPU is busy with other threads. It waits its turn.

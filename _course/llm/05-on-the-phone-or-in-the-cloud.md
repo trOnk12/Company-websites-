@@ -29,7 +29,7 @@ What you give up:
 - Size: a model that fits on a phone is much smaller than a cloud model, so hard reasoning and long documents are out of reach.
 - Reach: it runs only on devices that support it, and different devices can run different versions of Gemini Nano. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 4), or a simpler feature.
 
-So the decision is per feature. Short, frequent, private tasks the user triggers inside your app, like smart replies or tidying a note, suit the phone. Three limits shape the design: AICore runs inference only while your app is the top foreground app (a foreground service doesn't count); each app has a request quota, so a burst gets a BUSY error to retry with backoff, plus a longer battery quota; and the model may need downloading first. So check the feature's status before you offer it, and show it only when it's ready. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.
+So the decision is per feature. Short, frequent, private tasks the user triggers inside your app, like smart replies or tidying a note, suit the phone. Three limits shape the design: AICore runs the model only while your app is the top foreground app (a foreground service doesn't count); each app has a request **quota**, a cap on how many requests it may make in a period, so a burst gets a BUSY error to retry with backoff, plus a longer battery quota; and the model may need downloading first. So check the feature's status before you offer it, and show it only when it's ready. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.
 
 ## The analogy
 

@@ -314,4 +314,75 @@
       count(`tutor ${course}`, true, 'Copied a tutor prompt');
     });
   }
+  // ── Your learning: progress everywhere, what to learn next, weak spots, export/import ──
+  const meData = document.getElementById('me-data');
+  if (meData) {
+    let courses = [];
+    try { courses = JSON.parse(meData.textContent); } catch {}
+    const passed = id => new Set(store.get(id));
+    const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+    const link = (href, text) => { const a = el('a', null, text); a.href = href; return a; };
+    const byId = Object.fromEntries(courses.map(c => [c.id, c]));
+    const done = c => c.puzzles.every(p => passed(c.id).has(p.n));
+
+    // Where you are
+    const where = document.querySelector('.me-courses');
+    for (const c of courses) {
+      const have = passed(c.id), li = el('li', 'me-course');
+      li.append(link(`${c.id}/`, c.title));
+      const bar = el('progress'); bar.max = c.puzzles.length; bar.value = have.size; bar.setAttribute('aria-label', `${c.title}: ${have.size} of ${c.puzzles.length}`);
+      li.append(bar, el('span', 'small', have.size === 0 ? ' not started' : have.size === c.puzzles.length ? ' complete ✓' : ` ${have.size} of ${c.puzzles.length}`));
+      where.append(li);
+    }
+
+    // Learn next: the next puzzle whose building blocks you have, in courses you've started;
+    // then courses whose prerequisite you've finished; then starting points.
+    const next = [];
+    for (const c of courses) {
+      const have = passed(c.id);
+      if (!have.size || have.size === c.puzzles.length) continue;
+      const ready = c.puzzles.find(p => !have.has(p.n) && p.blocks.every(b => have.has(b))) || c.puzzles.find(p => !have.has(p.n));
+      next.push({ c, p: ready, why: ready.blocks.length ? `You have its building blocks: ${ready.blocks.map(b => c.puzzles[b].title).join(', ')}.` : `Next in ${c.title}.` });
+    }
+    for (const c of courses) {
+      if (passed(c.id).size || !c.assumes || !byId[c.assumes] || !done(byId[c.assumes])) continue;
+      next.push({ c, p: c.puzzles[0], why: `It builds on ${byId[c.assumes].title}, which you've finished.` });
+    }
+    if (!next.length) for (const id of ['android', 'sysdesign', 'security']) if (byId[id] && !passed(id).size) next.push({ c: byId[id], p: byId[id].puzzles[0], why: 'A course that starts from zero.' });
+    const ol = document.querySelector('.me-next'); ol.textContent = '';
+    for (const { c, p, why } of next.slice(0, 4)) {
+      const li = el('li', 'me-suggestion');
+      li.append(link(`${c.id}/${p.slug}.html`, p.title), el('span', 'small me-course-name', ` · ${c.title}`), el('p', 'small', why));
+      ol.append(li);
+    }
+
+    // Go back to: questions first answered wrong
+    const weak = document.querySelector('.me-weak'); let any = false;
+    for (const c of courses) for (const m of store.missed(c.id)) {
+      const p = c.puzzles[m.n]; if (!p) continue; any = true;
+      const li = el('li'); li.append(link(`${c.id}/${p.slug}.html`, m.q), el('span', 'small', ` · ${p.title}`)); weak.append(li);
+    }
+    if (!any) weak.append(el('li', 'small', 'Nothing yet: wrong answers you give in a quiz show up here.'));
+
+    // Export / import
+    const status = document.querySelector('.me-status');
+    document.querySelector('[data-export]').addEventListener('click', () => {
+      const dump = {};
+      try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (/^(course|music):/.test(k)) dump[k] = localStorage.getItem(k); } } catch {}
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify({ site: 'pachulski.dev', saved: new Date().toISOString(), progress: dump }, null, 1)], { type: 'application/json' }));
+      a.download = 'pachulski-progress.json'; document.body.append(a); a.click(); a.remove();
+      status.textContent = 'Saved. Load this file on your other device.';
+      count('progress export', true, 'Saved progress to a file');
+    });
+    document.querySelector('[data-import]').addEventListener('change', async e => {
+      const file = e.target.files[0]; if (!file) return;
+      try {
+        const d = JSON.parse(await file.text());
+        const entries = Object.entries(d.progress || {}).filter(([k, v]) => /^(course|music):[\w:-]+$/.test(k) && typeof v === 'string' && v.length < 20000);
+        for (const [k, v] of entries) localStorage.setItem(k, v);
+        status.textContent = `Loaded ${entries.length} saved items.`; setTimeout(() => location.reload(), 600);
+      } catch { status.textContent = "That file isn't a progress file from this site."; }
+    });
+  }
 })();
