@@ -56,7 +56,18 @@ function pen(seed, rough = 1) {
     }
     return out.join(' ');
   };
-  return { line, rect, ellipse, cable, hatch, rand: r, jit: j };
+  // A watercolour blob: a filled, irregular shape (the filter in the page softens its edge).
+  const blob = (cx, cy, rx, ry = rx, wild = 0.16) => {
+    const n = 14, start = r() * Math.PI * 2, pts = [];
+    for (let k = 0; k < n; k++) { const a = start + (k / n) * Math.PI * 2, d = 1 + j(wild); pts.push([cx + Math.cos(a) * rx * d, cy + Math.sin(a) * ry * d]); }
+    let d = `M${f(pts[0][0])},${f(pts[0][1])}`;
+    for (let k = 0; k < n; k++) {
+      const p0 = pts[(k - 1 + n) % n], p1 = pts[k], p2 = pts[(k + 1) % n], p3 = pts[(k + 2) % n];
+      d += ` C${f(p1[0] + (p2[0] - p0[0]) / 6)},${f(p1[1] + (p2[1] - p0[1]) / 6)} ${f(p2[0] - (p3[0] - p1[0]) / 6)},${f(p2[1] - (p3[1] - p1[1]) / 6)} ${f(p2[0])},${f(p2[1])}`;
+    }
+    return d + 'Z';
+  };
+  return { line, rect, ellipse, cable, hatch, blob, rand: r, jit: j };
 }
 
 module.exports = { pen, seedOf };

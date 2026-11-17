@@ -43,7 +43,7 @@ function knobSvg(f, label) {
   const ticks = Array.from({ length: 11 }, (_, k) => { const d = -150 + 30 * k; const [a, b] = P(d, 19), [c, e] = P(d, k % 5 === 0 ? 23 : 21.5); return p.line(a, b, c, e, false); }).join(' ');
   const d = -150 + 300 * f;
   const [x1, y1] = P(d, 2), [x2, y2] = P(d, 14);
-  return `<svg class="knob" viewBox="0 0 48 48" role="img" aria-label="${L.esc(label)}"><path class="sk thin" d="${ticks}"/><path class="sk" d="${p.ellipse(24, 24, 15, 15)}"/><path class="sk ptr" d="${p.line(x1, y1, x2, y2)}"/><circle class="k-dot" cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="2.3"/></svg>`;
+  return `<svg class="knob" viewBox="0 0 48 48" role="img" aria-label="${L.esc(label)}"><path class="wash" d="${p.blob(25.5, 25.5, 14, 14, 0.12)}"/><path class="sk thin" d="${ticks}"/><path class="sk" d="${p.ellipse(24, 24, 15, 15)}"/><path class="sk ptr" d="${p.line(x1, y1, x2, y2)}"/><circle class="k-dot" cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="2.3"/></svg>`;
 }
 
 // A device's panel, sketched, with this recipe's knobs and switches drawn where they're set.
@@ -65,7 +65,7 @@ function deviceSketch(dev, title, block) {
   const cols = Math.min(pedal ? 4 : 5, items.length), cw = 118, chh = 104;
   const W = cols * cw + 40, top = 54, bodyRows = Math.ceil(items.length / cols), H = top + bodyRows * chh + (pedal ? 92 : 24);
   const name = { 'dev-gc': 'GRAND CANYON', 'dev-ns': 'NIGHTSKY', 'dev-pf': 'PERfourMER MKII', 'dev-oxi': 'OXI ONE' }[dev] || '';
-  let svg = `<path class="sk heavy" d="${p.rect(6, 8, W - 12, H - 16)}"/>`;
+  let svg = `<path class="wash soft" d="${p.blob(W / 2 + 10, H / 2 + 8, W / 2 - 4, H / 2 - 6, 0.08)}"/><path class="sk heavy" d="${p.rect(6, 8, W - 12, H - 16)}"/>`;
   svg += `<text class="sk-type" x="22" y="38">${L.esc(name)}</text><path class="sk thin" d="${p.line(20, 46, W - 20, 46, false)}"/>`;
   if (!pedal) for (const [x, y] of [[16, 18], [W - 16, 18], [16, H - 18], [W - 16, H - 18]]) svg += `<path class="sk thin" d="${p.ellipse(x, y, 3.2, 3.2, false)}"/>`;
   items.forEach((it, k) => {
@@ -75,10 +75,10 @@ function deviceSketch(dev, title, block) {
       const P = (deg, r) => [cx + r * Math.sin(deg * Math.PI / 180), cy - r * Math.cos(deg * Math.PI / 180)];
       const ticks = Array.from({ length: 11 }, (_, q) => { const d = -150 + 30 * q; const [a, b] = P(d, 23), [c, e] = P(d, q % 5 === 0 ? 28 : 26); return p.line(a, b, c, e, false); }).join(' ');
       const d = -150 + 300 * it.f, [x1, y1] = P(d, 3), [x2, y2] = P(d, 17);
-      svg += `<path class="sk thin" d="${ticks}"/><path class="sk" d="${p.ellipse(cx, cy, 19, 19)}"/><path class="sk ptr" d="${p.line(x1, y1, x2, y2)}"/><circle class="k-dot" cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="2.6"/>`;
+      svg += `<path class="wash" d="${p.blob(cx + 3, cy + 3, 18, 18, 0.14)}"/><path class="sk thin" d="${ticks}"/><path class="sk" d="${p.ellipse(cx, cy, 19, 19)}"/><path class="sk ptr" d="${p.line(x1, y1, x2, y2)}"/><circle class="k-dot" cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="2.6"/>`;
     } else {
       const w = Math.max(44, Math.min(cw - 14, it.v.length * 8.5 + 18));
-      svg += `<path class="sk" d="${p.rect(cx - w / 2, cy - 14, w, 28)}"/><text class="sk-hand" x="${cx}" y="${cy + 6}" text-anchor="middle">${L.esc(it.v)}</text><path class="sk red" d="${p.ellipse(cx, cy, w / 2 + 7, 20, false)}"/>`;
+      svg += `<path class="wash hi" d="${p.blob(cx, cy, w / 2 + 4, 16, 0.12)}"/><path class="sk" d="${p.rect(cx - w / 2, cy - 14, w, 28)}"/><text class="sk-hand" x="${cx}" y="${cy + 6}" text-anchor="middle">${L.esc(it.v)}</text><path class="sk red" d="${p.ellipse(cx, cy, w / 2 + 7, 20, false)}"/>`;
     }
     svg += `<text class="sk-label" x="${cx}" y="${cy + 50}" text-anchor="middle">${label}</text>`;
   });
@@ -95,6 +95,7 @@ function rigSketch() {
   const p = pen('rig');
   const W = 760, H = 300;
   let s = '';
+  s += `<g class="dev-oxi"><path class="wash" d="${p.blob(104, 134, 92, 66)}"/></g><g class="dev-pf"><path class="wash" d="${p.blob(326, 134, 104, 76)}"/></g><g class="dev-gc"><path class="wash" d="${p.blob(526, 134, 66, 86)}"/></g><g class="dev-ns"><path class="wash" d="${p.blob(688, 134, 66, 86)}"/></g>`;
   // OXI One: a pad grid
   s += `<path class="sk heavy" d="${p.rect(14, 70, 170, 120)}"/><path class="sk thin" d="${p.rect(28, 84, 60, 22)}"/>`;
   for (let r = 0; r < 4; r++) for (let c = 0; c < 8; c++) s += `<path class="sk thin" d="${p.rect(28 + c * 18, 116 + r * 16, 11, 10, false)}"/>`;
@@ -160,6 +161,7 @@ function soundSketch(kind, seed) {
     for (let k = 0; k < 3; k++) { const a = k * 2 * Math.PI / 3; s += `<path class="sk red" d="${p.ellipse(cx + Math.sin(a) * R, cy - Math.cos(a) * R, 8, 8)}"/>`; }
     s += T(cx, cy - 4, 'one bar', 'sk-label') + T(cx, cy + 16, '| bass ×4   ● echo ×3', 'sk-label') + T(cx, 222, 'they meet on beat 1', 'sk-label');
   } else return '';
+  s = `<path class="wash hi" d="${p.blob(150, 110, 130, 90, 0.1)}"/>` + s;
   return `<figure class="sound-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of what the recipe sounds like">${s}</svg><figcaption>What it sounds like</figcaption></figure>`;
 }
 
@@ -176,7 +178,7 @@ function stepsSketch(block, seed) {
     [...(pat || '')].slice(0, 16).forEach((c, k) => {
       const x = lw + k * cw;
       s += `<path class="sk${k % 4 === 0 ? '' : ' thin'}" d="${p.rect(x + 3, y + 6, cw - 6, rh - 16, k % 4 === 0)}"/>`;
-      if (c === 'x') s += `<circle class="k-dot" cx="${x + cw / 2}" cy="${y + rh / 2 - 2}" r="7"/>`;
+      if (c === 'x') s += `<path class="wash" d="${p.blob(x + cw / 2 + 2, y + rh / 2, 13, 13, 0.15)}"/><circle class="k-dot" cx="${x + cw / 2}" cy="${y + rh / 2 - 2}" r="7"/>`;
       if (c === '=') s += `<path class="sk red" d="${p.line(x - 4, y + rh / 2 - 2, x + cw + 2, y + rh / 2 - 2)}"/>`;
     });
   });
@@ -186,7 +188,7 @@ function stepsSketch(block, seed) {
 // A cassette, sketched, for the index shelf.
 function cassetteSketch(seed) {
   const p = pen(`tape:${seed}`);
-  let s = `<path class="sk heavy" d="${p.rect(6, 6, 308, 196)}"/><path class="sk" d="${p.rect(26, 22, 268, 104)}"/>`;
+  let s = `<path class="wash soft" d="${p.blob(162, 108, 150, 96, 0.06)}"/><path class="wash" d="${p.blob(160, 50, 128, 30, 0.1)}"/><path class="sk heavy" d="${p.rect(6, 6, 308, 196)}"/><path class="sk" d="${p.rect(26, 22, 268, 104)}"/>`;
   s += `<path class="sk thin" d="${p.line(36, 70, 284, 70, false)} ${p.line(36, 92, 284, 92, false)} ${p.line(36, 114, 284, 114, false)}"/>`;
   s += `<path class="sk" d="${p.rect(80, 138, 160, 40)}"/>`;
   for (const x of [114, 206]) { s += `<path class="sk" d="${p.ellipse(x, 158, 14, 14)}"/><path class="sk thin" d="${p.ellipse(x, 158, 5, 5, false)}"/>`; }
@@ -245,7 +247,7 @@ function section(title, text) {
 }
 
 // A pencil wobble for anything "drawn by hand", defined once per page.
-const DEFS = '<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false"><filter id="pencil"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/></filter></svg>';
+const DEFS = '<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false"><filter id="pencil"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/></filter><filter id="watercolor" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14" result="d"/><feGaussianBlur in="d" stdDeviation="0.8"/></filter></svg>';
 
 // The signal chain, drawn as four boxes and a cable: the same on every page.
 const CHAIN = [['dev-oxi', 'OXI One MK2', 'sequencer'], ['dev-pf', 'PERfourMER MKII', 'synth'], ['dev-gc', 'Grand Canyon', 'delay'], ['dev-ns', 'NightSky', 'reverb']];
