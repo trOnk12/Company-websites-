@@ -18,7 +18,7 @@ Your app sends "Summarise this review" with a 300-word review, and gets a 60-wor
 
 A language model doesn't see letters or words. Text is first cut into **tokens**: common words are one token, rarer words are split into pieces, and emoji or unusual characters can take several. On Anthropic's earlier Claude models, one token was about 3.5 English characters; other languages and other models differ. The API's token counting tells you exactly.
 
-Then the model does one thing, over and over: **next-token prediction**. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set. (The prompt itself is read in one go; only the answer is written step by step. That's why a long answer costs more time than a long question.)
+Then the model does one thing, over and over: **next-token prediction**. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set (the next puzzle shows where). (The prompt itself is read in one go; only the answer is written step by step. That's why a long answer costs more time than a long question.)
 
 Three consequences you'll feel in an app:
 
@@ -30,7 +30,7 @@ Three consequences you'll feel in an app:
 
 ## The analogy
 
-A typist who can only see what's already on the page, and adds one word at a time, each time rereading the page to decide the next. The page is never planned in advance: every word is chosen when its turn comes.
+A typist who can only see what's already on the page, and adds one word at a time, each time rereading the page to decide the next. The page is never planned in advance: every word is chosen when it's time.
 
 ## Check yourself
 

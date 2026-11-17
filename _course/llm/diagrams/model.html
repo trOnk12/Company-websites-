@@ -1,0 +1,18 @@
+<!-- label: A language model continues text; it runs on the provider's servers behind an API -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mo-t"><title id="mo-t">Training shows the model huge amounts of text; given the text "The capital of France is" it continues with Paris; it runs on a provider's servers; your app sends an HTTP request with text and a key and gets the continuation back</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><x-sheet x="30" y="40" w="120" h="90" lines="5" label="lots of text"/><x-arrow tone="ink" d="M154,85 L236,120"/></g>
+<x-machine class="step s1" x="240" y="100" w="160" label="language model"/>
+<g class="step s2" data-pulse="2"><text class="d-a" x="320" y="70" text-anchor="middle">"The capital of France is" → Paris</text></g>
+<g class="step s3" data-pulse="3"><x-server x="440" y="80" w="90" h="120" label="provider's servers"/><x-arrow tone="ink" d="M404,130 L436,130"/></g>
+<x-phone class="step s4" x="30" y="190" w="70" h="120" label="your app"/>
+<x-letter class="step s4" data-move="4:120,230" x="0" y="0" w="150" h="30" label="text + key →"/>
+<g class="step s4" data-pulse="4"><x-arrow tone="acc" d="M274,246 L436,190"/><text class="d-a" x="400" y="300" text-anchor="middle">an API: request in, continuation out</text></g>
+<g class="step s1" data-move="1:90,170 2:320,90 3:485,230 4:200,290"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>In <b>training</b>, a program reads huge amounts of text, learning what tends to come next. The result is a <b>language model</b>.</p></li>
+<li><p>Give it any text and it continues it: "The capital of France is" becomes "Paris".</p></li>
+<li><p>Large ones, <b>LLMs</b>, are too big for a phone: they run on a provider's servers. <i>Predict: how does your app use one?</i></p></li>
+<li><p>Through an <b>API</b>: an HTTP request with your text and a secret key, and a response with the continuation.</p></li>
+</ol>

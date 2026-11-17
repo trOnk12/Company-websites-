@@ -1,0 +1,17 @@
+<!-- label: One POST with model, max_tokens and messages; back come text, stop_reason and usage -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="fc-t"><title id="fc-t">The app sends a POST with model, max_tokens and a messages list with one user turn; the response holds the text, a stop_reason and usage with input and output tokens; a cut-off answer says max_tokens</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="20" y="100" w="70" h="120" label="your app"/>
+<x-server class="step s1" x="540" y="90" w="80" h="120" label="provider"/>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="120" y="40" width="200" height="110" rx="8"/><text class="d-tiny" x="220" y="62" text-anchor="middle">POST</text><text class="d-mi" x="220" y="88" text-anchor="middle">model, max_tokens</text><text class="d-mi" x="220" y="114" text-anchor="middle">messages: [user]</text><x-arrow tone="ink" d="M324,95 L534,120"/></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="300" y="200" width="220" height="110" rx="8"/><text class="d-a" x="410" y="228" text-anchor="middle">text</text><text class="d-mi" x="410" y="254" text-anchor="middle">stop_reason</text><text class="d-mi" x="410" y="280" text-anchor="middle">usage: in 312, out 9</text><x-arrow tone="acc" d="M296,250 L96,200"/></g>
+<g class="step only-3" data-pulse="3"><text class="d-r" x="220" y="330" text-anchor="middle">cut off: stop_reason = max_tokens</text></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="220" y="330" text-anchor="middle">you pay per token; output costs more</text></g>
+<g class="step s1" data-move="1:220,170 2:410,320 3:535,250 4:535,280"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>One HTTP POST: the model's name, <b>max_tokens</b>, and <b>messages</b>, a list of <b>turns</b>; here, one user turn.</p></li>
+<li><p>Back comes JSON: the text, a <b>stop_reason</b>, and <b>usage</b>, the input and output tokens of this call.</p></li>
+<li><p>If the answer hits your limit, it stops mid-sentence and says so. <i>Predict: which tokens cost more?</i></p></li>
+<li><p>Output tokens: they're priced higher, and each takes a step to generate.</p></li>
+</ol>

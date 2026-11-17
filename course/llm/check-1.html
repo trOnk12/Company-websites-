@@ -50,66 +50,86 @@
     <article class="module-check course-top wrap narrow" data-course="llm">
       <p class="eyebrow"><a href="./">LLMs for mobile engineers, from tokens to your app</a> · check</p>
       <h1>Know A model in your app already?</h1>
-      <p class="lede">One question for each of the 6 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
-<section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: One token at a time</p>
+      <p class="lede">One question for each of the 8 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+<section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: What a language model is</p>
 <fieldset class="quiz" data-n="0">
-<legend>Why does a 300-token answer take longer than a 30-token one?</legend>
-<input type="radio" name="q-00-one-token-at-a-time-1" id="q-00-one-token-at-a-time-1-1"><label for="q-00-one-token-at-a-time-1-1">The model must read the longer answer back before sending it</label>
-<input type="radio" name="q-00-one-token-at-a-time-1" id="q-00-one-token-at-a-time-1-2" data-ok><label for="q-00-one-token-at-a-time-1-2">Each token is one more run of the model, one after another</label>
-<input type="radio" name="q-00-one-token-at-a-time-1" id="q-00-one-token-at-a-time-1-3"><label for="q-00-one-token-at-a-time-1-3">A longer answer needs a bigger network response</label>
-<p class="fb no opt-1"><b>Not quite.</b> It doesn't reread for sending; it generates one token per step. <a class="show-me" href="00-one-token-at-a-time.html">Learn it in puzzle 0 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> One token per step.</p>
-<p class="fb no opt-3"><b>Not quite.</b> A few kilobytes cost little; the time is in generating each token. <a class="show-me" href="00-one-token-at-a-time.html">Learn it in puzzle 0 →</a></p>
+<legend>What does a language model do with the text you send it?</legend>
+<input type="radio" name="q-00-what-a-language-model-is-1" id="q-00-what-a-language-model-is-1-1" data-ok><label for="q-00-what-a-language-model-is-1-1">It continues it, one likely word after another</label>
+<input type="radio" name="q-00-what-a-language-model-is-1" id="q-00-what-a-language-model-is-1-2"><label for="q-00-what-a-language-model-is-1-2">It runs your text as code on the provider's servers</label>
+<input type="radio" name="q-00-what-a-language-model-is-1" id="q-00-what-a-language-model-is-1-3"><label for="q-00-what-a-language-model-is-1-3">It looks up the answer in a database of facts</label>
+<p class="fb ok opt-1"><b>Right.</b> It continues text.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Your text is input to continue, not code to run. <a class="show-me" href="00-what-a-language-model-is.html">Learn it in puzzle 0 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> It doesn't look things up; it continues text based on what it learned. <a class="show-me" href="00-what-a-language-model-is.html">Learn it in puzzle 0 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: Why answers stream</p>
+<section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: One token at a time</p>
 <fieldset class="quiz" data-n="1">
+<legend>Why does a 300-token answer take longer than a 30-token one?</legend>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-1"><label for="q-01-one-token-at-a-time-1-1">The model must read the longer answer back before sending it</label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-2" data-ok><label for="q-01-one-token-at-a-time-1-2">Each token is one more run of the model, one after another</label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-3"><label for="q-01-one-token-at-a-time-1-3">A longer answer needs a bigger network response</label>
+<p class="fb no opt-1"><b>Not quite.</b> It doesn't reread for sending; it generates one token per step. <a class="show-me" href="01-one-token-at-a-time.html">Learn it in puzzle 1 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> One token per step.</p>
+<p class="fb no opt-3"><b>Not quite.</b> A few kilobytes cost little; the time is in generating each token. <a class="show-me" href="01-one-token-at-a-time.html">Learn it in puzzle 1 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Your first call</p>
+<fieldset class="quiz" data-n="2">
+<legend>The response's stop_reason is <code>max_tokens</code>. What happened?</legend>
+<input type="radio" name="q-02-your-first-call-1" id="q-02-your-first-call-1-1"><label for="q-02-your-first-call-1-1">The request had too many input tokens</label>
+<input type="radio" name="q-02-your-first-call-1" id="q-02-your-first-call-1-2"><label for="q-02-your-first-call-1-2">The model finished its answer normally</label>
+<input type="radio" name="q-02-your-first-call-1" id="q-02-your-first-call-1-3" data-ok><label for="q-02-your-first-call-1-3">The answer was cut off at the limit you set</label>
+<p class="fb no opt-1"><b>Not quite.</b> That's a different error; this is about the answer's length. <a class="show-me" href="02-your-first-call.html">Learn it in puzzle 2 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> That's end_turn; max_tokens means it hit your limit. <a class="show-me" href="02-your-first-call.html">Learn it in puzzle 2 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> Cut off at your limit.</p>
+</fieldset></section>
+<section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Why answers stream</p>
+<fieldset class="quiz" data-n="3">
 <legend>Streaming is turned on. What gets faster?</legend>
-<input type="radio" name="q-01-why-answers-stream-1" id="q-01-why-answers-stream-1-1"><label for="q-01-why-answers-stream-1-1">Both, because streaming sends fewer bytes over the network</label>
-<input type="radio" name="q-01-why-answers-stream-1" id="q-01-why-answers-stream-1-2"><label for="q-01-why-answers-stream-1-2">The total time, because the model writes faster while streaming</label>
-<input type="radio" name="q-01-why-answers-stream-1" id="q-01-why-answers-stream-1-3" data-ok><label for="q-01-why-answers-stream-1-3">The time to first token, since words show as soon as they exist</label>
-<p class="fb no opt-1"><b>Not quite.</b> The bytes are about the same; only when they're shown changes. <a class="show-me" href="01-why-answers-stream.html">Learn it in puzzle 1 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> The model writes at the same speed; you just see it sooner. <a class="show-me" href="01-why-answers-stream.html">Learn it in puzzle 1 →</a></p>
+<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-1"><label for="q-03-why-answers-stream-1-1">Both, because streaming sends fewer bytes over the network</label>
+<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-2"><label for="q-03-why-answers-stream-1-2">The total time, because the model writes faster while streaming</label>
+<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-3" data-ok><label for="q-03-why-answers-stream-1-3">The time to first token, since words show as soon as they exist</label>
+<p class="fb no opt-1"><b>Not quite.</b> The bytes are about the same; only when they're shown changes. <a class="show-me" href="03-why-answers-stream.html">Learn it in puzzle 3 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The model writes at the same speed; you just see it sooner. <a class="show-me" href="03-why-answers-stream.html">Learn it in puzzle 3 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Sooner, not faster.</p>
 </fieldset></section>
-<section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: It remembers nothing</p>
-<fieldset class="quiz" data-n="2">
-<legend>Your app sends only the latest message. Why does the bot forget the device the user just named?</legend>
-<input type="radio" name="q-02-it-remembers-nothing-1" id="q-02-it-remembers-nothing-1-1" data-ok><label for="q-02-it-remembers-nothing-1-1">The API keeps nothing between requests, so the earlier message wasn't sent</label>
-<input type="radio" name="q-02-it-remembers-nothing-1" id="q-02-it-remembers-nothing-1-2"><label for="q-02-it-remembers-nothing-1-2">The model forgets on purpose to protect privacy</label>
-<input type="radio" name="q-02-it-remembers-nothing-1" id="q-02-it-remembers-nothing-1-3"><label for="q-02-it-remembers-nothing-1-3">The model's context window was full after one message</label>
-<p class="fb ok opt-1"><b>Right.</b> Stateless: send what it should know.</p>
-<p class="fb no opt-2"><b>Not quite.</b> It keeps nothing because the API is stateless, not by choice per message. <a class="show-me" href="02-it-remembers-nothing.html">Learn it in puzzle 2 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> One message is tiny; the earlier one wasn't in the request. <a class="show-me" href="02-it-remembers-nothing.html">Learn it in puzzle 2 →</a></p>
-</fieldset></section>
-<section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Same question, different answers</p>
-<fieldset class="quiz" data-n="3">
-<legend>You set temperature to 0. Can you now assert the exact output string in a test?</legend>
-<input type="radio" name="q-03-same-question-different-answers-1" id="q-03-same-question-different-answers-1-1"><label for="q-03-same-question-different-answers-1-1">Yes, because temperature 0 always picks the single most likely token</label>
-<input type="radio" name="q-03-same-question-different-answers-1" id="q-03-same-question-different-answers-1-2" data-ok><label for="q-03-same-question-different-answers-1-2">No: even at 0 the output isn't guaranteed to be identical</label>
-<input type="radio" name="q-03-same-question-different-answers-1" id="q-03-same-question-different-answers-1-3"><label for="q-03-same-question-different-answers-1-3">Only if the prompt is shorter than one sentence</label>
-<p class="fb no opt-1"><b>Not quite.</b> Anthropic's docs say even at 0 the results won't be fully deterministic. <a class="show-me" href="03-same-question-different-answers.html">Learn it in puzzle 3 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Test properties, not strings.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Prompt length doesn't make the output deterministic. <a class="show-me" href="03-same-question-different-answers.html">Learn it in puzzle 3 →</a></p>
-</fieldset></section>
-<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: Your key is not a secret</p>
+<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: It remembers nothing</p>
 <fieldset class="quiz" data-n="4">
-<legend>The key is in the APK, obfuscated by R8. Is it safe?</legend>
-<input type="radio" name="q-04-your-key-is-not-a-secret-1" id="q-04-your-key-is-not-a-secret-1-1"><label for="q-04-your-key-is-not-a-secret-1-1">Yes, because R8 obfuscation makes the key unreadable in the APK</label>
-<input type="radio" name="q-04-your-key-is-not-a-secret-1" id="q-04-your-key-is-not-a-secret-1-2" data-ok><label for="q-04-your-key-is-not-a-secret-1-2">No: the app must send it, so it can be found in the APK or in the app's traffic</label>
-<input type="radio" name="q-04-your-key-is-not-a-secret-1" id="q-04-your-key-is-not-a-secret-1-3"><label for="q-04-your-key-is-not-a-secret-1-3">Yes, as long as every request from the app goes over HTTPS</label>
-<p class="fb no opt-1"><b>Not quite.</b> R8 renames code; the key is still a value the app sends. <a class="show-me" href="04-your-key-is-not-a-secret.html">Learn it in puzzle 4 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> If the app can send it, users can read it.</p>
-<p class="fb no opt-3"><b>Not quite.</b> HTTPS protects the wire from others, not from the phone's owner. <a class="show-me" href="04-your-key-is-not-a-secret.html">Learn it in puzzle 4 →</a></p>
+<legend>Your app sends only the latest message. Why does the bot forget the device the user just named?</legend>
+<input type="radio" name="q-04-it-remembers-nothing-1" id="q-04-it-remembers-nothing-1-1" data-ok><label for="q-04-it-remembers-nothing-1-1">The API keeps nothing between requests, so the earlier message wasn't sent</label>
+<input type="radio" name="q-04-it-remembers-nothing-1" id="q-04-it-remembers-nothing-1-2"><label for="q-04-it-remembers-nothing-1-2">The model forgets on purpose to protect privacy</label>
+<input type="radio" name="q-04-it-remembers-nothing-1" id="q-04-it-remembers-nothing-1-3"><label for="q-04-it-remembers-nothing-1-3">The model's context window was full after one message</label>
+<p class="fb ok opt-1"><b>Right.</b> Stateless: send what it should know.</p>
+<p class="fb no opt-2"><b>Not quite.</b> It keeps nothing because the API is stateless, not by choice per message. <a class="show-me" href="04-it-remembers-nothing.html">Learn it in puzzle 4 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> One message is tiny; the earlier one wasn't in the request. <a class="show-me" href="04-it-remembers-nothing.html">Learn it in puzzle 4 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: On the phone or in the cloud</p>
+<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: Same question, different answers</p>
 <fieldset class="quiz" data-n="5">
+<legend>You set temperature to 0. Can you now assert the exact output string in a test?</legend>
+<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-1"><label for="q-05-same-question-different-answers-1-1">Yes, because temperature 0 always picks the single most likely token</label>
+<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-2" data-ok><label for="q-05-same-question-different-answers-1-2">No: even at 0 the output isn't guaranteed to be identical</label>
+<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-3"><label for="q-05-same-question-different-answers-1-3">Only if the prompt is shorter than one sentence</label>
+<p class="fb no opt-1"><b>Not quite.</b> Anthropic's docs say even at 0 the results won't be fully deterministic. <a class="show-me" href="05-same-question-different-answers.html">Learn it in puzzle 5 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Test properties, not strings.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Prompt length doesn't make the output deterministic. <a class="show-me" href="05-same-question-different-answers.html">Learn it in puzzle 5 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: Your key is not a secret</p>
+<fieldset class="quiz" data-n="6">
+<legend>The key is in the APK, obfuscated by R8. Is it safe?</legend>
+<input type="radio" name="q-06-your-key-is-not-a-secret-1" id="q-06-your-key-is-not-a-secret-1-1"><label for="q-06-your-key-is-not-a-secret-1-1">Yes, because R8 obfuscation makes the key unreadable in the APK</label>
+<input type="radio" name="q-06-your-key-is-not-a-secret-1" id="q-06-your-key-is-not-a-secret-1-2" data-ok><label for="q-06-your-key-is-not-a-secret-1-2">No: the app must send it, so it can be found in the APK or in the app's traffic</label>
+<input type="radio" name="q-06-your-key-is-not-a-secret-1" id="q-06-your-key-is-not-a-secret-1-3"><label for="q-06-your-key-is-not-a-secret-1-3">Yes, as long as every request from the app goes over HTTPS</label>
+<p class="fb no opt-1"><b>Not quite.</b> R8 renames code; the key is still a value the app sends. <a class="show-me" href="06-your-key-is-not-a-secret.html">Learn it in puzzle 6 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> If the app can send it, users can read it.</p>
+<p class="fb no opt-3"><b>Not quite.</b> HTTPS protects the wire from others, not from the phone's owner. <a class="show-me" href="06-your-key-is-not-a-secret.html">Learn it in puzzle 6 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: On the phone or in the cloud</p>
+<fieldset class="quiz" data-n="7">
 <legend>Which feature suits an on-device model best?</legend>
-<input type="radio" name="q-05-on-the-phone-or-in-the-cloud-1" id="q-05-on-the-phone-or-in-the-cloud-1-1" data-ok><label for="q-05-on-the-phone-or-in-the-cloud-1-1">Smart replies for private messages, short and frequent</label>
-<input type="radio" name="q-05-on-the-phone-or-in-the-cloud-1" id="q-05-on-the-phone-or-in-the-cloud-1-2"><label for="q-05-on-the-phone-or-in-the-cloud-1-2">Generating a full marketing report from sales data</label>
-<input type="radio" name="q-05-on-the-phone-or-in-the-cloud-1" id="q-05-on-the-phone-or-in-the-cloud-1-3"><label for="q-05-on-the-phone-or-in-the-cloud-1-3">Answering questions over a 200-page manual</label>
+<input type="radio" name="q-07-on-the-phone-or-in-the-cloud-1" id="q-07-on-the-phone-or-in-the-cloud-1-1" data-ok><label for="q-07-on-the-phone-or-in-the-cloud-1-1">Smart replies for private messages, short and frequent</label>
+<input type="radio" name="q-07-on-the-phone-or-in-the-cloud-1" id="q-07-on-the-phone-or-in-the-cloud-1-2"><label for="q-07-on-the-phone-or-in-the-cloud-1-2">Generating a full marketing report from sales data</label>
+<input type="radio" name="q-07-on-the-phone-or-in-the-cloud-1" id="q-07-on-the-phone-or-in-the-cloud-1-3"><label for="q-07-on-the-phone-or-in-the-cloud-1-3">Answering questions over a 200-page manual</label>
 <p class="fb ok opt-1"><b>Right.</b> Short, frequent, private.</p>
-<p class="fb no opt-2"><b>Not quite.</b> A long, hard task suits a cloud model behind your backend. <a class="show-me" href="05-on-the-phone-or-in-the-cloud.html">Learn it in puzzle 5 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Long documents and hard reasoning need a bigger, cloud model. <a class="show-me" href="05-on-the-phone-or-in-the-cloud.html">Learn it in puzzle 5 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> A long, hard task suits a cloud model behind your backend. <a class="show-me" href="07-on-the-phone-or-in-the-cloud.html">Learn it in puzzle 7 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Long documents and hard reasoning need a bigger, cloud model. <a class="show-me" href="07-on-the-phone-or-in-the-cloud.html">Learn it in puzzle 7 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

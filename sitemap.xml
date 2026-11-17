@@ -361,32 +361,42 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/llm/00-one-token-at-a-time</loc>
+    <loc>https://pachulski.dev/course/llm/00-what-a-language-model-is</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/llm/01-why-answers-stream</loc>
+    <loc>https://pachulski.dev/course/llm/01-one-token-at-a-time</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/llm/02-it-remembers-nothing</loc>
+    <loc>https://pachulski.dev/course/llm/02-your-first-call</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/llm/03-same-question-different-answers</loc>
+    <loc>https://pachulski.dev/course/llm/03-why-answers-stream</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/llm/04-your-key-is-not-a-secret</loc>
+    <loc>https://pachulski.dev/course/llm/04-it-remembers-nothing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/llm/05-on-the-phone-or-in-the-cloud</loc>
+    <loc>https://pachulski.dev/course/llm/05-same-question-different-answers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/llm/06-your-key-is-not-a-secret</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/llm/07-on-the-phone-or-in-the-cloud</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

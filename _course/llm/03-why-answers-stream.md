@@ -16,7 +16,7 @@ Your app calls the model and waits for the full answer: eight seconds of spinner
 
 ## The building block
 
-Puzzle 0 showed the model produces an answer one token at a time. So the first tokens exist long before the last one. If the API waits for the whole answer, your user waits for all of it.
+Puzzle 1 showed the model produces an answer one token at a time. So the first tokens exist long before the last one. If the API waits for the whole answer, your user waits for all of it.
 
 With **streaming**, the API sends each new piece as soon as it's generated. Anthropic's API does this when you set `"stream": true`: one HTTP response stays open, and pieces arrive as **server-sent events**, small text events on the same connection.
 
@@ -28,9 +28,9 @@ Two numbers now matter:
 On Android, the stream is a long-lived request, so it changes your code more than a normal call:
 
 - Run it on a coroutine that the screen's ViewModel owns, and append each piece to the UI state as it arrives.
-- Cancel it when the user leaves or taps stop: you pay for every token generated, wanted or not. If the stream goes through your own server (puzzle 4), the server must cancel its request to the model too, or generation and billing carry on.
+- Cancel it when the user leaves or taps stop: you pay for every token generated, wanted or not. If the stream goes through your own server (puzzle 6), the server must cancel its request to the model too, or generation and billing carry on.
 - OkHttp has an SSE add-on (`okhttp-sse`), and Anthropic publishes a Java SDK that streams.
-- A dropped connection mid-answer is normal on mobile (puzzle 1 of the Mobile system design course): keep what arrived, show it, and offer to retry.
+- A dropped connection mid-answer is normal on mobile, in a lift or a tunnel: keep what arrived, show it, and offer to retry.
 
 ## The analogy
 
@@ -39,7 +39,7 @@ A friend reading you a letter over the phone. You could wait until they've read 
 ## Check yourself
 
 - Streaming is turned on. What gets faster?::*The time to first token, since words show as soon as they exist||The total time, because the model writes faster while streaming >> The model writes at the same speed; you just see it sooner. >> s3||Both, because streaming sends fewer bytes over the network >> The bytes are about the same; only when they're shown changes. >> s3::Sooner, not faster.
-- The user leaves the chat screen mid-answer. Why cancel the stream?::*Every generated token costs money and battery, even if nobody reads it||The stream would crash the app once the screen is gone >> It wouldn't crash if the ViewModel owns it; the waste is the point. >> s4||Server-sent events can't run in the background >> They can; you cancel because the answer is no longer wanted. >> s4::Unread tokens are still paid for.
+- The user leaves the chat screen mid-answer. Why cancel the stream?::*Every generated token is still paid for, even if nobody reads it||The stream would crash the app once the screen is gone >> It wouldn't crash if the ViewModel owns it; the waste is the point. >> s4||Server-sent events can't run in the background >> They can; you cancel because the answer is no longer wanted. >> s4::Unread tokens are still paid for.
 - What's the difference between time to first token and total time?::*Time to first token is when the answer starts, while total time is when it ends||Time to first token is when the answer ends, while total time is when it starts >> That's the two swapped. >> the-building-block::Start vs end.
 
 ## Sources

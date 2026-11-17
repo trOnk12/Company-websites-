@@ -7,7 +7,7 @@ takeaway: Anything in your APK can be extracted, so an API key in the app belong
 
 ## The problem
 
-You put the model provider's key in `BuildConfig`, obfuscated with R8, and call the API straight from the app. It works. Then your usage dashboard shows calls your app never made, around the clock, with prompts that have nothing to do with your feature. How did anyone get the key?
+You put the model provider's key in `BuildConfig`, obfuscated with R8, Android's build tool that shrinks code and renames it, and call the API straight from the app. It works. Then your usage dashboard shows calls your app never made, around the clock, with prompts that have nothing to do with your feature. How did anyone get the key?
 
 ## See it
 
@@ -20,9 +20,9 @@ An **API key** is a password for your account: whoever sends it, gets served, an
 
 So the key lives on a server you control, a **proxy backend**:
 
-1. The app calls **your** server, authenticated as the user (your normal login token).
+1. The app calls **your** server, sending the user's **login token**: the token your app receives when the user signs in, which proves to your server who they are.
 2. Your server checks who it is, applies limits per user ("20 requests a day on the free plan"), and builds the request: your system prompt, the user's message.
-3. Your server adds the API key and calls the model, streaming the answer back to the app (puzzle 1).
+3. Your server adds the API key and calls the model, streaming the answer back to the app (puzzle 3).
 
 The key never leaves the server. If one user abuses the feature, you block that user, not your whole account. And your instructions to the model and the model choice can change without an app release. Google offers a managed version of this pattern for Gemini: Firebase AI Logic, with App Check to make sure calls come from your real app.
 

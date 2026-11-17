@@ -33,9 +33,6 @@
    "answer",
    "model",
    "models",
-   "language model",
-   "LLM",
-   "AI",
    "round trip",
    "round trips",
    "latency",
@@ -92,7 +89,16 @@
    "App Check",
    "Prompt API",
    "prompt caching",
-   "Prompt caching"
+   "Prompt caching",
+   "MODEL_NAME",
+   "content",
+   "\"end_turn\"",
+   "end_turn",
+   "user",
+   "assistant",
+   "role",
+   "AI",
+   "POST"
   ],
   "homonyms": [
    "server",
@@ -114,7 +120,7 @@
  },
  "terms": {
   "token": {
-   "in": "00",
+   "in": "01",
    "def": "The unit a language model reads and writes: a word, part of a word, a character or a byte.",
    "aliases": [
     "tokens",
@@ -122,14 +128,14 @@
    ]
   },
   "next-token prediction": {
-   "in": "00",
+   "in": "01",
    "def": "What the model does: given the text so far, pick the next token, add it, and repeat.",
    "aliases": [
     "predicts the next token"
    ]
   },
   "streaming": {
-   "in": "01",
+   "in": "03",
    "def": "Receiving the answer token by token as it's generated, instead of all at once at the end.",
    "aliases": [
     "stream",
@@ -138,38 +144,38 @@
    ]
   },
   "time to first token": {
-   "in": "01",
+   "in": "03",
    "def": "How long until the first token of the answer arrives: what makes an app feel responsive.",
    "aliases": [
     "TTFT"
    ]
   },
   "server-sent events": {
-   "in": "01",
+   "in": "03",
    "def": "A way for a server to send a stream of small events over one open HTTP response.",
    "aliases": [
     "SSE"
    ]
   },
   "stateless": {
-   "in": "02",
+   "in": "04",
    "def": "Keeping nothing between requests: every request must carry everything needed.",
    "aliases": []
   },
   "context window": {
-   "in": "02",
+   "in": "04",
    "def": "The text the model can see for one request, including its answer: its working memory.",
    "aliases": [
     "context"
    ]
   },
   "temperature": {
-   "in": "03",
+   "in": "05",
    "def": "A setting for how random the choice of next token is: higher is more varied, lower more predictable.",
    "aliases": []
   },
   "sampling": {
-   "in": "03",
+   "in": "05",
    "def": "Choosing the next token at random, weighted by how likely the model thinks each one is.",
    "aliases": [
     "sampled",
@@ -177,37 +183,95 @@
    ]
   },
   "API key": {
-   "in": "04",
+   "in": "06",
    "def": "A secret that lets whoever holds it call a paid API on your account.",
    "aliases": [
     "API keys"
    ]
   },
   "proxy backend": {
-   "in": "04",
+   "in": "06",
    "def": "Your own server that the app calls; it checks the user, adds the API key, and calls the model.",
    "aliases": []
   },
   "on-device model": {
-   "in": "05",
+   "in": "07",
    "def": "A model that runs on the phone itself, with no network call.",
    "aliases": [
     "on-device"
    ]
   },
   "AICore": {
-   "in": "05",
+   "in": "07",
    "def": "Android's system service that runs Gemini Nano on the device and keeps it updated.",
    "aliases": []
   },
   "obfuscation": {
-   "in": "04",
+   "in": "06",
    "def": "Scrambling names in code to make it harder to read.",
    "aliases": []
   },
   "quota": {
-   "in": "05",
+   "in": "07",
    "def": "A cap on how many requests an app may make in a period.",
+   "aliases": []
+  },
+  "language model": {
+   "in": "00",
+   "def": "A program trained on huge amounts of text that continues any text you give it.",
+   "aliases": [
+    "language models"
+   ]
+  },
+  "training": {
+   "in": "00",
+   "def": "How a model learned: shown huge amounts of text and corrected, again and again, at predicting what comes next.",
+   "aliases": []
+  },
+  "LLM": {
+   "in": "00",
+   "def": "A large language model, too big for a phone, run on a provider's servers.",
+   "aliases": [
+    "LLMs"
+   ]
+  },
+  "max_tokens": {
+   "in": "02",
+   "def": "The most tokens the model may write in its answer.",
+   "kind": "code"
+  },
+  "messages": {
+   "in": "02",
+   "def": "The conversation sent with each request: a list of turns marked user or assistant.",
+   "kind": "code"
+  },
+  "turn": {
+   "in": "02",
+   "def": "One message in the conversation, marked user (your side) or assistant (the model's).",
+   "aliases": [
+    "turns"
+   ]
+  },
+  "stop_reason": {
+   "in": "02",
+   "def": "Why the answer ended: end_turn when finished, max_tokens when cut off.",
+   "kind": "code"
+  },
+  "usage": {
+   "in": "02",
+   "def": "The input and output tokens a call used: what you pay for.",
+   "kind": "code"
+  },
+  "probability": {
+   "in": "05",
+   "def": "How likely something is, as a share of 100%.",
+   "aliases": [
+    "probabilities"
+   ]
+  },
+  "login token": {
+   "in": "06",
+   "def": "The token your app gets when the user signs in, which proves to your server who they are.",
    "aliases": []
   }
  }

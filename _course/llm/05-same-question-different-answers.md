@@ -16,7 +16,7 @@ Your test calls the model with the same review and asserts the summary equals a 
 
 ## The building block
 
-Puzzle 0 said the model picks the next token. More precisely, at each step it scores every possible next token: "Great" very likely, "Good" likely, "Fine" less so. Then one is chosen by **sampling**: at random, weighted by those scores. Usually the likely one; sometimes not. Once a different token is picked, everything after it can go differently.
+Puzzle 1 said the model picks the next token. More precisely, at each step it gives every possible next token a **probability**, a share of 100% saying how likely it is: "Great" 60%, "Good" 30%, "Fine" 10%. Then one is chosen by **sampling**: at random, weighted by those scores. Usually the likely one; sometimes not. Once a different token is picked, everything after it can go differently.
 
 **Temperature** controls how adventurous the sampling is:
 
@@ -25,7 +25,7 @@ Puzzle 0 said the model picks the next token. More precisely, at each step it sc
 
 For an app feature that must be consistent, like extracting fields or summarising, use a low temperature. For brainstorming names, a higher one.
 
-But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic, and identical inputs might produce different outputs. Temperature 0 means "pick the top token", but tiny numeric differences on the provider's servers can still change which token is on top. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk, which module 3 covers.
+But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic (the same input always giving the same output), and identical inputs might produce different outputs. Temperature 0 means "pick the top token", but tiny numeric differences on the provider's servers can still change which token is on top. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk.
 
 ## The analogy
 

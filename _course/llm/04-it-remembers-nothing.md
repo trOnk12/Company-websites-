@@ -16,14 +16,14 @@ Your first version sends only the user's latest message. The bot answers "What's
 
 ## The building block
 
-The model API is **stateless**: each request starts from nothing. There's no session on the server holding your conversation. If the model is to "remember" an earlier message, that message must be in this request.
+The model API is **stateless**: each request starts from nothing. There's no session, no memory kept on the server between your requests, holding your conversation. If the model is to "remember" an earlier message, that message must be in this request.
 
 So a chat app keeps the conversation itself, in its ViewModel or database, and sends all of it with every new message: earlier user messages, earlier answers, then the new message.
 
 Everything in one request, plus the answer the model writes, must fit in the **context window**: the model's working memory for that request, measured in tokens. Windows are large now, but three things grow with every message:
 
 - **Cost:** you pay for all the input tokens again, every turn, so a chat's total cost grows faster than its length. Prompt caching makes a repeated beginning cheaper and faster to read, but you still send it.
-- **Time:** more input to read before the first token (puzzle 1).
+- **Time:** more input to read before the first token (puzzle 3).
 - **Quality:** Anthropic notes that as the token count grows, accuracy and recall degrade.
 
 So long chats need a policy: keep the last few turns, replace old ones with a short summary, or drop what doesn't matter. That's your code's decision, not the model's.

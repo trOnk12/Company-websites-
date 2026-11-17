@@ -1,7 +1,7 @@
 ---
 title: On the phone or in the cloud
 short: On-device models
-summary: Puzzle 4 put a server between your app and the model. For some features you can skip the server and the network entirely: Android ships a model that runs on the phone. Here's what it's good at, what it costs you, and how to choose.
+summary: Puzzle 6 put a server between your app and the model. For some features you can skip the server and the network entirely: Android ships a model that runs on the phone. Here's what it's good at, what it costs you, and how to choose.
 takeaway: An on-device model like Gemini Nano runs on the phone through Android's AICore service: no network, no per-request bill, and the data never leaves the device. In exchange it's smaller than cloud models and available only on supported devices. Use it for short, private, frequent tasks; use a cloud model behind your backend for hard ones; and design a fallback for devices that can't run it.
 ---
 
@@ -20,14 +20,14 @@ An **on-device model** runs on the phone itself. On Android, Google's Gemini Nan
 
 What you gain:
 
-- No network: it works in a tunnel, and there's no round trip (puzzle 1 of the Mobile system design course).
+- No network: it works in a tunnel, and there's no wait for a request to reach a server and the answer to come back.
 - Privacy: the text never leaves the phone.
 - No per-request bill: there's no API to pay for each call.
 
 What you give up:
 
 - Size: a model that fits on a phone is much smaller than a cloud model, so hard reasoning and long documents are out of reach.
-- Reach: it runs only on devices that support it, and different devices can run different versions of Gemini Nano. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 4), or a simpler feature.
+- Reach: it runs only on devices that support it, and different devices can run different versions of Gemini Nano. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 6), or a simpler feature.
 
 So the decision is per feature. Short, frequent, private tasks the user triggers inside your app, like smart replies or tidying a note, suit the phone. Three limits shape the design: AICore runs the model only while your app is the top foreground app (a foreground service doesn't count); each app has a request **quota**, a cap on how many requests it may make in a period, so a burst gets a BUSY error to retry with backoff, plus a longer battery quota; and the model may need downloading first. So check the feature's status before you offer it, and show it only when it's ready. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.
 
