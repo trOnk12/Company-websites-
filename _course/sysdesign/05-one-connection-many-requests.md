@@ -1,13 +1,13 @@
 ---
 title: One connection, many requests
 short: Handshakes and reuse
-summary: Puzzle 1 counted round trips per request. A brand-new HTTPS connection adds its own before the first request even leaves. Here's what they cost, and how OkHttp makes them a one-time price.
+summary: Puzzle 3 counted round trips per request. A brand-new HTTPS connection adds its own before the first request even leaves. Here's what they cost, and how OkHttp makes them a one-time price.
 takeaway: A new HTTPS connection costs a TCP handshake (one round trip) and a TLS 1.3 handshake (one more) before the request's own round trip. Connection reuse skips both for every later request; HTTP/2 goes further and sends many requests at once over that one connection. In code, that means one shared OkHttpClient, because each client has its own connection pool.
 ---
 
 ## The problem
 
-Puzzle 1 said one request costs one round trip. You measure your first API call of the day on a 250 ms network: it takes about three times that. The next calls are fast. What did the first one pay for?
+Puzzle 3 said one request costs one round trip. You measure your first API call of the day on a 250 ms network: it takes about three times that. The next calls are fast. What did the first one pay for?
 
 ## See it
 
@@ -20,15 +20,15 @@ Before HTTPS can carry a request, two handshakes happen on a new connection:
 
 1. **TCP handshake:** client and server agree to talk. One round trip before any data flows.
 2. **TLS handshake:** the key agreement from the Encryption course. TLS 1.3 needs one more round trip.
-3. Then your request and its answer: the round trip from puzzle 1.
+3. Then your request and its answer: the round trip from puzzle 3.
 
 So a first request on a new connection costs about three round trips: 750 ms on that network, for a few kilobytes.
 
-**Connection reuse** keeps the connection open and sends the next request over it. Both handshakes are skipped: one round trip, as in puzzle 1.
+**Connection reuse** keeps the connection open and sends the next request over it. Both handshakes are skipped: one round trip, as in puzzle 3.
 
-**HTTP/2** goes further. With HTTP/1.1, a connection carries one request at a time. HTTP/2 does **multiplexing**: many requests and responses interleaved on one connection, all in flight at once. That's what makes "send them together" from puzzle 1 cheap.
+**HTTP/2** goes further. With HTTP/1.1, a connection carries one request at a time. HTTP/2 does **multiplexing**: many requests and responses interleaved on one connection, all in flight at once. That's what makes "send them together" from puzzle 3 cheap.
 
-In an Android app, OkHttp (under Retrofit) does both for you, with one condition: use one `OkHttpClient` for the whole app. Each client keeps its own **connection pool**, the set of connections it keeps open for reuse; a new client per screen, or per request, starts cold and pays the handshakes again. For per-call settings, use `client.newBuilder()`: the new client shares the original's pool. (HTTP/3, over QUIC, goes further and combines both handshakes into one round trip.)
+In an Android app, OkHttp (under Retrofit) does both for you, with one condition: use one `OkHttpClient` for the whole app. Each client keeps its own **connection pool**, the set of connections it keeps open for reuse; a new client per screen, or per request, starts cold and pays the handshakes again. For per-call settings, use `client.newBuilder()`: the new client shares the original's pool.
 
 ## The analogy
 

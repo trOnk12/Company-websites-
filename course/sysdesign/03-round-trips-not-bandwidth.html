@@ -9,7 +9,7 @@
   <meta property="og:title" content="Round trips, not bandwidth – Mobile system design, from a packet to an app – Mateusz Pachulski">
   <meta property="og:description" content="Your profile screen loads in a blink on office Wi-Fi and crawls on the train. The data is 60 KB. Here's what the user is actually waiting for, and why a faster network barely helps.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/sysdesign/01-round-trips-not-bandwidth">
+  <meta property="og:url" content="https://pachulski.dev/course/sysdesign/03-round-trips-not-bandwidth">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Round trips, not bandwidth – Mobile system design, from a packet to an app – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/sysdesign/01-round-trips-not-bandwidth">
+  <link rel="canonical" href="https://pachulski.dev/course/sysdesign/03-round-trips-not-bandwidth">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -47,13 +47,13 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="1" data-prev="00-what-actually-travels.html" data-prev-title="What actually travels">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-round-trips-not-bandwidth.html" aria-current="page" title="Round trips, not bandwidth">1</a></li><li><a href="02-one-connection-many-requests.html" title="One connection, many requests">2</a></li><li><a href="03-the-radio-is-the-battery.html" title="The radio is the battery">3</a></li><li><a href="04-ask-before-you-download.html" title="Ask before you download">4</a></li><li><a href="05-the-database-is-the-truth.html" title="The database is the truth">5</a></li><li><a href="06-retry-without-charging-twice.html" title="Retry without charging twice">6</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 1 · 2 of 7</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="3" data-prev="02-anatomy-of-an-http-call.html" data-prev-title="Anatomy of an HTTP call">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" class="done" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" class="done" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" aria-current="page" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 3 · 4 of 11</p>
       <h1>Round trips, not bandwidth</h1>
       <p class="lede">Your profile screen loads in a blink on office Wi-Fi and crawls on the train. The data is 60 KB. Here's what the user is actually waiting for, and why a faster network barely helps.</p>
-      <aside class="builds-on" aria-labelledby="builds-on-1">
-        <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-3">
+        <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="0"><details><summary><a href="00-what-actually-travels.html">Puzzle 0: What actually travels</a></summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
       </aside>
@@ -89,7 +89,7 @@
 <p>A request needs a <b>round trip</b>: the request travels to the server, the server answers, the answer travels back. For a few kilobytes, the data itself takes almost no time to send. Almost all the wait is the trip.</p>
 <p>So for small requests, the time is roughly:</p>
 <div class="table-wrap"><table><thead><tr><th scope="col"></th><th scope="col">Time</th></tr></thead><tbody><tr><th scope="row">One request</th><td>1 round trip</td></tr><tr><th scope="row">Four requests, each waiting for the one before</th><td>4 round trips</td></tr><tr><th scope="row">The three independent ones together, then the avatar</th><td>2 round trips</td></tr></tbody></table></div>
-<p>At 30 ms per round trip on Wi-Fi, four in a row is 120 ms. At 250 ms on a busy mobile network, it's a full second, and doubling the bandwidth doesn't change it, because you weren't waiting for bandwidth. Sending the user, settings and avatar URL requests together, then the avatar, takes two round trips: 500 ms.</p>
+<p>At 30 ms per round trip on Wi-Fi, four in a row is 120 ms. At 250 ms on a busy mobile network, it's a full second, and doubling the bandwidth doesn't change it, because you weren't waiting for bandwidth. Sending the user, settings and avatar URL requests together, then the avatar, takes two round trips: 500 ms. (In Kotlin, start them with <code>async</code> and wait with <code>awaitAll</code>; over one connection this needs a newer HTTP version, puzzle 5.)</p>
 <p>That's why the first question of any mobile system design is: how many round trips does this screen need, and can they happen at the same time, or not at all? One endpoint that returns the whole screen, or requests that don't depend on each other, beats any amount of compression.</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -100,26 +100,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your screen's four requests each wait for the one before, on a 250 ms mobile network. Bandwidth doubles. Roughly how long does loading take now?</legend>
-<input type="radio" name="q-01-round-trips-not-bandwidth-1" id="q-01-round-trips-not-bandwidth-1-1"><label for="q-01-round-trips-not-bandwidth-1-1">A quarter as long, because the four requests now share the bandwidth</label>
-<input type="radio" name="q-01-round-trips-not-bandwidth-1" id="q-01-round-trips-not-bandwidth-1-2"><label for="q-01-round-trips-not-bandwidth-1-2">Half as long, because twice the bandwidth moves data twice as fast</label>
-<input type="radio" name="q-01-round-trips-not-bandwidth-1" id="q-01-round-trips-not-bandwidth-1-3" data-ok><label for="q-01-round-trips-not-bandwidth-1-3">About the same, about one second, since the wait is four round trips</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-1"><label for="q-03-round-trips-not-bandwidth-1-1">A quarter as long, because the four requests now share the bandwidth</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-2"><label for="q-03-round-trips-not-bandwidth-1-2">Half as long, because twice the bandwidth moves data twice as fast</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-3" data-ok><label for="q-03-round-trips-not-bandwidth-1-3">About the same, about one second, since the wait is four round trips</label>
 <p class="fb no opt-1"><b>Not quite.</b> Sharing bandwidth doesn't shorten a trip. <label class="show-me" for="st-rtt-3" data-goto="st-rtt">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> For a few kilobytes the data takes almost no time; the trips do. <label class="show-me" for="st-rtt-3" data-goto="st-rtt">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Small requests wait for round trips.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Which change makes that screen faster on every network?</legend>
-<input type="radio" name="q-01-round-trips-not-bandwidth-2" id="q-01-round-trips-not-bandwidth-2-1" data-ok><label for="q-01-round-trips-not-bandwidth-2-1">Sending the three independent requests together, then the avatar</label>
-<input type="radio" name="q-01-round-trips-not-bandwidth-2" id="q-01-round-trips-not-bandwidth-2-2"><label for="q-01-round-trips-not-bandwidth-2-2">Moving from Wi-Fi to a 5G network with more bandwidth</label>
-<input type="radio" name="q-01-round-trips-not-bandwidth-2" id="q-01-round-trips-not-bandwidth-2-3"><label for="q-01-round-trips-not-bandwidth-2-3">Compressing the responses so each one is smaller</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-1" data-ok><label for="q-03-round-trips-not-bandwidth-2-1">Sending the three independent requests together, then the avatar</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-2"><label for="q-03-round-trips-not-bandwidth-2-2">Moving from Wi-Fi to a 5G network with more bandwidth</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-3"><label for="q-03-round-trips-not-bandwidth-2-3">Compressing the responses so each one is smaller</label>
 <p class="fb ok opt-1"><b>Right.</b> Fewer trips in a row, faster everywhere.</p>
 <p class="fb no opt-2"><b>Not quite.</b> More bandwidth doesn't remove round trips; fewer trips do. <label class="show-me" for="st-rtt-4" data-goto="st-rtt">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Smaller data saves little when the wait is the trip, not the data. <label class="show-me" for="st-rtt-4" data-goto="st-rtt">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between latency and bandwidth?</legend>
-<input type="radio" name="q-01-round-trips-not-bandwidth-3" id="q-01-round-trips-not-bandwidth-3-1" data-ok><label for="q-01-round-trips-not-bandwidth-3-1">Latency is how long a packet takes to arrive, while bandwidth is how much data fits per second</label>
-<input type="radio" name="q-01-round-trips-not-bandwidth-3" id="q-01-round-trips-not-bandwidth-3-2"><label for="q-01-round-trips-not-bandwidth-3-2">Latency is how much data fits per second, while bandwidth is how long a packet takes to arrive</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-3" id="q-03-round-trips-not-bandwidth-3-1" data-ok><label for="q-03-round-trips-not-bandwidth-3-1">Latency is how long a packet takes to arrive, while bandwidth is how much data fits per second</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-3" id="q-03-round-trips-not-bandwidth-3-2"><label for="q-03-round-trips-not-bandwidth-3-2">Latency is how much data fits per second, while bandwidth is how long a packet takes to arrive</label>
 <p class="fb ok opt-1"><b>Right.</b> Time of the trip vs size of the pipe.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
@@ -132,14 +132,14 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="00-what-actually-travels.html">← Start</a>
-        <a class="button primary" href="02-one-connection-many-requests.html">Puzzle 2: Handshakes and reuse →</a>
+        <a class="button" href="02-anatomy-of-an-http-call.html">← Puzzle 2</a>
+        <a class="button primary" href="04-what-https-adds.html">Puzzle 4: TLS as a black box →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Round%20trips%2C%20not%20bandwidth&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2F01-round-trips-not-bandwidth" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2F03-round-trips-not-bandwidth" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

@@ -496,32 +496,52 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/01-round-trips-not-bandwidth</loc>
+    <loc>https://pachulski.dev/course/sysdesign/01-finding-the-server</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/02-one-connection-many-requests</loc>
+    <loc>https://pachulski.dev/course/sysdesign/02-anatomy-of-an-http-call</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/03-the-radio-is-the-battery</loc>
+    <loc>https://pachulski.dev/course/sysdesign/03-round-trips-not-bandwidth</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/04-ask-before-you-download</loc>
+    <loc>https://pachulski.dev/course/sysdesign/04-what-https-adds</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/05-the-database-is-the-truth</loc>
+    <loc>https://pachulski.dev/course/sysdesign/05-one-connection-many-requests</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/06-retry-without-charging-twice</loc>
+    <loc>https://pachulski.dev/course/sysdesign/06-the-radio-is-the-battery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/sysdesign/07-ask-before-you-download</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/sysdesign/08-the-database-is-the-truth</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/sysdesign/09-when-the-connection-breaks</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/sysdesign/10-retry-without-charging-twice</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

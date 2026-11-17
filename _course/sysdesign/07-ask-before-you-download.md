@@ -7,7 +7,7 @@ takeaway: Cache-Control on a response says how long it stays fresh; while fresh,
 
 ## The problem
 
-Every time the user opens the feed, the app downloads it again: 200 KB, a round trip or more, a radio wake-up (puzzle 3). Most of the time, nothing in it has changed. How can the app avoid downloading what it already has, and still notice when it does change?
+Every time the user opens the feed, the app downloads it again: 200 KB, a round trip or more, a radio wake-up (puzzle 6). Most of the time, nothing in it has changed. How can the app avoid downloading what it already has, and still notice when it does change?
 
 ## See it
 
@@ -25,7 +25,7 @@ HTTP has caching built into its responses. OkHttp implements it when you give th
 - Not changed: the server answers **304 Not Modified**, with no body. The app keeps its copy and marks it fresh again. One round trip, a few hundred bytes instead of 200 KB.
 - Changed: a normal `200 OK` with the new feed and a new ETag.
 
-So in a system design answer, "cache it" has two levels: how long it's fresh (no network) and how it's revalidated (a cheap check). The server decides both, per response: a user's profile might be fresh for an hour; a live score, never. Two directives people mix up: `no-cache` means "store it, but always revalidate"; `no-store` means "never store it".
+Two notes. Your server sets these headers, so caching is a contract with the backend team; and HTTP caching applies to GET responses. So in a system design answer, "cache it" has two levels: how long it's fresh (no network) and how it's revalidated (a cheap check). The server decides both, per response: a user's profile might be fresh for an hour; a live score, never. Two directives people mix up: `no-cache` means "store it, but always revalidate"; `no-store` means "never store it".
 
 ## The analogy
 

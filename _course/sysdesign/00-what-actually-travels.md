@@ -26,12 +26,12 @@ On top of TCP, two more layers:
 
 | Layer | Its job |
 |---|---|
-| HTTP | the request and the response: method, URL, headers, body |
-| TLS | encrypts the stream, so routers on the way can't read or change it (the Encryption course) |
+| HTTP | the request and the response (puzzle 2) |
+| TLS | encrypts the stream, so routers on the way can't read or change it (puzzle 4) |
 | TCP | reliable, ordered delivery, over a connection |
 | IP | addresses and routes each packet, best effort |
 
-Every puzzle that follows is about the cost of this stack: how long packets take to cross (puzzle 1), what setting up a connection costs (puzzle 2), and what the phone's radio pays to send them (puzzle 3).
+Every puzzle that follows is about the cost of this stack: how long packets take to cross (puzzle 3), what setting up a connection costs (puzzle 5), and what the phone's radio pays to send them (puzzle 6).
 
 ## The analogy
 
@@ -40,7 +40,7 @@ Sending a book by post, one page per envelope. The post office (IP) delivers mos
 ## Check yourself
 
 - A packet of your request is lost between two routers. Who notices and fixes it?::*TCP: the missing packet isn't acknowledged, so it's sent again||IP: it reroutes the packet around the broken router >> IP only does its best; recovering lost packets is TCP's job. >> s3||Your app: OkHttp sees the gap and asks for the packet >> Your code sees a clean stream; TCP handles losses underneath. >> s3::Numbering, acknowledging, resending: TCP.
-- Why must a TCP connection be set up before the first request?::*Both sides must agree to talk and start numbering packets||IP needs the server's address confirmed first >> IP addresses every packet anyway; the setup is TCP's bookkeeping. >> s4||TLS refuses to send data without one >> TLS runs on top of TCP, but the setup is TCP's own need. >> s4::Reliability needs shared bookkeeping.
+- Why must a TCP connection be set up before the first request?::*Both sides must agree to talk and start numbering packets||IP needs the server's location confirmed first >> IP delivers every packet anyway; the setup is TCP's bookkeeping. >> s4||TLS refuses to send data without one >> TLS runs on top of TCP, but the setup is TCP's own need. >> s4::Reliability needs shared bookkeeping.
 - What's the difference between IP and TCP?::*IP delivers single packets as best it can, while TCP makes them a reliable, ordered stream||IP makes packets a reliable, ordered stream, while TCP delivers single packets as best it can >> That's the two swapped. >> the-building-block::Best effort vs reliable.
 
 ## Sources

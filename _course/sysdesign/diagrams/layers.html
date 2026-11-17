@@ -11,7 +11,7 @@
 <g class="step s4" data-pulse="4"><x-letter x="450" y="180" w="40" h="24" label="2"/><text class="d-a" x="400" y="320" text-anchor="middle">not acknowledged: sent again</text></g>
 </svg>
 <ol class="caps">
-<li><p>Your request is HTTP, encrypted by TLS, carried by <b>TCP</b>: layers inside layers.</p></li>
+<li><p>Your request is HTTP, encrypted by <b>TLS</b> (it scrambles the data), carried by <b>TCP</b>: layers inside layers.</p></li>
 <li><p>TCP cuts it into numbered <b>packets</b>. <b>IP</b> passes each one from router to router: best effort, no promises.</p></li>
 <li><p>Packet 2 is lost on the way. <i>Predict: who notices, and what happens?</i></p></li>
 <li><p>TCP: packet 2 was never acknowledged, so it's sent again. The server gets everything, in order.</p></li>

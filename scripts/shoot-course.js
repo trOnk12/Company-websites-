@@ -42,7 +42,7 @@ function serve() {
   await ctx.route(/goatcounter/, r => r.abort());
   const page = await ctx.newPage();
   const courseDir = path.join(ROOT, 'course');
-  for (const c of fs.readdirSync(courseDir).filter(d => fs.statSync(path.join(courseDir, d)).isDirectory())) {
+  for (const c of fs.readdirSync(courseDir).filter(d => fs.statSync(path.join(courseDir, d)).isDirectory() && (!process.argv[2] || d === process.argv[2]))) {
     const dir = path.join(OUT, c);
     fs.mkdirSync(dir, { recursive: true });
     const rows = [];

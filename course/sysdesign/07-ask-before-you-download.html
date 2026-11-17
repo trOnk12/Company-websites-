@@ -9,7 +9,7 @@
   <meta property="og:title" content="Ask before you download – Mobile system design, from a packet to an app – Mateusz Pachulski">
   <meta property="og:description" content="Your feed downloads the same 200 KB every time the screen opens, even when nothing changed. HTTP already has the answer. Here's how a response says how long it stays good, and how the app asks &quot;has this changed?&quot; for almost nothing.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/sysdesign/04-ask-before-you-download">
+  <meta property="og:url" content="https://pachulski.dev/course/sysdesign/07-ask-before-you-download">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Ask before you download – Mobile system design, from a packet to an app – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/sysdesign/04-ask-before-you-download">
+  <link rel="canonical" href="https://pachulski.dev/course/sysdesign/07-ask-before-you-download">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -47,19 +47,19 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="4" data-prev="03-the-radio-is-the-battery.html" data-prev-title="The radio is the battery">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-round-trips-not-bandwidth.html" class="done" title="Round trips, not bandwidth">1</a></li><li><a href="02-one-connection-many-requests.html" class="done" title="One connection, many requests">2</a></li><li><a href="03-the-radio-is-the-battery.html" class="done" title="The radio is the battery">3</a></li><li><a href="04-ask-before-you-download.html" aria-current="page" title="Ask before you download">4</a></li><li><a href="05-the-database-is-the-truth.html" title="The database is the truth">5</a></li><li><a href="06-retry-without-charging-twice.html" title="Retry without charging twice">6</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 4 · 5 of 7</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="7" data-prev="06-the-radio-is-the-battery.html" data-prev-title="The radio is the battery">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" class="done" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" class="done" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" class="done" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" class="done" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" class="done" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" class="done" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" aria-current="page" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 7 · 8 of 11</p>
       <h1>Ask before you download</h1>
       <p class="lede">Your feed downloads the same 200 KB every time the screen opens, even when nothing changed. HTTP already has the answer. Here's how a response says how long it stays good, and how the app asks &quot;has this changed?&quot; for almost nothing.</p>
-      <aside class="builds-on" aria-labelledby="builds-on-4">
-        <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-round-trips-not-bandwidth.html">Puzzle 1: Round trips, not bandwidth</a></summary><p>Latency is how long a packet takes to arrive; bandwidth is how much data fits through per second. Small requests are bound by latency, so the wait is the number of round trips times the round-trip time. Requests that wait for each other add their round trips together; cut the round trips, and the screen gets faster on every network.</p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-what-actually-travels.html">0</a> → <a href="01-round-trips-not-bandwidth.html">1</a>. Know them already? Start here.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-7">
+        <p id="builds-on-7"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="2"><details><summary><a href="02-anatomy-of-an-http-call.html">Puzzle 2: Anatomy of an HTTP call</a></summary><p>An HTTP request is a method (GET to read, POST to create, PUT to replace, DELETE to remove), a path, headers (name: value pairs about the message) and an optional body. The response has a status code, headers and a body. Status codes come in families: 2xx worked, 3xx look elsewhere or use what you have, 4xx your request was wrong, 5xx the server failed.</p></details></li><li data-block="3"><details><summary><a href="03-round-trips-not-bandwidth.html">Puzzle 3: Round trips, not bandwidth</a></summary><p>Latency is how long a packet takes to arrive; bandwidth is how much data fits through per second. Small requests are bound by latency, so the wait is the number of round trips times the round-trip time. Requests that wait for each other add their round trips together; cut the round trips, and the screen gets faster on every network.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-what-actually-travels.html">0</a> → <a href="01-finding-the-server.html">1</a> → <a href="02-anatomy-of-an-http-call.html">2</a> → <a href="03-round-trips-not-bandwidth.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Every time the user opens the feed, the app downloads it again: 200 KB, a round trip or more, a radio wake-up (puzzle 3). Most of the time, nothing in it has changed. How can the app avoid downloading what it already has, and still notice when it does change?</p>
+<p>Every time the user opens the feed, the app downloads it again: 200 KB, a round trip or more, a radio wake-up (puzzle 6). Most of the time, nothing in it has changed. How can the app avoid downloading what it already has, and still notice when it does change?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -89,7 +89,7 @@
 <p><b>1. Fresh: don't ask at all.</b> The server adds a header like <code>Cache-Control: max-age=60</code>. For the next 60 seconds, the stored response is <b>fresh</b>: the app uses it without touching the network. Zero round trips, zero radio.</p>
 <p><b>2. Stale: ask, cheaply.</b> After 60 seconds the copy is stale. It isn't thrown away. The server also sent an <b>ETag</b>, a short tag naming this version of the feed, like <code>&quot;v42&quot;</code>. The app now sends a <b>conditional request</b>: &quot;I have <code>&quot;v42&quot;</code>; has it changed?&quot;, in an <code>If-None-Match</code> header.</p>
 <ul><li>Not changed: the server answers <b>304 Not Modified</b>, with no body. The app keeps its copy and marks it fresh again. One round trip, a few hundred bytes instead of 200 KB.</li><li>Changed: a normal <code>200 OK</code> with the new feed and a new ETag.</li></ul>
-<p>So in a system design answer, &quot;cache it&quot; has two levels: how long it's fresh (no network) and how it's revalidated (a cheap check). The server decides both, per response: a user's profile might be fresh for an hour; a live score, never. Two directives people mix up: <code>no-cache</code> means &quot;store it, but always revalidate&quot;; <code>no-store</code> means &quot;never store it&quot;.</p>
+<p>Two notes. Your server sets these headers, so caching is a contract with the backend team; and HTTP caching applies to GET responses. So in a system design answer, &quot;cache it&quot; has two levels: how long it's fresh (no network) and how it's revalidated (a cheap check). The server decides both, per response: a user's profile might be fresh for an hour; a live score, never. Two directives people mix up: <code>no-cache</code> means &quot;store it, but always revalidate&quot;; <code>no-store</code> means &quot;never store it&quot;.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -99,26 +99,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The feed came with <code>Cache-Control: max-age=60</code>. The user reopens it 30 seconds later. What happens on the network?</legend>
-<input type="radio" name="q-04-ask-before-you-download-1" id="q-04-ask-before-you-download-1-1"><label for="q-04-ask-before-you-download-1-1">A conditional request, answered 304 if nothing changed</label>
-<input type="radio" name="q-04-ask-before-you-download-1" id="q-04-ask-before-you-download-1-2" data-ok><label for="q-04-ask-before-you-download-1-2">Nothing at all: the copy is still fresh, so it's used from the cache</label>
-<input type="radio" name="q-04-ask-before-you-download-1" id="q-04-ask-before-you-download-1-3"><label for="q-04-ask-before-you-download-1-3">A full download, because the screen was closed and reopened</label>
+<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-1"><label for="q-07-ask-before-you-download-1-1">A conditional request, answered 304 if nothing changed</label>
+<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-2" data-ok><label for="q-07-ask-before-you-download-1-2">Nothing at all: the copy is still fresh, so it's used from the cache</label>
+<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-3"><label for="q-07-ask-before-you-download-1-3">A full download, because the screen was closed and reopened</label>
 <p class="fb no opt-1"><b>Not quite.</b> That's after 60 seconds, when the copy is stale. <label class="show-me" for="st-cache-2" data-goto="st-cache">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Fresh means no network.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The stored response survives the screen closing. <label class="show-me" for="st-cache-1" data-goto="st-cache">Show me step 1 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Two minutes later the copy is stale and the feed hasn't changed. What does the server send?</legend>
-<input type="radio" name="q-04-ask-before-you-download-2" id="q-04-ask-before-you-download-2-1"><label for="q-04-ask-before-you-download-2-1">The whole feed again, since the copy is out of date</label>
-<input type="radio" name="q-04-ask-before-you-download-2" id="q-04-ask-before-you-download-2-2" data-ok><label for="q-04-ask-before-you-download-2-2">A 304 Not Modified with no body, so the app reuses its copy</label>
-<input type="radio" name="q-04-ask-before-you-download-2" id="q-04-ask-before-you-download-2-3"><label for="q-04-ask-before-you-download-2-3">Nothing, because the app doesn't ask once the copy is stale</label>
+<input type="radio" name="q-07-ask-before-you-download-2" id="q-07-ask-before-you-download-2-1"><label for="q-07-ask-before-you-download-2-1">The whole feed again, since the copy is out of date</label>
+<input type="radio" name="q-07-ask-before-you-download-2" id="q-07-ask-before-you-download-2-2" data-ok><label for="q-07-ask-before-you-download-2-2">A 304 Not Modified with no body, so the app reuses its copy</label>
+<input type="radio" name="q-07-ask-before-you-download-2" id="q-07-ask-before-you-download-2-3"><label for="q-07-ask-before-you-download-2-3">Nothing, because the app doesn't ask once the copy is stale</label>
 <p class="fb no opt-1"><b>Not quite.</b> Stale isn't wrong: with a matching ETag the server answers 304. <label class="show-me" for="st-cache-3" data-goto="st-cache">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Stale means ask cheaply.</p>
 <p class="fb no opt-3"><b>Not quite.</b> It asks with a conditional request carrying the ETag. <label class="show-me" for="st-cache-3" data-goto="st-cache">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between Cache-Control and an ETag?</legend>
-<input type="radio" name="q-04-ask-before-you-download-3" id="q-04-ask-before-you-download-3-1"><label for="q-04-ask-before-you-download-3-1">Cache-Control names a copy's version for checking, while an ETag says how long it stays fresh</label>
-<input type="radio" name="q-04-ask-before-you-download-3" id="q-04-ask-before-you-download-3-2" data-ok><label for="q-04-ask-before-you-download-3-2">Cache-Control says how long a copy stays fresh, while an ETag names its version for checking</label>
+<input type="radio" name="q-07-ask-before-you-download-3" id="q-07-ask-before-you-download-3-1"><label for="q-07-ask-before-you-download-3-1">Cache-Control names a copy's version for checking, while an ETag says how long it stays fresh</label>
+<input type="radio" name="q-07-ask-before-you-download-3" id="q-07-ask-before-you-download-3-2" data-ok><label for="q-07-ask-before-you-download-3-2">Cache-Control says how long a copy stays fresh, while an ETag names its version for checking</label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> How long vs which version.</p>
 </fieldset>
@@ -131,14 +131,14 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="03-the-radio-is-the-battery.html">← Puzzle 3</a>
-        <a class="button primary" href="05-the-database-is-the-truth.html">Puzzle 5: Offline-first →</a>
+        <a class="button" href="06-the-radio-is-the-battery.html">← Puzzle 6</a>
+        <a class="button primary" href="08-the-database-is-the-truth.html">Puzzle 8: Offline-first →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Ask%20before%20you%20download&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2F04-ask-before-you-download" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2F07-ask-before-you-download" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

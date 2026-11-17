@@ -1,0 +1,17 @@
+<!-- label: A read timeout: the request may have arrived and only the answer was lost -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="to-t"><title id="to-t">The phone sends POST orders; in a lift the connection breaks; after ten seconds a read timeout fires; two stories look the same from the phone: the request was lost, or the server created the order and the answer was lost</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="20" y="100" w="70" h="120" label="phone"/>
+<x-server class="step s1" x="540" y="90" w="80" h="120" label="server"/>
+<x-letter class="step s1" data-move="1:120,110 2:300,110 3:300,110 4:420,110" x="0" y="0" w="110" h="28" label="POST /orders"/>
+<g class="step s2" data-pulse="2"><path class="d-red" d="M300,150 L340,190 M340,150 L300,190"/><text class="d-r" x="320" y="215" text-anchor="middle">lift: connection breaks</text></g>
+<g class="step s3" data-pulse="3"><text class="d-r" x="110" y="270" text-anchor="middle">10 s: read timeout</text></g>
+<g class="step s4" data-pulse="4"><x-sheet x="440" y="230" w="120" h="60" lines="2" label="order created?"/><text class="d-a" x="260" y="300" text-anchor="middle">lost on the way, or answer lost?</text></g>
+<g class="step s1" data-move="1:55,250 2:320,240 3:110,290 4:500,320"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>The phone sends <code>POST /orders</code> over an open connection.</p></li>
+<li><p>In a lift the connection breaks. TCP can't resend into a connection that's gone.</p></li>
+<li><p>After ten seconds, OkHttp gives up: a read <b>timeout</b>. <i>Predict: was the order created?</i></p></li>
+<li><p>You can't tell: the request may have been lost, or the server created the order and only the answer was lost.</p></li>
+</ol>

@@ -9,7 +9,7 @@
   <meta property="og:title" content="The database is the truth – Mobile system design, from a packet to an app – Mateusz Pachulski">
   <meta property="og:description" content="The user opens your notes app in a tunnel: a spinner, then an error. On the next screen, a note they just wrote is missing. Both have one cause. Here's the structure Android recommends instead: one place every screen reads from.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/sysdesign/05-the-database-is-the-truth">
+  <meta property="og:url" content="https://pachulski.dev/course/sysdesign/08-the-database-is-the-truth">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>The database is the truth – Mobile system design, from a packet to an app – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/sysdesign/05-the-database-is-the-truth">
+  <link rel="canonical" href="https://pachulski.dev/course/sysdesign/08-the-database-is-the-truth">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -47,15 +47,15 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="5" data-prev="04-ask-before-you-download.html" data-prev-title="Ask before you download">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-round-trips-not-bandwidth.html" class="done" title="Round trips, not bandwidth">1</a></li><li><a href="02-one-connection-many-requests.html" class="done" title="One connection, many requests">2</a></li><li><a href="03-the-radio-is-the-battery.html" class="done" title="The radio is the battery">3</a></li><li><a href="04-ask-before-you-download.html" class="done" title="Ask before you download">4</a></li><li><a href="05-the-database-is-the-truth.html" aria-current="page" title="The database is the truth">5</a></li><li><a href="06-retry-without-charging-twice.html" title="Retry without charging twice">6</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 5 · 6 of 7</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="8" data-prev="07-ask-before-you-download.html" data-prev-title="Ask before you download">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" class="done" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" class="done" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" class="done" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" class="done" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" class="done" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" class="done" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" class="done" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" aria-current="page" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 8 · 9 of 11</p>
       <h1>The database is the truth</h1>
       <p class="lede">The user opens your notes app in a tunnel: a spinner, then an error. On the next screen, a note they just wrote is missing. Both have one cause. Here's the structure Android recommends instead: one place every screen reads from.</p>
-      <aside class="builds-on" aria-labelledby="builds-on-5">
-        <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-what-actually-travels.html">Puzzle 0: What actually travels</a></summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-8">
+        <p id="builds-on-8"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="1"><details><summary><a href="01-finding-the-server.html">Puzzle 1: Finding the server</a></summary><p>Every machine on the internet has an IP address, a number that routers use to deliver packets. People and code use hostnames instead, like api.example.com. Before the first connection, the phone asks DNS, the internet's phone book, which address a hostname has. That lookup is one more round trip on a cold start, so the answer is cached for a while.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-what-actually-travels.html">0</a> → <a href="01-finding-the-server.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -84,7 +84,7 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>The problem is that the screen has several places to get data from: the network response, its own list, maybe a cache. When they disagree, the screens disagree.</p>
-<p>An <b>offline-first</b> app picks one: the local database (Room, on Android) is the <b>source of truth</b>. It's the only place the UI ever reads from.</p>
+<p>An <b>offline-first</b> app picks one: the local database (Room, on Android) is the <b>source of truth</b>. (Puzzle 7's HTTP cache still has a job: it makes the repository's network calls cheap. But screens never read it directly.) It's the only place the UI ever reads from.</p>
 <p>The parts:</p>
 <ul><li>The <b>repository</b> combines two data sources: the local database and the network API.</li><li><b>Reads:</b> the UI observes the database, for example as a <code>Flow</code>. When the database changes, every screen showing that data updates by itself.</li><li><b>Network results</b> never go straight to the screen: the repository writes them into the database, and the screens update from there.</li><li><b>Writes:</b> the user's change goes into the database first, so it shows at once, even offline, and is marked to sync. When there's a connection, the repository sends it to the server; WorkManager can make sure it eventually does.</li></ul>
 <p>In a tunnel, the screen shows what's in the database, with no spinner. The new note shows on every screen at once, because they all read the same table.</p>
@@ -98,26 +98,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>In an offline-first app, the network returns a fresh list of notes. Where does it go?</legend>
-<input type="radio" name="q-05-the-database-is-the-truth-1" id="q-05-the-database-is-the-truth-1-1" data-ok><label for="q-05-the-database-is-the-truth-1-1">Into the local database, and the screens update from there</label>
-<input type="radio" name="q-05-the-database-is-the-truth-1" id="q-05-the-database-is-the-truth-1-2"><label for="q-05-the-database-is-the-truth-1-2">Into a separate in-memory cache next to the database</label>
-<input type="radio" name="q-05-the-database-is-the-truth-1" id="q-05-the-database-is-the-truth-1-3"><label for="q-05-the-database-is-the-truth-1-3">Straight to the screen that asked for it, then into the database</label>
+<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-1" data-ok><label for="q-08-the-database-is-the-truth-1-1">Into the local database, and the screens update from there</label>
+<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-2"><label for="q-08-the-database-is-the-truth-1-2">Into a separate in-memory cache next to the database</label>
+<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-3"><label for="q-08-the-database-is-the-truth-1-3">Straight to the screen that asked for it, then into the database</label>
 <p class="fb ok opt-1"><b>Right.</b> Network → database → screens.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A second store is a second source of truth: the thing this design removes. <label class="show-me" for="st-offline-3" data-goto="st-offline">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Then other screens could disagree; results always go through the database. <label class="show-me" for="st-offline-3" data-goto="st-offline">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The user writes a note in a tunnel. What does the app do?</legend>
-<input type="radio" name="q-05-the-database-is-the-truth-2" id="q-05-the-database-is-the-truth-2-1"><label for="q-05-the-database-is-the-truth-2-1">Keeps it in the screen's state until a connection comes back</label>
-<input type="radio" name="q-05-the-database-is-the-truth-2" id="q-05-the-database-is-the-truth-2-2"><label for="q-05-the-database-is-the-truth-2-2">Shows an error, since the server can't be reached</label>
-<input type="radio" name="q-05-the-database-is-the-truth-2" id="q-05-the-database-is-the-truth-2-3" data-ok><label for="q-05-the-database-is-the-truth-2-3">Saves it to the database at once and syncs it later when online</label>
+<input type="radio" name="q-08-the-database-is-the-truth-2" id="q-08-the-database-is-the-truth-2-1"><label for="q-08-the-database-is-the-truth-2-1">Keeps it in the screen's state until a connection comes back</label>
+<input type="radio" name="q-08-the-database-is-the-truth-2" id="q-08-the-database-is-the-truth-2-2"><label for="q-08-the-database-is-the-truth-2-2">Shows an error, since the server can't be reached</label>
+<input type="radio" name="q-08-the-database-is-the-truth-2" id="q-08-the-database-is-the-truth-2-3" data-ok><label for="q-08-the-database-is-the-truth-2-3">Saves it to the database at once and syncs it later when online</label>
 <p class="fb no opt-1"><b>Not quite.</b> Screen state is lost if the app dies; the database survives. <label class="show-me" for="st-offline-4" data-goto="st-offline">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Writes go to the local database first; the network can wait. <label class="show-me" for="st-offline-4" data-goto="st-offline">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Write locally first, sync later.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the source of truth and the network data source?</legend>
-<input type="radio" name="q-05-the-database-is-the-truth-3" id="q-05-the-database-is-the-truth-3-1"><label for="q-05-the-database-is-the-truth-3-1">The app reads only the network data source, while the source of truth feeds it</label>
-<input type="radio" name="q-05-the-database-is-the-truth-3" id="q-05-the-database-is-the-truth-3-2" data-ok><label for="q-05-the-database-is-the-truth-3-2">The app reads only the source of truth, while the network data source feeds it</label>
+<input type="radio" name="q-08-the-database-is-the-truth-3" id="q-08-the-database-is-the-truth-3-1"><label for="q-08-the-database-is-the-truth-3-1">The app reads only the network data source, while the source of truth feeds it</label>
+<input type="radio" name="q-08-the-database-is-the-truth-3" id="q-08-the-database-is-the-truth-3-2" data-ok><label for="q-08-the-database-is-the-truth-3-2">The app reads only the source of truth, while the network data source feeds it</label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> What the UI reads vs what fills it.</p>
 </fieldset>
@@ -130,14 +130,14 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="04-ask-before-you-download.html">← Puzzle 4</a>
-        <a class="button primary" href="06-retry-without-charging-twice.html">Puzzle 6: Idempotency and backoff →</a>
+        <a class="button" href="07-ask-before-you-download.html">← Puzzle 7</a>
+        <a class="button primary" href="09-when-the-connection-breaks.html">Puzzle 9: Timeouts and lost answers →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20The%20database%20is%20the%20truth&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2F05-the-database-is-the-truth" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2F08-the-database-is-the-truth" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

@@ -37,7 +37,6 @@
    "password",
    "token",
    "internet",
-   "HTTPS",
    "bank",
    "bit",
    "bits",
@@ -226,10 +225,14 @@
  "from": {
   "round trip": {
    "course": "sysdesign",
-   "in": 1,
+   "in": 3,
    "aliases": [
     "round trips"
    ]
+  },
+  "HTTPS": {
+   "course": "sysdesign",
+   "in": 4
   }
  }
 }

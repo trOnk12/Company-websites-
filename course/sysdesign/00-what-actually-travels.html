@@ -48,8 +48,8 @@
 
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" aria-current="page" title="What actually travels">0</a></li><li><a href="01-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">1</a></li><li><a href="02-one-connection-many-requests.html" title="One connection, many requests">2</a></li><li><a href="03-the-radio-is-the-battery.html" title="The radio is the battery">3</a></li><li><a href="04-ask-before-you-download.html" title="Ask before you download">4</a></li><li><a href="05-the-database-is-the-truth.html" title="The database is the truth">5</a></li><li><a href="06-retry-without-charging-twice.html" title="Retry without charging twice">6</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Start here · 1 of 7</p>
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" aria-current="page" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      <p class="eyebrow">Mobile system design, from a packet to an app · Start here · 1 of 11</p>
       <h1>What actually travels</h1>
       <p class="lede">Your app calls an API and gets JSON back, as if the two were joined by a pipe. Underneath, there's no pipe: only small chunks of data that can get lost. Here's the stack of layers that turns them into a request and a response.</p>
 
@@ -72,7 +72,7 @@
 <g class="step s4" data-pulse="4"><g><rect class="d-paper" x="450" y="180" width="40" height="24" rx="3"/><polyline class="d-line" points="450,180 470,188 490,180"/><text class="d-tiny" x="470" y="198" text-anchor="middle">2</text></g><text class="d-a" x="400" y="320" text-anchor="middle">not acknowledged: sent again</text></g>
 </svg></div>
 <ol class="caps">
-<li><p>Your request is HTTP, encrypted by TLS, carried by <b>TCP</b>: layers inside layers.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-layers-2">Next →</label></div></li>
+<li><p>Your request is HTTP, encrypted by <b>TLS</b> (it scrambles the data), carried by <b>TCP</b>: layers inside layers.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-layers-2">Next →</label></div></li>
 <li><p>TCP cuts it into numbered <b>packets</b>. <b>IP</b> passes each one from router to router: best effort, no promises.</p><div class="stepnav"><label for="st-layers-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-layers-3">Next →</label></div></li>
 <li><p>Packet 2 is lost on the way. <i>Predict: who notices, and what happens?</i></p><div class="stepnav"><label for="st-layers-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-layers-4">Next →</label></div></li>
 <li><p>TCP: packet 2 was never acknowledged, so it's sent again. The server gets everything, in order.</p><div class="stepnav"><label for="st-layers-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-layers-1">↺ Again</label></div></li>
@@ -86,8 +86,8 @@
 <p><b>IP</b>, the Internet Protocol, is the postal service: it addresses each packet and passes it from router to router toward the server. It does its best, nothing more. A packet can be lost, delayed, or overtaken by the one sent after it.</p>
 <p><b>TCP</b>, the Transmission Control Protocol, builds something reliable on top. The sender numbers every packet; the receiver sends back acknowledgements, &quot;got up to number 12&quot;; anything not acknowledged in time is sent again; the receiver puts packets back in order. Your code sees one clean stream of bytes. To keep that bookkeeping, both sides must first agree to talk: a TCP <b>connection</b>, set up with a short exchange before any data flows.</p>
 <p>On top of TCP, two more layers:</p>
-<div class="table-wrap"><table><thead><tr><th scope="col">Layer</th><th scope="col">Its job</th></tr></thead><tbody><tr><th scope="row">HTTP</th><td>the request and the response: method, URL, headers, body</td></tr><tr><th scope="row">TLS</th><td>encrypts the stream, so routers on the way can't read or change it (the Encryption course)</td></tr><tr><th scope="row">TCP</th><td>reliable, ordered delivery, over a connection</td></tr><tr><th scope="row">IP</th><td>addresses and routes each packet, best effort</td></tr></tbody></table></div>
-<p>Every puzzle that follows is about the cost of this stack: how long packets take to cross (puzzle 1), what setting up a connection costs (puzzle 2), and what the phone's radio pays to send them (puzzle 3).</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Layer</th><th scope="col">Its job</th></tr></thead><tbody><tr><th scope="row">HTTP</th><td>the request and the response (puzzle 2)</td></tr><tr><th scope="row">TLS</th><td>encrypts the stream, so routers on the way can't read or change it (puzzle 4)</td></tr><tr><th scope="row">TCP</th><td>reliable, ordered delivery, over a connection</td></tr><tr><th scope="row">IP</th><td>addresses and routes each packet, best effort</td></tr></tbody></table></div>
+<p>Every puzzle that follows is about the cost of this stack: how long packets take to cross (puzzle 3), what setting up a connection costs (puzzle 5), and what the phone's radio pays to send them (puzzle 6).</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -106,10 +106,10 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>Why must a TCP connection be set up before the first request?</legend>
-<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-1"><label for="q-00-what-actually-travels-2-1">IP needs the server's address confirmed first</label>
+<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-1"><label for="q-00-what-actually-travels-2-1">IP needs the server's location confirmed first</label>
 <input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-2" data-ok><label for="q-00-what-actually-travels-2-2">Both sides must agree to talk and start numbering packets</label>
 <input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-3"><label for="q-00-what-actually-travels-2-3">TLS refuses to send data without one</label>
-<p class="fb no opt-1"><b>Not quite.</b> IP addresses every packet anyway; the setup is TCP's bookkeeping. <label class="show-me" for="st-layers-4" data-goto="st-layers">Show me step 4 again ↑</label></p>
+<p class="fb no opt-1"><b>Not quite.</b> IP delivers every packet anyway; the setup is TCP's bookkeeping. <label class="show-me" for="st-layers-4" data-goto="st-layers">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Reliability needs shared bookkeeping.</p>
 <p class="fb no opt-3"><b>Not quite.</b> TLS runs on top of TCP, but the setup is TCP's own need. <label class="show-me" for="st-layers-4" data-goto="st-layers">Show me step 4 again ↑</label></p>
 </fieldset>
@@ -130,7 +130,7 @@
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="./">← Overview</a>
-        <a class="button primary" href="01-round-trips-not-bandwidth.html">Puzzle 1: Why it feels slow →</a>
+        <a class="button primary" href="01-finding-the-server.html">Puzzle 1: Addresses and DNS →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20What%20actually%20travels&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>

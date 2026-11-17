@@ -14,12 +14,16 @@
       "blurb": "Round trips, handshakes, the radio, caching, offline-first data and safe retries.",
       "puzzles": [
         "00-what-actually-travels.md",
-        "01-round-trips-not-bandwidth.md",
-        "02-one-connection-many-requests.md",
-        "03-the-radio-is-the-battery.md",
-        "04-ask-before-you-download.md",
-        "05-the-database-is-the-truth.md",
-        "06-retry-without-charging-twice.md"
+        "01-finding-the-server.md",
+        "02-anatomy-of-an-http-call.md",
+        "03-round-trips-not-bandwidth.md",
+        "04-what-https-adds.md",
+        "05-one-connection-many-requests.md",
+        "06-the-radio-is-the-battery.md",
+        "07-ask-before-you-download.md",
+        "08-the-database-is-the-truth.md",
+        "09-when-the-connection-breaks.md",
+        "10-retry-without-charging-twice.md"
       ]
     }
   ],

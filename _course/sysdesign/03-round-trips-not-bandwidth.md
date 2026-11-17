@@ -28,7 +28,7 @@ So for small requests, the time is roughly:
 | Four requests, each waiting for the one before | 4 round trips |
 | The three independent ones together, then the avatar | 2 round trips |
 
-At 30 ms per round trip on Wi-Fi, four in a row is 120 ms. At 250 ms on a busy mobile network, it's a full second, and doubling the bandwidth doesn't change it, because you weren't waiting for bandwidth. Sending the user, settings and avatar URL requests together, then the avatar, takes two round trips: 500 ms.
+At 30 ms per round trip on Wi-Fi, four in a row is 120 ms. At 250 ms on a busy mobile network, it's a full second, and doubling the bandwidth doesn't change it, because you weren't waiting for bandwidth. Sending the user, settings and avatar URL requests together, then the avatar, takes two round trips: 500 ms. (In Kotlin, start them with `async` and wait with `awaitAll`; over one connection this needs a newer HTTP version, puzzle 5.)
 
 That's why the first question of any mobile system design is: how many round trips does this screen need, and can they happen at the same time, or not at all? One endpoint that returns the whole screen, or requests that don't depend on each other, beats any amount of compression.
 

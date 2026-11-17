@@ -1,0 +1,16 @@
+<!-- label: The phone asks DNS for the host's address, then connects; the answer is cached -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="dn-t"><title id="dn-t">The app knows only the hostname api.example.com; the phone asks a DNS server which address it has; DNS answers with an IP address; the phone keeps the answer in a cache and connects to that address; the next request skips the lookup</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="90" w="80" h="140" label="phone"/>
+<g class="step s1" data-pulse="1"><text class="d-a" x="20" y="70">api.example.com</text></g>
+<g class="step s2" data-pulse="2"><x-sheet x="250" y="40" w="140" h="90" lines="4" label="DNS: phone book"/></g>
+<x-letter class="step s2 hide-4" data-move="2:120,100 3:120,150" x="0" y="0" w="120" h="28" label="which address?"/>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="320" y="200" text-anchor="middle">93.184.215.14</text></g>
+<g class="step s4" data-pulse="4"><x-server x="530" y="150" w="80" h="120" label="api server"/><rect class="d-hl" x="30" y="260" width="110" height="34" rx="6"/><text class="d-tiny" x="85" y="282" text-anchor="middle">cached address</text><x-arrow tone="acc" d="M144,270 L524,220"/><text class="d-a" x="330" y="230" text-anchor="middle">connect</text></g>
+</svg>
+<ol class="caps">
+<li><p>Your code knows a <b>hostname</b>, api.example.com. Packets need a number.</p></li>
+<li><p>The phone asks <b>DNS</b>, the internet's phone book: which address does this name have?</p></li>
+<li><p>DNS answers with an <b>IP address</b>. <i>Predict: does the next request ask again?</i></p></li>
+<li><p>No: the answer is <b>cached</b> for a while, and the phone connects straight to the address.</p></li>
+</ol>

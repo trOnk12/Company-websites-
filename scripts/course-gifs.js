@@ -55,7 +55,7 @@ function serve() {
   // course.js runs (it moves the diagram's parts); reduced motion makes it jump straight to each step.
   await page.route(/goatcounter/, r => r.abort());
   const courseDir = path.join(ROOT, 'course');
-  for (const c of fs.readdirSync(courseDir).filter(d => fs.statSync(path.join(courseDir, d)).isDirectory())) {
+  for (const c of fs.readdirSync(courseDir).filter(d => fs.statSync(path.join(courseDir, d)).isDirectory() && (!process.argv[2] || d === process.argv[2]))) {
     const outDir = path.join(courseDir, c, 'gifs');
     fs.mkdirSync(outDir, { recursive: true });
     for (const f of fs.readdirSync(path.join(courseDir, c)).filter(f => /^\d\d-.*\.html$/.test(f)).sort()) {

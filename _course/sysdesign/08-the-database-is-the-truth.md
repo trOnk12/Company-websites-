@@ -18,7 +18,7 @@ Your notes screen calls the API and shows the result. In a tunnel, it shows a sp
 
 The problem is that the screen has several places to get data from: the network response, its own list, maybe a cache. When they disagree, the screens disagree.
 
-An **offline-first** app picks one: the local database (Room, on Android) is the **source of truth**. It's the only place the UI ever reads from.
+An **offline-first** app picks one: the local database (Room, on Android) is the **source of truth**. (Puzzle 7's HTTP cache still has a job: it makes the repository's network calls cheap. But screens never read it directly.) It's the only place the UI ever reads from.
 
 The parts:
 

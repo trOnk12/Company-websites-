@@ -16,11 +16,11 @@ Your app sends an analytics event the moment something happens, about every 20 s
 
 ## The building block
 
-The phone's cellular radio has power levels, its **radio state**. Idle, it sips power and only listens now and then. Connected, it draws a lot: on LTE, today's 4G mobile network, roughly a hundred times more, according to High Performance Browser Networking.
+The phone's cellular radio has power levels, its **radio state**. Idle, it sips power and only listens now and then. Active (the radio's own state, not puzzle 5's TCP connection, which can stay open while the radio idles), it draws a lot: on LTE, today's 4G mobile network, roughly a hundred times more, according to High Performance Browser Networking.
 
 Two things make every send expensive:
 
-- **Waking up takes time**, a wake-up delay. Moving from idle to connected costs control messages with the tower before your data can go: that's latency on top of puzzle 1's round trip.
+- **Waking up takes time**, a wake-up delay. Moving from idle to connected costs control messages with the tower before your data can go: that's latency on top of puzzle 3's round trip.
 - **It doesn't fall asleep right away.** After the last packet, the radio stays at high power for a **tail time**, in case more data comes, then steps down. Android's documentation gives an example for a typical device on 3G, the older mobile network: at least 18 seconds of drawing energy per transfer. On LTE the timers are set by the network and are shorter, but the effect is the same.
 
 So a 300-byte ping pays almost the same fixed cost, one wake-up and one tail, as a far bigger download. Send a ping about every 20 seconds, and the radio never gets to sleep.
