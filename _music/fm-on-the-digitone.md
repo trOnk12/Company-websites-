@@ -58,7 +58,7 @@ LEV A :: *0* :: No shaking yet. This is the knob of the whole lesson.
 ATK B :: as it is ::
 DEC B :: as it is ::
 END B :: as it is ::
-LEV B :: *0* :: Group B stays silent until step 9.
+LEV B :: *0* :: B doesn't shake anything yet, and with MIX at X you don't hear B1's own output either.
 ```
 
 ```digitone SYN 3 · FM TONE
@@ -71,7 +71,17 @@ BTRG :: as it is ::
 BRST :: as it is ::
 ```
 
-On the **FLTR** page, open the filter: **FREQ** fully up and **ENV** at 0, so the filter doesn't hide what FM does. On the **AMP** page, set **MODE** to **AHD** and **HOLD** to **NOTE**: the sound then lasts as long as you hold a key.
+```digitone SYN 4 · FM TONE
+RATIO OFFSET C :: *0* :: Offsets nudge a ratio off its value. At 0, "whole number" really means whole.
+RATIO OFFSET A :: *0* ::
+RATIO OFFSET B1 :: *0* ::
+RATIO OFFSET B2 :: *0* ::
+KEY TRACK A :: *0* :: Otherwise higher keys get less shaking, which would skew step 2.
+KEY TRACK B1 :: *0* ::
+KEY TRACK B2 :: *0* ::
+```
+
+On the **FLTR** page, open the filter, so it doesn't hide what FM does: **FREQ** fully up, **ENV** at 0, and if it's the MULTI-MODE filter, **TYPE** fully to lowpass. On FLTR page 2, the base-width filter is out of the way with **BASE** at 0 and **WDTH** at 127. On the **AMP** page, set **MODE** to **AHD** and **HOLD** to **NOTE**: the sound then lasts as long as you hold a key.
 
 Press **[KEYBOARD]** so the trig keys play notes, and hold one down.
 
@@ -102,7 +112,7 @@ In the drawing, why is there only one line?::Because a sine is a single frequenc
 
 The manual says the same: "At slower modulation rates, it is simply vibrato, but when the modulating frequency reaches audio rate, the vibrato effects becomes a part of the sound". The sine that shakes is the **modulator** (A); the sine being shaken is the **carrier** (C), because it carries the note to your ears.
 
-Slide the speed up slowly. Around 15–20 shakes per second, the wobble stops being a wobble.
+Slide the speed up slowly. Somewhere around 15 to 20 shakes per second, roughly, the wobble stops being a wobble.
 
 ```fm
 title: Vibrato, faster and faster
@@ -117,14 +127,14 @@ On the Digitone you can hear the same thing, because A's speed follows the key y
 
 ```digitone SYN 1 · FM TONE
 RATIO C :: *4.00* :: C now sounds two octaves above the key, so even very low keys stay audible.
-RATIO A :: *0.25* :: The lowest ratio: A shakes at a quarter of the key's pitch. On a very low key that's a few shakes per second.
+RATIO A :: *0.25* :: As low as it goes (0.25 is the lowest the manual gives for group B; check A on your unit). A shakes at a quarter of the key's pitch: on a very low key, a few shakes per second.
 ```
 
 ```digitone SYN 2 · FM TONE
 LEV A :: *≈30* :: Enough shaking to hear it clearly.
 ```
 
-Press **[−]** until the keyboard is 3 or 4 octaves down, and play a **C**: slow vibrato. Now press **[+]** and play C again, octave by octave. Each octave doubles A's speed: vibrato, then a flutter, then a growl, then simply a different sound. Nothing changed but the speed.
+Press **[−]** until the keyboard is 3 or 4 octaves down, and play a **C**: slow vibrato. Now press **[+]** and play C again, octave by octave. Each octave doubles A's speed: vibrato, then a flutter, then a growl, then simply a different sound. Nothing changed but the speed. (If the slow vibrato on the lowest octaves is hard to hear, raise LEV A a little there.)
 
 ```check
 You play one octave higher. What happens to A's shaking speed, and why?::It doubles. RATIO A is a multiple of the note you play, so A's speed follows the key, like C's pitch does.
@@ -191,14 +201,14 @@ A note's **harmonics** are the frequencies at 1, 2, 3, 4… times the note: a la
 Keep **LEV A** around a third and try three ratios:
 
 ```digitone SYN 1 · FM TONE
-RATIO A :: *1.00, then 2.00, then one between* :: 1.00: every rung, a full, saw-like tone. 2.00: hollow, like a square or a clarinet. Then any value that isn't a whole number: a bell, or metal.
+RATIO A :: *1.00, then 2.00, then off the ladder* :: 1.00: every rung, a full, saw-like tone. 2.00: hollow, like a square or a clarinet. Then leave the ladder: nudge RATIO OFFSET A (SYN page 4) a little off 0, or use DTUN: a bell, or metal.
 ```
 
 ```fm
 title: Ratio picks the rungs
 ratio: 2
 depth: 1.5
-choices: 1, 2, 3, 1.5, 3.5, 1.41
+choices: 1, 2, 3, 0.5, 1.5, 1.41
 lock: depth
 ```
 
@@ -206,8 +216,10 @@ lock: depth
 
 **Why 1.41 rings like a bell.** Steps of 1.41 never land on the rungs: the spikes sit between the harmonics, so your ear can't add them up to one clear pitch. Real bells and metal bars ring the same way.
 
+**Halves are a trap.** Try 1.5 or 0.5 in the player: the spikes land halfway between the rungs, but always on the *same* halfway points. That's the ladder of a note an octave lower, so you hear a pitch, often lower or hollow, not a bell. To really leave the ladder, the ratio has to be "untidy", which on the Digitone is what RATIO OFFSET and DTUN are for.
+
 ```check
-RATIO C is 1.00 and RATIO A is 3.00. Will it sound in tune or clangy?::In tune. Steps of 3 from a carrier at 1 land on 1, 4, 7… and fold back from −2, −5 onto 2, 5: all whole rungs, so it stays on the ladder.
+RATIO C is 1.00 and RATIO A is 3.00. Will it sound in tune or clangy?::In tune. Steps of 3 from a carrier at 1 land on 1, 4, 7… and fold back from −2, −5 onto 2, 5: all whole rungs, so it stays on the ladder (every third rung is just missing). When the manual says odd numbers give "metallic or other natural sounds", it's describing that character, not leaving the ladder.
 ```
 
 ## 6. Who is the boss: C or A
@@ -218,7 +230,7 @@ RATIO C is 1.00 and RATIO A is 3.00. Will it sound in tune or clangy?::In tune. 
 
 The manual: C "always works like a carrier, is limited mostly to integers since it is generally used for carrying the base note of the sound", while A "has a more extensive number of ratio values to allow for more inharmonic relationships". So:
 
-- Change **RATIO C** to **2.00**: the whole sound jumps an octave up, colour and all.
+- Change **RATIO C** to **2.00**: the pitch jumps an octave, and the colour changes too, because A didn't move with it.
 - Change **RATIO A**: the pitch stays; the colour changes.
 
 A useful habit: keep C on a whole number and do your colouring with A.
@@ -270,7 +282,7 @@ The pluck is too clicky. Do you lower LEV A or lengthen DEC A?::Lower LEV A to m
 
 In algorithm 1 the feedback sits on **A**: that's the little loop on A's corner in the screen's picture. The manual: feedback "is usually only applied to modulators", and the factory sounds **B001** and **B002** show "how feedback is used to create a basic square and saw waveform".
 
-Go back to **RATIO A 1.00**, **LEV A** about a third, and the A envelope fully open (**END A 127**). Then:
+Go back to **RATIO A 1.00**, **LEV A** about a third, the A envelope fully open (**END A 127**), and AMP **HOLD** back to **NOTE**, so notes last while you hold them. Then:
 
 ```digitone SYN 1 · FM TONE
 FDBK :: *0 → up* :: Turn it slowly. A little: edge. More: buzz. A lot: noise.
@@ -288,7 +300,7 @@ With LEV A at 0, does FDBK change the sound?::Hardly. FDBK changes A's own wave,
 
 Group **B** is two operators, **B1** and **B2**, set together. Two things are special about it:
 
-- **RATIO B** shows two numbers and turns like a watch: one number climbs through every ratio, then the other moves up one value, and the first starts over.
+- **RATIO B** shows two numbers and turns like a watch: B2, the fast hand, climbs through every ratio up to 16, then B1, the slow hand, moves up one value, and B2 starts over from 0.25.
 - **LEV B** isn't one amount, it's a morph. From 0 to 43 only **B1** fades in; from 43 to 85 B1 fades back out while **B2** fades in; above 85 B2 stays up and B1 comes back.
 
 Here is algorithm 1, as the screen draws it:
@@ -307,11 +319,20 @@ B1>Y dotted
 
 B2 sits on B1, and B1 has a line to C as well as its own line to **Y**. So with **LEV B** at about **43**, B1 alone shakes C too: a second set of spikes on top of A's.
 
+```digitone SYN 1 · FM TONE
+RATIO B :: *B1 2.00* :: Turn RATIO B until B1, the slow hand, reads 2.00. B2, the fast hand, doesn't matter here: at LEV B 43 it's silent.
+```
+
 ```digitone SYN 2 · FM TONE
+ATK B :: *0* :: Open the B envelope fully, like A's in step 0…
+DEC B :: *0* ::
+END B :: *127* :: …so LEV B alone sets the shaking.
 LEV B :: *≈43* :: B1 at full strength, B2 still silent: a second modulator on C.
 ```
 
 Now turn **MIX** slowly from X towards Y. **MIX** cross-fades between the two carrier outputs: here, from C (shaken by A and B1) to B1's own tone. The manual: each algorithm "has two carrier outputs (X and Y)", and MIX lets you "cross-fade between two separate timbres". Two sounds in one track.
+
+When you're done, set **LEV B** back to **0** and **MIX** back to **X** for the last step.
 
 ```check
 On the screen, a box has another box on top of it and a line down to Y. What is it?::Both: a carrier (its line goes to Y, so you hear it) and something being shaken (the box on top modulates it).
@@ -350,8 +371,12 @@ Everything above, in one sound. Start from step 0, then:
 ```digitone SYN 1 · FM TONE
 ALGO :: *1* :: A on C, as in the whole lesson.
 RATIO C :: *1.00* :: The note.
-RATIO A :: *a non-whole value around 3.5* :: Between the rungs: glassy, a little bell.
+RATIO A :: *3.00* :: Bright and in tune…
 FDBK :: *≈10* :: A touch of edge.
+```
+
+```digitone SYN 4 · FM TONE
+RATIO OFFSET A :: *≈ a small nudge* :: …then a little off the ladder: glassy, a little bell.
 ```
 
 ```digitone SYN 2 · FM TONE
@@ -361,7 +386,7 @@ END A :: *≈20* :: …but some stays.
 LEV A :: *≈70* :: How bright the start is.
 ```
 
-On the **AMP** page: **HOLD** ≈10, **DEC** ≈70. On the **FX** page, send a little to **REV** and **DEL**. Play a slow melody in the middle of the keyboard. Then turn **RATIO A** to 3.00 and back: in tune, then glassy again. You know why now.
+On the **AMP** page: **HOLD** ≈10, **DEC** ≈70. On the **FX** page, send a little to **REV** and **DEL**. Play a slow melody in the middle of the keyboard. Then set **RATIO OFFSET A** back to 0 and up again: in tune, then glassy again. You know why now.
 
 ## The cheat card
 
@@ -378,12 +403,13 @@ On the **AMP** page: **HOLD** ≈10, **DEC** ≈70. On the **FX** page, send a l
 
 ## If it sounds wrong
 
-- **Turning LEV A does nothing:** MIX isn't at X, so you hear the other carrier; or the A envelope is closed (END A at 0 with a finished DEC).
-- **Everything is out of tune:** RATIO C isn't a whole number, or DTUN is up.
-- **The sound is dull whatever you do:** the filter on the FLTR page is closing it: FREQ fully up, ENV at 0.
+- **Turning LEV A does nothing:** MIX isn't at X, so you hear the other carrier; or the A envelope is closed (END A at 0 with a finished DEC); or KEY TRACK A is high and you're playing high notes.
+- **Everything is out of tune:** RATIO C isn't a whole number, or RATIO OFFSET C (SYN page 4) isn't 0.
+- **It beats or clangs when it shouldn't:** DTUN is up (it pushes A and B2 off their ratios), or RATIO OFFSET A isn't 0.
+- **The sound is dull whatever you do:** the filter is closing it: FREQ fully up, ENV at 0, TYPE at lowpass; on FLTR page 2, BASE 0 and WDTH 127.
 - **The notes are short:** AMP MODE is AHD with a small HOLD. Set HOLD to NOTE while you're exploring.
 
 ## Sources
 
-- [Digitone II user manual, OS 1.12](https://www.elektron.se/wp-content/uploads/2026/10/Digitone-2-User-Manual_ENG_OS1.12_261008.pdf): FM TONE parameters, pages 1 to 4 (pp. 89–93); the FM synthesis appendix: overview and "it is simply vibrato" (p. 106), the eight algorithms and X/Y outputs (p. 107), ratios, including 1:2 and 1:1 (pp. 107–108), operator envelopes and the LEV B graph (pp. 108–109), HARM (pp. 109–110); machine selection (p. 89); [TRK] + [PLAY] clears a preset, [KEYBOARD] and octave keys (key combinations and keyboard mode chapters).
+- [Digitone II user manual, OS 1.12](https://www.elektron.se/wp-content/uploads/2026/10/Digitone-2-User-Manual_ENG_OS1.12_261008.pdf): FM TONE parameters, pages 1 to 4 (pp. 89–93); the FM synthesis appendix: overview and "it is simply vibrato" (p. 106), the eight algorithms and X/Y outputs (p. 107), ratios, including 1:2 and 1:1 (pp. 107–108), operator envelopes and the LEV B graph (pp. 108–109), HARM (pp. 109–110), ratio offsets and key track (p. 93), the base-width filter (p. 60); machine selection (p. 89); [TRK] + [PLAY] clears a preset, [KEYBOARD] and octave keys (key combinations and keyboard mode chapters).
 - The spike drawings on this page are computed, not drawn by hand: a sine carrier shaken by a sine modulator has sidebands at the carrier ± whole multiples of the modulator, with heights given by Bessel functions of the depth; spikes that would fall below zero fold back with their sign flipped. The depth slider here is a physics depth, not the Digitone's LEV scale: they move the same way, but the numbers don't match.
