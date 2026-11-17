@@ -501,7 +501,8 @@ ${html}
 function renderIndex(everything) {
   const all = everything.filter(x => !x.lesson), lessons = everything.filter(x => x.lesson);
   const intro = fs.existsSync(path.join(SRC, '_index.md')) ? L.parseFrontmatter(fs.readFileSync(path.join(SRC, '_index.md'), 'utf8'), '_index.md') : { meta: {}, body: '' };
-  const html = sections(intro.body).map(s => section(s.title, s.text)).join('\n');
+  // The setup sections fold away: they're reference, read once.
+  const html = sections(intro.body).map(s => section(s.title, s.text).replace(/<section id="([^"]+)"[^>]*><h2>([\s\S]*?)<\/h2>/, '<details class="setup" id="$1"><summary>$2</summary>').replace(/<\/section>$/, '</details>')).join('\n');
   const cards = all.map((r, i) => `<li class="cassette c-${i % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">A${i + 1}</span><span class="c-title">${L.esc(r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.level || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n');
   return L.page({
     title: 'Music: sound recipes for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski',
@@ -510,21 +511,28 @@ function renderIndex(everything) {
     base: '../', current: 'music', feed: false, footer, script: 'music.js',
     body: `    <article class="music music-index course-top wrap">
       ${DEFS}
-      <p class="eyebrow">Music, my hobby</p>
-      <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>
-      <p class="lede">${L.esc(intro.meta.summary || '')}</p>
-      ${rigSketch()}
-      <details class="rig-drawn"><summary>See each device, drawn from its real panel</summary>
-        <div class="rig-grid">${['pf', 'gc', 'ns', 'oxi'].map(id => DEV.render(id, { caption: { pf: 'Vermona PERfourMER MKII: four synth channels, one strip each.', gc: 'Electro-Harmonix Grand Canyon: delay and looper.', ns: 'Strymon NightSky: reverb.', oxi: 'OXI One MKII: the sequencer.' }[id], seed: 'index' })).join('')}</div>
-      </details>
-      ${lessons.length ? `<h2>Side B: lessons</h2>
-      <ul class="shelf lessons">
-${lessons.map((r, i) => `<li class="cassette lesson-tape c-${(i + 3) % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">B${i + 1}</span><span class="c-title">${L.esc(r.meta.shelf || r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.device || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n')}
-      </ul>` : ''}
-      <h2>The tape shelf</h2>
+      <div class="music-hero">
+        <div>
+          <p class="eyebrow">Music, my hobby</p>
+          <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>
+          <p class="lede">${L.esc(intro.meta.summary || '')}</p>
+          <p class="hero-links"><a class="button primary" href="#side-a">Pick a recipe ↓</a> ${lessons.length ? `<a class="button" href="${lessons[0].slug}.html">Learn FM on the Digitone</a>` : ''}</p>
+        </div>
+        ${rigSketch()}
+      </div>
+      <h2 id="side-a">Side A: recipes for the rig</h2>
       <ul class="shelf">
 ${cards}
       </ul>
+      ${lessons.length ? `<h2 id="side-b">Side B: lessons</h2>
+      <ul class="shelf lessons">
+${lessons.map((r, i) => `<li class="cassette lesson-tape c-${(i + 3) % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">B${i + 1}</span><span class="c-title">${L.esc(r.meta.shelf || r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.device || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n')}
+      </ul>` : ''}
+      <h2 id="setup">Before your first recipe</h2>
+      <p>Wire the rig once and learn how to read a recipe. Open each part when you need it.</p>
+      <details class="rig-drawn setup"><summary>The four devices, drawn from their real panels</summary>
+        <div class="rig-grid">${['pf', 'gc', 'ns', 'oxi'].map(id => DEV.render(id, { caption: { pf: 'Vermona PERfourMER MKII: four synth channels, one strip each.', gc: 'Electro-Harmonix Grand Canyon: delay and looper.', ns: 'Strymon NightSky: reverb.', oxi: 'OXI One MKII: the sequencer.' }[id], seed: 'index' })).join('')}</div>
+      </details>
 ${html}
     </article>`,
   });

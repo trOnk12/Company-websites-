@@ -33,6 +33,7 @@ test.describe('Music', () => {
       await page.goto(`/music/${r}.html`);
       await expect(page.locator('h1')).toHaveCount(1);
       expect(await page.locator('svg.knob').count(), r).toBeGreaterThan(5);
+      expect(await page.locator('figure.dev-sketch.has-set').count(), r).toBeGreaterThan(1);
       await expect(page.locator('#sources a[href*="grand-canyon-manual"]'), r).toHaveCount(1);
       const [scroll, client] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
       expect(scroll, r).toBeLessThanOrEqual(client);

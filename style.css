@@ -836,3 +836,28 @@ body:has(article.music) { --type: "JetBrains Mono", ui-monospace, monospace; fon
 .rig-grid { display: grid; gap: 1rem 1.5rem; margin-top: .8rem; }
 @media (min-width: 52rem) { .rig-grid { grid-template-columns: 1fr 1fr; } .rig-grid .dev-pf, .rig-grid .dev-oxi { grid-column: 1 / -1; } }
 .dev-dn { max-width: 26rem; }
+/* ───────── Music UX pass ───────── */
+.music-hero { display: grid; gap: 1rem; align-items: center; }
+@media (min-width: 62rem) { .music-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 2.5rem; } .music-hero .rig-sketch { margin: 0; } }
+.hero-links { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.2rem; }
+.hero-links .button { display: inline-flex; align-items: center; text-decoration: none; }
+.music details.setup { border: 2px solid var(--ink); border-radius: var(--wobble); background: #FFFFFFB3; padding: .2rem 1.1rem; margin: .9rem 0; }
+.music details.setup > summary { font-family: var(--marker); font-size: 1.25rem; cursor: pointer; padding: .7rem 0; list-style: none; display: flex; gap: .6rem; align-items: center; }
+.music details.setup > summary::-webkit-details-marker { display: none; }
+.music details.setup > summary::before { content: "+"; font-family: var(--type); color: var(--red); font-size: 1.3rem; width: 1rem; }
+.music details.setup[open] > summary::before { content: "−"; }
+.music details.setup[open] { padding-bottom: 1rem; }
+/* Phones: the title card first, the margin sketches after the recipe; wide panels scroll sideways. */
+@media (max-width: 65.99rem) { .music .margin { order: 2; } }
+@media (max-width: 40rem) {
+  .dev-sketch.dev-pf, .dev-sketch.dev-oxi { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .dev-sketch.dev-pf svg, .dev-sketch.dev-oxi svg { min-width: 40rem; }
+  .dev-sketch.dev-pf figcaption, .dev-sketch.dev-oxi figcaption { position: sticky; left: 0; }
+  .dev-row .dev-sketch.inset svg { min-width: 0; }
+  .nav-links { gap: 0 .95rem; }
+}
+@media (max-width: 40rem) { .dev-sketch.dev-pf:not(.inset) figcaption::after { content: " Swipe sideways for the whole strip."; } }
+@media (max-width: 65.99rem) { .music .margin .margin-note { display: none; } }
+@media (max-width: 26rem) { .nav-links { gap: 0 .8rem; } .nav-links a { font-size: .95rem; } }
+.music-index h2 { margin-top: 2.6rem; }
+@media (max-width: 40rem) { .dev-sketch.dev-pf figcaption, .dev-sketch.dev-oxi figcaption { max-width: calc(100vw - 2.5rem); } }
