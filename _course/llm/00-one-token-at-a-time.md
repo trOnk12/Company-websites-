@@ -7,7 +7,7 @@ takeaway: A language model reads and writes tokens: words, pieces of words, char
 
 ## The problem
 
-Your app sends "Summarise this review" with a 300-word review, and gets a 60-word summary back. The API bill doesn't count words at all. The response time grows with the length of the answer, not the question. What is the model actually doing?
+Your app sends "Summarise this review" with a 300-word review, and gets a 60-word summary back. The API bill doesn't count words at all. The response time grows mostly with the length of the answer, much less with the question. What is the model actually doing?
 
 ## See it
 
@@ -18,7 +18,7 @@ Your app sends "Summarise this review" with a 300-word review, and gets a 60-wor
 
 A language model doesn't see letters or words. Text is first cut into **tokens**: common words are one token, rarer words are split into pieces, and emoji or unusual characters can take several. On Anthropic's earlier Claude models, one token was about 3.5 English characters; other languages and other models differ. The API's token counting tells you exactly.
 
-Then the model does one thing, over and over: **next-token prediction**. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set.
+Then the model does one thing, over and over: **next-token prediction**. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set. (The prompt itself is read in one go; only the answer is written step by step. That's why a long answer costs more time than a long question.)
 
 Three consequences you'll feel in an app:
 

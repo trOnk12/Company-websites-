@@ -28,7 +28,8 @@ Two numbers now matter:
 On Android, the stream is a long-lived request, so it changes your code more than a normal call:
 
 - Run it on a coroutine that the screen's ViewModel owns, and append each piece to the UI state as it arrives.
-- Cancel it when the user leaves or taps stop: you pay for every token generated, wanted or not.
+- Cancel it when the user leaves or taps stop: you pay for every token generated, wanted or not. If the stream goes through your own server (puzzle 4), the server must cancel its request to the model too, or generation and billing carry on.
+- OkHttp has an SSE add-on (`okhttp-sse`), and Anthropic publishes a Java SDK that streams.
 - A dropped connection mid-answer is normal on mobile (puzzle 0 of the Mobile system design course): keep what arrived, show it, and offer to retry.
 
 ## The analogy

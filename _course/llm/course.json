@@ -24,6 +24,10 @@
   ],
   "upcoming": [
     {
+      "title": "Next: what a call costs and how it fails",
+      "topics": "max_tokens and a cut-off answer, why output tokens cost more than input, rate limits and retries, prompt caching, and structured output you can parse."
+    },
+    {
       "title": "Module 2: Tools and agents",
       "topics": "Tool use: the model asks your code to act; structured output; the agent loop; letting it read your app's data safely; prompt injection."
     },

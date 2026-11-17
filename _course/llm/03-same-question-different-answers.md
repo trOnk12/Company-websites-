@@ -25,7 +25,7 @@ Puzzle 0 said the model picks the next token. More precisely, at each step it sc
 
 For an app feature that must be consistent, like extracting fields or summarising, use a low temperature. For brainstorming names, a higher one.
 
-But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic, and identical inputs might produce different outputs. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk, which module 3 covers.
+But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic, and identical inputs might produce different outputs. Temperature 0 means "pick the top token", but tiny numeric differences on the provider's servers can still change which token is on top. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk, which module 3 covers.
 
 ## The analogy
 

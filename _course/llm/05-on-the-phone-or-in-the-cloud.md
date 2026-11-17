@@ -16,7 +16,7 @@ You want "smart reply" suggestions in a messaging app. Sending every private mes
 
 ## The building block
 
-An **on-device model** runs on the phone itself. On Android, Google's Gemini Nano runs inside **AICore**, a system service that uses the device's hardware and keeps the model updated. Apps reach it through ML Kit's GenAI APIs: ready-made tasks like summarising, proofreading and rewriting, and a prompt API for your own instructions.
+An **on-device model** runs on the phone itself. On Android, Google's Gemini Nano runs inside **AICore**, a system service that uses the device's hardware and keeps the model updated. Apps reach it through ML Kit's GenAI APIs: ready-made tasks like summarising, proofreading and rewriting, and a Prompt API (beta) for your own prompts.
 
 What you gain:
 
@@ -27,9 +27,9 @@ What you gain:
 What you give up:
 
 - Size: a model that fits on a phone is much smaller than a cloud model, so hard reasoning and long documents are out of reach.
-- Reach: it runs only on devices that support it. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 4), or a simpler feature.
+- Reach: it runs only on devices that support it, and different devices can run different versions of Gemini Nano. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 4), or a simpler feature.
 
-So the decision is per feature. Short, frequent, private tasks, like smart replies, a summary of one notification or tidying a note, suit the phone. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.
+So the decision is per feature. Short, frequent, private tasks the user triggers inside your app, like smart replies or tidying a note, suit the phone. Three limits shape the design: AICore runs inference only while your app is the top foreground app (a foreground service doesn't count); each app has a request quota, so a burst gets a BUSY error to retry with backoff, plus a longer battery quota; and the model may need downloading first. So check the feature's status before you offer it, and show it only when it's ready. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.
 
 ## The analogy
 

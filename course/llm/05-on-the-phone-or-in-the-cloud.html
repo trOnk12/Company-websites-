@@ -75,16 +75,16 @@
 <li><p>They need a plan too: the cloud path, or a simpler feature.</p><div class="stepnav"><label for="st-ondevice-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-ondevice-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-ondevice-1" title="Step 1"></label><label for="st-ondevice-2" title="Step 2"></label><label for="st-ondevice-3" title="Step 3"></label><label for="st-ondevice-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/ondevice.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>An <b>on-device model</b> runs on the phone itself. On Android, Google's Gemini Nano runs inside <b>AICore</b>, a system service that uses the device's hardware and keeps the model updated. Apps reach it through ML Kit's GenAI APIs: ready-made tasks like summarising, proofreading and rewriting, and a prompt API for your own instructions.</p>
+<p>An <b>on-device model</b> runs on the phone itself. On Android, Google's Gemini Nano runs inside <b>AICore</b>, a system service that uses the device's hardware and keeps the model updated. Apps reach it through ML Kit's GenAI APIs: ready-made tasks like summarising, proofreading and rewriting, and a Prompt API (beta) for your own prompts.</p>
 <p>What you gain:</p>
 <ul><li>No network: it works in a tunnel, and there's no round trip (puzzle 0 of the Mobile system design course).</li><li>Privacy: the text never leaves the phone.</li><li>No per-request bill: there's no API to pay for each call.</li></ul>
 <p>What you give up:</p>
-<ul><li>Size: a model that fits on a phone is much smaller than a cloud model, so hard reasoning and long documents are out of reach.</li><li>Reach: it runs only on devices that support it. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 4), or a simpler feature.</li></ul>
-<p>So the decision is per feature. Short, frequent, private tasks, like smart replies, a summary of one notification or tidying a note, suit the phone. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.</p>
+<ul><li>Size: a model that fits on a phone is much smaller than a cloud model, so hard reasoning and long documents are out of reach.</li><li>Reach: it runs only on devices that support it, and different devices can run different versions of Gemini Nano. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 4), or a simpler feature.</li></ul>
+<p>So the decision is per feature. Short, frequent, private tasks the user triggers inside your app, like smart replies or tidying a note, suit the phone. Three limits shape the design: AICore runs inference only while your app is the top foreground app (a foreground service doesn't count); each app has a request quota, so a burst gets a BUSY error to retry with backoff, plus a longer battery quota; and the model may need downloading first. So check the feature's status before you offer it, and show it only when it's ready. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -131,7 +131,7 @@
       </nav>
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
-        <p>You've reached the last puzzle of <b>LLMs for mobile engineers, from tokens to your app</b>. Next: Module 2: Tools and agents, about tool use: the model asks your code to act; structured output; the agent loop; letting it read your app's data safely; prompt injection.</p>
+        <p>You've reached the last puzzle of <b>LLMs for mobile engineers, from tokens to your app</b>. Next: Next: what a call costs and how it fails, about max_tokens and a cut-off answer, why output tokens cost more than input, rate limits and retries, prompt caching, and structured output you can parse.</p>
         <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
         <p class="actions"><a class="button primary" href="../">All courses →</a></p>
       </section>

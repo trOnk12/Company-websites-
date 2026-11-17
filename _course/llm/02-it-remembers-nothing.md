@@ -22,7 +22,7 @@ So a chat app keeps the conversation itself, in its ViewModel or database, and s
 
 Everything in one request, plus the answer the model writes, must fit in the **context window**: the model's working memory for that request, measured in tokens. Windows are large now, but three things grow with every message:
 
-- **Cost:** you pay for all the input tokens again, every turn.
+- **Cost:** you pay for all the input tokens again, every turn, so a chat's total cost grows faster than its length. Prompt caching makes a repeated beginning cheaper and faster to read, but you still send it.
 - **Time:** more input to read before the first token (puzzle 1).
 - **Quality:** Anthropic notes that as the token count grows, accuracy and recall degrade.
 

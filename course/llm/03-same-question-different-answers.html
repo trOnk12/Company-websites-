@@ -67,7 +67,7 @@
 <div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sa-t"><title id="sa-t">The model gives each possible next token a score: Great high, Good medium, Fine low; sampling picks one at random by score; low temperature makes the top token win almost always; high temperature gives the others more chances</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-wood" x="30" y="140" width="140" height="54" rx="8"/><line class="d-line" x1="55.0" y1="167.0" x2="60.0" y2="167.0"/><line class="d-line" x1="52.9" y1="171.9" x2="56.5" y2="175.5"/><line class="d-line" x1="48.0" y1="174.0" x2="48.0" y2="179.0"/><line class="d-line" x1="43.1" y1="171.9" x2="39.5" y2="175.5"/><line class="d-line" x1="41.0" y1="167.0" x2="36.0" y2="167.0"/><line class="d-line" x1="43.1" y1="162.1" x2="39.5" y2="158.5"/><line class="d-line" x1="48.0" y1="160.0" x2="48.0" y2="155.0"/><line class="d-line" x1="52.9" y1="162.1" x2="56.5" y2="158.5"/><circle class="d-paper" cx="48" cy="167" r="8"/><text class="d-tiny" x="117" y="172" text-anchor="middle">model</text></g>
-<g class="step s1" data-pulse="1"><rect class="d-hl" x="230" y="120" width="180" height="34" rx="4"/><text class="d-a" x="530" y="143">Great 60%</text><rect class="d-band" x="230" y="170" width="90" height="34" rx="4"/><text class="d-tiny" x="530" y="192">Good 30%</text><rect class="d-band" x="230" y="220" width="30" height="34" rx="4"/><text class="d-tiny" x="530" y="242">Fine 10%</text></g>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="230" y="120" width="180" height="34" rx="4"/><text class="d-a" x="530" y="143">Great</text><rect class="d-band" x="230" y="170" width="90" height="34" rx="4"/><text class="d-tiny" x="530" y="192">Good</text><rect class="d-band" x="230" y="220" width="30" height="34" rx="4"/><text class="d-tiny" x="530" y="242">Fine</text></g>
 <g class="step s2" data-move="2:240,90 3:240,90 4:240,90"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 <g class="step only-2" data-pulse="2"><text class="d-a" x="400" y="90" text-anchor="middle">picked at random, by score</text></g>
 <g class="step only-3" data-pulse="3"><rect class="d-ok" x="230" y="120" width="290" height="34" rx="4"/><text class="d-a" x="420" y="300" text-anchor="middle">low temperature: Great almost always</text></g>
@@ -80,7 +80,7 @@
 <li><p>It evens them out: "Good" and "Fine" get picked more often, so answers vary more.</p><div class="stepnav"><label for="st-sampling-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-sampling-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-sampling-1" title="Step 1"></label><label for="st-sampling-2" title="Step 2"></label><label for="st-sampling-3" title="Step 3"></label><label for="st-sampling-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/sampling.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
@@ -88,7 +88,7 @@
 <p><b>Temperature</b> controls how adventurous the sampling is:</p>
 <ul><li>Higher: less likely tokens get picked more often. More varied, more creative, sometimes less accurate.</li><li>Lower: the most likely tokens win more often. More predictable, more repetitive.</li></ul>
 <p>For an app feature that must be consistent, like extracting fields or summarising, use a low temperature. For brainstorming names, a higher one.</p>
-<p>But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic, and identical inputs might produce different outputs. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk, which module 3 covers.</p>
+<p>But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic, and identical inputs might produce different outputs. Temperature 0 means &quot;pick the top token&quot;, but tiny numeric differences on the provider's servers can still change which token is on top. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk, which module 3 covers.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

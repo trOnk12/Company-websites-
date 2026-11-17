@@ -81,14 +81,14 @@
 <li><p>Your app decides: replace old turns with a short summary, or keep only the last few.</p><div class="stepnav"><label for="st-context-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-context-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-context-1" title="Step 1"></label><label for="st-context-2" title="Step 2"></label><label for="st-context-3" title="Step 3"></label><label for="st-context-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/context.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>The model API is <b>stateless</b>: each request starts from nothing. There's no session on the server holding your conversation. If the model is to &quot;remember&quot; an earlier message, that message must be in this request.</p>
 <p>So a chat app keeps the conversation itself, in its ViewModel or database, and sends all of it with every new message: earlier user messages, earlier answers, then the new message.</p>
 <p>Everything in one request, plus the answer the model writes, must fit in the <b>context window</b>: the model's working memory for that request, measured in tokens. Windows are large now, but three things grow with every message:</p>
-<ul><li><b>Cost:</b> you pay for all the input tokens again, every turn.</li><li><b>Time:</b> more input to read before the first token (puzzle 1).</li><li><b>Quality:</b> Anthropic notes that as the token count grows, accuracy and recall degrade.</li></ul>
+<ul><li><b>Cost:</b> you pay for all the input tokens again, every turn, so a chat's total cost grows faster than its length. Prompt caching makes a repeated beginning cheaper and faster to read, but you still send it.</li><li><b>Time:</b> more input to read before the first token (puzzle 1).</li><li><b>Quality:</b> Anthropic notes that as the token count grows, accuracy and recall degrade.</li></ul>
 <p>So long chats need a policy: keep the last few turns, replace old ones with a short summary, or drop what doesn't matter. That's your code's decision, not the model's.</p>
       </section>
       <section aria-labelledby="the-analogy">

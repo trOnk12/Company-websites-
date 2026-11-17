@@ -55,7 +55,7 @@
 
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Your app sends &quot;Summarise this review&quot; with a 300-word review, and gets a 60-word summary back. The API bill doesn't count words at all. The response time grows with the length of the answer, not the question. What is the model actually doing?</p>
+<p>Your app sends &quot;Summarise this review&quot; with a 300-word review, and gets a 60-word summary back. The API bill doesn't count words at all. The response time grows mostly with the length of the answer, much less with the question. What is the model actually doing?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -70,18 +70,18 @@
 <g class="step s4" data-pulse="4"><rect class="d-hl" x="404" y="50" width="62" height="34" rx="6"/><text class="d-a" x="435" y="72" text-anchor="middle">phone</text><text class="d-a" x="320" y="290" text-anchor="middle">one token per step</text></g>
 </svg></div>
 <ol class="caps">
-<li><p>Your prompt is cut into <b>tokens</b>: whole words, pieces of words. "Summarise" becomes two.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-tokens-2">Next →</label></div></li>
+<li><p>Your prompt is cut into <b>tokens</b>: whole words, pieces of words. "Summarise" might become two, depending on the model.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-tokens-2">Next →</label></div></li>
 <li><p>The model reads every token so far and picks one next token: <b>next-token prediction</b>.</p><div class="stepnav"><label for="st-tokens-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-tokens-3">Next →</label></div></li>
 <li><p>That token is appended to the text, and the model runs again on the longer text. <i>Predict: what does that mean for long answers?</i></p><div class="stepnav"><label for="st-tokens-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-tokens-4">Next →</label></div></li>
 <li><p>Each new token is one more step. A 300-token answer is 300 runs, which is why long answers take longer.</p><div class="stepnav"><label for="st-tokens-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-tokens-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-tokens-1" title="Step 1"></label><label for="st-tokens-2" title="Step 2"></label><label for="st-tokens-3" title="Step 3"></label><label for="st-tokens-4" title="Step 4"></label></div>
-</figure>
+</figure><p class="gif-link"><a href="gifs/tokens.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A language model doesn't see letters or words. Text is first cut into <b>tokens</b>: common words are one token, rarer words are split into pieces, and emoji or unusual characters can take several. On Anthropic's earlier Claude models, one token was about 3.5 English characters; other languages and other models differ. The API's token counting tells you exactly.</p>
-<p>Then the model does one thing, over and over: <b>next-token prediction</b>. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set.</p>
+<p>Then the model does one thing, over and over: <b>next-token prediction</b>. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set. (The prompt itself is read in one go; only the answer is written step by step. That's why a long answer costs more time than a long question.)</p>
 <p>Three consequences you'll feel in an app:</p>
 <div class="table-wrap"><table><thead><tr><th scope="col"></th><th scope="col">Because</th></tr></thead><tbody><tr><th scope="row">A long answer takes longer than a short one</th><td>each token is one more run of the model</td></tr><tr><th scope="row">Limits and prices are in tokens</th><td>that's the unit the model reads and writes</td></tr><tr><th scope="row">The same text costs different amounts in different languages</th><td>the split into tokens differs</td></tr></tbody></table></div>
       </section>

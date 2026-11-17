@@ -88,6 +88,14 @@ only the blocks they're missing.
 - [x] Review round (correctness 6–9, clarity 8–9): eleven fixes applied.
 - [ ] Module 2: push vs polling (FCM, WebSocket/SSE), pagination with cursors, sync conflicts, safe rollouts.
 
+## Sprint 10: LLMs for mobile engineers, module 1 (done 2026-11-17)
+
+- [x] New course, six puzzles: tokens and next-token prediction, streaming and time to first token, the stateless API
+  and the context window, sampling and temperature, the API key on a proxy backend, on-device Gemini Nano via AICore.
+  Sources: Anthropic docs, Android and ML Kit GenAI docs, Google Cloud key guidance.
+- [x] Review round (correctness 6–9, clarity 8–9): fixes applied, Gemini Nano limits verified.
+- [ ] Next puzzle: what a call costs and how it fails. Module 2: tools and agents.
+
 ## Backlog, in order
 
 1. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,

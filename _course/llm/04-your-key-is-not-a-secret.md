@@ -24,7 +24,7 @@ So the key lives on a server you control, a **proxy backend**:
 2. Your server checks who it is, applies limits per user ("20 requests a day on the free plan"), and builds the request: your system prompt, the user's message.
 3. Your server adds the API key and calls the model, streaming the answer back to the app (puzzle 1).
 
-The key never leaves the server. If one user abuses the feature, you block that user, not your whole account. And your instructions to the model and the model choice can change without an app release.
+The key never leaves the server. If one user abuses the feature, you block that user, not your whole account. And your instructions to the model and the model choice can change without an app release. Google offers a managed version of this pattern for Gemini: Firebase AI Logic, with App Check to make sure calls come from your real app.
 
 ## The analogy
 

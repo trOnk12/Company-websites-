@@ -83,7 +83,16 @@
    "ML",
    "system prompt",
    "Pixel 9",
-   "JSON"
+   "JSON",
+   "BUSY",
+   "okhttp-sse",
+   "SDK",
+   "Java",
+   "Firebase AI Logic",
+   "App Check",
+   "Prompt API",
+   "prompt caching",
+   "Prompt caching"
   ]
  },
  "avoid": {
