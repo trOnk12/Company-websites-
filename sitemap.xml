@@ -591,6 +591,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/music/fm-on-the-digitone</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/music/spiral-of-fifths</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

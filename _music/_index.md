@@ -1,6 +1,6 @@
 ---
 title: Sound recipes
-summary: Music is my hobby. These are recipes for one small rig, an OXI One MK2 sequencer, a Vermona PERfourMER MKII synth, an Electro-Harmonix Grand Canyon delay and a Strymon NightSky reverb, with every knob drawn where it should point.
+summary: Music is my hobby. Here are recipes for one small rig, an OXI One MK2 sequencer, a Vermona PERfourMER MKII synth, an Electro-Harmonix Grand Canyon delay and a Strymon NightSky reverb, with every knob drawn where it should point, and lessons on the ideas behind the sounds, starting with FM on the Elektron Digitone II.
 ---
 
 ## The rig, wired once

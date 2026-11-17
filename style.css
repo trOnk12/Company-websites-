@@ -747,3 +747,58 @@ body:has(article.music) { --type: "JetBrains Mono", ui-monospace, monospace; fon
 .me-weak li { margin-bottom: .4rem; }
 .me label.button { cursor: pointer; }
 .me button.button { font: inherit; font-weight: 700; cursor: pointer; }
+/* ───────── Music lessons: the Digitone's screen, checks, and the FM player ───────── */
+.dn-screen { margin: 1.1rem 0 .4rem; background: #141414; color: #EDEDED; border: 2px solid var(--ink); border-radius: 10px 14px 9px 12px; padding: .55rem .6rem .7rem; box-shadow: 3px 3px 0 #1D1C1A55; max-width: 34rem; }
+.dn-head { font-family: var(--mono); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; border-bottom: 1px solid #EDEDED66; padding: 0 .2rem .35rem; margin-bottom: .45rem; color: #EDEDED; }
+.dn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: .35rem; }
+.dn-grid.eight { grid-template-columns: repeat(4, 1fr); }
+.dn-cell { border: 1px solid #EDEDED55; border-radius: 4px; padding: .3rem .25rem .25rem; text-align: center; display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+.dn-v { font-family: var(--mono); font-size: .92rem; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; }
+.dn-p { font-family: var(--mono); font-size: .66rem; letter-spacing: .05em; color: #EDEDEDB3; text-transform: uppercase; }
+.dn-cell.on { background: #EDEDED; color: #141414; border-color: #EDEDED; }
+.dn-cell.on .dn-p { color: #141414B3; }
+@media (max-width: 34rem) { .dn-grid.eight { grid-template-columns: repeat(2, 1fr); } }
+.music .lesson blockquote, .music.lesson blockquote { border: 2px solid var(--ink); border-radius: var(--wobble); background: #E8F0FF; margin: 1rem 0; padding: .6rem 1rem; font-size: 1.05rem; }
+.music.lesson blockquote p { margin: .2rem 0; }
+.check { margin: 1.1rem 0; border: 2px dashed var(--ink); border-radius: 12px 8px 14px 9px; background: #FFF3A6; padding: .55rem .9rem; transform: rotate(-.4deg); }
+.check summary { cursor: pointer; font-weight: 600; }
+.check-tag { font-family: var(--marker); color: var(--red); margin-right: .3rem; }
+.check p { font-family: var(--hand); font-size: 1.3rem; line-height: 1.25; color: var(--blue); margin: .5rem 0 .2rem; }
+.fm-toy { margin: 1.25rem 0; border: 2px solid var(--ink); border-radius: var(--wobble); background: #FFFFFFD9; padding: .8rem 1rem .6rem; }
+.fm-head { margin-bottom: .2rem; }
+.fm-tag { font-family: var(--type); font-size: .78rem; color: var(--red); letter-spacing: .08em; text-transform: uppercase; }
+.fm-head b { font-family: var(--marker); font-weight: 400; font-size: 1.15rem; }
+.fm-spec { width: 100%; height: auto; display: block; }
+.fm-rung { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 4; }
+.fm-num { font-family: var(--hand); font-size: 15px; fill: var(--muted); }
+.fm-axis { font-family: var(--hand); font-size: 15px; fill: var(--blue); }
+.fm-base { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; }
+.fm-spike { fill: none; stroke: var(--ink); stroke-width: 2.6; stroke-linecap: round; }
+.fm-dot { fill: var(--red); }
+.fm-read { font-family: var(--type); font-size: .82rem; color: var(--muted); margin: .1rem 0 .4rem; }
+.fm-controls { display: grid; gap: .55rem; }
+.fm-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.fm-slider { display: grid; grid-template-columns: minmax(6.5rem, auto) 1fr 3.4rem; gap: .6rem; align-items: center; }
+.fm-slider input { width: 100%; accent-color: var(--red); }
+.fm-name { font-family: var(--type); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+.fm-val { font-family: var(--hand); font-size: 1.3rem; color: var(--pencil); text-align: right; }
+.fm-choices { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+.fm-choices .fm-name { margin-right: .4rem; }
+.fm-choice { font-family: var(--type); font-size: .9rem; min-width: 2.6rem; min-height: 2.2rem; background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: 8px 12px 7px 10px; cursor: pointer; }
+.fm-choice[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.fm-choice:focus-visible, .fm-slider input:focus-visible { outline: 3px dashed var(--blue); outline-offset: 3px; }
+.fm-status { font-family: var(--hand); font-size: 1.35rem; color: var(--blue); margin: .2rem 0; }
+.fm-toy figcaption { font-family: var(--hand); font-size: 1.15rem; color: var(--muted); margin-top: .35rem; }
+.fm-map { margin: 1rem 0; display: grid; gap: .3rem; }
+.fm-map div { display: flex; gap: .5rem; align-items: baseline; border-bottom: 1px dashed var(--rule); }
+.fm-map dt { font-family: var(--type); font-size: .8rem; text-transform: uppercase; min-width: 6.5rem; }
+.fm-map dd { margin: 0; font-family: var(--hand); font-size: 1.2rem; color: var(--blue); }
+.music .lesson table, .music.lesson table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.music.lesson th, .music.lesson td { border-bottom: 1px dashed var(--rule); padding: .4rem .5rem .4rem 0; text-align: left; vertical-align: top; }
+.music.lesson th { font-family: var(--type); font-size: .8rem; text-transform: uppercase; font-weight: 400; border-bottom: 2px solid var(--ink); }
+.music .idea { border: 2px solid var(--ink); border-radius: var(--wobble); background: #E3ECFF; margin: 1rem 0; padding: .55rem 1rem; transform: rotate(.3deg); }
+.music .idea p { margin: .15rem 0; font-size: 1.04rem; }
+.algo-sketch { margin: 1rem 0; max-width: 20rem; }
+.algo-sketch svg { width: 100%; height: auto; display: block; }
+.algo-sketch figcaption { font-family: var(--hand); font-size: 1.1rem; color: var(--muted); }
+.sk.dotted { stroke-dasharray: 2 5; stroke-width: 2.6; }

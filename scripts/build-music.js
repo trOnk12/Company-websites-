@@ -160,6 +160,16 @@ function soundSketch(kind, seed) {
     for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2; s += `<path class="sk heavy" d="${p.line(cx + Math.sin(a) * (R - 12), cy - Math.cos(a) * (R - 12), cx + Math.sin(a) * (R + 12), cy - Math.cos(a) * (R + 12))}"/>`; }
     for (let k = 0; k < 3; k++) { const a = k * 2 * Math.PI / 3; s += `<path class="sk red" d="${p.ellipse(cx + Math.sin(a) * R, cy - Math.cos(a) * R, 8, 8)}"/>`; }
     s += T(cx, cy - 4, 'one bar', 'sk-label') + T(cx, cy + 16, '| bass ×4   ● echo ×3', 'sk-label') + T(cx, 222, 'they meet on beat 1', 'sk-label');
+  } else if (kind === 'fm') {
+    let w1 = '', w2 = '';
+    for (let x = 20; x < 130; x += 6) w1 += p.line(x, 60 + Math.sin(x / 9) * 16, x + 6, 60 + Math.sin((x + 6) / 9) * 16, false) + ' ';
+    for (let x = 170; x < 282; x += 3) { const ph = (u => u / 5 + 2.2 * Math.sin(u / 9))(x); const ph2 = (u => u / 5 + 2.2 * Math.sin(u / 9))(x + 3); w2 += p.line(x, 60 + Math.sin(ph) * 16, x + 3, 60 + Math.sin(ph2) * 16, false) + ' '; }
+    s += `<path class="sk" d="${w1}"/>` + T(75, 102, 'one sine…', 'sk-label');
+    s += `<path class="sk red" d="${p.line(136, 60, 160, 60)} ${p.line(160, 60, 152, 54)} ${p.line(160, 60, 152, 66)}"/>` + T(148, 40, 'shake it', 'sk-label');
+    s += `<path class="sk" d="${w2}"/>` + T(226, 102, '…a new colour', 'sk-label');
+    s += `<path class="sk thin" d="${p.line(20, 196, 284, 196, false)}"/>`;
+    [[60, .35], [100, .6], [140, 1], [180, .6], [220, .35], [260, .15]].forEach(([x, a]) => { s += `<path class="sk${x === 140 ? ' heavy' : ''}" d="${p.line(x, 196, x, 196 - a * 72)}"/><circle class="k-dot" cx="${x}" cy="${196 - a * 72}" r="3.2"/>`; });
+    s += T(150, 222, 'the spikes it makes', 'sk-label');
   } else return '';
   s = `<path class="wash hi" d="${p.blob(150, 110, 130, 90, 0.1)}"/>` + s;
   return `<figure class="sound-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of what the recipe sounds like">${s}</svg><figcaption>What it sounds like</figcaption></figure>`;
@@ -227,10 +237,95 @@ function settings(block) {
   return `<ul class="settings">${rows.join('')}</ul>`;
 }
 
+// A Digitone II parameter page, drawn like its screen: the knobs' parameters in their places, the ones this step
+// changes inverted. Each line: "PARAM :: value :: why". *value* marks a change; ≈ marks my starting point.
+//   ```digitone SYN 1 · FM TONE
+//   ALGO :: *1* :: Why.
+//   ```
+function digitone(head, block) {
+  const ctx = { file: 'music', cards: new Map(), links: new Set() };
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split('::').map(x => x.trim()));
+  const cell = ([c, v]) => {
+    const on = /^\*.*\*$/.test(v || '');
+    const val = on ? v.slice(1, -1) : (v || '');
+    return `<div class="dn-cell${on ? ' on' : ''}"><span class="dn-v">${L.esc(val)}</span><span class="dn-p">${L.esc(c)}</span></div>`;
+  };
+  const screen = `<figure class="dn-screen"><figcaption class="dn-head"><span>${L.esc(head || '')}</span></figcaption><div class="dn-grid${rows.length === 8 ? ' eight' : ''}">${rows.map(cell).join('')}</div></figure>`;
+  const whys = rows.filter(([, v, why]) => /^\*.*\*$/.test(v || '') && why).map(([c, v, why]) => `<li class="setting" tabindex="0"><span class="control">${L.esc(c)}</span><span class="value"><span class="v text">${L.esc(v.slice(1, -1))}</span></span><span class="why">${L.inline(why, ctx)}</span></li>`);
+  return screen + (whys.length ? `<ul class="settings">${whys.join('')}</ul>` : '');
+}
+
+// A question to answer in your head, then open: "Question::Answer".
+function check(block) {
+  const ctx = { file: 'music', cards: new Map(), links: new Set() };
+  return block.split('\n').map(l => l.trim()).filter(Boolean).map(l => { const [q, a] = l.split('::'); return `<details class="check"><summary><span class="check-tag">Check</span> ${L.inline(q.trim(), ctx)}</summary><p>${L.inline((a || '').trim(), ctx)}</p></details>`; }).join('');
+}
+
+// "Play it here": the spikes are drawn at build time (so they show without JavaScript), and music.js adds the
+// sound and the controls. Lines: "key: value" (title, mode rate|pluck|match, ratio, depth, rate, choices, lock, targets).
+const FM = require('../music/fm-core.js');
+function fmToy(block) {
+  const cfg = {};
+  for (const l of block.split('\n')) { const m = l.match(/^\s*(\w+)\s*:\s*(.+?)\s*$/); if (m) cfg[m[1]] = m[2]; }
+  const list = v => (v || '').split(',').map(x => x.trim()).filter(Boolean);
+  const data = { title: cfg.title || 'Play it here', mode: cfg.mode || 'ratio', ratio: Number(cfg.ratio || 1), depth: Number(cfg.depth || 0), rate: Number(cfg.rate || 4), lock: list(cfg.lock), choices: list(cfg.choices).map(Number), targets: list(cfg.targets) };
+  if (data.mode === 'match') { data.ratio = 1; data.depth = 0; }
+  const fm = data.mode === 'rate' ? data.rate : 220 * data.ratio;
+  const d = FM.svg(220, fm, data.depth, { rungs: 12 });
+  const note = { rate: 'Slide the speed up slowly and listen for the moment the wobble becomes a colour.', pluck: 'Each note starts with this many spikes and falls back to one: that fall is the A envelope.', match: 'Play the target, set ratio and depth, then check.' }[data.mode] || 'The faint lines are the note’s harmonics: 1, 2, 3… times the note.';
+  return `<figure class="fm-toy" data-cfg="${L.esc(JSON.stringify(data))}"><div class="fm-head"><span class="fm-tag">Play it here</span> <b>${L.esc(data.title)}</b></div><div class="fm-spec-wrap">${d.svg}</div><p class="fm-read" aria-live="polite">${L.esc(d.label)}</p><div class="fm-controls" hidden></div><figcaption>${L.esc(note)}</figcaption></figure>`;
+}
+
+// An FM algorithm, sketched like the Digitone's own drawing. Lines: "OP col row [fb]" places an operator,
+// "A>C" draws a modulation line, "C>X" or "B1>Y dotted" an output.
+function algoSketch(block, seed) {
+  const p = pen(`algo:${seed}`);
+  const ops = {}, edges = [];
+  for (const l of block.split('\n').map(x => x.trim()).filter(Boolean)) {
+    const m = l.match(/^(\w+)\s+(-?\d+)\s+(-?\d+)(\s+fb)?$/);
+    if (m) ops[m[1]] = { c: Number(m[2]), r: Number(m[3]), fb: !!m[4] };
+    else { const e = l.match(/^(\w+)>(\w+)(\s+dotted)?$/); if (e) edges.push({ a: e[1], b: e[2], dot: !!e[3] }); }
+  }
+  const cs = Object.values(ops).map(o => o.c), rs = Object.values(ops).map(o => o.r);
+  const c0 = Math.min(...cs), r0 = Math.min(...rs), cw = 96, rh = 84, bw = 54, x0 = 60, y0 = 34;
+  const at = o => [x0 + (o.c - c0) * cw, y0 + (o.r - r0) * rh];
+  const bottom = y0 + (Math.max(...rs) - r0) * rh + bw + 46;
+  const W = x0 + (Math.max(...cs) - c0) * cw + bw + 60, H = bottom + 40;
+  const outX = { X: x0 + bw / 2, Y: x0 + (Math.max(...cs) - c0) * cw + bw / 2 };
+  let s = '';
+  for (const e of edges) {
+    const A = ops[e.a]; if (!A) continue;
+    const [ax, ay] = at(A);
+    if (e.b === 'X' || e.b === 'Y') {
+      const tx = outX[e.b];
+      const d = Math.abs(tx - (ax + bw / 2)) < 2 ? p.line(ax + bw / 2, ay + bw, tx, bottom - 18) : p.line(ax + bw / 2, ay + bw, ax + bw / 2, bottom - 30) + ' ' + p.line(ax + bw / 2, bottom - 30, tx, bottom - 18);
+      s += `<path class="sk${e.dot ? ' dotted' : ''}" d="${d}"/>`;
+    } else {
+      const B = ops[e.b]; if (!B) continue;
+      const [bx, by] = at(B);
+      s += `<path class="sk red" d="${p.line(ax + bw / 2, ay + bw, bx + bw / 2, by)}"/><circle class="k-dot" cx="${bx + bw / 2}" cy="${by}" r="3.4"/>`;
+    }
+  }
+  for (const [name, o] of Object.entries(ops)) {
+    const [x, y] = at(o);
+    s += `<path class="wash" d="${p.blob(x + bw / 2 + 3, y + bw / 2 + 3, bw / 2, bw / 2, 0.12)}"/><path class="sk heavy" d="${p.rect(x, y, bw, bw)}"/><text class="sk-hand big" x="${x + bw / 2}" y="${y + bw / 2 + 8}" text-anchor="middle">${L.esc(name)}</text>`;
+    if (o.fb) s += `<path class="sk" d="${p.line(x - 10, y + 16, x - 10, y - 10)} ${p.line(x - 10, y - 10, x + 16, y - 10)} ${p.line(x + 16, y - 10, x + 16, y)}"/><text class="sk-label" x="${x - 14}" y="${y - 16}" text-anchor="middle">FDBK</text>`;
+  }
+  for (const [k, x] of Object.entries(outX)) s += `<text class="sk-hand big" x="${x}" y="${bottom + 4}" text-anchor="middle">${k}</text>`;
+  return `<figure class="algo-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of the algorithm: ${L.esc(edges.map(e => `${e.a} to ${e.b}`).join(', '))}">${s}</svg><figcaption>Red: shakes (modulates). Black: goes out to X or Y; dotted: not shaped by the operator envelope.</figcaption></figure>`;
+}
+
 // One section: Markdown, with any ```settings fences drawn as cards.
 function section(title, text) {
   const ctx = { file: 'music', cards: new Map(), links: new Set() };
   text = text.replace(/```steps\n([\s\S]*?)```/g, (_, b) => `\n\n@@STEPS${Buffer.from(b).toString('base64')}@@\n\n`);
+  const blocks = [];
+  const stash = html => { blocks.push(html); return `\n\n@@BLOCK${blocks.length - 1}@@\n\n`; };
+  text = text.replace(/```digitone ?([^\n]*)\n([\s\S]*?)```/g, (_, h, b) => stash(digitone(h.trim(), b)))
+    .replace(/```check\n([\s\S]*?)```/g, (_, b) => stash(check(b)))
+    .replace(/```fm\n([\s\S]*?)```/g, (_, b) => stash(fmToy(b)))
+    .replace(/```algo\n([\s\S]*?)```/g, (_, b) => stash(algoSketch(b, title)))
+    .replace(/^> (.+)$/gm, (_, q) => stash(`<blockquote class="idea"><p>${L.inline(q, ctx)}</p></blockquote>`));
   const parts = text.split(/```settings\n([\s\S]*?)```/);
   const dev0 = /perfourmer/i.test(title) ? 'dev-pf' : /grand canyon/i.test(title) ? 'dev-gc' : /nightsky/i.test(title) ? 'dev-ns' : '';
   let html = '';
@@ -238,7 +333,10 @@ function section(title, text) {
     if (i % 2) html += (dev0 && /^\d+\./.test(title) ? deviceSketch(dev0, title, part) : '') + settings(part);
     else if (part.trim()) part.split(/@@STEPS([A-Za-z0-9+/=]+)@@/).forEach((q, k) => {
       if (k % 2) html += stepsSketch(Buffer.from(q, 'base64').toString('utf8'), title);
-      else if (q.trim()) html += L.renderBlocks(L.parseBody(`## x\n\n${q.trim()}\n`, ctx)[0].blocks, ctx);
+      else if (q.trim()) q.split(/@@BLOCK(\d+)@@/).forEach((r, j) => {
+        if (j % 2) html += blocks[Number(r)];
+        else if (r.trim()) html += L.renderBlocks(L.parseBody(`## x\n\n${r.trim()}\n`, ctx)[0].blocks, ctx);
+      });
     });
   });
   const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -258,7 +356,7 @@ function load() {
   return fs.readdirSync(SRC).filter(f => f.endsWith('.md') && !f.startsWith('_')).map(f => {
     const raw = fs.readFileSync(path.join(SRC, f), 'utf8');
     const { meta, body } = L.parseFrontmatter(raw, f);
-    return { slug: f.replace(/\.md$/, ''), meta, body };
+    return { slug: f.replace(/\.md$/, ''), meta, body, lesson: meta.kind === 'lesson' };
   }).sort((a, b) => Number(a.meta.order || 99) - Number(b.meta.order || 99));
 }
 
@@ -269,7 +367,9 @@ function sections(body) {
 const footer = `      <p class="small">Settings are my starting points, to tune by ear; what each control does is checked against the manuals linked on each page.</p>
       <p class="small"><a href="./">All recipes</a> · <a href="../course/">Courses</a> · <a href="../">pachulski.dev</a></p>`;
 
-function renderRecipe(r, all) {
+function renderRecipe(r, everything) {
+  if (r.lesson) return renderLesson(r, everything);
+  const all = everything.filter(x => !x.lesson);
   const i = all.indexOf(r);
   const next = all[i + 1], prev = all[i - 1];
   const html = sections(r.body).map(s => section(s.title, s.text)).join('\n');
@@ -305,7 +405,47 @@ ${html}
   });
 }
 
-function renderIndex(all) {
+// A lesson: the same sketchbook page, but it teaches one idea step by step instead of building one sound.
+const MAP = [['LEV', 'how many overtones'], ['RATIO', 'which overtones'], ['A envelope', 'overtones over time'], ['FDBK', 'grit']];
+function renderLesson(r, everything) {
+  const lessons = everything.filter(x => x.lesson);
+  const i = lessons.indexOf(r);
+  const html = sections(r.body).map(s => section(s.title, s.text)).join('\n');
+  const first = everything.find(x => !x.lesson);
+  return L.page({
+    title: `${r.meta.title}: an FM synthesis lesson for the Elektron Digitone II – Mateusz Pachulski`,
+    description: r.meta.summary,
+    canonical: `${L.SITE}/music/${r.slug}`,
+    base: '../', current: 'music', feed: false, footer, script: ['fm-core.js', 'music.js'],
+    body: `    <article class="music recipe lesson course-top wrap" data-recipe="${r.slug}">
+      ${DEFS}
+      <p class="eyebrow"><a href="./">← The tape shelf</a></p>
+      <div class="recipe-grid">
+      <aside class="margin" aria-label="At a glance">
+        ${soundSketch(r.meta.sound, r.slug)}
+        <dl class="fm-map">${MAP.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+        <p class="margin-note">Each “Play it here” box makes sound in your browser. Tap a setting row to tick it off.</p>
+      </aside>
+      <div class="recipe-main">
+      <header class="jcard">
+        <p class="side">Side B · Lesson ${String(i + 1).padStart(2, '0')}</p>
+        <h1>${L.esc(r.meta.title)}</h1>
+        <p class="mood">${L.esc(r.meta.mood || '')}</p>
+        <p class="lede">${L.esc(r.meta.summary)}</p>
+        <dl class="jfields">${[['Level', r.meta.level], ['Time', r.meta.time], ['On', r.meta.device]].filter(([, v]) => v).map(([k, v]) => `<div><dt>${k}</dt><dd>${L.esc(v)}</dd></div>`).join('')}</dl>
+      </header>
+      <div class="tools" hidden><button type="button" class="button" data-compact>Hide the whys</button> <button type="button" class="button" data-untick>Clear my ticks</button> <span class="tick-count small" aria-live="polite"></span></div>
+      <nav class="recipe-toc" aria-label="On this page"><ol>${sections(r.body).map(s => `<li><a href="#${s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}">${L.esc(s.title)}</a></li>`).join('')}</ol></nav>
+${html}
+      </div>
+      </div>
+      <nav class="pager" aria-label="More">${first ? `<a class="button primary" href="${first.slug}.html">Now play a recipe: ${L.esc(first.meta.title)} →</a>` : ''}<a class="button" href="./">All recipes</a></nav>
+    </article>`,
+  });
+}
+
+function renderIndex(everything) {
+  const all = everything.filter(x => !x.lesson), lessons = everything.filter(x => x.lesson);
   const intro = fs.existsSync(path.join(SRC, '_index.md')) ? L.parseFrontmatter(fs.readFileSync(path.join(SRC, '_index.md'), 'utf8'), '_index.md') : { meta: {}, body: '' };
   const html = sections(intro.body).map(s => section(s.title, s.text)).join('\n');
   const cards = all.map((r, i) => `<li class="cassette c-${i % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">A${i + 1}</span><span class="c-title">${L.esc(r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.level || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n');
@@ -320,6 +460,10 @@ function renderIndex(all) {
       <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>
       <p class="lede">${L.esc(intro.meta.summary || '')}</p>
       ${rigSketch()}
+      ${lessons.length ? `<h2>Side B: lessons</h2>
+      <ul class="shelf lessons">
+${lessons.map((r, i) => `<li class="cassette lesson-tape c-${(i + 3) % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">B${i + 1}</span><span class="c-title">${L.esc(r.meta.shelf || r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.device || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n')}
+      </ul>` : ''}
       <h2>The tape shelf</h2>
       <ul class="shelf">
 ${cards}

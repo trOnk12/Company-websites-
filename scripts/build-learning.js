@@ -189,7 +189,7 @@ function page({ title, description, canonical, body, image = `${SITE}/og-image.p
 ${feed ? `  <link rel="alternate" type="application/atom+xml" title="Mateusz Pachulski – Learning" href="${base}learning/feed.xml">\n` : ''}  <link rel="icon" href="${FAVICON}">
   <link rel="preload" as="font" type="font/woff2" href="${base}fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="${base}fonts/literata-600.woff2" crossorigin>
-  <link rel="stylesheet" href="${base}style.css">${script ? `\n  <script src="${script}" defer></script>` : ''}
+  <link rel="stylesheet" href="${base}style.css">${script ? [].concat(script).map(src => `\n  <script src="${src}" defer></script>`).join('') : ''}
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
