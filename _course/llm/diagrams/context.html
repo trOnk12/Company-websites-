@@ -1,0 +1,17 @@
+<!-- label: Each request carries the whole chat; it must fit the context window -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="cx-t"><title id="cx-t">The app stores the chat; each request to the stateless model must carry earlier messages; the request grows with every turn and must fit inside the context window; old turns are summarised to keep it small</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-machine class="step s1" x="470" y="140" w="140" label="model"/>
+<g class="step s1 hide-2" data-pulse="1"><x-letter x="40" y="150" w="130" h="34" label="battery life?"/><text class="d-r" x="320" y="120" text-anchor="middle">which device?</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-dash" x="30" y="40" width="400" height="230" rx="10"/><text class="d-tiny" x="230" y="62" text-anchor="middle">context window</text></g>
+<g class="step s2" data-move="2:40,90 3:40,90 4:40,90"><x-letter x="0" y="0" w="150" h="30" label="I have a Pixel 9"/><x-letter x="0" y="40" w="150" h="30" label="answer"/><x-letter x="0" y="80" w="150" h="30" label="battery life?"/></g>
+<g class="step only-3" data-pulse="3"><rect class="d-band" x="210" y="90" width="200" height="150" rx="6"/><text class="d-r" x="310" y="170" text-anchor="middle">50 turns: more to pay</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="210" y="90" width="200" height="40" rx="6"/><text class="d-a" x="310" y="115" text-anchor="middle">summary of old turns</text></g>
+<x-arrow class="step s2" tone="acc" d="M432,160 L466,170"/>
+</svg>
+<ol class="caps">
+<li><p>The app sends only the latest message. The model has never seen the earlier one: the API is <b>stateless</b>.</p></li>
+<li><p>So every request carries the conversation so far. All of it, plus the answer, must fit in the <b>context window</b>.</p></li>
+<li><p>After fifty turns, every request carries fifty turns: more to pay, more to read. <i>Predict: how do you keep it small?</i></p></li>
+<li><p>Your app decides: replace old turns with a short summary, or keep only the last few.</p></li>
+</ol>

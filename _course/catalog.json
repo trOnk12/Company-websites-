@@ -28,7 +28,8 @@
     },
     {
       "title": "How LLMs and AI agents work",
-      "topics": "Tokens, transformers and attention, the KV cache, sampling, context windows and retrieval, embeddings, agents and tool use, checking AI output, on-device models."
+      "topics": "Tokens, transformers and attention, the KV cache, sampling, context windows and retrieval, embeddings, agents and tool use, checking AI output, on-device models.",
+      "id": "llm"
     },
     {
       "title": "Kotlin Multiplatform and iOS for Android developers",

@@ -1,0 +1,17 @@
+<!-- label: A key in the app can be taken; behind your server it can't -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="px-t"><title id="px-t">An app with the API key inside calls the model directly, and someone extracts the key and calls the model on your bill; with a proxy backend the app sends its login token to your server, which checks the user, applies a limit, adds the key and calls the model</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="100" label="app"/>
+<x-machine class="step s1" x="480" y="120" w="130" label="model"/>
+<g class="step s1 hide-3" data-pulse="1"><x-key x="44" y="60" fill="d-adv"/><x-arrow tone="ink" d="M110,150 L475,150"/></g>
+<g class="step only-2" data-pulse="2"><x-person x="250" y="230" label="attacker"/><x-key x="290" y="200" fill="d-bad"/><x-arrow tone="red" d="M320,220 L475,170"/><text class="d-r" x="400" y="300" text-anchor="middle">calls on your bill</text></g>
+<g class="step s3" data-pulse="3"><x-server x="270" y="90" w="90" h="120" label="your server"/><x-key x="370" y="60" fill="d-adv"/><x-arrow tone="ink" d="M110,150 L265,150"/><x-arrow tone="acc" d="M365,150 L475,150"/></g>
+<x-letter class="step s3" data-move="3:120,170 4:120,170" x="0" y="0" w="110" h="28" label="login token"/>
+<g class="step s4" data-pulse="4"><text class="d-a" x="315" y="260" text-anchor="middle">checks the user, applies limits</text><text class="d-a" x="315" y="290" text-anchor="middle">the key stays here</text></g>
+</svg>
+<ol class="caps">
+<li><p>The <b>API key</b> is inside the app, and the app calls the model directly.</p></li>
+<li><p>Anyone can unpack the APK or watch their own traffic, take the key, and call the model on your bill.</p></li>
+<li><p>Instead, the app sends its user's login token to your server, which holds the key. <i>Predict: what can the server do that the app couldn't?</i></p></li>
+<li><p>Check who's asking and limit each user. That's a <b>proxy backend</b>: the key never leaves it.</p></li>
+</ol>

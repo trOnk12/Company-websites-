@@ -1,0 +1,16 @@
+<!-- label: Text becomes tokens; the model adds one token at a time -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="tk-t"><title id="tk-t">The prompt is cut into tokens; the model reads all tokens so far and predicts one next token; that token is appended and the model runs again; each new token is one more step</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="30" y="50" width="70" height="34" rx="6"/><text class="d-tiny" x="65" y="72" text-anchor="middle">Summar</text><rect class="d-band" x="104" y="50" width="44" height="34" rx="6"/><text class="d-tiny" x="126" y="72" text-anchor="middle">ise</text><rect class="d-band" x="152" y="50" width="54" height="34" rx="6"/><text class="d-tiny" x="179" y="72" text-anchor="middle">this</text><rect class="d-band" x="210" y="50" width="70" height="34" rx="6"/><text class="d-tiny" x="245" y="72" text-anchor="middle">review</text></g>
+<g class="step s2" data-pulse="2"><x-machine x="250" y="160" w="160" label="model"/></g>
+<x-arrow class="step s2" tone="ink" d="M200,90 L290,156"/>
+<g class="step s2" data-move="2:440,170 3:290,58 4:340,58"><rect class="d-hl" x="0" y="0" width="56" height="34" rx="6"/><text class="d-a" x="28" y="22" text-anchor="middle">Great</text></g>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="320" y="290" text-anchor="middle">appended, then run again</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="404" y="50" width="62" height="34" rx="6"/><text class="d-a" x="435" y="72" text-anchor="middle">phone</text><text class="d-a" x="320" y="290" text-anchor="middle">one token per step</text></g>
+</svg>
+<ol class="caps">
+<li><p>Your prompt is cut into <b>tokens</b>: whole words, pieces of words. "Summarise" becomes two.</p></li>
+<li><p>The model reads every token so far and picks one next token: <b>next-token prediction</b>.</p></li>
+<li><p>That token is appended to the text, and the model runs again on the longer text. <i>Predict: what does that mean for long answers?</i></p></li>
+<li><p>Each new token is one more step. A 300-token answer is 300 runs, which is why long answers take longer.</p></li>
+</ol>

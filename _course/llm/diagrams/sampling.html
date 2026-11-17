@@ -1,0 +1,16 @@
+<!-- label: The model scores each next token; sampling picks one; temperature tilts the odds -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sa-t"><title id="sa-t">The model gives each possible next token a score: Great high, Good medium, Fine low; sampling picks one at random by score; low temperature makes the top token win almost always; high temperature gives the others more chances</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-machine class="step s1" x="30" y="140" w="140" label="model"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="230" y="120" width="180" height="34" rx="4"/><text class="d-a" x="530" y="143">Great 60%</text><rect class="d-band" x="230" y="170" width="90" height="34" rx="4"/><text class="d-tiny" x="530" y="192">Good 30%</text><rect class="d-band" x="230" y="220" width="30" height="34" rx="4"/><text class="d-tiny" x="530" y="242">Fine 10%</text></g>
+<g class="step s2" data-move="2:240,90 3:240,90 4:240,90"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+<g class="step only-2" data-pulse="2"><text class="d-a" x="400" y="90" text-anchor="middle">picked at random, by score</text></g>
+<g class="step only-3" data-pulse="3"><rect class="d-ok" x="230" y="120" width="290" height="34" rx="4"/><text class="d-a" x="420" y="300" text-anchor="middle">low temperature: Great almost always</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-ok" x="230" y="170" width="140" height="34" rx="4"/><rect class="d-ok" x="230" y="220" width="90" height="34" rx="4"/><text class="d-a" x="420" y="300" text-anchor="middle">high temperature: more variety</text></g>
+</svg>
+<ol class="caps">
+<li><p>At each step the model scores every possible next token: "Great" likely, "Good" less, "Fine" rarely.</p></li>
+<li><p>One is chosen by <b>sampling</b>: at random, weighted by the scores. Usually "Great", not always.</p></li>
+<li><p>Low <b>temperature</b> tilts the odds further toward the top token. <i>Predict: what does a high one do?</i></p></li>
+<li><p>It evens them out: "Good" and "Fine" get picked more often, so answers vary more.</p></li>
+</ol>

@@ -1,0 +1,40 @@
+{
+  "title": "LLMs for mobile engineers, from tokens to your app",
+  "intro": "What actually happens when your app calls a language model: tokens, one at a time; why answers stream; why the model remembers nothing; why the same question gets different answers; where the API key must never live; and when the model should run on the phone instead. One small puzzle at a time.",
+  "how": "Each puzzle starts with something you'll hit when you put a model in an app, gives you one building block, shows it in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. Facts come from Anthropic's and Android's documentation and Google Cloud's security guidance, linked on every page.",
+  "hero": "tokens",
+  "heroAlt": "Animated diagram: a prompt becomes tokens; the model predicts one token, adds it, and predicts the next.",
+  "assumes": {
+    "title": "Mobile system design, from a packet to an app",
+    "href": "../sysdesign/"
+  },
+  "modules": [
+    {
+      "title": "Module 1: A model in your app",
+      "blurb": "Tokens, streaming, statelessness and the context window, temperature, keys, and on-device models.",
+      "puzzles": [
+        "00-one-token-at-a-time.md",
+        "01-why-answers-stream.md",
+        "02-it-remembers-nothing.md",
+        "03-same-question-different-answers.md",
+        "04-your-key-is-not-a-secret.md",
+        "05-on-the-phone-or-in-the-cloud.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Tools and agents",
+      "topics": "Tool use: the model asks your code to act; structured output; the agent loop; letting it read your app's data safely; prompt injection."
+    },
+    {
+      "title": "Module 3: Shipping it",
+      "topics": "Prompt caching and cost, evaluating answers, guardrails, latency budgets on mobile, and fallbacks when the model is down."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  }
+}

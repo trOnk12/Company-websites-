@@ -1,0 +1,17 @@
+<!-- label: Without streaming you wait for the end; with it, words appear as they're made -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">Without streaming the app shows a spinner until the whole answer arrives after eight seconds; with streaming each token arrives as a small event over one open response, so words appear after half a second; leaving the screen cancels the stream</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="90" w="90" h="150" label="chat screen"/>
+<x-machine class="step s1" x="460" y="120" w="140" label="model"/>
+<g class="step s1 hide-2" data-pulse="1"><circle class="d-dash" cx="75" cy="150" r="18"/><text class="d-r" x="290" y="120" text-anchor="middle">8 s of spinner</text></g>
+<g class="step s2" data-pulse="2"><line class="d-line" x1="130" y1="170" x2="455" y2="170"/><text class="d-a" x="290" y="155" text-anchor="middle">one open response</text></g>
+<x-letter class="step s2" data-move="2:400,180 3:140,180 4:140,180" x="0" y="0" w="60" h="26" label="Great"/>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="290" y="250" text-anchor="middle">first words after 0.5 s</text></g>
+<g class="step s4" data-pulse="4"><path class="d-red" d="M280,160 L300,180 M300,160 L280,180"/><text class="d-r" x="290" y="250" text-anchor="middle">user leaves: cancel</text></g>
+</svg>
+<ol class="caps">
+<li><p>The app as written waits for the whole answer: eight seconds of spinner, then all the text at once.</p></li>
+<li><p>With <b>streaming</b>, one HTTP response stays open, and each new piece arrives as one of the <b>server-sent events</b>.</p></li>
+<li><p>The first words show after half a second: the <b>time to first token</b>. <i>Predict: what if the user leaves mid-answer?</i></p></li>
+<li><p>Cancel the stream: every token still being generated costs money and battery, read or not.</p></li>
+</ol>

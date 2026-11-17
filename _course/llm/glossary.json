@@ -1,0 +1,188 @@
+{
+ "baseline": {
+  "_about": "Words the learner already knows: everyday Android, plus the system design course.",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Android",
+   "phone",
+   "code",
+   "data",
+   "server",
+   "request",
+   "response",
+   "network",
+   "API",
+   "JSON",
+   "ms",
+   "user",
+   "users",
+   "battery",
+   "HTTP",
+   "HTTPS",
+   "URL",
+   "text",
+   "word",
+   "words",
+   "chat",
+   "message",
+   "messages",
+   "prompt",
+   "answer",
+   "model",
+   "models",
+   "language model",
+   "LLM",
+   "AI",
+   "round trip",
+   "round trips",
+   "latency",
+   "backend",
+   "APK",
+   "Claude",
+   "Gemini",
+   "Gemini Nano",
+   "ChatGPT",
+   "key",
+   "password",
+   "cloud",
+   "cost",
+   "bill",
+   "price",
+   "second",
+   "seconds",
+   "UI",
+   "ViewModel",
+   "Flow",
+   "OkHttp",
+   "Retrofit",
+   "Compose",
+   "Text",
+   "test",
+   "tests",
+   "string",
+   "strings",
+   "English",
+   "Polish",
+   "emoji",
+   "unit test",
+   "summary",
+   "summaries",
+   "headers",
+   "header",
+   "Wi-Fi",
+   "privacy",
+   "offline",
+   "\"stream\": true",
+   "BuildConfig",
+   "R8",
+   "ML Kit",
+   "GenAI",
+   "ML",
+   "system prompt",
+   "Pixel 9",
+   "JSON"
+  ]
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what.",
+  "phrases": {
+   "the system": "name the actor: the model, your backend, AICore",
+   "simply": "cut it",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is",
+   "magic": "say what actually happens"
+  }
+ },
+ "terms": {
+  "token": {
+   "in": "00",
+   "def": "The unit a language model reads and writes: a word, part of a word, a character or a byte.",
+   "aliases": [
+    "tokens",
+    "tokenizer"
+   ]
+  },
+  "next-token prediction": {
+   "in": "00",
+   "def": "What the model does: given the text so far, pick the next token, add it, and repeat.",
+   "aliases": [
+    "predicts the next token"
+   ]
+  },
+  "streaming": {
+   "in": "01",
+   "def": "Receiving the answer token by token as it's generated, instead of all at once at the end.",
+   "aliases": [
+    "stream",
+    "streams",
+    "streamed"
+   ]
+  },
+  "time to first token": {
+   "in": "01",
+   "def": "How long until the first token of the answer arrives: what makes an app feel responsive.",
+   "aliases": [
+    "TTFT"
+   ]
+  },
+  "server-sent events": {
+   "in": "01",
+   "def": "A way for a server to send a stream of small events over one open HTTP response.",
+   "aliases": [
+    "SSE"
+   ]
+  },
+  "stateless": {
+   "in": "02",
+   "def": "Keeping nothing between requests: every request must carry everything needed.",
+   "aliases": []
+  },
+  "context window": {
+   "in": "02",
+   "def": "The text the model can see for one request, including its answer: its working memory.",
+   "aliases": [
+    "context"
+   ]
+  },
+  "temperature": {
+   "in": "03",
+   "def": "A setting for how random the choice of next token is: higher is more varied, lower more predictable.",
+   "aliases": []
+  },
+  "sampling": {
+   "in": "03",
+   "def": "Choosing the next token at random, weighted by how likely the model thinks each one is.",
+   "aliases": [
+    "sampled",
+    "sample"
+   ]
+  },
+  "API key": {
+   "in": "04",
+   "def": "A secret that lets whoever holds it call a paid API on your account.",
+   "aliases": [
+    "API keys"
+   ]
+  },
+  "proxy backend": {
+   "in": "04",
+   "def": "Your own server that the app calls; it checks the user, adds the API key, and calls the model.",
+   "aliases": []
+  },
+  "on-device model": {
+   "in": "05",
+   "def": "A model that runs on the phone itself, with no network call.",
+   "aliases": [
+    "on-device"
+   ]
+  },
+  "AICore": {
+   "in": "05",
+   "def": "Android's system service that runs Gemini Nano on the device and keeps it updated.",
+   "aliases": []
+  }
+ }
+}
