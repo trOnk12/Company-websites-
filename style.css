@@ -506,10 +506,9 @@ pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
 .recipe-toc ol { display: flex; flex-wrap: wrap; gap: .3rem 1rem; padding: 0; list-style: none; font-size: .9rem; }
 .recipe section { margin-top: 2rem; }
 
-/* ───────── Music: patch sheets on a desk ─────────
-   Old synth manuals shipped blank front-panel sheets you marked in pencil to save a sound.
-   Each recipe is one of those: printed in typewriter ink, marked by hand in pencil and red pen,
-   taped together, with sticky notes. The recipe list is a shelf of hand-labelled cassettes. */
+/* ───────── Music: a sketchbook ─────────
+   Everything here is drawn in ink: the rig, each device's panel with the recipe's knobs, the knobs in the lists,
+   the cassettes. The lines come from scripts/sketch.js (double, wobbly strokes); boxes use hand-drawn borders. */
 @font-face { font-family: "Caveat"; src: url("fonts/caveat-var.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
 @font-face { font-family: "Special Elite"; src: url("fonts/special-elite-400.woff2") format("woff2"); font-display: swap; }
 @font-face { font-family: "Permanent Marker"; src: url("fonts/permanent-marker-400.woff2") format("woff2"); font-display: swap; }
@@ -518,133 +517,121 @@ body:has(article.music) {
   --hand: "Caveat", "Segoe Print", "Bradley Hand", cursive;
   --type: "Special Elite", "Courier New", monospace;
   --marker: "Permanent Marker", "Caveat", cursive;
-  --paper: #FBF8F0; --desk: #D9CBB0; --ink: #23201B; --muted: #5A5348; --pencil: #4A4A4F;
-  --red: #C8321E; --blue: #1F4FA8; --rule: #B9AC93; --accent-deep: #1F4FA8; --tape: #E8DDBF;
-  --bg: var(--desk);
-  background-color: var(--desk);
-  background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .28  0 0 0 0 .18  0 0 0 .09 0'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>"),
-    radial-gradient(70rem 40rem at 50% -10rem, #EFE5CF, transparent 70%);
+  --paper: #FFFDF7; --ink: #1D1C1A; --muted: #55524B; --pencil: #3A3A3E; --red: #D33A22; --blue: #2456B5; --rule: #C9C1AE; --accent-deep: #2456B5;
+  --bg: var(--paper);
+  --wobble: 255px 14px 225px 16px / 16px 225px 14px 255px;
+  background-color: var(--paper);
+  background-image: radial-gradient(#D8D0BE 1px, transparent 1.2px);
+  background-size: 22px 22px;
 }
-body:has(article.music) .site-header, body:has(article.music) .site-footer { border-color: #00000022; }
-body:has(article.music) .brand, body:has(article.music) .nav-links a { color: var(--ink); }
-.music { font-family: var(--sans); }
+body:has(article.music) .site-header, body:has(article.music) .site-footer { border-color: #1D1C1A22; }
 .music .eyebrow, .music .eyebrow a { font-family: var(--type); color: var(--muted); }
-.music h2 { font-family: var(--type); font-weight: 400; letter-spacing: .01em; font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem); }
-.music .marker, .music h1 { font-family: var(--marker); font-weight: 400; letter-spacing: .01em; color: var(--ink); }
-.music h1.marker { font-size: clamp(2.6rem, 1.8rem + 4vw, 4.4rem); transform: rotate(-1.5deg); display: inline-block; }
+.music h1, .music .marker { font-family: var(--marker); font-weight: 400; color: var(--ink); letter-spacing: .01em; }
+.music h1.marker { font-size: clamp(2.6rem, 1.8rem + 4vw, 4.4rem); transform: rotate(-1.5deg); display: inline-block; position: relative; }
+.music h1.marker::after { content: ""; position: absolute; left: -2%; right: -4%; bottom: .05em; height: .32em; background: #FFD84D99; z-index: -1; transform: rotate(-1deg); border-radius: 3px 10px 4px 12px; }
+.music h2 { font-family: var(--marker); font-weight: 400; font-size: clamp(1.45rem, 1.15rem + 1.1vw, 1.95rem); color: var(--ink); }
 .music .lede { color: var(--muted); }
-.music code { background: #00000010; color: var(--ink); font-family: var(--type); }
+.music code { background: #1D1C1A0D; color: var(--ink); font-family: var(--type); }
 
-/* The J-card: a cassette insert as the recipe's title page */
-.jcard { position: relative; background: var(--paper); border: 1px solid #00000018; padding: 1.4rem 1.4rem 1.2rem; margin: .5rem 0 1.5rem;
-  box-shadow: 0 1px 0 #fff inset, 0 14px 30px -12px #4a3a1a66; transform: rotate(-.6deg);
-  background-image: repeating-linear-gradient(transparent 0 31px, #9DB7D833 31px 32px); }
-.jcard::before, .jcard::after { content: ""; position: absolute; top: -12px; width: 92px; height: 26px; background: var(--tape); opacity: .85; box-shadow: 0 1px 2px #0002; }
-.jcard::before { left: 18px; transform: rotate(-4deg); }
-.jcard::after { right: 22px; transform: rotate(5deg); }
-.jcard .side { font-family: var(--type); font-size: .85rem; color: var(--red); margin: 0 0 .2rem; letter-spacing: .06em; text-transform: uppercase; }
+/* Ink drawings */
+.sk { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.sk.thin { stroke-width: 1; opacity: .85; }
+.sk.heavy { stroke-width: 2.2; }
+.sk.ptr { stroke-width: 3.4; stroke: #222; }
+.sk.red { stroke: var(--red); stroke-width: 2; }
+.k-dot { fill: var(--red); }
+.sk-type { font-family: var(--type); font-size: 15px; fill: var(--ink); letter-spacing: .08em; }
+.sk-hand { font-family: var(--hand); font-size: 19px; fill: var(--ink); font-weight: 600; }
+.sk-hand.big { font-size: 24px; }
+.sk-label { font-family: var(--hand); font-size: 15.5px; fill: var(--blue); }
+.rig-sketch { margin: 1.5rem 0 1rem; }
+.rig-sketch svg, .panel-sketch svg { width: 100%; height: auto; display: block; }
+.panel-sketch { margin: 1rem 0 1.25rem; }
+.panel-sketch figcaption { font-family: var(--hand); font-size: 1.15rem; color: var(--muted); margin-top: .1rem; transform: rotate(-.6deg); }
+
+/* J-card header, sketched */
+.jcard { position: relative; border: 2px solid var(--ink); border-radius: var(--wobble); padding: 1.3rem 1.4rem 1.1rem; margin: .5rem 0 1.25rem; background: #FFFFFFAA; }
+.jcard .side { font-family: var(--type); font-size: .82rem; color: var(--red); margin: 0 0 .2rem; letter-spacing: .08em; text-transform: uppercase; }
 .jcard h1 { font-size: clamp(2.3rem, 1.6rem + 3.4vw, 3.8rem); line-height: 1.05; margin: 0 0 .3rem; }
 .jcard .mood { font-family: var(--hand); font-size: 1.6rem; color: var(--blue); margin: 0; transform: rotate(-1deg); }
-.jcard .lede { margin-top: .6rem; }
 .jfields { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .4rem 1.2rem; margin: 1rem 0 0; }
-.jfields div { border-bottom: 1.5px solid var(--ink); display: flex; align-items: baseline; gap: .5rem; padding-bottom: .1rem; }
-.jfields dt { font-family: var(--type); font-size: .78rem; text-transform: uppercase; color: var(--muted); }
+.jfields div { border-bottom: 2px solid var(--ink); border-radius: 0 0 40px 6px / 0 0 4px 2px; display: flex; align-items: baseline; gap: .5rem; }
+.jfields dt { font-family: var(--type); font-size: .76rem; text-transform: uppercase; color: var(--muted); }
 .jfields dd { margin: 0; font-family: var(--hand); font-size: 1.45rem; line-height: 1.1; color: var(--blue); }
 
-/* Signal chain: typed boxes joined by a hand-drawn cable */
-.chain { list-style: none; padding: 0; margin: 1.5rem 0 .75rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.7rem; }
-.chain li { position: relative; font-family: var(--type); font-size: .82rem; background: var(--paper); border: 1.5px solid var(--ink); padding: .3rem .6rem; line-height: 1.2; box-shadow: 2px 2px 0 var(--ink); }
-.chain li:nth-child(odd) { transform: rotate(-1deg); } .chain li:nth-child(even) { transform: rotate(1deg); }
-.chain li + li::before { content: "→"; font-family: var(--hand); font-size: 1.7rem; line-height: 1; color: var(--red); position: absolute; left: -1.45rem; top: 50%; transform: translateY(-55%); }
+/* Signal chain */
+.chain { list-style: none; padding: 0; margin: 1.25rem 0 .75rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem 1.8rem; }
+.chain li { position: relative; font-family: var(--type); font-size: .82rem; border: 2px solid var(--ink); border-radius: var(--wobble); padding: .3rem .7rem; line-height: 1.2; background: #fff; }
+.chain li + li::before { content: "→"; font-family: var(--hand); font-size: 1.8rem; line-height: 1; color: var(--red); position: absolute; left: -1.5rem; top: 50%; transform: translateY(-55%); }
 .chain span { display: block; font-family: var(--hand); font-size: 1.05rem; color: var(--blue); }
+@media (max-width: 40rem) { .chain { flex-direction: column; align-items: flex-start; gap: 1.5rem; } .chain li + li::before { content: "↓"; left: 1rem; top: -1.6rem; transform: none; } }
 
-/* Label-maker buttons (embossed tape) */
+/* Buttons: hand-drawn boxes */
 .music .button, .music .pager .button {
-  font-family: var(--type); text-transform: uppercase; letter-spacing: .12em; font-weight: 400; font-size: .85rem;
-  color: #F6F2E8; background: #1E1E22; border: 0; border-radius: 3px; min-height: 2.5rem; padding: 0 1rem;
-  text-shadow: 0 1px 0 #000, 0 -1px 0 #ffffff26; box-shadow: inset 0 2px 0 #ffffff14, inset 0 -2px 0 #0006, 0 2px 4px #0003;
-  cursor: pointer; transform: rotate(-.8deg);
+  font-family: var(--marker); font-weight: 400; font-size: 1rem; letter-spacing: .02em; color: var(--ink);
+  background: #fff; border: 2px solid var(--ink); border-radius: var(--wobble); min-height: 2.6rem; padding: 0 1.1rem;
+  box-shadow: 3px 3px 0 var(--ink); cursor: pointer; transition: transform .08s, box-shadow .08s;
 }
-.music .button:nth-of-type(even) { transform: rotate(.7deg); }
-.music .button:hover { background: #2A2A30; }
-.music .button.primary { background: var(--red); }
-.music .button.primary:hover { background: #D94530; }
-.music .button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.music .button:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); background: #FFF6CC; }
+.music .button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.music .button.primary { background: var(--red); color: #fff; }
+.music .button.primary:hover { background: #E04A30; }
+.music .button:focus-visible { outline: 3px dashed var(--blue); outline-offset: 4px; }
 
-/* Each device is one patch sheet, taped down */
+/* Sections: device pages framed by hand */
 .music section { margin-top: 2.75rem; }
-.music section.device { position: relative; background: var(--paper); padding: 1.6rem 1.25rem .75rem; border: 1px solid #00000014;
-  box-shadow: 0 16px 28px -16px #4a3a1a88, 0 1px 0 #fff inset; }
-.music section.device:nth-of-type(odd) { transform: rotate(.35deg); } .music section.device:nth-of-type(even) { transform: rotate(-.35deg); }
-.music section.device::before { content: ""; position: absolute; top: -13px; left: 50%; width: 120px; height: 26px; margin-left: -60px; background: var(--tape); opacity: .85; transform: rotate(-2deg); box-shadow: 0 1px 2px #0002; }
-.music section.device > h2 { margin-bottom: .2rem; }
-.music section.device > h2::before { content: "Patch sheet"; display: block; width: max-content; font-family: var(--type); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--dev); border: 2px solid var(--dev); padding: .05rem .4rem; margin-bottom: .5rem; transform: rotate(-2deg); opacity: .85; }
-.dev-oxi { --dev: #3B3B3B; } .dev-pf { --dev: #1F4FA8; } .dev-gc { --dev: #C0571B; } .dev-ns { --dev: #5B3FA0; }
+.music section.device { border: 2px solid var(--ink); border-radius: var(--wobble); padding: 1.3rem 1.2rem .6rem; background: #FFFFFFB3; }
+.music section.device:nth-of-type(odd) { transform: rotate(.3deg); } .music section.device:nth-of-type(even) { transform: rotate(-.3deg); }
+.music section.device > h2 { margin-bottom: .3rem; }
+.dev-oxi { --dev: #3B3B3B; } .dev-pf { --dev: #2456B5; } .dev-gc { --dev: #C0571B; } .dev-ns { --dev: #6A49B5; }
+.music section.device > h2::after { content: ""; display: block; height: 6px; width: 7rem; margin-top: .2rem; border-radius: 50%; background: var(--dev); opacity: .35; transform: rotate(-1deg); }
 
-/* Rows: typed control name, pencil marks, handwritten note */
-.music .settings { background: transparent; border: 0; border-top: 1.5px solid var(--ink); padding: 0; box-shadow: none; }
-.music .setting { border-bottom: 1px dashed var(--rule); padding: .65rem 2rem .65rem 0; cursor: pointer; position: relative; }
+/* Rows */
+.music .settings { border-top: 2px solid var(--ink); padding: 0; margin-top: .5rem; }
+.music .setting { border-bottom: 1px dashed var(--rule); padding: .6rem 2rem .6rem 0; cursor: pointer; position: relative; }
 .music .setting:last-child { border-bottom: 0; }
 .music .setting .control { font-family: var(--type); font-size: .82rem; font-weight: 400; letter-spacing: .03em; color: var(--ink); text-transform: uppercase; }
-.music .setting .value { font-weight: 400; }
 .music .setting .value .v { font-family: var(--hand); font-size: 1.45rem; line-height: 1; color: var(--pencil); }
 .music .setting .value .text { font-family: var(--hand); font-size: 1.35rem; line-height: 1.15; color: var(--pencil); }
 .music .setting .why { font-family: var(--hand); font-size: 1.22rem; line-height: 1.2; color: var(--blue); }
 .music .knob { width: 3.2rem; height: 3.2rem; }
-.music .knob .k-ticks { stroke: var(--ink); stroke-width: 1.2; stroke-linecap: round; fill: none; }
-.music .knob .k-ring { fill: #fff; stroke: var(--ink); stroke-width: 1.2; }
-.music .knob .k-hand { filter: url(#pencil); }
-.music .knob .k-ptr { stroke: #2A2A2F; stroke-width: 3.6; stroke-linecap: round; }
-.music .knob .k-dot { fill: var(--red); }
-/* The chosen option is circled in red pen */
 .music .choices { gap: .15rem .55rem; }
-.music .choice { font-family: var(--type); font-size: .82rem; border: 0; background: none; color: var(--muted); padding: .2rem .35rem; position: relative; border-radius: 0; box-shadow: none; }
-.music .choice.on { background: none; color: var(--ink); box-shadow: none; }
+.music .choice { font-family: var(--type); font-size: .82rem; border: 0; background: none; color: var(--muted); padding: .2rem .35rem; position: relative; }
+.music .choice.on { color: var(--ink); background: none; }
 .music .choice.on::after { content: ""; position: absolute; inset: -4px -7px; border: 2px solid var(--red); border-radius: 52% 46% 55% 44% / 58% 50% 52% 44%; transform: rotate(-4deg); }
-/* Ticked off in red marker */
-.music .setting::after { content: ""; position: absolute; right: .1rem; top: .7rem; width: 1.2rem; height: 1.2rem; border: 1.5px solid var(--rule); border-radius: 2px; transform: rotate(3deg); }
+.music .setting::after { content: ""; position: absolute; right: .1rem; top: .7rem; width: 1.1rem; height: 1.1rem; border: 2px solid var(--ink); border-radius: 3px 6px 2px 5px; transform: rotate(3deg); }
 .music .setting.ticked::after { content: "✓"; border-color: transparent; font-family: var(--marker); color: var(--red); font-size: 1.6rem; line-height: .9; width: auto; height: auto; right: 0; top: .35rem; transform: rotate(-8deg); }
 .music .setting.ticked .control { text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
 .music .setting:focus-visible { outline: 2px dashed var(--blue); outline-offset: 2px; }
 .music.compact .setting .why { display: none; }
 .music.compact .setting { padding-top: .35rem; padding-bottom: .35rem; }
 
-/* Sticky notes for the check and the troubleshooting */
-.music #you-got-it-right-when, .music #if-it-sounds-wrong { background: #FFF07A; padding: 1.1rem 1.2rem .6rem; box-shadow: 0 12px 20px -12px #6a5a1a99; transform: rotate(-1deg); max-width: 34rem; }
-.music #if-it-sounds-wrong { background: #FFC7D6; transform: rotate(.8deg); margin-left: auto; }
-.music #you-got-it-right-when h2, .music #if-it-sounds-wrong h2 { font-family: var(--marker); font-size: 1.5rem; }
+/* Notes */
+.music #you-got-it-right-when, .music #if-it-sounds-wrong { border: 2px solid var(--ink); border-radius: var(--wobble); background: #FFF3A6; padding: 1rem 1.2rem .5rem; transform: rotate(-1deg); max-width: 34rem; box-shadow: 4px 5px 0 #1D1C1A22; }
+.music #if-it-sounds-wrong { background: #FFD6DF; transform: rotate(.8deg); margin-left: auto; }
 .music #you-got-it-right-when li, .music #if-it-sounds-wrong li { font-family: var(--hand); font-size: 1.35rem; line-height: 1.25; }
 
-/* Tools and contents */
-.music .tools { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin: 1rem 0 .5rem; }
-.music .tick-count { font-family: var(--hand); font-size: 1.3rem; color: var(--red); }
+.music .tools { display: flex; flex-wrap: wrap; align-items: center; gap: .9rem; margin: 1rem 0 .5rem; }
+.music .tick-count { font-family: var(--hand); font-size: 1.35rem; color: var(--red); }
 .music .recipe-toc ol { font-family: var(--type); font-size: .82rem; gap: .2rem 1rem; }
 .music .recipe-toc a { color: var(--ink); }
 .music .pager { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; margin-top: 3rem; }
 
-/* The tape shelf: one hand-labelled cassette per recipe */
-.shelf { list-style: none; padding: 0; margin: 1.25rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: 2.2rem 1.6rem; }
-.cassette > a { display: block; text-decoration: none; color: var(--ink); position: relative; aspect-ratio: 1.58; border-radius: 10px; padding: 7% 6% 5%;
-  background: linear-gradient(160deg, #3A3B40, #232428); box-shadow: inset 0 1px 0 #ffffff1f, 0 14px 22px -12px #000a; transition: transform .2s; }
-.cassette:nth-child(3n+1) > a { transform: rotate(-1.4deg); } .cassette:nth-child(3n+2) > a { transform: rotate(1deg); } .cassette:nth-child(3n) > a { transform: rotate(-.4deg); }
-.cassette > a:hover, .cassette > a:focus-visible { transform: translateY(-6px) rotate(0); }
-.c-label { display: block; height: 62%; background: var(--paper); border-radius: 4px; padding: .45rem .7rem; position: relative;
-  background-image: linear-gradient(var(--c) 0 .55rem, transparent .55rem), repeating-linear-gradient(transparent 0 1.25rem, #9DB7D855 1.25rem calc(1.25rem + 1px)); }
-.c-side { position: absolute; right: .6rem; top: .7rem; font-family: var(--type); font-size: .75rem; color: var(--muted); }
-.c-title { display: block; font-family: var(--marker); font-size: 1.35rem; line-height: 1.1; margin-top: .5rem; padding-right: 1.6rem; }
-.c-mood { display: block; font-family: var(--hand); font-size: 1.15rem; line-height: 1.1; color: var(--blue); margin-top: .15rem; }
-.c-window { position: absolute; left: 24%; right: 24%; bottom: 13%; height: 19%; background: #15161A; border-radius: 30px; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; box-shadow: inset 0 2px 4px #000; }
-.reel { width: 1.55rem; height: 1.55rem; border-radius: 50%; background: radial-gradient(circle, #15161A 0 22%, transparent 23%), conic-gradient(#EDE6D6 0 12%, #9A9488 12% 21%, #EDE6D6 21% 45%, #9A9488 45% 54%, #EDE6D6 54% 78%, #9A9488 78% 87%, #EDE6D6 87%); }
-.c-tape { flex: 1; height: 50%; margin: 0 4%; background: linear-gradient(#5A3A22, #3A2414); border-radius: 2px; }
-.cassette > a:hover .reel { animation: reel 1.2s linear infinite; }
-@keyframes reel { to { transform: rotate(360deg); } }
-.c-foot { position: absolute; left: 0; right: 0; bottom: 2.5%; text-align: center; font-family: var(--type); font-size: .62rem; color: #B9B4A8; letter-spacing: .08em; text-transform: uppercase; }
-.c-note { font-family: var(--hand); font-size: 1.25rem; line-height: 1.2; color: var(--ink); margin: .9rem .3rem 0; }
-.c-0 { --c: #C8321E; } .c-1 { --c: #1F4FA8; } .c-2 { --c: #D9A21B; } .c-3 { --c: #2F7D5B; } .c-4 { --c: #5B3FA0; } .c-5 { --c: #C0571B; }
-@media (prefers-reduced-motion: reduce) { .cassette > a { transition: none; } .cassette > a:hover .reel { animation: none; } }
+/* The tape shelf: sketched cassettes with handwritten labels */
+.shelf { list-style: none; padding: 0; margin: 1.25rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr)); gap: 2rem 1.6rem; }
+.cassette > a { display: block; position: relative; text-decoration: none; color: var(--ink); transition: transform .2s; }
+.cassette:nth-child(3n+1) > a { transform: rotate(-1.2deg); } .cassette:nth-child(3n+2) > a { transform: rotate(1deg); } .cassette:nth-child(3n) > a { transform: rotate(-.4deg); }
+.cassette > a:hover, .cassette > a:focus-visible { transform: translateY(-5px) rotate(0); }
+.c-sk { width: 100%; height: auto; display: block; }
+.c-side { position: absolute; right: 12%; top: 13%; font-family: var(--type); font-size: .75rem; color: var(--muted); }
+.c-title { position: absolute; left: 11%; right: 14%; top: 13%; font-family: var(--marker); font-size: clamp(1.05rem, .9rem + .5vw, 1.3rem); line-height: 1.1; }
+.c-mood { position: absolute; left: 11%; right: 9%; top: 34%; font-family: var(--hand); font-size: 1.1rem; line-height: 1.05; color: var(--c); }
+.c-foot { position: absolute; left: 11%; right: 10%; top: 49%; text-align: left; font-family: var(--type); font-size: .62rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+.c-note { font-family: var(--hand); font-size: 1.25rem; line-height: 1.2; margin: .6rem .3rem 0; }
+.c-0 { --c: #D33A22; } .c-1 { --c: #2456B5; } .c-2 { --c: #B07A00; } .c-3 { --c: #2F7D5B; } .c-4 { --c: #6A49B5; } .c-5 { --c: #C0571B; }
+@media (prefers-reduced-motion: reduce) { .cassette > a, .music .button { transition: none; } }
 @media (max-width: 40rem) {
-  .chain { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
-  .chain li + li::before { content: "↓"; left: 1rem; top: -1.6rem; transform: none; }
+  .rig-sketch, .panel-sketch { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .rig-sketch svg { min-width: 36rem; }
+  .panel-sketch svg { min-width: 30rem; }
 }

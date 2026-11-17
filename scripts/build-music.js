@@ -34,13 +34,102 @@ function knobFraction(v) {
   return f >= 0 && f <= 1 ? f : null;
 }
 
-// A knob as a printed patch-sheet template (ring + scale ticks), with the setting drawn on it by hand.
+const { pen } = require('./sketch');
+
+// A knob, sketched: a wobbly ring with scale ticks, and the setting drawn in heavy pencil with a red dot.
 function knobSvg(f, label) {
-  const P = (deg, r) => [(24 + r * Math.sin(deg * Math.PI / 180)).toFixed(1), (24 - r * Math.cos(deg * Math.PI / 180)).toFixed(1)];
-  const ticks = Array.from({ length: 11 }, (_, k) => { const d = -150 + 30 * k; const [a, b] = P(d, 19), [c, e] = P(d, k % 5 === 0 ? 23 : 21.5); return `M${a},${b}L${c},${e}`; }).join('');
+  const p = pen(`knob:${label}`);
+  const P = (deg, r) => [24 + r * Math.sin(deg * Math.PI / 180), 24 - r * Math.cos(deg * Math.PI / 180)];
+  const ticks = Array.from({ length: 11 }, (_, k) => { const d = -150 + 30 * k; const [a, b] = P(d, 19), [c, e] = P(d, k % 5 === 0 ? 23 : 21.5); return p.line(a, b, c, e, false); }).join(' ');
   const d = -150 + 300 * f;
-  const [x1, y1] = P(d, 2), [x2, y2] = P(d, 15);
-  return `<svg class="knob" viewBox="0 0 48 48" role="img" aria-label="${L.esc(label)}"><path class="k-ticks" d="${ticks}"/><circle class="k-ring" cx="24" cy="24" r="15"/><g class="k-hand"><line class="k-ptr" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/><circle class="k-dot" cx="${x2}" cy="${y2}" r="2.2"/></g></svg>`;
+  const [x1, y1] = P(d, 2), [x2, y2] = P(d, 14);
+  return `<svg class="knob" viewBox="0 0 48 48" role="img" aria-label="${L.esc(label)}"><path class="sk thin" d="${ticks}"/><path class="sk" d="${p.ellipse(24, 24, 15, 15)}"/><path class="sk ptr" d="${p.line(x1, y1, x2, y2)}"/><circle class="k-dot" cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="2.3"/></svg>`;
+}
+
+// A device's panel, sketched, with this recipe's knobs and switches drawn where they're set.
+const shortName = s => s.replace(/\s*\(.*?\)\s*/g, ' ').replace(/^(Ch|Channel) \d+ /, '').replace(/^Oscillator /, 'OSC ').replace(/^Filter /, 'VCF ').replace(/ \(all\)$/, '').replace(/^LFO SPEED\/PHASE$/, 'LFO SPEED').trim();
+function deviceSketch(dev, title, block) {
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split('::').map(s => s.trim()));
+  const items = rows.map(([c, v, x]) => {
+    const step = (v || '').match(/^step (\d+)\/(\d+)$/);
+    if (step) return { c: shortName(c), kind: 'knob', f: (step[1] - 1) / (step[2] - 1), v: x || `step ${step[1]}` };
+    const fr = knobFraction(v || '');
+    if (fr !== null) return { c: shortName(c), kind: 'knob', f: fr, v };
+    const ch = (v || '').match(/^\[(.+)\]$/);
+    if (ch) { const on = ch[1].split('|').find(o => /^\*.*\*$/.test(o.trim())); if (on) return { c: shortName(c), kind: 'switch', v: on.trim().slice(1, -1) }; }
+    return null;
+  }).filter(Boolean);
+  if (items.length < 2) return '';
+  const p = pen(`dev:${title}`);
+  const pedal = dev === 'dev-gc' || dev === 'dev-ns';
+  const cols = Math.min(pedal ? 4 : 5, items.length), cw = 118, chh = 104;
+  const W = cols * cw + 40, top = 54, bodyRows = Math.ceil(items.length / cols), H = top + bodyRows * chh + (pedal ? 92 : 24);
+  const name = { 'dev-gc': 'GRAND CANYON', 'dev-ns': 'NIGHTSKY', 'dev-pf': 'PERfourMER MKII', 'dev-oxi': 'OXI ONE' }[dev] || '';
+  let svg = `<path class="sk heavy" d="${p.rect(6, 8, W - 12, H - 16)}"/>`;
+  svg += `<text class="sk-type" x="22" y="38">${L.esc(name)}</text><path class="sk thin" d="${p.line(20, 46, W - 20, 46, false)}"/>`;
+  if (!pedal) for (const [x, y] of [[16, 18], [W - 16, 18], [16, H - 18], [W - 16, H - 18]]) svg += `<path class="sk thin" d="${p.ellipse(x, y, 3.2, 3.2, false)}"/>`;
+  items.forEach((it, k) => {
+    const cx = 20 + (k % cols) * cw + cw / 2, cy = top + Math.floor(k / cols) * chh + 36;
+    const label = L.esc(it.c.length > 16 ? it.c.slice(0, 15) + '…' : it.c);
+    if (it.kind === 'knob') {
+      const P = (deg, r) => [cx + r * Math.sin(deg * Math.PI / 180), cy - r * Math.cos(deg * Math.PI / 180)];
+      const ticks = Array.from({ length: 11 }, (_, q) => { const d = -150 + 30 * q; const [a, b] = P(d, 23), [c, e] = P(d, q % 5 === 0 ? 28 : 26); return p.line(a, b, c, e, false); }).join(' ');
+      const d = -150 + 300 * it.f, [x1, y1] = P(d, 3), [x2, y2] = P(d, 17);
+      svg += `<path class="sk thin" d="${ticks}"/><path class="sk" d="${p.ellipse(cx, cy, 19, 19)}"/><path class="sk ptr" d="${p.line(x1, y1, x2, y2)}"/><circle class="k-dot" cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="2.6"/>`;
+    } else {
+      const w = Math.max(44, Math.min(cw - 14, it.v.length * 8.5 + 18));
+      svg += `<path class="sk" d="${p.rect(cx - w / 2, cy - 14, w, 28)}"/><text class="sk-hand" x="${cx}" y="${cy + 6}" text-anchor="middle">${L.esc(it.v)}</text><path class="sk red" d="${p.ellipse(cx, cy, w / 2 + 7, 20, false)}"/>`;
+    }
+    svg += `<text class="sk-label" x="${cx}" y="${cy + 50}" text-anchor="middle">${label}</text>`;
+  });
+  if (pedal) {
+    const fy = H - 56;
+    for (const fx of [W * 0.3, W * 0.7]) svg += `<path class="sk" d="${p.ellipse(fx, fy, 17, 17)}"/><path class="sk thin" d="${p.ellipse(fx, fy, 9, 9, false)}"/>`;
+    svg += `<path class="sk red" d="${p.ellipse(W / 2, fy, 4, 4, false)}"/>`;
+  }
+  return `<figure class="panel-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of the ${L.esc(name)} panel with this recipe's settings">${svg}</svg><figcaption>The panel as it should look. Details below.</figcaption></figure>`;
+}
+
+// The whole rig, sketched for the index: four boxes and their cables.
+function rigSketch() {
+  const p = pen('rig');
+  const W = 760, H = 300;
+  let s = '';
+  // OXI One: a pad grid
+  s += `<path class="sk heavy" d="${p.rect(14, 70, 170, 120)}"/><path class="sk thin" d="${p.rect(28, 84, 60, 22)}"/>`;
+  for (let r = 0; r < 4; r++) for (let c = 0; c < 8; c++) s += `<path class="sk thin" d="${p.rect(28 + c * 18, 116 + r * 16, 11, 10, false)}"/>`;
+  s += `<text class="sk-hand big" x="99" y="222" text-anchor="middle">OXI One</text><text class="sk-label" x="99" y="242" text-anchor="middle">plays the notes</text>`;
+  // PERfourMER: four channel strips of knobs
+  s += `<path class="sk heavy" d="${p.rect(222, 62, 196, 136)}"/>`;
+  for (let c = 0; c < 4; c++) { s += `<path class="sk thin" d="${p.line(222 + 49 * (c + 1), 70, 222 + 49 * (c + 1), 190, false)}"/>`; for (let r = 0; r < 4; r++) s += `<path class="sk" d="${p.ellipse(246 + c * 49, 86 + r * 30, 8, 8, r % 2 === 0)}"/>`; }
+  s += `<text class="sk-hand big" x="320" y="230" text-anchor="middle">PERfourMER</text><text class="sk-label" x="320" y="250" text-anchor="middle">four analog voices</text>`;
+  // Two pedals
+  const pedalAt = (x, name, sub, n) => {
+    let o = `<path class="sk heavy" d="${p.rect(x, 52, 118, 158)}"/>`;
+    for (let k = 0; k < n; k++) o += `<path class="sk" d="${p.ellipse(x + 26 + (k % 3) * 33, 80 + Math.floor(k / 3) * 34, 10, 10)}"/>`;
+    o += `<path class="sk" d="${p.ellipse(x + 34, 182, 13, 13)}"/><path class="sk" d="${p.ellipse(x + 84, 182, 13, 13)}"/>`;
+    return o + `<text class="sk-hand big" x="${x + 59}" y="240" text-anchor="middle">${name}</text><text class="sk-label" x="${x + 59}" y="260" text-anchor="middle">${sub}</text>`;
+  };
+  s += pedalAt(462, 'Grand Canyon', 'delay', 6) + pedalAt(624, 'NightSky', 'reverb', 9);
+  // Cables
+  s += `<path class="sk red" d="${p.cable(184, 100, 222, 100, 22)}"/><text class="sk-label" x="203" y="60" text-anchor="middle">MIDI</text>`;
+  s += `<path class="sk" d="${p.cable(418, 120, 462, 120, 26)}"/><text class="sk-label" x="440" y="60" text-anchor="middle">audio</text>`;
+  s += `<path class="sk" d="${p.cable(580, 110, 624, 110, 20)}"/><path class="sk" d="${p.cable(580, 122, 624, 122, 26)}"/>`;
+  s += `<path class="sk" d="${p.line(742, 160, 756, 160)}"/><text class="sk-label" x="742" y="36" text-anchor="end">to your mixer</text><path class="sk thin" d="${p.line(736, 42, 748, 156, false)}"/>`;
+  s += `<path class="sk" d="${p.cable(404, 198, 440, 290, -30)}"/><text class="sk-label" x="448" y="292">dry bass, straight to the mixer</text>`;
+  return `<figure class="rig-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of the rig: the OXI One sends MIDI to the PERfourMER, whose audio goes through the Grand Canyon and the NightSky; the bass leaves the PERfourMER dry">${s}</svg></figure>`;
+}
+
+// A cassette, sketched, for the index shelf.
+function cassetteSketch(seed) {
+  const p = pen(`tape:${seed}`);
+  let s = `<path class="sk heavy" d="${p.rect(6, 6, 308, 196)}"/><path class="sk" d="${p.rect(26, 22, 268, 104)}"/>`;
+  s += `<path class="sk thin" d="${p.line(36, 70, 284, 70, false)} ${p.line(36, 92, 284, 92, false)} ${p.line(36, 114, 284, 114, false)}"/>`;
+  s += `<path class="sk" d="${p.rect(80, 138, 160, 40)}"/>`;
+  for (const x of [114, 206]) { s += `<path class="sk" d="${p.ellipse(x, 158, 14, 14)}"/><path class="sk thin" d="${p.ellipse(x, 158, 5, 5, false)}"/>`; }
+  s += `<path class="sk thin" d="${p.hatch(132, 148, 56, 20, 5)}"/>`;
+  s += `<path class="sk thin" d="${p.line(60, 202, 90, 186, false)} ${p.line(260, 202, 230, 186, false)} ${p.line(90, 186, 230, 186, false)}"/>`;
+  return `<svg class="c-sk" viewBox="0 0 320 210" aria-hidden="true">${s}</svg>`;
 }
 
 function valueHtml(control, v, extra) {
@@ -77,9 +166,10 @@ function settings(block) {
 function section(title, text) {
   const ctx = { file: 'music', cards: new Map(), links: new Set() };
   const parts = text.split(/```settings\n([\s\S]*?)```/);
+  const dev0 = /perfourmer/i.test(title) ? 'dev-pf' : /grand canyon/i.test(title) ? 'dev-gc' : /nightsky/i.test(title) ? 'dev-ns' : '';
   let html = '';
   parts.forEach((part, i) => {
-    if (i % 2) html += settings(part);
+    if (i % 2) html += (dev0 && /^\d+\./.test(title) ? deviceSketch(dev0, title, part) : '') + settings(part);
     else if (part.trim()) html += L.renderBlocks(L.parseBody(`## x\n\n${part.trim()}\n`, ctx)[0].blocks, ctx);
   });
   const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -141,7 +231,7 @@ ${html}
 function renderIndex(all) {
   const intro = fs.existsSync(path.join(SRC, '_index.md')) ? L.parseFrontmatter(fs.readFileSync(path.join(SRC, '_index.md'), 'utf8'), '_index.md') : { meta: {}, body: '' };
   const html = sections(intro.body).map(s => section(s.title, s.text)).join('\n');
-  const cards = all.map((r, i) => `<li class="cassette c-${i % 6}"><a href="${r.slug}.html"><span class="c-label"><span class="c-side">A${i + 1}</span><span class="c-title">${L.esc(r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span></span><span class="c-window" aria-hidden="true"><span class="reel"></span><span class="c-tape"></span><span class="reel"></span></span><span class="c-foot" aria-hidden="true">${L.esc(r.meta.level || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n');
+  const cards = all.map((r, i) => `<li class="cassette c-${i % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">A${i + 1}</span><span class="c-title">${L.esc(r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.level || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n');
   return L.page({
     title: 'Music: sound recipes for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski',
     description: intro.meta.summary || 'Sound recipes with exact settings.',
@@ -152,7 +242,7 @@ function renderIndex(all) {
       <p class="eyebrow">Music, my hobby</p>
       <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>
       <p class="lede">${L.esc(intro.meta.summary || '')}</p>
-      ${chain()}
+      ${rigSketch()}
       <h2>The tape shelf</h2>
       <ul class="shelf">
 ${cards}
