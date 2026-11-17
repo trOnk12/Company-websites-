@@ -48,8 +48,8 @@
 
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" aria-current="page" title="Anyone on the line">0</a></li><li><a href="01-one-key-for-both.html" title="One key for both">1</a></li><li><a href="02-a-secret-agreed-in-public.html" title="A secret agreed in public">2</a></li><li><a href="03-a-fingerprint-for-data.html" title="A fingerprint for data">3</a></li><li><a href="04-proof-of-who-you-are.html" title="Proof of who you are">4</a></li><li><a href="05-tls-the-blocks-together.html" title="TLS, the blocks together">5</a></li></ol></nav>
-      <p class="eyebrow">Encryption, from the ground up · Start here · 1 of 6</p>
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" aria-current="page" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
+      <p class="eyebrow">Encryption, from the ground up · Start here · 1 of 9</p>
       <h1>Anyone on the line</h1>
       <p class="lede">Your app sends a password to a server. Between the two sit a café's Wi-Fi, a phone operator and a dozen machines you don't control. Here's what any of them can do, and the first defence that stops it.</p>
 
@@ -88,7 +88,7 @@
 <p>Call any such machine the listener (or the attacker: same machine). It can do three things, and the later puzzles build the blocks that stop them:</p>
 <ul><li><b>read</b> what passes by: the password, the token, the card number;</li><li><b>change</b> it on the way: a different amount, a different account;</li><li><b>pretend</b> to be the other side: answer as if it were your server.</li></ul>
 <p>The first block stops the reading. <b>Encryption</b> turns data into gibberish that only someone holding the right <b>key</b>, a secret number, can turn back (decrypt). The gibberish is <b>ciphertext</b>. A machine in the middle still sees every byte, but they mean nothing to it.</p>
-<p>Encryption alone doesn't stop the other two. Someone can still change ciphertext (the result is garbage, or quietly different data, and nobody notices unless something checks), and encryption with someone who is pretending to be your server protects nothing. Puzzles 3 and 4 add those checks. First, though: where does the key come from?</p>
+<p>Encryption alone doesn't stop the other two. Someone can still change ciphertext (the result is garbage, or quietly different data, and nobody notices unless something checks), and encryption with someone who is pretending to be your server protects nothing. Puzzles 5 to 7 add those checks. First, though: where does the key come from?</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -131,7 +131,7 @@
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="./">← Overview</a>
-        <a class="button primary" href="01-one-key-for-both.html">Puzzle 1: Symmetric encryption →</a>
+        <a class="button primary" href="01-bits-xor-and-a-toy-cipher.html">Puzzle 1: The smallest cipher →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Anyone%20on%20the%20line&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>

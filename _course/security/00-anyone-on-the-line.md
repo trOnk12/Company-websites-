@@ -24,7 +24,7 @@ Call any such machine the listener (or the attacker: same machine). It can do th
 
 The first block stops the reading. **Encryption** turns data into gibberish that only someone holding the right **key**, a secret number, can turn back (decrypt). The gibberish is **ciphertext**. A machine in the middle still sees every byte, but they mean nothing to it.
 
-Encryption alone doesn't stop the other two. Someone can still change ciphertext (the result is garbage, or quietly different data, and nobody notices unless something checks), and encryption with someone who is pretending to be your server protects nothing. Puzzles 3 and 4 add those checks. First, though: where does the key come from?
+Encryption alone doesn't stop the other two. Someone can still change ciphertext (the result is garbage, or quietly different data, and nobody notices unless something checks), and encryption with someone who is pretending to be your server protects nothing. Puzzles 5 to 7 add those checks. First, though: where does the key come from?
 
 ## The analogy
 

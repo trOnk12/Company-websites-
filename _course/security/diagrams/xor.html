@@ -1,0 +1,15 @@
+<!-- label: XOR the data with the key to encrypt, and again to decrypt -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="xo-t"><title id="xo-t">Data bits 0101 XORed with key bits 0011 give 0110; XORing 0110 with the same key gives back 0101; reusing the key for two messages lets the listener cancel it</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><text class="d-tiny" x="60" y="80">data</text><text class="d-mi" x="200" y="80">0 1 0 1</text><text class="d-tiny" x="60" y="120">key</text><text class="d-mi" x="200" y="120">0 0 1 1</text><line class="d-line" x1="180" y1="135" x2="300" y2="135"/></g>
+<g class="step s2" data-pulse="2"><text class="d-tiny" x="60" y="160">XOR</text><text class="d-a" x="200" y="160">0 1 1 0</text><text class="d-tiny" x="330" y="160">gibberish</text></g>
+<g class="step s3" data-pulse="3"><text class="d-tiny" x="60" y="210">XOR key</text><text class="d-a" x="200" y="210">0 1 0 1</text><text class="d-tiny" x="330" y="210">the data again</text></g>
+<g class="step s4" data-pulse="4"><text class="d-r" x="320" y="280" text-anchor="middle">same key twice: the two ciphertexts</text><text class="d-r" x="320" y="305" text-anchor="middle">XORed together cancel it</text></g>
+<g class="step s1" data-move="1:170,100 2:170,155 3:170,205 4:170,290"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Data is <b>bits</b>; a key is bits too. Line them up.</p></li>
+<li><p><b>XOR</b> them: 1 where the bits differ, 0 where they're equal. The result is gibberish.</p></li>
+<li><p>XOR with the same key again, and the data comes back exactly. That's a cipher. <i>Predict: what if the key is used twice?</i></p></li>
+<li><p>XORing the two ciphertexts cancels the key: a <b>one-time pad</b> must be used once. Real ciphers make a fresh <b>keystream</b> instead.</p></li>
+</ol>

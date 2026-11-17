@@ -1,13 +1,13 @@
 ---
 title: A secret agreed in public
 short: Key exchange
-summary: In puzzle 1, AES needed the same key on both sides, and sending it would hand it to the listener. Here's how two sides agree on a secret while every word they say is overheard.
+summary: In puzzle 2, AES needed the same key on both sides, and sending it would hand it to the listener. Here's how two sides agree on a secret while every word they say is overheard.
 takeaway: In a key exchange, each side keeps a private value and sends a public value made from it. Each combines its own private value with the other's public value, and both get the same shared secret. The listener sees only the public values and can't compute it. But it doesn't tell you who you agreed with.
 ---
 
 ## The problem
 
-In puzzle 1, your app and your server needed the same AES key, and sending it would give it to the listener from puzzle 0. Everything they say crosses the café Wi-Fi in plain sight. Is it even possible to agree on a secret when someone hears every word?
+In puzzle 2, your app and your server needed the same AES key, and sending it would give it to the listener from puzzle 0. Everything they say crosses the café Wi-Fi in plain sight. Is it even possible to agree on a secret when someone hears every word?
 
 ## See it
 
@@ -22,11 +22,13 @@ It is, with a **key exchange**. The idea, in the form called Diffie–Hellman, w
 2. From it, each computes a **public value** and sends it openly. Going from private to public is easy; going back, from the public value to the private one, is a problem nobody knows how to solve in any useful time.
 3. Each side combines **its own private value** with **the other side's public value**. The math works out so both get the same number: the **shared secret**.
 
-The listener has both public values, but neither private one, and with only public values there's no known way to compute the shared secret. So both sides now share a secret nobody else has, and the keys for AES from puzzle 1 are derived from it: computed from it in a fixed way both sides follow (puzzle 5). Once the connection ends, both private values are thrown away, so every connection gets fresh ones.
+With small numbers, so you can check it by hand (real ones are hundreds of digits long): both sides agree in public on a modulus p = 23 and a base g = 5. Your app picks private 6 and sends 5⁶ mod 23 = 8. The server picks private 15 and sends 5¹⁵ mod 23 = 19. Your app computes 19⁶ mod 23 = 2; the server computes 8¹⁵ mod 23 = 2. Same secret, 2, and it never travelled. ("mod 23" means the remainder after dividing by 23.)
+
+The listener has both public values, but neither private one, and with only public values there's no known way to compute the shared secret. So both sides now share a secret nobody else has, and the keys for AES from puzzle 2 are derived from it: computed from it in a fixed way both sides follow (puzzle 8). Once the connection ends, both private values are thrown away, so every connection gets fresh ones.
 
 Mixing paint gives the feel of it. Both start from the same yellow, agreed in public. Each mixes a secret color into it and sends the mix. Each then adds its own secret color to the other's mix. Both end with the same brown; the listener, holding only the two mixes, can't un-mix them.
 
-One gap is left: the exchange tells you that you share a secret with whoever answered, not who that is. If the listener answers in your server's place, you've agreed a secret with the listener. Puzzle 4 closes that gap.
+One gap is left: the exchange tells you that you share a secret with whoever answered, not who that is. If the listener answers in your server's place, you've agreed a secret with the listener. The next puzzle shows that attack; puzzle 7 closes the gap.
 
 ## The analogy
 

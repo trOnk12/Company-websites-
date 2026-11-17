@@ -1,0 +1,17 @@
+<!-- label: The tag is computed from data and key; a changed message can't get a matching tag -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ma-t"><title id="ma-t">The sender computes a tag from the data and the shared key and attaches it; the receiver recomputes it with the same key and compares; an attacker changes the data but cannot compute a matching tag without the key, so the receiver rejects it</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="20" y="100" w="70" h="120" label="sender"/>
+<x-server class="step s1" x="540" y="90" w="80" h="120" label="receiver"/>
+<g class="step s1" data-pulse="1"><x-letter x="120" y="90" w="110" h="30" label="pay 20 €"/><x-key x="140" y="140"/><rect class="d-hl" x="240" y="90" width="70" height="30" rx="6"/><text class="d-tiny" x="275" y="110" text-anchor="middle">tag</text></g>
+<g class="step s2" data-pulse="2"><x-key x="460" y="140"/></g><g class="step only-2"><text class="d-a" x="470" y="250" text-anchor="middle">recompute, compare: equal</text></g>
+<g class="step s3" data-pulse="3"><x-person x="320" y="250" label="attacker"/><text class="d-r" x="320" y="210" text-anchor="middle">pay 900 €, no key</text></g>
+<g class="step s4" data-pulse="4"><path class="d-red" d="M450,280 L490,320 M490,280 L450,320"/><text class="d-r" x="520" y="340" text-anchor="middle">tag doesn't match: rejected</text></g>
+<g class="step s1" data-move="1:275,140 2:470,200 3:320,180 4:470,300"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>The sender computes a <b>MAC</b> from the message and the shared key, and attaches it as a <b>tag</b>.</p></li>
+<li><p>The receiver has the same key: it recomputes the MAC and compares. Equal: unchanged.</p></li>
+<li><p>An attacker changes the amount, but has no key. <i>Predict: can it make a matching tag?</i></p></li>
+<li><p>No: the receiver's tag won't match, and the message is rejected. <b>HMAC</b> is the usual recipe.</p></li>
+</ol>

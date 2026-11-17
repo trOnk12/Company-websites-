@@ -10,11 +10,14 @@
       "blurb": "Six blocks, each stopping one attack, that together make TLS.",
       "puzzles": [
         "00-anyone-on-the-line.md",
-        "01-one-key-for-both.md",
-        "02-a-secret-agreed-in-public.md",
-        "03-a-fingerprint-for-data.md",
-        "04-proof-of-who-you-are.md",
-        "05-tls-the-blocks-together.md"
+        "01-bits-xor-and-a-toy-cipher.md",
+        "02-one-key-for-both.md",
+        "03-a-secret-agreed-in-public.md",
+        "04-the-man-in-the-middle.md",
+        "05-a-fingerprint-for-data.md",
+        "06-a-hash-with-a-secret.md",
+        "07-proof-of-who-you-are.md",
+        "08-tls-the-blocks-together.md"
       ]
     }
   ],

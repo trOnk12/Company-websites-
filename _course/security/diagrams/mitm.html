@@ -1,0 +1,18 @@
+<!-- label: The attacker runs one exchange with each side and relays everything -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mi-t"><title id="mi-t">The app sends its public value, the attacker keeps it and sends its own to the server; the server's public value is swapped the same way; the app shares secret one with the attacker and the server shares secret two with the attacker; the attacker decrypts, reads and re-encrypts every message</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="20" y="100" w="70" h="120" label="app"/>
+<x-person class="step s1" x="320" y="160" label="attacker"/>
+<x-server class="step s1" x="540" y="90" w="80" h="120" label="server"/>
+<g class="step s1" data-pulse="1"><x-letter x="110" y="80" w="80" h="28" label="app's"/><x-letter x="420" y="80" w="80" h="28" label="attacker's"/></g>
+<g class="step s2" data-pulse="2"><x-letter x="420" y="230" w="80" h="28" label="server's"/><x-letter x="110" y="230" w="80" h="28" label="attacker's"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="110" y="280" width="140" height="30" rx="6"/><text class="d-tiny" x="180" y="300" text-anchor="middle">secret 1</text><rect class="d-hl" x="390" y="280" width="140" height="30" rx="6"/><text class="d-tiny" x="460" y="300" text-anchor="middle">secret 2</text></g>
+<g class="step s4" data-pulse="4"><text class="d-r" x="320" y="70" text-anchor="middle">decrypt, read, re-encrypt</text></g>
+<g class="step s1" data-move="1:250,94 2:250,244 3:320,295 4:320,120"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Your app sends its public value. The attacker keeps it and sends the server its own, pretending to be you.</p></li>
+<li><p>The server's public value is swapped the same way, on the way back.</p></li>
+<li><p>Your app shares one secret with the attacker; the server shares another with the attacker. <i>Predict: what can it do now?</i></p></li>
+<li><p>Decrypt, read or change, re-encrypt, pass on: a <b>man-in-the-middle attack</b>. Only proof of who sent each public value stops it.</p></li>
+</ol>

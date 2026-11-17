@@ -456,27 +456,42 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/security/01-one-key-for-both</loc>
+    <loc>https://pachulski.dev/course/security/01-bits-xor-and-a-toy-cipher</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/security/02-a-secret-agreed-in-public</loc>
+    <loc>https://pachulski.dev/course/security/02-one-key-for-both</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/security/03-a-fingerprint-for-data</loc>
+    <loc>https://pachulski.dev/course/security/03-a-secret-agreed-in-public</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/security/04-proof-of-who-you-are</loc>
+    <loc>https://pachulski.dev/course/security/04-the-man-in-the-middle</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/security/05-tls-the-blocks-together</loc>
+    <loc>https://pachulski.dev/course/security/05-a-fingerprint-for-data</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/security/06-a-hash-with-a-secret</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/security/07-proof-of-who-you-are</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/security/08-tls-the-blocks-together</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

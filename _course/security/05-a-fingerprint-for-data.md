@@ -28,7 +28,7 @@ So if you know the digest the data should have, you can check it: hash what arri
 
 There's a catch. If the attacker can change the data, it can also change a digest sent next to it: it hashes its own version and sends that digest instead. A digest helps only if the attacker can't make a matching one.
 
-Two ways close that gap. If both sides already share a secret key, they can use a **keyed check**: a short value computed from the data and the key together, the way a hash is computed from data alone. Without the key, nobody can make a check that matches changed data. That's what protects your data once a connection is set up (puzzle 5). Before there's a shared key, the next block makes a mark that only the real sender can produce.
+Two ways close that gap. If both sides already share a secret key, they can mix it into the fingerprint, so only they can make one: that's the next puzzle. Before there's a shared key, puzzle 7 makes a mark that only the real sender can produce.
 
 ## The analogy
 

@@ -50,7 +50,7 @@
     <article class="module-check course-top wrap narrow" data-course="security">
       <p class="eyebrow"><a href="./">Encryption, from the ground up</a> · check</p>
       <h1>Know The blocks of HTTPS already?</h1>
-      <p class="lede">One question for each of the 6 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 9 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: Anyone on the line</p>
 <fieldset class="quiz" data-n="0">
 <legend>Your app sends a password, encrypted, over the café Wi-Fi. A machine in the middle copies every byte. What does it learn?</legend>
@@ -61,55 +61,85 @@
 <p class="fb ok opt-2"><b>Right.</b> Ciphertext without the key means nothing.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The Wi-Fi's own password doesn't matter here: what matters is your data is encrypted. <a class="show-me" href="00-anyone-on-the-line.html">Learn it in puzzle 0 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: One key for both</p>
+<section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: Bits, XOR and a toy cipher</p>
 <fieldset class="quiz" data-n="1">
-<legend>Your app encrypts a 1 MB photo with AES. Roughly how does AES handle it?</legend>
-<input type="radio" name="q-01-one-key-for-both-1" id="q-01-one-key-for-both-1-1" data-ok><label for="q-01-one-key-for-both-1-1">In 128-bit blocks, all with the same key</label>
-<input type="radio" name="q-01-one-key-for-both-1" id="q-01-one-key-for-both-1-2"><label for="q-01-one-key-for-both-1-2">In 128-bit blocks, each with its own new key</label>
-<input type="radio" name="q-01-one-key-for-both-1" id="q-01-one-key-for-both-1-3"><label for="q-01-one-key-for-both-1-3">In one go, because the key is as long as the photo</label>
-<p class="fb ok opt-1"><b>Right.</b> Fixed-size blocks, one key.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Every block uses the same key; a new key per block would need its own way to share. <a class="show-me" href="01-one-key-for-both.html">Learn it in puzzle 1 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> The key is 128 to 256 bits; AES works through the data in 128-bit blocks. <a class="show-me" href="01-one-key-for-both.html">Learn it in puzzle 1 →</a></p>
+<legend>Data 1100, key 1010. What is data XOR key?</legend>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-1"><label for="q-01-bits-xor-and-a-toy-cipher-1-1">1000: 1 only in places where both bits are 1</label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-2"><label for="q-01-bits-xor-and-a-toy-cipher-1-2">1110: 1 wherever at least one of the two bits is 1</label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-3" data-ok><label for="q-01-bits-xor-and-a-toy-cipher-1-3">0110: 1 where the bits differ, 0 where they're equal</label>
+<p class="fb no opt-1"><b>Not quite.</b> That's AND; XOR gives 1 where the bits differ. <a class="show-me" href="01-bits-xor-and-a-toy-cipher.html">Learn it in puzzle 1 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> That's OR; XOR gives 0 when both bits are 1. <a class="show-me" href="01-bits-xor-and-a-toy-cipher.html">Learn it in puzzle 1 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> Different gives 1, equal gives 0.</p>
 </fieldset></section>
-<section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: A secret agreed in public</p>
+<section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: One key for both</p>
 <fieldset class="quiz" data-n="2">
-<legend>The listener records both public values from a key exchange. What can it do with them?</legend>
-<input type="radio" name="q-02-a-secret-agreed-in-public-1" id="q-02-a-secret-agreed-in-public-1-1" data-ok><label for="q-02-a-secret-agreed-in-public-1-1">Nothing useful: without a private value, it can't compute the shared secret</label>
-<input type="radio" name="q-02-a-secret-agreed-in-public-1" id="q-02-a-secret-agreed-in-public-1-2"><label for="q-02-a-secret-agreed-in-public-1-2">Work back from a public value to its private value with enough patience</label>
-<input type="radio" name="q-02-a-secret-agreed-in-public-1" id="q-02-a-secret-agreed-in-public-1-3"><label for="q-02-a-secret-agreed-in-public-1-3">Combine the two public values to get the shared secret</label>
-<p class="fb ok opt-1"><b>Right.</b> Public values alone don't give the secret.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Going back is a problem nobody knows how to solve in any useful time. <a class="show-me" href="02-a-secret-agreed-in-public.html">Learn it in puzzle 2 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Getting the secret needs one private value; public values alone don't give it. <a class="show-me" href="02-a-secret-agreed-in-public.html">Learn it in puzzle 2 →</a></p>
+<legend>Your app encrypts a 1 MB photo with AES. Roughly how does AES handle it?</legend>
+<input type="radio" name="q-02-one-key-for-both-1" id="q-02-one-key-for-both-1-1" data-ok><label for="q-02-one-key-for-both-1-1">Block by block, 128 bits at a time, all with the same key</label>
+<input type="radio" name="q-02-one-key-for-both-1" id="q-02-one-key-for-both-1-2"><label for="q-02-one-key-for-both-1-2">In 128-bit blocks, each with its own new key</label>
+<input type="radio" name="q-02-one-key-for-both-1" id="q-02-one-key-for-both-1-3"><label for="q-02-one-key-for-both-1-3">In one go, because the key is as long as the photo</label>
+<p class="fb ok opt-1"><b>Right.</b> Fixed-size blocks, one key.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Every block uses the same key; a new key per block would need its own way to share. <a class="show-me" href="02-one-key-for-both.html">Learn it in puzzle 2 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> The key is 128 to 256 bits; AES works through the data in 128-bit blocks. <a class="show-me" href="02-one-key-for-both.html">Learn it in puzzle 2 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: A fingerprint for data</p>
+<section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: A secret agreed in public</p>
 <fieldset class="quiz" data-n="3">
-<legend>One bit of a 10 MB file is flipped on the way. What happens to its <code>SHA-256</code> digest?</legend>
-<input type="radio" name="q-03-a-fingerprint-for-data-1" id="q-03-a-fingerprint-for-data-1-1"><label for="q-03-a-fingerprint-for-data-1-1">It changes by one bit, matching the one bit that changed</label>
-<input type="radio" name="q-03-a-fingerprint-for-data-1" id="q-03-a-fingerprint-for-data-1-2" data-ok><label for="q-03-a-fingerprint-for-data-1-2">It changes completely, so a comparison shows the file was changed</label>
-<input type="radio" name="q-03-a-fingerprint-for-data-1" id="q-03-a-fingerprint-for-data-1-3"><label for="q-03-a-fingerprint-for-data-1-3">It stays the same, because one bit is too small to matter</label>
-<p class="fb no opt-1"><b>Not quite.</b> A hash doesn't map bits to bits: one flipped bit changes the whole digest. <a class="show-me" href="03-a-fingerprint-for-data.html">Learn it in puzzle 3 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> One bit changed, a different digest.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Any change, even one bit, gives a different digest. <a class="show-me" href="03-a-fingerprint-for-data.html">Learn it in puzzle 3 →</a></p>
+<legend>The listener records both public values from a key exchange. What can it do with them?</legend>
+<input type="radio" name="q-03-a-secret-agreed-in-public-1" id="q-03-a-secret-agreed-in-public-1-1" data-ok><label for="q-03-a-secret-agreed-in-public-1-1">Nothing useful: without a private value, it can't compute the shared secret</label>
+<input type="radio" name="q-03-a-secret-agreed-in-public-1" id="q-03-a-secret-agreed-in-public-1-2"><label for="q-03-a-secret-agreed-in-public-1-2">Work back from a public value to its private value with enough patience</label>
+<input type="radio" name="q-03-a-secret-agreed-in-public-1" id="q-03-a-secret-agreed-in-public-1-3"><label for="q-03-a-secret-agreed-in-public-1-3">Combine the two public values to get the shared secret</label>
+<p class="fb ok opt-1"><b>Right.</b> Public values alone don't give the secret.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Going back is a problem nobody knows how to solve in any useful time. <a class="show-me" href="03-a-secret-agreed-in-public.html">Learn it in puzzle 3 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Getting the secret needs one private value; public values alone don't give it. <a class="show-me" href="03-a-secret-agreed-in-public.html">Learn it in puzzle 3 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: Proof of who you are</p>
+<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: The man in the middle</p>
 <fieldset class="quiz" data-n="4">
-<legend>A listener makes its own certificate with your server's name and its own public key. What does your app see?</legend>
-<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-1"><label for="q-04-proof-of-who-you-are-1-1">A valid certificate, because the name on it is right</label>
-<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-2" data-ok><label for="q-04-proof-of-who-you-are-1-2">No trusted authority signed it, so the check fails</label>
-<input type="radio" name="q-04-proof-of-who-you-are-1" id="q-04-proof-of-who-you-are-1-3"><label for="q-04-proof-of-who-you-are-1-3">A valid certificate, once the listener signs it itself</label>
-<p class="fb no opt-1"><b>Not quite.</b> The name isn't enough: the certificate must carry a trusted authority's signature. <a class="show-me" href="04-proof-of-who-you-are.html">Learn it in puzzle 4 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Only an authority's signature makes a certificate trusted.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Only a signature from an authority your phone trusts counts, and authorities check who controls the name. <a class="show-me" href="04-proof-of-who-you-are.html">Learn it in puzzle 4 →</a></p>
+<legend>In a man-in-the-middle attack, who does your app share its secret with?</legend>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-1"><label for="q-04-the-man-in-the-middle-1-1">The server, because the key exchange guarantees it</label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-2" data-ok><label for="q-04-the-man-in-the-middle-1-2">The attacker, who answered in the server's place</label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-3"><label for="q-04-the-man-in-the-middle-1-3">Nobody, since the attacker blocks the exchange</label>
+<p class="fb no opt-1"><b>Not quite.</b> The exchange only guarantees a secret with whoever answered. <a class="show-me" href="04-the-man-in-the-middle.html">Learn it in puzzle 4 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> With whoever answered.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The exchange succeeds; it just succeeds with the attacker. <a class="show-me" href="04-the-man-in-the-middle.html">Learn it in puzzle 4 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: TLS, the blocks together</p>
+<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: A fingerprint for data</p>
 <fieldset class="quiz" data-n="5">
+<legend>One bit of a 10 MB file is flipped on the way. What happens to its <code>SHA-256</code> digest?</legend>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-1"><label for="q-05-a-fingerprint-for-data-1-1">It changes by one bit, matching the one bit that changed</label>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-2" data-ok><label for="q-05-a-fingerprint-for-data-1-2">It changes completely, so a comparison shows the file was changed</label>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-3"><label for="q-05-a-fingerprint-for-data-1-3">It stays the same, because one bit is too small to matter</label>
+<p class="fb no opt-1"><b>Not quite.</b> A hash doesn't map bits to bits: one flipped bit changes the whole digest. <a class="show-me" href="05-a-fingerprint-for-data.html">Learn it in puzzle 5 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> One bit changed, a different digest.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Any change, even one bit, gives a different digest. <a class="show-me" href="05-a-fingerprint-for-data.html">Learn it in puzzle 5 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: A hash with a secret</p>
+<fieldset class="quiz" data-n="6">
+<legend>The attacker changes a message and computes a fresh SHA-256 digest of it. With a MAC in use, what happens?</legend>
+<input type="radio" name="q-06-a-hash-with-a-secret-1" id="q-06-a-hash-with-a-secret-1-1" data-ok><label for="q-06-a-hash-with-a-secret-1-1">The receiver rejects it: the tag needs the key, which the attacker lacks</label>
+<input type="radio" name="q-06-a-hash-with-a-secret-1" id="q-06-a-hash-with-a-secret-1-2"><label for="q-06-a-hash-with-a-secret-1-2">It passes only if the change is small</label>
+<input type="radio" name="q-06-a-hash-with-a-secret-1" id="q-06-a-hash-with-a-secret-1-3"><label for="q-06-a-hash-with-a-secret-1-3">It passes, because the digest matches the changed message</label>
+<p class="fb ok opt-1"><b>Right.</b> No key, no valid tag.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Any change needs a new tag, and that needs the key. <a class="show-me" href="06-a-hash-with-a-secret.html">Learn it in puzzle 6 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> A plain digest isn't the check here; the tag needs the secret key. <a class="show-me" href="06-a-hash-with-a-secret.html">Learn it in puzzle 6 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Proof of who you are</p>
+<fieldset class="quiz" data-n="7">
+<legend>A listener makes its own certificate with your server's name and its own public key. What does your app see?</legend>
+<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-1"><label for="q-07-proof-of-who-you-are-1-1">A valid certificate, because the name on it is right</label>
+<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-2" data-ok><label for="q-07-proof-of-who-you-are-1-2">No trusted authority signed it, so the check fails</label>
+<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-3"><label for="q-07-proof-of-who-you-are-1-3">A valid certificate, once the listener signs it itself</label>
+<p class="fb no opt-1"><b>Not quite.</b> The name isn't enough: the certificate must carry a trusted authority's signature. <a class="show-me" href="07-proof-of-who-you-are.html">Learn it in puzzle 7 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Only an authority's signature makes a certificate trusted.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Only a signature from an authority your phone trusts counts, and authorities check who controls the name. <a class="show-me" href="07-proof-of-who-you-are.html">Learn it in puzzle 7 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: TLS, the blocks together</p>
+<fieldset class="quiz" data-n="8">
 <legend>Your app connects to your server over HTTPS on the café Wi-Fi. A machine in the middle replaces one byte of the response. What happens?</legend>
-<input type="radio" name="q-05-tls-the-blocks-together-1" id="q-05-tls-the-blocks-together-1-1" data-ok><label for="q-05-tls-the-blocks-together-1-1">The keyed check on that record fails, so your app rejects it</label>
-<input type="radio" name="q-05-tls-the-blocks-together-1" id="q-05-tls-the-blocks-together-1-2"><label for="q-05-tls-the-blocks-together-1-2">Nothing, because the change is encrypted too</label>
-<input type="radio" name="q-05-tls-the-blocks-together-1" id="q-05-tls-the-blocks-together-1-3"><label for="q-05-tls-the-blocks-together-1-3">Your app uses the slightly changed response without noticing</label>
+<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-1" data-ok><label for="q-08-tls-the-blocks-together-1-1">The MAC on that record fails, so your app rejects it</label>
+<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-2"><label for="q-08-tls-the-blocks-together-1-2">Nothing, because the change is encrypted too</label>
+<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-3"><label for="q-08-tls-the-blocks-together-1-3">Your app uses the slightly changed response without noticing</label>
 <p class="fb ok opt-1"><b>Right.</b> Every record is checked as well as encrypted.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Encryption alone wouldn't notice; the per-record check is what catches it. <a class="show-me" href="05-tls-the-blocks-together.html">Learn it in puzzle 5 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Every record carries a keyed check; a changed byte makes it fail, and the listener can't recompute it. <a class="show-me" href="05-tls-the-blocks-together.html">Learn it in puzzle 5 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> Encryption alone wouldn't notice; the per-record check is what catches it. <a class="show-me" href="08-tls-the-blocks-together.html">Learn it in puzzle 8 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Every record carries a keyed check; a changed byte makes it fail, and the listener can't recompute it. <a class="show-me" href="08-tls-the-blocks-together.html">Learn it in puzzle 8 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

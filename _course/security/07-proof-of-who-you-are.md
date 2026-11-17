@@ -1,13 +1,13 @@
 ---
 title: Proof of who you are
 short: Signatures and certificates
-summary: In puzzle 2, the key exchange worked with whoever answered, and in puzzle 3 an attacker could swap a digest. Both gaps close the same way: a mark on the data that only the real server can make.
-takeaway: A key pair is a private key the owner keeps and a public key anyone may have. Signing locks a digest with the private key; anyone can check it with the public key, and nobody can fake it without the private key. A certificate is a server's name and public key, signed by a certificate authority your phone already trusts.
+summary: In puzzle 3, the key exchange worked with whoever answered, and in puzzle 5 an attacker could swap a digest. Both gaps close the same way: a mark on the data that only the real server can make.
+takeaway: A key pair is a private key the owner keeps and a public key anyone may have. Signing computes a signature from a digest and the private key; anyone can check it with the public key, and nobody can fake it without the private key. A certificate is a server's name and public key, signed by a certificate authority your phone already trusts.
 ---
 
 ## The problem
 
-Two gaps are open. In puzzle 2, your app agreed on a secret with whoever answered, which might be the listener pretending to be your server. In puzzle 3, a digest only helped if the attacker couldn't swap it. Both come down to one question: how does your app know that something really comes from your server?
+Two gaps are open. In puzzle 3, your app agreed on a secret with whoever answered, which might be the listener pretending to be your server. In puzzle 5, a digest only helped if the attacker couldn't swap it. Both come down to one question: how does your app know that something really comes from your server?
 
 ## See it
 
@@ -16,17 +16,17 @@ Two gaps are open. In puzzle 2, your app agreed on a secret with whoever answere
 
 ## The building block
 
-This needs a different kind of key from puzzle 1. There, one key did both jobs. Here the server has a **key pair**: two keys made together, a **private key** it never shows anyone and a **public key** anyone may have. What one does, only its partner can check. That's why this kind is also called asymmetric.
+This needs a different kind of key from puzzle 2. There, one key did both jobs. Here the server has a **key pair**: two keys made together, a **private key** it never shows anyone and a **public key** anyone may have. What one does, only its partner can check. That's why this kind is also called asymmetric.
 
-- To make a **signature**, the server hashes the data (puzzle 3) and runs the digest through a signing step that needs its private key.
+- To make a **signature**, the server hashes the data (puzzle 5) and runs the digest through a signing step that needs its private key.
 - Anyone with the public key can check the signature against the data: it checks out only if it was made with the matching private key and the data hasn't changed since.
 - Without the private key, nobody can make a signature that checks out. Not the listener, not anyone. (Signing isn't encrypting: the data stays readable; the signature only proves who made it and that it's unchanged.)
 
-So a signature proves two things at once: who sent it, and that it wasn't changed.
+So a signature proves two things at once: who sent it, and that it wasn't changed. That closes puzzle 4's gap: in HTTPS, the server signs the key exchange, including its public value, so a swapped value from a man in the middle can't carry the server's signature.
 
-That moves the question: how does your app know which public key is really your server's? A listener could hand over its own. The answer is a **certificate**: a small document with your server's name and its public key, signed by a **certificate authority**, an organization whose public key is already built into your phone. Before it signs, the authority checks that whoever asks really controls that name. Certificates aren't secret: your server shows its certificate to every visitor, so anyone can copy one. A certificate signed by anyone else, including one the server signs itself, fails that check. Your app checks the authority's signature on the certificate, checks that the name matches the one in the address it asked for, and from then on trusts that public key. Puzzle 5 shows why a copied certificate alone gets the listener nowhere.
+That moves the question: how does your app know which public key is really your server's? A listener could hand over its own. The answer is a **certificate**: a small document with your server's name and its public key, signed by a **certificate authority**, an organization whose public key is already built into your phone. Before it signs, the authority checks that whoever asks really controls that name. Certificates aren't secret: your server shows its certificate to every visitor, so anyone can copy one. A certificate signed by anyone else, including one the server signs itself, fails that check. Your app checks the authority's signature on the certificate, checks that the name matches the one in the address it asked for, and from then on trusts that public key. Puzzle 8 shows why a copied certificate alone gets the listener nowhere.
 
-Note the look-alike from puzzle 2: a key exchange's private value is thrown away when the connection ends; a server's private key is kept for years and proves who it is.
+Note the look-alike from puzzle 3: a key exchange's private value is thrown away when the connection ends; a server's private key is kept for years and proves who it is.
 
 ## The analogy
 

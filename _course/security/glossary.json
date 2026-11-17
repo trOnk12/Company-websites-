@@ -43,7 +43,21 @@
    "iPhone",
    "server",
    "Android",
-   "RSA"
+   "RSA",
+   "p = 23",
+   "g = 5",
+   "mod 23",
+   "modulus",
+   "base",
+   "0101",
+   "0011",
+   "0110",
+   "1100",
+   "1010",
+   "1110",
+   "1000",
+   "OR",
+   "AND"
   ],
   "homonyms": [
    "token",
@@ -76,45 +90,45 @@
    "aliases": []
   },
   "symmetric encryption": {
-   "in": "01",
+   "in": "02",
    "def": "Encryption where the same key locks and unlocks.",
    "aliases": [
     "symmetric"
    ]
   },
   "AES": {
-   "in": "01",
+   "in": "02",
    "def": "The standard symmetric cipher: blocks of 128 bits, keys of 128, 192 or 256 bits.",
    "aliases": []
   },
   "key exchange": {
-   "in": "02",
+   "in": "03",
    "def": "Two sides agreeing on a shared secret over a line anyone can hear.",
    "aliases": []
   },
   "private value": {
-   "in": "02",
+   "in": "03",
    "def": "The number each side keeps to itself during a key exchange.",
    "aliases": [
     "private values"
    ]
   },
   "public value": {
-   "in": "02",
+   "in": "03",
    "def": "The number each side sends openly during a key exchange.",
    "aliases": [
     "public values"
    ]
   },
   "shared secret": {
-   "in": "02",
+   "in": "03",
    "def": "The number both sides compute and a listener can't.",
    "aliases": [
     "shared secrets"
    ]
   },
   "hash function": {
-   "in": "03",
+   "in": "05",
    "def": "A function that turns any data into a short, fixed-size fingerprint.",
    "aliases": [
     "hash functions",
@@ -122,14 +136,14 @@
    ]
   },
   "digest": {
-   "in": "03",
+   "in": "05",
    "def": "The fingerprint a hash function produces, like SHA-256's 256 bits.",
    "aliases": [
     "digests"
    ]
   },
   "SHA-256": {
-   "in": "03",
+   "in": "05",
    "def": "A standard hash function with a 256-bit digest.",
    "kind": "code",
    "aliases": [
@@ -137,21 +151,21 @@
    ]
   },
   "private key": {
-   "in": "04",
+   "in": "07",
    "def": "The half of a key pair its owner keeps secret, used to sign.",
    "aliases": [
     "private keys"
    ]
   },
   "public key": {
-   "in": "04",
+   "in": "07",
    "def": "The half of a key pair anyone may have, used to check signatures.",
    "aliases": [
     "public keys"
    ]
   },
   "signature": {
-   "in": "04",
+   "in": "07",
    "def": "A digest locked with a private key; anyone with the public key can check it.",
    "aliases": [
     "signatures",
@@ -161,33 +175,33 @@
    ]
   },
   "certificate": {
-   "in": "04",
+   "in": "07",
    "def": "A server's name and public key, signed by an authority the phone trusts.",
    "aliases": [
     "certificates"
    ]
   },
   "certificate authority": {
-   "in": "04",
+   "in": "07",
    "def": "An organization phones trust to sign certificates.",
    "aliases": [
     "certificate authorities"
    ]
   },
   "TLS": {
-   "in": "05",
+   "in": "08",
    "def": "The protocol behind HTTPS: key exchange, certificate check, then symmetric encryption.",
    "aliases": []
   },
   "handshake": {
-   "in": "05",
+   "in": "08",
    "def": "The first messages of a TLS connection, where keys are agreed and the server proves who it is.",
    "aliases": [
     "handshakes"
    ]
   },
   "128-bit block": {
-   "in": "01",
+   "in": "02",
    "def": "The fixed-size piece AES encrypts at a time: 128 bits.",
    "aliases": [
     "blocks of 128 bits",
@@ -195,19 +209,60 @@
    ]
   },
   "key pair": {
-   "in": "04",
+   "in": "07",
    "def": "Two keys made together: a private one kept secret and a public one anyone may have.",
    "aliases": [
     "key pairs",
     "asymmetric"
    ]
   },
-  "keyed check": {
-   "in": "03",
-   "def": "A short value computed from data and a shared secret key; without the key, nobody can make one that matches.",
+  "bit": {
+   "in": "01",
+   "def": "A zero or a one; eight make a byte.",
    "aliases": [
-    "keyed checks",
-    "MAC"
+    "bits"
+   ]
+  },
+  "XOR": {
+   "in": "01",
+   "def": "Combines two bits: 0 if they're equal, 1 if they differ. XOR the same key twice and you're back where you started.",
+   "aliases": []
+  },
+  "one-time pad": {
+   "in": "01",
+   "def": "XOR with a random key as long as the data, used once: perfectly secret.",
+   "aliases": []
+  },
+  "keystream": {
+   "in": "01",
+   "def": "A long, fresh stream of key bits generated from a short key, XORed with the data.",
+   "aliases": []
+  },
+  "man-in-the-middle attack": {
+   "in": "04",
+   "def": "Intercepting a key exchange and running one with each side, so the attacker holds both secrets.",
+   "aliases": [
+    "man in the middle"
+   ]
+  },
+  "MAC": {
+   "in": "06",
+   "def": "Message authentication code: a short value computed from data and a secret key; only key holders can make a matching one.",
+   "aliases": [
+    "MACs",
+    "message authentication code"
+   ]
+  },
+  "HMAC": {
+   "in": "06",
+   "def": "The usual recipe for a MAC, built from a hash function.",
+   "aliases": []
+  },
+  "tag": {
+   "in": "06",
+   "def": "The MAC attached to a message.",
+   "aliases": [
+    "tags"
    ]
   }
  },

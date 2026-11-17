@@ -16,8 +16,8 @@
 <g class="step s4"><text class="d-a" x="320" y="290" text-anchor="middle">every record: encrypted and checked</text></g>
 </svg>
 <ol class="caps">
-<li><p><b>TLS</b>, the S in HTTPS, starts with a short exchange: the <b>handshake</b>. Your app says hello and sends its public value (puzzle 2).</p></li>
+<li><p><b>TLS</b>, the S in HTTPS, starts with a short exchange: the <b>handshake</b>. Your app says hello and sends its public value (puzzle 3).</p></li>
 <li><p>The server answers with its public value. Both compute the shared secret and derive keys from it: from now on, everything is encrypted.</p></li>
 <li><p>Now, encrypted, the server sends its certificate and a signature over the conversation; your app checks all three. <i>Predict: what protects the data after that?</i></p></li>
-<li><p>Each record of data is encrypted with those keys and carries a keyed check, a tag: read, change and pretend are all stopped.</p></li>
+<li><p>Each record of data is encrypted with those keys and carries a MAC, its tag: read, change and pretend are all stopped.</p></li>
 </ol>
