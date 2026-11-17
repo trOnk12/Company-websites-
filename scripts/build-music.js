@@ -34,17 +34,13 @@ function knobFraction(v) {
   return f >= 0 && f <= 1 ? f : null;
 }
 
+// A knob as a printed patch-sheet template (ring + scale ticks), with the setting drawn on it by hand.
 function knobSvg(f, label) {
-  const a = (-150 + 300 * f) * Math.PI / 180; // 0° = straight up
-  const x = n => (20 + n * Math.sin(a)).toFixed(1), y = n => (20 - n * Math.cos(a)).toFixed(1);
-  const arc = r => {
-    const a0 = -150 * Math.PI / 180;
-    const sx = (20 + r * Math.sin(a0)).toFixed(1), sy = (20 - r * Math.cos(a0)).toFixed(1);
-    const ex = (20 + r * Math.sin(a)).toFixed(1), ey = (20 - r * Math.cos(a)).toFixed(1);
-    return f <= 0.001 ? '' : `<path class="k-arc" d="M${sx},${sy} A${r},${r} 0 ${300 * f > 180 ? 1 : 0} 1 ${ex},${ey}"/>`;
-  };
-  const track = `<path class="k-track" d="M${(20 + 17 * Math.sin(-150 * Math.PI / 180)).toFixed(1)},${(20 - 17 * Math.cos(-150 * Math.PI / 180)).toFixed(1)} A17,17 0 1 1 ${(20 + 17 * Math.sin(150 * Math.PI / 180)).toFixed(1)},${(20 - 17 * Math.cos(150 * Math.PI / 180)).toFixed(1)}"/>`;
-  return `<svg class="knob" viewBox="0 0 40 40" role="img" aria-label="${L.esc(label)}">${track}${arc(17)}<circle class="k-body" cx="20" cy="20" r="12"/><line class="k-ptr" x1="${x(3)}" y1="${y(3)}" x2="${x(11)}" y2="${y(11)}"/></svg>`;
+  const P = (deg, r) => [(24 + r * Math.sin(deg * Math.PI / 180)).toFixed(1), (24 - r * Math.cos(deg * Math.PI / 180)).toFixed(1)];
+  const ticks = Array.from({ length: 11 }, (_, k) => { const d = -150 + 30 * k; const [a, b] = P(d, 19), [c, e] = P(d, k % 5 === 0 ? 23 : 21.5); return `M${a},${b}L${c},${e}`; }).join('');
+  const d = -150 + 300 * f;
+  const [x1, y1] = P(d, 2), [x2, y2] = P(d, 15);
+  return `<svg class="knob" viewBox="0 0 48 48" role="img" aria-label="${L.esc(label)}"><path class="k-ticks" d="${ticks}"/><circle class="k-ring" cx="24" cy="24" r="15"/><g class="k-hand"><line class="k-ptr" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/><circle class="k-dot" cx="${x2}" cy="${y2}" r="2.2"/></g></svg>`;
 }
 
 function valueHtml(control, v, extra) {
@@ -91,6 +87,9 @@ function section(title, text) {
   return `      <section id="${id}"${dev ? ` class="device ${dev}"` : ''}><h2>${L.inline(title, ctx)}</h2>\n${html}</section>`;
 }
 
+// A pencil wobble for anything "drawn by hand", defined once per page.
+const DEFS = '<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false"><filter id="pencil"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.8"/></filter></svg>';
+
 // The signal chain, drawn as four boxes and a cable: the same on every page.
 const CHAIN = [['dev-oxi', 'OXI One MK2', 'sequencer'], ['dev-pf', 'PERfourMER MKII', 'synth'], ['dev-gc', 'Grand Canyon', 'delay'], ['dev-ns', 'NightSky', 'reverb']];
 const chain = () => `<ol class="chain" aria-label="Signal chain">${CHAIN.map(([c, n, k]) => `<li class="${c}"><b>${n}</b><span>${k}</span></li>`).join('')}</ol>`;
@@ -121,10 +120,15 @@ function renderRecipe(r, all) {
     canonical: `${L.SITE}/music/${r.slug}`,
     base: '../', current: 'music', feed: false, footer, script: 'music.js',
     body: `    <article class="music recipe course-top wrap narrow" data-recipe="${r.slug}">
-      <p class="eyebrow"><a href="./">Music recipes</a> · ${L.esc(r.meta.mood || '')}</p>
-      <h1>${L.esc(r.meta.title)}</h1>
-      <p class="lede">${L.esc(r.meta.summary)}</p>
-      <p class="badges">${[['Level', r.meta.level], ['Setup', r.meta.time], ['Key', r.meta.key]].filter(([, v]) => v).map(([k, v]) => `<span class="badge"><b>${k}</b> ${L.esc(v)}</span>`).join('')}</p>
+      ${DEFS}
+      <p class="eyebrow"><a href="./">← The tape shelf</a></p>
+      <header class="jcard">
+        <p class="side">Side A · Recipe ${String(i + 1).padStart(2, '0')}</p>
+        <h1>${L.esc(r.meta.title)}</h1>
+        <p class="mood">${L.esc(r.meta.mood || '')}</p>
+        <p class="lede">${L.esc(r.meta.summary)}</p>
+        <dl class="jfields">${[['Level', r.meta.level], ['Setup', r.meta.time], ['Key', r.meta.key]].filter(([, v]) => v).map(([k, v]) => `<div><dt>${k}</dt><dd>${L.esc(v)}</dd></div>`).join('')}</dl>
+      </header>
       ${chain()}
       <div class="tools" hidden><button type="button" class="button" data-compact>Hide the whys</button> <button type="button" class="button" data-untick>Clear my ticks</button> <span class="tick-count small" aria-live="polite"></span></div>
       <nav class="recipe-toc" aria-label="On this page"><ol>${sections(r.body).map(s => `<li><a href="#${s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}">${L.esc(s.title)}</a></li>`).join('')}</ol></nav>
@@ -137,19 +141,20 @@ ${html}
 function renderIndex(all) {
   const intro = fs.existsSync(path.join(SRC, '_index.md')) ? L.parseFrontmatter(fs.readFileSync(path.join(SRC, '_index.md'), 'utf8'), '_index.md') : { meta: {}, body: '' };
   const html = sections(intro.body).map(s => section(s.title, s.text)).join('\n');
-  const cards = all.map((r, i) => `<li class="course-card patch patch-${i % 4}"><span class="patch-no">${String(i + 1).padStart(2, '0')}</span><h3><a href="${r.slug}.html">${L.esc(r.meta.title)}</a></h3><p class="mood">${L.esc(r.meta.mood || '')}</p><p class="small">${L.esc(r.meta.summary)}</p></li>`).join('\n');
+  const cards = all.map((r, i) => `<li class="cassette c-${i % 6}"><a href="${r.slug}.html"><span class="c-label"><span class="c-side">A${i + 1}</span><span class="c-title">${L.esc(r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span></span><span class="c-window" aria-hidden="true"><span class="reel"></span><span class="c-tape"></span><span class="reel"></span></span><span class="c-foot" aria-hidden="true">${L.esc(r.meta.level || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n');
   return L.page({
     title: 'Music: sound recipes for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski',
     description: intro.meta.summary || 'Sound recipes with exact settings.',
     canonical: `${L.SITE}/music/`,
     base: '../', current: 'music', feed: false, footer,
     body: `    <article class="music course-top wrap narrow">
+      ${DEFS}
       <p class="eyebrow">Music, my hobby</p>
-      <h1>${L.esc(intro.meta.title || 'Music')}</h1>
+      <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>
       <p class="lede">${L.esc(intro.meta.summary || '')}</p>
       ${chain()}
-      <h2>Recipes</h2>
-      <ul class="courses recipes">
+      <h2>The tape shelf</h2>
+      <ul class="shelf">
 ${cards}
       </ul>
 ${html}

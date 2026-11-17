@@ -22,7 +22,7 @@ test.describe('Music', () => {
   test('the index lists every recipe', async ({ page }) => {
     await page.goto('/music/');
     await expect(page.locator('h1')).toHaveCount(1);
-    for (const r of RECIPES) await expect(page.locator(`.course-card a[href="${r}.html"]`)).toHaveCount(1);
+    for (const r of RECIPES) await expect(page.locator(`.cassette a[href="${r}.html"]`)).toHaveCount(1);
   });
 
   test('every recipe draws its knobs, links its manuals and fits a phone', async ({ page }) => {
