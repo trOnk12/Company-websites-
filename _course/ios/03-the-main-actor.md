@@ -1,7 +1,7 @@
 ---
 title: The main actor
 short: Swift concurrency
-summary: In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and dispatchers. Swift has its own version, with one idea Kotlin doesn't have built in.
+summary: In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and withContext. Swift has its own version, with one idea Kotlin doesn't have built in.
 takeaway: An async function can give up its thread while it waits, at each await: Swift's suspend. An actor lets only one task at a time touch its data. The main actor protects all UI data, so code marked @MainActor runs on the main thread: Swift's Dispatchers.Main.
 ---
 

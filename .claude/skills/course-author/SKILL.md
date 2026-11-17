@@ -131,6 +131,27 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
 - **Check for a newer default.** Docs pages lag (ART's newer collector isn't on the GC page): say "the default since
   X, newer devices may run Y" rather than "today's".
 
+## 4c. Vocabulary honesty (the KMP lesson)
+
+The KMP course read as "skipping lots of details": puzzle 5 used heap, roots, strong reference, `deinit` and
+"the iOS course, puzzle 4" as if known. They passed the lint because they'd been added to `baseline` to silence it.
+So:
+
+- **`baseline` is only for words a beginner of this course really knows** (Kotlin, app, screen, phone). Never add a
+  word to it to make the lint pass. If the lint flags a word, either teach it (glossary `terms`, bold where first used),
+  link it (glossary `from`: `{"ARC": {"course": "ios", "in": 4}}`, rendered as a "New to these?" link on the puzzle),
+  or say it in plain words.
+- **`_course/jargon.json`** lists words that always need teaching. The lint rejects them in any `baseline`, and flags
+  them in text unless taught or linked. When a review finds a new slipped word, add it there.
+- **A cross-course reference is not a definition.** "(the iOS course, puzzle 4)" helps only someone who took it. The
+  puzzle must still say, in one sentence, what the idea is; the `from` link is for depth.
+- **One big idea per puzzle.** If explaining a puzzle's idea needs another idea the course hasn't given (tracing GC needs
+  "roots"; GC vs ARC needs both), that other idea is a puzzle of its own, before it. Add the puzzle; don't compress it
+  into a clause.
+- **Ask the reviewer the owner's question.** Every review round includes a strict learner pass with the course's real
+  learner profile (what they know, what they've never touched, and which other courses they have NOT taken), asking
+  for undefined concepts, leaps and missing puzzles, not only clarity scores.
+
 ## 5. Facts
 
 Verify every claim against a primary source in this session (fetch it, quote it) before writing the

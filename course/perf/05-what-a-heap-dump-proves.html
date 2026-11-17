@@ -52,7 +52,11 @@
       <p class="eyebrow">Performance, under the hood · Puzzle 5 · 6 of 6</p>
       <h1>What a heap dump proves</h1>
       <p class="lede">Puzzle 4's collector frees everything it can't reach. So how does memory get stuck in a garbage-collected app? Here's what a snapshot of memory records, the two sizes it shows, and the chain that proves memory is stuck.</p>
-      <aside class="builds-on" aria-label="Building blocks"><p><b>Builds on</b> what you already know from <a href="../android/">Android from the foundation</a>, not on an earlier puzzle here: you can start with this one.</p></aside>
+      <aside class="builds-on" aria-labelledby="builds-on-5">
+        <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="4"><details><summary><a href="04-what-the-collector-costs.html">Puzzle 4: What the collector costs</a></summary><p>Each thread allocates from its own TLAB by bumping a pointer, with no lock. ART's Concurrent Copying collector moves live objects while your threads keep running, with one small pause that doesn't grow with the heap, and since Android 10 it mostly runs cheap young GCs. What still costs frames is allocation churn: the collector's threads compete for CPUs, and an app that allocates faster than they free must wait.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-a-photo-or-a-diary.html">0</a> → <a href="01-reading-the-flames.html">1</a> → <a href="02-slow-is-not-busy.html">2</a> → <a href="04-what-the-collector-costs.html">4</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>After rotating the phone ten times, your app uses 80 MB more than at start. The garbage collector frees everything that's unreachable, so whatever is left must still be reachable. From where? And which object, among millions, is the one to fix?</p>

@@ -1,7 +1,7 @@
 ---
 title: Queues, not handlers
 short: GCD and dispatch queues
-summary: On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine dispatcher. iOS has one system for both. Here it is.
+summary: On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine on another thread. iOS has one system for both. Here it is.
 takeaway: Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.
 ---
 
@@ -16,7 +16,7 @@ In puzzle 1, slow work on the main run loop froze the screen. On Android you'd m
 
 ## The building block
 
-iOS's answer is **GCD**, Grand Central Dispatch. Instead of threads, you think in **dispatch queues**: first-in, first-out lines of tasks. You add a task, a closure, to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.
+iOS's answer is **GCD**, Grand Central Dispatch. Instead of threads, you think in **dispatch queues**: first-in, first-out lines of tasks. You add a task, a **closure** (a block of code you pass around, like a Kotlin lambda), to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.
 
 A queue is either **serial**, running one task at a time in order, or **concurrent**, able to run several of its tasks at the same time on different threads.
 

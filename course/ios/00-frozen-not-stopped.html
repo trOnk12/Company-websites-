@@ -52,7 +52,7 @@
       <p class="eyebrow">iOS for Android developers · Start here · 1 of 5</p>
       <h1>Frozen, not stopped</h1>
       <p class="lede">On Android, an app in the background keeps its process, and its threads can keep running. On iOS, a few seconds after the user leaves, your app stops running any code at all. Here's what that means for your work.</p>
-
+      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/02-how-kotlin-calls-apple.html"><b>framework</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 2: How Kotlin calls Apple</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>On Android, when the user switches away, your Activity is stopped, but your process lives on: a coroutine can finish its upload, a thread can keep writing to the database. You save state in <code>onStop</code> and the process might still run for a long time. Write the same app for iOS, and the upload dies a few seconds after the user leaves. What happens to an iOS app in the background?</p>

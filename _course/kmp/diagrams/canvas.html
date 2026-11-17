@@ -11,6 +11,6 @@
 <ol class="caps">
 <li><p>Your Swift code hosts the whole Compose screen as one view controller: <code>ComposeUIViewController</code>.</p></li>
 <li><p>Compose draws the button and the list itself with <b>Skia</b>. UIKit sees one view; it doesn't know there's a button. <i>Predict: how does VoiceOver find it?</i></p></li>
-<li><p>Compose maps its semantics into iOS's <b>accessibility tree</b>: a Material button arrives there as a button.</p></li>
+<li><p>Compose maps its <b>semantics</b>, what each element is and says, into iOS's <b>accessibility tree</b>: a Material button arrives there as a button.</p></li>
 <li><p>Something Skia can't draw, like a real map, goes in as a real UIKit view through <code>UIKitView</code>.</p></li>
 </ol>

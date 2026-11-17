@@ -45,6 +45,10 @@
    "server",
    "Android",
    "RSA"
+  ],
+  "homonyms": [
+   "token",
+   "server"
   ]
  },
  "terms": {
@@ -217,6 +221,15 @@
    "simply": "cut it: it makes a learner who's stuck feel slow",
    "obviously": "cut it",
    "just a": "cut it, or say what it is"
+  }
+ },
+ "from": {
+  "round trip": {
+   "course": "sysdesign",
+   "in": 1,
+   "aliases": [
+    "round trips"
+   ]
   }
  }
 }

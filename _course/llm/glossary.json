@@ -93,6 +93,13 @@
    "Prompt API",
    "prompt caching",
    "Prompt caching"
+  ],
+  "homonyms": [
+   "server",
+   "key",
+   "ViewModel",
+   "headers",
+   "header"
   ]
  },
  "avoid": {

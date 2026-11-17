@@ -9,7 +9,7 @@
 <x-arrow class="step only-4" tone="acc" d="M400,150 C380,200 330,226 306,236"/>
 </svg>
 <ol class="caps">
-<li><p>The main thread works through its own line of tasks: the main queue. Slow work there would freeze the screen.</p></li>
+<li><p>The main thread works through its own line of tasks: the <b>main queue</b>. Slow work there would freeze the screen.</p></li>
 <li><p>So the slow task goes into another <b>dispatch queue</b>, a line of tasks run by <b>GCD</b> on threads it manages. This one is <b>concurrent</b>: several tasks can run at once.</p></li>
 <li><p>One of GCD's threads picks up "load image" and runs it, off the main thread. <i>Predict: how does the image get on screen?</i></p></li>
 <li><p>Through the main queue: <code>DispatchQueue.main.async</code>, iOS's <code>handler.post</code>. The main queue is <b>serial</b>: one task at a time, on the main thread.</p></li>

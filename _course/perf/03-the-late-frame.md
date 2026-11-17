@@ -1,7 +1,7 @@
 ---
 title: The late frame
 short: Expected vs actual
-summary: The Android course showed that a frame must be ready before the next vsync. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.
+summary: The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.
 takeaway: FrameTimeline gives every frame two slices: the Expected Timeline, the window the app was given, and the Actual Timeline, from Choreographer's callback to when the frame was posted and the GPU finished. Actual past the deadline is jank; FrameTimeline says whether the app or SurfaceFlinger was late. Then read the late frame's main thread and RenderThread: states, then flame chart.
 ---
 
@@ -16,7 +16,7 @@ Users say scrolling stutters, but only sometimes. In a trace there are hundreds 
 
 ## The building block
 
-In the Android course you saw a frame's work: the main thread measures, lays out and draws, the RenderThread hands it to the GPU, and the result must be ready for the next vsync. Since Android 12, Perfetto's **FrameTimeline** draws that contract for each frame, as two slices under your app:
+In the Android course you saw a frame's work: the main thread measures, lays out and draws, the RenderThread hands it to the GPU, and the result must be ready for the next **vsync**, the display's signal that it's about to show a new frame. Since Android 12, Perfetto's **FrameTimeline** draws that contract for each frame, as two slices under your app:
 
 - **Expected Timeline**: the window the app was given for this frame. It starts when the Choreographer callback was scheduled; its end is the frame's **deadline**.
 - **Actual Timeline**: what really happened. It starts when `Choreographer#doFrame` started running and ends at whichever came later: the frame being posted to SurfaceFlinger (the RenderThread hands the finished frame over), or the GPU finishing.

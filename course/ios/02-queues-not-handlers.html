@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine dispatcher. iOS has one system for both. Here it is.">
+  <meta name="description" content="On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine on another thread. iOS has one system for both. Here it is.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Queues, not handlers – iOS for Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine dispatcher. iOS has one system for both. Here it is.">
+  <meta property="og:description" content="On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine on another thread. iOS has one system for both. Here it is.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/ios/02-queues-not-handlers">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,7 +51,7 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" class="done" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" class="done" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" aria-current="page" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
       <p class="eyebrow">iOS for Android developers · Puzzle 2 · 3 of 5</p>
       <h1>Queues, not handlers</h1>
-      <p class="lede">On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine dispatcher. iOS has one system for both. Here it is.</p>
+      <p class="lede">On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine on another thread. iOS has one system for both. Here it is.</p>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-the-run-loop-is-your-looper.html">Puzzle 1: The run loop is your Looper</a></summary><p>Every iOS thread has a run loop: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.</p></details></li></ul>
@@ -74,7 +74,7 @@
 <path class="step only-4 d-arr-acc" d="M400,150 C380,200 330,226 306,236" marker-end="url(#ah-queues-acc)"/>
 </svg></div>
 <ol class="caps">
-<li><p>The main thread works through its own line of tasks: the main queue. Slow work there would freeze the screen.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-queues-2">Next →</label></div></li>
+<li><p>The main thread works through its own line of tasks: the <b>main queue</b>. Slow work there would freeze the screen.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-queues-2">Next →</label></div></li>
 <li><p>So the slow task goes into another <b>dispatch queue</b>, a line of tasks run by <b>GCD</b> on threads it manages. This one is <b>concurrent</b>: several tasks can run at once.</p><div class="stepnav"><label for="st-queues-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-queues-3">Next →</label></div></li>
 <li><p>One of GCD's threads picks up "load image" and runs it, off the main thread. <i>Predict: how does the image get on screen?</i></p><div class="stepnav"><label for="st-queues-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-queues-4">Next →</label></div></li>
 <li><p>Through the main queue: <code>DispatchQueue.main.async</code>, iOS's <code>handler.post</code>. The main queue is <b>serial</b>: one task at a time, on the main thread.</p><div class="stepnav"><label for="st-queues-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-queues-1">↺ Again</label></div></li>
@@ -84,7 +84,7 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>iOS's answer is <b>GCD</b>, Grand Central Dispatch. Instead of threads, you think in <b>dispatch queues</b>: first-in, first-out lines of tasks. You add a task, a closure, to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.</p>
+<p>iOS's answer is <b>GCD</b>, Grand Central Dispatch. Instead of threads, you think in <b>dispatch queues</b>: first-in, first-out lines of tasks. You add a task, a <b>closure</b> (a block of code you pass around, like a Kotlin lambda), to a queue; GCD runs it on one of a pool of threads that it creates and manages for you.</p>
 <p>A queue is either <b>serial</b>, running one task at a time in order, or <b>concurrent</b>, able to run several of its tasks at the same time on different threads.</p>
 <p>One queue is special: the main queue. It's serial, and its tasks run on the main thread: they're one of the kinds of work the main run loop from puzzle 1 picks up, next to touches and timers. The others you'll use most are the global queues: concurrent queues GCD provides, ready to use, for work off the main thread. So the iOS pattern is the Android one, with new names:</p>
 <pre><code class="language-swift">DispatchQueue.global().async {          // a concurrent queue: off the main thread

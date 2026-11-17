@@ -90,7 +90,7 @@
 <p>Two numbers now matter:</p>
 <ul><li><b>Time to first token</b>: how long until the first words appear. This is what the user feels.</li><li>Total time: about the same as before. Streaming doesn't make the model faster; it stops hiding its progress.</li></ul>
 <p>On Android, the stream is a long-lived request, so it changes your code more than a normal call:</p>
-<ul><li>Run it on a coroutine that the screen's ViewModel owns, and append each piece to the UI state as it arrives.</li><li>Cancel it when the user leaves or taps stop: you pay for every token generated, wanted or not. If the stream goes through your own server (puzzle 4), the server must cancel its request to the model too, or generation and billing carry on.</li><li>OkHttp has an SSE add-on (<code>okhttp-sse</code>), and Anthropic publishes a Java SDK that streams.</li><li>A dropped connection mid-answer is normal on mobile (puzzle 0 of the Mobile system design course): keep what arrived, show it, and offer to retry.</li></ul>
+<ul><li>Run it on a coroutine that the screen's ViewModel owns, and append each piece to the UI state as it arrives.</li><li>Cancel it when the user leaves or taps stop: you pay for every token generated, wanted or not. If the stream goes through your own server (puzzle 4), the server must cancel its request to the model too, or generation and billing carry on.</li><li>OkHttp has an SSE add-on (<code>okhttp-sse</code>), and Anthropic publishes a Java SDK that streams.</li><li>A dropped connection mid-answer is normal on mobile (puzzle 1 of the Mobile system design course): keep what arrived, show it, and offer to retry.</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

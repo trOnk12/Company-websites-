@@ -6,7 +6,7 @@
 <g class="step s1" data-move="1:206,36 2:206,36 3:240,36 4:345,36"><path class="d-red" d="M0,0 v48"/></g>
 <g class="step s2" data-pulse="2"><x-machine x="400" y="40" w="200" label="Concurrent Copying"/><rect class="d-band" x="400" y="160" width="200" height="40" rx="4"/><rect class="d-ok" x="400" y="160" width="40" height="40"/><text class="d-tiny" x="500" y="220" text-anchor="middle">live objects copied</text></g>
 <g class="step s3" data-pulse="3"><text class="d-a" x="260" y="200" text-anchor="middle">young GC: new objects only</text><x-arrow tone="acc" d="M370,194 L396,184"/></g>
-<g class="step s4" data-pulse="4"><rect class="d-bad" x="40" y="250" width="300" height="40" rx="6"/><text class="d-rt" x="190" y="275" text-anchor="middle">heap fills faster than freed</text><text class="d-r" x="470" y="275" text-anchor="middle">main thread waits</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="40" y="250" width="300" height="40" rx="6"/><text class="d-rt" x="190" y="275" text-anchor="middle">memory fills faster than freed</text><text class="d-r" x="470" y="275" text-anchor="middle">main thread waits</text></g>
 </svg>
 <ol class="caps">
 <li><p>Each thread allocates from its own <b>TLAB</b>: a new object moves a pointer forward. No lock, no search.</p></li>

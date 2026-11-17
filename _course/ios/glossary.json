@@ -29,7 +29,6 @@
    "DEX",
    "Dispatchers.IO",
    "Dispatchers.Main",
-   "GC",
    "Handler",
    "ID",
    "Intent",
@@ -46,7 +45,6 @@
    "MessageQueue",
    "Parcel",
    "SavedStateHandle",
-   "Swift",
    "Swift Task",
    "Thread.sleep()",
    "TransactionTooLargeException",
@@ -55,18 +53,15 @@
    "ViewModel",
    "ViewModelStore",
    "ViewModels",
-   "Xcode",
    "Zygote",
    "ZygoteInit.main()",
    "app",
-   "async",
    "background",
    "bitmap",
    "boot",
    "boots",
    "button",
    "byte",
-   "bytecode",
    "bytes",
    "callback",
    "callbacks",
@@ -93,9 +88,7 @@
    "forks",
    "frame",
    "frames",
-   "framework",
    "function",
-   "garbage collector",
    "handler.post",
    "handler.post { … }",
    "hideHint()",
@@ -170,23 +163,23 @@
    "onStop",
    "showProfile()",
    "self",
-   "[weak self]",
    "val image = withContext(Dispatchers.IO) { load() }",
    "IO",
    "sceneDidEnterBackground",
    "beginBackgroundTask",
    "loadUser()",
-   "closure",
-   "closures",
    "structs",
    "enums",
    "sceneDidEnterBackground",
    "beginBackgroundTask",
    "loadUser()",
-   "closure",
-   "closures",
    "structs",
-   "enums"
+   "enums",
+   "async"
+  ],
+  "homonyms": [
+   "self",
+   "async"
   ]
  },
  "terms": {
@@ -281,7 +274,8 @@
    "in": "04",
    "def": "Automatic Reference Counting: frees an object the moment nothing refers to it.",
    "aliases": [
-    "Automatic Reference Counting"
+    "Automatic Reference Counting",
+    "reference counting"
    ]
   },
   "strong reference": {
@@ -306,6 +300,26 @@
     "weak references",
     "weak"
    ]
+  },
+  "closure": {
+   "in": "02",
+   "def": "A block of code you can pass around and run later, like a Kotlin lambda.",
+   "aliases": [
+    "closures"
+   ]
+  },
+  "main queue": {
+   "in": "02",
+   "def": "The serial dispatch queue whose tasks run on the main thread.",
+   "aliases": []
+  },
+  "garbage collector": {
+   "in": "04",
+   "def": "Android's way of freeing memory: from time to time it finds objects nothing can reach and frees them, cycles included.",
+   "aliases": [
+    "GC",
+    "garbage collection"
+   ]
   }
  },
  "avoid": {
@@ -317,6 +331,31 @@
    "simply": "cut it: it makes a learner who's stuck feel slow",
    "obviously": "cut it",
    "just a": "cut it, or say what it is"
+  }
+ },
+ "from": {
+  "bytecode": {
+   "course": "kmp",
+   "in": 0
+  },
+  "framework": {
+   "course": "kmp",
+   "in": 2,
+   "aliases": [
+    "frameworks"
+   ]
+  },
+  "Swift": {
+   "course": "kmp",
+   "in": 4
+  },
+  "Xcode": {
+   "course": "kmp",
+   "in": 4
+  },
+  "[weak self]": {
+   "course": "kmp",
+   "in": 8
   }
  }
 }

@@ -56,7 +56,7 @@
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="0"><details><summary><a href="00-frozen-not-stopped.html">Puzzle 0: Frozen, not stopped</a></summary><p>An iOS app moves through app states: not running, inactive, active, background, suspended. Seconds after it goes to the background it's suspended: still in memory, running no code. iOS can end a suspended app without running any of your code, so save your state as you enter the background, not at the end.</p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-frozen-not-stopped.html">0</a>. Know them already? Start here.</p>
-      </aside>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/02-how-kotlin-calls-apple.html"><b>framework</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 2: How Kotlin calls Apple</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>On Android, you know the main thread's routine: a Looper takes the next message from its queue, runs it to the end, and repeats, and nothing touches the screen from anywhere else. Your iOS screen also needs touches handled, timers fired and redraws done, one after another, on one thread. Who runs that loop on iOS?</p>

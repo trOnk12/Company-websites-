@@ -1,0 +1,15 @@
+<!-- label: Platform libraries: Kotlin bindings to Apple's frameworks, only on Apple targets -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="pl-t"><title id="pl-t">Apple's UIKit framework holds UIDevice; Kotlin can't read it directly; Kotlin/Native ships a platform library binding to it; iosMain imports the binding and calls UIDevice; commonMain cannot, because Android has no UIKit</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-wood" x="440" y="60" width="170" height="120" rx="8"/><text class="d-b" x="525" y="88" text-anchor="middle">UIKit</text><rect class="d-paper" x="465" y="110" width="120" height="40" rx="4"/><text class="d-tiny" x="525" y="135" text-anchor="middle">UIDevice</text><text class="d-tiny" x="525" y="200" text-anchor="middle">Apple's framework</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="250" y="90" width="150" height="60" rx="8"/><text class="d-a" x="325" y="118" text-anchor="middle">platform library</text><text class="d-tiny" x="325" y="138" text-anchor="middle">platform.UIKit</text><x-arrow tone="ink" d="M404,120 L436,120"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-band" x="30" y="90" width="170" height="60" rx="8"/><text class="d-a" x="115" y="125" text-anchor="middle">iosMain</text><x-arrow tone="acc" d="M204,120 L246,120"/></g>
+<g class="step s1" data-move="1:500,240 2:300,240 3:110,240 4:110,240"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-band" x="30" y="220" width="170" height="60" rx="8"/><text class="d-a" x="115" y="255" text-anchor="middle">commonMain</text><path class="d-red" d="M210,240 L240,262 M240,240 L210,262"/><text class="d-r" x="380" y="260" text-anchor="middle">no UIKit on Android</text></g>
+</svg>
+<ol class="caps">
+<li><p>Apple's code lives in <b>frameworks</b>. <b>UIKit</b>, the screen framework, has <code>UIDevice</code>. It isn't Kotlin.</p></li>
+<li><p>Kotlin/Native ships <b>platform libraries</b>: prebuilt Kotlin bindings to Apple's frameworks, under <code>platform.</code>.</p></li>
+<li><p>iosMain imports the binding and calls <code>UIDevice</code> like any Kotlin class. <i>Predict: can commonMain do the same?</i></p></li>
+<li><p>No: the binding exists only for Apple targets, and common code compiles for Android too.</p></li>
+</ol>

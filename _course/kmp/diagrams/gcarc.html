@@ -14,5 +14,5 @@
 <li><p>Your Kotlin view model lives in Kotlin/Native's <b>shared heap</b>: one pool of objects that any thread can use.</p></li>
 <li><p>A <b>tracing GC</b> sweeps it from time to time, freeing what it can't reach. The Swift screen is freed by ARC instead, at a count of zero.</p></li>
 <li><p>The screen holds the view model; the view model's callback holds the screen. Each side keeps the other alive. <i>Predict: what breaks the loop?</i></p></li>
-<li><p>A weak link, the fix from the iOS course: the callback refers to the screen weakly, and both can be freed.</p></li>
+<li><p>A weak link, puzzle 8's fix: the callback refers to the screen weakly, and both can be freed.</p></li>
 </ol>

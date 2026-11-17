@@ -8,8 +8,8 @@
 <g class="step s4" data-pulse="4"><rect class="d-bad" x="30" y="236" width="180" height="36" rx="6"/><text class="d-rt" x="120" y="259" text-anchor="middle">throws, no @Throws</text><x-arrow tone="red" d="M214,254 L414,254"/><rect class="d-bad" x="420" y="236" width="180" height="36" rx="6"/><text class="d-rt" x="500" y="259" text-anchor="middle">app ends</text><circle class="d-bad" cx="612" cy="254" r="11"/><path class="d-red" d="M605,247 L619,261 M619,247 L605,261"/><rect class="d-hl" x="30" y="286" width="180" height="36" rx="6"/><text class="d-mi" x="120" y="309" text-anchor="middle">with @Throws</text><x-arrow tone="acc" d="M214,304 L414,304"/><rect class="d-ok" x="420" y="286" width="180" height="36" rx="6"/><text class="d-tiny" x="510" y="309" text-anchor="middle">error Swift can catch</text></g>
 </svg>
 <ol class="caps">
-<li><p>Everything Swift sees of your Kotlin passes through the Objective-C header from puzzle 3.</p></li>
+<li><p>Everything Swift sees of your Kotlin passes through the Objective-C header from puzzle 5.</p></li>
 <li><p>A <code>Flow&lt;User&gt;</code> crosses, but its <code>User</code> falls off: Objective-C keeps type parameters on classes only, and Flow is an interface.</p></li>
-<li><p>A <code>suspend</code> function becomes a method with a <b>completion handler</b>: "call me back when done". Swift calls it with await. <i>Predict: what about an exception?</i></p></li>
+<li><p>A <code>suspend</code> function becomes a method with a <b>completion handler</b>: "call me back when done". Swift calls it as an <b>async function</b>, with await. <i>Predict: what about an exception?</i></p></li>
 <li><p>An exception crosses only if the function lists it with <code>@Throws</code>: then Swift gets an error it can catch. Without it, the app ends.</p></li>
 </ol>

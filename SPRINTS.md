@@ -96,6 +96,16 @@ only the blocks they're missing.
 - [x] Review round (correctness 6–9, clarity 8–9): fixes applied, Gemini Nano limits verified.
 - [ ] Next puzzle: what a call costs and how it fails. Module 2: tools and agents.
 
+## Sprint 11: No hidden gaps (done 2026-11-17)
+
+- [x] Strict learner "gap hunt" on KMP: five new building-block puzzles, iOS-course references replaced, 3 modules.
+- [x] Lint: `_course/jargon.json`, cross-course check (a baseline word another course teaches must be linked with
+  glossary `from`, shown on the puzzle as "New to these?"), homonyms. Every course fixed to pass.
+- [x] System design: new puzzle 0, What actually travels (packets, IP, TCP, TLS, HTTP), before TCP is used.
+- [x] Music: calmer typography, analytics on music pages, a hand-drawn home button instead of a section.
+- [ ] KMP splits: lost in translation (3 ideas), whose thread (dispatch vs cancellation), one framework, one canvas.
+- [ ] Same gap hunt for Android, BLE, security, iOS, perf, LLM.
+
 ## Backlog, in order
 
 1. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,

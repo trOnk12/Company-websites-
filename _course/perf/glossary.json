@@ -38,12 +38,10 @@
    "frame",
    "frames",
    "jank",
-   "vsync",
    "Choreographer",
    "RenderThread",
    "GPU",
    "ART",
-   "garbage collector",
    "Binder",
    "lock",
    "network",
@@ -96,8 +94,6 @@
    "format()",
    "loadUser()",
    "Choreographer#doFrame",
-   "GC",
-   "heap",
    "StringBuilder"
   ]
  },
@@ -288,6 +284,30 @@
     "leaked",
     "leaking"
    ]
+  },
+  "garbage collector": {
+   "in": "04",
+   "def": "The part of ART that finds objects nothing can reach and frees their memory.",
+   "aliases": [
+    "GC",
+    "garbage collection"
+   ]
+  },
+  "heap": {
+   "in": "04",
+   "def": "The memory where an app's objects live.",
+   "aliases": []
+  },
+  "vsync": {
+   "in": "03",
+   "def": "The display's regular signal that it's about to show a new frame.",
+   "aliases": []
+  }
+ },
+ "from": {
+  "native code": {
+   "course": "kmp",
+   "in": 0
   }
  }
 }

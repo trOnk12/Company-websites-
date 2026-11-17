@@ -1,0 +1,17 @@
+<!-- label: iOS's main thread: a run loop taking tasks from the main queue, like a Looper -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mt-t"><title id="mt-t">The main thread runs a run loop that takes tasks one at a time from the main queue, like Android's Looper and MessageQueue; a background thread finishes slow work and posts the UI update to the main queue with DispatchQueue.main.async</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-person class="step s1" x="60" y="150" desk="1" label="main thread"/>
+<g class="step s1" data-pulse="1"><path class="d-line" d="M60,110 C20,110 20,60 60,60 C100,60 100,110 70,110" fill="none"/><text class="d-tiny" x="12" y="44">run loop ≈ Looper</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-band" x="180" y="140" width="220" height="40" rx="6"/><text class="d-tiny" x="290" y="130" text-anchor="middle">main queue ≈ MessageQueue</text><x-letter x="190" y="146" w="56" h="28" label="touch"/><x-letter x="252" y="146" w="56" h="28" label="timer"/><x-arrow tone="ink" d="M176,160 L130,160"/></g>
+<x-person class="step s3" x="520" y="150" label="background"/>
+<x-letter class="step s3" data-move="3:470,90 4:330,146" x="0" y="0" w="60" h="28" label="image"/>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="420" y="260" text-anchor="middle">slow work done off the main thread</text></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="320" y="260" text-anchor="middle">DispatchQueue.main.async</text><text class="d-tiny" x="320" y="285" text-anchor="middle">UI only on the main thread</text></g>
+</svg>
+<ol class="caps">
+<li><p>iOS's main thread runs a <b>run loop</b>: wait for work, handle it, wait again. Android calls it a Looper.</p></li>
+<li><p>Work waits in the <b>main queue</b>, one task at a time: touches, timers, your tasks. Android's MessageQueue.</p></li>
+<li><p>A background thread loads an image. <i>Predict: how does the result reach the screen?</i></p></li>
+<li><p>It's added to the main queue with <code>DispatchQueue.main.async</code>, and the main thread shows it: UI only there.</p></li>
+</ol>

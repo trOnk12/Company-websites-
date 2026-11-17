@@ -13,12 +13,13 @@
       "title": "Module 1: The network under your app",
       "blurb": "Round trips, handshakes, the radio, caching, offline-first data and safe retries.",
       "puzzles": [
-        "00-round-trips-not-bandwidth.md",
-        "01-one-connection-many-requests.md",
-        "02-the-radio-is-the-battery.md",
-        "03-ask-before-you-download.md",
-        "04-the-database-is-the-truth.md",
-        "05-retry-without-charging-twice.md"
+        "00-what-actually-travels.md",
+        "01-round-trips-not-bandwidth.md",
+        "02-one-connection-many-requests.md",
+        "03-the-radio-is-the-battery.md",
+        "04-ask-before-you-download.md",
+        "05-the-database-is-the-truth.md",
+        "06-retry-without-charging-twice.md"
       ]
     }
   ],

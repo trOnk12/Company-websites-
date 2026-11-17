@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Your app's rules are written twice, once in Kotlin for Android and once in Swift for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone has no JVM.">
+  <meta name="description" content="Your app's rules are written twice, once for Android and once for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone can't run Android's kind of code.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="One Kotlin, many machines – Kotlin Multiplatform, from the compiler up – Mateusz Pachulski">
-  <meta property="og:description" content="Your app's rules are written twice, once in Kotlin for Android and once in Swift for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone has no JVM.">
+  <meta property="og:description" content="Your app's rules are written twice, once for Android and once for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone can't run Android's kind of code.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/kmp/00-one-kotlin-many-machines">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -48,14 +48,14 @@
 
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" aria-current="page" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" title="What every target has">1</a></li><li><a href="02-a-promise-and-its-keepers.html" title="A promise and its keepers">2</a></li><li><a href="03-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">3</a></li><li><a href="04-lost-in-translation.html" title="Lost in translation">4</a></li><li><a href="05-two-ways-to-free-memory.html" title="Two ways to free memory">5</a></li><li><a href="06-whose-thread-is-it.html" title="Whose thread is it?">6</a></li><li><a href="07-one-framework-not-two.html" title="One framework, not two">7</a></li><li><a href="08-what-compose-shares.html" title="What Compose actually shares">8</a></li><li><a href="09-one-canvas-on-ios.html" title="One canvas on iOS">9</a></li></ol></nav>
-      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Start here · 1 of 10</p>
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" aria-current="page" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
+      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Start here · 1 of 16</p>
       <h1>One Kotlin, many machines</h1>
-      <p class="lede">Your app's rules are written twice, once in Kotlin for Android and once in Swift for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone has no JVM.</p>
-
+      <p class="lede">Your app's rules are written twice, once for Android and once for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone can't run Android's kind of code.</p>
+      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/08-whats-inside-the-apk.html"><b>ART</b></a> <span class="small">Android from the foundation, puzzle 8: What's inside the APK</span></li><li><a href="../android/08-whats-inside-the-apk.html"><b>DEX</b></a> <span class="small">Android from the foundation, puzzle 8: What's inside the APK</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Your login rules, your price calculation, your sync logic: in most teams they're written twice, in Kotlin for Android and in Swift for iOS. Every bug gets fixed twice, and the two copies drift apart. Kotlin runs on the JVM, and an iPhone has no JVM. So how can one Kotlin file run on both?</p>
+<p>Your login rules, your price calculation, your sync logic: in most teams they're written twice, in Kotlin for Android and in Apple's own language for iOS. Every bug gets fixed twice, and the two copies drift apart. Kotlin runs on the JVM, the Java Virtual Machine, a program that runs compiled Kotlin and Java on any computer, and an iPhone has no JVM. So how can one Kotlin file run on both?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -112,7 +112,7 @@
 <legend>What's the difference between bytecode and native code?</legend>
 <input type="radio" name="q-00-one-kotlin-many-machines-3" id="q-00-one-kotlin-many-machines-3-1" data-ok><label for="q-00-one-kotlin-many-machines-3-1">Bytecode is for a virtual machine; native code runs directly on the CPU</label>
 <input type="radio" name="q-00-one-kotlin-many-machines-3" id="q-00-one-kotlin-many-machines-3-2"><label for="q-00-one-kotlin-many-machines-3-2">Native code is bytecode that has been compressed</label>
-<input type="radio" name="q-00-one-kotlin-many-machines-3" id="q-00-one-kotlin-many-machines-3-3"><label for="q-00-one-kotlin-many-machines-3-3">Bytecode is Kotlin's code; native code is Swift's code</label>
+<input type="radio" name="q-00-one-kotlin-many-machines-3" id="q-00-one-kotlin-many-machines-3-3"><label for="q-00-one-kotlin-many-machines-3-3">Bytecode is Kotlin's code; native code is Apple's own code</label>
 <p class="fb ok opt-1"><b>Right.</b> What runs it: a virtual machine, or the CPU itself.</p>
 <p class="fb no opt-2"><b>Not quite.</b> They're different instructions for different machines, not a smaller copy. <label class="show-me" for="st-targets-3" data-goto="st-targets">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Both come from your Kotlin; they differ in what runs them. <label class="show-me" for="st-targets-4" data-goto="st-targets">Show me step 4 again ↑</label></p>

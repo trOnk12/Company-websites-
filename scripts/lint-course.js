@@ -178,7 +178,41 @@ function vocabulary(id, puzzles) {
     });
     return { t, in: Number(v.in), kind: v.kind || 'concept', rx, names };
   });
-  const known = new Set([...g.baseline.words, ...terms.flatMap(t => t.names)].map(w => w.toLowerCase()));
+  // Terms another course teaches: listed under "from" with the course and puzzle, so the dependency is explicit
+  // (the puzzle page links to it). A baseline word that another course teaches is a hidden gap: an error.
+  const taughtElsewhere = {};
+  // The course this one declares it builds on (course.json "assumes") is fair game: its overview links it.
+  const meta = JSON.parse(fs.readFileSync(path.join(SRC, id, 'course.json'), 'utf8'));
+  const assumed = meta.assumes ? (meta.assumes.href.match(/\.\.\/([a-z0-9-]+)\//) || [])[1] : null;
+  const key = nm => /[A-Z]/.test(nm) ? nm : nm.toLowerCase();
+  const assumedWords = [];
+  for (const other of fs.readdirSync(SRC).filter(d => d !== id && d !== assumed && fs.existsSync(path.join(SRC, d, 'glossary.json')))) {
+    const og = JSON.parse(fs.readFileSync(path.join(SRC, other, 'glossary.json'), 'utf8'));
+    for (const [ot, ov] of Object.entries(og.terms)) for (const nm of [ot, ...(ov.aliases || [])]) taughtElsewhere[key(nm)] = taughtElsewhere[key(nm)] || { course: other, in: Number(ov.in), term: ot };
+  }
+  if (assumed && fs.existsSync(path.join(SRC, assumed, 'glossary.json'))) {
+    const ag = JSON.parse(fs.readFileSync(path.join(SRC, assumed, 'glossary.json'), 'utf8'));
+    for (const [at2, av] of Object.entries(ag.terms)) for (const nm of [at2, ...(av.aliases || [])]) assumedWords.push(nm);
+  }
+  const from = g.from || {};
+  for (const [ft, fv] of Object.entries(from)) {
+    const og = path.join(SRC, fv.course || '', 'glossary.json');
+    const ok = fs.existsSync(og) && Object.entries(JSON.parse(fs.readFileSync(og, 'utf8')).terms).some(([ot, ov]) => [ot, ...(ov.aliases || [])].some(x => x.toLowerCase() === ft.toLowerCase()) && Number(ov.in) === Number(fv.in));
+    if (!ok) problems.push(`${id}: "from" says ${fv.course} puzzle ${fv.in} teaches "${ft}", but that course's glossary doesn't`);
+  }
+  // baseline.homonyms: everyday words that another course uses in a narrower sense (a BLE "server", an Objective-C
+  // "header"). Listing one says: here it means the everyday thing.
+  const homonyms = new Set((g.baseline.homonyms || []).map(w => w.toLowerCase()));
+  for (const w of g.baseline.words) {
+    if (homonyms.has(w.toLowerCase())) continue;
+    const hit = taughtElsewhere[key(w)];
+    if (hit && !from[w] && !g.terms[w]) problems.push(`${id}: baseline word "${w}" is a concept the ${hit.course} course teaches (puzzle ${hit.in}): list it under "from" so the page links it, or teach it here`);
+  }
+  // Jargon that always needs teaching, whatever the course: never allowed in the baseline.
+  const jf = path.join(SRC, 'jargon.json');
+  const jargon = fs.existsSync(jf) ? JSON.parse(fs.readFileSync(jf, 'utf8')).words : [];
+  for (const w of g.baseline.words) if (!homonyms.has(w.toLowerCase()) && !assumedWords.some(a => a.toLowerCase() === w.toLowerCase()) && jargon.some(j => j.toLowerCase() === w.toLowerCase())) problems.push(`${id}: baseline word "${w}" is jargon: teach it in a puzzle (glossary "terms") or link it (glossary "from")`);
+  const known = new Set([...g.baseline.words, ...assumedWords, ...terms.flatMap(t => t.names), ...Object.keys(from), ...Object.values(from).flatMap(v => v.aliases || [])].map(w => w.toLowerCase()));
   const norm = c => c.replace(/\(.*?\)/g, '()').replace(/\s*\{.*$/, '').trim();
   const isKnown = c => { const n = norm(c).toLowerCase(); return [n, n.replace(/\(\)$/, ''), n + '()', n.replace(/s$/, '')].some(x => known.has(x)); };
 
@@ -211,6 +245,13 @@ function vocabulary(id, puzzles) {
       }
     }
     for (const u of unknown) at(`unknown term ${u}: add it to glossary.json with the puzzle that teaches it, or say it in plain words`);
+    // E: jargon in plain words ("heap", "roots", "closure") still needs teaching or a link.
+    for (const j of jargon) {
+      if (known.has(j.toLowerCase())) continue;
+      const rx = new RegExp(`(?<![\\w-])${esc(j)}s?(?![\\w-])`, 'i');
+      const hit = segs.find(s => rx.test(s.text));
+      if (hit) at(`uses "${j}" (${hit.where}) but never teaches it: add it to glossary "terms" (taught here or earlier) or "from" (another course's puzzle)`);
+    }
     // E: words a beginner misreads or that hide who acts (glossary.json → avoid).
     for (const [phrase, fix] of Object.entries((g.avoid || {}).phrases || {})) {
       const rx = new RegExp(`(?<![\\w-])${esc(phrase)}(?![\\w-])`, 'i');

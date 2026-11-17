@@ -313,7 +313,7 @@ function renderIndex(all) {
     title: 'Music: sound recipes for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski',
     description: intro.meta.summary || 'Sound recipes with exact settings.',
     canonical: `${L.SITE}/music/`,
-    base: '../', current: 'music', feed: false, footer,
+    base: '../', current: 'music', feed: false, footer, script: 'music.js',
     body: `    <article class="music music-index course-top wrap">
       ${DEFS}
       <p class="eyebrow">Music, my hobby</p>

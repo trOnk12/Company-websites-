@@ -1,13 +1,13 @@
 ---
 title: What the collector costs
-short: ART's garbage collector
-summary: "The GC paused my app" was true on old Android. Modern ART collectors barely pause. Here's how ART allocates and collects, and the way it can still cost you frames.
+short: How ART frees memory
+summary: "Freeing memory paused my app" was true on old Android. Modern ART collectors barely pause. Here's how ART allocates and collects, and the way it can still cost you frames.
 takeaway: Each thread allocates from its own TLAB by bumping a pointer, with no lock. ART's Concurrent Copying collector moves live objects while your threads keep running, with one small pause that doesn't grow with the heap, and since Android 10 it mostly runs cheap young GCs. What still costs frames is allocation churn: the collector's threads compete for CPUs, and an app that allocates faster than they free must wait.
 ---
 
 ## The problem
 
-Your list allocates a few new objects per row: a `StringBuilder` for the title, a formatted date, a list for the tags. Someone on your team says "allocations cause GC pauses, and GC pauses cause jank". Is that still true? What does the collector actually do while you scroll?
+Your list allocates a few new objects per row: a `StringBuilder` for the title, a formatted date, a list for the tags. Someone on your team says the **garbage collector** (GC for short: the part of ART that finds objects nobody uses and frees their memory) "pauses the app when you allocate, and pauses cause jank". Is that still true? What does the collector actually do while you scroll?
 
 ## See it
 
@@ -16,7 +16,7 @@ Your list allocates a few new objects per row: a `StringBuilder` for the title, 
 
 ## The building block
 
-Start with allocating. With ART's default collector, each thread gets its own **TLAB**, a thread-local slice of the heap. Allocating an object there is a pointer bump: move a marker forward by the object's size. No lock, no searching for space. Creating an object is cheap.
+Start with allocating. With ART's default collector, each thread gets its own **TLAB**, a thread-local slice of the **heap**, the memory where objects live. Allocating an object there is a pointer bump: move a marker forward by the object's size. No lock, no searching for space. Creating an object is cheap.
 
 Collecting is the garbage collector's job: find the objects nothing can reach any more, and free their memory. Since Android 8, ART's default has been **Concurrent Copying** (newer devices may run its successor, Concurrent Mark-Compact, with the same low-pause idea): it copies the objects that are still alive into fresh space while your threads keep running, so live objects end up packed together, with no gaps, without stopping your app. There's one small pause per collection, and it doesn't grow with the size of the heap: ART's own docs show an average of about 2 ms.
 

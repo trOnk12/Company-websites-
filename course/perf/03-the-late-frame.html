@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="The Android course showed that a frame must be ready before the next vsync. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
+  <meta name="description" content="The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="The late frame – Performance, under the hood – Mateusz Pachulski">
-  <meta property="og:description" content="The Android course showed that a frame must be ready before the next vsync. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
+  <meta property="og:description" content="The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/perf/03-the-late-frame">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,7 +51,7 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-photo-or-a-diary.html" class="done" title="A photo or a diary">0</a></li><li><a href="01-reading-the-flames.html" class="done" title="Reading the flames">1</a></li><li><a href="02-slow-is-not-busy.html" class="done" title="Slow isn't always busy">2</a></li><li><a href="03-the-late-frame.html" aria-current="page" title="The late frame">3</a></li><li><a href="04-what-the-collector-costs.html" title="What the collector costs">4</a></li><li><a href="05-what-a-heap-dump-proves.html" title="What a heap dump proves">5</a></li></ol></nav>
       <p class="eyebrow">Performance, under the hood · Puzzle 3 · 4 of 6</p>
       <h1>The late frame</h1>
-      <p class="lede">The Android course showed that a frame must be ready before the next vsync. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.</p>
+      <p class="lede">The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.</p>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="2"><details><summary><a href="02-slow-is-not-busy.html">Puzzle 2: Slow isn't always busy</a></summary><p>A system trace shows each thread's state as the kernel sees it: Running on a CPU, Runnable and waiting for one, Sleeping while blocked on a lock or a reply, or in Uninterruptible Sleep waiting for disk I/O. A slow span that's mostly Running needs faster code; mostly Sleeping or Uninterruptible Sleep, it's waiting on something else; mostly Runnable, other threads have the CPUs.</p></details></li></ul>
@@ -83,7 +83,7 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>In the Android course you saw a frame's work: the main thread measures, lays out and draws, the RenderThread hands it to the GPU, and the result must be ready for the next vsync. Since Android 12, Perfetto's <b>FrameTimeline</b> draws that contract for each frame, as two slices under your app:</p>
+<p>In the Android course you saw a frame's work: the main thread measures, lays out and draws, the RenderThread hands it to the GPU, and the result must be ready for the next <b>vsync</b>, the display's signal that it's about to show a new frame. Since Android 12, Perfetto's <b>FrameTimeline</b> draws that contract for each frame, as two slices under your app:</p>
 <ul><li><b>Expected Timeline</b>: the window the app was given for this frame. It starts when the Choreographer callback was scheduled; its end is the frame's <b>deadline</b>.</li><li><b>Actual Timeline</b>: what really happened. It starts when <code>Choreographer#doFrame</code> started running and ends at whichever came later: the frame being posted to SurfaceFlinger (the RenderThread hands the finished frame over), or the GPU finishing.</li></ul>
 <p>When Actual ends after the deadline, the frame is janky, and FrameTimeline labels whose fault it was. &quot;App Deadline Missed&quot; means your app ran longer than expected. Other labels blame SurfaceFlinger or the display, and &quot;Buffer Stuffing&quot; means your app queued frames faster than they could be shown.</p>
 <p>Notice that the GPU counts. A frame whose main thread finished early can still be late if the GPU work was too heavy.</p>
@@ -130,7 +130,7 @@
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-slow-is-not-busy.html">← Puzzle 2</a>
-        <a class="button primary" href="04-what-the-collector-costs.html">Puzzle 4: ART's garbage collector →</a>
+        <a class="button primary" href="04-what-the-collector-costs.html">Puzzle 4: How ART frees memory →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20The%20late%20frame&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>

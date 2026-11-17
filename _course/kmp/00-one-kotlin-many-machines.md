@@ -1,13 +1,13 @@
 ---
 title: One Kotlin, many machines
 short: Compiler and targets
-summary: Your app's rules are written twice, once in Kotlin for Android and once in Swift for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone has no JVM.
+summary: Your app's rules are written twice, once for Android and once for iOS. Here's how one Kotlin file ends up running on both, even though an iPhone can't run Android's kind of code.
 takeaway: The Kotlin compiler has one front end that reads your code and one back end per target. For Android it produces bytecode for a virtual machine; for iOS, Kotlin/Native produces native code that runs directly on the CPU.
 ---
 
 ## The problem
 
-Your login rules, your price calculation, your sync logic: in most teams they're written twice, in Kotlin for Android and in Swift for iOS. Every bug gets fixed twice, and the two copies drift apart. Kotlin runs on the JVM, and an iPhone has no JVM. So how can one Kotlin file run on both?
+Your login rules, your price calculation, your sync logic: in most teams they're written twice, in Kotlin for Android and in Apple's own language for iOS. Every bug gets fixed twice, and the two copies drift apart. Kotlin runs on the JVM, the Java Virtual Machine, a program that runs compiled Kotlin and Java on any computer, and an iPhone has no JVM. So how can one Kotlin file run on both?
 
 ## See it
 
@@ -32,7 +32,7 @@ One recipe, two kitchens. A head chef reads and checks the recipe once (the fron
 
 - Your shared Kotlin already runs on Android and iOS. You add a desktop target. What happens to the shared code?::*It stays the same, and the compiler adds another back end for desktop||You rewrite it in a desktop language, then share the tests >> The shared Kotlin is compiled again, by another back end. Nothing is rewritten. >> s4||It has to be checked again by a new front end for desktop >> There's one front end for every target; only the back end differs. >> s2::One front end, one back end per target.
 - Why can't an iPhone just run the Android bytecode?::*Because an iPhone has no virtual machine to run bytecode||Because Apple's CPUs are too slow to run bytecode in time >> Speed isn't the issue: bytecode needs a virtual machine, and iOS doesn't have one. >> s3::Bytecode needs a virtual machine; native code needs only the CPU.
-- What's the difference between bytecode and native code?::*Bytecode is for a virtual machine; native code runs directly on the CPU||Bytecode is Kotlin's code; native code is Swift's code >> Both come from your Kotlin; they differ in what runs them. >> s4||Native code is bytecode that has been compressed >> They're different instructions for different machines, not a smaller copy. >> s3::What runs it: a virtual machine, or the CPU itself.
+- What's the difference between bytecode and native code?::*Bytecode is for a virtual machine; native code runs directly on the CPU||Bytecode is Kotlin's code; native code is Apple's own code >> Both come from your Kotlin; they differ in what runs them. >> s4||Native code is bytecode that has been compressed >> They're different instructions for different machines, not a smaller copy. >> s3::What runs it: a virtual machine, or the CPU itself.
 
 ## Sources
 

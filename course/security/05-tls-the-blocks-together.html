@@ -56,7 +56,7 @@
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="4"><details><summary><a href="04-proof-of-who-you-are.html">Puzzle 4: Proof of who you are</a></summary><p>A key pair is a private key the owner keeps and a public key anyone may have. Signing locks a digest with the private key; anyone can check it with the public key, and nobody can fake it without the private key. A certificate is a server's name and public key, signed by a certificate authority your phone already trusts.</p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 5 puzzles: <a href="00-anyone-on-the-line.html">0</a> → <a href="01-one-key-for-both.html">1</a> → <a href="02-a-secret-agreed-in-public.html">2</a> → <a href="03-a-fingerprint-for-data.html">3</a> → <a href="04-proof-of-who-you-are.html">4</a>. Know them already? Start here.</p>
-      </aside>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../sysdesign/01-round-trips-not-bandwidth.html"><b>round trip</b></a> <span class="small">Mobile system design, from a packet to an app, puzzle 1: Round trips, not bandwidth</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>Puzzle 0 named three things a machine in the middle can do: read, change, pretend. Puzzles 1 to 4 each built one block: symmetric encryption, key exchange, hashes, signatures and certificates. Your app opens an https address and sends a request a moment later. How do all those blocks fit into that moment?</p>

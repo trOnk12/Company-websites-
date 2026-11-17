@@ -20,7 +20,7 @@ An **on-device model** runs on the phone itself. On Android, Google's Gemini Nan
 
 What you gain:
 
-- No network: it works in a tunnel, and there's no round trip (puzzle 0 of the Mobile system design course).
+- No network: it works in a tunnel, and there's no round trip (puzzle 1 of the Mobile system design course).
 - Privacy: the text never leaves the phone.
 - No per-request bill: there's no API to pay for each call.
 

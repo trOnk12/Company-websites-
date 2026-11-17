@@ -13,5 +13,5 @@
 <li><p>Your coroutine does its network work on <code>Dispatchers.IO</code>: one of Kotlin's own worker threads.</p></li>
 <li><p>It resumes on <code>Dispatchers.Main</code>. On iOS that's backed by the <b>main queue</b>, so it runs on the main thread, like Android's Looper.</p></li>
 <li><p>The Swift task waiting for it is cancelled: the user left. But the plain bridge can't pass <b>cancellation</b> across, and the coroutine keeps running. <i>Predict: what stops it?</i></p></li>
-<li><p>Owning the scope: the shared view model, whose coroutine is still on <code>Dispatchers.IO</code>, exposes <code>close()</code>, the Swift side calls it when the screen goes away, and the coroutine is cancelled.</p></li>
+<li><p>Owning the <b>scope</b>: the shared view model, whose coroutine is still on <code>Dispatchers.IO</code>, exposes <code>close()</code>, the Swift side calls it when the screen goes away, and the coroutine is cancelled.</p></li>
 </ol>

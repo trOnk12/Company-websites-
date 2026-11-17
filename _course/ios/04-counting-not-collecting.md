@@ -1,13 +1,13 @@
 ---
 title: Counting, not collecting
 short: ARC and reference cycles
-summary: On Android, a garbage collector finds objects nothing uses anymore and frees them, cycles included. Swift has no garbage collector. Here's what it does instead, and the leak it can't see.
+summary: On Android, objects nothing uses anymore are found and freed for you, cycles included. Swift doesn't work that way. Here's what it does instead, and the leak it can't see.
 takeaway: ARC counts the strong references to each object and frees it the moment the count drops to zero. Two objects holding strong references to each other never reach zero: a strong reference cycle, which leaks. Make one side a weak reference, which doesn't keep the object alive.
 ---
 
 ## The problem
 
-On Android, you rarely think about freeing memory: the garbage collector, from time to time, finds every object nothing can reach anymore and frees it, even two objects that point at each other. Swift on iOS has no garbage collector. So who frees your objects, when, and is there anything it misses?
+On Android, you rarely think about freeing memory: the **garbage collector**, from time to time, finds every object nothing can reach anymore and frees it, even two objects that point at each other. Swift on iOS has no garbage collector. So who frees your objects, when, and is there anything it misses?
 
 ## See it
 

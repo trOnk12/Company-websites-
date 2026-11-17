@@ -1,0 +1,16 @@
+<!-- label: A closure stored by self and holding self is a cycle; [weak self] breaks it -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="wk-t"><title id="wk-t">A screen stores a closure; the closure holds the screen strongly; the user leaves and both stay alive; with weak self the closure's arrow stops counting, the screen is freed, deinit runs, and the closure's self becomes nil</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="80" y="100" width="150" height="60" rx="8"/><text class="d-a" x="155" y="135" text-anchor="middle">Screen</text><rect class="d-band" x="390" y="100" width="150" height="60" rx="8"/><text class="d-a" x="465" y="135" text-anchor="middle">closure</text><x-arrow tone="ink" d="M234,115 L386,115"/></g>
+<x-arrow class="step s2 hide-4" tone="red" d="M386,150 L234,150"/>
+<g class="step only-2" data-pulse="2"><text class="d-r" x="310" y="210" text-anchor="middle">user left: never freed</text></g>
+<g class="step s3" data-pulse="3"><x-arrow tone="path" d="M386,150 L234,150"/><text class="d-a" x="310" y="182" text-anchor="middle">[weak self]</text></g>
+<g class="step s4" data-pulse="4"><path class="d-red" d="M100,110 L210,150 M210,110 L100,150"/><text class="d-a" x="155" y="210" text-anchor="middle">deinit runs</text><text class="d-a" x="465" y="210" text-anchor="middle">self is now nil</text></g>
+<g class="step s1" data-move="1:155,260 2:155,260 3:310,260 4:465,260"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>A screen stores a <b>closure</b> that refreshes it every second.</p></li>
+<li><p>The closure uses <code>self</code>, so it holds the screen strongly: a cycle. The user leaves; neither is freed.</p></li>
+<li><p><code>[weak self]</code> makes the closure's link a <b>weak reference</b>: it doesn't count. <i>Predict: what happens when the user leaves now?</i></p></li>
+<li><p>The screen's count reaches zero: it's freed and its <b>deinit</b> runs. Inside the closure, <code>self</code> is now nil.</p></li>
+</ol>

@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and dispatchers. Swift has its own version, with one idea Kotlin doesn't have built in.">
+  <meta name="description" content="In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and withContext. Swift has its own version, with one idea Kotlin doesn't have built in.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="The main actor – iOS for Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and dispatchers. Swift has its own version, with one idea Kotlin doesn't have built in.">
+  <meta property="og:description" content="In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and withContext. Swift has its own version, with one idea Kotlin doesn't have built in.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/ios/03-the-main-actor">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,12 +51,12 @@
       <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" class="done" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" class="done" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" class="done" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" aria-current="page" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
       <p class="eyebrow">iOS for Android developers · Puzzle 3 · 4 of 5</p>
       <h1>The main actor</h1>
-      <p class="lede">In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and dispatchers. Swift has its own version, with one idea Kotlin doesn't have built in.</p>
+      <p class="lede">In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and withContext. Swift has its own version, with one idea Kotlin doesn't have built in.</p>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-frozen-not-stopped.html">Puzzle 0: Frozen, not stopped</a></summary><p>An iOS app moves through app states: not running, inactive, active, background, suspended. Seconds after it goes to the background it's suspended: still in memory, running no code. iOS can end a suspended app without running any of your code, so save your state as you enter the background, not at the end.</p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-frozen-not-stopped.html">0</a>. Know them already? Start here.</p>
-      </aside>
+        <ul><li data-block="2"><details><summary><a href="02-queues-not-handlers.html">Puzzle 2: Queues, not handlers</a></summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-frozen-not-stopped.html">0</a> → <a href="01-the-run-loop-is-your-looper.html">1</a> → <a href="02-queues-not-handlers.html">2</a>. Know them already? Start here.</p>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/04-an-ios-app-in-one-puzzle.html"><b>Swift</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 4: An iOS app in one puzzle</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>In puzzle 2, the image went to a background queue and back to the main queue, by hand, in nested blocks. In Kotlin you'd write it straight down, wrapping the slow part in withContext(Dispatchers.IO), and the coroutine does the hopping. Does Swift have that, and how does it keep screen work on the main thread?</p>

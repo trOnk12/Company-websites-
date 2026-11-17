@@ -128,6 +128,13 @@ Give it the puzzle files and diagrams, ask it to flag every wrong, overstated or
 that each right answer is right and each wrong answer wrong, and to return exact current text plus a
 replacement. The learner passes find confusion; only this pass finds a confident, clear, wrong sentence.
 
+## Pass 2e: the gap hunt (strict learner, whole course)
+
+Run once per module and again for the whole course. Give a fresh agent the course's real learner profile, including
+which other courses they have NOT taken, and ask for: every concept used before it's explained (with the exact phrase),
+every leap, every missing puzzle between two puzzles (title + core idea + position), and overloaded puzzles. Missing
+puzzles get written, not footnoted. Add any slipped word to `_course/jargon.json`.
+
 ## Pass bar
 
 A puzzle ships only when the lint is clean, its diagram scores at least 8/10 in the picture review, **and** the fresh learner scores it at least 8/10 for

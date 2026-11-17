@@ -1,0 +1,18 @@
+<!-- label: A composable describes the UI; when state changes, it runs again -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="cp-t"><title id="cp-t">A composable function Greeting takes a name and describes a text; the screen shows Hello Ana; the name changes to Ben; Compose calls Greeting again and the screen shows Hello Ben; the compiler plugin added the bookkeeping that makes this possible</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="40" y="70" width="230" height="90" rx="8"/><text class="d-tiny" x="155" y="96" text-anchor="middle">@Composable Greeting(name)</text><text class="d-a" x="155" y="130" text-anchor="middle">Text("Hello, $name")</text></g>
+<x-phone class="step s1" x="440" y="60" w="130" h="200" label="screen"/>
+<g class="step s1 hide-3"><text class="d-a" x="505" y="160" text-anchor="middle">Hello, Ana</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="80" y="210" width="150" height="40" rx="6"/><text class="d-a" x="155" y="236" text-anchor="middle">state: Ben</text></g>
+<x-arrow class="step s3" tone="acc" d="M155,206 L155,166"/>
+<g class="step s3" data-pulse="3"><text class="d-a" x="505" y="160" text-anchor="middle">Hello, Ben</text><text class="d-a" x="320" y="300" text-anchor="middle">recomposition: called again</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-dash" x="30" y="60" width="250" height="110" rx="10"/><text class="d-tiny" x="155" y="190" text-anchor="middle">compiler plugin's bookkeeping</text></g>
+<g class="step s1" data-move="1:155,180 2:155,270 3:505,200 4:155,40"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>A <b>composable</b>: a function that describes the UI for its data. For "Ana", the screen shows "Hello, Ana".</p></li>
+<li><p>The name changes to "Ben". It's <b>state</b>, kept across calls with <b>remember</b>.</p></li>
+<li><p>Compose calls <code>Greeting</code> again with "Ben": <b>recomposition</b>. <i>Predict: how does it know what to redo?</i></p></li>
+<li><p>The <b>Compose compiler plugin</b> rewrote the function with hidden bookkeeping, so the runtime redoes only what changed.</p></li>
+</ol>

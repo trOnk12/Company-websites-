@@ -146,7 +146,25 @@ function diagramOf(p) {
 }
 
 // "Builds on": the puzzles this one stands on, each with what it gives you, and the shortest path from zero.
+// Terms this puzzle borrows from other courses (glossary "from"), linked to the puzzle that teaches each.
+function fromOther(course, p) {
+  const from = (course.glossary && course.glossary.from) || {};
+  const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const used = Object.entries(from).filter(([t, v]) => [t, ...(v.aliases || [])].some(nm => new RegExp(`(?<![\\w-])${esc(nm)}s?(?![\\w-])`, /[A-Z]/.test(nm) ? '' : 'i').test(p.body)));
+  if (!used.length) return '';
+  const items = used.map(([t, v]) => {
+    let href = `../${v.course}/`, title = v.course;
+    try { const oc = loadCourse(v.course); const op = oc.puzzles[Number(v.in)]; href = `../${v.course}/${op.slug}.html`; title = `${oc.meta.title}, puzzle ${v.in}: ${op.meta.title}`; } catch {}
+    return `<li><a href="${href}"><b>${L.esc(t)}</b></a> <span class="small">${L.esc(title)}</span></li>`;
+  }).join('');
+  return `      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul>${items}</ul></aside>`;
+}
+
 function buildsOn(course, p) {
+  return buildsOnHere(course, p) + fromOther(course, p);
+}
+
+function buildsOnHere(course, p) {
   const b = blocks(course.id);
   const need = b[p.n] || [];
   const assumes = course.meta.assumes;

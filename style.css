@@ -696,3 +696,40 @@ body:has(article.music) {
 .music .choice.on::after { border-color: var(--pink); }
 .music .setting.ticked::after { color: var(--pink); }
 .music .tick-count { color: var(--pink); }
+
+/* ── Music typography, take 3: handwriting only where a hand would write; everything you read at length is clean ── */
+body:has(article.music) { --type: "JetBrains Mono", ui-monospace, monospace; font-size: 1.0625rem; }
+.music h1, .music h1.marker, .music .jcard h1 { font-family: var(--hand); font-weight: 700; letter-spacing: 0; line-height: 1; }
+.music h1.marker { font-size: clamp(3.2rem, 2.2rem + 4.5vw, 5.4rem); }
+.music .jcard h1 { font-size: clamp(2.8rem, 2rem + 3.6vw, 4.4rem); }
+.music h2, .music section > h2 { font-family: var(--hand); font-weight: 700; font-size: clamp(1.9rem, 1.5rem + 1.3vw, 2.5rem); line-height: 1.05; letter-spacing: 0; }
+.music .lede { font-size: 1.15rem; line-height: 1.6; color: #3E3B35; max-width: 40rem; }
+.music p, .music li { line-height: 1.65; }
+.music .eyebrow, .music .eyebrow a { font-family: var(--type); font-size: .8rem; letter-spacing: .04em; }
+.music .setting .control { font-family: var(--type); font-size: .74rem; letter-spacing: .06em; font-weight: 600; }
+.music .setting .why { font-family: var(--sans); font-size: .93rem; line-height: 1.5; color: #4B5A78; }
+.music .setting .value .v, .music .setting .value .text { font-family: var(--hand); font-weight: 600; font-size: 1.5rem; }
+.music .choice { font-family: var(--type); font-size: .78rem; }
+.music #you-got-it-right-when li, .music #if-it-sounds-wrong li { font-family: var(--sans); font-size: 1rem; line-height: 1.55; }
+.music #you-got-it-right-when h2, .music #if-it-sounds-wrong h2 { font-size: 1.9rem; }
+.music .button, .music .pager .button { font-family: var(--hand); font-weight: 700; font-size: 1.3rem; letter-spacing: 0; }
+.c-title { font-family: var(--hand); font-weight: 700; font-size: clamp(1.5rem, 1.2rem + .6vw, 1.8rem); line-height: 1; }
+.c-note { font-family: var(--sans); font-size: .95rem; line-height: 1.5; color: #3E3B35; }
+.c-side, .c-foot { font-family: var(--type); }
+.jcard .side, .jfields dt { font-family: var(--type); }
+.chain li { font-family: var(--type); font-size: .78rem; }
+.recipe-toc ol { font-family: var(--type); }
+.sound-sketch figcaption, .steps-sketch figcaption { font-family: var(--hand); font-weight: 700; font-size: 1.2rem; }
+
+/* Home: a hand-drawn way into the music section, deliberately unlike the site's other buttons */
+.music-button { display: inline-flex; align-items: center; gap: .8rem; margin-top: 1.5rem; padding: .35rem 1.1rem .35rem .4rem; text-decoration: none; color: #1D1C1A;
+  border: 2px solid #1D1C1A; border-radius: 255px 14px 225px 16px / 16px 225px 14px 255px; background: #FFFDF7; box-shadow: 4px 4px 0 #FFD84D; transform: rotate(-1.2deg); transition: transform .15s, box-shadow .15s; }
+.music-button:hover, .music-button:focus-visible { transform: rotate(0) translateY(-2px); box-shadow: 6px 6px 0 #FF4FA0; }
+.music-doodle { width: 5.2rem; height: auto; flex: none; }
+.music-doodle .sk-h { fill: none; stroke: #1D1C1A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.music-doodle .sk-h.thin { stroke-width: 1.2; }
+.music-doodle .sk-h.note { stroke: #F0412A; stroke-width: 2.4; }
+.music-doodle .wash-home { fill: #8B4DFF; opacity: .22; }
+.mb-text { font-family: "Caveat", "Segoe Print", cursive; font-weight: 700; font-size: 1.45rem; line-height: 1.1; }
+.mb-kicker { display: block; font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 400; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: #6A49B5; }
+@media (prefers-reduced-motion: reduce) { .music-button { transition: none; } }

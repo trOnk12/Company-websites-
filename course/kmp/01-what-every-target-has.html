@@ -48,8 +48,8 @@
 
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="1" data-prev="00-one-kotlin-many-machines.html" data-prev-title="One Kotlin, many machines">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" class="done" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" aria-current="page" title="What every target has">1</a></li><li><a href="02-a-promise-and-its-keepers.html" title="A promise and its keepers">2</a></li><li><a href="03-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">3</a></li><li><a href="04-lost-in-translation.html" title="Lost in translation">4</a></li><li><a href="05-two-ways-to-free-memory.html" title="Two ways to free memory">5</a></li><li><a href="06-whose-thread-is-it.html" title="Whose thread is it?">6</a></li><li><a href="07-one-framework-not-two.html" title="One framework, not two">7</a></li><li><a href="08-what-compose-shares.html" title="What Compose actually shares">8</a></li><li><a href="09-one-canvas-on-ios.html" title="One canvas on iOS">9</a></li></ol></nav>
-      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Puzzle 1 · 2 of 10</p>
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" class="done" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" aria-current="page" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
+      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Puzzle 1 · 2 of 16</p>
       <h1>What every target has</h1>
       <p class="lede">In puzzle 0, one Kotlin file became bytecode and native code. But some code only makes sense on one platform. Here's how a project says which code goes where.</p>
       <aside class="builds-on" aria-labelledby="builds-on-1">
@@ -118,7 +118,7 @@
 <legend>What's the difference between <code>commonMain</code> and <code>iosMain</code>?</legend>
 <input type="radio" name="q-01-what-every-target-has-3" id="q-01-what-every-target-has-3-1"><label for="q-01-what-every-target-has-3-1"><code>commonMain</code> is for logic; <code>iosMain</code> is for screens</label>
 <input type="radio" name="q-01-what-every-target-has-3" id="q-01-what-every-target-has-3-2" data-ok><label for="q-01-what-every-target-has-3-2"><code>commonMain</code>: every target. <code>iosMain</code>: only iOS, with Apple's APIs</label>
-<input type="radio" name="q-01-what-every-target-has-3" id="q-01-what-every-target-has-3-3"><label for="q-01-what-every-target-has-3-3"><code>iosMain</code> is written in Swift; <code>commonMain</code> in Kotlin</label>
+<input type="radio" name="q-01-what-every-target-has-3" id="q-01-what-every-target-has-3-3"><label for="q-01-what-every-target-has-3-3"><code>iosMain</code> is written in Apple's own language; <code>commonMain</code> in Kotlin</label>
 <p class="fb no opt-1"><b>Not quite.</b> The split is about which targets the code is compiled for, not about logic versus screens. <label class="show-me" for="st-sourcesets-2" data-goto="st-sourcesets">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Which targets a source set is compiled for.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Both are Kotlin; they're compiled for different targets. <label class="show-me" for="st-sourcesets-4" data-goto="st-sourcesets">Show me step 4 again ↑</label></p>
@@ -133,7 +133,7 @@
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-one-kotlin-many-machines.html">← Start</a>
-        <a class="button primary" href="02-a-promise-and-its-keepers.html">Puzzle 2: expect and actual →</a>
+        <a class="button primary" href="02-how-kotlin-calls-apple.html">Puzzle 2: Platform libraries →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20What%20every%20target%20has&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>

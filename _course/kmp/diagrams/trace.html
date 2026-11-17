@@ -1,0 +1,15 @@
+<!-- label: Tracing frees what roots can't reach; counting frees at zero and misses cycles -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="tr-t"><title id="tr-t">Objects in the heap with references from a root; a tracing collector follows references from the root and frees the unreachable pair that points at each other; reference counting gives each object a count and frees at zero, but the pair keeps each other at 1 forever</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-ink" x="30" y="60" width="90" height="40" rx="6"/><text class="d-inv" x="75" y="86" text-anchor="middle">root</text><rect class="d-hl" x="180" y="60" width="90" height="40" rx="6"/><text class="d-tiny" x="225" y="86" text-anchor="middle">A</text><rect class="d-hl" x="330" y="60" width="90" height="40" rx="6"/><text class="d-tiny" x="375" y="86" text-anchor="middle">B</text><x-arrow tone="ink" d="M124,80 L176,80"/><x-arrow tone="ink" d="M274,80 L326,80"/><rect class="d-band" x="180" y="190" width="90" height="40" rx="6"/><text class="d-tiny" x="225" y="216" text-anchor="middle">C</text><rect class="d-band" x="330" y="190" width="90" height="40" rx="6"/><text class="d-tiny" x="375" y="216" text-anchor="middle">D</text><x-arrow tone="ink" d="M274,200 L326,200"/><x-arrow tone="ink" d="M326,222 L274,222"/></g>
+<g class="step s2" data-move="2:75,130 3:375,130 4:375,130"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+<g class="step only-2" data-pulse="2"><text class="d-a" x="440" y="130">tracing: follow from the root</text></g>
+<g class="step only-3" data-pulse="3"><path class="d-red" d="M190,250 L260,250 M340,250 L410,250"/><text class="d-a" x="300" y="290" text-anchor="middle">C and D unreachable: freed</text></g>
+<g class="step s4" data-pulse="4"><text class="d-r" x="225" y="180" text-anchor="middle">count 1</text><text class="d-r" x="375" y="180" text-anchor="middle">count 1</text><text class="d-r" x="300" y="290" text-anchor="middle">counting: never zero, never freed</text></g>
+</svg>
+<ol class="caps">
+<li><p>Objects in the <b>heap</b>. A <b>root</b> points at A, A at B. C and D point only at each other.</p></li>
+<li><p>A <b>tracing GC</b> starts at the roots and follows every reference: it reaches A and B.</p></li>
+<li><p>C and D, a <b>cycle</b> pointing only at each other, were never reached: both are freed. <i>Predict: what does counting do with C and D?</i></p></li>
+<li><p><b>Reference counting</b> sees each with one <b>strong reference</b>: count 1, forever. The <b>cycle</b> is never freed.</p></li>
+</ol>

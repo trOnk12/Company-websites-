@@ -7,30 +7,42 @@
   "modules": [
     {
       "title": "Module 1: One codebase, two worlds",
-      "blurb": "From one source file to two kinds of machine code, and how Swift sees what you built.",
+      "blurb": "From one source file to two kinds of machine code, how Kotlin reaches Apple's code, what an iOS app is, and how Swift sees what you built.",
       "puzzles": [
         "00-one-kotlin-many-machines.md",
         "01-what-every-target-has.md",
-        "02-a-promise-and-its-keepers.md",
-        "03-how-swift-sees-your-kotlin.md",
-        "04-lost-in-translation.md"
+        "02-how-kotlin-calls-apple.md",
+        "03-a-promise-and-its-keepers.md",
+        "04-an-ios-app-in-one-puzzle.md",
+        "05-how-swift-sees-your-kotlin.md",
+        "06-lost-in-translation.md"
       ]
     },
     {
-      "title": "Module 2: Living on iOS, and sharing the UI",
-      "blurb": "Memory, threads and shipping on iOS; then what Compose Multiplatform shares and how it draws there.",
+      "title": "Module 2: Living on iOS",
+      "blurb": "How memory is freed on each side and where that breaks, the main thread on iOS, coroutines there, and shipping one framework.",
       "puzzles": [
-        "05-two-ways-to-free-memory.md",
-        "06-whose-thread-is-it.md",
-        "07-one-framework-not-two.md",
-        "08-what-compose-shares.md",
-        "09-one-canvas-on-ios.md"
+        "07-counting-or-tracing.md",
+        "08-weak-references-and-closures.md",
+        "09-two-ways-to-free-memory.md",
+        "10-the-main-thread-on-ios.md",
+        "11-whose-thread-is-it.md",
+        "12-one-framework-not-two.md"
+      ]
+    },
+    {
+      "title": "Module 3: Sharing the UI",
+      "blurb": "Compose from its one core idea, what Compose Multiplatform shares, and how it draws on iOS.",
+      "puzzles": [
+        "13-compose-in-one-puzzle.md",
+        "14-what-compose-shares.md",
+        "15-one-canvas-on-ios.md"
       ]
     }
   ],
   "upcoming": [
     {
-      "title": "Module 3: Compose Multiplatform in practice",
+      "title": "Module 4: Compose Multiplatform in practice",
       "topics": "Touch, scrolling and text input on iOS; accessibility through VoiceOver; interop with SwiftUI and UIKit in both directions; resources and navigation."
     }
   ],

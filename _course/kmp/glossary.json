@@ -33,18 +33,10 @@
    "hideHint()",
    "bytes",
    "byte",
-   "JVM",
-   "iOS",
-   "iPhone",
-   "Swift",
-   "Xcode",
    "Gradle",
    "Android",
-   "ART",
-   "DEX",
    "Kotlin",
    "String",
-   "suspend",
    "Flow",
    "Flow<User>",
    "List",
@@ -63,41 +55,16 @@
    "LoginRules",
    "Box<User>",
    "IOException",
-   "await",
-   "async",
    "throws",
    "if",
    "Flow&lt;User&gt;",
-   "ARC",
-   "GC",
-   "garbage collector",
-   "weak",
-   "weak reference",
-   "Task",
-   "async",
-   "await",
-   "UIKit",
-   "UIView",
-   "Skiko",
-   "SKIE",
-   "closure",
-   "deinit",
-   "XCFramework",
    "api",
-   "Compose",
-   "Jetpack Compose",
-   "@Composable",
-   "remember",
-   "recomposition",
    "Modifier",
    "Text",
    "Column",
    "LazyColumn",
-   "Context",
    "R",
    "LocalContext",
-   "Metal",
-   "scope",
    "CoroutineScope",
    "SupervisorJob",
    "Dispatchers.Default",
@@ -106,21 +73,69 @@
    "close()",
    "URLSession",
    "Info.plist",
-   "VoiceOver",
-   "ViewModel",
    "internal",
    "JetBrains",
    "material3",
-   "UIStackView",
-   "UIButton",
-   "SwiftUI",
-   "Canvas",
-   "MKMapView",
    "Google",
    "clickable",
    "Modifier.semantics",
    "contentDescription",
-   "[weak self]"
+   "iOS",
+   "iPhone",
+   "ViewModel",
+   "Context",
+   "suspend",
+   "Compose",
+   "Jetpack Compose",
+   "platform.",
+   "import platform.UIKit",
+   "UIDevice.currentDevice",
+   "import platform.UIKit.UIDevice",
+   "UIDevice",
+   "IDE",
+   "override",
+   "?",
+   "KMP",
+   "let",
+   "var",
+   "let label = UILabel()",
+   "UILabel",
+   "viewDidLoad",
+   "self",
+   "nil",
+   "self?.refresh()",
+   "DispatchQueue",
+   "DispatchQueue.main.async { }",
+   "imageView.image",
+   "SKIE",
+   "Touchlab",
+   "CoroutineScope",
+   "XML",
+   "textView.text = name",
+   "Greeting",
+   "name",
+   "var count by remember { mutableStateOf(0) }",
+   "mutableStateOf",
+   "UIStackView",
+   "UIButton",
+   "Material",
+   "fun",
+   "reference",
+   "references",
+   "this",
+   "null",
+   "var count by remember",
+   "actor",
+   "actors"
+  ],
+  "homonyms": [
+   "ViewModel",
+   "Context",
+   "suspend",
+   "header",
+   "actor",
+   "actors",
+   "self"
   ]
  },
  "terms": {
@@ -194,33 +209,33 @@
    "aliases": []
   },
   "expect": {
-   "in": "02",
+   "in": "03",
    "def": "A declaration in common code that promises each platform will provide it.",
    "aliases": [
     "expected"
    ]
   },
   "actual": {
-   "in": "02",
+   "in": "03",
    "def": "A platform's implementation of an expect declaration.",
    "aliases": [
     "actuals"
    ]
   },
   "framework": {
-   "in": "03",
+   "in": "02",
    "def": "Apple's package for a library: the compiled code plus a description of its API.",
    "aliases": [
     "frameworks"
    ]
   },
   "Objective-C": {
-   "in": "03",
+   "in": "05",
    "def": "The older language of Apple's platforms, which Swift can call directly.",
    "aliases": []
   },
   "header": {
-   "in": "03",
+   "in": "05",
    "def": "The file that describes a library's API, without its code.",
    "aliases": [
     "headers",
@@ -228,36 +243,39 @@
    ]
   },
   "completion handler": {
-   "in": "04",
+   "in": "06",
    "def": "A function you pass in, called later with the result: Objective-C's way of saying \"later\".",
    "aliases": [
     "completionHandler"
    ]
   },
   "@Throws": {
-   "in": "04",
+   "in": "06",
    "def": "Lists which Kotlin exceptions may cross into Swift as errors.",
    "kind": "code"
   },
   "shared heap": {
-   "in": "05",
+   "in": "09",
    "def": "Kotlin/Native's one pool of objects, reachable from any thread.",
    "aliases": []
   },
   "tracing GC": {
-   "in": "05",
-   "def": "A collector that, from time to time, frees every object it can't reach from the roots.",
+   "in": "07",
+   "def": "A garbage collector that starts from the roots, follows every reference, and frees what it didn't reach.",
    "aliases": [
-    "tracing garbage collector"
+    "tracing garbage collector",
+    "garbage collector",
+    "GC",
+    "garbage collection"
    ]
   },
   "main queue": {
-   "in": "06",
-   "def": "iOS's queue of tasks for the main thread; Dispatchers.Main on iOS is backed by it.",
+   "in": "10",
+   "def": "The line of tasks waiting for iOS's main thread: the MessageQueue's role.",
    "aliases": []
   },
   "cancellation": {
-   "in": "06",
+   "in": "11",
    "def": "Stopping a coroutine or task before it finishes.",
    "aliases": [
     "cancel",
@@ -266,51 +284,221 @@
    ]
   },
   "umbrella framework": {
-   "in": "07",
+   "in": "12",
    "def": "One framework that carries every Kotlin module Swift needs, with one runtime.",
    "aliases": [
     "umbrella"
    ]
   },
   "dead code elimination": {
-   "in": "07",
+   "in": "12",
    "def": "Leaving out compiled code nothing uses, to keep the app small.",
    "aliases": []
   },
   "Compose Multiplatform": {
-   "in": "08",
+   "in": "14",
    "def": "JetBrains' version of Jetpack Compose that runs on Android, iOS, desktop and web.",
    "aliases": []
   },
   "Compose runtime": {
-   "in": "08",
+   "in": "14",
    "def": "The part of Compose that tracks state and decides what to recompose; it knows nothing about pixels.",
    "aliases": []
   },
   "platform layer": {
-   "in": "08",
+   "in": "14",
    "def": "The part written per target: the window, touches, the drawing surface, text input and accessibility.",
    "aliases": []
   },
   "Skia": {
-   "in": "09",
+   "in": "15",
    "def": "A graphics library that draws shapes and text; on iOS, Compose draws with it through Skiko.",
    "aliases": []
   },
   "ComposeUIViewController": {
-   "in": "09",
+   "in": "15",
    "def": "Hosts Compose UI inside an iOS app as one UIKit view controller.",
    "kind": "code"
   },
   "accessibility tree": {
-   "in": "09",
+   "in": "15",
    "def": "The list of on-screen elements, with labels and roles, that VoiceOver reads.",
    "aliases": []
   },
   "UIKitView": {
-   "in": "09",
+   "in": "15",
    "def": "Places a real UIKit view, such as a map, inside a Compose screen.",
    "kind": "code"
+  },
+  "platform library": {
+   "in": "02",
+   "def": "A prebuilt Kotlin binding to a target's native libraries, shipped with Kotlin/Native; on Apple targets, to Apple's frameworks.",
+   "aliases": [
+    "platform libraries"
+   ]
+  },
+  "UIKit": {
+   "in": "02",
+   "def": "Apple's framework for screens: buttons, lists, text.",
+   "aliases": []
+  },
+  "Swift": {
+   "in": "04",
+   "def": "The language of iOS apps, close to Kotlin.",
+   "aliases": []
+  },
+  "Xcode": {
+   "in": "04",
+   "def": "Apple's IDE: builds and runs iOS apps, like Android Studio.",
+   "aliases": []
+  },
+  "view controller": {
+   "in": "04",
+   "def": "Manages one iOS screen's views and reacts to the user, like an Activity.",
+   "aliases": [
+    "view controllers"
+   ]
+  },
+  "SwiftUI": {
+   "in": "04",
+   "def": "Apple's declarative UI framework, the iOS counterpart of Compose.",
+   "aliases": []
+  },
+  "heap": {
+   "in": "07",
+   "def": "The memory area where objects are created and kept.",
+   "aliases": []
+  },
+  "root": {
+   "in": "07",
+   "def": "A reference the program certainly still has, like a local or global variable; tracing starts from the roots.",
+   "aliases": [
+    "roots"
+   ]
+  },
+  "reference counting": {
+   "in": "07",
+   "def": "Freeing each object the moment its count of strong references reaches zero; Swift calls it ARC.",
+   "aliases": [
+    "ARC"
+   ]
+  },
+  "strong reference": {
+   "in": "07",
+   "def": "A reference that keeps its object alive by adding to its count.",
+   "aliases": [
+    "strong references"
+   ]
+  },
+  "cycle": {
+   "in": "07",
+   "def": "Objects that hold each other with strong references, so none of their counts reaches zero.",
+   "aliases": [
+    "cycles",
+    "retain cycle"
+   ]
+  },
+  "deinit": {
+   "in": "08",
+   "def": "Code in a Swift class that runs when an instance is freed.",
+   "kind": "code"
+  },
+  "weak reference": {
+   "in": "08",
+   "def": "A reference that doesn't add to the count, so it can't keep its object alive; it becomes nil when the object is freed.",
+   "aliases": [
+    "weak references",
+    "weak"
+   ]
+  },
+  "closure": {
+   "in": "08",
+   "def": "Swift's lambda: a block of code that holds strong references to what it uses.",
+   "aliases": [
+    "closures"
+   ]
+  },
+  "[weak self]": {
+   "in": "08",
+   "def": "A capture list that makes a closure hold self weakly.",
+   "kind": "code"
+  },
+  "run loop": {
+   "in": "10",
+   "def": "iOS's version of the Looper: keeps the main thread waiting for work and handling it.",
+   "aliases": []
+  },
+  "composable": {
+   "in": "13",
+   "def": "A Kotlin function marked @Composable that describes UI for its data.",
+   "aliases": [
+    "composables",
+    "@Composable"
+   ]
+  },
+  "recomposition": {
+   "in": "13",
+   "def": "Compose calling composables again because their data changed.",
+   "aliases": [
+    "recompose",
+    "recomposes"
+   ]
+  },
+  "state": {
+   "in": "13",
+   "def": "Data whose change makes Compose recompose what uses it.",
+   "aliases": []
+  },
+  "remember": {
+   "in": "13",
+   "def": "Keeps a value across recompositions.",
+   "kind": "code"
+  },
+  "Compose compiler plugin": {
+   "in": "13",
+   "def": "Part of the Kotlin compiler that rewrites composables so the runtime can track what each one showed.",
+   "aliases": [
+    "compiler plugin"
+   ]
+  },
+  "JVM": {
+   "in": "00",
+   "def": "The Java Virtual Machine: a program that runs compiled Kotlin and Java on any computer.",
+   "aliases": [],
+   "kind": "name"
+  },
+  "async function": {
+   "in": "06",
+   "def": "Swift's version of a suspend function, called with await.",
+   "aliases": [
+    "async",
+    "await"
+   ]
+  },
+  "Task": {
+   "in": "11",
+   "def": "Swift's version of a launched coroutine.",
+   "kind": "code"
+  },
+  "scope": {
+   "in": "11",
+   "def": "A CoroutineScope: the owner of a group of coroutines; cancelling it cancels them all.",
+   "aliases": []
+  },
+  "XCFramework": {
+   "in": "12",
+   "def": "One bundle holding a framework built for every Apple device and simulator.",
+   "aliases": []
+  },
+  "VoiceOver": {
+   "in": "14",
+   "def": "iOS's screen reader.",
+   "aliases": []
+  },
+  "semantics": {
+   "in": "15",
+   "def": "What each UI element is and says (role, label), which Compose passes to accessibility tools.",
+   "aliases": []
   }
  },
  "avoid": {
@@ -322,6 +510,57 @@
    "simply": "cut it: it makes a learner who's stuck feel slow",
    "obviously": "cut it",
    "just a": "cut it, or say what it is"
+  }
+ },
+ "from": {
+  "ART": {
+   "course": "android",
+   "in": 8,
+   "aliases": [
+    "Android Runtime"
+   ]
+  },
+  "DEX": {
+   "course": "android",
+   "in": 8
+  },
+  "process": {
+   "course": "android",
+   "in": 0
+  },
+  "main thread": {
+   "course": "android",
+   "in": 2
+  },
+  "Looper": {
+   "course": "android",
+   "in": 14
+  },
+  "message queue": {
+   "course": "android",
+   "in": 14,
+   "aliases": [
+    "MessageQueue"
+   ]
+  },
+  "Handler": {
+   "course": "android",
+   "in": 14,
+   "aliases": [
+    "handler.post { }",
+    "handler.post"
+   ]
+  },
+  "frame": {
+   "course": "android",
+   "in": 15,
+   "aliases": [
+    "frames"
+   ]
+  },
+  "DispatchQueue.main.async": {
+   "course": "ios",
+   "in": 2
   }
  }
 }

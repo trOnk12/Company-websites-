@@ -261,6 +261,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/kmp/check-3</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/kmp/00-one-kotlin-many-machines</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -271,42 +276,72 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/02-a-promise-and-its-keepers</loc>
+    <loc>https://pachulski.dev/course/kmp/02-how-kotlin-calls-apple</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/03-how-swift-sees-your-kotlin</loc>
+    <loc>https://pachulski.dev/course/kmp/03-a-promise-and-its-keepers</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/04-lost-in-translation</loc>
+    <loc>https://pachulski.dev/course/kmp/04-an-ios-app-in-one-puzzle</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/05-two-ways-to-free-memory</loc>
+    <loc>https://pachulski.dev/course/kmp/05-how-swift-sees-your-kotlin</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/06-whose-thread-is-it</loc>
+    <loc>https://pachulski.dev/course/kmp/06-lost-in-translation</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/07-one-framework-not-two</loc>
+    <loc>https://pachulski.dev/course/kmp/07-counting-or-tracing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/08-what-compose-shares</loc>
+    <loc>https://pachulski.dev/course/kmp/08-weak-references-and-closures</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/09-one-canvas-on-ios</loc>
+    <loc>https://pachulski.dev/course/kmp/09-two-ways-to-free-memory</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/10-the-main-thread-on-ios</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/11-whose-thread-is-it</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/12-one-framework-not-two</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/13-compose-in-one-puzzle</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/14-what-compose-shares</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/15-one-canvas-on-ios</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -441,32 +476,37 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/00-round-trips-not-bandwidth</loc>
+    <loc>https://pachulski.dev/course/sysdesign/00-what-actually-travels</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/01-one-connection-many-requests</loc>
+    <loc>https://pachulski.dev/course/sysdesign/01-round-trips-not-bandwidth</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/02-the-radio-is-the-battery</loc>
+    <loc>https://pachulski.dev/course/sysdesign/02-one-connection-many-requests</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/03-ask-before-you-download</loc>
+    <loc>https://pachulski.dev/course/sysdesign/03-the-radio-is-the-battery</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/04-the-database-is-the-truth</loc>
+    <loc>https://pachulski.dev/course/sysdesign/04-ask-before-you-download</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/sysdesign/05-retry-without-charging-twice</loc>
+    <loc>https://pachulski.dev/course/sysdesign/05-the-database-is-the-truth</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/sysdesign/06-retry-without-charging-twice</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
