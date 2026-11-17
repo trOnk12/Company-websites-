@@ -51,7 +51,7 @@ test.describe('Course', () => {
     test(`${id}: puzzle "${slug}" steps through its diagram without JavaScript`, async ({ page }) => {
       await page.goto(`/course/${id}/${slug}.html`);
       // Only the course's own player script, from this site.
-      for (const src of await page.locator('script').evaluateAll(ss => ss.map(s => s.getAttribute('src')))) expect(src).toBe('../course.js');
+      for (const src of await page.locator('script').evaluateAll(ss => ss.map(s => s.getAttribute('src')))) expect(['../progress-index.js', '../course.js']).toContain(src);
       const stepper = page.locator('.stepper');
       await expect(stepper).toHaveCount(1);
       const steps = await stepper.locator('> input').count();
@@ -168,8 +168,8 @@ test.describe('Course', () => {
   test('Continue with Claude writes a tutor prompt from your progress and weak spots', async ({ page }) => {
     await page.goto(`/course/kmp/`);
     await page.evaluate(() => {
-      localStorage.setItem('course:kmp:mastered', '[0,1]');
-      localStorage.setItem('course:kmp:missed', JSON.stringify([{ n: 1, q: 'A weak spot question?' }]));
+      localStorage.setItem('course:kmp:done', JSON.stringify(['one-kotlin-many-machines', 'what-every-target-has']));
+      localStorage.setItem('course:kmp:missed', JSON.stringify([{ s: 'what-every-target-has', q: 'A weak spot question?' }]));
     });
     await page.reload();
     await page.locator('[data-tutor="kmp"]').click();
@@ -189,15 +189,15 @@ test.describe('Course', () => {
     await page.locator('fieldset.quiz').first().locator('input:not([data-ok]) + label').first().click();
     const missed = await page.evaluate(() => JSON.parse(localStorage.getItem('course:kmp:missed') || '[]'));
     expect(missed.length).toBe(1);
-    expect(missed[0].n).toBe(0);
+    expect(missed[0].s).toBe('one-kotlin-many-machines');
   });
 
   test('Your learning shows progress, what to learn next, and weak spots', async ({ page }) => {
     await page.goto('/course/me.html');
     await expect(page.locator('.me-next li')).not.toHaveCount(0);
     await page.evaluate(() => {
-      localStorage.setItem('course:kmp:mastered', '[0,1]');
-      localStorage.setItem('course:kmp:missed', JSON.stringify([{ n: 1, q: 'A weak spot?' }]));
+      localStorage.setItem('course:kmp:done', JSON.stringify(['one-kotlin-many-machines', 'what-every-target-has']));
+      localStorage.setItem('course:kmp:missed', JSON.stringify([{ s: 'what-every-target-has', q: 'A weak spot?' }]));
     });
     await page.reload();
     await expect(page.locator('.me-next li').first()).toContainText(/./);
@@ -232,5 +232,16 @@ test.describe('Course', () => {
       const [scroll, client] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
       expect(scroll, p).toBeLessThanOrEqual(client);
     }
+  });
+
+  test('progress is saved by puzzle name and survives renumbering (old saves migrate)', async ({ page }) => {
+    await page.goto('/course/perf/');
+    await page.evaluate(() => { localStorage.clear(); localStorage.setItem('course:perf:mastered', '[0,1]'); });
+    await page.reload();
+    // Before the perf course grew, puzzles 0 and 1 were "A photo or a diary" and "Reading the flames".
+    await expect(page.locator('.modules li[data-n="2"]')).toHaveAttribute('data-state', 'done');
+    await expect(page.locator('.modules li[data-n="3"]')).toHaveAttribute('data-state', 'done');
+    await expect(page.locator('.modules li[data-n="0"]')).toHaveAttribute('data-state', 'next');
+    expect(JSON.parse(await page.evaluate(() => localStorage.getItem('course:perf:done')))).toEqual(['a-photo-or-a-diary', 'reading-the-flames']);
   });
 });

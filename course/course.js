@@ -123,18 +123,36 @@
   }
 
   // ── Mastery: answer every question correctly to unlock the next puzzle ──────────
+  // Progress is saved by puzzle slug (course:<id>:done), so it survives new puzzles being inserted; callers still
+  // work with puzzle numbers in the current order. Progress saved by number (course:<id>:mastered) is migrated once,
+  // through the course's old order when it has since been renumbered.
+  const IDX = window.COURSE_INDEX || { cur: {}, legacy: {} };
+  const slugs = c => IDX.cur[c] || [];
+  const read = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch { return null; } };
+  const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+  const done = c => {
+    const have = read(`course:${c}:done`);
+    if (Array.isArray(have)) return have;
+    const old = read(`course:${c}:mastered`) || [], order = IDX.legacy[c] || slugs(c);
+    const migrated = [...new Set(old.map(n => order[n]).filter(Boolean))];
+    if (slugs(c).length) write(`course:${c}:done`, migrated);
+    return migrated;
+  };
   const store = {
-    get(course) { try { return JSON.parse(localStorage.getItem(`course:${course}:mastered`) || '[]'); } catch { return []; } },
-    add(course, n) { try { const s = new Set(store.get(course)); s.add(n); localStorage.setItem(`course:${course}:mastered`, JSON.stringify([...s])); } catch {} },
-    clear(course) { try { localStorage.removeItem(`course:${course}:mastered`); localStorage.removeItem(`course:${course}:missed`); } catch {} },
+    get(course) { const s = slugs(course); return done(course).map(x => s.indexOf(x)).filter(i => i >= 0); },
+    add(course, n) { const slug = slugs(course)[n]; if (!slug) return; const d = new Set(done(course)); d.add(slug); write(`course:${course}:done`, [...d]); },
+    clear(course) { try { ['done', 'mastered', 'missed'].forEach(k => localStorage.removeItem(`course:${course}:${k}`)); } catch {} },
     // Questions you first answered wrong: your weak spots, for the tutor prompt. Only in this browser.
-    missed(course) { try { return JSON.parse(localStorage.getItem(`course:${course}:missed`) || '[]'); } catch { return []; } },
+    missed(course) {
+      const s = slugs(course), order = IDX.legacy[course] || s;
+      return (read(`course:${course}:missed`) || []).map(m => ({ n: s.indexOf(m.s || order[m.n]), q: m.q })).filter(m => m.n >= 0);
+    },
     miss(course, n, q) {
-      try {
-        const m = store.missed(course).filter(x => !(x.n === n && x.q === q));
-        m.push({ n, q });
-        localStorage.setItem(`course:${course}:missed`, JSON.stringify(m.slice(-30)));
-      } catch {}
+      const slug = slugs(course)[n]; if (!slug) return;
+      const s = slugs(course), order = IDX.legacy[course] || s;
+      const m = (read(`course:${course}:missed`) || []).map(x => ({ s: x.s || order[x.n], q: x.q })).filter(x => !(x.s === slug && x.q === q));
+      m.push({ s: slug, q });
+      write(`course:${course}:missed`, m.slice(-30));
     },
   };
 
