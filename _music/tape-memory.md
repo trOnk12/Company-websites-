@@ -5,6 +5,7 @@ mood: Lo-fi arpeggio, round-robin voices
 level: Easy
 time: 10 min
 key: C major
+sound: tape
 order: 3
 ---
 
@@ -63,6 +64,11 @@ REVERB :: 11 o'clock :: A light coat.
 ```
 
 ## 4. The OXI One: play it
+
+```steps
+Seq 1 · C E G B D… :: xxxxxxxxxxxxxxxx
+Seq 2 · bass C :: x.......x.......
+```
 
 Sequencer 1 Mono on Ch 1; sequencer 2 Mono on Ch 2 for the bass.
 

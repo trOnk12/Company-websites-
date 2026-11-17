@@ -5,6 +5,7 @@ mood: Ambient pad you can play after it's frozen
 level: Easy
 time: 10 min
 key: A minor, chords Am and F
+sound: cloud
 order: 2
 ---
 
@@ -70,6 +71,11 @@ REVERB :: 2 o'clock :: The cloud is the main sound here.
 ```
 
 ## 4. The OXI One: play it
+
+```steps
+Seq 1 · Am chord :: x===============
+Seq 2 · bass A :: x===============
+```
 
 Sequencer 1 in **Poly** mode on Ch 1; sequencer 2 Mono on Ch 2 for the bass.
 

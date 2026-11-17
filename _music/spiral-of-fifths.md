@@ -4,13 +4,14 @@ summary: Play one note; it grows into a rising cascade of fifths that melts into
 mood: Cosmic arpeggio from one note
 level: Medium
 time: 15 min
-key: A minor pentatonic (notes A and E)
+key: A major pentatonic (the spiral from A)
+sound: stairs
 order: 1
 ---
 
 ## What you'll hear
 
-One short note. Then its echo a fifth higher, then a fifth above that, climbing like stairs: C, G, D, A, E. The reverb blurs the stairs into a chord and darkens the top, so it stays warm. The dry bass sits underneath.
+One short note. Then its echo a fifth higher, then a fifth above that, climbing like stairs: A, E, B, F♯, C♯. The reverb blurs the stairs into a chord and darkens the top, so it stays warm. The dry bass sits underneath.
 
 **The rule of this recipe:** the Grand Canyon makes the notes; the NightSky blurs and darkens them. If both added high sounds, it would be noise.
 
@@ -43,7 +44,7 @@ Start from neutral (see the rig page): only the **DELAY** LED lit, and EXP MODE,
 DELAY TYPE :: PITCH :: Turn the big knob until the PITCH LED lights.
 Secondary mode :: Hold PING PONG about 2 s, until the PITCH LED blinks, then let go :: The key step: each echo is shifted again, so one echo a fifth up becomes a staircase. (By default every echo has the same pitch.)
 MODE (left mini knob) :: step 5/5 :: upward shift + dry :: Modes 1 and 5 feed your dry note into the delay, so the spiral starts from your note, not straight from the fifth.
-PITCH (right mini knob) :: step 7/12 :: perfect 5th :: Fifths from C: C, G, D, A, E. Those five notes are the pentatonic scale, the "nothing clashes" scale, so the spiral builds a pretty chord on its own.
+PITCH (right mini knob) :: step 7/12 :: perfect 5th :: Fifths from A: A, E, B, F♯, C♯. Those five notes are a pentatonic scale, the "nothing clashes" scale, so the spiral builds a pretty chord on its own.
 FEEDBACK :: 9:30 o'clock :: Start here, then raise it slowly. Each repeat climbs 7 semitones; five climb almost 3 octaves, and the top gets grainy and squeals.
 TAP DIV :: Press until the eighth + DOT LEDs light :: A dotted eighth falls between the beats, so the cascade skips across the rhythm like a live arpeggiator, not a metronome.
 Tempo :: Tap the TAP/LOOP footswitch on each beat of the OXI's tempo :: The tapped time is a quarter note; TAP DIV turns it into a dotted eighth.
@@ -72,6 +73,11 @@ REVERB :: 1 o'clock :: Cloud a little under the dry signal. Raise it for more sp
 ```
 
 ## 4. The OXI One: play it
+
+```steps
+Seq 1 · A :: x...............
+Seq 2 · bass A :: x===============
+```
 
 Sequencer 1 (Mono, Ch 1) plays the spiral; sequencer 2 (Mono, Ch 2) plays the bass.
 

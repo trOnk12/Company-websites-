@@ -120,6 +120,69 @@ function rigSketch() {
   return `<figure class="rig-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of the rig: the OXI One sends MIDI to the PERfourMER, whose audio goes through the Grand Canyon and the NightSky; the bass leaves the PERfourMER dry">${s}</svg></figure>`;
 }
 
+// "What it sounds like": one drawing per recipe, chosen by the recipe's `sound` field.
+function soundSketch(kind, seed) {
+  const p = pen(`sound:${seed}`);
+  const W = 300, H = 230;
+  let s = '';
+  const T = (x, y, txt, cls = 'sk-hand', a = 'middle') => `<text class="${cls}" x="${x}" y="${y}" text-anchor="${a}">${txt}</text>`;
+  if (kind === 'stairs') {
+    const notes = ['A', 'E', 'B', 'F♯', 'C♯'];
+    notes.forEach((n, k) => { const x = 22 + k * 52, y = 186 - k * 32; s += `<path class="sk${k ? '' : ' heavy'}" d="${p.rect(x, y, 44, 22)}"/>` + T(x + 22, y + 17, n); if (k) s += `<path class="sk thin" d="${p.line(x - 8, y + 30, x + 4, y + 22, false)}"/>`; });
+    s += `<path class="sk red" d="${p.cable(40, 170, 250, 50, -40)}"/>` + `<path class="sk red" d="${p.line(246, 54, 236, 52)} ${p.line(246, 54, 242, 64)}"/>`;
+    s += `<path class="sk thin" d="${p.ellipse(240, 40, 46, 22)} ${p.ellipse(214, 30, 22, 14, false)} ${p.ellipse(268, 34, 20, 13, false)}"/>` + T(240, 46, 'cloud', 'sk-label');
+    s += T(24, 222, 'one note → a fifth up, again and again', 'sk-label', 'start');
+  } else if (kind === 'cloud') {
+    s += `<path class="sk" d="${p.ellipse(150, 90, 110, 52)} ${p.ellipse(90, 74, 46, 32, false)} ${p.ellipse(205, 72, 50, 34, false)}"/>`;
+    s += `<path class="sk red" d="${p.line(150, 62, 150, 118)} ${p.line(126, 76, 174, 104)} ${p.line(126, 104, 174, 76)}"/>` + T(150, 138, 'INFINITE', 'sk-type');
+    s += `<path class="sk" d="${p.line(266, 70, 266, 30)} ${p.line(266, 30, 258, 40)} ${p.line(266, 30, 274, 40)} ${p.line(266, 110, 266, 150)} ${p.line(266, 150, 258, 140)} ${p.line(266, 150, 274, 140)}"/>` + T(266, 168, '± semitones', 'sk-label');
+    for (let k = 0; k < 3; k++) s += `<path class="sk thin" d="${p.rect(40 + k * 22, 172 - k * 10, 14, 30 + k * 10)}"/>`;
+    s += T(30, 222, 'a chord, frozen, then moved', 'sk-label', 'start');
+  } else if (kind === 'tape') {
+    const vox = ['1', '3', '4', '1', '3', '4', '1'];
+    vox.forEach((v, k) => { const x = 26 + k * 38; s += `<path class="sk${v === '1' ? '' : v === '3' ? ' red' : ' thin'}" d="${p.ellipse(x, 70 + (k % 3) * 18, 12, 12)}"/>` + T(x, 76 + (k % 3) * 18, v, 'sk-label'); });
+    let wave = ''; for (let x = 20; x < 280; x += 20) wave += p.line(x, 160 + Math.sin(x / 18) * 10, x + 20, 160 + Math.sin((x + 20) / 18) * 10, false) + ' ';
+    s += `<path class="sk" d="${wave}"/>` + T(150, 196, 'wow & flutter', 'sk-label') + T(26, 34, 'each note, the next voice', 'sk-label', 'start');
+  } else if (kind === 'reverse') {
+    s += `<path class="sk" d="${p.line(20, 110, 40, 30)} ${p.line(40, 30, 130, 110)}"/>` + T(75, 140, 'played', 'sk-label');
+    s += `<path class="sk red" d="${p.line(170, 110, 260, 30)} ${p.line(260, 30, 280, 110)}"/>` + T(225, 140, 'echoed', 'sk-label');
+    s += `<path class="sk" d="${p.line(138, 70, 162, 70)} ${p.line(162, 70, 154, 64)} ${p.line(162, 70, 154, 76)}"/>`;
+    s += `<path class="sk thin" d="${p.line(14, 110, 290, 110, false)}"/>` + T(150, 200, 'the echo swells in, backwards', 'sk-label');
+  } else if (kind === 'sing') {
+    s += `<path class="sk heavy" d="${p.line(14, 180, 290, 180)}"/>` + T(150, 210, 'the drone never moves', 'sk-label');
+    const ys = [110, 80, 96, 60, 90];
+    ys.forEach((y, k) => { const x = 20 + k * 54; s += `<path class="sk red" d="${p.line(x, y, x + 34, y)}"/>`; if (k < ys.length - 1) s += `<path class="sk red" d="${p.line(x + 34, y, x + 54, ys[k + 1], false)}"/>`; s += T(x + 17, y - 10, String(k + 1), 'sk-label'); });
+    s += T(150, 30, 'the reverb sings, gliding', 'sk-label');
+  } else if (kind === 'poly') {
+    const cx = 150, cy = 110, R = 78;
+    s += `<path class="sk" d="${p.ellipse(cx, cy, R, R)}"/>`;
+    for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2; s += `<path class="sk heavy" d="${p.line(cx + Math.sin(a) * (R - 12), cy - Math.cos(a) * (R - 12), cx + Math.sin(a) * (R + 12), cy - Math.cos(a) * (R + 12))}"/>`; }
+    for (let k = 0; k < 3; k++) { const a = k * 2 * Math.PI / 3; s += `<path class="sk red" d="${p.ellipse(cx + Math.sin(a) * R, cy - Math.cos(a) * R, 8, 8)}"/>`; }
+    s += T(cx, cy - 4, 'one bar', 'sk-label') + T(cx, cy + 16, '| bass ×4   ● echo ×3', 'sk-label') + T(cx, 222, 'they meet on beat 1', 'sk-label');
+  } else return '';
+  return `<figure class="sound-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of what the recipe sounds like">${s}</svg><figcaption>What it sounds like</figcaption></figure>`;
+}
+
+// The OXI's 16 steps, sketched. Each line: "Label :: pattern", x = note, = tie, . empty.
+function stepsSketch(block, seed) {
+  const p = pen(`steps:${seed}`);
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split('::').map(s => s.trim()));
+  const cw = 34, lw = 150, rh = 56, W = lw + 16 * cw + 16, H = 40 + rows.length * rh;
+  let s = '';
+  for (let k = 0; k < 16; k++) s += `<text class="sk-label" x="${lw + k * cw + cw / 2}" y="24" text-anchor="middle">${k % 4 === 0 ? k + 1 : '·'}</text>`;
+  rows.forEach(([label, pat], r) => {
+    const y = 36 + r * rh;
+    s += `<text class="sk-hand" x="8" y="${y + 28}">${L.esc(label)}</text>`;
+    [...(pat || '')].slice(0, 16).forEach((c, k) => {
+      const x = lw + k * cw;
+      s += `<path class="sk${k % 4 === 0 ? '' : ' thin'}" d="${p.rect(x + 3, y + 6, cw - 6, rh - 16, k % 4 === 0)}"/>`;
+      if (c === 'x') s += `<circle class="k-dot" cx="${x + cw / 2}" cy="${y + rh / 2 - 2}" r="7"/>`;
+      if (c === '=') s += `<path class="sk red" d="${p.line(x - 4, y + rh / 2 - 2, x + cw + 2, y + rh / 2 - 2)}"/>`;
+    });
+  });
+  return `<figure class="steps-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of the OXI One's 16 steps for this recipe">${s}</svg><figcaption>● a note · red line: tied on</figcaption></figure>`;
+}
+
 // A cassette, sketched, for the index shelf.
 function cassetteSketch(seed) {
   const p = pen(`tape:${seed}`);
@@ -165,12 +228,16 @@ function settings(block) {
 // One section: Markdown, with any ```settings fences drawn as cards.
 function section(title, text) {
   const ctx = { file: 'music', cards: new Map(), links: new Set() };
+  text = text.replace(/```steps\n([\s\S]*?)```/g, (_, b) => `\n\n@@STEPS${Buffer.from(b).toString('base64')}@@\n\n`);
   const parts = text.split(/```settings\n([\s\S]*?)```/);
   const dev0 = /perfourmer/i.test(title) ? 'dev-pf' : /grand canyon/i.test(title) ? 'dev-gc' : /nightsky/i.test(title) ? 'dev-ns' : '';
   let html = '';
   parts.forEach((part, i) => {
     if (i % 2) html += (dev0 && /^\d+\./.test(title) ? deviceSketch(dev0, title, part) : '') + settings(part);
-    else if (part.trim()) html += L.renderBlocks(L.parseBody(`## x\n\n${part.trim()}\n`, ctx)[0].blocks, ctx);
+    else if (part.trim()) part.split(/@@STEPS([A-Za-z0-9+/=]+)@@/).forEach((q, k) => {
+      if (k % 2) html += stepsSketch(Buffer.from(q, 'base64').toString('utf8'), title);
+      else if (q.trim()) html += L.renderBlocks(L.parseBody(`## x\n\n${q.trim()}\n`, ctx)[0].blocks, ctx);
+    });
   });
   const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const dev = /perfourmer/i.test(title) ? 'dev-pf' : /grand canyon/i.test(title) ? 'dev-gc' : /nightsky/i.test(title) ? 'dev-ns' : /oxi/i.test(title) ? 'dev-oxi' : '';
@@ -209,9 +276,16 @@ function renderRecipe(r, all) {
     description: r.meta.summary,
     canonical: `${L.SITE}/music/${r.slug}`,
     base: '../', current: 'music', feed: false, footer, script: 'music.js',
-    body: `    <article class="music recipe course-top wrap narrow" data-recipe="${r.slug}">
+    body: `    <article class="music recipe course-top wrap" data-recipe="${r.slug}">
       ${DEFS}
       <p class="eyebrow"><a href="./">← The tape shelf</a></p>
+      <div class="recipe-grid">
+      <aside class="margin" aria-label="At a glance">
+        ${soundSketch(r.meta.sound, r.slug)}
+        ${chain()}
+        <p class="margin-note">Tap a row below to tick it off as you set it.</p>
+      </aside>
+      <div class="recipe-main">
       <header class="jcard">
         <p class="side">Side A · Recipe ${String(i + 1).padStart(2, '0')}</p>
         <h1>${L.esc(r.meta.title)}</h1>
@@ -219,10 +293,11 @@ function renderRecipe(r, all) {
         <p class="lede">${L.esc(r.meta.summary)}</p>
         <dl class="jfields">${[['Level', r.meta.level], ['Setup', r.meta.time], ['Key', r.meta.key]].filter(([, v]) => v).map(([k, v]) => `<div><dt>${k}</dt><dd>${L.esc(v)}</dd></div>`).join('')}</dl>
       </header>
-      ${chain()}
       <div class="tools" hidden><button type="button" class="button" data-compact>Hide the whys</button> <button type="button" class="button" data-untick>Clear my ticks</button> <span class="tick-count small" aria-live="polite"></span></div>
       <nav class="recipe-toc" aria-label="On this page"><ol>${sections(r.body).map(s => `<li><a href="#${s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}">${L.esc(s.title)}</a></li>`).join('')}</ol></nav>
 ${html}
+      </div>
+      </div>
       <nav class="pager" aria-label="More recipes">${prev ? `<a class="button" href="${prev.slug}.html">← ${L.esc(prev.meta.title)}</a>` : ''}${next ? `<a class="button primary" href="${next.slug}.html">${L.esc(next.meta.title)} →</a>` : `<a class="button" href="./">All recipes</a>`}</nav>
     </article>`,
   });
@@ -237,7 +312,7 @@ function renderIndex(all) {
     description: intro.meta.summary || 'Sound recipes with exact settings.',
     canonical: `${L.SITE}/music/`,
     base: '../', current: 'music', feed: false, footer,
-    body: `    <article class="music course-top wrap narrow">
+    body: `    <article class="music music-index course-top wrap">
       ${DEFS}
       <p class="eyebrow">Music, my hobby</p>
       <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>

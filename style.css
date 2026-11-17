@@ -635,3 +635,27 @@ body:has(article.music) .site-header, body:has(article.music) .site-footer { bor
   .rig-sketch svg { min-width: 36rem; }
   .panel-sketch svg { min-width: 30rem; }
 }
+
+/* Recipe layout: the page, and a margin that stays in view on wide screens */
+.music .recipe-grid { display: grid; gap: 1.5rem; }
+.music .recipe-main { min-width: 0; max-width: 46rem; }
+.music .jcard { max-width: 46rem; }
+.music .margin { min-width: 0; }
+@media (min-width: 66rem) {
+  .music .recipe-grid { grid-template-columns: minmax(0, 46rem) 19rem; gap: 3rem; align-items: start; }
+  .music .margin { grid-column: 2; grid-row: 1; position: sticky; top: 1rem; }
+  .music .recipe-main { grid-column: 1; grid-row: 1; }
+}
+.sound-sketch { margin: 0; border: 2px solid var(--ink); border-radius: var(--wobble); background: #FFFFFFC0; padding: .5rem .6rem .3rem; transform: rotate(1deg); }
+.sound-sketch svg, .steps-sketch svg { width: 100%; height: auto; display: block; }
+.sound-sketch figcaption, .steps-sketch figcaption { font-family: var(--marker); font-size: .95rem; color: var(--red); transform: rotate(-1deg); }
+.steps-sketch { margin: 1rem 0 1.25rem; }
+@media (max-width: 40rem) { .steps-sketch { overflow-x: auto; } .steps-sketch svg { min-width: 34rem; } }
+.margin .chain { flex-direction: column; align-items: flex-start; gap: 1.4rem; margin-top: 1.5rem; }
+.margin .chain li + li::before { content: "↓"; left: 1rem; top: -1.55rem; transform: none; }
+.margin-note { font-family: var(--hand); font-size: 1.25rem; color: var(--blue); transform: rotate(-1.5deg); margin-top: 1.2rem; }
+@media (max-width: 65.99rem) { .margin .chain { flex-direction: row; } .margin .chain li + li::before { content: "→"; left: -1.5rem; top: 50%; transform: translateY(-55%); } }
+@media (max-width: 40rem) { .margin .chain { flex-direction: column; } .margin .chain li + li::before { content: "↓"; left: 1rem; top: -1.6rem; transform: none; } .sound-sketch { max-width: 22rem; } }
+/* Index: wide shelf, readable text */
+.music-index .lede, .music-index > section, .music-index .rig-sketch { max-width: 50rem; }
+.music-index .shelf { grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); }

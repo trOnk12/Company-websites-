@@ -5,6 +5,7 @@ mood: Drone plus a melody played by the reverb
 level: Medium
 time: 15 min
 key: A, major pentatonic
+sound: sing
 order: 5
 ---
 
@@ -58,6 +59,10 @@ REVERB :: 2 o'clock :: The singing cloud should be loud.
 ```
 
 ## 4. The OXI One: start the drone
+
+```steps
+Seq 1 · drone A :: x===============
+```
 
 1. Tempo around 60 BPM.
 2. Sequencer 1 (Mono, Ch 1): an **A** on step 1, tied across all 16 steps. With VCA MODE on ON, the drone sounds continuously at that pitch.

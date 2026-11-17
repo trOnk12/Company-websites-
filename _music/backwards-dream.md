@@ -5,6 +5,7 @@ mood: Reverse echoes, slow melody
 level: Easy
 time: 10 min
 key: D minor
+sound: reverse
 order: 4
 ---
 
@@ -62,6 +63,11 @@ REVERB :: noon :: Even with the dry signal.
 ```
 
 ## 4. The OXI One: play it
+
+```steps
+Seq 1 · D minor :: x=..x=..x=..x=..
+Seq 2 · bass D :: x===============
+```
 
 1. Tempo 60–75 BPM: slow is the point.
 2. Sequencer 1 (Mono, Ch 1): a slow melody in D minor (try D, F, A, C, E), one note every 4 steps, with rests. Each note about 2 steps long (hold the pad, turn **knob 3**).

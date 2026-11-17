@@ -5,6 +5,7 @@ mood: Polyrhythmic echo groove
 level: Medium
 time: 15 min
 key: E minor
+sound: poly
 order: 6
 ---
 
@@ -65,6 +66,11 @@ REVERB :: 10 o'clock :: Just a little air.
 ```
 
 ## 4. The OXI One: play it
+
+```steps
+Seq 1 · blip :: x...............
+Seq 2 · bass E :: x...x...x...x...
+```
 
 1. Tempo 90–100 BPM. Not slower than about 85: one bar must fit in the delay's 3-second maximum.
 2. Sequencer 1 (Mono, Ch 1): one blip on step 1. Short gate.
