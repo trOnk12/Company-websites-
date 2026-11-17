@@ -1,0 +1,15 @@
+<!-- label: Least important first -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="lmk-t"><title id="lmk-t">App processes stacked by importance, the app on screen at the top and cached apps at the bottom; memory fills up; the low-memory killer ends cached processes first, without warning</title>
+<x-ground class="step s1" y="330" label="kernel"/>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="40" y="40" width="40" height="270" rx="4"/><rect class="d-hl" x="40" y="150" width="40" height="160" rx="4"/><text class="d-tiny" x="60" y="30" text-anchor="middle">memory</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-ok" x="140" y="50" width="240" height="44" rx="6"/><text class="d-a" x="260" y="78" text-anchor="middle">on screen</text><rect class="d-paper" x="140" y="110" width="240" height="40" rx="6"/><text class="d-tiny" x="260" y="135" text-anchor="middle">music playing</text><rect class="d-paper" x="140" y="166" width="240" height="40" rx="6"/><text class="d-tiny" x="260" y="191" text-anchor="middle">cached app</text><rect class="d-paper" x="140" y="222" width="240" height="40" rx="6"/><text class="d-tiny" x="260" y="247" text-anchor="middle">yours, cached</text><text class="d-m" x="470" y="78" text-anchor="middle">most</text><text class="d-m" x="470" y="247" text-anchor="middle">least</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-bad" x="40" y="60" width="40" height="250" rx="4"/><text class="d-r" x="470" y="160" text-anchor="middle">memory runs low</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="140" y="222" width="240" height="40" rx="6"/><text class="d-rt" x="260" y="247" text-anchor="middle">ended, no warning</text><text class="d-a" x="470" y="300" text-anchor="middle">low-memory killer</text></g>
+<g class="step s1" data-move="1:60,150 2:260,40 3:60,60 4:400,242"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Every app you open is a process, and each takes some of the phone's memory.</p></li>
+<li><p>Android sorts them by <b>importance</b>: the <b>foreground</b> app the user is using at the top, <b>cached</b> apps the user left at the bottom.</p></li>
+<li><p>Memory runs low. <i>Predict: which process goes first?</i></p></li>
+<li><p>The least important: a cached one. The <b>low-memory killer</b> ends it outright, with no callback.</p></li>
+</ol>

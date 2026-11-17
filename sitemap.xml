@@ -96,87 +96,97 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/03-the-town-hall-decides</loc>
+    <loc>https://pachulski.dev/course/android/03-threads-share-one-house</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/04-the-post-office-carries-letters</loc>
+    <loc>https://pachulski.dev/course/android/04-the-town-hall-decides</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/05-you-dont-call-youre-called</loc>
+    <loc>https://pachulski.dev/course/android/05-the-post-office-carries-letters</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/06-each-app-is-its-own-user</loc>
+    <loc>https://pachulski.dev/course/android/06-you-dont-call-youre-called</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/07-letters-between-apps</loc>
+    <loc>https://pachulski.dev/course/android/07-each-app-is-its-own-user</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/08-whats-inside-the-apk</loc>
+    <loc>https://pachulski.dev/course/android/08-letters-between-apps</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/09-faster-code-now-and-later</loc>
+    <loc>https://pachulski.dev/course/android/09-whats-inside-the-apk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/10-zygote</loc>
+    <loc>https://pachulski.dev/course/android/10-faster-code-now-and-later</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/11-sharing-memory</loc>
+    <loc>https://pachulski.dev/course/android/11-zygote</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/12-starting-an-app</loc>
+    <loc>https://pachulski.dev/course/android/12-sharing-memory</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/13-inside-a-binder-call</loc>
+    <loc>https://pachulski.dev/course/android/13-when-memory-runs-out</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/14-the-main-threads-queue</loc>
+    <loc>https://pachulski.dev/course/android/14-starting-an-app</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/15-frames-jank-and-anrs</loc>
+    <loc>https://pachulski.dev/course/android/15-inside-a-binder-call</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/16-how-big-can-a-binder-call-be</loc>
+    <loc>https://pachulski.dev/course/android/16-the-main-threads-queue</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/17-turn-the-phone-lose-the-screen</loc>
+    <loc>https://pachulski.dev/course/android/17-frames-jank-and-anrs</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/18-the-viewmodel-outlives-the-screen</loc>
+    <loc>https://pachulski.dev/course/android/18-how-big-can-a-binder-call-be</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/19-when-the-process-is-gone</loc>
+    <loc>https://pachulski.dev/course/android/19-turn-the-phone-lose-the-screen</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/20-the-viewmodel-outlives-the-screen</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/21-when-the-process-is-gone</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -44,6 +44,28 @@
    "the-late-frame",
    "what-the-collector-costs",
    "what-a-heap-dump-proves"
+  ],
+  "android": [
+   "a-running-app-is-a-process",
+   "the-kernel-is-in-charge",
+   "threads-are-the-workers",
+   "the-town-hall-decides",
+   "the-post-office-carries-letters",
+   "you-dont-call-youre-called",
+   "each-app-is-its-own-user",
+   "letters-between-apps",
+   "whats-inside-the-apk",
+   "faster-code-now-and-later",
+   "zygote",
+   "sharing-memory",
+   "starting-an-app",
+   "inside-a-binder-call",
+   "the-main-threads-queue",
+   "frames-jank-and-anrs",
+   "how-big-can-a-binder-call-be",
+   "turn-the-phone-lose-the-screen",
+   "the-viewmodel-outlives-the-screen",
+   "when-the-process-is-gone"
   ]
  }
 }

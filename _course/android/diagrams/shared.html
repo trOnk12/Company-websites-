@@ -1,0 +1,20 @@
+<!-- label: Two threads, one value, one lost update -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sh-t"><title id="sh-t">Two threads in one process share one value; both read 5, both add one and both write 6, so one update is lost; with one owner, only the main thread writes and the other hands it a note</title>
+<x-ground class="step s1" y="310" label="kernel"/>
+<x-house class="step s1" x="20" y="80" w="600" h="230"/>
+<text class="step s1 d-m" x="604" y="300" text-anchor="end">one process, one memory</text>
+<g class="step s1" data-pulse="1"><rect class="d-paper" x="250" y="100" width="140" height="56" rx="4"/><text class="d-a" x="320" y="134" text-anchor="middle">count = 5</text></g>
+<x-person class="step s1 hide-4" x="140" y="180" label="thread A"/>
+<x-person class="step s1" x="500" y="180" label="thread B"/>
+<g class="step s2 hide-4" data-pulse="2"><x-arrow tone="acc" d="M250,140 L170,176"/><x-arrow tone="acc" d="M390,140 L470,176"/><text class="d-tiny" x="190" y="150" text-anchor="middle">reads 5</text><text class="d-tiny" x="450" y="150" text-anchor="middle">reads 5</text></g>
+<g class="step s3 hide-4" data-pulse="3"><rect class="d-bad" x="250" y="100" width="140" height="56" rx="4"/><text class="d-rt" x="320" y="134" text-anchor="middle">count = 6</text><text class="d-r" x="320" y="186" text-anchor="middle">both wrote 6: one is lost</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-ok" x="250" y="100" width="140" height="56" rx="4"/><text class="d-a" x="320" y="134" text-anchor="middle">screen text</text><x-letter x="380" y="220" w="70" h="34" label="note"/><x-arrow tone="ink" d="M380,236 L190,220"/><text class="d-a" x="320" y="196" text-anchor="middle">one owner writes</text></g>
+<x-person class="step s4" x="140" y="180" tone="hl" desk="1" label="main thread"/>
+<g class="step s1" data-move="1:320,90 2:320,90 3:320,200 4:250,236"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Threads in one process share its memory: both A and B can read and write <code>count</code>.</p></li>
+<li><p>Both want to add one. Each first reads the value: both read 5.</p></li>
+<li><p>Each adds one and writes back 6. The count should be 7: one update is lost. That's a <b>race condition</b>. <i>Predict: how do you stop it?</i></p></li>
+<li><p>A <b>lock</b> makes them take turns, or give the value <b>one owner</b>. Android gives the screen one owner: the main thread. Others hand it a note.</p></li>
+</ol>

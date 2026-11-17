@@ -18,7 +18,7 @@ In puzzle 1, the kernel handed the CPU to a process. But a process often needs t
 
 A **thread** is a worker inside a process. It runs code one step after another. A process can have several threads, and the kernel gives each of them turns on the CPU, just as it does with processes.
 
-Every Android app has one special thread: the **main thread**. It's the one that draws the screen and handles taps. Other threads can download or calculate, but anything on the screen is the main thread's job. (Why only one thread? Puzzle 14.)
+Every Android app has one special thread: the **main thread**. It's the one that draws the screen and handles taps. Other threads can download or calculate, but anything on the screen is the main thread's job. (Why only one thread? Puzzle 16.)
 
 ## The analogy
 

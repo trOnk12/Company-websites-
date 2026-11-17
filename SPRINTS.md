@@ -127,7 +127,12 @@ Done in this sprint:
 - [x] iOS: "every thread has a run loop" → "can have"; 03 Q1 explanation narrowed; two hint pointers.
 
 To do, in order:
-- [ ] Android: new puzzles "Threads share one house" (02→03), "When memory runs out, who gets ended" (before 12),
+- [x] Android: new puzzles 03 "Threads share one house" (shared memory, race condition, lock vs one owner,
+  thread-safe) and 13 "When memory runs out, who goes" (importance, foreground vs cached, low-memory killer);
+  16 (main thread's queue) unloaded: windows and input channels now taught in 17, broken ActivityThread sentence
+  rewritten; 22 puzzles. Android's old order added to progress-legacy.json so saved progress maps correctly.
+- [ ] Android, still: "Objects live at addresses; only bytes travel" (before 15), "Slow work off the main thread,
+  and back" (before 20); split 15, 20, 21; teach Intent extras before 18. (Was: Android: new puzzles "Threads share one house" (02→03), "When memory runs out, who gets ended" (before 12),)
   "Objects live at addresses; only bytes travel" (before 13), "Windows and the touch line" (split from 14),
   "Slow work off the main thread, and back" (before 18). Split 13, 18, 19; teach Intent extras before 16.
 - [ ] iOS: "Swift for Kotlin developers" (before 00), "Your app's front door: @main, scenes" (before 00),
