@@ -1,0 +1,223 @@
+{
+ "baseline": {
+  "_about": "Words the learner already knows: everyday Android and Kotlin, plus the Encryption course.",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Android",
+   "phone",
+   "code",
+   "data",
+   "server",
+   "request",
+   "response",
+   "network",
+   "API",
+   "JSON",
+   "ms",
+   "KB",
+   "MB",
+   "user",
+   "users",
+   "battery",
+   "4G",
+   "5G",
+   "Wi-Fi",
+   "LTE",
+   "HTTP",
+   "HTTPS",
+   "URL",
+   "image",
+   "images",
+   "feed",
+   "list",
+   "TLS",
+   "handshake",
+   "key",
+   "keys",
+   "TCP",
+   "packet",
+   "packets",
+   "ViewModel",
+   "Room",
+   "database",
+   "Flow",
+   "Compose",
+   "UI",
+   "UUID",
+   "POST",
+   "GET",
+   "PUT",
+   "DELETE",
+   "200 OK",
+   "500",
+   "timeout",
+   "WorkManager",
+   "OkHttp",
+   "Retrofit",
+   "Stripe",
+   "AWS",
+   "London",
+   "New York",
+   "payment",
+   "order",
+   "profile",
+   "avatar",
+   "header",
+   "headers",
+   "hash",
+   "random",
+   "second",
+   "seconds",
+   "minute",
+   "minutes",
+   "OkHttpClient", "5xx", "429", "429 Too Many Requests", "Retry-After", "400", "no-cache", "no-store", "client.newBuilder()", "HTTP/3", "QUIC",
+   "Cache-Control: max-age=60",
+   "\"v42\"",
+   "If-None-Match",
+   "POST /payments",
+   "ID",
+   "Idempotency-Key"
+  ]
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what.",
+  "phrases": {
+   "the system": "name the actor: the radio, the server, the cache",
+   "simply": "cut it",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is"
+  }
+ },
+ "terms": {
+  "latency": {
+   "in": "00",
+   "def": "The time a packet takes to travel from sender to receiver.",
+   "aliases": []
+  },
+  "bandwidth": {
+   "in": "00",
+   "def": "How much data a link can carry per second.",
+   "aliases": []
+  },
+  "round trip": {
+   "in": "00",
+   "def": "A message there and its answer back: twice the latency, plus the server's work.",
+   "aliases": [
+    "round trips",
+    "round-trip",
+    "RTT"
+   ]
+  },
+  "connection reuse": {
+   "in": "01",
+   "def": "Sending new requests over a connection that's already open, skipping its handshakes.",
+   "aliases": []
+  },
+  "HTTP/2": {
+   "in": "01",
+   "def": "A version of HTTP that sends many requests at once over one connection.",
+   "aliases": []
+  },
+  "multiplexing": {
+   "in": "01",
+   "def": "Interleaving several requests and responses on one connection at the same time.",
+   "aliases": []
+  },
+  "radio state": {
+   "in": "02",
+   "def": "The power level the phone's radio is in: idle and sipping power, or connected and drawing a lot.",
+   "aliases": [
+    "radio states"
+   ]
+  },
+  "tail time": {
+   "in": "02",
+   "def": "How long the radio stays at high power after the last packet, waiting for more.",
+   "aliases": []
+  },
+  "batching": {
+   "in": "02",
+   "def": "Sending several pieces of network work together, so the radio wakes up once.",
+   "aliases": [
+    "batch",
+    "batched",
+    "bundle",
+    "bundling"
+   ]
+  },
+  "Cache-Control": {
+   "in": "03",
+   "def": "The response header that tells a cache how long the response stays fresh.",
+   "kind": "code"
+  },
+  "fresh": {
+   "in": "03",
+   "def": "A cached response young enough to use without asking the server.",
+   "aliases": [
+    "stale"
+   ]
+  },
+  "ETag": {
+   "in": "03",
+   "def": "A short tag that names one version of a resource.",
+   "kind": "code"
+  },
+  "conditional request": {
+   "in": "03",
+   "def": "A request that says which version you already have; the server answers 304 if it hasn't changed.",
+   "aliases": [
+    "conditional requests",
+    "304",
+    "304 Not Modified"
+   ]
+  },
+  "offline-first": {
+   "in": "04",
+   "def": "An app that reads and writes local data first, and syncs with the network when it can.",
+   "aliases": []
+  },
+  "source of truth": {
+   "in": "04",
+   "def": "The one place the app reads a piece of data from; everything else copies it.",
+   "aliases": [
+    "single source of truth"
+   ]
+  },
+  "repository": {
+   "in": "04",
+   "def": "The class that combines the local and network data sources and gives the rest of the app its data.",
+   "aliases": [
+    "repositories"
+   ]
+  },
+  "idempotent": {
+   "in": "05",
+   "def": "Doing it twice has the same effect as doing it once.",
+   "aliases": [
+    "idempotency"
+   ]
+  },
+  "idempotency key": {
+   "in": "05",
+   "def": "A unique ID the client sends with a request so the server can recognise a retry.",
+   "aliases": [
+    "idempotency keys"
+   ]
+  },
+  "exponential backoff": {
+   "in": "05",
+   "def": "Waiting longer after each failed try: 1 s, 2 s, 4 s and so on.",
+   "aliases": [
+    "backoff"
+   ]
+  },
+  "jitter": {
+   "in": "05",
+   "def": "Randomness added to the wait, so clients that failed together don't retry together.",
+   "aliases": []
+  }
+ }
+}

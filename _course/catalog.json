@@ -19,7 +19,8 @@
     },
     {
       "title": "Mobile system design, from a packet to an app",
-      "topics": "TCP and TLS, HTTP and caching, round trips, offline-first with one source of truth, sync, safe rollouts and seeing problems in production."
+      "topics": "TCP and TLS, HTTP and caching, round trips, offline-first with one source of truth, sync, safe rollouts and seeing problems in production.",
+      "id": "sysdesign"
     },
     {
       "title": "System design: the building blocks",

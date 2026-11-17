@@ -1,0 +1,17 @@
+<!-- label: Fresh: no network. Stale: a tiny check, answered 304 -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ca-t"><title id="ca-t">The app stores the feed with Cache-Control max-age 60 and ETag v42; within 60 seconds it uses the copy with no network; after that it sends If-None-Match v42 and the server answers 304 with no body; if the feed changed it sends 200 with the new feed</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="100" label="app"/>
+<x-server class="step s1" x="530" y="90" label="server"/>
+<g class="step s1" data-pulse="1"><x-sheet x="120" y="80" w="150" h="90" lines="3" label="stored feed"/><text class="d-tiny" x="195" y="200" text-anchor="middle">max-age=60, ETag "v42"</text></g><g class="step only-1"><text class="d-a" x="195" y="240" text-anchor="middle">fresh: no network</text></g>
+<g class="step s2 hide-4" data-pulse="2"><text class="d-r" x="195" y="270" text-anchor="middle">2 minutes later: stale</text></g>
+<x-letter class="step s3 hide-4" data-move="3:290,120 4:290,120" x="0" y="0" w="150" h="30" label="If-None-Match v42"/>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="400" y="270" text-anchor="middle">has it changed?</text></g>
+<g class="step s4" data-pulse="4"><x-letter x="300" y="120" w="130" h="30" label="304, no body"/><text class="d-a" x="365" y="200" text-anchor="middle">keep the copy: fresh again</text></g>
+</svg>
+<ol class="caps">
+<li><p>The feed arrived with <code>Cache-Control: max-age=60</code> and an <b>ETag</b>. Thirty seconds later the copy is <b>fresh</b>: no network at all.</p></li>
+<li><p>Two minutes later the copy is stale. It isn't thrown away: the app can check it.</p></li>
+<li><p>A <b>conditional request</b>: "I have v42; has it changed?" <i>Predict: what comes back if nothing changed?</i></p></li>
+<li><p>A 304 with no body. The app keeps its copy and marks it fresh again: one tiny round trip instead of 200 KB.</p></li>
+</ol>

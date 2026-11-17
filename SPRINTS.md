@@ -79,6 +79,15 @@ only the blocks they're missing.
 - [x] Review round (correctness 6–9, clarity 8–9): twelve fixes applied. Home page now lists all six courses.
 - [ ] Module 2 (Macrobenchmark, baseline profiles, startup end to end, Perfetto SQL) and module 3 (memory pressure).
 
+## Sprint 9: Mobile system design, module 1 (done 2026-11-17)
+
+- [x] New course, six puzzles: round trips vs bandwidth, handshakes and connection reuse (HTTP/2, one OkHttpClient),
+  the radio's states and tail time (batching), HTTP caching (Cache-Control, ETag, 304), offline-first with the
+  database as the source of truth, idempotency keys with backoff and jitter. Sources: High Performance Browser
+  Networking, Android docs, MDN, RFC 8446/9110, OkHttp, Stripe, AWS.
+- [x] Review round (correctness 6–9, clarity 8–9): eleven fixes applied.
+- [ ] Module 2: push vs polling (FCM, WebSocket/SSE), pagination with cursors, sync conflicts, safe rollouts.
+
 ## Backlog, in order
 
 1. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,

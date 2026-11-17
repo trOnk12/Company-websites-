@@ -1,0 +1,18 @@
+<!-- label: A new connection pays two handshakes; a reused one pays only the request -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ru-t"><title id="ru-t">A first request on a new connection waits for a TCP handshake and a TLS handshake, three round trips in all; later requests reuse the open connection and take one round trip; HTTP/2 sends several requests at once over that connection</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="110" label="phone"/>
+<x-server class="step s1" x="530" y="90" label="server"/>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="130" y="60" width="120" height="30" rx="4"/><text class="d-tiny" x="190" y="80" text-anchor="middle">TCP</text><rect class="d-band" x="260" y="60" width="120" height="30" rx="4"/><text class="d-tiny" x="320" y="80" text-anchor="middle">TLS</text><rect class="d-hl" x="390" y="60" width="120" height="30" rx="4"/><text class="d-tiny" x="450" y="80" text-anchor="middle">request</text></g>
+<g class="step only-1"><text class="d-r" x="320" y="130" text-anchor="middle">first request: 3 trips</text></g>
+<g class="step s2" data-pulse="2"><line class="d-line" x1="110" y1="190" x2="520" y2="190"/><text class="d-a" x="315" y="178" text-anchor="middle">connection kept open</text></g>
+<x-letter class="step s2" data-move="2:140,200 3:420,200 4:140,200" x="0" y="0" w="60" h="28" label="next"/>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="315" y="270" text-anchor="middle">reused: 1 trip</text></g>
+<g class="step s4" data-pulse="4"><x-letter x="250" y="240" w="50" h="26" label="A"/><x-letter x="310" y="240" w="50" h="26" label="B"/><x-letter x="370" y="240" w="50" h="26" label="C"/><text class="d-a" x="335" y="300" text-anchor="middle">HTTP/2: all at once</text></g>
+</svg>
+<ol class="caps">
+<li><p>A first request on a new connection: a TCP handshake, then a TLS handshake, each one round trip, then the request itself. Three trips.</p></li>
+<li><p><b>Connection reuse</b>: the connection stays open, and the next request goes straight over it.</p></li>
+<li><p>No handshakes this time: one round trip. <i>Predict: what if the screen needs several requests at once?</i></p></li>
+<li><p><b>HTTP/2</b> sends them all at once over that one connection: <b>multiplexing</b>. One shared OkHttpClient keeps it open for later requests.</p></li>
+</ol>

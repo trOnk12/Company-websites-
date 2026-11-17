@@ -1,0 +1,17 @@
+<!-- label: Four requests in a row cost four round trips; in parallel, about one -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="rt-t"><title id="rt-t">A phone sends four requests to a server one after another, each waiting for the last, so the wait is four round trips; doubling bandwidth barely changes it; sending independent requests together takes about one round trip</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="40" y="110" label="phone"/>
+<x-server class="step s1" x="520" y="90" label="server"/>
+<g class="step s1" data-pulse="1"><line class="d-dash" x1="120" y1="175" x2="510" y2="175"/><text class="d-a" x="315" y="160" text-anchor="middle">one round trip: 250 ms</text></g>
+<x-letter class="step s1" data-move="1:130,190 2:430,190 3:130,190 4:430,190" x="0" y="0" w="60" h="30" label="4 KB"/>
+<g class="step s2 hide-4" data-pulse="2"><text class="d-r" x="315" y="270" text-anchor="middle">user → settings → avatar URL → avatar</text><text class="d-r" x="315" y="300" text-anchor="middle">4 trips in a row: 1 second</text></g>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="315" y="70" text-anchor="middle">twice the bandwidth: still about 1 second</text></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="315" y="270" text-anchor="middle">three together, then the avatar</text><text class="d-a" x="315" y="300" text-anchor="middle">2 trips: 500 ms</text></g>
+</svg>
+<ol class="caps">
+<li><p>A <b>round trip</b>: the request goes to the server and the answer comes back. Each way takes the network's <b>latency</b>; this network's round trip is 250 ms.</p></li>
+<li><p>Your screen makes four requests, each waiting for the one before. Four trips in a row: a full second, for a few kilobytes.</p></li>
+<li><p>Now the network's <b>bandwidth</b> doubles. The trips take just as long. <i>Predict: what does make it faster?</i></p></li>
+<li><p>Fewer trips in a row: send the three that don't depend on each other together, then the avatar. Or ask for the whole screen in one request.</p></li>
+</ol>

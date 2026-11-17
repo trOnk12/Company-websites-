@@ -1,0 +1,15 @@
+<!-- label: The UI reads only the database; the repository syncs it with the network -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="of-t"><title id="of-t">Two screens observe the local database; the repository writes network results into the database and the screens update; a note written offline goes into the database first and shows on both screens, then syncs to the server when online</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><x-phone x="30" y="30" w="60" h="100" label="list screen"/><x-phone x="30" y="190" w="60" h="100" label="edit screen"/><x-cabinet x="240" y="120" w="120" drawers="2" label="database"/><x-arrow tone="acc" d="M236,150 L100,90"/><x-arrow tone="acc" d="M236,190 L100,240"/></g>
+<g class="step s2" data-pulse="2"><x-server x="530" y="40" w="80" h="110" label="server"/><rect class="d-hl" x="400" y="190" width="110" height="40" rx="6"/><text class="d-tiny" x="455" y="215" text-anchor="middle">repository</text><x-arrow tone="ink" d="M560,156 L500,188"/><x-arrow tone="ink" d="M398,210 L366,190"/></g>
+<x-letter class="step s3" data-move="3:110,230 4:260,90" x="0" y="0" w="70" h="28" label="new note"/>
+<g class="step only-3" data-pulse="3"><text class="d-r" x="455" y="290" text-anchor="middle">offline</text></g>
+<g class="step s4" data-pulse="4"><text class="d-a" x="300" y="300" text-anchor="middle">both screens show it</text><x-arrow tone="path" d="M366,170 L398,200"/><text class="d-tiny" x="560" y="290" text-anchor="middle">syncs when online</text></g>
+</svg>
+<ol class="caps">
+<li><p>Both screens observe the local database, the <b>source of truth</b>. They never read the network directly.</p></li>
+<li><p>The <b>repository</b> fetches from the server and writes the results into the database. The screens update from there.</p></li>
+<li><p>The user writes a note in a tunnel. <i>Predict: where does it go, and who sees it?</i></p></li>
+<li><p>Into the database first: both screens show it at once. The repository syncs it when there's a connection. That's <b>offline-first</b>.</p></li>
+</ol>

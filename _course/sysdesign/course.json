@@ -1,0 +1,40 @@
+{
+  "title": "Mobile system design, from a packet to an app",
+  "intro": "What really decides how fast, how frugal and how reliable your app's networking is: round trips, handshakes, the phone's radio, HTTP caching, offline-first data and safe retries. The building blocks every mobile system design interview stands on, one small puzzle at a time.",
+  "how": "Each puzzle starts with a problem a real app hits, gives you one building block, shows it in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. Facts come from High Performance Browser Networking, Android's documentation, MDN, Stripe and AWS, linked on every page.",
+  "hero": "rtt",
+  "heroAlt": "Animated diagram: a request travels from a phone to a server and back; the time it waits is mostly the trip, not the size of the data.",
+  "assumes": {
+    "title": "Encryption, from the ground up",
+    "href": "../security/"
+  },
+  "modules": [
+    {
+      "title": "Module 1: The network under your app",
+      "blurb": "Round trips, handshakes, the radio, caching, offline-first data and safe retries.",
+      "puzzles": [
+        "00-round-trips-not-bandwidth.md",
+        "01-one-connection-many-requests.md",
+        "02-the-radio-is-the-battery.md",
+        "03-ask-before-you-download.md",
+        "04-the-database-is-the-truth.md",
+        "05-retry-without-charging-twice.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Designing a feature end to end",
+      "topics": "A feed with pagination and cursors; images and their cache; sync with conflicts; real-time updates (polling, long polling, WebSockets, push); rolling out safely with flags."
+    },
+    {
+      "title": "Module 3: Seeing it in production",
+      "topics": "Metrics that matter, crash and ANR rates, network error budgets, logs you can search, and why p99 matters more than the average."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  }
+}

@@ -1,0 +1,18 @@
+<!-- label: A retry with the same key gets the first result; jitter spreads the retries -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="re-t"><title id="re-t">The app sends a payment with key k1; the server charges and stores the result, but the answer is lost; the app retries with the same key k1 and the server returns the stored result without charging again; many clients retrying with jitter spread out over time</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-phone class="step s1" x="30" y="90" label="app"/>
+<x-server class="step s1" x="520" y="70" label="server"/>
+<x-letter class="step s1 hide-3" data-move="1:120,110 2:350,110" x="0" y="0" w="150" h="30" label="pay 20 €, key k1"/>
+<g class="step s2" data-pulse="2"><x-sheet x="400" y="200" w="100" h="60" lines="2" label="k1: charged"/></g>
+<g class="step only-2"><text class="d-r" x="260" y="190" text-anchor="middle">answer lost: timeout</text></g>
+<x-letter class="step s3 hide-4" data-move="3:120,150 4:400,150" x="0" y="0" w="130" h="30" label="retry, key k1"/>
+<g class="step only-3" data-pulse="3"><text class="d-a" x="260" y="200" text-anchor="middle">same key</text></g>
+<g class="step s4" data-pulse="4"><x-letter x="170" y="200" w="180" h="30" label="stored result, no charge"/><circle class="d-acc" cx="60" cy="300" r="5"/><circle class="d-acc" cx="140" cy="300" r="5"/><circle class="d-acc" cx="190" cy="300" r="5"/><circle class="d-acc" cx="320" cy="300" r="5"/><circle class="d-acc" cx="460" cy="300" r="5"/><text class="d-tiny" x="260" y="330" text-anchor="middle">retries with jitter: spread out</text></g>
+</svg>
+<ol class="caps">
+<li><p>The app sends the payment with an <b>idempotency key</b>, k1, generated once for this tap.</p></li>
+<li><p>The server charges the card and stores the result under k1. The answer is lost on the way back: a timeout.</p></li>
+<li><p>The app retries with the same key. <i>Predict: does the server charge again?</i></p></li>
+<li><p>No: it sees k1 and returns the stored result. Retries use <b>exponential backoff</b> with <b>jitter</b>, so many clients don't return at once.</p></li>
+</ol>
