@@ -2,6 +2,9 @@
 title: Frozen sky
 summary: A slow chord that rises into a shimmering cathedral, then freezes in place. You turn one knob and the frozen sky moves up or down in semitones, like playing a second instrument.
 mood: Ambient pad you can play after it's frozen
+level: Easy
+time: 10 min
+key: A minor, chords Am and F
 order: 2
 ---
 
@@ -38,8 +41,8 @@ PAN :: noon :: In the main left output, which feeds the pedals.
 DELAY TYPE :: MOD :: Digital delay with a moving delay time: chorus and vibrato.
 DELAY :: 7:30 o'clock :: Near the minimum: you hear thickness, not echoes. If you hear separate echoes, turn it further left.
 FEEDBACK :: 9 o'clock :: Very few repeats.
-MOD RATE (mini knob) :: 9 o'clock :: Slow movement.
-MOD DEPTH (mini knob) :: 11 o'clock :: A wobble you feel more than hear.
+MOD RATE (left mini knob) :: 9 o'clock :: Slow movement.
+MOD DEPTH (right mini knob) :: 11 o'clock :: A wobble you feel more than hear.
 DELAY LVL :: 11 o'clock :: Under the dry signal: a thickener.
 PING PONG :: [off|*on*] :: Repeats alternate left and right: wider.
 ```
@@ -74,13 +77,19 @@ Sequencer 1 in **Poly** mode on Ch 1; sequencer 2 Mono on Ch 2 for the bass.
 2. Sequencer 1: on step 1, tap three pads in the same column: a chord (for example A, C, E). Up to seven notes fit on one step.
 3. Make the chord last the whole bar: for each note of the chord, hold its pad on step 1 and tap the same row on the bar's last step. That ties that note across the bar.
 4. Make a second chord a bar later (F, A, C), tied the same way.
-5. Sequencer 2: the root of each chord, low, tied across the bar.
+5. Sequencer 2 (the bass patch from the rig page): the root of each chord, A then F, low, tied across the bar.
+
+## You got it right when
+
+- The chord **rises an octave** in the reverb as it fades.
+- After INFINITE, the cloud **stays** when the chord stops.
+- Turning SIZE/PITCH moves the frozen cloud in **clean semitone steps**.
 
 ## 5. The performance: freeze and transpose
 
 1. Let a chord ring, then press **INFINITE**. The cloud holds.
-2. Turn **SIZE/PITCH**. With QUANTIZE on *half step* it moves in semitones. **Counter-clockwise goes up**, clockwise goes down, up to an octave each way. (That's the direction the manual gives; trust your ears if it feels reversed.)
-3. Try +5 (a fourth) and +7 (a fifth) semitones over the bass: they always fit.
+2. Turn **SIZE/PITCH**. With QUANTIZE on *half step* it moves in semitones. **Counter-clockwise goes up**, clockwise goes down, up to an octave each way. (The manual: minimum is up, maximum is down.)
+3. Stop sequencer 1 first (the factory setting lets new chords pour into the frozen cloud). Then try +5 (a fourth) and +7 (a fifth) semitones over the bass: they usually fit.
 4. Bring it back to noon, then press **INFINITE** again to let the sky melt away.
 
 ## If it sounds wrong

@@ -2,6 +2,9 @@
 title: The spiral of fifths
 summary: Play one note; it grows into a rising cascade of fifths that melts into a dark cloud. It sounds like a whole chord played by someone else.
 mood: Cosmic arpeggio from one note
+level: Medium
+time: 15 min
+key: A minor pentatonic (notes A and E)
 order: 1
 ---
 
@@ -34,18 +37,18 @@ PAN :: noon :: In the main left output, which feeds the pedals.
 
 ## 2. Grand Canyon: PITCH, where the magic happens
 
-Make sure only the **DELAY** LED is lit (press the small Mode button until it is), and no top-left buttons are lit.
+Start from neutral (see the rig page): only the **DELAY** LED lit, and EXP MODE, MOMENT, TAILS and PING PONG unlit.
 
 ```settings
 DELAY TYPE :: PITCH :: Turn the big knob until the PITCH LED lights.
-Secondary mode :: Hold PING PONG about 2 s, until the PITCH LED blinks, then let go :: The key step. By default the pitch shift is outside the feedback loop, so every echo has the same pitch. In secondary mode each echo is shifted again: one echo a fifth up becomes a staircase.
-MODE (mini knob) :: step 5/5 :: upward shift + dry :: Modes 1 and 5 feed your dry note into the delay, so the spiral starts from your note, not straight from the fifth.
-PITCH (mini knob) :: step 7/12 :: perfect 5th :: Fifths from C: C, G, D, A, E. Those five notes are the pentatonic scale, the "nothing clashes" scale, so the spiral builds a pretty chord on its own.
-FEEDBACK :: 10:30 o'clock :: A few repeats. Each fifth is 7 semitones, so 5 repeats climb 35, almost 3 octaves. More ends in a squeal.
+Secondary mode :: Hold PING PONG about 2 s, until the PITCH LED blinks, then let go :: The key step: each echo is shifted again, so one echo a fifth up becomes a staircase. (By default every echo has the same pitch.)
+MODE (left mini knob) :: step 5/5 :: upward shift + dry :: Modes 1 and 5 feed your dry note into the delay, so the spiral starts from your note, not straight from the fifth.
+PITCH (right mini knob) :: step 7/12 :: perfect 5th :: Fifths from C: C, G, D, A, E. Those five notes are the pentatonic scale, the "nothing clashes" scale, so the spiral builds a pretty chord on its own.
+FEEDBACK :: 9:30 o'clock :: Start here, then raise it slowly. Each repeat climbs 7 semitones; five climb almost 3 octaves, and the top gets grainy and squeals.
 TAP DIV :: Press until the eighth + DOT LEDs light :: A dotted eighth falls between the beats, so the cascade skips across the rhythm like a live arpeggiator, not a metronome.
 Tempo :: Tap the TAP/LOOP footswitch on each beat of the OXI's tempo :: The tapped time is a quarter note; TAP DIV turns it into a dotted eighth.
 DELAY LVL :: 1 o'clock :: Past 2 o'clock the dry signal starts to drop; at max you'd hear only echoes and lose your note.
-PING PONG :: Your choice :: Check it after the secondary step. On, the stairs bounce left and right.
+PING PONG :: Check its light after the 2 s hold :: Press it once to set it how you like. On, the stairs bounce left and right.
 ```
 
 ## 3. NightSky: blur the stairs into a cloud
@@ -73,10 +76,16 @@ REVERB :: 1 o'clock :: Cloud a little under the dry signal. Raise it for more sp
 Sequencer 1 (Mono, Ch 1) plays the spiral; sequencer 2 (Mono, Ch 2) plays the bass.
 
 1. Set the tempo: hold **Shift**, turn **knob 1**. Around 80–90 BPM gives the spiral time.
-2. Sequencer 1: tap **one note per bar**, or one every two bars, on step 1. Less is more: the spiral does the rest.
+2. Sequencer 1: tap **one note per bar**, or one every two bars, on step 1: start with **A**. Less is more: the spiral does the rest.
 3. Keep the gate short: hold the step's pad and turn **knob 3** until it's one step long.
-4. Sequencer 2: a low root note on step 1, tied across the bar (hold the pad and turn **knob 3** quickly clockwise).
+4. Sequencer 2 (the bass patch from the rig page): a low **A** on step 1, tied across the bar (hold the pad and turn **knob 3** quickly clockwise).
 5. Change the note rarely. Each note builds its own pentatonic stairs, so notes a fifth apart sound best together: A, then E.
+
+## You got it right when
+
+- One OXI note gives you **five or so rising notes**, each a fifth above the last, not the same note repeating.
+- The top of the spiral sounds **warm**, not piercing.
+- The bass is clear underneath.
 
 ## 5. The performance
 

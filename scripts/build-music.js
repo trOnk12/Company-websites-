@@ -72,7 +72,7 @@ function settings(block) {
     const stepped = /^step \d+\/\d+$/.test(value);
     const extra = stepped ? parts[2] : '';
     const why = stepped ? parts[3] : parts[2];
-    return `<li class="setting"><span class="control">${L.esc(control)}</span><span class="value">${valueHtml(control, value, extra)}</span>${why ? `<span class="why">${L.inline(why, ctx)}</span>` : ''}</li>`;
+    return `<li class="setting" tabindex="0"><span class="control">${L.esc(control)}</span><span class="value">${valueHtml(control, value, extra)}</span>${why ? `<span class="why">${L.inline(why, ctx)}</span>` : ''}</li>`;
   });
   return `<ul class="settings">${rows.join('')}</ul>`;
 }
@@ -87,8 +87,13 @@ function section(title, text) {
     else if (part.trim()) html += L.renderBlocks(L.parseBody(`## x\n\n${part.trim()}\n`, ctx)[0].blocks, ctx);
   });
   const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  return `      <section id="${id}"><h2>${L.inline(title, ctx)}</h2>\n${html}</section>`;
+  const dev = /perfourmer/i.test(title) ? 'dev-pf' : /grand canyon/i.test(title) ? 'dev-gc' : /nightsky/i.test(title) ? 'dev-ns' : /oxi/i.test(title) ? 'dev-oxi' : '';
+  return `      <section id="${id}"${dev ? ` class="device ${dev}"` : ''}><h2>${L.inline(title, ctx)}</h2>\n${html}</section>`;
 }
+
+// The signal chain, drawn as four boxes and a cable: the same on every page.
+const CHAIN = [['dev-oxi', 'OXI One MK2', 'sequencer'], ['dev-pf', 'PERfourMER MKII', 'synth'], ['dev-gc', 'Grand Canyon', 'delay'], ['dev-ns', 'NightSky', 'reverb']];
+const chain = () => `<ol class="chain" aria-label="Signal chain">${CHAIN.map(([c, n, k]) => `<li class="${c}"><b>${n}</b><span>${k}</span></li>`).join('')}</ol>`;
 
 function load() {
   if (!fs.existsSync(SRC)) return [];
@@ -114,11 +119,14 @@ function renderRecipe(r, all) {
     title: `${r.meta.title}: a recipe for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski`,
     description: r.meta.summary,
     canonical: `${L.SITE}/music/${r.slug}`,
-    base: '../', current: 'music', feed: false, footer,
-    body: `    <article class="recipe course-top wrap narrow">
+    base: '../', current: 'music', feed: false, footer, script: 'music.js',
+    body: `    <article class="music recipe course-top wrap narrow" data-recipe="${r.slug}">
       <p class="eyebrow"><a href="./">Music recipes</a> · ${L.esc(r.meta.mood || '')}</p>
       <h1>${L.esc(r.meta.title)}</h1>
       <p class="lede">${L.esc(r.meta.summary)}</p>
+      <p class="badges">${[['Level', r.meta.level], ['Setup', r.meta.time], ['Key', r.meta.key]].filter(([, v]) => v).map(([k, v]) => `<span class="badge"><b>${k}</b> ${L.esc(v)}</span>`).join('')}</p>
+      ${chain()}
+      <div class="tools" hidden><button type="button" class="button" data-compact>Hide the whys</button> <button type="button" class="button" data-untick>Clear my ticks</button> <span class="tick-count small" aria-live="polite"></span></div>
       <nav class="recipe-toc" aria-label="On this page"><ol>${sections(r.body).map(s => `<li><a href="#${s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}">${L.esc(s.title)}</a></li>`).join('')}</ol></nav>
 ${html}
       <nav class="pager" aria-label="More recipes">${prev ? `<a class="button" href="${prev.slug}.html">← ${L.esc(prev.meta.title)}</a>` : ''}${next ? `<a class="button primary" href="${next.slug}.html">${L.esc(next.meta.title)} →</a>` : `<a class="button" href="./">All recipes</a>`}</nav>
@@ -129,18 +137,19 @@ ${html}
 function renderIndex(all) {
   const intro = fs.existsSync(path.join(SRC, '_index.md')) ? L.parseFrontmatter(fs.readFileSync(path.join(SRC, '_index.md'), 'utf8'), '_index.md') : { meta: {}, body: '' };
   const html = sections(intro.body).map(s => section(s.title, s.text)).join('\n');
-  const cards = all.map(r => `<li class="course-card"><h3><a href="${r.slug}.html">${L.esc(r.meta.title)}</a></h3><p class="small"><b>${L.esc(r.meta.mood || '')}</b> ${L.esc(r.meta.summary)}</p></li>`).join('\n');
+  const cards = all.map((r, i) => `<li class="course-card patch patch-${i % 4}"><span class="patch-no">${String(i + 1).padStart(2, '0')}</span><h3><a href="${r.slug}.html">${L.esc(r.meta.title)}</a></h3><p class="mood">${L.esc(r.meta.mood || '')}</p><p class="small">${L.esc(r.meta.summary)}</p></li>`).join('\n');
   return L.page({
     title: 'Music: sound recipes for OXI One, PERfourMER, Grand Canyon and NightSky – Mateusz Pachulski',
     description: intro.meta.summary || 'Sound recipes with exact settings.',
     canonical: `${L.SITE}/music/`,
     base: '../', current: 'music', feed: false, footer,
-    body: `    <article class="course-top wrap narrow">
+    body: `    <article class="music course-top wrap narrow">
       <p class="eyebrow">Music, my hobby</p>
       <h1>${L.esc(intro.meta.title || 'Music')}</h1>
       <p class="lede">${L.esc(intro.meta.summary || '')}</p>
+      ${chain()}
       <h2>Recipes</h2>
-      <ul class="courses">
+      <ul class="courses recipes">
 ${cards}
       </ul>
 ${html}

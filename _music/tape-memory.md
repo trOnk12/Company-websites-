@@ -2,6 +2,9 @@
 title: Tape memory
 summary: A fast arpeggio where every note is a different instrument, echoed by a worn tape machine and a grainy small room. Like a cassette of a song you half remember.
 mood: Lo-fi arpeggio, round-robin voices
+level: Easy
+time: 10 min
+key: C major
 order: 3
 ---
 
@@ -13,7 +16,7 @@ A quick sixteenth-note pattern. Each note comes from the next synth channel in t
 
 ## 1. PERfourMER: three different voices, one line
 
-Synth channels **1, 3 and 4** on MIDI channel 1, **PLAYMODE M2**. Set each channel differently:
+Synth channels **1, 3 and 4** on MIDI channel 1, **PLAYMODE M2**. Rows marked (all) are the same on the three channels: set channel 1, then match the others by eye.
 
 ```settings
 PLAYMODE :: [M1|*M2*|P1|P2|D1|D2] :: Mono 2: note 1 goes to channel 1, note 2 to channel 3, note 3 to channel 4, and around again.
@@ -37,8 +40,8 @@ DELAY TYPE :: TAPE :: An old tape echo: repeats degrade and distort.
 TAP DIV :: Press until only the eighth LED lights :: Echoes on the off-beat eighths, under the sixteenths.
 Tempo :: Tap the TAP/LOOP footswitch on each beat :: Locks the echoes to the OXI's tempo.
 FEEDBACK :: noon :: Several repeats, each one more worn.
-DISTORTION (mini knob) :: 10 o'clock :: A little tape grit.
-FLUTTER DEPTH (mini knob) :: 1 o'clock :: The warble: notes bend slightly, like a stretched cassette.
+DISTORTION (left mini knob) :: 10 o'clock :: A little tape grit.
+FLUTTER DEPTH (right mini knob) :: 1 o'clock :: The warble: notes bend slightly, like a stretched cassette.
 DELAY LVL :: 11 o'clock :: Echoes under the dry line.
 PING PONG :: [off|*on*] :: Echoes bounce left and right.
 ```
@@ -66,7 +69,12 @@ Sequencer 1 Mono on Ch 1; sequencer 2 Mono on Ch 2 for the bass.
 1. Tempo 95–110 BPM.
 2. Sequencer 1: fill all 16 steps with a pattern of 4 or 5 notes repeating (for example C, E, G, B, D). A length that isn't a multiple of 3 keeps changing which of the three voices plays which note.
 3. Short gates: hold a pad and turn **knob 3** down.
-4. Sequencer 2: a bass note on steps 1 and 9.
+4. Sequencer 2 (the bass patch from the rig page): a low C on steps 1 and 9.
+
+## You got it right when
+
+- Consecutive notes come from **different-sounding voices**.
+- The echoes **wobble** slightly and get darker with each repeat.
 
 ## 5. The performance
 

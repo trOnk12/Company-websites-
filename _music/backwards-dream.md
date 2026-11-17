@@ -2,6 +2,9 @@
 title: Backwards dream
 summary: A slow melody whose echoes play in reverse, swelling into each note before it arrives, inside a reverb that builds slowly. Like a tape played backwards in a dream.
 mood: Reverse echoes, slow melody
+level: Easy
+time: 10 min
+key: D minor
 order: 4
 ---
 
@@ -31,12 +34,12 @@ PAN :: noon :: In the main left output, which feeds the pedals.
 
 ```settings
 DELAY TYPE :: REVERSE :: Reverse echoes, with a detector that listens for each new note.
-SENSITIVITY (mini knob) :: noon :: Then adjust: the REVERSE LED should blink on every note the OXI plays, and not in between.
-MOD DEPTH (mini knob) :: 10 o'clock :: A little movement in the reversed sound.
+SENSITIVITY (left mini knob) :: noon :: Then adjust: the REVERSE LED should blink on every note the OXI plays, and not in between.
+MOD DEPTH (right mini knob) :: 10 o'clock :: A little movement in the reversed sound.
 DELAY :: 1 o'clock :: Long: the reversed swell needs time.
 FEEDBACK :: 10 o'clock :: One or two repeats.
 DELAY LVL :: 2 o'clock :: Up to where dry and reverse are both full: past 2 o'clock the dry note starts to drop.
-TAP DIV :: Press until only the quarter LED lights :: If you tap a tempo, one echo per beat.
+Tempo :: Don't tap: set it with the DELAY knob above :: A long, free delay suits the slow melody better than a locked one.
 ```
 
 ## 3. NightSky: a slow-building wash
@@ -61,8 +64,13 @@ REVERB :: noon :: Even with the dry signal.
 ## 4. The OXI One: play it
 
 1. Tempo 60–75 BPM: slow is the point.
-2. Sequencer 1 (Mono, Ch 1): a slow melody, one note every 4 steps, with rests. Each note about 2 steps long (hold the pad, turn **knob 3**).
-3. Sequencer 2 (Mono, Ch 2): one long bass note per two bars, tied.
+2. Sequencer 1 (Mono, Ch 1): a slow melody in D minor (try D, F, A, C, E), one note every 4 steps, with rests. Each note about 2 steps long (hold the pad, turn **knob 3**).
+3. Sequencer 2 (Mono, Ch 2, the bass patch from the rig page): a low D, one long note per two bars, tied.
+
+## You got it right when
+
+- The REVERSE LED **blinks once per note**.
+- Each note is followed by a **swell** that rises into silence instead of fading.
 
 ## 5. The performance
 

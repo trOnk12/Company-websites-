@@ -35,4 +35,16 @@ test.describe('Music', () => {
       expect(scroll, r).toBeLessThanOrEqual(client);
     }
   });
+  test('settings can be ticked off, remembered, and the whys hidden for a cheat card', async ({ page }) => {
+    await page.goto(`/music/${RECIPES[0]}.html`);
+    const row = page.locator('.setting').first();
+    await row.click();
+    await expect(row).toHaveClass(/ticked/);
+    await page.reload();
+    await expect(page.locator('.setting').first()).toHaveClass(/ticked/);
+    await page.locator('[data-compact]').click();
+    await expect(page.locator('.setting .why').first()).toBeHidden();
+    await page.locator('[data-untick]').click();
+    await expect(page.locator('.setting').first()).not.toHaveClass(/ticked/);
+  });
 });

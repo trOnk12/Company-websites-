@@ -2,6 +2,9 @@
 title: Three against four
 summary: A bass in plain 4/4 and an echo that only knows threes. The two cycles cross and meet again every bar, and a simple blip becomes a groove.
 mood: Polyrhythmic echo groove
+level: Medium
+time: 15 min
+key: E minor
 order: 6
 ---
 
@@ -29,7 +32,7 @@ Ch 2 OCTAVE :: 16' :: Low.
 Ch 2 CUTOFF :: 10 o'clock :: Round.
 Ch 2 Filter EG INT :: 1 o'clock :: A little punch on each note.
 Ch 2 DECAY :: 10 o'clock :: Short, so the four beats are clear.
-Ch 2 SUSTAIN :: 10 o'clock :: A little body.
+Ch 2 SUSTAIN :: 10 o'clock :: A little body. Everything else on channel 2: the bass patch from the rig page.
 ```
 
 ## 2. Grand Canyon: a three-head drum echo
@@ -37,8 +40,8 @@ Ch 2 SUSTAIN :: 10 o'clock :: A little body.
 ```settings
 DELAY TYPE :: DRUM :: A magnetic drum echo: the delay time is split evenly between its playback heads.
 Secondary mode :: Hold PING PONG about 2 s, until the DRUM LED blinks, then let go :: Three heads instead of four: rhythms in threes.
-RHYTHM (mini knob) :: step 7/8 :: heads 1, 2 and 3 :: All three heads play: three even echoes. Count the positions from fully left.
-DRUM AGE (mini knob) :: 11 o'clock :: A bit of age: darker, slightly distorted, warbling.
+RHYTHM (left mini knob) :: step 7/8 :: heads 1, 2 and 3 :: All three heads play: three even echoes. Count the positions from fully left.
+DRUM AGE (right mini knob) :: 11 o'clock :: A bit of age: darker, slightly distorted, warbling.
 TAP DIV :: Press until only the quarter LED lights :: So the tapped time is used as is.
 Tempo :: Tap the TAP/LOOP footswitch once per bar, on the bar's first beat :: The delay time becomes one whole bar, so its three heads land evenly across it: three against the bass's four.
 FEEDBACK :: 9 o'clock :: Mostly one pass: the pattern stays clear.
@@ -65,8 +68,12 @@ REVERB :: 10 o'clock :: Just a little air.
 
 1. Tempo 90–100 BPM. Not slower than about 85: one bar must fit in the delay's 3-second maximum.
 2. Sequencer 1 (Mono, Ch 1): one blip on step 1. Short gate.
-3. Sequencer 2 (Mono, Ch 2): bass on steps 1, 5, 9 and 13: four on the floor.
+3. Sequencer 2 (Mono, Ch 2): a low E on steps 1, 5, 9 and 13: four on the floor.
 4. Tap the Grand Canyon's TAP/LOOP once on each bar's first beat, two bars in a row.
+
+## You got it right when
+
+- Count the bass 1-2-3-4: the **three echoes land between** its beats, and meet it again on beat 1.
 
 ## 5. The performance
 

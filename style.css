@@ -505,3 +505,110 @@ pre code { white-space: pre-wrap; overflow-wrap: anywhere; }
 .choice.on { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 600; }
 .recipe-toc ol { display: flex; flex-wrap: wrap; gap: .3rem 1rem; padding: 0; list-style: none; font-size: .9rem; }
 .recipe section { margin-top: 2rem; }
+
+/* ── Music: its own world. A night-sky studio: dark sky, faint stars, hardware knobs, lit buttons. ── */
+body:has(article.music) {
+  --bg: #0A0D1A; --bg-band: #141A2E; --ink: #ECEAF4; --muted: #A6ABC6; --accent-deep: #9CC4FF; --rule: #262D4A; --focus: #FFC46B;
+  --amber: #FFB547; --cyan: #6EE7F2; --violet: #A78BFA; --orange: #FF9E4A; --sky: #5EC2FF;
+  --panel: #10152A; --panel-hi: #1A2140;
+  background:
+    radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent 51%),
+    radial-gradient(1px 1px at 78% 9%, #fff9 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 33% 6%, #fffa 50%, transparent 51%),
+    radial-gradient(1px 1px at 91% 27%, #fff7 50%, transparent 51%),
+    radial-gradient(1px 1px at 55% 31%, #fff6 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 6% 41%, #fff8 50%, transparent 51%),
+    radial-gradient(1px 1px at 67% 52%, #fff5 50%, transparent 51%),
+    radial-gradient(1px 1px at 24% 66%, #fff5 50%, transparent 51%),
+    radial-gradient(1px 1px at 86% 74%, #fff6 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 44% 88%, #fff6 50%, transparent 51%),
+    radial-gradient(60rem 26rem at 70% -6rem, #3B2A7A55, transparent 70%),
+    radial-gradient(50rem 22rem at 10% -4rem, #0E5A6B44, transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+}
+body:has(article.music) .site-header,
+body:has(article.music) .site-footer { border-color: var(--rule); }
+body:has(article.music) ::selection { background: var(--violet); color: #0A0D1A; }
+.music h1 {
+  background: linear-gradient(100deg, #F4F1FF 10%, var(--violet) 55%, var(--cyan) 95%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.music h2 { color: #F4F1FF; }
+.music .eyebrow { color: var(--cyan); letter-spacing: .04em; }
+.music .eyebrow a { color: var(--cyan); }
+.music code { background: var(--panel-hi); color: var(--amber); }
+
+/* Hardware keys instead of the site's flat buttons */
+.music .button, body:has(article.music) .pager .button {
+  border: 1px solid #39426B; border-radius: 10px; color: var(--ink);
+  background: linear-gradient(180deg, #232B4C, #161C33);
+  box-shadow: inset 0 1px 0 #ffffff1a, 0 3px 0 #070912, 0 6px 14px #0008;
+  transition: transform .08s, box-shadow .08s;
+}
+.music .button:hover { background: linear-gradient(180deg, #2A3358, #1A2140); }
+.music .button:active { transform: translateY(2px); box-shadow: inset 0 1px 0 #ffffff1a, 0 1px 0 #070912; }
+.music .button.primary {
+  color: #1A1206; border-color: #FFD08A;
+  background: linear-gradient(180deg, #FFD08A, var(--amber));
+  box-shadow: inset 0 1px 0 #fff8, 0 3px 0 #8A5A12, 0 0 22px #FFB54766;
+}
+.music .button.primary:hover { background: linear-gradient(180deg, #FFDCA3, #FFC160); }
+
+/* Signal chain: four boxes on a glowing cable */
+.chain { list-style: none; padding: 0; margin: 1.75rem 0 .5rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; position: relative; }
+.chain::before { content: ""; position: absolute; left: 6%; right: 6%; top: 50%; height: 2px; background: linear-gradient(90deg, var(--ink), var(--sky), var(--orange), var(--violet)); box-shadow: 0 0 10px #A78BFA88; }
+.chain li { position: relative; background: var(--panel); border: 1px solid var(--rule); border-top: 3px solid var(--dev); border-radius: 8px; padding: .55rem .6rem; text-align: center; line-height: 1.25; }
+.chain b { display: block; font-size: .85rem; }
+.chain span { font-family: var(--mono); font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+@media (max-width: 34rem) { .chain { grid-template-columns: 1fr 1fr; } .chain::before { display: none; } }
+.dev-oxi { --dev: #F4F4F5; } .dev-pf { --dev: var(--sky); } .dev-gc { --dev: var(--orange); } .dev-ns { --dev: var(--violet); }
+
+/* Device sections: a faceplate with the device's colour */
+.music section.device > h2 { display: flex; align-items: center; gap: .6rem; }
+.music section.device > h2::before { content: ""; width: .7rem; height: .7rem; border-radius: 50%; background: var(--dev); box-shadow: 0 0 12px var(--dev); flex: none; }
+.music .settings { background: linear-gradient(180deg, var(--panel-hi), var(--panel)); border: 1px solid var(--rule); border-top: 3px solid var(--dev, var(--cyan)); border-radius: 12px; padding: .25rem 1rem; box-shadow: 0 10px 30px #0006; }
+.music .setting { border-bottom: 1px dashed var(--rule); }
+.music .setting:last-child { border-bottom: 0; }
+.music .setting .control { color: var(--dev, var(--cyan)); text-transform: uppercase; letter-spacing: .06em; font-size: .75rem; }
+.music .setting .why { color: var(--muted); }
+
+/* Knobs: a ridged cap, a glowing arc and an amber pointer */
+.music .knob { width: 3rem; height: 3rem; filter: drop-shadow(0 3px 4px #0009); }
+.music .knob .k-track { stroke: #2B3354; stroke-width: 3.5; }
+.music .knob .k-arc { stroke: var(--dev, var(--cyan)); stroke-width: 3.5; filter: drop-shadow(0 0 3px var(--dev, var(--cyan))); }
+.music .knob .k-body { fill: #1D2440; stroke: #59628C; stroke-width: 1.2; stroke-dasharray: 1.6 1.6; }
+.music .knob .k-ptr { stroke: var(--amber); stroke-width: 2.6; filter: drop-shadow(0 0 2px var(--amber)); }
+
+/* Option buttons: unlit rubber, the chosen one lit */
+.music .choice { border-radius: 6px; border-color: #343C62; background: #151B31; color: #8D93B3; box-shadow: inset 0 -2px 0 #0007; }
+.music .choice.on { background: var(--dev, var(--amber)); border-color: var(--dev, var(--amber)); color: #0A0D1A; box-shadow: 0 0 14px var(--dev, var(--amber)), inset 0 1px 0 #fff8; }
+
+/* Recipe cards as patch cards */
+.music .recipes { grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.music .patch { position: relative; background: linear-gradient(160deg, var(--panel-hi), var(--panel)); border: 1px solid var(--rule); border-radius: 12px; padding: 1.1rem 1.1rem 1rem; overflow: hidden; transition: transform .15s, box-shadow .15s; }
+.music .patch:hover { transform: translateY(-3px); box-shadow: 0 12px 28px #0008, 0 0 0 1px var(--p); }
+.music .patch::after { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--p); box-shadow: 0 0 16px var(--p); }
+.music .patch-0 { --p: var(--violet); } .music .patch-1 { --p: var(--cyan); } .music .patch-2 { --p: var(--amber); } .music .patch-3 { --p: var(--sky); }
+.music .patch-no { font-family: var(--mono); font-size: .75rem; color: var(--p); letter-spacing: .1em; }
+.music .patch h3 a { color: #F4F1FF; text-decoration: none; }
+.music .patch h3 a::after { content: ""; position: absolute; inset: 0; }
+.music .patch .mood { font-family: var(--mono); font-size: .78rem; color: var(--p); margin: 0 0 .4rem; }
+.music .recipe-toc a { color: var(--muted); }
+.music .recipe-toc a:hover { color: var(--cyan); }
+.music .pager { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: space-between; margin-top: 2.5rem; }
+@media (prefers-reduced-motion: reduce) { .music .patch, .music .button { transition: none; } }
+.music .badges { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 0; }
+.music .badge { font-size: .85rem; padding: .25rem .65rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--panel); color: var(--ink); }
+.music .badge b { font-family: var(--mono); font-size: .7rem; color: var(--cyan); text-transform: uppercase; letter-spacing: .08em; margin-right: .25rem; }
+.music .tools { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin: 1.25rem 0 .25rem; }
+.music .tools .button { min-height: 2.4rem; font-size: .9rem; cursor: pointer; font-family: inherit; }
+.music .tick-count { color: var(--muted); font-family: var(--mono); }
+.music .setting { cursor: pointer; position: relative; }
+.music .setting:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+.music .setting::after { content: ""; position: absolute; right: 0; top: .9rem; width: 1.15rem; height: 1.15rem; border-radius: 50%; border: 1.5px solid #3A4370; }
+.music .setting.ticked::after { content: "✓"; background: var(--dev, var(--cyan)); border-color: var(--dev, var(--cyan)); color: #0A0D1A; font-size: .75rem; font-weight: 700; line-height: 1.15rem; text-align: center; box-shadow: 0 0 10px var(--dev, var(--cyan)); }
+.music .setting.ticked .control, .music .setting.ticked .value { opacity: .55; }
+.music .setting { padding-right: 1.8rem; }
+.music.compact .setting .why { display: none; }
+.music.compact .setting { padding-top: .4rem; padding-bottom: .4rem; }
