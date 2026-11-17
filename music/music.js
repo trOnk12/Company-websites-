@@ -205,3 +205,29 @@
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopAll(); });
 })();
+
+// Device sketches (scripts/devices.js): when a panel scrolls into view, its set knobs turn from noon to their value,
+// one after another, like setting up the patch. Tap the drawing to play it again. Drawn finished without JavaScript.
+(() => {
+  const figs = [...document.querySelectorAll('.dev-sketch.has-set')];
+  if (!figs.length || !('IntersectionObserver' in window)) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const ease = t => 1 - Math.pow(1 - t, 3);
+  const play = fig => {
+    const ptrs = [...fig.querySelectorAll('.dv-ctl.set .dv-ptr')];
+    ptrs.forEach(g => g.setAttribute('transform', `rotate(0 ${g.dataset.cx} ${g.dataset.cy})`));
+    const t0 = performance.now(), dur = 700, gap = 140;
+    const step = now => {
+      let busy = false;
+      ptrs.forEach((g, i) => {
+        const t = Math.min(1, Math.max(0, (now - t0 - i * gap) / dur));
+        if (t < 1) busy = true;
+        g.setAttribute('transform', `rotate(${(Number(g.dataset.a) * ease(t)).toFixed(1)} ${g.dataset.cx} ${g.dataset.cy})`);
+      });
+      if (busy) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); play(e.target); } }), { threshold: 0.5 });
+  figs.forEach(f => { io.observe(f); f.addEventListener('click', () => play(f)); f.setAttribute('title', 'Tap to turn the knobs again'); });
+})();

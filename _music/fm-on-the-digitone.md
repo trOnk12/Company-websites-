@@ -37,6 +37,15 @@ The rest of this page earns that table, one knob at a time. Every step has a box
 
 Pick an empty track. Clear its preset with **[TRK] + [PLAY]**, then make sure the machine is **FM TONE**: **[FUNC] + [SYN]** opens the MACHINE menu; choose **FM TONE** and press **[YES]**.
 
+```device dn
+trk :: on
+play :: on
+func :: on
+syn :: on
+yes :: on
+caption: Hold TRK, press PLAY (1, 2); hold FUNC, press SYN (3, 4); pick FM TONE and press YES (5).
+```
+
 Now set these, so we all start from the same sound. Press **[SYN]** for page 1, and again (or **[DOWN]**) for page 2.
 
 ```digitone SYN 1 · FM TONE

@@ -35,6 +35,7 @@ function knobFraction(v) {
 }
 
 const { pen } = require('./sketch');
+const DEV = require('./devices');
 
 // A knob, sketched: a wobbly ring with scale ticks, and the setting drawn in heavy pencil with a red dot.
 function knobSvg(f, label) {
@@ -224,15 +225,15 @@ function valueHtml(control, v, extra) {
   return `<span class="v text">${L.inline(v, ctx)}</span>`;
 }
 
-function settings(block) {
+function settings(block, nums = []) {
   const ctx = { file: 'music', cards: new Map(), links: new Set() };
-  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(line => {
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map((line, k) => {
     const parts = line.split('::').map(s => s.trim());
     const [control, value] = parts;
     const stepped = /^step \d+\/\d+$/.test(value);
     const extra = stepped ? parts[2] : '';
     const why = stepped ? parts[3] : parts[2];
-    return `<li class="setting" tabindex="0"><span class="control">${L.esc(control)}</span><span class="value">${valueHtml(control, value, extra)}</span>${why ? `<span class="why">${L.inline(why, ctx)}</span>` : ''}</li>`;
+    return `<li class="setting" tabindex="0"><span class="control">${nums[k] ? `<span class="num" aria-hidden="true">${nums[k]}</span>` : ''}${L.esc(control)}</span><span class="value">${valueHtml(control, value, extra)}</span>${why ? `<span class="why">${L.inline(why, ctx)}</span>` : ''}</li>`;
   });
   return `<ul class="settings">${rows.join('')}</ul>`;
 }
@@ -315,6 +316,54 @@ function algoSketch(block, seed) {
   return `<figure class="algo-sketch"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch of the algorithm: ${L.esc(edges.map(e => `${e.a} to ${e.b}`).join(', '))}">${s}</svg><figcaption>Red: shakes (modulates). Black: goes out to X or Y; dotted: not shaped by the operator envelope.</figcaption></figure>`;
 }
 
+// The real panel of a device, with this card's controls set and numbered like the rows under it.
+// PERfourMER cards show only the channel strips they touch (named by "Ch N" rows, or the section's text).
+function panelFor(dev, title, text, block) {
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split('::').map(x => x.trim()));
+  const chm = (title + ' ' + text).match(/channels?\s*\**\s*(\d)/i);
+  const ctx = { channel: chm ? Number(chm[1]) : 1 };
+  const set = {}, numbers = {}, nums = [], chans = new Set();
+  let n = 0;
+  rows.forEach(([c, v], k) => {
+    const r = DEV.resolve(dev, c, v || '', ctx);
+    if (!r) return;
+    if (!numbers[r.id]) numbers[r.id] = ++n;
+    nums[k] = numbers[r.id];
+    if (!r.state.off) set[r.id] = r.state;
+    if (dev === 'pf' && r.id.startsWith('c')) chans.add(r.channel);
+  });
+  if (n < 2) return { html: '', nums: [] };
+  let view = ['all'];
+  let inset = '';
+  if (dev === 'pf') {
+    view = [...chans].sort().map(c => `ch${c}`);
+    if (!view.length) view = ['ch1'];
+    const g = ['playmode', 'master'].filter(r => set[r === 'master' ? 'master_volume' : 'playmode']);
+    if (g.length) inset = DEV.render('pf', { set, view: g, numbers, seed: title + ':g' }).replace('class="dev-sketch', 'class="dev-sketch inset');
+  }
+  if (dev === 'ns') view = ['panel'];
+  if (dev === 'gc') view = ['top'];
+  const name = { pf: 'PERfourMER', gc: 'Grand Canyon', ns: 'NightSky' }[dev];
+  const cap = dev === 'pf' && chans.size ? `The ${name}${view.filter(v => v.startsWith('ch')).length > 1 ? `, channels ${[...chans].sort().join(' and ')}` : `, channel ${[...chans][0] || ctx.channel}`}: the numbers match the list below.` : `The ${name}: the numbers match the list below.`;
+  const main = DEV.render(dev, { set, view, numbers, caption: cap, seed: title, fitX: dev === 'pf' ? 70 : 0 });
+  return { html: inset ? `<div class="dev-row">${main}${inset}</div>` : main, nums };
+}
+
+// Any device of the rig, from a lesson: "```device dn" then "control :: on | 0.3 | option" lines, "caption: …",
+// and optionally "view: region, region". Ids are the models' ids in scripts/devices.js.
+function deviceBlock(id, block, seed) {
+  const set = {}, numbers = {};
+  let caption = '', view = ['all'], n = 0;
+  for (const l of block.split('\n').map(x => x.trim()).filter(Boolean)) {
+    if (/^caption:/.test(l)) { caption = l.replace(/^caption:\s*/, ''); continue; }
+    if (/^view:/.test(l)) { view = l.replace(/^view:\s*/, '').split(',').map(x => x.trim()); continue; }
+    const [c, v] = l.split('::').map(x => x.trim());
+    set[c] = v === 'on' ? { on: true } : /^[\d.]+$/.test(v) ? { f: Number(v) } : { opt: v };
+    numbers[c] = ++n;
+  }
+  return DEV.render(id, { set, view, numbers, caption, seed });
+}
+
 // One section: Markdown, with any ```settings fences drawn as cards.
 function section(title, text) {
   const ctx = { file: 'music', cards: new Map(), links: new Set() };
@@ -325,12 +374,17 @@ function section(title, text) {
     .replace(/```check\n([\s\S]*?)```/g, (_, b) => stash(check(b)))
     .replace(/```fm\n([\s\S]*?)```/g, (_, b) => stash(fmToy(b)))
     .replace(/```algo\n([\s\S]*?)```/g, (_, b) => stash(algoSketch(b, title)))
+    .replace(/```device (\w+)\n([\s\S]*?)```/g, (_, id, b) => stash(deviceBlock(id, b, title)))
     .replace(/^> (.+)$/gm, (_, q) => stash(`<blockquote class="idea"><p>${L.inline(q, ctx)}</p></blockquote>`));
   const parts = text.split(/```settings\n([\s\S]*?)```/);
-  const dev0 = /perfourmer/i.test(title) ? 'dev-pf' : /grand canyon/i.test(title) ? 'dev-gc' : /nightsky/i.test(title) ? 'dev-ns' : '';
+  const dev0 = /perfourmer|^the bass/i.test(title) ? 'dev-pf' : /grand canyon/i.test(title) ? 'dev-gc' : /nightsky/i.test(title) ? 'dev-ns' : '';
   let html = '';
   parts.forEach((part, i) => {
-    if (i % 2) html += (dev0 && /^\d+\./.test(title) ? deviceSketch(dev0, title, part) : '') + settings(part);
+    if (i % 2) {
+      const devId = { 'dev-pf': 'pf', 'dev-gc': 'gc', 'dev-ns': 'ns' }[dev0];
+      const panel = devId && /^\d+\.|bass/i.test(title) ? panelFor(devId, title, text, part) : { html: '', nums: [] };
+      html += panel.html + settings(part, panel.nums);
+    }
     else if (part.trim()) part.split(/@@STEPS([A-Za-z0-9+/=]+)@@/).forEach((q, k) => {
       if (k % 2) html += stepsSketch(Buffer.from(q, 'base64').toString('utf8'), title);
       else if (q.trim()) q.split(/@@BLOCK(\d+)@@/).forEach((r, j) => {
@@ -460,6 +514,9 @@ function renderIndex(everything) {
       <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>
       <p class="lede">${L.esc(intro.meta.summary || '')}</p>
       ${rigSketch()}
+      <details class="rig-drawn"><summary>See each device, drawn from its real panel</summary>
+        <div class="rig-grid">${['pf', 'gc', 'ns', 'oxi'].map(id => DEV.render(id, { caption: { pf: 'Vermona PERfourMER MKII: four synth channels, one strip each.', gc: 'Electro-Harmonix Grand Canyon: delay and looper.', ns: 'Strymon NightSky: reverb.', oxi: 'OXI One MKII: the sequencer.' }[id], seed: 'index' })).join('')}</div>
+      </details>
       ${lessons.length ? `<h2>Side B: lessons</h2>
       <ul class="shelf lessons">
 ${lessons.map((r, i) => `<li class="cassette lesson-tape c-${(i + 3) % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">B${i + 1}</span><span class="c-title">${L.esc(r.meta.shelf || r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.device || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n')}
