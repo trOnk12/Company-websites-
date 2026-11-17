@@ -76,7 +76,7 @@
 <input type="radio" name="q-15-frames-jank-and-anrs-1" id="q-15-frames-jank-and-anrs-1-1"><label for="q-15-frames-jank-and-anrs-1-1">Another thread handles the tap while the main thread sleeps</label>
 <input type="radio" name="q-15-frames-jank-and-anrs-1" id="q-15-frames-jank-and-anrs-1-2" data-ok><label for="q-15-frames-jank-and-anrs-1-2">The tap waits, and after 5 seconds system_server shows an ANR</label>
 <input type="radio" name="q-15-frames-jank-and-anrs-1" id="q-15-frames-jank-and-anrs-1-3"><label for="q-15-frames-jank-and-anrs-1-3">Android stops the click code after 5 seconds and runs the tap</label>
-<p class="fb no opt-1"><b>Not quite.</b> Touches are messages for the main thread too, so they wait behind the sleeping <code>onCreate()</code>. <a class="show-me" href="15-frames-jank-and-anrs.html">Learn it in puzzle 15 →</a></p>
+<p class="fb no opt-1"><b>Not quite.</b> Touches are messages for the main thread too, so they wait behind the sleeping click code. <a class="show-me" href="15-frames-jank-and-anrs.html">Learn it in puzzle 15 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> One message at a time: the touch waits behind the sleep, and after 5 seconds comes the ANR.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Nothing is stopped: system_server shows a dialog and the user decides. <a class="show-me" href="15-frames-jank-and-anrs.html">Learn it in puzzle 15 →</a></p>
 </fieldset></section>

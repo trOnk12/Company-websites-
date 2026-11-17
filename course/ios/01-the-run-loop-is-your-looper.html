@@ -102,9 +102,9 @@
 <input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-1"><label for="q-01-the-run-loop-is-your-looper-1-1">The tap is handled on another thread, so the screen stays smooth</label>
 <input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-2" data-ok><label for="q-01-the-run-loop-is-your-looper-1-2">The tap waits until the run loop gets back to it, and the screen seems frozen</label>
 <input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-3"><label for="q-01-the-run-loop-is-your-looper-1-3">The run loop pauses the file read, handles the tap, then resumes</label>
-<p class="fb no opt-1"><b>Not quite.</b> Touches are the main run loop's job; they wait behind your file read. <label class="show-me" for="st-runloop-3" data-goto="st-runloop">Show me step 3 again ↑</label></p>
+<p class="fb no opt-1"><b>Not quite.</b> Touches are the main run loop's job; they wait behind your file read. <label class="show-me" for="st-runloop-4" data-goto="st-runloop">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One loop, one thing at a time.</p>
-<p class="fb no opt-3"><b>Not quite.</b> A run loop runs each piece of work to the end; it can't pause your read halfway. <label class="show-me" for="st-runloop-3" data-goto="st-runloop">Show me step 3 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> A run loop runs each piece of work to the end; it can't pause your read halfway. <label class="show-me" for="st-runloop-4" data-goto="st-runloop">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does the main thread sleep when there's no work, instead of checking again and again?</legend>
@@ -119,7 +119,7 @@
 <input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-2"><label for="q-01-the-run-loop-is-your-looper-3-2">They're two names for the main thread</label>
 <input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-3"><label for="q-01-the-run-loop-is-your-looper-3-3">A run loop is a thread that only handles touches</label>
 <p class="fb ok opt-1"><b>Right.</b> Worker vs its routine.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Every thread has a run loop; the main thread is only one of them. <label class="show-me" for="st-runloop-1" data-goto="st-runloop">Show me step 1 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Any thread can have one; the main thread is only one of them. <label class="show-me" for="st-runloop-1" data-goto="st-runloop">Show me step 1 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> A run loop isn't a thread: any thread can have one, feeding it its events. <label class="show-me" for="st-runloop-1" data-goto="st-runloop">Show me step 1 again ↑</label></p>
 </fieldset>
       </section>
@@ -127,7 +127,7 @@
         <h2 id="sources">Sources</h2>
 <ul><li><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html">Apple: Threading Programming Guide, Run Loops</a> (&quot;A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming events. The purpose of a run loop is to keep your thread busy when there is work to do and put your thread to sleep when there is none&quot;; &quot;each thread, including the application's main thread, has an associated run loop object… The app frameworks automatically set up and run the run loop on the main thread&quot;)</li></ul>
       </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Every iOS thread has a run loop: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Any iOS thread can have a run loop, and the main thread always does: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

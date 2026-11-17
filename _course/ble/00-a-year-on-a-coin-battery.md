@@ -1,5 +1,5 @@
 ---
-title: A year on a coin battery
+title: Months on a coin battery
 short: Why "low energy"
 summary: A heart-rate strap runs for months on a battery the size of a coin. Here's the one idea that makes that possible, and that every later puzzle follows from.
 takeaway: The radio is the hungriest part of a small device. BLE keeps it off almost all the time and wakes it only for short, planned moments. Every rule in this course follows from that.
@@ -18,7 +18,7 @@ Your Bluetooth headphones need charging every day or two. A heart-rate strap, a 
 
 A device's **radio** is the part that sends and listens over the air. A radio that is on, sending or just listening, uses far more power than the rest of the device asleep. For a small device, it's the hungriest part.
 
-**Bluetooth Low Energy**, **BLE** for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep for much longer than it was awake: anything from a few milliseconds (ms) to seconds. Your headphones use the original Bluetooth, which keeps the radio busy streaming sound; that's why they need charging every day or two.
+**Bluetooth Low Energy**, **BLE** for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep, usually for many times longer than it was awake: up to several seconds. Awake 3 ms out of every second is 0.3% of the time. Your headphones use the original Bluetooth, which keeps the radio busy streaming sound; that's why they need charging every day or two.
 
 That creates the two problems the next puzzles solve. A device that's asleep almost all the time is hard to find: how does your phone ever hear it? (puzzle 1) And once they've found each other, how do two devices that both sleep meet at the same moment? (puzzle 2)
 

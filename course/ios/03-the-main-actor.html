@@ -105,7 +105,7 @@ func showProfile() async {
 <input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-2"><label for="q-03-the-main-actor-1-2">Yes, unless the call is moved to a global dispatch queue first</label>
 <input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-3"><label for="q-03-the-main-actor-1-3">Yes: it's on the main actor, so the main thread waits too</label>
 <p class="fb ok opt-1"><b>Right.</b> await gives the thread back while waiting.</p>
-<p class="fb no opt-2"><b>Not quite.</b> No manual queue is needed: await already lets the main thread go. <label class="show-me" for="st-actor-2" data-goto="st-actor">Show me step 2 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> For a real network call, no: while it waits, await lets the main thread go. (Heavy work the function does itself is another matter, see the building block.) <label class="show-me" for="st-actor-2" data-goto="st-actor">Show me step 2 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> At an await, the function gives up its thread; the main thread keeps handling touches. <label class="show-me" for="st-actor-2" data-goto="st-actor">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">

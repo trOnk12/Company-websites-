@@ -34,7 +34,7 @@ class DraftViewModel(private val saved: SavedStateHandle) : ViewModel() {
 
 Saved state survives turning the phone too: the old Activity is stopped before it's destroyed, so its Bundle is saved and handed to the new Activity.
 
-Saved state is for coming back. If the user closes the screen for good with Back, there's nothing to come back to, so system_server throws it away.
+Saved state is for coming back. If the user closes the screen for good with Back, there's nothing to come back to, so system_server throws it away. (On an app's first screen, Android 12 and later only move the app to the background on Back, so there the state stays.)
 
 | Kept in | Survives turning the phone | Survives process death | Survives Back |
 |---|---|---|---|
@@ -58,3 +58,4 @@ Before the house can be torn down, the clerk mails the town hall a postcard with
 - [Android Developers: Save UI states](https://developer.android.com/topic/libraries/architecture/saving-states) (the table: saved state survives "system-initiated process death", not "user complete screen dismissal/finish()"; "only for primitive types and simple, small objects")
 - [AOSP: PendingTransactionActions.java](https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/servertransaction/PendingTransactionActions.java#L135) (when the Activity stops: `ActivityClient.getInstance().activityStopped(mActivity.token, mState, …)`, with a `TransactionTooLargeException` check right after)
 - [Android reference: SavedStateHandle](https://developer.android.com/reference/androidx/lifecycle/SavedStateHandle)
+- [Android 12 behavior changes: root launcher activities are no longer finished on Back press](https://developer.android.com/about/versions/12/behavior-changes-all) ("In Android 12, the system now moves the activity and its task to the background instead of finishing the activity.")

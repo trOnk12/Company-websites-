@@ -2,7 +2,7 @@
 title: The run loop is your Looper
 short: Run loop
 summary: On Android, the main thread runs a Looper: take a message from the queue, run it, repeat. iOS has the same idea under another name. Here it is, and the one way it differs.
-takeaway: Every iOS thread has a run loop: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.
+takeaway: Any iOS thread can have a run loop, and the main thread always does: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.
 ---
 
 ## The problem
@@ -28,9 +28,9 @@ The same clerk from the Android house, with a different name on the badge: work 
 
 ## Check yourself
 
-- On iOS, you read a large file on the main thread, and it takes 2 seconds. The user taps meanwhile. What happens?::*The tap waits until the run loop gets back to it, and the screen seems frozen||The tap is handled on another thread, so the screen stays smooth >> Touches are the main run loop's job; they wait behind your file read. >> s3||The run loop pauses the file read, handles the tap, then resumes >> A run loop runs each piece of work to the end; it can't pause your read halfway. >> s3::One loop, one thing at a time.
+- On iOS, you read a large file on the main thread, and it takes 2 seconds. The user taps meanwhile. What happens?::*The tap waits until the run loop gets back to it, and the screen seems frozen||The tap is handled on another thread, so the screen stays smooth >> Touches are the main run loop's job; they wait behind your file read. >> s4||The run loop pauses the file read, handles the tap, then resumes >> A run loop runs each piece of work to the end; it can't pause your read halfway. >> s4::One loop, one thing at a time.
 - Why does the main thread sleep when there's no work, instead of checking again and again?::*Because checking again and again burns CPU and battery||Because iOS ends threads that check too often >> Nothing is ended: sleeping is what saves the CPU and battery. >> s2::Sleep until there's work: no wasted CPU.
-- What's the difference between a run loop and a thread?::*The thread does the work, while the run loop feeds it events||A run loop is a thread that only handles touches >> A run loop isn't a thread: any thread can have one, feeding it its events. >> s1||They're two names for the main thread >> Every thread has a run loop; the main thread is only one of them. >> s1::Worker vs its routine.
+- What's the difference between a run loop and a thread?::*The thread does the work, while the run loop feeds it events||A run loop is a thread that only handles touches >> A run loop isn't a thread: any thread can have one, feeding it its events. >> s1||They're two names for the main thread >> Any thread can have one; the main thread is only one of them. >> s1::Worker vs its routine.
 
 ## Sources
 

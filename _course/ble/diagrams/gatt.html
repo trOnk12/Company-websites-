@@ -6,14 +6,14 @@
 <g class="step s1" data-pulse="1"><x-cabinet x="150" y="120" w="210" drawers="2" label="GATT server"/></g>
 <g class="step s2" data-pulse="2"><text class="d-b" x="255" y="148" text-anchor="middle">Heart Rate</text><text class="d-b" x="255" y="194" text-anchor="middle">Battery</text></g>
 <g class="step s3" data-move="2:200,136 3:380,96" data-pulse="3"><rect class="d-paper" x="0" y="0" width="120" height="70" rx="4"/><rect class="d-hl" x="0" y="-12" width="60" height="14" rx="3"/><text class="d-tiny" x="60" y="30" text-anchor="middle">measurement</text><text class="d-b" x="60" y="56" text-anchor="middle">72</text></g>
-<g class="step s3"><rect class="d-band" x="380" y="176" width="120" height="24" rx="4"/><text class="d-mi" x="440" y="193" text-anchor="middle">UUID 2A37</text></g>
+<g class="step s3"><rect class="d-band" x="380" y="176" width="120" height="24" rx="4"/><text class="d-mi" x="440" y="193" text-anchor="middle">UUID 2A19</text></g>
 <g class="step s4" data-pulse="4"><x-phone x="540" y="120" w="64" h="120" label="GATT client"/></g>
-<x-letter class="step only-4" data-move="3:540,260 4:420,260" x="0" y="0" w="110" h="40" label="read 2A37"/>
+<x-letter class="step only-4" data-move="3:540,260 4:420,260" x="0" y="0" w="110" h="40" label="read 2A19"/>
 <x-arrow class="step only-4" tone="path" d="M536,240 C470,270 400,240 364,190"/><x-arrow class="step only-4" tone="acc" d="M500,124 C516,128 528,140 536,150"/>
 </svg>
 <ol class="caps">
 <li><p>The strap keeps its data in a filing cabinet: <b>GATT</b>. The strap is the <b>GATT server</b>, the side that holds the data.</p></li>
 <li><p>Each drawer is a <b>service</b>, a group of related values: Heart Rate, Battery.</p></li>
-<li><p>In a drawer, each folder is a <b>characteristic</b>: one value, like the latest heart rate, 72. Its name is a <b>UUID</b>: for a standard value like this, the same number on every brand of strap. <i>Predict: how does the phone ask for it?</i></p></li>
-<li><p>By that name. The phone is the <b>GATT client</b>: "read 2A37", and the strap answers with the folder's value.</p></li>
+<li><p>In a drawer, each folder is a <b>characteristic</b>: one value, like the battery level, 85%. Its name is a <b>UUID</b>: for a standard value like this, the same number on every brand of strap. <i>Predict: how does the phone ask for it?</i></p></li>
+<li><p>By that name. The phone is the <b>GATT client</b>: "read 2A19" (Battery Level), and the strap answers with the folder's value. Not every folder can be read: the heart rate can only be sent, as the next puzzle shows.</p></li>
 </ol>

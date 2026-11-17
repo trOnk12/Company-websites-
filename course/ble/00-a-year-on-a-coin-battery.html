@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A heart-rate strap runs for months on a battery the size of a coin. Here's the one idea that makes that possible, and that every later puzzle follows from.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="A year on a coin battery – Bluetooth Low Energy, from the radio up – Mateusz Pachulski">
+  <meta property="og:title" content="Months on a coin battery – Bluetooth Low Energy, from the radio up – Mateusz Pachulski">
   <meta property="og:description" content="A heart-rate strap runs for months on a battery the size of a coin. Here's the one idea that makes that possible, and that every later puzzle follows from.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/ble/00-a-year-on-a-coin-battery">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>A year on a coin battery – Bluetooth Low Energy, from the radio up – Mateusz Pachulski</title>
+  <title>Months on a coin battery – Bluetooth Low Energy, from the radio up – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/ble/00-a-year-on-a-coin-battery">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -49,9 +49,9 @@
 
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" aria-current="page" title="A year on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" aria-current="page" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
       <p class="eyebrow">Bluetooth Low Energy, from the radio up · Start here · 1 of 5</p>
-      <h1>A year on a coin battery</h1>
+      <h1>Months on a coin battery</h1>
       <p class="lede">A heart-rate strap runs for months on a battery the size of a coin. Here's the one idea that makes that possible, and that every later puzzle follows from.</p>
 
       <section aria-labelledby="the-problem">
@@ -84,7 +84,7 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A device's <b>radio</b> is the part that sends and listens over the air. A radio that is on, sending or just listening, uses far more power than the rest of the device asleep. For a small device, it's the hungriest part.</p>
-<p><b>Bluetooth Low Energy</b>, <b>BLE</b> for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep for much longer than it was awake: anything from a few milliseconds (ms) to seconds. Your headphones use the original Bluetooth, which keeps the radio busy streaming sound; that's why they need charging every day or two.</p>
+<p><b>Bluetooth Low Energy</b>, <b>BLE</b> for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep, usually for many times longer than it was awake: up to several seconds. Awake 3 ms out of every second is 0.3% of the time. Your headphones use the original Bluetooth, which keeps the radio busy streaming sound; that's why they need charging every day or two.</p>
 <p>That creates the two problems the next puzzles solve. A device that's asleep almost all the time is hard to find: how does your phone ever hear it? (puzzle 1) And once they've found each other, how do two devices that both sleep meet at the same moment? (puzzle 2)</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -129,7 +129,7 @@
         <a class="button primary" href="01-shouting-into-the-room.html">Puzzle 1: Advertising and scanning →</a>
       </nav>
 
-      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20A%20year%20on%20a%20coin%20battery&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
+      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Months%20on%20a%20coin%20battery&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
   <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fble%2F00-a-year-on-a-coin-battery" alt="" width="1" height="1"></noscript>

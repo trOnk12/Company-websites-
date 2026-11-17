@@ -1,13 +1,13 @@
 ---
 title: Don't ask, get told
 short: Notifications
-summary: In puzzle 3, the phone read the heart rate by asking for it. Asking again and again wastes radio time. Here's how the strap tells the phone instead, and the one step everyone forgets.
+summary: In puzzle 3, the phone read the battery level by asking for it. A live heart rate can't work that way: asking again and again wastes radio time, and the standard doesn't even allow reading it. Here's how the strap tells the phone instead, and the one step everyone forgets.
 takeaway: A notification is the server sending a characteristic's value by itself when it changes. It only starts after the client writes the CCCD descriptor on the device. On Android, setCharacteristicNotification() alone isn't enough: you also writeDescriptor() the CCCD.
 ---
 
 ## The problem
 
-In puzzle 3, the phone read the heart rate by asking: "read 2A37". To show a live heart rate, it would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and each read waits for a meeting to ask and for the answer (puzzle 3), so the value can be old by the time it arrives. Can the strap just tell the phone when the value changes?
+In puzzle 3, the phone read the battery level by asking: "read 2A19". Imagine showing a live heart rate the same way: the phone would have to ask at every connection event. That's a request and an answer each time, even when the value didn't change, and each read waits for a meeting to ask and for the answer (puzzle 3), so the value can be old by the time it arrives. Can the strap just tell the phone when the value changes? For the heart rate, that's the only way the standard allows.
 
 ## See it
 
@@ -46,3 +46,4 @@ Instead of phoning the newsroom every hour to ask "anything new?", you subscribe
 - [Bluetooth Core Specification 5.4, Vol 3, Part G: GATT](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/host/generic-attribute-profile--gatt-.html) (Client Characteristic Configuration: "Bit 0: Notification. The Characteristic Value shall be notified"; the descriptor value is kept per client)
 - [Bluetooth SIG assigned numbers: descriptors](https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/uuids/descriptors.yaml) (`0x2902`: Client Characteristic Configuration)
 - [Android Developers: Transfer BLE data](https://developer.android.com/develop/connectivity/bluetooth/ble/transfer-ble-data) (the sample calls `setCharacteristicNotification()` and then writes the descriptor with `ENABLE_NOTIFICATION_VALUE`)
+- [Bluetooth SIG: Heart Rate Service 1.0](https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/HRS_v1.0/out/en/index-en.html) (characteristic table: "Heart Rate Measurement / M / Notify / None", no Read property)

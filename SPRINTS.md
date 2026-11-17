@@ -111,6 +111,34 @@ only the blocks they're missing.
 - [ ] Same gap hunt for Android, BLE, iOS.
 - [ ] Splits of overloaded puzzles: sysdesign 5, 8, 10; LLM 03, 07; security 08.
 
+## Sprint 12: Ready to self-study (from the strict-learner gap hunts of Android, iOS, BLE)
+
+Verdicts: Android can be started today (puzzles 0–12 read alone, 8–9/10); 13–14 and 18–19 stall (4–5/10).
+iOS is a good runtime-model bridge but can't start iOS work (no Swift, no app structure, no screen).
+BLE is a sound primer but can't build a feature (no scan, connect, callback, permissions or parsing).
+
+Done in this sprint:
+- [x] Progress saved by puzzle slug, not number (inserting puzzles scrambled it); old saves migrate via
+  `_course/progress-legacy.json`; test.
+- [x] BLE: Heart Rate Measurement isn't readable (Notify only, HRS 1.0): the read example is now Battery Level
+  (2A19); P00 sleep-length contradiction, title, truncated diagram label.
+- [x] Android: "a dialog pauses the Activity" corrected; Android 12 Back on the root Activity (moves to background,
+  not destroyed) noted in 18 and 19 with the source; 15 Q1 explanation; 14 "from step 3".
+- [x] iOS: "every thread has a run loop" → "can have"; 03 Q1 explanation narrowed; two hint pointers.
+
+To do, in order:
+- [ ] Android: new puzzles "Threads share one house" (02→03), "When memory runs out, who gets ended" (before 12),
+  "Objects live at addresses; only bytes travel" (before 13), "Windows and the touch line" (split from 14),
+  "Slow work off the main thread, and back" (before 18). Split 13, 18, 19; teach Intent extras before 16.
+- [ ] iOS: "Swift for Kotlin developers" (before 00), "Your app's front door: @main, scenes" (before 00),
+  "A screen: UIViewController and SwiftUI View" (before 02), "Two meanings of async; Task { }" (split 03),
+  "Value types are copied" (before 04). Clean the glossary baseline (no Swift whitelisting).
+- [ ] BLE: "What's in a shout" (advertisement contents, ScanFilter), "Ask first" (permissions),
+  "Can I read it?" (properties: split P03), "Bytes to a number" (parsing 2A37 flags, uint8/16, bits),
+  "The Android call chain" (connectGatt → callbacks → close; one operation at a time). P04 API-33 note.
+- [ ] Quizzes everywhere: replace the "What's the difference between X and Y" template where it only tests recall;
+  no two-option questions; applied/numeric questions.
+
 ## Backlog, in order
 
 1. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,

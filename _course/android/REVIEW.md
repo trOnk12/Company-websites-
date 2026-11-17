@@ -29,3 +29,4 @@ puzzle ≥ 8.
   (puzzle, question, option), so the misconceptions people actually hold show up in the dashboard.
 - Not yet at the bar: pictures are mostly 7–8 (07 is 6.5), text has three puzzles at 7. Next round: redraw 07 with
   three equal houses and the refusal travelling back to Game; frames on a timeline in 15; Zygote's fork in 12's cold start.
+| 2026-11-17 | gap hunt (strict learner) | clean | see SPRINTS.md sprint 12 | Fixed now: accuracy and quiz bugs (listed in the sprint log). Still open: the missing building-block puzzles and splits in sprint 12. |
