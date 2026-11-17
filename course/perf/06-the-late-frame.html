@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
+  <meta name="description" content="Puzzle 5 showed that a frame's buffer must be ready before the display's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="The late frame – Performance, under the hood – Mateusz Pachulski">
-  <meta property="og:description" content="The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
+  <meta property="og:description" content="Puzzle 5 showed that a frame's buffer must be ready before the display's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/perf/03-the-late-frame">
+  <meta property="og:url" content="https://pachulski.dev/course/perf/06-the-late-frame">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>The late frame – Performance, under the hood – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/perf/03-the-late-frame">
+  <link rel="canonical" href="https://pachulski.dev/course/perf/06-the-late-frame">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -47,15 +47,15 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="3" data-prev="02-slow-is-not-busy.html" data-prev-title="Slow isn't always busy">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-photo-or-a-diary.html" class="done" title="A photo or a diary">0</a></li><li><a href="01-reading-the-flames.html" class="done" title="Reading the flames">1</a></li><li><a href="02-slow-is-not-busy.html" class="done" title="Slow isn't always busy">2</a></li><li><a href="03-the-late-frame.html" aria-current="page" title="The late frame">3</a></li><li><a href="04-what-the-collector-costs.html" title="What the collector costs">4</a></li><li><a href="05-what-a-heap-dump-proves.html" title="What a heap dump proves">5</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Puzzle 3 · 4 of 6</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="6" data-prev="05-who-puts-pixels-on-screen.html" data-prev-title="Who puts pixels on screen">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" class="done" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" class="done" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" class="done" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" class="done" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" class="done" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" aria-current="page" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      <p class="eyebrow">Performance, under the hood · Puzzle 6 · 7 of 10</p>
       <h1>The late frame</h1>
-      <p class="lede">The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.</p>
-      <aside class="builds-on" aria-labelledby="builds-on-3">
-        <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-slow-is-not-busy.html">Puzzle 2: Slow isn't always busy</a></summary><p>A system trace shows each thread's state as the kernel sees it: Running on a CPU, Runnable and waiting for one, Sleeping while blocked on a lock or a reply, or in Uninterruptible Sleep waiting for disk I/O. A slow span that's mostly Running needs faster code; mostly Sleeping or Uninterruptible Sleep, it's waiting on something else; mostly Runnable, other threads have the CPUs.</p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-photo-or-a-diary.html">0</a> → <a href="01-reading-the-flames.html">1</a> → <a href="02-slow-is-not-busy.html">2</a>. Know them already? Start here.</p>
+      <p class="lede">Puzzle 5 showed that a frame's buffer must be ready before the display's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-6">
+        <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="4"><details><summary><a href="04-slow-is-not-busy.html">Puzzle 4: Slow isn't always busy</a></summary><p>A system trace shows each thread's state as the kernel sees it: Running on a CPU, Runnable and waiting for one, Sleeping while blocked on a lock or a reply, or in Uninterruptible Sleep waiting for disk I/O. A slow span that's mostly Running needs faster code; mostly Sleeping or Uninterruptible Sleep, it's waiting on something else; mostly Runnable, other threads have the CPUs.</p></details></li><li data-block="5"><details><summary><a href="05-who-puts-pixels-on-screen.html">Puzzle 5: Who puts pixels on screen</a></summary><p>The display redraws at a fixed rate and sends vsync before each refresh. Your app's RenderThread gives drawing commands to the GPU, which fills a buffer with the frame's pixels. The finished buffer is queued for SurfaceFlinger, which composites the latest buffer of every visible window into what the display shows. A frame counts only once its buffer is ready when SurfaceFlinger needs it.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-threads-take-turns.html">0</a> → <a href="01-what-a-trace-is.html">1</a> → <a href="02-a-photo-or-a-diary.html">2</a> → <a href="03-reading-the-flames.html">3</a> → <a href="04-slow-is-not-busy.html">4</a> → <a href="05-who-puts-pixels-on-screen.html">5</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -83,11 +83,11 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>In the Android course you saw a frame's work: the main thread measures, lays out and draws, the RenderThread hands it to the GPU, and the result must be ready for the next <b>vsync</b>, the display's signal that it's about to show a new frame. Since Android 12, Perfetto's <b>FrameTimeline</b> draws that contract for each frame, as two slices under your app:</p>
-<ul><li><b>Expected Timeline</b>: the window the app was given for this frame. It starts when the Choreographer callback was scheduled; its end is the frame's <b>deadline</b>.</li><li><b>Actual Timeline</b>: what really happened. It starts when <code>Choreographer#doFrame</code> started running and ends at whichever came later: the frame being posted to <b>SurfaceFlinger</b>, Android's service that combines every app's frames onto the display, (the RenderThread hands the finished frame over), or the GPU finishing.</li></ul>
+<p>In puzzle 5 you followed a frame's path: the main thread measures, lays out and draws, the RenderThread hands the drawing to the GPU, and the finished buffer must be queued for SurfaceFlinger before the vsync it's meant for. Since Android 12, Perfetto's <b>FrameTimeline</b> draws that contract for each frame, as two slices under your app:</p>
+<ul><li><b>Expected Timeline</b>: the window the app was given for this frame. It starts when the Choreographer callback was scheduled; its end is the frame's <b>deadline</b>.</li><li><b>Actual Timeline</b>: what really happened. It starts when <code>Choreographer#doFrame</code> started running and ends at whichever came later: the frame being posted to SurfaceFlinger (the RenderThread queues the buffer), or the GPU finishing.</li></ul>
 <p>When Actual ends after the deadline, the frame is janky, and FrameTimeline labels whose fault it was. &quot;App Deadline Missed&quot; means your app ran longer than expected. Other labels blame SurfaceFlinger or the display, and &quot;Buffer Stuffing&quot; means your app queued frames faster than they could be shown.</p>
 <p>Notice that the GPU counts. A frame whose main thread finished early can still be late if the GPU work was too heavy.</p>
-<p>So the method is: find the late frames on the Actual Timeline, then zoom into that frame's main thread and RenderThread. Read their states (puzzle 2) first, then the flame chart (puzzle 1) for the Running parts.</p>
+<p>So the method is: find the late frames on the Actual Timeline, then zoom into that frame's main thread and RenderThread. Read their states (puzzle 4) first, then the flame chart (puzzle 3) for the Running parts.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -97,26 +97,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A frame's main thread finished well before the deadline, but FrameTimeline marks it late. What can explain it?</legend>
-<input type="radio" name="q-03-the-late-frame-1" id="q-03-the-late-frame-1-1"><label for="q-03-the-late-frame-1-1">The Expected Timeline was drawn wrong by Perfetto</label>
-<input type="radio" name="q-03-the-late-frame-1" id="q-03-the-late-frame-1-2"><label for="q-03-the-late-frame-1-2">Nothing: if the main thread finished early, the frame is on time</label>
-<input type="radio" name="q-03-the-late-frame-1" id="q-03-the-late-frame-1-3" data-ok><label for="q-03-the-late-frame-1-3">The GPU finished after the deadline, and that counts too</label>
+<input type="radio" name="q-06-the-late-frame-1" id="q-06-the-late-frame-1-1"><label for="q-06-the-late-frame-1-1">The Expected Timeline was drawn wrong by Perfetto</label>
+<input type="radio" name="q-06-the-late-frame-1" id="q-06-the-late-frame-1-2"><label for="q-06-the-late-frame-1-2">Nothing: if the main thread finished early, the frame is on time</label>
+<input type="radio" name="q-06-the-late-frame-1" id="q-06-the-late-frame-1-3" data-ok><label for="q-06-the-late-frame-1-3">The GPU finished after the deadline, and that counts too</label>
 <p class="fb no opt-1"><b>Not quite.</b> The expected window is the app's budget; the GPU work came on top. <label class="show-me" for="st-frametl-3" data-goto="st-frametl">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> The Actual Timeline ends at the later of posting and the GPU finishing. <label class="show-me" for="st-frametl-3" data-goto="st-frametl">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Actual ends at max(GPU, post time).</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A frame is marked &quot;App Deadline Missed&quot;. Where do you look next?</legend>
-<input type="radio" name="q-03-the-late-frame-2" id="q-03-the-late-frame-2-1" data-ok><label for="q-03-the-late-frame-2-1">At that frame's main thread and RenderThread, states first</label>
-<input type="radio" name="q-03-the-late-frame-2" id="q-03-the-late-frame-2-2"><label for="q-03-the-late-frame-2-2">At the Expected Timeline, to make the window longer</label>
-<input type="radio" name="q-03-the-late-frame-2" id="q-03-the-late-frame-2-3"><label for="q-03-the-late-frame-2-3">At SurfaceFlinger's threads, since it draws the frame</label>
+<input type="radio" name="q-06-the-late-frame-2" id="q-06-the-late-frame-2-1" data-ok><label for="q-06-the-late-frame-2-1">At that frame's main thread and RenderThread, states first</label>
+<input type="radio" name="q-06-the-late-frame-2" id="q-06-the-late-frame-2-2"><label for="q-06-the-late-frame-2-2">At the Expected Timeline, to make the window longer</label>
+<input type="radio" name="q-06-the-late-frame-2" id="q-06-the-late-frame-2-3"><label for="q-06-the-late-frame-2-3">At SurfaceFlinger's threads, since it draws the frame</label>
 <p class="fb ok opt-1"><b>Right.</b> The app was late: read the app's threads.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The window comes from the display's timing; you can't stretch it. <label class="show-me" for="st-frametl-4" data-goto="st-frametl">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> That label means your app took too long; SurfaceFlinger has its own labels. <label class="show-me" for="st-frametl-4" data-goto="st-frametl">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the Expected Timeline and the Actual Timeline?</legend>
-<input type="radio" name="q-03-the-late-frame-3" id="q-03-the-late-frame-3-1" data-ok><label for="q-03-the-late-frame-3-1">Expected is the window the app was given, while Actual is when its work really ran</label>
-<input type="radio" name="q-03-the-late-frame-3" id="q-03-the-late-frame-3-2"><label for="q-03-the-late-frame-3-2">Expected is when the work really ran, while Actual is the window the app was given</label>
+<input type="radio" name="q-06-the-late-frame-3" id="q-06-the-late-frame-3-1" data-ok><label for="q-06-the-late-frame-3-1">Expected is the window the app was given, while Actual is when its work really ran</label>
+<input type="radio" name="q-06-the-late-frame-3" id="q-06-the-late-frame-3-2"><label for="q-06-the-late-frame-3-2">Expected is when the work really ran, while Actual is the window the app was given</label>
 <p class="fb ok opt-1"><b>Right.</b> Budget vs what happened.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
@@ -129,14 +129,14 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="02-slow-is-not-busy.html">← Puzzle 2</a>
-        <a class="button primary" href="04-what-the-collector-costs.html">Puzzle 4: How ART frees memory →</a>
+        <a class="button" href="05-who-puts-pixels-on-screen.html">← Puzzle 5</a>
+        <a class="button primary" href="07-what-garbage-is.html">Puzzle 7: References and reachability →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20The%20late%20frame&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fperf%2F03-the-late-frame" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fperf%2F06-the-late-frame" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

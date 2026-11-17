@@ -1,0 +1,16 @@
+<!-- label: From drawing commands to one picture on the display -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="px-t"><title id="px-t">The RenderThread sends drawing commands to the GPU, which fills a buffer with pixels; the buffer is queued for SurfaceFlinger, which takes the latest buffer from the app, the status bar and the navigation bar and composites them into one picture for the display at vsync</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<x-person class="step s1" x="60" y="60" label="RenderThread"/>
+<g class="step s1" data-pulse="1"><x-chip x="150" y="60" w="80" h="56" label="GPU"/><x-arrow tone="acc" d="M95,85 L140,88"/></g>
+<g class="step s2" data-pulse="2"><x-sheet x="270" y="50" w="70" h="90" lines="5" label="your buffer"/><x-arrow tone="acc" d="M235,90 L262,92"/></g>
+<g class="step s3" data-pulse="3"><x-sheet x="270" y="190" w="70" h="30" lines="1" label="status bar"/><x-sheet x="270" y="260" w="70" h="30" lines="1" label="nav bar"/><x-machine x="380" y="150" w="120" label="SurfaceFlinger"/><x-arrow tone="ink" d="M345,95 L390,150"/><x-arrow tone="ink" d="M345,205 L385,185"/><x-arrow tone="ink" d="M345,275 L395,215"/></g>
+<g class="step s4" data-pulse="4"><x-phone x="550" y="110" label="display"/><x-arrow tone="acc" d="M505,180 L545,175"/><text class="d-a" x="440" y="70" text-anchor="middle">at vsync: one picture</text></g>
+<g class="step s1" data-move="1:190,135 2:305,40 3:440,140 4:585,90"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Your app's RenderThread sends drawing commands to the <b>GPU</b>, the graphics processor.</p></li>
+<li><p>The GPU writes the frame's pixels into a <b>buffer</b>, memory that holds one picture. Your app queues it.</p></li>
+<li><p><b>SurfaceFlinger</b> takes the latest buffer from every visible window and <b>composites</b> them. <i>Predict: what if your buffer isn't finished in time?</i></p></li>
+<li><p>At <b>vsync</b> the display shows the combined picture. No finished buffer from your app: its old picture is shown again.</p></li>
+</ol>

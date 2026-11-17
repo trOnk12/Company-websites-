@@ -120,8 +120,6 @@
    "UIButton",
    "Material",
    "fun",
-   "reference",
-   "references",
    "this",
    "null",
    "var count by remember",
@@ -561,6 +559,13 @@
   "DispatchQueue.main.async": {
    "course": "ios",
    "in": 2
+  },
+  "reference": {
+   "course": "perf",
+   "in": 7,
+   "aliases": [
+    "references"
+   ]
   }
  }
 }

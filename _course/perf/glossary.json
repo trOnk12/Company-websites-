@@ -40,7 +40,6 @@
    "jank",
    "Choreographer",
    "RenderThread",
-   "GPU",
    "ART",
    "Binder",
    "lock",
@@ -55,7 +54,6 @@
    "onCreate()",
    "RecyclerView",
    "ANR",
-   "Perfetto",
    "Hz",
    "µs",
    "fun",
@@ -93,7 +91,10 @@
    "format()",
    "loadUser()",
    "Choreographer#doFrame",
-   "StringBuilder"
+   "User",
+   "Address",
+   "title",
+   "val title = StringBuilder()"
   ]
  },
  "avoid": {
@@ -107,7 +108,7 @@
  },
  "terms": {
   "call stack": {
-   "in": "00",
+   "in": "02",
    "def": "The chain of function calls a thread is inside right now, from the first caller to the running function.",
    "aliases": [
     "call stacks",
@@ -115,7 +116,7 @@
    ]
   },
   "sample": {
-   "in": "00",
+   "in": "02",
    "def": "A snapshot of a thread's call stack, taken by the kernel every so many CPU events.",
    "aliases": [
     "samples",
@@ -124,7 +125,7 @@
    ]
   },
   "method tracing": {
-   "in": "00",
+   "in": "02",
    "def": "Recording a timestamp at the start and end of every method call, by instrumenting the code.",
    "aliases": [
     "method recording",
@@ -132,7 +133,7 @@
    ]
   },
   "instrumentation": {
-   "in": "00",
+   "in": "02",
    "def": "Extra code injected into your app to record what it does; it slows the app down.",
    "aliases": [
     "instrumenting",
@@ -140,7 +141,7 @@
    ]
   },
   "trace section": {
-   "in": "00",
+   "in": "02",
    "def": "A named span you mark yourself with trace(\"name\") { }, recorded in a system trace.",
    "aliases": [
     "trace sections",
@@ -148,94 +149,94 @@
    ]
   },
   "call chart": {
-   "in": "01",
+   "in": "03",
    "def": "Each call drawn as a bar along a timeline, callees under their caller.",
    "aliases": []
   },
   "flame chart": {
-   "in": "01",
+   "in": "03",
    "def": "The call chart with identical call stacks merged; width is total time, not a timeline.",
    "aliases": [
     "flame charts"
    ]
   },
   "self time": {
-   "in": "01",
+   "in": "03",
    "def": "Time a function spent running its own code, not the functions it called.",
    "aliases": [
     "self"
    ]
   },
   "total time": {
-   "in": "01",
+   "in": "03",
    "def": "Self time plus the time spent in everything the function called.",
    "aliases": []
   },
   "thread state": {
-   "in": "02",
+   "in": "04",
    "def": "What a thread is doing according to the kernel: running, runnable, sleeping, or in uninterruptible sleep.",
    "aliases": [
     "thread states"
    ]
   },
   "Running": {
-   "in": "02",
+   "in": "04",
    "def": "The thread is on a CPU, executing.",
    "aliases": []
   },
   "Runnable": {
-   "in": "02",
+   "in": "04",
    "def": "The thread is ready to run but waiting for a free CPU.",
    "aliases": []
   },
   "Sleeping": {
-   "in": "02",
+   "in": "04",
    "def": "The thread is waiting for something: a lock, a Binder reply, a message.",
    "aliases": []
   },
   "Uninterruptible Sleep": {
-   "in": "02",
+   "in": "04",
    "def": "The thread is waiting inside the kernel, usually for disk I/O.",
    "aliases": []
   },
   "FrameTimeline": {
-   "in": "03",
+   "in": "06",
    "def": "Perfetto's view of every frame: when it was expected to finish and when it really did.",
    "aliases": []
   },
   "Expected Timeline": {
-   "in": "03",
+   "in": "06",
    "def": "The time window the app was given to render a frame.",
    "aliases": []
   },
   "Actual Timeline": {
-   "in": "03",
+   "in": "06",
    "def": "When the app's frame work really started and ended, GPU included.",
    "aliases": []
   },
   "deadline": {
-   "in": "03",
+   "in": "06",
    "def": "The end of a frame's expected window: finish after it and the frame is late.",
    "aliases": [
     "deadlines"
    ]
   },
   "Concurrent Copying": {
-   "in": "04",
+   "in": "08",
    "def": "ART's default garbage collector since Android 8: it moves live objects while your threads keep running.",
    "aliases": [
     "CC"
    ]
   },
   "TLAB": {
-   "in": "04",
-   "def": "A thread's own slice of the heap; allocating there is a pointer bump, with no lock.",
+   "in": "08",
+   "def": "A thread's own piece of the heap; allocating there is a pointer bump, with no lock.",
    "aliases": [
     "thread-local allocation buffer"
    ]
   },
   "young GC": {
-   "in": "04",
+   "in": "08",
    "def": "A collection of only recently created objects, which mostly die young; cheap and frequent.",
    "aliases": [
     "young generation",
@@ -243,21 +244,21 @@
    ]
   },
   "allocation churn": {
-   "in": "04",
+   "in": "08",
    "def": "Creating many short-lived objects, which makes the collector run often.",
    "aliases": [
     "churn"
    ]
   },
   "heap dump": {
-   "in": "05",
+   "in": "09",
    "def": "A snapshot of every object in the app's heap and who refers to whom.",
    "aliases": [
     "heap dumps"
    ]
   },
   "GC root": {
-   "in": "05",
+   "in": "07",
    "def": "A starting point the collector always keeps: a thread's local variables, static fields, and the like.",
    "aliases": [
     "GC roots",
@@ -266,17 +267,17 @@
    ]
   },
   "shallow size": {
-   "in": "05",
+   "in": "09",
    "def": "The memory one object takes by itself.",
    "aliases": []
   },
   "retained size": {
-   "in": "05",
+   "in": "09",
    "def": "The memory that would be freed if this object were freed: itself plus all it alone keeps alive.",
    "aliases": []
   },
   "leak": {
-   "in": "05",
+   "in": "09",
    "def": "An object that's no longer needed but is still reachable from a GC root, so it's never freed.",
    "aliases": [
     "leaks",
@@ -285,7 +286,7 @@
    ]
   },
   "garbage collector": {
-   "in": "04",
+   "in": "07",
    "def": "The part of ART that finds objects nothing can reach and frees their memory.",
    "aliases": [
     "GC",
@@ -293,17 +294,17 @@
    ]
   },
   "heap": {
-   "in": "04",
+   "in": "07",
    "def": "The memory where an app's objects live.",
    "aliases": []
   },
   "vsync": {
-   "in": "03",
+   "in": "05",
    "def": "The display's regular signal that it's about to show a new frame.",
    "aliases": []
   },
   "CPU cycle": {
-   "in": "00",
+   "in": "02",
    "def": "One tick of the processor's clock.",
    "aliases": [
     "CPU cycles"
@@ -311,25 +312,143 @@
    "kind": "name"
   },
   "scheduler": {
-   "in": "02",
+   "in": "00",
    "def": "The part of the kernel that decides which thread runs on which CPU.",
    "aliases": []
   },
   "native memory": {
-   "in": "05",
+   "in": "09",
    "def": "Memory outside the heap that the garbage collector doesn't manage.",
    "aliases": []
   },
   "SurfaceFlinger": {
-   "in": "03",
+   "in": "05",
    "def": "The system service that combines every app's frames onto the display.",
    "kind": "name"
+  },
+  "CPU core": {
+   "in": "00",
+   "def": "One part of the processor that executes instructions; it runs one thread at a time.",
+   "aliases": [
+    "CPU cores",
+    "core",
+    "cores"
+   ]
+  },
+  "run queue": {
+   "in": "00",
+   "def": "The line of threads that are ready to run, waiting for a CPU core.",
+   "aliases": [
+    "run queues"
+   ]
+  },
+  "preemption": {
+   "in": "00",
+   "def": "The scheduler taking a core away from a running thread so another gets a turn.",
+   "aliases": [
+    "preempted",
+    "pre-emption"
+   ]
+  },
+  "wake": {
+   "in": "00",
+   "def": "The kernel putting a sleeping thread back in a run queue once what it waited for has arrived.",
+   "aliases": [
+    "wakes",
+    "woken",
+    "woke",
+    "wakeup",
+    "wakeups"
+   ]
+  },
+  "trace": {
+   "in": "01",
+   "def": "One continuous recording of timestamped events, detailed enough to rebuild the timeline.",
+   "aliases": [
+    "traces",
+    "system trace",
+    "system traces"
+   ]
+  },
+  "Perfetto": {
+   "in": "01",
+   "def": "The tool that records traces on an Android phone and draws them in the browser.",
+   "aliases": [],
+   "kind": "name"
+  },
+  "track": {
+   "in": "01",
+   "def": "One row in a trace view, usually one thread's.",
+   "aliases": [
+    "tracks"
+   ]
+  },
+  "slice": {
+   "in": "01",
+   "def": "A named span on a track, with a start and an end; a slice under another happened inside it.",
+   "aliases": [
+    "slices"
+   ]
+  },
+  "GPU": {
+   "in": "05",
+   "def": "The graphics processor: the part of the chip built to fill millions of pixels at once.",
+   "aliases": []
+  },
+  "buffer": {
+   "in": "05",
+   "def": "A block of memory that holds one picture, filled by the GPU and handed to SurfaceFlinger.",
+   "aliases": [
+    "buffers"
+   ]
+  },
+  "composite": {
+   "in": "05",
+   "def": "Combining the latest buffer of every visible window into the one picture the display shows.",
+   "aliases": [
+    "composites",
+    "compositing"
+   ]
+  },
+  "reference": {
+   "in": "07",
+   "def": "A value that points at an object in the heap; variables and fields hold references, not objects.",
+   "aliases": [
+    "references"
+   ]
+  },
+  "reachable": {
+   "in": "07",
+   "def": "An object a chain of references leads to from a GC root; some code could still use it.",
+   "aliases": [
+    "reachability",
+    "unreachable"
+   ]
+  },
+  "garbage": {
+   "in": "07",
+   "def": "An object no chain of references from any root leads to; its memory can be reused.",
+   "aliases": []
+  },
+  "native code": {
+   "in": "02",
+   "def": "Code compiled straight to the processor's instructions, like the C and C++ inside Android and ART.",
+   "aliases": []
+  },
+  "callee": {
+   "in": "03",
+   "def": "A function called by another one, its caller.",
+   "aliases": [
+    "callees"
+   ]
+  },
+  "pause": {
+   "in": "08",
+   "def": "A moment when the garbage collector stops your threads.",
+   "aliases": [
+    "pauses"
+   ]
   }
  },
- "from": {
-  "native code": {
-   "course": "kmp",
-   "in": 0
-  }
- }
+ "from": {}
 }

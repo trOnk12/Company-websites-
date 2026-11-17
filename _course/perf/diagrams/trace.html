@@ -1,0 +1,16 @@
+<!-- label: One trace: tracks, slices, nesting -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="tr-t"><title id="tr-t">The kernel and the app write timestamped events into one recording; Perfetto draws them with time left to right, one track per thread, named slices on each track, and a slice under another one happening inside it</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1 hide-2" data-pulse="1"><x-sheet x="270" y="70" w="100" h="130" lines="7" label="trace"/><text class="d-tiny" x="120" y="110" text-anchor="middle">12.0 ms: main runs</text><text class="d-tiny" x="120" y="140" text-anchor="middle">12.3 ms: frame</text><text class="d-tiny" x="520" y="125" text-anchor="middle">12.8 ms: wakeup</text></g>
+<g class="step s2"><x-arrow tone="ink" d="M40,320 L610,320"/><text class="d-tiny" x="600" y="340" text-anchor="end">time</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-lane" x="40" y="60" width="580" height="90" rx="4"/><text class="d-tiny" x="48" y="78">main thread</text><rect class="d-lane" x="40" y="170" width="580" height="90" rx="4"/><text class="d-tiny" x="48" y="188">RenderThread</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="120" y="90" width="300" height="24" rx="3"/><text class="d-tiny" x="270" y="107" text-anchor="middle">Choreographer#doFrame</text><rect class="d-hl" x="440" y="200" width="140" height="24" rx="3"/><text class="d-tiny" x="510" y="217" text-anchor="middle">drawing</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-ok" x="130" y="118" width="110" height="22" rx="3"/><text class="d-tiny" x="185" y="134" text-anchor="middle">measure()</text><rect class="d-ok" x="250" y="118" width="150" height="22" rx="3"/><text class="d-tiny" x="325" y="134" text-anchor="middle">draw()</text><text class="d-a" x="330" y="295" text-anchor="middle">under means inside</text></g>
+<g class="step s1" data-move="1:320,55 2:60,105 3:105,102 4:118,129"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>A <b>trace</b>: the kernel and the app write events, each with a timestamp, into one recording. Afterwards the timeline can be rebuilt.</p></li>
+<li><p><b>Perfetto</b> draws it: time runs left to right, and each thread gets a row, a <b>track</b>.</p></li>
+<li><p>On a track, each <b>slice</b> is a named span with a start and an end. <i>Predict: what does a slice drawn under another one mean?</i></p></li>
+<li><p>It happened inside it: <code>measure()</code> and <code>draw()</code> ran as part of that frame's work.</p></li>
+</ol>

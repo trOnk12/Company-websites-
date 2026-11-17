@@ -1,6 +1,6 @@
 {
   "title": "Performance, under the hood",
-  "intro": "What the profiler is really showing you: how a sample differs from a trace, how to read a flame chart, why a slow function isn't always busy, when a frame is late, what the garbage collector actually costs, and what a heap dump proves. Built from the kernel up, one small puzzle at a time.",
+  "intro": "What the profiler is really showing you, built from the ground up: how threads take turns on the processor, what a trace records, how a sample differs from a trace, how to read a flame chart, why a slow function isn't always busy, how pixels reach the screen and when a frame is late, what garbage is and what collecting it costs, and what a heap dump proves. One small puzzle at a time.",
   "how": "Each puzzle starts with something a profiler shows you, gives you the one building block behind it, shows it in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. Facts come from the Android, ART, simpleperf and Perfetto documentation, linked on every page.",
   "hero": "sampling",
   "heroAlt": "Animated diagram: the kernel interrupts a running thread every few thousand CPU cycles and writes down its call stack; counting the snapshots shows where the time went.",
@@ -10,25 +10,35 @@
   },
   "modules": [
     {
-      "title": "Module 1: What the profiler is really showing you",
-      "blurb": "Samples and traces, flame charts, thread states, late frames, the garbage collector and heap dumps.",
+      "title": "Module 1: Where the time goes",
+      "blurb": "How threads take turns on the CPU, what a trace records, samples and traces, flame charts, and why a slow span may not be busy.",
       "puzzles": [
-        "00-a-photo-or-a-diary.md",
-        "01-reading-the-flames.md",
-        "02-slow-is-not-busy.md",
-        "03-the-late-frame.md",
-        "04-what-the-collector-costs.md",
-        "05-what-a-heap-dump-proves.md"
+        "00-threads-take-turns.md",
+        "01-what-a-trace-is.md",
+        "02-a-photo-or-a-diary.md",
+        "03-reading-the-flames.md",
+        "04-slow-is-not-busy.md"
+      ]
+    },
+    {
+      "title": "Module 2: Frames and memory",
+      "blurb": "How pixels reach the screen and when a frame is late; what garbage is, what collecting it costs, and what a heap dump proves.",
+      "puzzles": [
+        "05-who-puts-pixels-on-screen.md",
+        "06-the-late-frame.md",
+        "07-what-garbage-is.md",
+        "08-what-the-collector-costs.md",
+        "09-what-a-heap-dump-proves.md"
       ]
     }
   ],
   "upcoming": [
     {
-      "title": "Module 2: Measuring for real",
+      "title": "Module 3: Measuring for real",
       "topics": "Macrobenchmark and why one run proves nothing; baseline profiles and what ART compiles ahead of time; startup traced end to end; reading a Perfetto trace with SQL."
     },
     {
-      "title": "Module 3: Memory under pressure",
+      "title": "Module 4: Memory under pressure",
       "topics": "Native memory and bitmaps, the low memory killer, trimming memory, and allocation tracking."
     }
   ],

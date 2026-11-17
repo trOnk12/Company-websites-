@@ -7,7 +7,7 @@ takeaway: A call chart draws each call along a timeline, callees under their cal
 
 ## The problem
 
-In puzzle 0 you recorded a slow scroll. The profiler now shows a mountain of coloured bars. `onBind()` is wide, `parseJson()` inside it is wide, and `format()` appears three times in one chart and once, very wide, in another. Which bar is the one to fix?
+In puzzle 2 you recorded a slow scroll. The profiler now shows a mountain of coloured bars. `onBind()` is wide, `parseJson()` inside it is wide, and `format()` appears three times in one chart and once, very wide, in another. Which bar is the one to fix?
 
 ## See it
 
@@ -16,7 +16,7 @@ In puzzle 0 you recorded a slow scroll. The profiler now shows a mountain of col
 
 ## The building block
 
-The **call chart** is a timeline. Each call is a bar from when it started to when it ended, and the functions it called sit underneath it. If `onBind()` calls `format()` three times, you see three separate `format()` bars, one after another.
+The **call chart** is a timeline. Each call is a bar from when it started to when it ended, and the functions it called, its **callees**, sit underneath it. If `onBind()` calls `format()` three times, you see three separate `format()` bars, one after another.
 
 The **flame chart** takes the same recording and merges every call that has the same chain of callers into one bar. The three `format()` calls, all called from `onBind()`, become one bar as wide as the three together. Now width means "how much time in total", and left to right is no longer a timeline: the widest children are drawn first. That's why it's the fastest way to see where time goes.
 

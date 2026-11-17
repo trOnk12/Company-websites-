@@ -1,13 +1,13 @@
 ---
 title: What the collector costs
 short: How ART frees memory
-summary: "Freeing memory paused my app" was true on old Android. Modern ART collectors barely pause. Here's how ART allocates and collects, and the way it can still cost you frames.
+summary: "Freeing memory freezes my app" was true on old Android. Modern ART collectors barely stop it. Here's how ART allocates and collects, and the way it can still cost you frames.
 takeaway: Each thread allocates from its own TLAB by bumping a pointer, with no lock. ART's Concurrent Copying collector moves live objects while your threads keep running, with one small pause that doesn't grow with the heap, and since Android 10 it mostly runs cheap young GCs. What still costs frames is allocation churn: the collector's threads compete for CPUs, and an app that allocates faster than they free must wait.
 ---
 
 ## The problem
 
-Your list allocates a few new objects per row: a `StringBuilder` for the title, a formatted date, a list for the tags. Someone on your team says the **garbage collector** (GC for short: the part of ART that finds objects nobody uses and frees their memory) "pauses the app when you allocate, and pauses cause jank". Is that still true? What does the collector actually do while you scroll?
+Your list allocates a few new objects per row: a `StringBuilder` for the title, a formatted date, a list for the tags. Puzzle 7 showed that these become garbage once nothing reaches them. Someone on your team says the garbage collector "freezes the app when you allocate, and freezes cause jank". Is that still true? What does the collector actually do while you scroll?
 
 ## See it
 
@@ -16,13 +16,13 @@ Your list allocates a few new objects per row: a `StringBuilder` for the title, 
 
 ## The building block
 
-Start with allocating. With ART's default collector, each thread gets its own **TLAB**, a thread-local slice of the **heap**, the memory where objects live. Allocating an object there is a pointer bump: move a marker forward by the object's size. No lock, no searching for space. Creating an object is cheap.
+Start with allocating. With ART's default collector, each thread gets its own **TLAB**, a thread-local piece of the heap. Allocating an object there is a pointer bump: move a marker forward by the object's size. No lock, no searching for space. Creating an object is cheap.
 
-Collecting is the garbage collector's job: find the objects nothing can reach any more, and free their memory. Since Android 8, ART's default has been **Concurrent Copying** (newer devices may run its successor, Concurrent Mark-Compact, with the same low-pause idea): it copies the objects that are still alive into fresh space while your threads keep running, so live objects end up packed together, with no gaps, without stopping your app. There's one small pause per collection, and it doesn't grow with the size of the heap: ART's own docs show an average of about 2 ms.
+Collecting is the garbage collector's job (puzzle 7): find the garbage, and free its memory. Since Android 8, ART's default has been **Concurrent Copying** (newer devices may run its successor, Concurrent Mark-Compact, with the same low-pause idea): it copies the objects that are still alive into fresh space while your threads keep running, so live objects end up packed together, with no gaps, without stopping your app. There's one small pause per collection, a moment when the collector stops your threads, and it doesn't grow with the size of the heap: ART's own docs show an average of about 2 ms.
 
 Since Android 10 it also sorts objects by age, young and old. Most objects die young, like that `StringBuilder`, so ART runs a **young GC** that looks only at recently created objects: little work, run often. It switches to a full-heap collection only when young ones stop freeing enough.
 
-So where does it hurt? Not mostly in the pause. **Allocation churn** makes collections frequent, and the collector's threads need CPUs too; your main thread may find them taken (Runnable, puzzle 2). And if your app allocates faster than the collector can free, your thread must wait for it, and that wait can cost a frame.
+So where does it hurt? Not mostly in the pause. **Allocation churn** makes collections frequent, and the collector's threads need CPUs too; your main thread may find them taken (Runnable, puzzle 4). And if your app allocates faster than the collector can free, your thread must wait for it, and that wait can cost a frame.
 
 ## The analogy
 
@@ -30,7 +30,7 @@ A café where every waiter has their own stack of clean cups (the TLAB): taking 
 
 ## Check yourself
 
-- Why is creating an object in ART cheap?::*Each thread bumps a pointer in its own TLAB, with no lock||The collector pre-creates objects of each class ahead of time >> It doesn't; allocation is fast because the space is the thread's own and contiguous. >> s1||Objects are put on the stack, not the heap, so the GC skips them >> Kotlin objects live on the heap; the speed comes from the TLAB. >> s1::Own space, one pointer bump.
+- Why is creating an object in ART cheap?::*Each thread bumps a pointer in its own TLAB, with no lock||The collector pre-creates objects of each class ahead of time >> It doesn't; allocation is fast because the space is the thread's own and contiguous. >> s1||ART keeps a shared list of free gaps and picks the first one that fits >> No search, no shared list: the thread moves its own marker in its own TLAB. >> s1::Own space, one pointer bump.
 - Concurrent Copying runs while you scroll. What does its pause depend on?::*Not the heap's size: it's one small pause per collection||The heap's size, since every live object must be copied during it >> Copying happens concurrently, while your threads run; the pause stays small. >> s2||Nothing, because Concurrent Copying never pauses at all >> It has one small pause per collection. >> s2::Small and constant, whatever the heap.
 - What's the difference between a young GC and a full-heap GC?::*A young GC looks only at recent objects, while a full-heap GC looks at all||A young GC looks at all objects, while a full-heap GC looks only at recent ones >> That's the two swapped. >> s3::Recent objects only vs everything.
 

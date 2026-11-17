@@ -411,32 +411,57 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/perf/00-a-photo-or-a-diary</loc>
+    <loc>https://pachulski.dev/course/perf/check-2</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/perf/01-reading-the-flames</loc>
+    <loc>https://pachulski.dev/course/perf/00-threads-take-turns</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/perf/02-slow-is-not-busy</loc>
+    <loc>https://pachulski.dev/course/perf/01-what-a-trace-is</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/perf/03-the-late-frame</loc>
+    <loc>https://pachulski.dev/course/perf/02-a-photo-or-a-diary</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/perf/04-what-the-collector-costs</loc>
+    <loc>https://pachulski.dev/course/perf/03-reading-the-flames</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/perf/05-what-a-heap-dump-proves</loc>
+    <loc>https://pachulski.dev/course/perf/04-slow-is-not-busy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/perf/05-who-puts-pixels-on-screen</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/perf/06-the-late-frame</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/perf/07-what-garbage-is</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/perf/08-what-the-collector-costs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/perf/09-what-a-heap-dump-proves</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -104,7 +104,12 @@ only the blocks they're missing.
 - [x] System design: new puzzle 0, What actually travels (packets, IP, TCP, TLS, HTTP), before TCP is used.
 - [x] Music: calmer typography, analytics on music pages, a hand-drawn home button instead of a section.
 - [ ] KMP splits: lost in translation (3 ideas), whose thread (dispatch vs cancellation), one framework, one canvas.
-- [ ] Same gap hunt for Android, BLE, security, iOS, perf, LLM.
+- [x] Gap hunt and fixes: system design (DNS, HTTP, TLS, timeouts: 11 puzzles), LLM (what a model is, your first
+  call: 8), security (XOR toy cipher, man in the middle, MAC: 9), perf (threads take turns, what a trace is, who puts
+  pixels on screen, what garbage is: 10 in 2 modules).
+- [x] "Your learning" page: progress per course, weak spots, what to learn next, export/import, no login.
+- [ ] Same gap hunt for Android, BLE, iOS.
+- [ ] Splits of overloaded puzzles: sysdesign 5, 8, 10; LLM 03, 07; security 08.
 
 ## Backlog, in order
 

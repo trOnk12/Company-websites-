@@ -7,7 +7,7 @@ takeaway: A system trace shows each thread's state as the kernel sees it: Runnin
 
 ## The problem
 
-You wrapped `loadUser()` in a trace section (puzzle 0) and it's 120 ms long, on the main thread, during startup. You sample the same moment: the main thread's stack barely shows up, as if it did nothing. Is the code slow, or not?
+You wrapped `loadUser()` in a trace section (puzzle 2) and it's 120 ms long, on the main thread, during startup. You sample the same moment: the main thread's stack barely shows up, as if it did nothing. Is the code slow, or not?
 
 ## See it
 
@@ -16,16 +16,16 @@ You wrapped `loadUser()` in a trace section (puzzle 0) and it's 120 ms long, on 
 
 ## The building block
 
-A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its **thread state**, as the kernel's **scheduler** (the part that decides which thread runs on which CPU) records it.
+A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its **thread state**, as the kernel's scheduler (puzzle 0) records it.
 
 - **Running**: the thread is on a CPU, executing. Only this time is "your code being slow".
-- **Runnable**: ready to run, but every CPU is busy with other threads. It waits its turn.
-- **Sleeping**: nothing to do until something happens: a lock held by another thread, a Binder reply from another process, a message.
+- **Runnable**: ready to run, waiting in the run queue because every core is busy with other threads. It waits its turn.
+- **Sleeping**: off the run queue, nothing to do until something happens and the kernel wakes it: a lock held by another thread, a Binder reply from another process, a message.
 - **Uninterruptible Sleep**: waiting inside the kernel, usually for disk I/O to complete.
 
-Sampling (puzzle 0) only fires while a thread is on a CPU, so a thread that isn't Running collects almost no samples. That's why your 120 ms span barely shows: most of it the main thread was asleep.
+Sampling (puzzle 2) only fires while a thread is on a CPU, so a thread that isn't Running collects almost no samples. That's why your 120 ms span barely shows: most of it the main thread was asleep.
 
-So before you optimise a slow span, read its states. Mostly Running: make the code faster, the flame chart (puzzle 1) shows where. Mostly Sleeping: find who it's waiting for; the trace shows which thread woke it. Mostly Uninterruptible Sleep: it's reading the disk, so move that off the main thread. Mostly Runnable: other threads, maybe your own, are keeping the CPUs busy.
+So before you optimise a slow span, read its states. Mostly Running: make the code faster, the flame chart (puzzle 3) shows where. Mostly Sleeping: find who it's waiting for; the trace shows which thread woke it. Mostly Uninterruptible Sleep: it's reading the disk, so move that off the main thread. Mostly Runnable: other threads, maybe your own, are keeping the CPUs busy.
 
 ## The analogy
 

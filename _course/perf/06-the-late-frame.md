@@ -1,7 +1,7 @@
 ---
 title: The late frame
 short: Expected vs actual
-summary: The Android course showed that a frame must be ready before the screen's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.
+summary: Puzzle 5 showed that a frame's buffer must be ready before the display's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.
 takeaway: FrameTimeline gives every frame two slices: the Expected Timeline, the window the app was given, and the Actual Timeline, from Choreographer's callback to when the frame was posted and the GPU finished. Actual past the deadline is jank; FrameTimeline says whether the app or SurfaceFlinger was late. Then read the late frame's main thread and RenderThread: states, then flame chart.
 ---
 
@@ -16,16 +16,16 @@ Users say scrolling stutters, but only sometimes. In a trace there are hundreds 
 
 ## The building block
 
-In the Android course you saw a frame's work: the main thread measures, lays out and draws, the RenderThread hands it to the GPU, and the result must be ready for the next **vsync**, the display's signal that it's about to show a new frame. Since Android 12, Perfetto's **FrameTimeline** draws that contract for each frame, as two slices under your app:
+In puzzle 5 you followed a frame's path: the main thread measures, lays out and draws, the RenderThread hands the drawing to the GPU, and the finished buffer must be queued for SurfaceFlinger before the vsync it's meant for. Since Android 12, Perfetto's **FrameTimeline** draws that contract for each frame, as two slices under your app:
 
 - **Expected Timeline**: the window the app was given for this frame. It starts when the Choreographer callback was scheduled; its end is the frame's **deadline**.
-- **Actual Timeline**: what really happened. It starts when `Choreographer#doFrame` started running and ends at whichever came later: the frame being posted to **SurfaceFlinger**, Android's service that combines every app's frames onto the display, (the RenderThread hands the finished frame over), or the GPU finishing.
+- **Actual Timeline**: what really happened. It starts when `Choreographer#doFrame` started running and ends at whichever came later: the frame being posted to SurfaceFlinger (the RenderThread queues the buffer), or the GPU finishing.
 
 When Actual ends after the deadline, the frame is janky, and FrameTimeline labels whose fault it was. "App Deadline Missed" means your app ran longer than expected. Other labels blame SurfaceFlinger or the display, and "Buffer Stuffing" means your app queued frames faster than they could be shown.
 
 Notice that the GPU counts. A frame whose main thread finished early can still be late if the GPU work was too heavy.
 
-So the method is: find the late frames on the Actual Timeline, then zoom into that frame's main thread and RenderThread. Read their states (puzzle 2) first, then the flame chart (puzzle 1) for the Running parts.
+So the method is: find the late frames on the Actual Timeline, then zoom into that frame's main thread and RenderThread. Read their states (puzzle 4) first, then the flame chart (puzzle 3) for the Running parts.
 
 ## The analogy
 

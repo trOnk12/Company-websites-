@@ -1,0 +1,15 @@
+<!-- label: Follow the arrows from the roots -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="gb-t"><title id="gb-t">Two GC roots, a local variable and a singleton, point at objects in the heap; objects point at other objects; the collector follows every chain from the roots; objects no chain reaches are garbage and their memory is freed</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-lane" x="200" y="30" width="420" height="300" rx="8"/><text class="d-tiny" x="410" y="50" text-anchor="middle">heap</text><rect class="d-paper" x="240" y="80" width="110" height="40" rx="6"/><text class="d-tiny" x="295" y="105" text-anchor="middle">StringBuilder</text><rect class="d-paper" x="240" y="200" width="110" height="40" rx="6"/><text class="d-tiny" x="295" y="225" text-anchor="middle">List</text><rect class="d-paper" x="440" y="200" width="110" height="40" rx="6"/><text class="d-tiny" x="495" y="225" text-anchor="middle">Activity</text><rect class="d-paper" x="440" y="80" width="110" height="40" rx="6"/><text class="d-tiny" x="495" y="105" text-anchor="middle">old User</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="30" y="80" width="130" height="40" rx="6"/><text class="d-tiny" x="95" y="105" text-anchor="middle">local: title</text><rect class="d-hl" x="30" y="200" width="130" height="40" rx="6"/><text class="d-tiny" x="95" y="225" text-anchor="middle">singleton</text><text class="d-a" x="95" y="290" text-anchor="middle">GC roots</text></g>
+<g class="step s3" data-pulse="3"><x-arrow tone="acc" d="M160,100 L234,100"/><x-arrow tone="acc" d="M160,220 L234,220"/><x-arrow tone="acc" d="M350,220 L434,220"/><text class="d-a" x="410" y="290" text-anchor="middle">reachable: kept</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="440" y="80" width="110" height="40" rx="6"/><text class="d-rt" x="495" y="105" text-anchor="middle">garbage</text><text class="d-r" x="495" y="150" text-anchor="middle">no chain leads here</text></g>
+<g class="step s1" data-move="1:410,160 2:95,65 3:390,220 4:495,62"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Objects live in the <b>heap</b>. Variables don't hold them; they hold <b>references</b>, arrows pointing at them.</p></li>
+<li><p>Some references are always in use: a running function's local variables, static fields like a singleton. These are the <b>GC roots</b>.</p></li>
+<li><p>Follow the arrows from the roots: every object you reach is <b>reachable</b>, so some code could still use it. <i>Predict: what about the old User?</i></p></li>
+<li><p>No chain from any root leads to it. It's <b>garbage</b>, and the <b>garbage collector</b> frees its memory.</p></li>
+</ol>

@@ -9,7 +9,7 @@
   <meta property="og:title" content="Slow isn't always busy – Performance, under the hood – Mateusz Pachulski">
   <meta property="og:description" content="A trace section on your main thread takes 120 ms, but a sample of the same moment shows almost nothing running. Both are right. Here's the line under every thread in a system trace that explains it.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/perf/02-slow-is-not-busy">
+  <meta property="og:url" content="https://pachulski.dev/course/perf/04-slow-is-not-busy">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Slow isn't always busy – Performance, under the hood – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/perf/02-slow-is-not-busy">
+  <link rel="canonical" href="https://pachulski.dev/course/perf/04-slow-is-not-busy">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -47,19 +47,19 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="2" data-prev="01-reading-the-flames.html" data-prev-title="Reading the flames">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-photo-or-a-diary.html" class="done" title="A photo or a diary">0</a></li><li><a href="01-reading-the-flames.html" class="done" title="Reading the flames">1</a></li><li><a href="02-slow-is-not-busy.html" aria-current="page" title="Slow isn't always busy">2</a></li><li><a href="03-the-late-frame.html" title="The late frame">3</a></li><li><a href="04-what-the-collector-costs.html" title="What the collector costs">4</a></li><li><a href="05-what-a-heap-dump-proves.html" title="What a heap dump proves">5</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Puzzle 2 · 3 of 6</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="4" data-prev="03-reading-the-flames.html" data-prev-title="Reading the flames">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" class="done" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" class="done" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" class="done" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" aria-current="page" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      <p class="eyebrow">Performance, under the hood · Puzzle 4 · 5 of 10</p>
       <h1>Slow isn't always busy</h1>
       <p class="lede">A trace section on your main thread takes 120 ms, but a sample of the same moment shows almost nothing running. Both are right. Here's the line under every thread in a system trace that explains it.</p>
-      <aside class="builds-on" aria-labelledby="builds-on-2">
-        <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-a-photo-or-a-diary.html">Puzzle 0: A photo or a diary</a></summary><p>Sampling asks the kernel to snapshot a thread's call stack every so many CPU events; counting the snapshots shows where time goes, cheaply, but short calls can be missed. Method tracing injects a timestamp at every method's start and end: exact counts, but the instrumentation slows the app and skews the timings. Trace sections mark only the spans you choose.</p></details></li><li data-block="1"><details><summary><a href="01-reading-the-flames.html">Puzzle 1: Reading the flames</a></summary><p>A call chart draws each call along a timeline, callees under their caller. A flame chart merges identical call stacks into one bar, so width means total time and left to right means nothing. A wide bar with a wide child is slow because of the child; a bar wider than all its children is slow in its own code: its self time.</p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-a-photo-or-a-diary.html">0</a> → <a href="01-reading-the-flames.html">1</a>. Know them already? Start here.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-4">
+        <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="2"><details><summary><a href="02-a-photo-or-a-diary.html">Puzzle 2: A photo or a diary</a></summary><p>Sampling asks the kernel to snapshot a thread's call stack every so many CPU events; counting the snapshots shows where time goes, cheaply, but short calls can be missed. Method tracing injects a timestamp at every method's start and end: exact counts, but the instrumentation slows the app and skews the timings. Trace sections mark only the spans you choose.</p></details></li><li data-block="3"><details><summary><a href="03-reading-the-flames.html">Puzzle 3: Reading the flames</a></summary><p>A call chart draws each call along a timeline, callees under their caller. A flame chart merges identical call stacks into one bar, so width means total time and left to right means nothing. A wide bar with a wide child is slow because of the child; a bar wider than all its children is slow in its own code: its self time.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-threads-take-turns.html">0</a> → <a href="01-what-a-trace-is.html">1</a> → <a href="02-a-photo-or-a-diary.html">2</a> → <a href="03-reading-the-flames.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>You wrapped <code>loadUser()</code> in a trace section (puzzle 0) and it's 120 ms long, on the main thread, during startup. You sample the same moment: the main thread's stack barely shows up, as if it did nothing. Is the code slow, or not?</p>
+<p>You wrapped <code>loadUser()</code> in a trace section (puzzle 2) and it's 120 ms long, on the main thread, during startup. You sample the same moment: the main thread's stack barely shows up, as if it did nothing. Is the code slow, or not?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -86,10 +86,10 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its <b>thread state</b>, as the kernel's <b>scheduler</b> (the part that decides which thread runs on which CPU) records it.</p>
-<ul><li><b>Running</b>: the thread is on a CPU, executing. Only this time is &quot;your code being slow&quot;.</li><li><b>Runnable</b>: ready to run, but every CPU is busy with other threads. It waits its turn.</li><li><b>Sleeping</b>: nothing to do until something happens: a lock held by another thread, a Binder reply from another process, a message.</li><li><b>Uninterruptible Sleep</b>: waiting inside the kernel, usually for disk I/O to complete.</li></ul>
-<p>Sampling (puzzle 0) only fires while a thread is on a CPU, so a thread that isn't Running collects almost no samples. That's why your 120 ms span barely shows: most of it the main thread was asleep.</p>
-<p>So before you optimise a slow span, read its states. Mostly Running: make the code faster, the flame chart (puzzle 1) shows where. Mostly Sleeping: find who it's waiting for; the trace shows which thread woke it. Mostly Uninterruptible Sleep: it's reading the disk, so move that off the main thread. Mostly Runnable: other threads, maybe your own, are keeping the CPUs busy.</p>
+<p>A span on a timeline says when something started and ended. It doesn't say whether the thread was working. For that, a system trace draws a coloured state line on every thread's track: its <b>thread state</b>, as the kernel's scheduler (puzzle 0) records it.</p>
+<ul><li><b>Running</b>: the thread is on a CPU, executing. Only this time is &quot;your code being slow&quot;.</li><li><b>Runnable</b>: ready to run, waiting in the run queue because every core is busy with other threads. It waits its turn.</li><li><b>Sleeping</b>: off the run queue, nothing to do until something happens and the kernel wakes it: a lock held by another thread, a Binder reply from another process, a message.</li><li><b>Uninterruptible Sleep</b>: waiting inside the kernel, usually for disk I/O to complete.</li></ul>
+<p>Sampling (puzzle 2) only fires while a thread is on a CPU, so a thread that isn't Running collects almost no samples. That's why your 120 ms span barely shows: most of it the main thread was asleep.</p>
+<p>So before you optimise a slow span, read its states. Mostly Running: make the code faster, the flame chart (puzzle 3) shows where. Mostly Sleeping: find who it's waiting for; the trace shows which thread woke it. Mostly Uninterruptible Sleep: it's reading the disk, so move that off the main thread. Mostly Runnable: other threads, maybe your own, are keeping the CPUs busy.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -99,26 +99,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>In another trace, a 120 ms main-thread span is 110 ms Sleeping. What will making its code faster save?</legend>
-<input type="radio" name="q-02-slow-is-not-busy-1" id="q-02-slow-is-not-busy-1-1"><label for="q-02-slow-is-not-busy-1-1">Most of the 120 ms, since the span is slow code</label>
-<input type="radio" name="q-02-slow-is-not-busy-1" id="q-02-slow-is-not-busy-1-2" data-ok><label for="q-02-slow-is-not-busy-1-2">Almost nothing: only 10 ms of it was Running</label>
-<input type="radio" name="q-02-slow-is-not-busy-1" id="q-02-slow-is-not-busy-1-3"><label for="q-02-slow-is-not-busy-1-3">All 120 ms, because a faster CPU wakes the thread sooner</label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-1"><label for="q-04-slow-is-not-busy-1-1">Most of the 120 ms, since the span is slow code</label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-2" data-ok><label for="q-04-slow-is-not-busy-1-2">Almost nothing: only 10 ms of it was Running</label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-3"><label for="q-04-slow-is-not-busy-1-3">All 120 ms, because a faster CPU wakes the thread sooner</label>
 <p class="fb no opt-1"><b>Not quite.</b> Only Running time is code running; Sleeping is waiting for something else. <label class="show-me" for="st-states-2" data-goto="st-states">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Faster code shortens only Running.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Sleeping ends when what it waits for arrives, not when the CPU is faster. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A span is mostly Uninterruptible Sleep. What is the thread most likely doing?</legend>
-<input type="radio" name="q-02-slow-is-not-busy-2" id="q-02-slow-is-not-busy-2-1" data-ok><label for="q-02-slow-is-not-busy-2-1">Waiting for the disk, such as a file or database read</label>
-<input type="radio" name="q-02-slow-is-not-busy-2" id="q-02-slow-is-not-busy-2-2"><label for="q-02-slow-is-not-busy-2-2">Running your code, but too slowly</label>
-<input type="radio" name="q-02-slow-is-not-busy-2" id="q-02-slow-is-not-busy-2-3"><label for="q-02-slow-is-not-busy-2-3">Waiting for a free CPU, because others are running</label>
+<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-1" data-ok><label for="q-04-slow-is-not-busy-2-1">Waiting for the disk, such as a file or database read</label>
+<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-2"><label for="q-04-slow-is-not-busy-2-2">Running your code, but too slowly</label>
+<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-3"><label for="q-04-slow-is-not-busy-2-3">Waiting for a free CPU, because others are running</label>
 <p class="fb ok opt-1"><b>Right.</b> Uninterruptible Sleep usually means disk I/O.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Running is its own state; in Uninterruptible Sleep the thread isn't on a CPU. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's Runnable: ready, but no CPU is free. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between Runnable and Sleeping?</legend>
-<input type="radio" name="q-02-slow-is-not-busy-3" id="q-02-slow-is-not-busy-3-1" data-ok><label for="q-02-slow-is-not-busy-3-1">Runnable is ready and waiting for a CPU, while Sleeping waits for an event</label>
-<input type="radio" name="q-02-slow-is-not-busy-3" id="q-02-slow-is-not-busy-3-2"><label for="q-02-slow-is-not-busy-3-2">Runnable waits for an event like a lock, while Sleeping is ready and waiting for a CPU</label>
+<input type="radio" name="q-04-slow-is-not-busy-3" id="q-04-slow-is-not-busy-3-1" data-ok><label for="q-04-slow-is-not-busy-3-1">Runnable is ready and waiting for a CPU, while Sleeping waits for an event</label>
+<input type="radio" name="q-04-slow-is-not-busy-3" id="q-04-slow-is-not-busy-3-2"><label for="q-04-slow-is-not-busy-3-2">Runnable waits for an event like a lock, while Sleeping is ready and waiting for a CPU</label>
 <p class="fb ok opt-1"><b>Right.</b> Ready but no CPU vs not ready.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
@@ -131,14 +131,14 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="01-reading-the-flames.html">← Puzzle 1</a>
-        <a class="button primary" href="03-the-late-frame.html">Puzzle 3: Expected vs actual →</a>
+        <a class="button" href="03-reading-the-flames.html">← Puzzle 3</a>
+        <a class="button primary" href="05-who-puts-pixels-on-screen.html">Puzzle 5: GPU, buffers, SurfaceFlinger →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Slow%20isn't%20always%20busy&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fperf%2F02-slow-is-not-busy" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fperf%2F04-slow-is-not-busy" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

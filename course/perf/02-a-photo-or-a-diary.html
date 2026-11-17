@@ -9,7 +9,7 @@
   <meta property="og:title" content="A photo or a diary – Performance, under the hood – Mateusz Pachulski">
   <meta property="og:description" content="Android Studio offers to take snapshots of what your app is running, or to record every method. They answer different questions, and one of them changes the timings it measures. Here's what each actually records.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/perf/00-a-photo-or-a-diary">
+  <meta property="og:url" content="https://pachulski.dev/course/perf/02-a-photo-or-a-diary">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>A photo or a diary – Performance, under the hood – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/perf/00-a-photo-or-a-diary">
+  <link rel="canonical" href="https://pachulski.dev/course/perf/02-a-photo-or-a-diary">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -47,12 +47,16 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-photo-or-a-diary.html" aria-current="page" title="A photo or a diary">0</a></li><li><a href="01-reading-the-flames.html" title="Reading the flames">1</a></li><li><a href="02-slow-is-not-busy.html" title="Slow isn't always busy">2</a></li><li><a href="03-the-late-frame.html" title="The late frame">3</a></li><li><a href="04-what-the-collector-costs.html" title="What the collector costs">4</a></li><li><a href="05-what-a-heap-dump-proves.html" title="What a heap dump proves">5</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Start here · 1 of 6</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="2" data-prev="01-what-a-trace-is.html" data-prev-title="What a trace is">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" class="done" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" aria-current="page" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      <p class="eyebrow">Performance, under the hood · Puzzle 2 · 3 of 10</p>
       <h1>A photo or a diary</h1>
       <p class="lede">Android Studio offers to take snapshots of what your app is running, or to record every method. They answer different questions, and one of them changes the timings it measures. Here's what each actually records.</p>
-      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>native code</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin, many machines</span></li></ul></aside>
+      <aside class="builds-on" aria-labelledby="builds-on-2">
+        <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="1"><details><summary><a href="01-what-a-trace-is.html">Puzzle 1: What a trace is</a></summary><p>A trace is one continuous recording of timestamped events, detailed enough to rebuild the timeline afterwards: which thread ran on which core, when threads woke, and the spans the app marked. Perfetto records and shows Android traces. Time runs left to right; each thread gets a track; on it, each slice is a named span with a start and an end, and a slice drawn under another happened inside it.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-threads-take-turns.html">0</a> → <a href="01-what-a-trace-is.html">1</a>. Know them already? Start here.</p>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>Scrolling your list feels slow. You open the profiler and it asks you to choose: take snapshots of what's running, or record every Java/Kotlin method. Both draw charts that look alike. Which one tells the truth about where the time went, and what does each cost your app while it runs?</p>
@@ -85,9 +89,9 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Every thread has a <b>call stack</b>: the chain of calls it's inside right now, from the first caller down to the function that's running.</p>
-<p><b>Sampling</b> doesn't touch your code. The profiler asks the kernel, and the kernel asks the CPU's counters: each time a given number of CPU cycles, ticks of the processor's clock, pass (by default about 4,000 times per second of running), the kernel pauses the thread and writes down its call stack. That snapshot is a <b>sample</b>. Thousands of them later, a function that shows up in 30% of the samples took about 30% of the time. It's cheap, and it sees native code and the runtime too. It only samples a thread while it's running on a CPU, so time spent waiting is invisible. But it's statistics: a call that starts and ends between two snapshots may never appear, and it can't tell you how many times something was called.</p>
+<p><b>Sampling</b> doesn't touch your code. The profiler asks the kernel, and the kernel asks the CPU's counters: each time a given number of CPU cycles, ticks of the processor's clock, pass (by default about 4,000 times per second of running), the kernel stops the thread for an instant and writes down its call stack. That snapshot is a sample. Thousands of them later, a function that shows up in 30% of the samples took about 30% of the time. It's cheap, and it sees <b>native code</b> too: code compiled straight to the processor's instructions, like the C and C++ that ART and Android itself are written in. It only samples a thread while it's running on a CPU, so time spent waiting is invisible. But it's statistics: a call that starts and ends between two snapshots may never appear, and it can't tell you how many times something was called.</p>
 <p><b>Method tracing</b> works by <b>instrumentation</b>: ART injects a timestamp at the entry and exit of every method. Now you get exact calls and exact counts. The price: that extra code runs on every call, so a function made of many tiny calls looks slower than it is. Android's docs say to keep these recordings to five seconds or less, and warn that timings may differ from production.</p>
-<p>The third tool is yours: a <b>trace section</b>. Wrap a span in <code>trace(&quot;loadAndProcessData&quot;) { }</code> and it appears, named, when you record a system trace (in the profiler, or with Perfetto). You pay only where you put one.</p>
+<p>The third tool is yours: a <b>trace section</b>. Wrap a span in <code>trace(&quot;loadAndProcessData&quot;) { }</code> and, when you record a trace (puzzle 1), it appears as a slice with that name on your thread's track. You pay only where you put one.</p>
 <div class="table-wrap"><table><thead><tr><th scope="col"></th><th scope="col">Sampling</th><th scope="col">Method tracing</th><th scope="col">Trace section</th></tr></thead><tbody><tr><th scope="row">Records</th><td>a call stack every N events</td><td>every method's start and end</td><td>spans you name</td></tr><tr><th scope="row">Exact counts</th><td>no</td><td>yes</td><td>yes, for your spans</td></tr><tr><th scope="row">Slows the app</th><td>barely</td><td>a lot</td><td>barely</td></tr></tbody></table></div>
       </section>
       <section aria-labelledby="the-analogy">
@@ -98,27 +102,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A function runs for 50 µs, once, between two snapshots. Which tool can miss it entirely?</legend>
-<input type="radio" name="q-00-a-photo-or-a-diary-1" id="q-00-a-photo-or-a-diary-1-1"><label for="q-00-a-photo-or-a-diary-1-1">Trace sections, because they can't time anything under 1 ms</label>
-<input type="radio" name="q-00-a-photo-or-a-diary-1" id="q-00-a-photo-or-a-diary-1-2"><label for="q-00-a-photo-or-a-diary-1-2">Method tracing, because instrumentation skips very short methods</label>
-<input type="radio" name="q-00-a-photo-or-a-diary-1" id="q-00-a-photo-or-a-diary-1-3" data-ok><label for="q-00-a-photo-or-a-diary-1-3">Sampling, since it only sees what's running at each snapshot</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-1"><label for="q-02-a-photo-or-a-diary-1-1">Trace sections, because they can't time anything under 1 ms</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-2"><label for="q-02-a-photo-or-a-diary-1-2">Method tracing, because instrumentation skips very short methods</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-3" data-ok><label for="q-02-a-photo-or-a-diary-1-3">Sampling, since it only sees what's running at each snapshot</label>
 <p class="fb no opt-1"><b>Not quite.</b> A trace section records whatever span you wrap; the risk of missing it is sampling's. <label class="show-me" for="st-sampling-4" data-goto="st-sampling">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Instrumentation records every method's start and end, however short. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> A snapshot misses what started and ended between two snapshots.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Your parser makes a million tiny calls. Method tracing says it takes 900 ms; sampling says 300 ms. Which do you trust for the time, and why?</legend>
-<input type="radio" name="q-00-a-photo-or-a-diary-2" id="q-00-a-photo-or-a-diary-2-1"><label for="q-00-a-photo-or-a-diary-2-1">Neither, because the two tools can't measure the same code</label>
-<input type="radio" name="q-00-a-photo-or-a-diary-2" id="q-00-a-photo-or-a-diary-2-2"><label for="q-00-a-photo-or-a-diary-2-2">The trace, because sampling only estimates and so always reads too low</label>
-<input type="radio" name="q-00-a-photo-or-a-diary-2" id="q-00-a-photo-or-a-diary-2-3" data-ok><label for="q-00-a-photo-or-a-diary-2-3">The sample, since instrumentation adds its own time to every one of those calls</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-1"><label for="q-02-a-photo-or-a-diary-2-1">Neither, because the two tools can't measure the same code</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-2"><label for="q-02-a-photo-or-a-diary-2-2">The trace, because sampling only estimates and so always reads too low</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-3" data-ok><label for="q-02-a-photo-or-a-diary-2-3">The sample, since instrumentation adds its own time to every one of those calls</label>
 <p class="fb no opt-1"><b>Not quite.</b> They can; they disagree because one of them slowed the code down. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Sampling estimates, but without slowing the code; the trace paid its own overhead a million times. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Instrumentation costs most where calls are many and small.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a sample and a trace section?</legend>
-<input type="radio" name="q-00-a-photo-or-a-diary-3" id="q-00-a-photo-or-a-diary-3-1" data-ok><label for="q-00-a-photo-or-a-diary-3-1">A sample is a stack snapshot the kernel takes, while a trace section is a span you mark yourself</label>
-<input type="radio" name="q-00-a-photo-or-a-diary-3" id="q-00-a-photo-or-a-diary-3-2"><label for="q-00-a-photo-or-a-diary-3-2">A sample is a span you mark yourself, while a trace section is a stack snapshot the kernel takes</label>
-<p class="fb ok opt-1"><b>Right.</b> Who decides what's recorded: the kernel's clock, or you.</p>
+<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-1" data-ok><label for="q-02-a-photo-or-a-diary-3-1">A sample is a stack snapshot the kernel takes, while a trace section is a span you mark yourself</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-2"><label for="q-02-a-photo-or-a-diary-3-2">A sample is a span you mark yourself, while a trace section is a stack snapshot the kernel takes</label>
+<p class="fb ok opt-1"><b>Right.</b> Who decides what's recorded: the kernel's regular snapshots, or you.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
@@ -130,14 +134,14 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="./">← Overview</a>
-        <a class="button primary" href="01-reading-the-flames.html">Puzzle 1: Call chart vs flame chart →</a>
+        <a class="button" href="01-what-a-trace-is.html">← Puzzle 1</a>
+        <a class="button primary" href="03-reading-the-flames.html">Puzzle 3: Call chart vs flame chart →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20A%20photo%20or%20a%20diary&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fperf%2F00-a-photo-or-a-diary" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fperf%2F02-a-photo-or-a-diary" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
