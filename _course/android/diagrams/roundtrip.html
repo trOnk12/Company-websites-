@@ -1,0 +1,20 @@
+<!-- label: Out to a worker, back with a post -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="rt-t"><title id="rt-t">A tap reaches the main thread, which hands the slow load to a worker thread and stays free; the worker posts the result into the main thread's queue; the main thread shows it on screen</title>
+<x-ground class="step s1" y="310" label="kernel"/>
+<x-house class="step s1" x="20" y="80" w="600" h="230"/>
+<g class="step s1"><rect class="d-paper" x="50" y="96" width="130" height="38" rx="4"/><text class="d-tiny" x="66" y="121">the screen</text></g>
+<x-person class="step s1" x="110" y="176" tone="hl" desk="1" label="main thread"/>
+<x-letter class="step s1 hide-2" data-pulse="1" x="250" y="190" w="56" h="34" label="tap"/>
+<g class="step s2 hide-3"><rect class="d-band" x="440" y="96" width="120" height="32" rx="4"/><text class="d-tiny" x="452" y="118">loading… 2 s</text></g><g class="step s3"><rect class="d-ok" x="440" y="96" width="120" height="32" rx="4"/><text class="d-tiny" x="452" y="118">done</text></g>
+<g class="step s2" data-pulse="2"><x-person x="500" y="176" label="worker thread"/><x-arrow tone="acc" d="M180,186 L460,186"/></g>
+<g class="step s2 hide-3"><text class="d-a" x="320" y="250" text-anchor="middle">main thread: still free</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-band" x="200" y="250" width="160" height="34" rx="4"/><text class="d-tiny" x="280" y="272" text-anchor="middle">main thread's queue</text><x-letter x="300" y="210" w="80" h="32" label="post"/><x-arrow tone="ink" d="M470,214 L384,226"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-ok" x="50" y="96" width="130" height="38" rx="4"/><text class="d-tiny" x="66" y="121">list shown</text></g>
+<g class="step s1" data-move="1:278,180 2:470,140 3:340,226 4:115,140"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>A tap should load a 2-second list. The main thread must stay free for frames and touches.</p></li>
+<li><p>So it hands the load to a <b>worker thread</b>, and goes straight back to its queue.</p></li>
+<li><p>Done, the worker doesn't touch the screen: it posts the result into the main thread's queue. <i>Predict: who shows the list?</i></p></li>
+<li><p>The main thread, when it reaches that message, like any other.</p></li>
+</ol>

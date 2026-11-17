@@ -31,3 +31,4 @@ puzzle ≥ 8.
   three equal houses and the refusal travelling back to Game; frames on a timeline in 15; Zygote's fork in 12's cold start.
 | 2026-11-17 | gap hunt (strict learner) | clean | see SPRINTS.md sprint 12 | Fixed now: accuracy and quiz bugs (listed in the sprint log). Still open: the missing building-block puzzles and splits in sprint 12. |
 | 2026-11-17 | v-next: 22 puzzles | clean | — | Two new building blocks from the gap hunt: 03 Threads share one house, 13 When memory runs out, who goes. Puzzle 16 unloaded (windows and input channels moved to 17, where they're used). Not re-scored by a fresh learner yet. |
+| 2026-11-17 | 23 puzzles | clean | — | New 18 Slow work off the main thread, and back (the ViewModel puzzle's "on another thread" now has a building block). Not re-scored yet. |

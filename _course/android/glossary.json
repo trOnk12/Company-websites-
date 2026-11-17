@@ -259,19 +259,19 @@
    ]
   },
   "Binder buffer": {
-   "in": "18",
+   "in": "19",
    "def": "The mailbox each process has for incoming Binder calls: about 1 MB, shared by all calls in progress.",
    "aliases": [
     "mailbox"
    ]
   },
   "TransactionTooLargeException": {
-   "in": "18",
+   "in": "19",
    "def": "Thrown when a call doesn't fit the Binder buffer.",
    "kind": "code"
   },
   "transaction": {
-   "in": "18",
+   "in": "19",
    "def": "One Binder call, carried from one process to another.",
    "aliases": [
     "transactions"
@@ -352,7 +352,7 @@
    "def": "A free operating system, first made for computers shared by many people; Android is built on it."
   },
   "configuration change": {
-   "in": "19",
+   "in": "20",
    "def": "A change to the phone's setup that can change how screens should look: turning the phone, dark mode, language.",
    "aliases": [
     "configuration changes",
@@ -360,7 +360,7 @@
    ]
   },
   "recreated": {
-   "in": "19",
+   "in": "20",
    "def": "Destroyed and built again from scratch as a new object.",
    "aliases": [
     "recreates",
@@ -369,7 +369,7 @@
    ]
   },
   "ViewModel": {
-   "in": "20",
+   "in": "21",
    "def": "An object made to hold one screen's data, kept across configuration changes.",
    "aliases": [
     "ViewModels",
@@ -377,11 +377,11 @@
    ]
   },
   "ViewModelStore": {
-   "in": "20",
+   "in": "21",
    "def": "The small map an Activity keeps its ViewModels in: name → ViewModel."
   },
   "onCleared()": {
-   "in": "20",
+   "in": "21",
    "def": "The ViewModel callback that runs when its store is cleared for good.",
    "kind": "code"
   },
@@ -391,31 +391,31 @@
    "kind": "code"
   },
   "isChangingConfigurations": {
-   "in": "20",
+   "in": "21",
    "def": "True while an Activity is being destroyed only to be recreated.",
    "kind": "code"
   },
   "viewModels()": {
-   "in": "20",
+   "in": "21",
    "def": "Gets this screen's ViewModel from its store, creating it the first time.",
    "kind": "code"
   },
   "process death": {
-   "in": "21",
+   "in": "22",
    "def": "Android ending an app's process, usually in the background to free memory.",
    "aliases": [
     "process is ended"
    ]
   },
   "saved state": {
-   "in": "21",
+   "in": "22",
    "def": "A small Bundle your app hands to system_server to keep, so a screen can be rebuilt after process death.",
    "aliases": [
     "saved-state"
    ]
   },
   "Bundle": {
-   "in": "21",
+   "in": "22",
    "def": "A small map of simple values (text, numbers) that can be packed into a Parcel.",
    "kind": "code",
    "aliases": [
@@ -423,12 +423,12 @@
    ]
   },
   "SavedStateHandle": {
-   "in": "21",
+   "in": "22",
    "def": "A map a ViewModel can read and write that is kept in the saved state.",
    "kind": "code"
   },
   "onSaveInstanceState()": {
-   "in": "21",
+   "in": "22",
    "def": "The Activity callback where it fills its Bundle before it's stopped.",
    "kind": "code"
   },
@@ -488,6 +488,26 @@
    "def": "A direct line from system_server into your app, one per window, that carries touches.",
    "aliases": [
     "input channels"
+   ]
+  },
+  "worker thread": {
+   "in": "18",
+   "def": "Any thread that isn't the main thread, used for slow work.",
+   "aliases": [
+    "worker threads"
+   ]
+  },
+  "thread { }": {
+   "in": "18",
+   "def": "Kotlin's way to start a new thread that runs the code in the braces.",
+   "kind": "code"
+  },
+  "runOnUiThread { }": {
+   "in": "18",
+   "def": "An Activity's shortcut to post code to the main thread.",
+   "kind": "code",
+   "aliases": [
+    "runOnUiThread"
    ]
   }
  },

@@ -1,13 +1,13 @@
 ---
 title: The ViewModel outlives the screen
 short: ViewModel and its store
-summary: In puzzle 19, turning the phone threw away the Activity and everything in its fields. Here's the object made to survive that, and where it waits while the new Activity is built.
+summary: In puzzle 20, turning the phone threw away the Activity and everything in its fields. Here's the object made to survive that, and where it waits while the new Activity is built.
 takeaway: A ViewModel lives in its Activity's ViewModelStore. On a configuration change, ActivityThread keeps the store and hands it to the new Activity, all inside your process. When the screen closes for good, the store is cleared and onCleared() runs.
 ---
 
 ## The problem
 
-In puzzle 19, a configuration change replaced your Activity with a new one, and the counter in its fields went back to 0. Now imagine the field held a list that took two seconds to download. Every time the user turns the phone, it's gone, and you download it again. The process survived: is there somewhere in it that outlives one Activity object?
+In puzzle 20, a configuration change replaced your Activity with a new one, and the counter in its fields went back to 0. Now imagine the field held a list that took two seconds to download. Every time the user turns the phone, it's gone, and you download it again. The process survived: is there somewhere in it that outlives one Activity object?
 
 ## See it
 
@@ -20,7 +20,7 @@ A **ViewModel** is an object made to hold one screen's data. You write it as a c
 
 ```kotlin
 class ListViewModel : ViewModel() {
-    val items = startDownload()   // starts once, when the ViewModel is created, on another thread (puzzle 17)
+    val items = startDownload()   // starts once, when the ViewModel is created, on a worker thread (puzzle 18)
 }
 
 // in the Activity:
@@ -33,7 +33,7 @@ The trick is what happens to the store. When the Activity is destroyed only to b
 
 When the Activity is destroyed for good, for example the user pressed the Back button to leave the screen (Since Android 12, Back on an app's first screen, the one the launcher opened, only moves the app to the background; that Activity isn't destroyed. On every other screen, Back destroys it.), no new Activity is coming. Then the store is cleared, and each ViewModel's `onCleared()` runs: your chance to stop work it started, like an unfinished download. The code that ships with `ViewModel` decides between the two with one check: at destroy, clear the store only if `isChangingConfigurations` is false (it's true when this destroy is only to recreate the Activity).
 
-So a ViewModel lives as long as the user keeps that screen: the screen they see stays the same, while the Activity objects behind it are replaced. But it still lives in your process. If the process itself is gone, so is the ViewModel. What survives that is puzzle 21.
+So a ViewModel lives as long as the user keeps that screen: the screen they see stays the same, while the Activity objects behind it are replaced. But it still lives in your process. If the process itself is gone, so is the ViewModel. What survives that is puzzle 22.
 
 ## The analogy
 

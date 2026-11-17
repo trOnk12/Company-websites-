@@ -9,7 +9,7 @@
   <meta property="og:title" content="How big can a Binder call be? – Android from the foundation – Mateusz Pachulski">
   <meta property="og:description" content="In puzzle 15, a call crossed Binder as bytes packed in a Parcel. The receiving process has only so much room for them.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/android/18-how-big-can-a-binder-call-be">
+  <meta property="og:url" content="https://pachulski.dev/course/android/19-how-big-can-a-binder-call-be">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>How big can a Binder call be? – Android from the foundation – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/android/18-how-big-can-a-binder-call-be">
+  <link rel="canonical" href="https://pachulski.dev/course/android/19-how-big-can-a-binder-call-be">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -48,13 +48,13 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="18" data-prev="17-frames-jank-and-anrs.html" data-prev-title="Frames, jank and ANRs">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" class="done" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" class="done" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" class="done" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" class="done" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" class="done" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" class="done" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" class="done" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" class="done" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" class="done" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" class="done" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" class="done" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" class="done" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" class="done" title="Frames, jank and ANRs">17</a></li><li><a href="18-how-big-can-a-binder-call-be.html" aria-current="page" title="How big can a Binder call be?">18</a></li><li><a href="19-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">19</a></li><li><a href="20-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">20</a></li><li><a href="21-when-the-process-is-gone.html" title="When the process is gone">21</a></li></ol></nav>
-      <p class="eyebrow">Android from the foundation · Puzzle 18 · 19 of 22</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="19" data-prev="18-slow-work-and-back.html" data-prev-title="Slow work off the main thread, and back">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" class="done" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" class="done" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" class="done" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" class="done" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" class="done" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" class="done" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" class="done" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" class="done" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" class="done" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" class="done" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" class="done" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" class="done" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" class="done" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" class="done" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" aria-current="page" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" title="When the process is gone">22</a></li></ol></nav>
+      <p class="eyebrow">Android from the foundation · Puzzle 19 · 20 of 23</p>
       <h1>How big can a Binder call be?</h1>
       <p class="lede">In puzzle 15, a call crossed Binder as bytes packed in a Parcel. The receiving process has only so much room for them.</p>
-      <aside class="builds-on" aria-labelledby="builds-on-18">
-        <p id="builds-on-18"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-19">
+        <p id="builds-on-19"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="15"><details><summary><a href="15-inside-a-binder-call.html">Puzzle 15: Inside a Binder call</a></summary><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 9 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a> → <a href="15-inside-a-binder-call.html">15</a>. Know them already? Start here.</p>
       </aside>
@@ -106,27 +106,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>You put a 3 MB photo into an Intent and start an Activity. What happens?</legend>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-1" id="q-18-how-big-can-a-binder-call-be-1-1"><label for="q-18-how-big-can-a-binder-call-be-1-1">It works, just more slowly</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-1" id="q-18-how-big-can-a-binder-call-be-1-2"><label for="q-18-how-big-can-a-binder-call-be-1-2">It works: the Intent object is handed over as it is</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-1" id="q-18-how-big-can-a-binder-call-be-1-3" data-ok><label for="q-18-how-big-can-a-binder-call-be-1-3">It fails with <code>TransactionTooLargeException</code></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-1"><label for="q-19-how-big-can-a-binder-call-be-1-1">It works, just more slowly</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-2"><label for="q-19-how-big-can-a-binder-call-be-1-2">It works: the Intent object is handed over as it is</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-1-3">It fails with <code>TransactionTooLargeException</code></label>
 <p class="fb no opt-1"><b>Not quite.</b> The buffer has a fixed size of about 1 MB. A Parcel that doesn't fit fails; it doesn't wait. <label class="show-me" for="st-buffer-3" data-goto="st-buffer">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Objects can't leave a process: the Intent is packed into a Parcel and must fit the receiver's Binder buffer. <label class="show-me" for="st-buffer-3" data-goto="st-buffer">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Every Intent crosses Binder, through a buffer of about 1 MB.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Your app's call into system_server carries 400,000 bytes (0.4 MB). It works most of the time but fails now and then. Why?</legend>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-2" id="q-18-how-big-can-a-binder-call-be-2-1" data-ok><label for="q-18-how-big-can-a-binder-call-be-2-1">The 1 MB is shared by every call in progress, so when others are waiting there's less room</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-2" id="q-18-how-big-can-a-binder-call-be-2-2"><label for="q-18-how-big-can-a-binder-call-be-2-2">The kernel shrinks the buffer when the phone is busy, then grows it back</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-2" id="q-18-how-big-can-a-binder-call-be-2-3"><label for="q-18-how-big-can-a-binder-call-be-2-3">0.4 MB is over the limit for one call, so it fails at random</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-1" data-ok><label for="q-19-how-big-can-a-binder-call-be-2-1">The 1 MB is shared by every call in progress, so when others are waiting there's less room</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-2"><label for="q-19-how-big-can-a-binder-call-be-2-2">The kernel shrinks the buffer when the phone is busy, then grows it back</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-3"><label for="q-19-how-big-can-a-binder-call-be-2-3">0.4 MB is over the limit for one call, so it fails at random</label>
 <p class="fb ok opt-1"><b>Right.</b> A shared, fixed-size buffer: other calls take room too.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The buffer's size is fixed when the process first uses Binder; it never changes. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The limit is about 1 MB, more than 0.4 MB. It's the sharing that hurts. <label class="show-me" for="st-buffer-2" data-goto="st-buffer">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>How do you show a big photo on another screen of your own app?</legend>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-3" id="q-18-how-big-can-a-binder-call-be-3-1"><label for="q-18-how-big-can-a-binder-call-be-3-1">Send it in many small Intents, one after another</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-3" id="q-18-how-big-can-a-binder-call-be-3-2"><label for="q-18-how-big-can-a-binder-call-be-3-2">Pack it into a bigger Parcel</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-3" id="q-18-how-big-can-a-binder-call-be-3-3" data-ok><label for="q-18-how-big-can-a-binder-call-be-3-3">Save it to a file and send the file's name</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-1"><label for="q-19-how-big-can-a-binder-call-be-3-1">Send it in many small Intents, one after another</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-2"><label for="q-19-how-big-can-a-binder-call-be-3-2">Pack it into a bigger Parcel</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-3-3">Save it to a file and send the file's name</label>
 <p class="fb no opt-1"><b>Not quite.</b> They all cross the same shared 1 MB, and the receiver has to glue them back together. Send where the photo is, not the photo. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The Parcel isn't the limit; the receiver's buffer is, and it's fixed. <label class="show-me" for="st-buffer-4" data-goto="st-buffer">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Send a small reference; let the other side read the data itself.</p>
@@ -140,14 +140,14 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="17-frames-jank-and-anrs.html">← Puzzle 17</a>
-        <a class="button primary" href="19-turn-the-phone-lose-the-screen.html">Puzzle 19: Configuration changes →</a>
+        <a class="button" href="18-slow-work-and-back.html">← Puzzle 18</a>
+        <a class="button primary" href="20-turn-the-phone-lose-the-screen.html">Puzzle 20: Configuration changes →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20How%20big%20can%20a%20Binder%20call%20be%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F18-how-big-can-a-binder-call-be" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F19-how-big-can-a-binder-call-be" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

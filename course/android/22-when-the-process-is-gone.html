@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="In puzzle 20, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.">
+  <meta name="description" content="In puzzle 21, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="When the process is gone – Android from the foundation – Mateusz Pachulski">
-  <meta property="og:description" content="In puzzle 20, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.">
+  <meta property="og:description" content="In puzzle 21, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/android/21-when-the-process-is-gone">
+  <meta property="og:url" content="https://pachulski.dev/course/android/22-when-the-process-is-gone">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>When the process is gone – Android from the foundation – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/android/21-when-the-process-is-gone">
+  <link rel="canonical" href="https://pachulski.dev/course/android/22-when-the-process-is-gone">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -48,19 +48,19 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="21" data-prev="20-the-viewmodel-outlives-the-screen.html" data-prev-title="The ViewModel outlives the screen">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" class="done" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" class="done" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" class="done" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" class="done" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" class="done" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" class="done" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" class="done" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" class="done" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" class="done" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" class="done" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" class="done" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" class="done" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" class="done" title="Frames, jank and ANRs">17</a></li><li><a href="18-how-big-can-a-binder-call-be.html" class="done" title="How big can a Binder call be?">18</a></li><li><a href="19-turn-the-phone-lose-the-screen.html" class="done" title="Turn the phone, lose your screen">19</a></li><li><a href="20-the-viewmodel-outlives-the-screen.html" class="done" title="The ViewModel outlives the screen">20</a></li><li><a href="21-when-the-process-is-gone.html" aria-current="page" title="When the process is gone">21</a></li></ol></nav>
-      <p class="eyebrow">Android from the foundation · Puzzle 21 · 22 of 22</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="22" data-prev="21-the-viewmodel-outlives-the-screen.html" data-prev-title="The ViewModel outlives the screen">
+      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" class="done" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" class="done" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" class="done" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" class="done" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" class="done" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" class="done" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" class="done" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" class="done" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" class="done" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" class="done" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" class="done" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" class="done" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" class="done" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" class="done" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" class="done" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" class="done" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" class="done" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" aria-current="page" title="When the process is gone">22</a></li></ol></nav>
+      <p class="eyebrow">Android from the foundation · Puzzle 22 · 23 of 23</p>
       <h1>When the process is gone</h1>
-      <p class="lede">In puzzle 20, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.</p>
-      <aside class="builds-on" aria-labelledby="builds-on-21">
-        <p id="builds-on-21"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="14"><details><summary><a href="14-starting-an-app.html">Puzzle 14: Starting an app, cold, warm and hot</a></summary><p>Cold start = fork Zygote, create your Application, then the first Activity. Warm = process alive, Activity created again. Hot = both alive, just brought to the front.</p></details></li><li data-block="20"><details><summary><a href="20-the-viewmodel-outlives-the-screen.html">Puzzle 20: The ViewModel outlives the screen</a></summary><p>A ViewModel lives in its Activity's ViewModelStore. On a configuration change, ActivityThread keeps the store and hands it to the new Activity, all inside your process. When the screen closes for good, the store is cleared and onCleared() runs.</p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 18 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="06-you-dont-call-youre-called.html">6</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a> → <a href="09-whats-inside-the-apk.html">9</a> → <a href="11-zygote.html">11</a> → <a href="12-sharing-memory.html">12</a> → <a href="13-when-memory-runs-out.html">13</a> → <a href="14-starting-an-app.html">14</a> → <a href="15-inside-a-binder-call.html">15</a> → <a href="16-the-main-threads-queue.html">16</a> → <a href="19-turn-the-phone-lose-the-screen.html">19</a> → <a href="20-the-viewmodel-outlives-the-screen.html">20</a>. Know them already? Start here.</p>
+      <p class="lede">In puzzle 21, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-22">
+        <p id="builds-on-22"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="21"><details><summary><a href="21-the-viewmodel-outlives-the-screen.html">Puzzle 21: The ViewModel outlives the screen</a></summary><p>A ViewModel lives in its Activity's ViewModelStore. On a configuration change, ActivityThread keeps the store and hands it to the new Activity, all inside your process. When the screen closes for good, the store is cleared and onCleared() runs.</p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 20 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="06-you-dont-call-youre-called.html">6</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a> → <a href="09-whats-inside-the-apk.html">9</a> → <a href="11-zygote.html">11</a> → <a href="12-sharing-memory.html">12</a> → <a href="13-when-memory-runs-out.html">13</a> → <a href="14-starting-an-app.html">14</a> → <a href="15-inside-a-binder-call.html">15</a> → <a href="16-the-main-threads-queue.html">16</a> → <a href="17-frames-jank-and-anrs.html">17</a> → <a href="18-slow-work-and-back.html">18</a> → <a href="20-turn-the-phone-lose-the-screen.html">20</a> → <a href="21-the-viewmodel-outlives-the-screen.html">21</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>In puzzle 20, the ViewModel survived turning the phone, because it waited in your process. In puzzle 14, you saw that when memory runs short, Android ends the processes of apps in the background. The user typed half a message, switched to another app for a minute, and came back. The process is gone, and with it every object it held, ViewModels included. Is the message lost?</p>
+<p>In puzzle 21, the ViewModel survived turning the phone, because it waited in your process. In puzzle 14, you saw that when memory runs short, Android ends the processes of apps in the background. The user typed half a message, switched to another app for a minute, and came back. The process is gone, and with it every object it held, ViewModels included. Is the message lost?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -94,7 +94,7 @@
         <h2 id="the-building-block">The building block</h2>
 <p>When Android ends your process in the background to free memory, that's <b>process death</b>. Nothing inside the process survives it.</p>
 <p>So, before it can happen, your app sends a little of its state somewhere that outlives the process: system_server. Each time your Activity is stopped (the user left it), your app packs what it chose to save into a <b><code>Bundle</code></b>, a small map of simple values like text and numbers, and Binder carries it to system_server. That copy is the screen's <b>saved state</b>. When the user comes back to a process that's gone, a new process starts (a cold start, puzzle 14), and system_server hands the Bundle back to the new Activity.</p>
-<p>Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 18), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes in a file on the phone and is read again by its ID.</p>
+<p>Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 19), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes in a file on the phone and is read again by its ID.</p>
 <p>An Activity fills its Bundle itself, in <code>onSaveInstanceState()</code>. A ViewModel can use saved state too, through a <b><code>SavedStateHandle</code></b>: a map that's kept in the saved state. <code>viewModels()</code> hands one to the ViewModel when it creates it.</p>
 <pre><code class="language-kotlin">class DraftViewModel(private val saved: SavedStateHandle) : ViewModel() {
     var draft: String
@@ -113,27 +113,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The user typed a long message, kept only in a ViewModel. They switch apps, and Android ends your process to free memory. They come back. What do they see?</legend>
-<input type="radio" name="q-21-when-the-process-is-gone-1" id="q-21-when-the-process-is-gone-1-1" data-ok><label for="q-21-when-the-process-is-gone-1-1">An empty message: the ViewModel ended with the process</label>
-<input type="radio" name="q-21-when-the-process-is-gone-1" id="q-21-when-the-process-is-gone-1-2"><label for="q-21-when-the-process-is-gone-1-2">The message, because system_server keeps every ViewModel</label>
-<input type="radio" name="q-21-when-the-process-is-gone-1" id="q-21-when-the-process-is-gone-1-3"><label for="q-21-when-the-process-is-gone-1-3">The message: a ViewModel survives everything</label>
+<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-1" data-ok><label for="q-22-when-the-process-is-gone-1-1">An empty message: the ViewModel ended with the process</label>
+<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-2"><label for="q-22-when-the-process-is-gone-1-2">The message, because system_server keeps every ViewModel</label>
+<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-3"><label for="q-22-when-the-process-is-gone-1-3">The message: a ViewModel survives everything</label>
 <p class="fb ok opt-1"><b>Right.</b> Only what was in the saved state (or in a file) comes back.</p>
 <p class="fb no opt-2"><b>Not quite.</b> system_server keeps only the small Bundle your app sent, never your objects. <label class="show-me" for="st-saved-1" data-goto="st-saved">Show me step 1 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> A ViewModel lives in your process; when the process is gone, so is it. <label class="show-me" for="st-saved-2" data-goto="st-saved">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why must saved state be small?</legend>
-<input type="radio" name="q-21-when-the-process-is-gone-2" id="q-21-when-the-process-is-gone-2-1" data-ok><label for="q-21-when-the-process-is-gone-2-1">Because it crosses Binder's ~1 MB buffer and waits in system_server's memory</label>
-<input type="radio" name="q-21-when-the-process-is-gone-2" id="q-21-when-the-process-is-gone-2-2"><label for="q-21-when-the-process-is-gone-2-2">Because each Bundle can hold only one value</label>
-<input type="radio" name="q-21-when-the-process-is-gone-2" id="q-21-when-the-process-is-gone-2-3"><label for="q-21-when-the-process-is-gone-2-3">Because system_server writes it to a file, and files are slow</label>
+<input type="radio" name="q-22-when-the-process-is-gone-2" id="q-22-when-the-process-is-gone-2-1" data-ok><label for="q-22-when-the-process-is-gone-2-1">Because it crosses Binder's ~1 MB buffer and waits in system_server's memory</label>
+<input type="radio" name="q-22-when-the-process-is-gone-2" id="q-22-when-the-process-is-gone-2-2"><label for="q-22-when-the-process-is-gone-2-2">Because each Bundle can hold only one value</label>
+<input type="radio" name="q-22-when-the-process-is-gone-2" id="q-22-when-the-process-is-gone-2-3"><label for="q-22-when-the-process-is-gone-2-3">Because system_server writes it to a file, and files are slow</label>
 <p class="fb ok opt-1"><b>Right.</b> It crosses Binder, so it has to fit the shared ~1 MB buffer.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A Bundle is a map and can hold many values; it's the shared ~1 MB buffer that limits it. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> It waits in system_server's memory and crosses Binder; the Binder buffer is the limit. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A ViewModel and saved state: which survives what?</legend>
-<input type="radio" name="q-21-when-the-process-is-gone-3" id="q-21-when-the-process-is-gone-3-1" data-ok><label for="q-21-when-the-process-is-gone-3-1">A ViewModel survives turning the phone, while saved state survives that and process death too</label>
-<input type="radio" name="q-21-when-the-process-is-gone-3" id="q-21-when-the-process-is-gone-3-2"><label for="q-21-when-the-process-is-gone-3-2">Saved state also survives Back, so a closed screen comes back as it was</label>
-<input type="radio" name="q-21-when-the-process-is-gone-3" id="q-21-when-the-process-is-gone-3-3"><label for="q-21-when-the-process-is-gone-3-3">Both survive process death, because both are saved by Android</label>
+<input type="radio" name="q-22-when-the-process-is-gone-3" id="q-22-when-the-process-is-gone-3-1" data-ok><label for="q-22-when-the-process-is-gone-3-1">A ViewModel survives turning the phone, while saved state survives that and process death too</label>
+<input type="radio" name="q-22-when-the-process-is-gone-3" id="q-22-when-the-process-is-gone-3-2"><label for="q-22-when-the-process-is-gone-3-2">Saved state also survives Back, so a closed screen comes back as it was</label>
+<input type="radio" name="q-22-when-the-process-is-gone-3" id="q-22-when-the-process-is-gone-3-3"><label for="q-22-when-the-process-is-gone-3-3">Both survive process death, because both are saved by Android</label>
 <p class="fb ok opt-1"><b>Right.</b> Different lifetimes: pick the place by what the data must survive.</p>
 <p class="fb no opt-2"><b>Not quite.</b> After Back there's nothing to come back to, so system_server throws it away. <label class="show-me" for="st-saved-4" data-goto="st-saved">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> The ViewModel is an object in your process, so it ends with the process. <label class="show-me" for="st-saved-2" data-goto="st-saved">Show me step 2 again ↑</label></p>
@@ -147,7 +147,7 @@
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="20-the-viewmodel-outlives-the-screen.html">← Puzzle 20</a>
+        <a class="button" href="21-the-viewmodel-outlives-the-screen.html">← Puzzle 21</a>
         <a class="button" href="./">Back to the overview →</a>
       </nav>
       <section class="finish" aria-labelledby="finish-heading">
@@ -159,7 +159,7 @@
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20When%20the%20process%20is%20gone&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F21-when-the-process-is-gone" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2F22-when-the-process-is-gone" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

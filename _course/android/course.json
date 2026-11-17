@@ -37,16 +37,17 @@
         "15-inside-a-binder-call.md",
         "16-the-main-threads-queue.md",
         "17-frames-jank-and-anrs.md",
-        "18-how-big-can-a-binder-call-be.md"
+        "18-slow-work-and-back.md",
+        "19-how-big-can-a-binder-call-be.md"
       ]
     },
     {
       "title": "Module 4: Screens and their lives",
       "blurb": "What happens to your screen, and your data, when the phone turns, the user leaves, or the process ends.",
       "puzzles": [
-        "19-turn-the-phone-lose-the-screen.md",
-        "20-the-viewmodel-outlives-the-screen.md",
-        "21-when-the-process-is-gone.md"
+        "20-turn-the-phone-lose-the-screen.md",
+        "21-the-viewmodel-outlives-the-screen.md",
+        "22-when-the-process-is-gone.md"
       ]
     }
   ],

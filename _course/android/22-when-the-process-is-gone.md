@@ -1,13 +1,13 @@
 ---
 title: When the process is gone
 short: Process death and saved state
-summary: In puzzle 20, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.
+summary: In puzzle 21, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.
 takeaway: Before your Activity is stopped, your app sends a small Bundle, its saved state, to system_server by Binder. If the process is ended in the background, a new process gets it back. Back throws it away. Keep it small: it crosses the ~1 MB Binder buffer.
 ---
 
 ## The problem
 
-In puzzle 20, the ViewModel survived turning the phone, because it waited in your process. In puzzle 14, you saw that when memory runs short, Android ends the processes of apps in the background. The user typed half a message, switched to another app for a minute, and came back. The process is gone, and with it every object it held, ViewModels included. Is the message lost?
+In puzzle 21, the ViewModel survived turning the phone, because it waited in your process. In puzzle 14, you saw that when memory runs short, Android ends the processes of apps in the background. The user typed half a message, switched to another app for a minute, and came back. The process is gone, and with it every object it held, ViewModels included. Is the message lost?
 
 ## See it
 
@@ -20,7 +20,7 @@ When Android ends your process in the background to free memory, that's **proces
 
 So, before it can happen, your app sends a little of its state somewhere that outlives the process: system_server. Each time your Activity is stopped (the user left it), your app packs what it chose to save into a **`Bundle`**, a small map of simple values like text and numbers, and Binder carries it to system_server. That copy is the screen's **saved state**. When the user comes back to a process that's gone, a new process starts (a cold start, puzzle 14), and system_server hands the Bundle back to the new Activity.
 
-Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 18), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes in a file on the phone and is read again by its ID.
+Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 19), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes in a file on the phone and is read again by its ID.
 
 An Activity fills its Bundle itself, in `onSaveInstanceState()`. A ViewModel can use saved state too, through a **`SavedStateHandle`**: a map that's kept in the saved state. `viewModels()` hands one to the ViewModel when it creates it.
 

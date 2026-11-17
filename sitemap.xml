@@ -171,22 +171,27 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/18-how-big-can-a-binder-call-be</loc>
+    <loc>https://pachulski.dev/course/android/18-slow-work-and-back</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/19-turn-the-phone-lose-the-screen</loc>
+    <loc>https://pachulski.dev/course/android/19-how-big-can-a-binder-call-be</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/20-the-viewmodel-outlives-the-screen</loc>
+    <loc>https://pachulski.dev/course/android/20-turn-the-phone-lose-the-screen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/android/21-when-the-process-is-gone</loc>
+    <loc>https://pachulski.dev/course/android/21-the-viewmodel-outlives-the-screen</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/22-when-the-process-is-gone</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

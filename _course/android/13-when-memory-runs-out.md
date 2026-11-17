@@ -20,7 +20,7 @@ Android sorts every app process by **importance**: how much the user would notic
 
 When free memory runs low, Android's **low-memory killer** ends processes to get memory back. It always starts with the least important: cached apps go first, the app on screen last. It doesn't ask your app; the kernel ends the process, and everything in its memory is gone at once.
 
-That's why "my app is in the background" never means "my app is still running". Leaving an app makes it cached, and a cached process can disappear at any moment. Two later puzzles build on this: starting an app again from nothing (puzzle 14), and how a screen gets its state back after its process was ended (puzzle 21).
+That's why "my app is in the background" never means "my app is still running". Leaving an app makes it cached, and a cached process can disappear at any moment. Two later puzzles build on this: starting an app again from nothing (puzzle 14), and how a screen gets its state back after its process was ended (puzzle 22).
 
 ## The analogy
 

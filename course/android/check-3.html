@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="android">
       <p class="eyebrow"><a href="./">Android from the foundation</a> · check</p>
       <h1>Know The machinery already?</h1>
-      <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 5 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 15"><p class="eyebrow">Puzzle 15: Inside a Binder call</p>
 <fieldset class="quiz" data-n="15">
 <legend>Your main thread calls a method on a proxy, and system_server takes 2 seconds to answer. What does the user see?</legend>
@@ -80,14 +80,24 @@
 <p class="fb ok opt-2"><b>Right.</b> One message at a time: the touch waits behind the sleep, and after 5 seconds comes the ANR.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Nothing is stopped: system_server shows a dialog and the user decides. <a class="show-me" href="17-frames-jank-and-anrs.html">Learn it in puzzle 17 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 18"><p class="eyebrow">Puzzle 18: How big can a Binder call be?</p>
+<section aria-label="Puzzle 18"><p class="eyebrow">Puzzle 18: Slow work off the main thread, and back</p>
 <fieldset class="quiz" data-n="18">
+<legend>A worker thread finished loading the list and sets the screen's text itself. What's wrong?</legend>
+<input type="radio" name="q-18-slow-work-and-back-1" id="q-18-slow-work-and-back-1-1"><label for="q-18-slow-work-and-back-1-1">Nothing is wrong, as long as the list loaded without any errors</label>
+<input type="radio" name="q-18-slow-work-and-back-1" id="q-18-slow-work-and-back-1-2" data-ok><label for="q-18-slow-work-and-back-1-2">Only the main thread may change the screen, so the worker must post it</label>
+<input type="radio" name="q-18-slow-work-and-back-1" id="q-18-slow-work-and-back-1-3"><label for="q-18-slow-work-and-back-1-3">It's too slow, because a worker thread draws text more slowly than the main thread</label>
+<p class="fb no opt-1"><b>Not quite.</b> The screen has one owner, the main thread; another thread changing it can break it (puzzle 3). <a class="show-me" href="18-slow-work-and-back.html">Learn it in puzzle 18 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Out to a worker, back with a post.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Speed isn't the issue: the rule is who may touch the screen. <a class="show-me" href="18-slow-work-and-back.html">Learn it in puzzle 18 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 19"><p class="eyebrow">Puzzle 19: How big can a Binder call be?</p>
+<fieldset class="quiz" data-n="19">
 <legend>You put a 3 MB photo into an Intent and start an Activity. What happens?</legend>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-1" id="q-18-how-big-can-a-binder-call-be-1-1"><label for="q-18-how-big-can-a-binder-call-be-1-1">It works, just more slowly</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-1" id="q-18-how-big-can-a-binder-call-be-1-2"><label for="q-18-how-big-can-a-binder-call-be-1-2">It works: the Intent object is handed over as it is</label>
-<input type="radio" name="q-18-how-big-can-a-binder-call-be-1" id="q-18-how-big-can-a-binder-call-be-1-3" data-ok><label for="q-18-how-big-can-a-binder-call-be-1-3">It fails with <code>TransactionTooLargeException</code></label>
-<p class="fb no opt-1"><b>Not quite.</b> The buffer has a fixed size of about 1 MB. A Parcel that doesn't fit fails; it doesn't wait. <a class="show-me" href="18-how-big-can-a-binder-call-be.html">Learn it in puzzle 18 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> Objects can't leave a process: the Intent is packed into a Parcel and must fit the receiver's Binder buffer. <a class="show-me" href="18-how-big-can-a-binder-call-be.html">Learn it in puzzle 18 →</a></p>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-1"><label for="q-19-how-big-can-a-binder-call-be-1-1">It works, just more slowly</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-2"><label for="q-19-how-big-can-a-binder-call-be-1-2">It works: the Intent object is handed over as it is</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-1-3">It fails with <code>TransactionTooLargeException</code></label>
+<p class="fb no opt-1"><b>Not quite.</b> The buffer has a fixed size of about 1 MB. A Parcel that doesn't fit fails; it doesn't wait. <a class="show-me" href="19-how-big-can-a-binder-call-be.html">Learn it in puzzle 19 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> Objects can't leave a process: the Intent is packed into a Parcel and must fit the receiver's Binder buffer. <a class="show-me" href="19-how-big-can-a-binder-call-be.html">Learn it in puzzle 19 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Every Intent crosses Binder, through a buffer of about 1 MB.</p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
