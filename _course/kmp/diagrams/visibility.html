@@ -1,0 +1,25 @@
+<!-- label: A source set sees up its dependsOn links, never down or sideways, and only the APIs all its targets have -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="vi-t"><title id="vi-t">The source set tree with dependsOn arrows pointing up; iosMain can call a function in commonMain; commonMain cannot call iosMain; iosMain cannot call androidMain; UIKit is available to iosMain, appleMain and nativeMain, compiled only for iOS here, but not to commonMain or androidMain</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="120" y="16" width="170" height="36" rx="6"/><text class="d-a" x="205" y="40" text-anchor="middle">commonMain</text>
+<rect class="d-band" x="200" y="82" width="150" height="36" rx="6"/><text class="d-tiny" x="275" y="106" text-anchor="middle">nativeMain</text>
+<rect class="d-band" x="200" y="148" width="150" height="36" rx="6"/><text class="d-tiny" x="275" y="172" text-anchor="middle">appleMain</text>
+<rect class="d-band" x="200" y="214" width="150" height="36" rx="6"/><text class="d-b" x="275" y="239" text-anchor="middle">iosMain</text>
+<rect class="d-band" x="10" y="214" width="150" height="36" rx="6"/><text class="d-tiny" x="85" y="238" text-anchor="middle">androidMain</text>
+<x-arrow tone="ink" d="M275,212 L275,188"/><x-arrow tone="ink" d="M275,146 L275,122"/><x-arrow tone="ink" d="M262,80 L236,56"/><x-arrow tone="ink" d="M85,212 C85,140 120,80 150,56"/></g>
+<text class="d-mi step only-1" x="286" y="205">dependsOn</text>
+<g class="step only-2" data-pulse="2"><text class="d-mi" x="12" y="40">price()</text><x-arrow tone="acc" d="M352,226 C440,200 440,60 296,34"/><circle class="d-ok" cx="434" cy="130" r="13"/><path class="d-line" d="M427,130 L432,136 L442,124"/></g>
+<g class="step only-3" data-pulse="3"><x-arrow tone="red" d="M292,40 C460,60 460,220 356,236"/><circle class="d-bad" cx="450" cy="140" r="13"/><path class="d-red" d="M442,132 L458,148 M458,132 L442,148"/><text class="d-rt" x="480" y="146">down</text></g>
+<g class="step only-4" data-pulse="4"><x-arrow tone="red" d="M198,262 C180,290 150,290 120,256"/><circle class="d-bad" cx="160" cy="292" r="13"/><path class="d-red" d="M152,284 L168,300 M168,284 L152,300"/><text class="d-rt" x="190" y="300">sideways</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-wood" x="500" y="130" width="120" height="60" rx="8"/><text class="d-b" x="560" y="167" text-anchor="middle">UIKit</text>
+<circle class="d-ok" cx="370" cy="100" r="11"/><path class="d-line" d="M364,100 L368,105 L377,95"/><circle class="d-ok" cx="370" cy="166" r="11"/><path class="d-line" d="M364,166 L368,171 L377,161"/><circle class="d-ok" cx="370" cy="232" r="11"/><path class="d-line" d="M364,232 L368,237 L377,227"/>
+<circle class="d-bad" cx="310" cy="34" r="11"/><path class="d-red" d="M304,28 L316,40 M316,28 L304,40"/><circle class="d-bad" cx="85" cy="272" r="11"/><path class="d-red" d="M79,266 L91,278 M91,266 L79,278"/></g>
+<g class="step s1" data-move="1:190,232 2:300,64 3:362,236 4:110,232 5:488,160"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Puzzle 17's arrows have a name: each source set <code>dependsOn</code> the one above it. The template draws these links for you.</p></li>
+<li><p>Code sees up its links: iosMain can call <code>price()</code> in commonMain, even an <code>internal</code> one.</p></li>
+<li><p>Never down: commonMain can't call iosMain's code. It's compiled for Android too, where that code doesn't exist. <i>Predict: can iosMain call androidMain?</i></p></li>
+<li><p>No, not sideways either: the two are never compiled together, so neither sees the other.</p></li>
+<li><p>APIs follow the targets: a source set uses only what all its targets have. Here nativeMain, appleMain and iosMain are compiled only for iOS, so all three see UIKit.</p></li>
+</ol>

@@ -124,7 +124,12 @@
    "null",
    "var count by remember",
    "actor",
-   "actors"
+   "actors",
+   "implementation",
+   "build.gradle.kts",
+   "plugins",
+   "dependencies",
+   "SDK"
   ],
   "homonyms": [
    "ViewModel",
@@ -497,6 +502,164 @@
    "in": "15",
    "def": "What each UI element is and says (role, label), which Compose passes to accessibility tools.",
    "aliases": []
+  },
+  "multiplatform plugin": {
+   "in": "16",
+   "def": "The Gradle plugin, kotlin(\"multiplatform\"), that reads the kotlin { } block and sets up targets, source sets and compilations.",
+   "aliases": [
+    "Kotlin Multiplatform plugin"
+   ]
+  },
+  "kotlin { }": {
+   "in": "16",
+   "def": "The block in a shared module's build.gradle.kts that declares its targets and source sets.",
+   "kind": "code"
+  },
+  "iosArm64": {
+   "in": "16",
+   "def": "The iOS target for real iPhones.",
+   "kind": "code",
+   "aliases": [
+    "iosArm64()"
+   ]
+  },
+  "iosSimulatorArm64": {
+   "in": "16",
+   "def": "The iOS target for the simulator on an Apple-silicon Mac.",
+   "kind": "code",
+   "aliases": [
+    "iosSimulatorArm64()"
+   ]
+  },
+  "platform source set": {
+   "in": "16",
+   "def": "The source set made for exactly one target and named after it, such as androidMain or iosArm64Main.",
+   "aliases": [
+    "platform source sets"
+   ]
+  },
+  "iosArm64Main": {
+   "in": "16",
+   "def": "The platform source set of the iosArm64 target.",
+   "kind": "code",
+   "aliases": [
+    "iosSimulatorArm64Main"
+   ]
+  },
+  "compilation": {
+   "in": "16",
+   "def": "One compiler run for one target, over every source set that target uses: main for your code, test for your tests.",
+   "aliases": [
+    "compilations"
+   ]
+  },
+  "commonTest": {
+   "in": "16",
+   "def": "The test source set compiled for every target, beside commonMain.",
+   "kind": "code"
+  },
+  "intermediate source set": {
+   "in": "17",
+   "def": "A source set compiled for some, but not all, of the project's targets, such as iosMain.",
+   "aliases": [
+    "intermediate source sets"
+   ]
+  },
+  "default hierarchy template": {
+   "in": "17",
+   "def": "The multiplatform plugin's built-in tree of intermediate source sets; it creates the ones that fit the targets you declare.",
+   "aliases": [
+    "hierarchy template"
+   ]
+  },
+  "appleMain": {
+   "in": "17",
+   "def": "The intermediate source set compiled for every Apple target in the project.",
+   "kind": "code"
+  },
+  "nativeMain": {
+   "in": "17",
+   "def": "The intermediate source set compiled for every Kotlin/Native target in the project.",
+   "kind": "code"
+  },
+  "dependsOn": {
+   "in": "18",
+   "def": "The link from a source set to the one above it: it sees that one's code, can keep its expect promises, and gets its libraries.",
+   "kind": "code"
+  },
+  "multiplatform library": {
+   "in": "19",
+   "def": "A library published for many targets with one common API, so commonMain can use it.",
+   "aliases": [
+    "multiplatform libraries"
+   ]
+  },
+  "commonMain.dependencies": {
+   "in": "19",
+   "def": "The dependencies block of one source set; iosMain.dependencies and the others work the same way.",
+   "kind": "code",
+   "aliases": [
+    "iosMain.dependencies",
+    "androidMain.dependencies",
+    "commonTest.dependencies"
+   ]
+  },
+  "IR": {
+   "in": "20",
+   "def": "Intermediate representation: the compiler's own form of checked code, between your source and machine code.",
+   "aliases": [
+    "intermediate representation"
+   ]
+  },
+  "klib": {
+   "in": "20",
+   "def": "Kotlin's library file: a zip of IR plus a description of its declarations, not yet machine code.",
+   "aliases": [
+    "klibs",
+    ".klib"
+   ]
+  },
+  "Gradle module metadata": {
+   "in": "21",
+   "def": "The .module file a library publishes, describing its variants and their attributes so Gradle can pick one.",
+   "aliases": [
+    ".module file"
+   ]
+  },
+  "variant": {
+   "in": "21",
+   "def": "One published build of a library for one use, such as its iosArm64 klib or its JVM .jar.",
+   "aliases": [
+    "variants"
+   ]
+  },
+  "attribute": {
+   "in": "21",
+   "def": "A label on a variant, such as its Kotlin platform, that Gradle matches against what a compilation needs.",
+   "aliases": [
+    "attributes"
+   ]
+  },
+  "dependency injection": {
+   "in": "22",
+   "def": "Handing an object what it needs from outside, for example through its constructor, instead of letting it create that itself.",
+   "aliases": [
+    "injection",
+    "inject",
+    "injected"
+   ]
+  },
+  "protocol": {
+   "in": "22",
+   "def": "Swift's name for an interface; a Kotlin interface reaches Swift as one.",
+   "aliases": [
+    "protocols"
+   ]
+  },
+  "androidLibrary": {
+   "in": "16",
+   "def": "The older name of the Android target block, before version 8.12 of Android's plugin.",
+   "kind": "code"
   }
  },
  "avoid": {

@@ -2,7 +2,7 @@
 title: A promise and its keepers
 short: expect and actual
 summary: In puzzle 1, common code couldn't call a platform's own APIs. But shared logic sometimes needs a small platform fact, like which phone it's running on. Here's how it asks without knowing.
-takeaway: An expect declaration in common code is a promise; every platform source set keeps it with an actual declaration. The compiler checks that every target has one. For anything bigger, an interface implemented per platform does the same job and is easier to test.
+takeaway: An expect declaration in common code is a promise; every platform's source set keeps it with an actual declaration. The compiler checks that every target has one. For anything bigger, an interface implemented per platform does the same job and is easier to test.
 ---
 
 ## The problem
@@ -23,7 +23,7 @@ Common code makes a promise. It declares what it needs, without a body, marked *
 expect fun platformName(): String
 ```
 
-Then every platform source set keeps that promise with an **`actual`** declaration, using its own APIs:
+Then every platform's source set keeps that promise with an **`actual`** declaration, using its own APIs:
 
 ```kotlin
 // androidMain

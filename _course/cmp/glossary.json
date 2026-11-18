@@ -1,0 +1,361 @@
+{
+ "baseline": {
+  "_about": "What the learner already knows: an Android engineer who finished the Android and Kotlin Multiplatform courses here and writes Jetpack Compose at work (Text, Column, Modifier, remember, mutableStateOf), but has never shipped Compose Multiplatform to iOS. Compose words the KMP course taught are linked under \"from\".",
+  "words": [
+   "app",
+   "screen",
+   "button",
+   "Kotlin",
+   "Java",
+   "Android",
+   "iOS",
+   "iPhone",
+   "phone",
+   "code",
+   "program",
+   "function",
+   "class",
+   "object",
+   "method",
+   "data",
+   "UI",
+   "API",
+   "APIs",
+   "Gradle",
+   "Google",
+   "JetBrains",
+   "Compose",
+   "Jetpack Compose",
+   "Text",
+   "Column",
+   "Row",
+   "Button",
+   "Modifier",
+   "LazyColumn",
+   "mutableStateOf",
+   "MutableState",
+   "MaterialTheme",
+   "Material",
+   "Material Design",
+   "material3",
+   "lambda",
+   "onClick",
+   "setContent",
+   "setContent { }",
+   "Int",
+   "String",
+   "Boolean",
+   "Unit",
+   "List",
+   "listOf",
+   "val",
+   "var",
+   "data class",
+   "interface",
+   "equals",
+   "===",
+   "null",
+   "suspend",
+   "count",
+   "count++",
+   "count.value",
+   "name",
+   "Greeting",
+   "Counter",
+   "User",
+   "Cart",
+   "CartBadge",
+   "Header",
+   "Screen",
+   "ErrorBanner",
+   "showError",
+   "names",
+   "Hello",
+   "Ana",
+   "Ben",
+   "KMP",
+   "MovieRow",
+   "movie",
+   "movie.id"
+  ],
+  "homonyms": [
+   "suspend"
+  ]
+ },
+ "terms": {
+  "Composer": {
+   "in": "00",
+   "def": "The runtime's recorder: the compiler plugin passes it into every composable call, and the call records what it did through it.",
+   "aliases": [
+    "$composer"
+   ],
+   "kind": "code"
+  },
+  "$changed": {
+   "in": "00",
+   "def": "A hidden Int the caller fills with what it already knows about each argument, such as \"same as last time\".",
+   "kind": "code"
+  },
+  "group": {
+   "in": "00",
+   "def": "Everything one composable call records between its start and its end, labelled with a key from its place in the source.",
+   "aliases": [
+    "groups"
+   ]
+  },
+  "composition": {
+   "in": "01",
+   "def": "The tree of groups your composables recorded on their first run, with their nodes and slots, kept and updated between runs.",
+   "aliases": [
+    "compositions"
+   ]
+  },
+  "node": {
+   "in": "01",
+   "def": "A real UI element that a composable such as Text leaves in the composition; in Compose UI it's a LayoutNode.",
+   "aliases": [
+    "nodes"
+   ]
+  },
+  "LayoutNode": {
+   "in": "01",
+   "def": "Compose UI's node class: one element of the UI tree, with a size, a position and a way to draw itself.",
+   "kind": "code"
+  },
+  "slot": {
+   "in": "01",
+   "def": "A cell where a group keeps a value: an argument it got last time, or something it asked to remember.",
+   "aliases": [
+    "slots"
+   ]
+  },
+  "slot table": {
+   "in": "01",
+   "def": "The runtime's storage for the composition: every group and its slots, in the order the calls ran.",
+   "aliases": []
+  },
+  "call site": {
+   "in": "01",
+   "def": "The place in your source code where a composable is called; it decides which group a call finds again.",
+   "aliases": [
+    "call sites"
+   ]
+  },
+  "key()": {
+   "in": "01",
+   "def": "A composable that gives the calls inside it an identity from a value you pass, such as an item's id.",
+   "kind": "code"
+  },
+  "snapshot state": {
+   "in": "02",
+   "def": "A value holder made by mutableStateOf; Compose watches every read and every write of its value.",
+   "aliases": []
+  },
+  "state read": {
+   "in": "02",
+   "def": "Code reading a snapshot state's value while Compose runs it; Compose notes which group was running.",
+   "aliases": [
+    "state reads"
+   ]
+  },
+  "restart group": {
+   "in": "02",
+   "def": "The group of a composable that Compose can run again on its own, from its start.",
+   "aliases": [
+    "restart groups"
+   ]
+  },
+  "Recomposer": {
+   "in": "02",
+   "def": "The runtime's scheduler: it waits for the next frame, then runs every marked restart group again.",
+   "kind": "code"
+  },
+  "skipping": {
+   "in": "03",
+   "def": "A call not running its body, and keeping last time's record, because its arguments equal the ones it got last time.",
+   "aliases": [
+    "skip",
+    "skips",
+    "skipped"
+   ]
+  },
+  "stable": {
+   "in": "03",
+   "def": "A type that can't change without Compose seeing it: it never changes, or changes only through snapshot state. Compared with equals.",
+   "aliases": [
+    "stability"
+   ]
+  },
+  "unstable": {
+   "in": "03",
+   "def": "A type that could change without Compose seeing it, such as a class with a var or a List.",
+   "aliases": []
+  },
+  "strong skipping": {
+   "in": "03",
+   "def": "The compiler mode, on by default since Kotlin 2.0.20, that lets a call with unstable arguments be skipped when the same instances (===) come back.",
+   "aliases": [
+    "strong skipping mode"
+   ]
+  },
+  "@Stable": {
+   "in": "03",
+   "def": "An annotation that promises Compose a type is stable when it can't prove it.",
+   "kind": "code"
+  },
+  "phase": {
+   "in": "04",
+   "def": "One of the three stages Compose runs to make a frame, in order: composition, layout, drawing.",
+   "aliases": [
+    "phases"
+   ]
+  },
+  "constraints": {
+   "in": "04",
+   "def": "The smallest and largest width and height a parent allows a child.",
+   "aliases": []
+  },
+  "measure": {
+   "in": "04",
+   "def": "Ask a child to choose its size within the constraints; in Compose, each child is measured at most once per layout.",
+   "aliases": [
+    "measures",
+    "measured",
+    "measuring"
+   ]
+  },
+  "placement": {
+   "in": "04",
+   "def": "A parent setting each measured child's x, y position, relative to itself.",
+   "aliases": [
+    "placed"
+   ]
+  },
+  "canvas": {
+   "in": "04",
+   "def": "The drawing surface a node draws itself onto, with commands like drawRect; Compose's Canvas is an interface.",
+   "aliases": []
+  },
+  "drawRect": {
+   "in": "04",
+   "def": "A canvas command that fills a rectangle with a colour.",
+   "kind": "code"
+  },
+  "Applier": {
+   "in": "05",
+   "def": "The plug between the runtime and a tree: it inserts, moves and removes nodes; the runtime knows nodes only through it.",
+   "kind": "code"
+  },
+  "Compose UI": {
+   "in": "05",
+   "def": "The layer that turns nodes into a screen: LayoutNode, Modifier, input, layout and drawing.",
+   "aliases": []
+  },
+  "foundation": {
+   "in": "05",
+   "def": "The layer of building blocks with no look of their own: Row, Column, LazyColumn, gestures.",
+   "aliases": []
+  },
+  "design system": {
+   "in": "05",
+   "def": "A set of rules and ready-made components for how an app looks: colours, type, shapes. Material Design is Google's.",
+   "aliases": [
+    "design systems"
+   ]
+  }
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what. The lint fails on them; name the actor or say the plain word instead.",
+  "phrases": {
+   "the system": "name the actor: the runtime, the compiler plugin, the Recomposer",
+   "views": "say UI elements, or nodes (Android Views aren't the topic here)",
+   "simply": "cut it: it makes a learner who's stuck feel slow",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is",
+   "magic": "say what does it: the compiler plugin, the runtime"
+  }
+ },
+ "from": {
+  "composable": {
+   "course": "kmp",
+   "in": 13,
+   "aliases": [
+    "composables",
+    "@Composable"
+   ]
+  },
+  "recomposition": {
+   "course": "kmp",
+   "in": 13,
+   "aliases": [
+    "recompose",
+    "recomposes"
+   ]
+  },
+  "remember": {
+   "course": "kmp",
+   "in": 13
+  },
+  "Compose compiler plugin": {
+   "course": "kmp",
+   "in": 13,
+   "aliases": [
+    "compiler plugin"
+   ]
+  },
+  "compiler": {
+   "course": "kmp",
+   "in": 0
+  },
+  "Compose runtime": {
+   "course": "kmp",
+   "in": 14
+  },
+  "platform layer": {
+   "course": "kmp",
+   "in": 14
+  },
+  "Compose Multiplatform": {
+   "course": "kmp",
+   "in": 14
+  },
+  "Skia": {
+   "course": "kmp",
+   "in": 15
+  },
+  "commonMain": {
+   "course": "kmp",
+   "in": 1
+  },
+  "common code": {
+   "course": "kmp",
+   "in": 1
+  },
+  "target": {
+   "course": "kmp",
+   "in": 0,
+   "aliases": [
+    "targets"
+   ]
+  },
+  "frame": {
+   "course": "android",
+   "in": 17,
+   "aliases": [
+    "frames"
+   ]
+  },
+  "main thread": {
+   "course": "android",
+   "in": 2
+  },
+  "window": {
+   "course": "android",
+   "in": 17
+  },
+  "state": {
+   "course": "kmp",
+   "in": 13
+  }
+ }
+}

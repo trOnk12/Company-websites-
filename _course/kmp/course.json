@@ -38,12 +38,37 @@
         "14-what-compose-shares.md",
         "15-one-canvas-on-ios.md"
       ]
+    },
+    {
+      "title": "Module 4: The build",
+      "blurb": "What the kotlin { } block declares, the tree of source sets between commonMain and each target, who can see what, where each library goes, how one dependency line reaches every target, and when to choose expect/actual or an interface.",
+      "puzzles": [
+        "16-the-kotlin-block.md",
+        "17-source-sets-in-between.md",
+        "18-who-can-see-what.md",
+        "19-dependencies-per-source-set.md",
+        "20-what-a-klib-is.md",
+        "21-one-line-many-variants.md",
+        "22-a-promise-or-an-interface.md"
+      ]
     }
   ],
   "upcoming": [
     {
-      "title": "Module 4: Compose Multiplatform in practice",
-      "topics": "Touch, scrolling and text input on iOS; accessibility through VoiceOver; interop with SwiftUI and UIKit in both directions; resources and navigation."
+      "title": "Module 5: Kotlin/Native under the hood",
+      "topics": "From IR to LLVM to a binary; framework vs XCFramework, static vs dynamic; debug symbols, crash reports and symbolication; build time and binary size."
+    },
+    {
+      "title": "Module 6: Across the boundary",
+      "topics": "Objective-C export limits (generics, sealed classes, default arguments), @Throws and exceptions, suspend functions and Flow from Swift, SKIE and Swift export."
+    },
+    {
+      "title": "Module 7: Shipping it to iOS",
+      "topics": "Swift Package Manager, CocoaPods or direct integration; embedAndSign; versioning a shared module."
+    },
+    {
+      "title": "Module 8: The common stack",
+      "topics": "Ktor engines, kotlinx.serialization, SQLDelight, settings, Koin; ViewModel in commonMain; testing in commonTest and on iOS."
     }
   ],
   "support": {

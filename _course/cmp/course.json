@@ -1,0 +1,44 @@
+{
+  "title": "Compose Multiplatform, under the hood",
+  "intro": "What Compose really does underneath your @Composable functions, and how Compose Multiplatform takes that same machinery to an iPhone: how it draws there, how it lives next to UIKit, and how a whole app is shared. For Android engineers who write Jetpack Compose and want to ship it to iOS.",
+  "how": "Each puzzle starts with a problem, gives you one building block, shows it in a diagram that plays itself, and ends with three questions you have to answer to unlock the next one. Facts come from Android's and Kotlin's documentation and from Compose's own source code, linked and quoted on every page.",
+  "hero": "stack",
+  "heroAlt": "Animated diagram: Compose as layers. The runtime at the bottom keeps a tree through an Applier; Compose UI lays it out and draws it onto a canvas; foundation and Material sit on top; only the edges where Compose UI meets the phone differ between Android and iOS.",
+  "assumes": {
+    "title": "Kotlin Multiplatform, from the compiler up",
+    "href": "../kmp/"
+  },
+  "modules": [
+    {
+      "title": "Module 1: Compose underneath",
+      "blurb": "What the compiler plugin does to a composable, the tree Compose remembers, which code runs again when state changes and what gets skipped, one frame from tree to pixels, and the layers that let Compose leave Android.",
+      "puzzles": [
+        "00-what-composable-really-does.md",
+        "01-the-tree-compose-remembers.md",
+        "02-who-read-that-state.md",
+        "03-what-gets-skipped.md",
+        "04-one-frame.md",
+        "05-three-layers.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Compose Multiplatform on iOS",
+      "topics": "Skia through Skiko, ComposeUIViewController, one Metal canvas, and how frames are scheduled on an iPhone."
+    },
+    {
+      "title": "Module 3: Living with UIKit",
+      "topics": "Interop in both directions, text input and the keyboard, accessibility, and looking at home on iOS."
+    },
+    {
+      "title": "Module 4: Shared app plumbing",
+      "topics": "Resources, navigation, lifecycle and ViewModel; performance on iOS; testing; Compose Multiplatform or SwiftUI."
+    }
+  ],
+  "support": {
+    "url": "",
+    "label": "Buy me a coffee",
+    "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
+  }
+}
