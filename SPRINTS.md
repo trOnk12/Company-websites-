@@ -145,6 +145,48 @@ To do, in order:
 - [ ] Quizzes everywhere: replace the "What's the difference between X and Y" template where it only tests recall;
   no two-option questions; applied/numeric questions.
 
+## Sprint 13 (planned): Depth, and KMP first
+
+Owner's priorities (2026-11-18): KMP really deep, then a Compose Multiplatform course, then iOS (KMP needs it);
+BLE paused; then UX and UI designer reviews; content first, UI after.
+
+### The depth ladder (design)
+Every course stays a straight path of puzzles, but any building block can open a floor below it.
+- A puzzle can list **"Go deeper"** blocks in its frontmatter (`deeper: [cs/what-a-compiler-does, …]`), rendered as
+  an optional box after the takeaway: never required to pass, never gating, tracked like any other puzzle.
+- The floors live in foundation courses, written the same way: **"Computers from the ground up"** (bits and
+  bytes, how a CPU runs instructions, memory and addresses, the stack and the heap, caches) and **"How code
+  becomes a program"** (source → tokens → tree → bytecode or machine code, JIT vs AOT, linking, what LLVM is).
+  The kernel, processes and threads already live in the Android course's module 1.
+- The building-block graph gets a direction: "builds on" points down, "go deeper" points further down.
+  "Your learning" shows depth reached per topic, not only puzzles passed.
+- Rule: the main path must stay complete without the floors (no puzzle may need a floor to be understood); the
+  floors answer "but how does *that* work?" for whoever asks.
+
+### KMP deep: modules to add after module 3 (no renumbering of existing puzzles)
+4. The build: the `kotlin { }` block and targets; the default hierarchy template and intermediate source sets
+   (appleMain, iosMain); what commonMain can see; klibs and how a library publishes per-target variants.
+5. Kotlin/Native under the hood: from IR to LLVM to a binary; framework vs XCFramework, static vs dynamic;
+   debug symbols, crash reports and symbolication; build time and binary size.
+6. Across the boundary: Objective-C export limits (generics, sealed classes, default arguments), `@Throws` and
+   exceptions, suspend functions and Flow from Swift (cancellation, threads), SKIE and Swift export.
+7. Shipping it to iOS: SPM / CocoaPods / direct integration, embedAndSign, versioning a shared module.
+8. The common stack: Ktor engines, kotlinx.serialization, SQLDelight, settings/DataStore, Koin; ViewModel
+   in commonMain (lifecycle-viewmodel KMP); testing in commonTest and on iOS.
+Deeper floors to link: what a compiler does, what LLVM is, linking, ARC vs tracing GC (exists in KMP module 2).
+
+### Compose Multiplatform (new course `cmp`, assumes KMP)
+1. Compose underneath: compiler plugin, composition and recomposition, runtime vs UI vs Material.
+2. CMP on iOS: Skia via Skiko, ComposeUIViewController, one Metal canvas, frame scheduling.
+3. Living with UIKit: interop both ways, text input and the keyboard, accessibility, look and feel.
+4. Shared app plumbing: resources, navigation, lifecycle/ViewModel; performance on iOS; testing; CMP vs SwiftUI.
+
+### iOS (feeds KMP)
+Swift for Kotlin developers; your app's front door (@main, scenes); a screen (UIViewController, SwiftUI View);
+split the main-actor puzzle (async/await + Task; actors); values are copied; fixes listed in sprint 12.
+
+### Then: UX and UI designer reviews of the course section (overview, tracking, path across courses, visual design)
+
 ## Backlog, in order
 
 1. **Sprint 9: LLMs for mobile engineers.** What happens when your app calls a model: tokens, the context window,

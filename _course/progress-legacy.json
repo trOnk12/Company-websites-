@@ -66,6 +66,20 @@
    "turn-the-phone-lose-the-screen",
    "the-viewmodel-outlives-the-screen",
    "when-the-process-is-gone"
+  ],
+  "ios": [
+   "frozen-not-stopped",
+   "the-run-loop-is-your-looper",
+   "queues-not-handlers",
+   "the-main-actor",
+   "counting-not-collecting"
+  ],
+  "ble": [
+   "a-year-on-a-coin-battery",
+   "shouting-into-the-room",
+   "a-timetable-for-two",
+   "the-filing-cabinet",
+   "dont-ask-get-told"
   ]
  }
 }
