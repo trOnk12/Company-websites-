@@ -3,6 +3,8 @@ name: course-author
 description: Create or restructure course content for pachulski.dev/course (a module, a puzzle, a diagram, questions) from Mateusz's learning material. Use whenever he asks to add a module, turn a topic or a learning session into puzzles, or rework existing puzzles. Always finish with the course-clarity skill.
 ---
 
+Read AGREEMENTS.md at the repo root first: priorities, the depth ladder and working rules.
+
 # /course-author — how every puzzle gets made
 
 The course is an education platform, not a blog: a beginner must be able to start at puzzle 0 and
