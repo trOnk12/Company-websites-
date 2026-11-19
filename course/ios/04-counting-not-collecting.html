@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="4" data-prev="03-the-main-actor.html" data-prev-title="The main actor">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" class="done" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" class="done" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" class="done" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" class="done" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" aria-current="page" title="Counting, not collecting">4</a></li></ol></nav>
-      <p class="eyebrow">iOS for Android developers · Puzzle 4 · 5 of 5</p>
-      <h1>Counting, not collecting</h1>
-      <p class="lede">On Android, objects nothing uses anymore are found and freed for you, cycles included. Swift doesn't work that way. Here's what it does instead, and the leak it can't see.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="4">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">iOS for Android developers</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 4 · 5 of 5</p>
+        <h1>Counting, not collecting</h1>
+        <p class="lede">On Android, objects nothing uses anymore are found and freed for you, cycles included. Swift doesn't work that way. Here's what it does instead, and the leak it can't see.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" aria-current="page" title="Counting, not collecting">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="2"><details><summary><a href="02-queues-not-handlers.html">Puzzle 2: Queues, not handlers</a></summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="ARC counts strong references; a cycle never reaches zero; a weak reference breaks it"><input type="radio" name="st-arc" id="st-arc-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-arc" id="st-arc-2" aria-label="Step 2 of 4"><input type="radio" name="st-arc" id="st-arc-3" aria-label="Step 3 of 4"><input type="radio" name="st-arc" id="st-arc-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ar-t"><title id="ar-t">An object's count goes up with each strong reference and it is freed at zero; a screen and its view model referring to each other never reach zero; making one reference weak lets both be freed</title><defs><marker id="ah-arc-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-arc-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-arc-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-arc-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ar-t"><title id="ar-t">An object's count goes up with each strong reference and it is freed at zero; a screen and its view model referring to each other never reach zero; making one reference weak lets both be freed</title><defs><marker id="ah-arc-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-arc-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-arc-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-arc-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1 hide-2" data-pulse="1"><rect class="d-hl" x="250" y="120" width="140" height="70" rx="8"/><text class="d-b" x="320" y="150" text-anchor="middle">object</text><text class="d-a" x="320" y="176" text-anchor="middle">count: 2</text><path class="d-arr-ink" d="M120,100 L244,140" marker-end="url(#ah-arc-ink)"/><path class="d-arr-ink" d="M120,220 L244,170" marker-end="url(#ah-arc-ink)"/><text class="d-tiny" x="90" y="96" text-anchor="middle">variable</text><text class="d-tiny" x="90" y="236" text-anchor="middle">property</text></g>
 <g class="step s2 hide-3" data-pulse="2"><rect class="d-paper" x="250" y="120" width="140" height="70" rx="8"/><text class="d-a" x="320" y="150" text-anchor="middle">count: 0</text><text class="d-r" x="320" y="176" text-anchor="middle">freed now</text></g>
@@ -73,6 +84,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-paper" x="120" y="130" width="140" height="60" rx="8"/><text class="d-b" x="190" y="166" text-anchor="middle">Screen</text><rect class="d-paper" x="380" y="130" width="140" height="60" rx="8"/><text class="d-b" x="450" y="166" text-anchor="middle">ViewModel</text><path class="d-arr-ink" d="M264,146 L374,146" marker-end="url(#ah-arc-ink)"/><path class="d-arr-path" d="M376,176 L266,176" marker-end="url(#ah-arc-path)"/><text class="d-a" x="320" y="214" text-anchor="middle">weak</text><text class="d-a" x="320" y="250" text-anchor="middle">both freed</text><rect class="d-blank" x="118" y="128" width="144" height="64" opacity="0.6"/><rect class="d-blank" x="378" y="128" width="144" height="64" opacity="0.6"/></g>
 <g class="step s1" data-move="1:320,110 2:320,110 3:320,120 4:320,200"><circle class="d-acc" cx="0" cy="0" r="6"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p><b>ARC</b> counts the <b>strong references</b> to each object: a variable here, a property there. This one has two.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-arc-2">Next →</label></div></li>
 <li><p>When both let go, the count reaches zero, and ARC frees it right away: no collector, no waiting.</p><div class="stepnav"><label for="st-arc-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-arc-3">Next →</label></div></li>
@@ -124,10 +136,7 @@
 <p class="fb ok opt-2"><b>Right.</b> Counting now vs searching later.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/">The Swift Programming Language: Automatic Reference Counting</a> (&quot;Swift uses Automatic Reference Counting (ARC) to track and manage your app's memory usage… ARC automatically frees up the memory used by class instances when those instances are no longer needed&quot;; &quot;two class instances hold a strong reference to each other, such that each instance keeps the other alive. This is known as a strong reference cycle. You resolve strong reference cycles by defining some of the relationships between classes as weak or unowned references&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/">The Swift Programming Language: Automatic Reference Counting</a> (&quot;Swift uses Automatic Reference Counting (ARC) to track and manage your app's memory usage… ARC automatically frees up the memory used by class instances when those instances are no longer needed&quot;; &quot;two class instances hold a strong reference to each other, such that each instance keeps the other alive. This is known as a strong reference cycle. You resolve strong reference cycles by defining some of the relationships between classes as weak or unowned references&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>ARC counts the strong references to each object and frees it the moment the count drops to zero. Two objects holding strong references to each other never reach zero: a strong reference cycle, which leaks. Make one side a weak reference, which doesn't keep the object alive.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="5" data-prev="04-it-remembers-nothing.html" data-prev-title="It remembers nothing">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" class="done" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" class="done" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" class="done" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" class="done" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" class="done" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" aria-current="page" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
-      <p class="eyebrow">LLMs for mobile engineers, from tokens to your app · Puzzle 5 · 6 of 8</p>
-      <h1>Same question, different answers</h1>
-      <p class="lede">Your unit test checks the model's summary against an expected string. It passes, then fails, then passes, with no code change. Here's where the randomness comes from, the knob that turns it down, and why it never reaches zero.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="5">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 5 · 6 of 8</p>
+        <h1>Same question, different answers</h1>
+        <p class="lede">Your unit test checks the model's summary against an expected string. It passes, then fails, then passes, with no code change. Here's where the randomness comes from, the knob that turns it down, and why it never reaches zero.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" aria-current="page" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="2"><details><summary><a href="02-your-first-call.html">Puzzle 2: Your first call</a></summary><p>A call to a model is one HTTP POST: a model name, max_tokens (the most it may write), and messages, a list of turns each marked user or assistant. The response holds the continuation, a stop_reason (end_turn when it finished, max_tokens when it was cut off), and usage: the input and output tokens you pay for. Output tokens cost more than input ones, and each one takes time to generate.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="The model scores each next token; sampling picks one; temperature tilts the odds"><input type="radio" name="st-sampling" id="st-sampling-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-sampling" id="st-sampling-2" aria-label="Step 2 of 4"><input type="radio" name="st-sampling" id="st-sampling-3" aria-label="Step 3 of 4"><input type="radio" name="st-sampling" id="st-sampling-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sa-t"><title id="sa-t">The model gives each possible next token a score: Great high, Good medium, Fine low; sampling picks one at random by score; low temperature makes the top token win almost always; high temperature gives the others more chances</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sa-t"><title id="sa-t">The model gives each possible next token a score: Great high, Good medium, Fine low; sampling picks one at random by score; low temperature makes the top token win almost always; high temperature gives the others more chances</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-wood" x="30" y="140" width="140" height="54" rx="8"/><line class="d-line" x1="55.0" y1="167.0" x2="60.0" y2="167.0"/><line class="d-line" x1="52.9" y1="171.9" x2="56.5" y2="175.5"/><line class="d-line" x1="48.0" y1="174.0" x2="48.0" y2="179.0"/><line class="d-line" x1="43.1" y1="171.9" x2="39.5" y2="175.5"/><line class="d-line" x1="41.0" y1="167.0" x2="36.0" y2="167.0"/><line class="d-line" x1="43.1" y1="162.1" x2="39.5" y2="158.5"/><line class="d-line" x1="48.0" y1="160.0" x2="48.0" y2="155.0"/><line class="d-line" x1="52.9" y1="162.1" x2="56.5" y2="158.5"/><circle class="d-paper" cx="48" cy="167" r="8"/><text class="d-tiny" x="117" y="172" text-anchor="middle">model</text></g>
 <g class="step s1" data-pulse="1"><rect class="d-hl" x="230" y="120" width="180" height="34" rx="4"/><text class="d-a" x="530" y="143">Great</text><rect class="d-band" x="230" y="170" width="90" height="34" rx="4"/><text class="d-tiny" x="530" y="192">Good</text><rect class="d-band" x="230" y="220" width="30" height="34" rx="4"/><text class="d-tiny" x="530" y="242">Fine</text></g>
@@ -74,6 +85,7 @@
 <g class="step only-3" data-pulse="3"><rect class="d-ok" x="230" y="120" width="290" height="34" rx="4"/><text class="d-a" x="420" y="300" text-anchor="middle">low temperature: Great almost always</text></g>
 <g class="step s4" data-pulse="4"><rect class="d-ok" x="230" y="170" width="140" height="34" rx="4"/><rect class="d-ok" x="230" y="220" width="90" height="34" rx="4"/><text class="d-a" x="420" y="300" text-anchor="middle">high temperature: more variety</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>At each step the model scores every possible next token: "Great" likely, "Good" less, "Fine" rarely.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-sampling-2">Next →</label></div></li>
 <li><p>One is chosen by <b>sampling</b>: at random, weighted by the scores. Usually "Great", not always.</p><div class="stepnav"><label for="st-sampling-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-sampling-3">Next →</label></div></li>
@@ -123,10 +135,7 @@
 <p class="fb ok opt-2"><b>Right.</b> The choice vs the knob on it.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, Temperature</a> (&quot;Temperature is a parameter that controls the randomness of a model's predictions during text generation. Higher temperatures lead to more creative and diverse outputs… Lower temperatures result in more conservative and deterministic outputs that stick to the most probable phrasing and answers&quot;; &quot;Even with temperature set to 0, the results will not be fully deterministic, and identical inputs might produce different outputs across API calls.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, Temperature</a> (&quot;Temperature is a parameter that controls the randomness of a model's predictions during text generation. Higher temperatures lead to more creative and diverse outputs… Lower temperatures result in more conservative and deterministic outputs that stick to the most probable phrasing and answers&quot;; &quot;Even with temperature set to 0, the results will not be fully deterministic, and identical inputs might produce different outputs across API calls.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>At each step the model gives every possible next token a probability, and the next token is chosen by sampling from them. Temperature sets how adventurous that choice is: higher gives more varied text, lower sticks to the most likely tokens. Even at temperature 0 the output isn't fully deterministic, so test model features on properties, not exact strings.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

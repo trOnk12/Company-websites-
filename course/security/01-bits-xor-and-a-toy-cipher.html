@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="1" data-prev="00-anyone-on-the-line.html" data-prev-title="Anyone on the line">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" class="done" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" aria-current="page" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
-      <p class="eyebrow">Encryption, from the ground up · Puzzle 1 · 2 of 9</p>
-      <h1>Bits, XOR and a toy cipher</h1>
-      <p class="lede">Puzzle 0 said encryption turns data into gibberish with a key. Before any real cipher, here's the one operation every cipher you'll meet ends with, and a complete cipher you can do by hand.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="1">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Encryption, from the ground up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 1 · 2 of 9</p>
+        <h1>Bits, XOR and a toy cipher</h1>
+        <p class="lede">Puzzle 0 said encryption turns data into gibberish with a key. Before any real cipher, here's the one operation every cipher you'll meet ends with, and a complete cipher you can do by hand.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" aria-current="page" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="0"><details><summary><a href="00-anyone-on-the-line.html">Puzzle 0: Anyone on the line</a></summary><p>Data crosses many machines on its way. Any of them can read it, change it, or pretend to be the other side. Encryption turns the data into ciphertext that only someone with the key can turn back, which stops the reading. The next puzzles stop the rest.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="XOR the data with the key to encrypt, and again to decrypt"><input type="radio" name="st-xor" id="st-xor-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-xor" id="st-xor-2" aria-label="Step 2 of 4"><input type="radio" name="st-xor" id="st-xor-3" aria-label="Step 3 of 4"><input type="radio" name="st-xor" id="st-xor-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="xo-t"><title id="xo-t">Data bits 0101 XORed with key bits 0011 give 0110; XORing 0110 with the same key gives back 0101; reusing the key for two messages lets the listener cancel it</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="xo-t"><title id="xo-t">Data bits 0101 XORed with key bits 0011 give 0110; XORing 0110 with the same key gives back 0101; reusing the key for two messages lets the listener cancel it</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><text class="d-tiny" x="60" y="80">data</text><text class="d-mi" x="200" y="80">0 1 0 1</text><text class="d-tiny" x="60" y="120">key</text><text class="d-mi" x="200" y="120">0 0 1 1</text><line class="d-line" x1="180" y1="135" x2="300" y2="135"/></g>
 <g class="step s2" data-pulse="2"><text class="d-tiny" x="60" y="160">XOR</text><text class="d-a" x="200" y="160">0 1 1 0</text><text class="d-tiny" x="330" y="160">gibberish</text></g>
@@ -73,6 +84,7 @@
 <g class="step s4" data-pulse="4"><text class="d-r" x="320" y="280" text-anchor="middle">same key twice: the two ciphertexts</text><text class="d-r" x="320" y="305" text-anchor="middle">XORed together cancel it</text></g>
 <g class="step s1" data-move="1:170,100 2:170,155 3:170,205 4:170,290"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Data is <b>bits</b>; a key is bits too. Line them up.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-xor-2">Next →</label></div></li>
 <li><p><b>XOR</b> them: 1 where the bits differ, 0 where they're equal. The result is gibberish.</p><div class="stepnav"><label for="st-xor-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-xor-3">Next →</label></div></li>
@@ -124,10 +136,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf">NIST SP 800-38A</a> (exclusive-OR: &quot;The bitwise addition, modulo 2, of two bit strings of equal length&quot;)</li><li><a href="https://www.rfc-editor.org/rfc/rfc4949">RFC 4949, Internet Security Glossary</a> (one-time pad: &quot;An encryption algorithm in which the key is a random sequence of symbols and each symbol is used for encryption only one time&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf">NIST SP 800-38A</a> (exclusive-OR: &quot;The bitwise addition, modulo 2, of two bit strings of equal length&quot;)</li><li><a href="https://www.rfc-editor.org/rfc/rfc4949">RFC 4949, Internet Security Glossary</a> (one-time pad: &quot;An encryption algorithm in which the key is a random sequence of symbols and each symbol is used for encryption only one time&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Data is bits, and a key is a string of bits too. XOR combines two bits: 0 if they're equal, 1 if they differ; XOR the same key in twice and you're back where you started. A one-time pad XORs each data bit with a key bit: perfectly secret if the key is random, as long as the data, and used once. Reuse the key, and XORing two ciphertexts cancels it, leaking the two messages XORed together.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

@@ -48,80 +48,84 @@
   </header>
 
   <main id="main">
-    <section class="hero" aria-labelledby="courses-heading">
-      <div class="wrap narrow">
-        <p class="eyebrow">Free for everyone · no sign-up</p>
-        <h1 id="courses-heading">Courses that build from the foundation</h1>
-        <p class="lede">Each course is a chain of small puzzles. Every puzzle starts with a problem, adds one building block, shows it in a diagram that moves, and ends with a check that tells you you're ready for the next. No term is used before it's explained.</p>
-        <p><a href="how-its-made.html">How these courses are made, and how they're checked →</a></p>
-        <p class="actions"><a class="button primary" href="me.html">Your learning: progress and what to learn next →</a></p>
+    <section class="catalog-hero" aria-labelledby="courses-heading">
+      <div class="wrap">
+        <p class="eyebrow">Free courses · no sign-up</p>
+        <h1 id="courses-heading">Understand how it works</h1>
+        <p class="lede">Build an explanation one puzzle at a time. Follow the mechanism, predict what happens next, and go deeper when a step raises another question.</p>
+        <p class="actions"><a class="button primary" href="#browse-courses">Browse courses</a> <a class="button" href="me.html">Your learning</a></p>
       </div>
     </section>
-    <section class="section" aria-labelledby="live-heading">
-      <div class="wrap narrow">
-        <h2 id="live-heading">Start here</h2>
-        <ul class="courses">
-        <li class="course-card" data-progress="android" data-total="23">
+    <div class="wrap catalog-body" id="browse-courses">
+      <section class="catalog-group" aria-labelledby="catalog-group-0">
+        <h2 id="catalog-group-0">Mobile development</h2>
+        <ul class="courses"><li class="course-card" data-progress="android" data-total="23">
           <h3><a href="android/">Android from the foundation</a></h3>
-          <p>Lifecycle, process death, ANRs, frozen screens: most of Android's hard parts come from a handful of ideas. This course builds them from the ground up, one small puzzle at a time, with pictures that move, until the rules stop being rules and start making sense.</p>
-          <p class="small">23 puzzles · about 120 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="android/">Open the course →</a></p>
-        </li>
-<li class="course-card" data-progress="ble" data-total="5">
-          <h3><a href="ble/">Bluetooth Low Energy, from the radio up</a></h3>
-          <p>Why a heart-rate strap lasts a year on a coin battery, how your phone finds it, and why your notifications never arrive. BLE's strange rules all come from one idea; this course builds them from it, one small puzzle at a time.</p>
-          <p class="small">5 puzzles · about 30 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="ble/">Open the course →</a></p>
-        </li>
-<li class="course-card" data-progress="ios" data-total="5">
-          <h3><a href="ios/">iOS for Android developers</a></h3>
-          <p>You already know Android's building blocks. This course maps each one onto its iOS twin, and shows exactly where the twins differ: the app that freezes instead of stopping, the run loop, queues instead of handlers, the main actor, and memory without a garbage collector.</p>
-          <p class="small">5 puzzles · about 30 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="ios/">Open the course →</a></p>
+          <p>Follow processes, threads and Binder to explain frozen screens, lifecycle and process death.</p>
+          <p class="small card-status"><span>23 puzzles · ~120 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="23" aria-label="Android from the foundation progress"></progress>
+          <a class="button primary" href="android/" data-puzzles="00-a-running-app-is-a-process 01-the-kernel-is-in-charge 02-threads-are-the-workers 03-threads-share-one-house 04-the-town-hall-decides 05-the-post-office-carries-letters 06-you-dont-call-youre-called 07-each-app-is-its-own-user 08-letters-between-apps 09-whats-inside-the-apk 10-faster-code-now-and-later 11-zygote 12-sharing-memory 13-when-memory-runs-out 14-starting-an-app 15-inside-a-binder-call 16-the-main-threads-queue 17-frames-jank-and-anrs 18-slow-work-and-back 19-how-big-can-a-binder-call-be 20-turn-the-phone-lose-the-screen 21-the-viewmodel-outlives-the-screen 22-when-the-process-is-gone">Open course</a>
         </li>
 <li class="course-card" data-progress="kmp" data-total="16">
           <h3><a href="kmp/">Kotlin Multiplatform, from the compiler up</a></h3>
-          <p>How one Kotlin codebase runs on Android and on an iPhone that has no JVM, what Swift actually sees of your code, how memory and threads behave on iOS, and how Compose Multiplatform draws your UI there. Built from the compiler up, one small puzzle at a time.</p>
-          <p class="small">16 puzzles · about 80 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="kmp/">Open the course →</a></p>
+          <p>Follow one Kotlin function through the build, then see how Swift calls Kotlin and how Compose draws on iOS.</p>
+          <p class="small card-status"><span>16 puzzles · ~80 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="16" aria-label="Kotlin Multiplatform, from the compiler up progress"></progress>
+          <a class="button primary" href="kmp/" data-puzzles="00-one-kotlin-many-machines 01-what-every-target-has 02-how-kotlin-calls-apple 03-a-promise-and-its-keepers 04-an-ios-app-in-one-puzzle 05-how-swift-sees-your-kotlin 06-lost-in-translation 07-counting-or-tracing 08-weak-references-and-closures 09-two-ways-to-free-memory 10-the-main-thread-on-ios 11-whose-thread-is-it 12-one-framework-not-two 13-compose-in-one-puzzle 14-what-compose-shares 15-one-canvas-on-ios">Open course</a>
         </li>
-<li class="course-card" data-progress="llm" data-total="8">
-          <h3><a href="llm/">LLMs for mobile engineers, from tokens to your app</a></h3>
-          <p>What actually happens when your app calls a language model: tokens, one at a time; why answers stream; why the model remembers nothing; why the same question gets different answers; where the API key must never live; and when the model should run on the phone instead. One small puzzle at a time.</p>
-          <p class="small">8 puzzles · about 40 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="llm/">Open the course →</a></p>
+<li class="course-card" data-progress="ios" data-total="5">
+          <h3><a href="ios/">iOS for Android developers</a></h3>
+          <p>Use your Android experience to understand iOS lifecycle, the run loop, Swift concurrency and ARC.</p>
+          <p class="small card-status"><span>5 puzzles · ~30 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="5" aria-label="iOS for Android developers progress"></progress>
+          <a class="button primary" href="ios/" data-puzzles="00-frozen-not-stopped 01-the-run-loop-is-your-looper 02-queues-not-handlers 03-the-main-actor 04-counting-not-collecting">Open course</a>
         </li>
 <li class="course-card" data-progress="perf" data-total="10">
           <h3><a href="perf/">Performance, under the hood</a></h3>
-          <p>What the profiler is really showing you, built from the ground up: how threads take turns on the processor, what a trace records, how a sample differs from a trace, how to read a flame chart, why a slow function isn't always busy, how pixels reach the screen and when a frame is late, what garbage is and what collecting it costs, and what a heap dump proves. One small puzzle at a time.</p>
-          <p class="small">10 puzzles · about 50 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="perf/">Open the course →</a></p>
+          <p>Read traces and heap dumps to work out why a frame, a thread or the garbage collector is slow.</p>
+          <p class="small card-status"><span>10 puzzles · ~50 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="10" aria-label="Performance, under the hood progress"></progress>
+          <a class="button primary" href="perf/" data-puzzles="00-threads-take-turns 01-what-a-trace-is 02-a-photo-or-a-diary 03-reading-the-flames 04-slow-is-not-busy 05-who-puts-pixels-on-screen 06-the-late-frame 07-what-garbage-is 08-what-the-collector-costs 09-what-a-heap-dump-proves">Open course</a>
+        </li></ul>
+      </section>
+<section class="catalog-group" aria-labelledby="catalog-group-1">
+        <h2 id="catalog-group-1">Networking and security</h2>
+        <ul class="courses"><li class="course-card" data-progress="sysdesign" data-total="11">
+          <h3><a href="sysdesign/">Mobile system design, from a packet to an app</a></h3>
+          <p>Follow a request through DNS, HTTP and TLS, then build up to offline sync and safe retries.</p>
+          <p class="small card-status"><span>11 puzzles · ~60 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="11" aria-label="Mobile system design, from a packet to an app progress"></progress>
+          <a class="button primary" href="sysdesign/" data-puzzles="00-what-actually-travels 01-finding-the-server 02-anatomy-of-an-http-call 03-round-trips-not-bandwidth 04-what-https-adds 05-one-connection-many-requests 06-the-radio-is-the-battery 07-ask-before-you-download 08-the-database-is-the-truth 09-when-the-connection-breaks 10-retry-without-charging-twice">Open course</a>
         </li>
 <li class="course-card" data-progress="security" data-total="9">
           <h3><a href="security/">Encryption, from the ground up</a></h3>
-          <p>What actually happens in the S of HTTPS. From &quot;anyone on the café Wi-Fi can read your packets&quot; to keys, key exchange, hashes, signatures and certificates, one small block at a time, until TLS stops being magic.</p>
-          <p class="small">9 puzzles · about 50 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="security/">Open the course →</a></p>
+          <p>Build from bits and keys to hashes, signatures, certificates and the TLS handshake.</p>
+          <p class="small card-status"><span>9 puzzles · ~50 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="9" aria-label="Encryption, from the ground up progress"></progress>
+          <a class="button primary" href="security/" data-puzzles="00-anyone-on-the-line 01-bits-xor-and-a-toy-cipher 02-one-key-for-both 03-a-secret-agreed-in-public 04-the-man-in-the-middle 05-a-fingerprint-for-data 06-a-hash-with-a-secret 07-proof-of-who-you-are 08-tls-the-blocks-together">Open course</a>
         </li>
-<li class="course-card" data-progress="sysdesign" data-total="11">
-          <h3><a href="sysdesign/">Mobile system design, from a packet to an app</a></h3>
-          <p>What really decides how fast, how frugal and how reliable your app's networking is: round trips, handshakes, the phone's radio, HTTP caching, offline-first data and safe retries. The building blocks every mobile system design interview stands on, one small puzzle at a time.</p>
-          <p class="small">11 puzzles · about 60 minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="sysdesign/">Open the course →</a></p>
-        </li>
-        </ul>
-      </div>
-    </section>
-    <section class="section" aria-labelledby="catalog-heading">
-      <div class="wrap narrow">
-        <h2 id="catalog-heading">Courses I plan to build</h2>
-        <p>No dates yet: these are topics from my own learning sessions, roughly in the order I'll turn them into puzzles.</p>
-        <ul class="modules">
-<li class="soon"><h3>System design: the building blocks</h3><p class="small">Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity.</p></li>
-<li class="soon"><h3>Data structures that earn their keep</h3><p class="small">Hash tables, heaps, graph search, B-trees and LSM trees, Bloom filters, CRDTs: what real systems use, and why.</p></li>
-        </ul>
-      </div>
-    </section>
+<li class="course-card" data-progress="ble" data-total="5">
+          <h3><a href="ble/">Bluetooth Low Energy, from the radio up</a></h3>
+          <p>Follow a sensor from its first radio advertisement to a connection and a GATT notification.</p>
+          <p class="small card-status"><span>5 puzzles · ~30 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="5" aria-label="Bluetooth Low Energy, from the radio up progress"></progress>
+          <a class="button primary" href="ble/" data-puzzles="00-a-year-on-a-coin-battery 01-shouting-into-the-room 02-a-timetable-for-two 03-the-filing-cabinet 04-dont-ask-get-told">Open course</a>
+        </li></ul>
+      </section>
+<section class="catalog-group" aria-labelledby="catalog-group-2">
+        <h2 id="catalog-group-2">AI for mobile</h2>
+        <ul class="courses"><li class="course-card" data-progress="llm" data-total="8">
+          <h3><a href="llm/">LLMs for mobile engineers, from tokens to your app</a></h3>
+          <p>Trace a model call from tokens and sampling to streaming, context and on-device decisions.</p>
+          <p class="small card-status"><span>8 puzzles · ~40 min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="8" aria-label="LLMs for mobile engineers, from tokens to your app progress"></progress>
+          <a class="button primary" href="llm/" data-puzzles="00-what-a-language-model-is 01-one-token-at-a-time 02-your-first-call 03-why-answers-stream 04-it-remembers-nothing 05-same-question-different-answers 06-your-key-is-not-a-secret 07-on-the-phone-or-in-the-cloud">Open course</a>
+        </li></ul>
+      </section>
+      <details class="course-extras"><summary>Courses I plan to build</summary><ul class="modules"><li class="soon"><h3>System design: the building blocks</h3><p class="small">Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity.</p></li>
+<li class="soon"><h3>Data structures that earn their keep</h3><p class="small">Hash tables, heaps, graph search, B-trees and LSM trees, Bloom filters, CRDTs: what real systems use, and why.</p></li></ul></details>
+      <p class="catalog-method"><a href="how-its-made.html">How the puzzles are written and checked</a></p>
+    </div>
   </main>
   <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2F" alt="" width="1" height="1"></noscript>
 

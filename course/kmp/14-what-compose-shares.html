@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="14" data-prev="13-compose-in-one-puzzle.html" data-prev-title="Compose in one puzzle">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" class="done" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" class="done" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" class="done" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" class="done" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" class="done" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" class="done" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" class="done" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" class="done" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" class="done" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" class="done" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" class="done" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" class="done" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" class="done" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" class="done" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" aria-current="page" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
-      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Puzzle 14 · 15 of 16</p>
-      <h1>What Compose actually shares</h1>
-      <p class="lede">One set of Compose UI code runs on Android and on iOS. &quot;Same code&quot; hides three layers. Here's which ones are shared, and the one that's written again for every platform.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="14">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Kotlin Multiplatform, from the compiler up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 14 · 15 of 16</p>
+        <h1>What Compose actually shares</h1>
+        <p class="lede">One set of Compose UI code runs on Android and on iOS. &quot;Same code&quot; hides three layers. Here's which ones are shared, and the one that's written again for every platform.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" title="One Kotlin function, two ways to run it">0</a></li><li><a href="01-what-every-target-has.html" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" aria-current="page" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-14">
         <p id="builds-on-14"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-what-every-target-has.html">Puzzle 1: What every target has</a></summary><p>Code lives in source sets. commonMain is compiled for every target, so it may only use what every target has; androidMain and iosMain are compiled for one platform each and can use that platform's own APIs.</p></details></li><li data-block="13"><details><summary><a href="13-compose-in-one-puzzle.html">Puzzle 13: Compose in one puzzle</a></summary><p>In Compose, a screen is a Kotlin function marked @Composable that describes the UI for the current data, instead of creating and updating view objects. When that data, its state, changes, Compose calls the affected functions again: recomposition. remember keeps a value across those calls. A compiler plugin rewrites every @Composable function so the runtime can track what each one showed and redo only what changed.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Compose in three layers; only the platform layer is per target"><input type="radio" name="st-layers" id="st-layers-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-layers" id="st-layers-2" aria-label="Step 2 of 4"><input type="radio" name="st-layers" id="st-layers-3" aria-label="Step 3 of 4"><input type="radio" name="st-layers" id="st-layers-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ly-t"><title id="ly-t">Compose in three layers: the shared compiler and runtime at the bottom, the same ui, foundation and material3 APIs in the middle, using Google's artifacts on Android and JetBrains' builds on iOS, and a platform layer per target at the top</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ly-t"><title id="ly-t">Compose in three layers: the shared compiler and runtime at the bottom, the same ui, foundation and material3 APIs in the middle, using Google's artifacts on Android and JetBrains' builds on iOS, and a platform layer per target at the top</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><rect class="d-hl" x="60" y="270" width="520" height="60" rx="8"/><text class="d-a" x="320" y="306" text-anchor="middle">compiler + runtime: shared</text></g>
 <g class="step s2" data-pulse="2"><rect class="d-band" x="60" y="180" width="250" height="70" rx="8"/><text class="d-b" x="185" y="208" text-anchor="middle">material3, ui</text><text class="d-tiny" x="185" y="232" text-anchor="middle">Google's, on Android</text><rect class="d-band" x="330" y="180" width="250" height="70" rx="8"/><text class="d-b" x="455" y="208" text-anchor="middle">material3, ui</text><text class="d-tiny" x="455" y="232" text-anchor="middle">JetBrains', on iOS</text></g>
@@ -73,6 +84,7 @@
 <g class="step s4" data-pulse="4"><g><rect class="d-paper" x="155" y="10" width="60" height="70" rx="12"/><rect class="d-hl" x="162" y="24" width="46" height="36" rx="4"/><circle class="d-ink" cx="185" cy="70" r="3"/></g><g><rect class="d-paper" x="425" y="10" width="60" height="70" rx="12"/><rect class="d-hl" x="432" y="24" width="46" height="36" rx="4"/><circle class="d-ink" cx="455" cy="70" r="3"/></g></g>
 <g class="step s1" data-move="1:610,300 2:610,215 3:610,125 4:610,45"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>At the bottom, the Compose compiler and the <b>Compose runtime</b>: they track state and recomposition, know nothing about pixels, and are shared.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-layers-2">Next →</label></div></li>
 <li><p>In the middle, the same APIs: <code>Text</code>, <code>Column</code>, <code>Modifier</code>. Android uses Google's artifacts; iOS uses JetBrains' builds of the same libraries.</p><div class="stepnav"><label for="st-layers-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-layers-3">Next →</label></div></li>
@@ -122,10 +134,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> It's the other way round: the runtime knows nothing about pixels. <label class="show-me" for="st-layers-1" data-goto="st-layers">Show me step 1 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://kotlinlang.org/docs/multiplatform/compose-multiplatform-and-jetpack-compose.html">Kotlin docs: Compose Multiplatform and Jetpack Compose</a> (&quot;It shares the Compose compiler and runtime with Jetpack Compose and uses the same APIs&quot;; &quot;When you build your Compose Multiplatform application for Android, you use the Jetpack Compose artifacts published by Google. For example, if you add compose.material3 to your dependencies, your project will use androidx.compose.material3:material3 in the Android target, and org.jetbrains.compose.material3:material3 in other targets.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kotlinlang.org/docs/multiplatform/compose-multiplatform-and-jetpack-compose.html">Kotlin docs: Compose Multiplatform and Jetpack Compose</a> (&quot;It shares the Compose compiler and runtime with Jetpack Compose and uses the same APIs&quot;; &quot;When you build your Compose Multiplatform application for Android, you use the Jetpack Compose artifacts published by Google. For example, if you add compose.material3 to your dependencies, your project will use androidx.compose.material3:material3 in the Android target, and org.jetbrains.compose.material3:material3 in other targets.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Compose Multiplatform shares the Compose compiler and runtime with Jetpack Compose, and the same APIs. On Android your build uses Google's Jetpack Compose artifacts; on iOS, desktop and web it uses JetBrains' builds of the same libraries. What's written per target is the platform layer: window, touches, drawing surface, text input and accessibility.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

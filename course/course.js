@@ -217,19 +217,27 @@
     });
     update();
 
-    // Opened a puzzle before mastering the one it builds on? Point back to it.
-    if (n > 0 && !store.get(course).includes(n - 1)) {
+    const passed = new Set(store.get(course));
+    const missing = [...puzzle.querySelectorAll('.builds-on li[data-block]')]
+      .filter(li => !passed.has(Number(li.dataset.block)));
+    if (!passed.has(n) && missing.length) {
       const gate = document.createElement('div');
       gate.className = 'gate';
       gate.setAttribute('role', 'note');
-      gate.innerHTML = `<p><b>This puzzle builds on the previous one.</b> You haven't passed the check for “${puzzle.dataset.prevTitle}” yet. Each puzzle uses the one before, so gaps add up.</p>
-<p class="actions"><a class="button primary" href="${puzzle.dataset.prev}">Go to the previous puzzle</a><button type="button" class="button">Continue anyway</button></p>`;
+      const prerequisite = missing[0].querySelector('summary a');
+      gate.innerHTML = '<p><b>Building blocks to review</b></p><p class="actions"><a class="button primary"></a><button type="button" class="button">Continue anyway</button></p>';
+      const review = gate.querySelector('a');
+      review.href = prerequisite.href;
+      review.textContent = prerequisite.textContent;
       gate.querySelector('button').addEventListener('click', () => { gate.remove(); count(`skipped to ${course} ${n}`, true, `Skipped ahead to puzzle ${n}`); });
-      puzzle.querySelector('nav[aria-label="Puzzles"]').after(gate);
+      puzzle.querySelector('.lesson-jumps').after(gate);
     }
 
     // Mark the building blocks you've already passed.
-    for (const li of puzzle.querySelectorAll('.builds-on li[data-block]')) if (store.get(course).includes(Number(li.dataset.block))) li.classList.add('done');
+    for (const li of puzzle.querySelectorAll('.builds-on li[data-block]')) if (passed.has(Number(li.dataset.block))) li.classList.add('done');
+    for (const [i, a] of [...puzzle.querySelectorAll('.progress a')].entries()) {
+      if (passed.has(i)) a.classList.add('done');
+    }
 
     // Mark mastered puzzles in the progress bar.
     const have = store.get(course);
@@ -254,33 +262,59 @@
     qs.forEach(q => q.addEventListener('change', tally));
   }
 
-  // ── Course cards on the catalog: how far you got in each course ──
+  // Opening a shared link to an optional section makes that section visible.
+  const openLinkedDetail = () => {
+    const detail = document.getElementById(location.hash.slice(1));
+    if (detail?.matches('details')) detail.open = true;
+  };
+  openLinkedDetail();
+  window.addEventListener('hashchange', openLinkedDetail);
+
+  // ── Course cards on the catalog: resume an unfinished course ──
   for (const card of document.querySelectorAll('[data-progress]')) {
-    const have = store.get(card.dataset.progress).length;
+    const course = card.dataset.progress;
+    const have = new Set(store.get(course));
     const total = Number(card.dataset.total);
-    const mine = card.querySelector('.mine');
-    if (mine && have) mine.textContent = have >= total ? 'completed ✓' : `${have} of ${total} mastered`;
-    const go = card.querySelector('.button.primary');
-    if (go && have) go.textContent = have >= total ? 'Review the course →' : 'Continue →';
+    const bar = card.querySelector('progress');
+    bar.value = have.size;
+    if (!have.size) continue;
+    card.querySelector('.mine').textContent = have.size === total ? 'Completed' : `${have.size} of ${total} passed`;
+    const go = card.querySelector('[data-puzzles]');
+    const puzzles = go.dataset.puzzles.split(' ');
+    const next = puzzles.findIndex((_, i) => !have.has(i));
+    go.textContent = next === -1 ? 'Review course' : 'Continue learning';
+    if (next !== -1) go.href = `${course}/${puzzles[next]}.html`;
   }
 
-  // ── Overview: ✓ mastered, → next, 🔒 not yet; "Continue" resumes where you stopped ──
+  // ── Overview: show progress and expand the module that contains the next puzzle ──
   const items = [...document.querySelectorAll('.modules li[data-course]')];
   if (items.length) {
     const course = items[0].dataset.course;
-    const have = store.get(course);
-    let next = items.findIndex(li => !have.includes(Number(li.dataset.n)));
-    items.forEach((li, i) => { li.dataset.state = have.includes(Number(li.dataset.n)) ? 'done' : i === next ? 'next' : 'locked'; });
+    const have = new Set(store.get(course));
+    const next = items.find(li => !have.has(Number(li.dataset.n)));
+    items.forEach(li => {
+      const passed = have.has(Number(li.dataset.n));
+      li.dataset.state = passed ? 'done' : li === next ? 'next' : 'upcoming';
+      li.querySelector('.puzzle-state').textContent = passed ? 'Passed' : li === next && have.size ? 'Up next' : '';
+    });
     const resume = document.querySelector(`[data-resume="${course}"]`);
-    if (resume && have.length) {
-      if (next === -1) { resume.textContent = 'Course complete: review from the start →'; next = 0; }
-      else resume.textContent = `Continue: puzzle ${items[next].dataset.n} →`;
-      resume.href = items[next].querySelector('a').getAttribute('href');
-      const count = document.createElement('p');
-      count.className = 'mastery';
-      count.innerHTML = `${have.length} of ${items.length} puzzles mastered · <button type="button" class="linklike">Reset my progress</button>`;
-      count.querySelector('button').addEventListener('click', () => { store.clear(course); location.reload(); });
-      resume.parentElement.after(count);
+    if (resume && have.size) {
+      if (next) {
+        const lesson = next.querySelector('a');
+        resume.textContent = `Continue: ${lesson.textContent}`;
+        resume.href = lesson.getAttribute('href');
+        const module = next.closest('.course-module');
+        if (module) module.open = true;
+      } else {
+        resume.textContent = 'Review from the start';
+      }
+      const progress = document.createElement('p');
+      progress.className = 'mastery';
+      progress.innerHTML = `${have.size} of ${items.length} puzzles passed · <button type="button" class="linklike">Reset my progress</button>`;
+      progress.querySelector('button').addEventListener('click', () => {
+        if (window.confirm('Reset your saved progress for this course?')) { store.clear(course); location.reload(); }
+      });
+      resume.parentElement.after(progress);
     }
   }
   // ── Continue with Claude: a tutor prompt built from this course and your progress ──
@@ -303,7 +337,8 @@
         'How to teach me:',
         '- Foundation first: one small idea at a time, each standing on one I already have. If I lack a block, teach that block first.',
         '- For each idea: a plain explanation, an everyday analogy, then one quick question. Wait for my answer before going on.',
-        '- Use only the words I know (listed below); define any new word the first time you use it.',
+        '- Define each new term on first use. If I ask why an explanation works, follow that mechanism down one layer and return to the original problem with the same example.',
+        '- Ask me to predict an outcome after changing one condition, then explain the answer from the earlier puzzles.',
         "- Go under the hood: who does the work, on which thread or process, and why it's built that way.",
         "- If you're unsure of a fact, say so and point me to a primary source (official docs, the spec, the source code).",
         '',
@@ -359,8 +394,11 @@
     for (const c of courses) {
       const have = passed(c.id);
       if (!have.size || have.size === c.puzzles.length) continue;
-      const ready = c.puzzles.find(p => !have.has(p.n) && p.blocks.every(b => have.has(b))) || c.puzzles.find(p => !have.has(p.n));
-      next.push({ c, p: ready, why: ready.blocks.length ? `You have its building blocks: ${ready.blocks.map(b => c.puzzles[b].title).join(', ')}.` : `Next in ${c.title}.` });
+      const ready = c.puzzles.find(p => !have.has(p.n) && p.blocks.every(b => have.has(b)));
+      const p = ready || c.puzzles.find(p => !have.has(p.n));
+      const why = !ready ? 'Start by checking the building blocks listed in this puzzle.'
+        : p.blocks.length ? `You have its building blocks: ${p.blocks.map(b => c.puzzles[b].title).join(', ')}.` : `Next in ${c.title}.`;
+      next.push({ c, p, why });
     }
     for (const c of courses) {
       if (passed(c.id).size || !c.assumes || !byId[c.assumes] || !done(byId[c.assumes])) continue;

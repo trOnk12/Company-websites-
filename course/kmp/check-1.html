@@ -52,15 +52,15 @@
       <p class="eyebrow"><a href="./">Kotlin Multiplatform, from the compiler up</a> · check</p>
       <h1>Know One codebase, two worlds already?</h1>
       <p class="lede">One question for each of the 7 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
-<section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: One Kotlin, many machines</p>
+<section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: One Kotlin function, two ways to run it</p>
 <fieldset class="quiz" data-n="0">
-<legend>Your shared Kotlin already runs on Android and iOS. You add a desktop target. What happens to the shared code?</legend>
-<input type="radio" name="q-00-one-kotlin-many-machines-1" id="q-00-one-kotlin-many-machines-1-1"><label for="q-00-one-kotlin-many-machines-1-1">You rewrite it in a desktop language, then share the tests</label>
-<input type="radio" name="q-00-one-kotlin-many-machines-1" id="q-00-one-kotlin-many-machines-1-2" data-ok><label for="q-00-one-kotlin-many-machines-1-2">It stays the same, and the compiler adds another back end for desktop</label>
-<input type="radio" name="q-00-one-kotlin-many-machines-1" id="q-00-one-kotlin-many-machines-1-3"><label for="q-00-one-kotlin-many-machines-1-3">It has to be checked again by a new front end for desktop</label>
-<p class="fb no opt-1"><b>Not quite.</b> The shared Kotlin is compiled again, by another back end. Nothing is rewritten. <a class="show-me" href="00-one-kotlin-many-machines.html">Learn it in puzzle 0 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> One front end, one back end per target.</p>
-<p class="fb no opt-3"><b>Not quite.</b> There's one front end for every target; only the back end differs. <a class="show-me" href="00-one-kotlin-many-machines.html">Learn it in puzzle 0 →</a></p>
+<legend>Your Android build has produced Kotlin class files, then stops before making DEX. Which step is still missing before those classes can run as part of the app?</legend>
+<input type="radio" name="q-00-one-kotlin-many-machines-1" id="q-00-one-kotlin-many-machines-1-1"><label for="q-00-one-kotlin-many-machines-1-1">Kotlin/Native must produce the DEX</label>
+<input type="radio" name="q-00-one-kotlin-many-machines-1" id="q-00-one-kotlin-many-machines-1-2"><label for="q-00-one-kotlin-many-machines-1-2">ART must first turn them into DEX on the phone</label>
+<input type="radio" name="q-00-one-kotlin-many-machines-1" id="q-00-one-kotlin-many-machines-1-3" data-ok><label for="q-00-one-kotlin-many-machines-1-3">The Android build must convert the class files into DEX</label>
+<p class="fb no opt-1"><b>Not quite.</b> Kotlin/Native is the iOS path here. The Android build produces the DEX. <a class="show-me" href="00-one-kotlin-many-machines.html">Learn it in puzzle 0 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> ART runs DEX on the phone. It gets the DEX that the build produced. <a class="show-me" href="00-one-kotlin-many-machines.html">Learn it in puzzle 0 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> Follow the output of the build up to the moment it reaches the phone.</p>
 </fieldset></section>
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: What every target has</p>
 <fieldset class="quiz" data-n="1">

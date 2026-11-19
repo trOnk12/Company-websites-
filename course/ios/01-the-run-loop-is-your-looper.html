@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="1" data-prev="00-frozen-not-stopped.html" data-prev-title="Frozen, not stopped">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" class="done" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" aria-current="page" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
-      <p class="eyebrow">iOS for Android developers · Puzzle 1 · 2 of 5</p>
-      <h1>The run loop is your Looper</h1>
-      <p class="lede">On Android, the main thread runs a Looper: take a message from the queue, run it, repeat. iOS has the same idea under another name. Here it is, and the one way it differs.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="1">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">iOS for Android developers</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 1 · 2 of 5</p>
+        <h1>The run loop is your Looper</h1>
+        <p class="lede">On Android, the main thread runs a Looper: take a message from the queue, run it, repeat. iOS has the same idea under another name. Here it is, and the one way it differs.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" aria-current="page" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="0"><details><summary><a href="00-frozen-not-stopped.html">Puzzle 0: Frozen, not stopped</a></summary><p>An iOS app moves through app states: not running, inactive, active, background, suspended. Seconds after it goes to the background it's suspended: still in memory, running no code. iOS can end a suspended app without running any of your code, so save your state as you enter the background, not at the end.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="The main thread's run loop: handle, then sleep; Android's Looper by another name"><input type="radio" name="st-runloop" id="st-runloop-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-runloop" id="st-runloop-2" aria-label="Step 2 of 4"><input type="radio" name="st-runloop" id="st-runloop-3" aria-label="Step 3 of 4"><input type="radio" name="st-runloop" id="st-runloop-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rl-t"><title id="rl-t">The main thread on iOS takes a touch, a timer and a redraw from its run loop one at a time; with nothing left it sleeps; a slow task blocks the touch behind it, just like Android's Looper</title><defs><marker id="ah-runloop-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-runloop-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-runloop-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-runloop-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rl-t"><title id="rl-t">The main thread on iOS takes a touch, a timer and a redraw from its run loop one at a time; with nothing left it sleeps; a slow task blocks the touch behind it, just like Android's Looper</title><defs><marker id="ah-runloop-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-runloop-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-runloop-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-runloop-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><circle class="d-skin" cx="90" cy="160" r="15"/><rect class="d-roof" x="68" y="177" width="44" height="32" rx="12"/><rect class="d-wood" x="34" y="210" width="150" height="12" rx="3"/><text class="d-tiny" x="90" y="244" text-anchor="middle">main thread</text></g>
 <g class="step s1"><text class="d-b" x="430" y="60" text-anchor="middle">run loop</text><path class="d-arr-ink" d="M560,100 L190,100" marker-end="url(#ah-runloop-ink)"/></g>
@@ -76,6 +87,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-bad" x="40" y="250" width="130" height="34" rx="4"/><text class="d-rt" x="105" y="272" text-anchor="middle">2 s file read</text><text class="d-r" x="250" y="300" text-anchor="middle">touch waits: frozen</text></g>
 <g class="step only-2"><text class="d-a" x="360" y="230" text-anchor="middle">one at a time, to the end</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The main thread has an in-tray of events: a touch, a timer, a redraw. Its routine is the <b>run loop</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-runloop-2">Next →</label></div></li>
 <li><p>Take the next event, handle it to the end, take the next. When the tray is empty, the thread sleeps until something arrives.</p><div class="stepnav"><label for="st-runloop-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-runloop-3">Next →</label></div></li>
@@ -123,10 +135,7 @@
 <p class="fb no opt-3"><b>Not quite.</b> A run loop isn't a thread: any thread can have one, feeding it its events. <label class="show-me" for="st-runloop-1" data-goto="st-runloop">Show me step 1 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html">Apple: Threading Programming Guide, Run Loops</a> (&quot;A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming events. The purpose of a run loop is to keep your thread busy when there is work to do and put your thread to sleep when there is none&quot;; &quot;each thread, including the application's main thread, has an associated run loop object… The app frameworks automatically set up and run the run loop on the main thread&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html">Apple: Threading Programming Guide, Run Loops</a> (&quot;A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming events. The purpose of a run loop is to keep your thread busy when there is work to do and put your thread to sleep when there is none&quot;; &quot;each thread, including the application's main thread, has an associated run loop object… The app frameworks automatically set up and run the run loop on the main thread&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Any iOS thread can have a run loop, and the main thread always does: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

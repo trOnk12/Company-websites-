@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="3" data-prev="02-how-kotlin-calls-apple.html" data-prev-title="How Kotlin calls Apple">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" class="done" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" class="done" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" class="done" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" aria-current="page" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
-      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Puzzle 3 · 4 of 16</p>
-      <h1>A promise and its keepers</h1>
-      <p class="lede">In puzzle 1, common code couldn't call a platform's own APIs. But shared logic sometimes needs a small platform fact, like which phone it's running on. Here's how it asks without knowing.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="3">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Kotlin Multiplatform, from the compiler up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 3 · 4 of 16</p>
+        <h1>A promise and its keepers</h1>
+        <p class="lede">In puzzle 1, common code couldn't call a platform's own APIs. But shared logic sometimes needs a small platform fact, like which phone it's running on. Here's how it asks without knowing.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" title="One Kotlin function, two ways to run it">0</a></li><li><a href="01-what-every-target-has.html" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" aria-current="page" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-what-every-target-has.html">Puzzle 1: What every target has</a></summary><p>Code lives in source sets. commonMain is compiled for every target, so it may only use what every target has; androidMain and iosMain are compiled for one platform each and can use that platform's own APIs.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="expect is a promise; each platform keeps it with an actual"><input type="radio" name="st-expect" id="st-expect-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-expect" id="st-expect-2" aria-label="Step 2 of 4"><input type="radio" name="st-expect" id="st-expect-3" aria-label="Step 3 of 4"><input type="radio" name="st-expect" id="st-expect-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ex-t"><title id="ex-t">Common code declares an expect function with no body; androidMain and iosMain each provide an actual; the compiler plugs the right one into each target; a target without an actual fails to build</title><defs><marker id="ah-expect-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-expect-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-expect-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-expect-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ex-t"><title id="ex-t">Common code declares an expect function with no body; androidMain and iosMain each provide an actual; the compiler plugs the right one into each target; a target without an actual fails to build</title><defs><marker id="ah-expect-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-expect-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-expect-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-expect-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><rect class="d-hl" x="200" y="30" width="240" height="80" rx="8"/><text class="d-a" x="320" y="56" text-anchor="middle">commonMain</text><text class="d-mi" x="320" y="86" text-anchor="middle">expect platformName()</text></g>
 <g class="step s1"><rect class="d-dash" x="270" y="120" width="100" height="34" rx="6"/><text class="d-tiny" x="320" y="142" text-anchor="middle">no body</text></g>
@@ -75,6 +86,7 @@
 <path class="step only-3 d-arr-acc" d="M130,196 C160,170 220,150 264,140" marker-end="url(#ah-expect-acc)"/>
 <g class="step s4" data-pulse="4"><rect class="d-paper" x="410" y="290" width="200" height="40" rx="8"/><text class="d-b" x="510" y="316" text-anchor="middle">web: no actual</text><circle class="d-bad" cx="400" cy="310" r="13"/><path class="d-red" d="M392,302 L408,318 M408,302 L392,318"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Common code makes a promise: <code>platformName()</code>, marked <b>expect</b>, with no body. It can call it without knowing how it works.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-expect-2">Next →</label></div></li>
 <li><p>Each platform keeps the promise with an <b>actual</b>, written with its own APIs: Android's build number, Apple's system version.</p><div class="stepnav"><label for="st-expect-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-expect-3">Next →</label></div></li>
@@ -130,10 +142,7 @@ actual fun platformName(): String = UIDevice.currentDevice.systemName() + &quot;
 <p class="fb no opt-3"><b>Not quite.</b> An <code>expect</code> has no body at all: only the actuals do the work. <label class="show-me" for="st-expect-2" data-goto="st-expect">Show me step 2 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://kotlinlang.org/docs/multiplatform/multiplatform-expect-actual.html">Kotlin docs: Expected and actual declarations</a> (&quot;Expected and actual declarations allow you to access platform-specific APIs from Kotlin Multiplatform modules. You can provide platform-agnostic APIs in the common code.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kotlinlang.org/docs/multiplatform/multiplatform-expect-actual.html">Kotlin docs: Expected and actual declarations</a> (&quot;Expected and actual declarations allow you to access platform-specific APIs from Kotlin Multiplatform modules. You can provide platform-agnostic APIs in the common code.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An expect declaration in common code is a promise; every platform source set keeps it with an actual declaration. The compiler checks that every target has one. For anything bigger, an interface implemented per platform does the same job and is easier to test.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

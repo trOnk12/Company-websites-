@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="2" data-prev="01-the-run-loop-is-your-looper.html" data-prev-title="The run loop is your Looper">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" class="done" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" class="done" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" aria-current="page" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
-      <p class="eyebrow">iOS for Android developers · Puzzle 2 · 3 of 5</p>
-      <h1>Queues, not handlers</h1>
-      <p class="lede">On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine on another thread. iOS has one system for both. Here it is.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="2">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">iOS for Android developers</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 2 · 3 of 5</p>
+        <h1>Queues, not handlers</h1>
+        <p class="lede">On Android, you post work to the main thread with a Handler and run slow work on another thread or a coroutine on another thread. iOS has one system for both. Here it is.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" aria-current="page" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-the-run-loop-is-your-looper.html">Puzzle 1: The run loop is your Looper</a></summary><p>Any iOS thread can have a run loop, and the main thread always does: an event loop that handles work when there is some and puts the thread to sleep when there is none. The app framework starts the main thread's run loop for you, just as Android starts the main Looper. UI work belongs on that loop, so blocking it freezes the screen.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="GCD: tasks wait in queues; a pool of threads runs them; the main queue runs on the main thread"><input type="radio" name="st-queues" id="st-queues-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-queues" id="st-queues-2" aria-label="Step 2 of 4"><input type="radio" name="st-queues" id="st-queues-3" aria-label="Step 3 of 4"><input type="radio" name="st-queues" id="st-queues-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="qu-t"><title id="qu-t">A slow task goes onto a concurrent queue and runs on one of GCD's threads; its result goes onto the main queue and the main thread shows it</title><defs><marker id="ah-queues-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-queues-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-queues-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-queues-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="qu-t"><title id="qu-t">A slow task goes onto a concurrent queue and runs on one of GCD's threads; its result goes onto the main queue and the main thread shows it</title><defs><marker id="ah-queues-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-queues-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-queues-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-queues-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><circle class="d-skin" cx="90" cy="200" r="15"/><rect class="d-roof" x="68" y="217" width="44" height="32" rx="12"/><rect class="d-wood" x="34" y="250" width="150" height="12" rx="3"/><text class="d-tiny" x="90" y="284" text-anchor="middle">main thread</text></g>
 <g class="step s1"><text class="d-tiny" x="300" y="300" text-anchor="middle">main queue</text><path class="d-arr-ink" d="M380,280 L180,280" marker-end="url(#ah-queues-ink)"/></g>
@@ -74,6 +85,7 @@
 <g class="step s4" data-pulse="4" data-move="3:380,104 4:210,226"><rect class="d-hl" x="0" y="0" width="90" height="36" rx="3"/><polyline class="d-line" points="0,0 45,14 90,0"/><text class="d-tiny" x="45" y="30" text-anchor="middle">show it</text></g>
 <path class="step only-4 d-arr-acc" d="M400,150 C380,200 330,226 306,236" marker-end="url(#ah-queues-acc)"/>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The main thread works through its own line of tasks: the <b>main queue</b>. Slow work there would freeze the screen.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-queues-2">Next →</label></div></li>
 <li><p>So the slow task goes into another <b>dispatch queue</b>, a line of tasks run by <b>GCD</b> on threads it manages. This one is <b>concurrent</b>: several tasks can run at once.</p><div class="stepnav"><label for="st-queues-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-queues-3">Next →</label></div></li>
@@ -130,10 +142,7 @@
 <p class="fb ok opt-3"><b>Right.</b> Tasks wait in queues; threads run them.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.apple.com/documentation/dispatch/dispatchqueue">Apple: DispatchQueue</a> (&quot;An object that manages the execution of tasks serially or concurrently on your app's main thread or on a background thread. Dispatch queues are FIFO queues to which your application can submit tasks in the form of block objects. Dispatch queues execute tasks either serially or concurrently. Work submitted to dispatch queues executes on a pool of threads managed by the system.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.apple.com/documentation/dispatch/dispatchqueue">Apple: DispatchQueue</a> (&quot;An object that manages the execution of tasks serially or concurrently on your app's main thread or on a background thread. Dispatch queues are FIFO queues to which your application can submit tasks in the form of block objects. Dispatch queues execute tasks either serially or concurrently. Work submitted to dispatch queues executes on a pool of threads managed by the system.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

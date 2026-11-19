@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="6" data-prev="05-who-puts-pixels-on-screen.html" data-prev-title="Who puts pixels on screen">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" class="done" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" class="done" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" class="done" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" class="done" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" class="done" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" aria-current="page" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Puzzle 6 · 7 of 10</p>
-      <h1>The late frame</h1>
-      <p class="lede">Puzzle 5 showed that a frame's buffer must be ready before the display's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="6">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Performance, under the hood</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 6 · 7 of 10</p>
+        <h1>The late frame</h1>
+        <p class="lede">Puzzle 5 showed that a frame's buffer must be ready before the display's next refresh. Perfetto draws that limit for every frame, next to when the frame really finished. Here's how to read the two lines, and tell your app's lateness from someone else's.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" aria-current="page" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="4"><details><summary><a href="04-slow-is-not-busy.html">Puzzle 4: Slow isn't always busy</a></summary><p>A system trace shows each thread's state as the kernel sees it: Running on a CPU, Runnable and waiting for one, Sleeping while blocked on a lock or a reply, or in Uninterruptible Sleep waiting for disk I/O. A slow span that's mostly Running needs faster code; mostly Sleeping or Uninterruptible Sleep, it's waiting on something else; mostly Runnable, other threads have the CPUs.</p></details></li><li data-block="5"><details><summary><a href="05-who-puts-pixels-on-screen.html">Puzzle 5: Who puts pixels on screen</a></summary><p>The display redraws at a fixed rate and sends vsync before each refresh. Your app's RenderThread gives drawing commands to the GPU, which fills a buffer with the frame's pixels. The finished buffer is queued for SurfaceFlinger, which composites the latest buffer of every visible window into what the display shows. A frame counts only once its buffer is ready when SurfaceFlinger needs it.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Expected window vs actual work, per frame"><input type="radio" name="st-frametl" id="st-frametl-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-frametl" id="st-frametl-2" aria-label="Step 2 of 4"><input type="radio" name="st-frametl" id="st-frametl-3" aria-label="Step 3 of 4"><input type="radio" name="st-frametl" id="st-frametl-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ft-t"><title id="ft-t">Three frames each have an expected window ending at a deadline; the actual work of the first two ends inside it; the third frame's main thread finishes early but its GPU work ends after the deadline, so it is marked late; then you read its threads</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ft-t"><title id="ft-t">Three frames each have an expected window ending at a deadline; the actual work of the first two ends inside it; the third frame's main thread finishes early but its GPU work ends after the deadline, so it is marked late; then you read its threads</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><text class="d-b" x="20" y="60">Expected</text><rect class="d-band" x="140" y="40" width="140" height="30" rx="4"/><rect class="d-band" x="290" y="40" width="140" height="30" rx="4"/><rect class="d-band" x="440" y="40" width="140" height="30" rx="4"/><line class="d-dash" x1="580" y1="30" x2="580" y2="200"/><text class="d-tiny" x="580" y="215" text-anchor="middle">frame 3 deadline</text></g>
 <g class="step s2" data-pulse="2"><text class="d-b" x="20" y="120">Actual</text><rect class="d-ok" x="140" y="100" width="110" height="30" rx="4"/><rect class="d-ok" x="290" y="100" width="120" height="30" rx="4"/></g>
@@ -73,6 +84,7 @@
 <g class="step s4" data-pulse="4"><g><circle class="d-skin" cx="120" cy="250" r="15"/><rect class="d-roof" x="98" y="267" width="44" height="32" rx="12"/><rect class="d-wood" x="64" y="300" width="150" height="12" rx="3"/><text class="d-tiny" x="120" y="334" text-anchor="middle">main thread</text></g><g><circle class="d-skin" cx="300" cy="250" r="15"/><rect class="d-roof" x="278" y="267" width="44" height="32" rx="12"/><text class="d-tiny" x="300" y="320" text-anchor="middle">RenderThread</text></g><text class="d-a" x="480" y="330" text-anchor="middle">states, then flame chart</text></g>
 <g class="step s1" data-move="1:510,20 2:350,90 3:570,190 4:210,330"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Perfetto's <b>FrameTimeline</b> draws two slices per frame. First the <b>Expected Timeline</b>: each frame's window. Its end is the frame's <b>deadline</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-frametl-2">Next →</label></div></li>
 <li><p>The <b>Actual Timeline</b>: when each frame's work really ran. The first two end inside their windows: on time.</p><div class="stepnav"><label for="st-frametl-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-frametl-3">Next →</label></div></li>
@@ -122,10 +134,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://perfetto.dev/docs/data-sources/frametimeline">Perfetto: Android Jank detection with FrameTimeline</a> (&quot;FrameTimeline requires Android 12(S) or higher&quot;; &quot;Expected Timeline: Each slice represents the time given to the app for rendering the frame… The start time is the time the Choreographer callback was scheduled to run&quot;; &quot;Actual Timeline: These slices represent the actual time an app took to complete the frame (including GPU work) and send it to SurfaceFlinger for composition… The end time of the slices here represent max(gpu time, post time)&quot;; &quot;AppDeadlineMissed: The app ran longer than expected causing a jank.&quot;)</li><li><a href="https://developer.android.com/studio/profile/jank-detection">Android Studio: UI jank detection</a> (the threads relevant to a janky frame: &quot;the UI thread, RenderThread, and the GPU completion thread&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://perfetto.dev/docs/data-sources/frametimeline">Perfetto: Android Jank detection with FrameTimeline</a> (&quot;FrameTimeline requires Android 12(S) or higher&quot;; &quot;Expected Timeline: Each slice represents the time given to the app for rendering the frame… The start time is the time the Choreographer callback was scheduled to run&quot;; &quot;Actual Timeline: These slices represent the actual time an app took to complete the frame (including GPU work) and send it to SurfaceFlinger for composition… The end time of the slices here represent max(gpu time, post time)&quot;; &quot;AppDeadlineMissed: The app ran longer than expected causing a jank.&quot;)</li><li><a href="https://developer.android.com/studio/profile/jank-detection">Android Studio: UI jank detection</a> (the threads relevant to a janky frame: &quot;the UI thread, RenderThread, and the GPU completion thread&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>FrameTimeline gives every frame two slices: the Expected Timeline, the window the app was given, and the Actual Timeline, from Choreographer's callback to when the frame was posted and the GPU finished. Actual past the deadline is jank; FrameTimeline says whether the app or SurfaceFlinger was late. Then read the late frame's main thread and RenderThread: states, then flame chart.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

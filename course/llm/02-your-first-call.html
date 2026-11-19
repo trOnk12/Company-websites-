@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="2" data-prev="01-one-token-at-a-time.html" data-prev-title="One token at a time">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" class="done" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" class="done" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" aria-current="page" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
-      <p class="eyebrow">LLMs for mobile engineers, from tokens to your app · Puzzle 2 · 3 of 8</p>
-      <h1>Your first call</h1>
-      <p class="lede">Puzzle 1 said the model works in tokens. Now one real call, so everything after it has something concrete to stand on: what your app sends, what comes back, and the three numbers that matter in the response.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="2">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 2 · 3 of 8</p>
+        <h1>Your first call</h1>
+        <p class="lede">Puzzle 1 said the model works in tokens. Now one real call, so everything after it has something concrete to stand on: what your app sends, what comes back, and the three numbers that matter in the response.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" aria-current="page" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-one-token-at-a-time.html">Puzzle 1: One token at a time</a></summary><p>A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Limits, latency and price are all counted in tokens, and longer answers take longer because each token is one more step.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="One POST with model, max_tokens and messages; back come text, stop_reason and usage"><input type="radio" name="st-firstcall" id="st-firstcall-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-firstcall" id="st-firstcall-2" aria-label="Step 2 of 4"><input type="radio" name="st-firstcall" id="st-firstcall-3" aria-label="Step 3 of 4"><input type="radio" name="st-firstcall" id="st-firstcall-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="fc-t"><title id="fc-t">The app sends a POST with model, max_tokens and a messages list with one user turn; the response holds the text, a stop_reason and usage with input and output tokens; a cut-off answer says max_tokens</title><defs><marker id="ah-firstcall-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-firstcall-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-firstcall-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-firstcall-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="fc-t"><title id="fc-t">The app sends a POST with model, max_tokens and a messages list with one user turn; the response holds the text, a stop_reason and usage with input and output tokens; a cut-off answer says max_tokens</title><defs><marker id="ah-firstcall-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-firstcall-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-firstcall-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-firstcall-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="20" y="100" width="70" height="120" rx="12"/><rect class="d-hl" x="27" y="114" width="56" height="86" rx="4"/><circle class="d-ink" cx="55" cy="210" r="3"/><text class="d-tiny" x="55" y="238" text-anchor="middle">your app</text></g>
 <g class="step s1"><rect class="d-wood" x="540" y="90" width="80" height="120" rx="6"/><rect class="d-paper" x="550" y="102" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="113" r="4"/><rect class="d-paper" x="550" y="134" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="145" r="4"/><rect class="d-paper" x="550" y="166" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="177" r="4"/><text class="d-tiny" x="580" y="228" text-anchor="middle">provider</text></g>
@@ -75,6 +86,7 @@
 <g class="step s4" data-pulse="4"><text class="d-a" x="220" y="330" text-anchor="middle">you pay per token; output costs more</text></g>
 <g class="step s1" data-move="1:220,170 2:410,320 3:535,250 4:535,280"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>One HTTP POST: the model's name, <b>max_tokens</b>, and <b>messages</b>, a list of <b>turns</b>; here, one user turn.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-firstcall-2">Next →</label></div></li>
 <li><p>Back comes JSON: the text, a <b>stop_reason</b>, and <b>usage</b>, the input and output tokens of this call.</p><div class="stepnav"><label for="st-firstcall-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-firstcall-3">Next →</label></div></li>
@@ -136,10 +148,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://docs.anthropic.com/en/api/messages-examples">Anthropic: Messages API examples</a> (a response contains <code>content</code>, <code>stop_reason</code> such as <code>&quot;end_turn&quot;</code> or <code>&quot;max_tokens&quot;</code>, and <code>&quot;usage&quot;: { &quot;input_tokens&quot;: …, &quot;output_tokens&quot;: … }</code>; requests send <code>model</code>, <code>max_tokens</code> and <code>messages</code> with roles)</li><li><a href="https://docs.anthropic.com/en/docs/about-claude/pricing">Anthropic: Pricing</a> (input and output tokens are priced separately, output higher)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/api/messages-examples">Anthropic: Messages API examples</a> (a response contains <code>content</code>, <code>stop_reason</code> such as <code>&quot;end_turn&quot;</code> or <code>&quot;max_tokens&quot;</code>, and <code>&quot;usage&quot;: { &quot;input_tokens&quot;: …, &quot;output_tokens&quot;: … }</code>; requests send <code>model</code>, <code>max_tokens</code> and <code>messages</code> with roles)</li><li><a href="https://docs.anthropic.com/en/docs/about-claude/pricing">Anthropic: Pricing</a> (input and output tokens are priced separately, output higher)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A call to a model is one HTTP POST: a model name, max_tokens (the most it may write), and messages, a list of turns each marked user or assistant. The response holds the continuation, a stop_reason (end_turn when it finished, max_tokens when it was cut off), and usage: the input and output tokens you pay for. Output tokens cost more than input ones, and each one takes time to generate.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

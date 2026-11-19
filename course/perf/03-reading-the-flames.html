@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="3" data-prev="02-a-photo-or-a-diary.html" data-prev-title="A photo or a diary">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" class="done" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" class="done" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" aria-current="page" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Puzzle 3 · 4 of 10</p>
-      <h1>Reading the flames</h1>
-      <p class="lede">The profiler draws the same recording two ways. In one, left to right is time; in the other, it isn't. Here's how to read each, and where a slow function really spends its time.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="3">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Performance, under the hood</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 3 · 4 of 10</p>
+        <h1>Reading the flames</h1>
+        <p class="lede">The profiler draws the same recording two ways. In one, left to right is time; in the other, it isn't. Here's how to read each, and where a slow function really spends its time.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" aria-current="page" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-label="Building blocks"><p><b>Builds on</b> what you already know from <a href="../android/">Android from the foundation</a>, not on an earlier puzzle here: you can start with this one.</p></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -61,7 +72,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A call chart is a timeline; a flame chart merges identical stacks"><input type="radio" name="st-flames" id="st-flames-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-flames" id="st-flames-2" aria-label="Step 2 of 4"><input type="radio" name="st-flames" id="st-flames-3" aria-label="Step 3 of 4"><input type="radio" name="st-flames" id="st-flames-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="fl-t"><title id="fl-t">A call chart shows onBind calling format three times along a timeline; a flame chart merges the three into one wide bar with no timeline; total time is the whole bar, self time is the part not covered by children</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="fl-t"><title id="fl-t">A call chart shows onBind calling format three times along a timeline; a flame chart merges the three into one wide bar with no timeline; total time is the whole bar, self time is the part not covered by children</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1 hide-2" data-pulse="1"><text class="d-b" x="20" y="40">call chart: a timeline</text>
 <rect class="d-band" x="40" y="70" width="560" height="34" rx="4"/><text class="d-tiny" x="320" y="92" text-anchor="middle">onBind()</text>
@@ -78,6 +89,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-bad" x="528" y="70" width="72" height="34" rx="4"/><text class="d-rt" x="564" y="92" text-anchor="middle">self</text><text class="d-a" x="320" y="200" text-anchor="middle">total = the whole bar</text><text class="d-r" x="320" y="230" text-anchor="middle">self = not covered by children</text></g>
 <g class="step s1" data-move="1:70,160 2:434,58 3:434,58 4:564,58"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The <b>call chart</b>: <code>onBind()</code> along a timeline, calling <code>format()</code>, then <code>parseJson()</code>, then <code>format()</code> twice more.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-flames-2">Next →</label></div></li>
 <li><p>The <b>flame chart</b> merges calls with the same chain of callers: three <code>format()</code> calls become one bar. Android Studio draws it upside down: the caller at the bottom.</p><div class="stepnav"><label for="st-flames-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-flames-3">Next →</label></div></li>
@@ -128,10 +140,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.android.com/studio/profile/chart-glossary/flame-chart">Android Studio: Flame chart</a> (&quot;identical methods or functions that share the same sequence of callers are collected and represented as one longer bar in a flame chart&quot;; &quot;the horizontal axis doesn't represent a timeline; instead, it indicates the relative amount of time each method or function takes to execute&quot;; &quot;the callees that consume the most CPU time appear first&quot;)</li><li><a href="https://developer.android.com/studio/profile/chart-glossary/top-bottom-charts">Android Studio: Top down and bottom up charts</a> (&quot;Self: the time the method or function call spent executing its own code and not that of its callees&quot;; &quot;Total: the sum of the method's Self and Children time&quot;; &quot;The Bottom Up tab displays a list of calls in which expanding a function or method's node displays its callers.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/studio/profile/chart-glossary/flame-chart">Android Studio: Flame chart</a> (&quot;identical methods or functions that share the same sequence of callers are collected and represented as one longer bar in a flame chart&quot;; &quot;the horizontal axis doesn't represent a timeline; instead, it indicates the relative amount of time each method or function takes to execute&quot;; &quot;the callees that consume the most CPU time appear first&quot;)</li><li><a href="https://developer.android.com/studio/profile/chart-glossary/top-bottom-charts">Android Studio: Top down and bottom up charts</a> (&quot;Self: the time the method or function call spent executing its own code and not that of its callees&quot;; &quot;Total: the sum of the method's Self and Children time&quot;; &quot;The Bottom Up tab displays a list of calls in which expanding a function or method's node displays its callers.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A call chart draws each call along a timeline, callees under their caller. A flame chart merges identical call stacks into one bar, so width means total time and left to right means nothing. A wide bar with a wide child is slow because of the child; a bar wider than all its children is slow in its own code: its self time.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="8" data-prev="07-proof-of-who-you-are.html" data-prev-title="Proof of who you are">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" class="done" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" class="done" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" class="done" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" class="done" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" class="done" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" class="done" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" class="done" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" class="done" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" aria-current="page" title="TLS, the blocks together">8</a></li></ol></nav>
-      <p class="eyebrow">Encryption, from the ground up · Puzzle 8 · 9 of 9</p>
-      <h1>TLS, the blocks together</h1>
-      <p class="lede">Puzzles 0 to 7 each stopped one thing a machine in the middle could do. The S in HTTPS is those blocks put together in one short conversation before your first request.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="8">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Encryption, from the ground up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 8 · 9 of 9</p>
+        <h1>TLS, the blocks together</h1>
+        <p class="lede">Puzzles 0 to 7 each stopped one thing a machine in the middle could do. The S in HTTPS is those blocks put together in one short conversation before your first request.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" aria-current="page" title="TLS, the blocks together">8</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-8">
         <p id="builds-on-8"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="6"><details><summary><a href="06-a-hash-with-a-secret.html">Puzzle 6: A hash with a secret</a></summary><p>A MAC (message authentication code) is a short value computed from the data and a secret key together; HMAC builds one from a hash function. The sender attaches it as a tag; the receiver, who has the same key, recomputes it and compares. An attacker who changes the data can't compute the matching tag without the key, so any change is caught. TLS protects every chunk of your data this way.</p></details></li><li data-block="7"><details><summary><a href="07-proof-of-who-you-are.html">Puzzle 7: Proof of who you are</a></summary><p>A key pair is a private key the owner keeps and a public key anyone may have. Signing computes a signature from a digest and the private key; anyone can check it with the public key, and nobody can fake it without the private key. A certificate is a server's name and public key, signed by a certificate authority your phone already trusts.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="The TLS handshake: key exchange, certificate, signature, then encrypted data"><input type="radio" name="st-tls" id="st-tls-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-tls" id="st-tls-2" aria-label="Step 2 of 4"><input type="radio" name="st-tls" id="st-tls-3" aria-label="Step 3 of 4"><input type="radio" name="st-tls" id="st-tls-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tl-t"><title id="tl-t">The app sends hello with its public value; the server answers with its public value, certificate and signature; the app checks them; both compute keys; then every request travels encrypted and checked</title><defs><marker id="ah-tls-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tl-t"><title id="tl-t">The app sends hello with its public value; the server answers with its public value, certificate and signature; the app checks them; both compute keys; then every request travels encrypted and checked</title><defs><marker id="ah-tls-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="30" y="110" width="64" height="120" rx="12"/><rect class="d-hl" x="37" y="124" width="50" height="86" rx="4"/><circle class="d-ink" cx="62" cy="220" r="3"/><text class="d-tiny" x="62" y="248" text-anchor="middle">your app</text></g>
 <g class="step s1"><rect class="d-wood" x="530" y="100" width="80" height="120" rx="6"/><rect class="d-paper" x="540" y="112" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="123" r="4"/><rect class="d-paper" x="540" y="144" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="155" r="4"/><rect class="d-paper" x="540" y="176" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="187" r="4"/><text class="d-tiny" x="570" y="238" text-anchor="middle">your server</text></g>
@@ -81,6 +92,7 @@
 <path class="step only-4 d-arr-acc" d="M100,180 C220,220 400,220 524,180" marker-end="url(#ah-tls-acc)"/>
 <g class="step s4"><text class="d-a" x="320" y="290" text-anchor="middle">every record: encrypted and checked</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p><b>TLS</b>, the S in HTTPS, starts with a short exchange: the <b>handshake</b>. Your app says hello and sends its public value (puzzle 3).</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-tls-2">Next →</label></div></li>
 <li><p>The server answers with its public value. Both compute the shared secret and derive keys from it: from now on, everything is encrypted.</p><div class="stepnav"><label for="st-tls-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-tls-3">Next →</label></div></li>
@@ -129,10 +141,7 @@
 <p class="fb ok opt-2"><b>Right.</b> Setting up vs using.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8446">RFC 8446: TLS 1.3</a> (the handshake &quot;can be thought of as having three phases&quot;: Key Exchange, &quot;Everything after this phase is encrypted&quot;, then Server Parameters and Authentication with Certificate and CertificateVerify; &quot;all ciphers are modeled as Authenticated Encryption with Associated Data (AEAD)… a unified encryption and authentication operation&quot;; &quot;TLS does not hide the length of the data it transmits&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.rfc-editor.org/rfc/rfc8446">RFC 8446: TLS 1.3</a> (the handshake &quot;can be thought of as having three phases&quot;: Key Exchange, &quot;Everything after this phase is encrypted&quot;, then Server Parameters and Authentication with Certificate and CertificateVerify; &quot;all ciphers are modeled as Authenticated Encryption with Associated Data (AEAD)… a unified encryption and authentication operation&quot;; &quot;TLS does not hide the length of the data it transmits&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A TLS handshake does a key exchange, has the server prove who it is with its certificate and a signature, and turns the shared secret into symmetric keys. Everything after that is encrypted with an AES-style cipher that also detects changes. Reading, changing and pretending are all stopped.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

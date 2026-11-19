@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" aria-current="page" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Start here · 1 of 11</p>
-      <h1>What actually travels</h1>
-      <p class="lede">Your app calls an API and gets JSON back, as if the two were joined by a pipe. Underneath, there's no pipe: only small chunks of data that can get lost. Here's the stack of layers that turns them into a request and a response.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="0">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Mobile system design, from a packet to an app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 0 · 1 of 11</p>
+        <h1>What actually travels</h1>
+        <p class="lede">Your app calls an API and gets JSON back, as if the two were joined by a pipe. Underneath, there's no pipe: only small chunks of data that can get lost. Here's the stack of layers that turns them into a request and a response.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" aria-current="page" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
 
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -61,7 +72,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="HTTP inside TLS inside TCP, carried by IP packets that can get lost"><input type="radio" name="st-layers" id="st-layers-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-layers" id="st-layers-2" aria-label="Step 2 of 4"><input type="radio" name="st-layers" id="st-layers-3" aria-label="Step 3 of 4"><input type="radio" name="st-layers" id="st-layers-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ly-t"><title id="ly-t">A request is wrapped by TLS and carried by TCP as numbered packets; IP routes each packet through routers and one gets lost; the receiver's acknowledgement shows the gap and TCP sends the lost packet again; the server gets the request in order</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ly-t"><title id="ly-t">A request is wrapped by TLS and carried by TCP as numbered packets; IP routes each packet through routers and one gets lost; the receiver's acknowledgement shows the gap and TCP sends the lost packet again; the server gets the request in order</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="20" y="100" width="70" height="130" rx="12"/><rect class="d-hl" x="27" y="114" width="56" height="96" rx="4"/><circle class="d-ink" cx="55" cy="220" r="3"/><text class="d-tiny" x="55" y="248" text-anchor="middle">app</text></g>
 <g class="step s1"><rect class="d-wood" x="540" y="80" width="80" height="120" rx="6"/><rect class="d-paper" x="550" y="92" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="103" r="4"/><rect class="d-paper" x="550" y="124" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="135" r="4"/><rect class="d-paper" x="550" y="156" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="167" r="4"/><text class="d-tiny" x="580" y="218" text-anchor="middle">server</text></g>
@@ -72,6 +83,7 @@
 <g class="step only-3" data-pulse="3"><path class="d-red" d="M300,180 L340,204 M340,180 L300,204"/><text class="d-r" x="320" y="230" text-anchor="middle">lost</text></g>
 <g class="step s4" data-pulse="4"><g><rect class="d-paper" x="450" y="180" width="40" height="24" rx="3"/><polyline class="d-line" points="450,180 470,188 490,180"/><text class="d-tiny" x="470" y="198" text-anchor="middle">2</text></g><text class="d-a" x="400" y="320" text-anchor="middle">not acknowledged: sent again</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Your request is HTTP, encrypted by <b>TLS</b> (it scrambles the data), carried by <b>TCP</b>: layers inside layers.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-layers-2">Next →</label></div></li>
 <li><p>TCP cuts it into numbered <b>packets</b>. <b>IP</b> passes each one from router to router: best effort, no promises.</p><div class="stepnav"><label for="st-layers-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-layers-3">Next →</label></div></li>
@@ -122,10 +134,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://hpbn.co/building-blocks-of-tcp/">High Performance Browser Networking: Building blocks of TCP</a> (&quot;The IP, or Internet Protocol, is what provides the host-to-host routing and addressing, and TCP, or Transmission Control Protocol, is what provides the abstraction of a reliable network running over an unreliable channel&quot;; TCP hides &quot;retransmission of lost data, in-order delivery, congestion control and avoidance, data integrity&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://hpbn.co/building-blocks-of-tcp/">High Performance Browser Networking: Building blocks of TCP</a> (&quot;The IP, or Internet Protocol, is what provides the host-to-host routing and addressing, and TCP, or Transmission Control Protocol, is what provides the abstraction of a reliable network running over an unreliable channel&quot;; TCP hides &quot;retransmission of lost data, in-order delivery, congestion control and avoidance, data integrity&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

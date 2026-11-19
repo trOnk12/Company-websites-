@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="5" data-prev="04-the-man-in-the-middle.html" data-prev-title="The man in the middle">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" class="done" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" class="done" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" class="done" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" class="done" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" class="done" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" aria-current="page" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
-      <p class="eyebrow">Encryption, from the ground up · Puzzle 5 · 6 of 9</p>
-      <h1>A fingerprint for data</h1>
-      <p class="lede">In puzzle 0, a machine in the middle could change data on its way, and encryption alone wouldn't notice. Here's the block that makes any change visible.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="5">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Encryption, from the ground up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 5 · 6 of 9</p>
+        <h1>A fingerprint for data</h1>
+        <p class="lede">In puzzle 0, a machine in the middle could change data on its way, and encryption alone wouldn't notice. Here's the block that makes any change visible.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" aria-current="page" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-bits-xor-and-a-toy-cipher.html">Puzzle 1: Bits, XOR and a toy cipher</a></summary><p>Data is bits, and a key is a string of bits too. XOR combines two bits: 0 if they're equal, 1 if they differ; XOR the same key in twice and you're back where you started. A one-time pad XORs each data bit with a key bit: perfectly secret if the key is random, as long as the data, and used once. Reuse the key, and XORing two ciphertexts cancels it, leaking the two messages XORed together.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A hash turns any data into a short fingerprint; one changed bit changes it"><input type="radio" name="st-hash" id="st-hash-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-hash" id="st-hash-2" aria-label="Step 2 of 4"><input type="radio" name="st-hash" id="st-hash-3" aria-label="Step 3 of 4"><input type="radio" name="st-hash" id="st-hash-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="hs-t"><title id="hs-t">Data of any size goes into a hash function and comes out as a short digest; changing one bit gives a completely different digest; comparing digests shows a change</title><defs><marker id="ah-hash-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-hash-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-hash-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-hash-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="hs-t"><title id="hs-t">Data of any size goes into a hash function and comes out as a short digest; changing one bit gives a completely different digest; comparing digests shows a change</title><defs><marker id="ah-hash-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-hash-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-hash-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-hash-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><g><rect class="d-paper" x="40" y="70" width="90" height="120" rx="3"/><line class="d-line" x1="48" y1="84" x2="122" y2="84"/><line class="d-line" x1="48" y1="97" x2="114" y2="97"/><line class="d-line" x1="48" y1="110" x2="122" y2="110"/><line class="d-line" x1="48" y1="123" x2="114" y2="123"/><line class="d-line" x1="48" y1="136" x2="122" y2="136"/><line class="d-line" x1="48" y1="149" x2="114" y2="149"/><line class="d-line" x1="48" y1="162" x2="122" y2="162"/><text class="d-tiny" x="85" y="208" text-anchor="middle">10 MB file</text></g></g>
 <g class="step s1"><rect class="d-wood" x="200" y="100" width="140" height="54" rx="8"/><line class="d-line" x1="225.0" y1="127.0" x2="230.0" y2="127.0"/><line class="d-line" x1="222.9" y1="131.9" x2="226.5" y2="135.5"/><line class="d-line" x1="218.0" y1="134.0" x2="218.0" y2="139.0"/><line class="d-line" x1="213.1" y1="131.9" x2="209.5" y2="135.5"/><line class="d-line" x1="211.0" y1="127.0" x2="206.0" y2="127.0"/><line class="d-line" x1="213.1" y1="122.1" x2="209.5" y2="118.5"/><line class="d-line" x1="218.0" y1="120.0" x2="218.0" y2="115.0"/><line class="d-line" x1="222.9" y1="122.1" x2="226.5" y2="118.5"/><circle class="d-paper" cx="218" cy="127" r="8"/><text class="d-tiny" x="287" y="132" text-anchor="middle">SHA-256</text></g>
@@ -75,6 +86,7 @@
 <g class="step s4" data-pulse="4"><text class="d-a" x="500" y="270" text-anchor="middle">compare: different</text><circle class="d-bad" cx="620" cy="190" r="12"/><path class="d-red" d="M613,183 L627,197 M627,183 L613,197"/></g>
 <g class="step s1" data-move="1:136,130 2:400,130 3:400,210 4:500,250"><circle class="d-acc" cx="0" cy="0" r="6"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Any data, a word or a 10 MB file, goes into a <b>hash function</b>. The standard one is <code>SHA-256</code>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-hash-2">Next →</label></div></li>
 <li><p>Out comes a short <b>digest</b>, always 256 bits: a fingerprint of the data. Same data, same digest, every time.</p><div class="stepnav"><label for="st-hash-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-hash-3">Next →</label></div></li>
@@ -125,10 +137,7 @@
 <p class="fb no opt-3"><b>Not quite.</b> Ciphertext is about as long as the data; a digest is always the same short size. <label class="show-me" for="st-hash-2" data-goto="st-hash">Show me step 2 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">NIST FIPS 180-4: Secure Hash Standard</a> (&quot;the result is an output called a message digest… it is computationally infeasible 1) to find a message that corresponds to a given message digest, or 2) to find two different messages that produce the same message digest. Any change to a message will, with a very high probability, result in a different message digest.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">NIST FIPS 180-4: Secure Hash Standard</a> (&quot;the result is an output called a message digest… it is computationally infeasible 1) to find a message that corresponds to a given message digest, or 2) to find two different messages that produce the same message digest. Any change to a message will, with a very high probability, result in a different message digest.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A hash function turns any data into a short, fixed-size digest, like SHA-256's 256 bits. Change one bit of the data and the digest changes completely, and nobody can make data that matches a given digest. So comparing digests shows whether data was changed.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

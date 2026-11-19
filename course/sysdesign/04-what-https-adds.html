@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="4" data-prev="03-round-trips-not-bandwidth.html" data-prev-title="Round trips, not bandwidth">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" class="done" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" class="done" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" class="done" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" aria-current="page" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 4 · 5 of 11</p>
-      <h1>What HTTPS adds</h1>
-      <p class="lede">Every request your app makes is encrypted. That adds three promises on top of TCP, and one more step before the first byte. Here's what you get and what it costs, without the cryptography.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="4">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Mobile system design, from a packet to an app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 4 · 5 of 11</p>
+        <h1>What HTTPS adds</h1>
+        <p class="lede">Every request your app makes is encrypted. That adds three promises on top of TCP, and one more step before the first byte. Here's what you get and what it costs, without the cryptography.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" aria-current="page" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="3"><details><summary><a href="03-round-trips-not-bandwidth.html">Puzzle 3: Round trips, not bandwidth</a></summary><p>Latency is how long a packet takes to arrive; bandwidth is how much data fits through per second. Small requests are bound by latency, so the wait is the number of round trips times the round-trip time. Requests that wait for each other add their round trips together; cut the round trips, and the screen gets faster on every network.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="TLS: encrypted, tamper-evident, and the server proves who it is; one round trip to set up"><input type="radio" name="st-tls" id="st-tls-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-tls" id="st-tls-2" aria-label="Step 2 of 4"><input type="radio" name="st-tls" id="st-tls-3" aria-label="Step 3 of 4"><input type="radio" name="st-tls" id="st-tls-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tl-t"><title id="tl-t">Between the phone and the server, routers see only scrambled bytes; a changed byte is detected; the server shows a certificate signed by an authority the phone trusts; setting this up is one handshake round trip</title><defs><marker id="ah-tls-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tl-t"><title id="tl-t">Between the phone and the server, routers see only scrambled bytes; a changed byte is detected; the server shows a certificate signed by an authority the phone trusts; setting this up is one handshake round trip</title><defs><marker id="ah-tls-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tls-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="20" y="100" width="70" height="120" rx="12"/><rect class="d-hl" x="27" y="114" width="56" height="86" rx="4"/><circle class="d-ink" cx="55" cy="210" r="3"/><text class="d-tiny" x="55" y="238" text-anchor="middle">phone</text></g>
 <g class="step s1"><rect class="d-wood" x="540" y="90" width="80" height="120" rx="6"/><rect class="d-paper" x="550" y="102" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="113" r="4"/><rect class="d-paper" x="550" y="134" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="145" r="4"/><rect class="d-paper" x="550" y="166" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="177" r="4"/><text class="d-tiny" x="580" y="228" text-anchor="middle">api.example.com</text></g>
@@ -76,6 +87,7 @@
 <g class="step s4" data-pulse="4"><path class="d-arr-ink" d="M100,120 L530,120" marker-end="url(#ah-tls-ink)"/><path class="d-arr-acc" d="M530,140 L100,140" marker-end="url(#ah-tls-acc)"/><text class="d-a" x="320" y="105" text-anchor="middle">handshake: one round trip</text></g>
 <g class="step s1" data-move="1:320,200 2:320,265 3:515,330 4:320,160"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p><b>HTTPS</b> is HTTP through <b>TLS</b>. Routers on the way see only scrambled bytes: encryption.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-tls-2">Next →</label></div></li>
 <li><p>If one changes a byte, TLS notices and rejects the data: integrity.</p><div class="stepnav"><label for="st-tls-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-tls-3">Next →</label></div></li>
@@ -124,10 +136,7 @@
 <p class="fb ok opt-2"><b>Right.</b> Secret vs identity.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://hpbn.co/transport-layer-security-tls/">High Performance Browser Networking: Transport Layer Security</a> (&quot;The TLS protocol is designed to provide three essential services to all applications running above it: encryption, authentication, and data integrity&quot;; &quot;As part of the TLS handshake, the protocol also allows both peers to authenticate their identity&quot;)</li><li><a href="https://www.rfc-editor.org/rfc/rfc8446">RFC 8446, TLS 1.3</a> (the full handshake is the &quot;1-RTT handshake&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://hpbn.co/transport-layer-security-tls/">High Performance Browser Networking: Transport Layer Security</a> (&quot;The TLS protocol is designed to provide three essential services to all applications running above it: encryption, authentication, and data integrity&quot;; &quot;As part of the TLS handshake, the protocol also allows both peers to authenticate their identity&quot;)</li><li><a href="https://www.rfc-editor.org/rfc/rfc8446">RFC 8446, TLS 1.3</a> (the full handshake is the &quot;1-RTT handshake&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>HTTPS is HTTP sent through TLS. TLS gives three promises: encryption (nobody on the way can read it), integrity (nobody can change it unnoticed) and authentication (you're really talking to the server you named, proven by its certificate). To set that up, client and server run a TLS handshake when the connection opens; in TLS 1.3 it costs one round trip, on top of TCP's.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>

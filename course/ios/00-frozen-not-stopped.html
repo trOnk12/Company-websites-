@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" aria-current="page" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
-      <p class="eyebrow">iOS for Android developers · Start here · 1 of 5</p>
-      <h1>Frozen, not stopped</h1>
-      <p class="lede">On Android, an app in the background keeps its process, and its threads can keep running. On iOS, a few seconds after the user leaves, your app stops running any code at all. Here's what that means for your work.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="0">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">iOS for Android developers</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 0 · 1 of 5</p>
+        <h1>Frozen, not stopped</h1>
+        <p class="lede">On Android, an app in the background keeps its process, and its threads can keep running. On iOS, a few seconds after the user leaves, your app stops running any code at all. Here's what that means for your work.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" aria-current="page" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/02-how-kotlin-calls-apple.html"><b>framework</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 2: How Kotlin calls Apple</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -61,7 +72,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="On iOS, the app is suspended seconds after it leaves the screen"><input type="radio" name="st-states" id="st-states-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-states" id="st-states-2" aria-label="Step 2 of 4"><input type="radio" name="st-states" id="st-states-3" aria-label="Step 3 of 4"><input type="radio" name="st-states" id="st-states-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">The app is active; the user leaves and it moves to the background with a few seconds to finish; then it is suspended, running no code; then iOS may end it without running any of its code</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">The app is active; the user leaves and it moves to the background with a few seconds to finish; then it is suspended, running no code; then iOS may end it without running any of its code</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-sleep" x="40" y="80" width="560" height="14" rx="3"/><text class="d-tiny" x="80" y="70" text-anchor="middle">active</text><text class="d-tiny" x="250" y="70" text-anchor="middle">background</text><text class="d-tiny" x="420" y="70" text-anchor="middle">suspended</text><text class="d-tiny" x="560" y="70" text-anchor="middle">ended</text></g>
 <g class="step s1" data-move="1:80,87 2:250,87 3:420,87 4:560,87"><circle class="d-acc" cx="0" cy="0" r="11"/></g>
@@ -71,6 +82,7 @@
 <g class="step s3 hide-4" data-pulse="3"><g><circle class="d-skin" cx="420" cy="190" r="15"/><rect class="d-roof" x="398" y="207" width="44" height="32" rx="12"/></g><rect class="d-dusk" x="380" y="150" width="80" height="110" rx="6"/><text class="d-a" x="420" y="290" text-anchor="middle">frozen: no code</text><rect class="d-bad" x="470" y="170" width="80" height="24" rx="4"/><text class="d-rt" x="510" y="187" text-anchor="middle">upload ✗</text></g>
 <g class="step s4" data-pulse="4"><rect class="d-dash" x="520" y="150" width="80" height="110" rx="6"/><text class="d-r" x="600" y="290" text-anchor="end">ended, no code ran</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p><b>UIKit</b> keeps your app in one of a few <b>app states</b>: from not running to <b>active</b>, in front and taking touches, where your code runs freely; the last is <b>suspended</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-states-2">Next →</label></div></li>
 <li><p>The user leaves: your app moves to the background, with a few seconds, five at most, to finish crucial work.</p><div class="stepnav"><label for="st-states-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-states-3">Next →</label></div></li>
@@ -119,10 +131,7 @@
 <p class="fb ok opt-2"><b>Right.</b> Briefly running vs not running.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.apple.com/documentation/uikit/managing-your-app-s-life-cycle">Apple: Managing your app's life cycle</a> (&quot;When someone dismisses your app's UI, UIKit moves the associated scene to the background state and eventually to the suspended state. UIKit can disconnect a background or suspended scene at any time to reclaim its resources&quot;)</li><li><a href="https://developer.apple.com/documentation/uikit/extending-your-app-s-background-execution-time">Apple: Extending your app's background execution time</a> (&quot;That method has five seconds to perform any tasks and return. Shortly after that method returns, iOS puts your app into the suspended state&quot;)</li><li><a href="https://developer.apple.com/documentation/uikit/about-the-app-launch-sequence">Apple: About the app launch sequence</a> (iOS &quot;suspends your process without allowing any application code to run&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.apple.com/documentation/uikit/managing-your-app-s-life-cycle">Apple: Managing your app's life cycle</a> (&quot;When someone dismisses your app's UI, UIKit moves the associated scene to the background state and eventually to the suspended state. UIKit can disconnect a background or suspended scene at any time to reclaim its resources&quot;)</li><li><a href="https://developer.apple.com/documentation/uikit/extending-your-app-s-background-execution-time">Apple: Extending your app's background execution time</a> (&quot;That method has five seconds to perform any tasks and return. Shortly after that method returns, iOS puts your app into the suspended state&quot;)</li><li><a href="https://developer.apple.com/documentation/uikit/about-the-app-launch-sequence">Apple: About the app launch sequence</a> (iOS &quot;suspends your process without allowing any application code to run&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An iOS app moves through app states: not running, inactive, active, background, suspended. Seconds after it goes to the background it's suspended: still in memory, running no code. iOS can end a suspended app without running any of your code, so save your state as you enter the background, not at the end.</p></div></section>
       
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
