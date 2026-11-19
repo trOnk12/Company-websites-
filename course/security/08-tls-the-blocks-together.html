@@ -143,7 +143,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.rfc-editor.org/rfc/rfc8446">RFC 8446: TLS 1.3</a> (the handshake &quot;can be thought of as having three phases&quot;: Key Exchange, &quot;Everything after this phase is encrypted&quot;, then Server Parameters and Authentication with Certificate and CertificateVerify; &quot;all ciphers are modeled as Authenticated Encryption with Associated Data (AEAD)… a unified encryption and authentication operation&quot;; &quot;TLS does not hide the length of the data it transmits&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A TLS handshake does a key exchange, has the server prove who it is with its certificate and a signature, and turns the shared secret into symmetric keys. Everything after that is encrypted with an AES-style cipher that also detects changes. Reading, changing and pretending are all stopped.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="07-proof-of-who-you-are.html">← Puzzle 7</a>

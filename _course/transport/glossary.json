@@ -1,0 +1,52 @@
+{
+  "baseline": {
+    "words": [
+      "ACK",
+      "SYN",
+      "CertificateVerify",
+      "UDP",
+      "HTTP"
+    ]
+  },
+  "terms": {
+    "sequence number": {
+      "in": "00",
+      "def": "The position of a byte in one direction of a TCP connection.",
+      "aliases": []
+    },
+    "cumulative acknowledgment": {
+      "in": "01",
+      "def": "The next byte needed to extend the contiguous prefix.",
+      "aliases": []
+    },
+    "handshake transcript": {
+      "in": "02",
+      "def": "The ordered record of messages used in the handshake checks.",
+      "aliases": []
+    },
+    "time to first byte": {
+      "in": "03",
+      "def": "The delay until a response begins.",
+      "aliases": []
+    },
+    "QUIC": {
+      "in": "04",
+      "def": "A secure transport over UDP with independent byte streams.",
+      "aliases": []
+    }
+  },
+  "from": {
+    "certificate": {
+      "course": "security",
+      "in": 7
+    },
+    "private key": {
+      "course": "security",
+      "in": 7
+    },
+    "signature": {
+      "course": "security",
+      "in": 7
+    }
+  }
+}

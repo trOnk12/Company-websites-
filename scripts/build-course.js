@@ -248,8 +248,7 @@ ${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\
 ${buildsOn(course, p)}
 ${linked}
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>${L.inline(p.meta.takeaway, ctx)}</p></div></section>
-      ${support(course, 'puzzle')}
-      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
+${support(course, 'puzzle')}      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         ${prev ? `<a class="button" href="${prev.slug}.html">← ${prev.n === 0 ? 'Start' : `Puzzle ${prev.n}`}</a>` : '<a class="button" href="./">← Overview</a>'}
         ${next ? `<a class="button primary" href="${next.slug}.html">Puzzle ${next.n}: ${L.esc(next.meta.short || next.meta.title)} →</a>` : '<a class="button" href="./">Back to the overview →</a>'}
@@ -310,11 +309,16 @@ function renderOverview(c) {
     </details></li>`;
   }).join('\n');
   const soon = (c.meta.upcoming || []).map((m, k) => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(${k === 0 ? 'next' : 'later'})</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
+  const related = (c.meta.relatedCourses || []).map(id => {
+    const target = loadCourse(id);
+    return `          <li><a href="../${target.id}/">${L.esc(target.meta.title)}</a></li>`;
+  }).join('\n');
   const body = `    <section class="hero course-intro" aria-labelledby="course-heading">
       <div class="wrap narrow">
         <p class="eyebrow"><a href="../">Free courses</a> · ${c.puzzles.length} puzzles so far · about ${minutes(c)} minutes</p>
         <h1 id="course-heading">${L.esc(c.meta.title)}</h1>
         <p class="lede">${L.esc(c.meta.intro)}</p>
+${c.meta.assumes ? `        <p class="small">Builds on <a href="${L.esc(c.meta.assumes.href)}">${L.esc(c.meta.assumes.title)}</a>.</p>\n` : ''}
         <p class="actions"><a class="button primary" href="${c.puzzles[0].slug}.html" data-resume="${c.id}">Start learning</a> <a class="button" href="#modules-heading">Browse modules</a></p>
       </div>
     </section>
@@ -324,7 +328,7 @@ function renderOverview(c) {
         <ul class="modules">
 ${modules}
         </ul>
-        ${soon ? `<details class="course-extras"><summary>Planned modules</summary><ul class="modules">${soon}</ul></details>` : ''}
+${soon ? `        <details class="course-extras"><summary>Planned modules</summary><ul class="modules">${soon}</ul></details>\n` : ''}${related ? `        <nav aria-label="Related courses"><h3>Continue with</h3><ul>\n${related}\n        </ul></nav>\n` : ''}
         <details class="course-extras"><summary>How the course works</summary>
           <p>Every puzzle is open from this outline. The check at the end of a puzzle unlocks its next button and saves your progress in this browser.</p>
           <p><a href="../how-its-made.html">How lessons are written and checked</a> · <a href="../me.html">Your learning</a></p>

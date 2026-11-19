@@ -5,8 +5,18 @@
   <link href="https://pachulski.dev/learning/feed.xml" rel="self"/>
   <link href="https://pachulski.dev/learning/"/>
   <id>https://pachulski.dev/learning/</id>
-  <updated>2026-11-13T00:00:00Z</updated>
+  <updated>2026-11-19T00:00:00Z</updated>
   <author><name>Mateusz Pachulski</name></author>
+  <entry>
+    <title>Twelve help questions, two ways to find the right article</title>
+    <link href="https://pachulski.dev/learning/word-matching-vs-embeddings"/>
+    <id>https://pachulski.dev/learning/word-matching-vs-embeddings</id>
+    <updated>2026-11-19T00:00:00Z</updated>
+    <summary>A reproducible run compared TF-IDF and MiniLM on the same synthetic help articles. The difference showed up when questions used different words from their answers.</summary>
+    <category term="ai"/>
+    <category term="retrieval"/>
+    <category term="experiments"/>
+  </entry>
   <entry>
     <title>A BLE UUID says what kind of data, not which device</title>
     <link href="https://pachulski.dev/learning/ble-uuid-says-what-not-which"/>

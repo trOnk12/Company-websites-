@@ -136,7 +136,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-dispatchers/-main.html">kotlinx.coroutines API: Dispatchers.Main</a> (&quot;On Native Darwin-based targets, it is a dispatcher backed by Darwin's main queue.&quot;)</li><li><a href="https://skie.touchlab.co/features/suspend">SKIE: Suspend functions</a> (&quot;suspend functions have to be exposed as Obj-C callback functions, which can be called from Swift using the async/await syntax. However, this is just Swift's syntax sugar. Swift still handles these functions as callback functions that do not support cancellation.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>On iOS, Dispatchers.Main is backed by the main queue, so a coroutine resumed there runs on the main thread, like on Android. Default and IO run on Kotlin's own worker threads. If Swift calls a suspend function without a bridge library, cancelling the Swift task doesn't cancel the Kotlin coroutine, so the shared code must own the scope.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="10-the-main-thread-on-ios.html">← Puzzle 10</a>

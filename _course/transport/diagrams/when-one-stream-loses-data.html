@@ -1,0 +1,32 @@
+<!-- label: Compare one shared byte order with separate stream orders after a cover range is lost -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="loss-title">
+<title id="loss-title">A missing cover range can hold later text behind a TCP gap. On separate QUIC streams the text can be delivered if it has what it needs.</title>
+<text x="38" y="87" class="d-b">Shared byte order</text>
+<rect x="38" y="105" width="168" height="55" rx="7" class="d-paper"/>
+<rect x="222" y="105" width="168" height="55" rx="7" class="d-paper step only-1"/>
+<rect x="222" y="105" width="168" height="55" rx="7" class="d-bad step s2"/>
+<rect x="406" y="105" width="168" height="55" rx="7" class="d-hl"/>
+<text x="122" y="139" class="d-m" text-anchor="middle">Cover start</text>
+<text x="306" y="139" class="d-m step only-1" text-anchor="middle">Cover bytes</text>
+<text x="306" y="139" class="d-m step s2" text-anchor="middle">Cover gap</text>
+<text x="490" y="139" class="d-m" text-anchor="middle">Text bytes</text>
+<text x="490" y="184" class="d-m step s3" text-anchor="middle">Waits behind gap</text>
+<g class="step s4">
+  <text x="38" y="231" class="d-b">Separate stream orders</text>
+  <rect x="38" y="251" width="168" height="50" rx="7" class="d-paper"/>
+  <rect x="222" y="251" width="168" height="50" rx="7" class="d-bad"/>
+  <rect x="38" y="317" width="168" height="50" rx="7" class="d-hl"/>
+  <text x="122" y="282" class="d-m" text-anchor="middle">Cover start</text>
+  <text x="306" y="282" class="d-m" text-anchor="middle">Gap</text>
+  <text x="122" y="348" class="d-m" text-anchor="middle">Text bytes</text>
+  <x-arrow tone="acc" d="M213,342 H455"/>
+  <text x="516" y="348" class="d-m" text-anchor="middle">Can arrive</text>
+</g>
+<g data-move="1:55,175 2:245,175 3:420,175 4:421,330"><circle class="d-acc" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Cover and text bytes can share one ordered delivery path.</p></li>
+<li><p>A cover range disappears while text bytes arrive. Predict what still needs to happen.</p></li>
+<li><p>When the text is later in the shared order, it can sit behind the missing cover bytes.</p></li>
+<li><p>With separately ordered streams, the text can be delivered when its own requirements are met.</p></li>
+</ol>

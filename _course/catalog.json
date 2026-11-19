@@ -47,6 +47,7 @@
       "courses": [
         "android",
         "kmp",
+        "compose",
         "ios",
         "perf"
       ]
@@ -55,6 +56,7 @@
       "title": "Networking and security",
       "courses": [
         "sysdesign",
+        "transport",
         "security",
         "ble"
       ]
@@ -74,6 +76,8 @@
     "sysdesign": "Follow a request through DNS, HTTP and TLS, then build up to offline sync and safe retries.",
     "security": "Build from bits and keys to hashes, signatures, certificates and the TLS handshake.",
     "ble": "Follow a sensor from its first radio advertisement to a connection and a GATT notification.",
-    "llm": "Trace a model call from tokens and sampling to streaming, context and on-device decisions."
+    "llm": "Trace a model call from tokens to streaming, then compare two ways of finding evidence for a chat assistant.",
+    "compose": "Follow a shared screen through state reads, placement, native iOS interop and VoiceOver.",
+    "transport": "Work through TCP byte numbers, TLS identity checks, HTTPS timing and what packet loss does to HTTP/2 and HTTP/3."
   }
 }

@@ -1,0 +1,22 @@
+{
+  "title": "Compose Multiplatform, one screen from state to pixels",
+  "intro": "Follow a shared bookmark screen from state reads to rendering, across the iOS hosting boundary and through a VoiceOver check.",
+  "how": "Follow the mechanism, predict a change and check your answer. Optional depth is available from the same puzzle.",
+  "assumes": {
+    "title": "Kotlin Multiplatform, from the compiler up",
+    "href": "../kmp/"
+  },
+  "modules": [
+    {
+      "title": "Module 1: One screen, two platforms",
+      "blurb": "Trace state, placement, native UI and accessibility through the same screen.",
+      "puzzles": [
+        "00-state-reads-and-ui.md",
+        "01-read-in-the-right-phase.md",
+        "02-who-hosts-the-native-view.md",
+        "03-pixels-and-voiceover.md"
+      ]
+    }
+  ],
+  "upcoming": []
+}

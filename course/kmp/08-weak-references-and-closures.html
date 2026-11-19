@@ -148,7 +148,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/">The Swift Programming Language: Automatic Reference Counting</a> (&quot;Weak and unowned references enable one instance in a reference cycle to refer to the other instance without keeping a strong hold on it&quot;; &quot;Use a weak reference when the other instance has a shorter lifetime&quot;; strong reference cycles for closures are resolved with &quot;a closure capture list&quot;; the <code>weak var tenant: Person?</code> example)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A weak reference points at an object without adding to its count, so it can't keep it alive; it becomes nil when the object is freed. Make one link in a cycle weak and the cycle can be freed. Closures, Swift's lambdas, hold strong references to what they use, including self, so a closure stored by the object it captures is a cycle; [weak self] makes that capture weak. deinit runs when an object is freed.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="07-counting-or-tracing.html">← Puzzle 7</a>

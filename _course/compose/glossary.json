@@ -1,0 +1,43 @@
+{
+  "baseline": {
+    "words": [
+      "UI",
+      "iOS",
+      "IntOffset",
+      "State",
+      "UITextField",
+      "UIKitView",
+      "UIViewControllerRepresentable",
+      "VoiceOver",
+      "ComposeUIViewController"
+    ]
+  },
+  "terms": {
+    "tracked state read": {
+      "in": "00",
+      "def": "A dependency Compose records when code reads an observable value.",
+      "aliases": []
+    },
+    "rendering phases": {
+      "in": "01",
+      "def": "The composition, layout and drawing work used to produce the UI.",
+      "aliases": []
+    },
+    "hosting boundary": {
+      "in": "02",
+      "def": "The region where one UI system embeds another.",
+      "aliases": []
+    },
+    "accessibility semantics": {
+      "in": "03",
+      "def": "Labels, roles, states and actions exposed to assistive technology.",
+      "aliases": []
+    }
+  },
+  "from": {
+    "frame": {
+      "course": "android",
+      "in": 17
+    }
+  }
+}

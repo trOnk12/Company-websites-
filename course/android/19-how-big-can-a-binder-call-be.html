@@ -146,7 +146,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/reference/android/os/TransactionTooLargeException">Android reference: TransactionTooLargeException</a> (&quot;The Binder transaction buffer has a limited fixed size, currently 1MB, which is shared by all transactions in progress for the process.&quot;)</li><li><a href="https://developer.android.com/reference/android/os/Parcel">Android reference: Parcel</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Calls into a process wait in its Binder buffer: about 1 MB, shared by every call in progress. A call that doesn't fit fails with TransactionTooLargeException. Send where the data is, not the data.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="18-slow-work-and-back.html">← Puzzle 18</a>

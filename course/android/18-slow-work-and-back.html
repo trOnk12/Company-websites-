@@ -148,7 +148,6 @@ button.setOnClickListener {
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a> (&quot;Android offers several ways to access the UI thread from other threads&quot;: <code>Activity.runOnUiThread(Runnable)</code>, <code>View.post(Runnable)</code>, <code>View.postDelayed(Runnable, long)</code>)</li><li><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.concurrent/thread.html">Kotlin API: thread</a> (&quot;Creates a thread that runs the specified block of code.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Slow work runs on a worker thread, so the main thread stays free for frames and touches. The worker never touches the screen: it posts the result back to the main thread's queue (with a Handler for the main thread, or runOnUiThread), and the main thread shows it. Coroutines make the same trip for you.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="17-frames-jank-and-anrs.html">← Puzzle 17</a>

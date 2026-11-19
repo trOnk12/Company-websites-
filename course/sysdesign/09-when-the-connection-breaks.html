@@ -139,7 +139,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://github.com/square/okhttp/blob/master/okhttp/src/commonJvmAndroid/kotlin/okhttp3/OkHttpClient.kt">OkHttp: OkHttpClient</a> (&quot;Default connect timeout (in milliseconds). The default is 10 seconds.&quot;; &quot;Default read timeout (in milliseconds). The default is 10 seconds.&quot;)</li><li><a href="https://hpbn.co/building-blocks-of-tcp/">High Performance Browser Networking: Building blocks of TCP</a> (TCP's reliability: &quot;retransmission of lost data, in-order delivery&quot; over a connection)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>TCP is reliable only while the connection lasts; on a phone, connections break in lifts, tunnels and handovers between Wi-Fi and mobile data. OkHttp gives up after timeouts: connect (no connection made) and read (no answer arrived). A read timeout can't tell you whether the server did the work: the request may have arrived and the answer been lost. Puzzle 10 makes that safe to retry.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="08-the-database-is-the-truth.html">← Puzzle 8</a>

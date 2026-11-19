@@ -51,13 +51,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="3">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 3 · 4 of 8</p>
+        <p class="eyebrow">Puzzle 3 · 4 of 10</p>
         <h1>Why answers stream</h1>
         <p class="lede">Your chat screen shows a spinner for eight seconds, then the whole answer at once. Users think it's broken. The model had the first words after half a second. Here's how to show them, and what changes in your networking code.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" aria-current="page" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" aria-current="page" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li><li><a href="08-find-evidence-before-writing.html" title="Find evidence before asking the model">8</a></li><li><a href="09-measure-retrieval-and-answer-separately.html" title="Which step failed the answer?">9</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -139,7 +139,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/docs/build-with-claude/streaming">Anthropic: Streaming messages</a> (&quot;When creating a Message, you can set \&quot;stream\&quot;: true to incrementally stream the response using server-sent events (SSE).&quot;)</li><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, TTFT</a> (&quot;Time to first token (TTFT) is a performance metric that measures the time it takes for a language model to generate the first token of its output after receiving a prompt. It is an important indicator of the model's responsiveness&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Because the model writes one token at a time, the API can stream: send each piece as it's generated, over one open HTTP response, as server-sent events. Time to first token, not total time, is what makes an app feel fast. On mobile, the stream is a long-lived request: keep it on a background coroutine, append to UI state as events arrive, and cancel it when the user leaves.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-your-first-call.html">← Puzzle 2</a>

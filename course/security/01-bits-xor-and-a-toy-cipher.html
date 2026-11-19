@@ -138,7 +138,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf">NIST SP 800-38A</a> (exclusive-OR: &quot;The bitwise addition, modulo 2, of two bit strings of equal length&quot;)</li><li><a href="https://www.rfc-editor.org/rfc/rfc4949">RFC 4949, Internet Security Glossary</a> (one-time pad: &quot;An encryption algorithm in which the key is a random sequence of symbols and each symbol is used for encryption only one time&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Data is bits, and a key is a string of bits too. XOR combines two bits: 0 if they're equal, 1 if they differ; XOR the same key in twice and you're back where you started. A one-time pad XORs each data bit with a key bit: perfectly secret if the key is random, as long as the data, and used once. Reuse the key, and XORing two ciphertexts cancels it, leaking the two messages XORed together.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-anyone-on-the-line.html">← Start</a>

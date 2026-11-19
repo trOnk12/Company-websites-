@@ -51,13 +51,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="1">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 1 · 2 of 8</p>
+        <p class="eyebrow">Puzzle 1 · 2 of 10</p>
         <h1>One token at a time</h1>
         <p class="lede">You send a prompt and get a paragraph back. It looks like the model writes the answer the way you would. It doesn't. Here's the loop that produces every word, and the unit everything is measured and billed in.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" aria-current="page" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" aria-current="page" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li><li><a href="08-find-evidence-before-writing.html" title="Find evidence before asking the model">8</a></li><li><a href="09-measure-retrieval-and-answer-separately.html" title="Which step failed the answer?">9</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -136,7 +136,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary</a> (&quot;Tokens are the smallest individual units of a language model, and can correspond to words, subwords, characters, or even bytes&quot;; earlier models: &quot;a token represents approximately 3.5 English characters&quot;; &quot;autoregressive language models… are pretrained to predict the next word, given the previous context of text&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Limits, latency and price are all counted in tokens, and longer answers take longer because each token is one more step.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-what-a-language-model-is.html">← Start</a>

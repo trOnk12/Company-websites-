@@ -142,7 +142,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a> (&quot;the Android UI toolkit is not thread-safe. So, don't manipulate your UI from a worker thread. Do all manipulation to your user interface from the UI thread.&quot;)</li><li><a href="https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html">Kotlin docs: Shared mutable state and concurrency</a> (&quot;Coroutines can be executed parallelly using a multi-threaded dispatcher like the Dispatchers.Default. It presents all the usual parallelism problems. The main problem being synchronization of access to shared mutable state.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Threads in one process share its memory: a value one thread changes, every other thread sees. If two threads change the same value at the same moment, their steps can interleave and an update is lost. The fix is a lock (one thread at a time) or one owner (only one thread ever touches it). Android picked one owner for the screen: the main thread.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-threads-are-the-workers.html">← Puzzle 2</a>

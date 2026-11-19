@@ -138,7 +138,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/">The Swift Programming Language: Automatic Reference Counting</a> (&quot;Swift uses Automatic Reference Counting (ARC) to track and manage your app's memory usage… ARC automatically frees up the memory used by class instances when those instances are no longer needed&quot;; &quot;two class instances hold a strong reference to each other, such that each instance keeps the other alive. This is known as a strong reference cycle. You resolve strong reference cycles by defining some of the relationships between classes as weak or unowned references&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>ARC counts the strong references to each object and frees it the moment the count drops to zero. Two objects holding strong references to each other never reach zero: a strong reference cycle, which leaks. Make one side a weak reference, which doesn't keep the object alive.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-the-main-actor.html">← Puzzle 3</a>

@@ -51,13 +51,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="7">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 7 · 8 of 8</p>
+        <p class="eyebrow">Puzzle 7 · 8 of 10</p>
         <h1>On the phone or in the cloud</h1>
         <p class="lede">Puzzle 6 put a server between your app and the model. For some features you can skip the server and the network entirely: Android ships a model that runs on the phone. Here's what it's good at, what it costs you, and how to choose.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" aria-current="page" title="On the phone or in the cloud">7</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" aria-current="page" title="On the phone or in the cloud">7</a></li><li><a href="08-find-evidence-before-writing.html" title="Find evidence before asking the model">8</a></li><li><a href="09-measure-retrieval-and-answer-separately.html" title="Which step failed the answer?">9</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -133,18 +133,12 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/ai/gemini-nano">Android Developers: Gemini Nano</a> (&quot;Gemini Nano lets you deliver rich generative AI experiences without needing a network connection or sending data to the cloud. On-device AI is a great solution for use-cases where low cost and privacy safeguards are your primary concerns&quot;; &quot;Gemini Nano runs in Android's AICore system service, which leverages device hardware to enable low inference latency and keeps the model up-to-date&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An on-device model like Gemini Nano runs on the phone through Android's AICore service: no network, no per-request bill, and the data never leaves the device. In exchange it's smaller than cloud models and available only on supported devices. Use it for short, private, frequent tasks; use a cloud model behind your backend for hard ones; and design a fallback for devices that can't run it.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="06-your-key-is-not-a-secret.html">← Puzzle 6</a>
-        <a class="button" href="./">Back to the overview →</a>
+        <a class="button primary" href="08-find-evidence-before-writing.html">Puzzle 8: Find evidence before asking the model →</a>
       </nav>
-      <section class="finish" aria-labelledby="finish-heading">
-        <h2 id="finish-heading">That's everything published so far</h2>
-        <p>You've reached the last puzzle of <b>LLMs for mobile engineers, from tokens to your app</b>. Next: Next: what a call costs and how it fails, about max_tokens and a cut-off answer, why output tokens cost more than input, rate limits and retries, prompt caching, and structured output you can parse.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
-      </section>
+
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20On%20the%20phone%20or%20in%20the%20cloud&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>

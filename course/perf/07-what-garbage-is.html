@@ -132,7 +132,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/topic/performance/memory-overview">Android Developers: Overview of memory management</a> (&quot;Garbage collection has two goals: find data objects in a program that cannot be accessed in the future; and reclaim the resources used by those objects.&quot;)</li><li><a href="https://developer.android.com/studio/profile/capture-heap-dump">Android Studio: Capture a heap dump</a> (&quot;Depth: The shortest number of hops from any GC root to the selected instance.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Objects live in the heap; variables and fields hold references to them, not the objects themselves. GC roots are the references that are always in use: running threads' local variables and static fields. An object is reachable if a chain of references leads to it from a root; if none does, nothing can ever use it again, and it's garbage. The garbage collector finds the garbage and frees its memory.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="06-the-late-frame.html">← Puzzle 6</a>

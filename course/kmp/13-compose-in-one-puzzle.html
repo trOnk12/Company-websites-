@@ -142,7 +142,6 @@ fun Greeting(name: String) {
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/develop/ui/compose/mental-model">Android Developers: Thinking in Compose</a> (&quot;you can build your user interface by defining a set of composable functions that take in data and emit UI elements&quot;; &quot;This annotation informs the Compose compiler that this function is intended to convert data into UI&quot;; &quot;Recomposition is the process of calling your composable functions again when inputs change. When Compose recomposes based on new inputs, it calls only the functions or lambdas that might have changed, and skips the rest.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>In Compose, a screen is a Kotlin function marked @Composable that describes the UI for the current data, instead of creating and updating view objects. When that data, its state, changes, Compose calls the affected functions again: recomposition. remember keeps a value across those calls. A compiler plugin rewrites every @Composable function so the runtime can track what each one showed and redo only what changed.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="12-one-framework-not-two.html">← Puzzle 12</a>

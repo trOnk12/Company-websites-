@@ -138,7 +138,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.rfc-editor.org/rfc/rfc4949">RFC 4949, Internet Security Glossary</a> (&quot;man-in-the-middle attack: A form of active wiretapping attack in which the attacker intercepts and selectively modifies communicated data to masquerade as one or more of the entities&quot;; with an unauthenticated Diffie-Hellman exchange, the attacker could &quot;establish separate session keys with each of them, and … function as a clandestine proxy server between them&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A man in the middle intercepts the key exchange and runs two: one with your app, pretending to be the server, and one with the server, pretending to be your app. Each side ends with a shared secret, but shares it with the attacker, who decrypts, reads or changes everything, and re-encrypts it. Encryption doesn't help. What stops it is proof of who sent the public values: a signature, puzzle 7.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-a-secret-agreed-in-public.html">← Puzzle 3</a>

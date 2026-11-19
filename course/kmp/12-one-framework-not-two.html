@@ -141,7 +141,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kotlinlang.org/docs/multiplatform/multiplatform-build-native-binaries.html">Kotlin docs: Build final native binaries</a> (&quot;Usage of several Kotlin/Native frameworks in a Swift application is limited, but you can create an umbrella framework and export all these modules to it&quot;; &quot;When you export a dependency, it includes all of its API to the framework API. The compiler adds the code from this dependency to the framework, even if you use a small fraction of it. This disables dead code elimination&quot;; &quot;XCFrameworks… gather logic for all the target platforms and architectures in a single bundle&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Each Kotlin framework carries its own copy of the Kotlin runtime, and using several in one Swift app is limited. So ship one umbrella framework that exports the modules Swift needs. Every exported module comes in whole, which turns off dead code elimination for it: export only what Swift calls.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="11-whose-thread-is-it.html">← Puzzle 11</a>

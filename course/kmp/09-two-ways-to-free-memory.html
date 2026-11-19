@@ -140,7 +140,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kotlinlang.org/docs/native-memory-manager.html">Kotlin docs: Kotlin/Native memory management</a> (&quot;Objects are stored in a shared heap and can be accessed from any thread. Tracing garbage collection is performed periodically to collect objects that are not reachable from the 'roots', like local and global variables.&quot;)</li><li><a href="https://kotlinlang.org/docs/native-arc-integration.html">Kotlin docs: Integration with Swift/Objective-C ARC</a> (&quot;An object is reclaimed only during the garbage collection. This applies to Swift/Objective-C objects that cross interop boundaries into Kotlin/Native&quot;; &quot;To avoid retain cycles, use weak or unowned references&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Kotlin/Native keeps objects in a shared heap and frees them with a tracing GC, like the JVM. Swift frees with ARC. A Swift object held by Kotlin is only freed at a GC, not the moment it's let go; and a cycle that runs through both sides can leak. Break it with a weak reference on the Swift side.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="08-weak-references-and-closures.html">← Puzzle 8</a>

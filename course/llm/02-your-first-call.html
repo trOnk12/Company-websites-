@@ -51,13 +51,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="2">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 2 · 3 of 8</p>
+        <p class="eyebrow">Puzzle 2 · 3 of 10</p>
         <h1>Your first call</h1>
         <p class="lede">Puzzle 1 said the model works in tokens. Now one real call, so everything after it has something concrete to stand on: what your app sends, what comes back, and the three numbers that matter in the response.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" aria-current="page" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" aria-current="page" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li><li><a href="08-find-evidence-before-writing.html" title="Find evidence before asking the model">8</a></li><li><a href="09-measure-retrieval-and-answer-separately.html" title="Which step failed the answer?">9</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -150,7 +150,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/api/messages-examples">Anthropic: Messages API examples</a> (a response contains <code>content</code>, <code>stop_reason</code> such as <code>&quot;end_turn&quot;</code> or <code>&quot;max_tokens&quot;</code>, and <code>&quot;usage&quot;: { &quot;input_tokens&quot;: …, &quot;output_tokens&quot;: … }</code>; requests send <code>model</code>, <code>max_tokens</code> and <code>messages</code> with roles)</li><li><a href="https://docs.anthropic.com/en/docs/about-claude/pricing">Anthropic: Pricing</a> (input and output tokens are priced separately, output higher)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A call to a model is one HTTP POST: a model name, max_tokens (the most it may write), and messages, a list of turns each marked user or assistant. The response holds the continuation, a stop_reason (end_turn when it finished, max_tokens when it was cut off), and usage: the input and output tokens you pay for. Output tokens cost more than input ones, and each one takes time to generate.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="01-one-token-at-a-time.html">← Puzzle 1</a>

@@ -143,7 +143,6 @@
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Multithreading/RunLoopManagement/RunLoopManagement.html">Apple: Threading Programming Guide, Run Loops</a> (&quot;A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming events. The purpose of a run loop is to keep your thread busy when there is work to do and put your thread to sleep when there is none.&quot;)</li><li><a href="https://developer.apple.com/documentation/dispatch/dispatchqueue">Apple: DispatchQueue</a> (&quot;An object that manages the execution of tasks serially or concurrently on your app's main thread or on a background thread&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>iOS's main thread runs a run loop, the role of Android's Looper: it waits for work, handles it, and waits again. Work for it waits in the main queue, the role of the MessageQueue, and DispatchQueue.main.async plays handler.post. As on Android, UIKit may be touched only from the main thread, and slow work there freezes the screen.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="09-two-ways-to-free-memory.html">← Puzzle 9</a>

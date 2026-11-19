@@ -40,15 +40,13 @@
       ]
     }
   ],
-  "upcoming": [
-    {
-      "title": "Module 4: Compose Multiplatform in practice",
-      "topics": "Touch, scrolling and text input on iOS; accessibility through VoiceOver; interop with SwiftUI and UIKit in both directions; resources and navigation."
-    }
-  ],
+  "upcoming": [],
   "support": {
     "url": "",
     "label": "Buy me a coffee",
     "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
-  }
+  },
+  "relatedCourses": [
+    "compose"
+  ]
 }
