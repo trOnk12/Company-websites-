@@ -159,6 +159,11 @@
     },
   };
 
+  function unfinishedVisit(course, passed) {
+    const index = slugs(course).indexOf(read(`course:${course}:last`));
+    return passed.has(index) ? -1 : index;
+  }
+
   const puzzle = document.querySelector('article.puzzle[data-course]');
   if (puzzle) {
     const course = puzzle.dataset.course;
@@ -182,7 +187,7 @@
       if (msg) {
         msg.hidden = open;
         const left = quizzes.filter(q => !solved(q)).length;
-        msg.textContent = `Answer ${left === 1 ? 'the last question' : `the ${left} questions`} above correctly to unlock the next puzzle.`;
+        msg.textContent = `Answer ${left === 1 ? 'the last question' : `the ${left} questions`} above correctly to ${next ? 'unlock the next puzzle' : 'mark this puzzle as passed'}.`;
       }
     };
     // A gentle coffee reminder: only right after a puzzle is mastered, at most once a month.
@@ -303,12 +308,12 @@
     const total = Number(card.dataset.total);
     const bar = card.querySelector('progress');
     bar.value = have.size;
-    const last = slugs(course).indexOf(read(`course:${course}:last`));
+    const last = unfinishedVisit(course, have);
     if (!have.size && last < 0) continue;
     card.querySelector('.mine').textContent = have.size === total ? 'Completed' : `${have.size} of ${total} passed`;
     const go = card.querySelector('[data-puzzles]');
     const puzzles = go.dataset.puzzles.split(' ');
-    const next = last >= 0 && !have.has(last) ? last : puzzles.findIndex((_, i) => !have.has(i));
+    const next = last >= 0 ? last : puzzles.findIndex((_, i) => !have.has(i));
     go.textContent = next === -1 ? 'Review course' : 'Continue learning';
     if (next !== -1) go.href = `${course}/${puzzles[next]}.html`;
   }
@@ -318,7 +323,7 @@
   if (items.length) {
     const course = items[0].dataset.course;
     const have = new Set(store.get(course));
-    const last = slugs(course).indexOf(read(`course:${course}:last`));
+    const last = unfinishedVisit(course, have);
     const next = items.find(li => Number(li.dataset.n) === last && !have.has(last)) || items.find(li => !have.has(Number(li.dataset.n)));
     items.forEach(li => {
       const passed = have.has(Number(li.dataset.n));
@@ -356,7 +361,8 @@
       let d;
       try { d = JSON.parse(tutorData.textContent); } catch { return; }
       const have = new Set(store.get(course));
-      const next = d.puzzles.find(p => !have.has(p.n));
+      const last = unfinishedVisit(course, have);
+      const next = d.puzzles.find(p => p.n === last) || d.puzzles.find(p => !have.has(p.n));
       const known = d.terms.filter(t => have.has(t.in));
       const missed = store.missed(course).filter(m => d.puzzles[m.n]);
       const lines = [
@@ -412,7 +418,7 @@
       const have = passed(c.id), li = el('li', 'me-course');
       li.append(link(`${c.id}/`, c.title));
       const bar = el('progress'); bar.max = c.puzzles.length; bar.value = have.size; bar.setAttribute('aria-label', `${c.title}: ${have.size} of ${c.puzzles.length}`);
-      li.append(bar, el('span', 'small', have.size === 0 ? ' not started' : have.size === c.puzzles.length ? ' complete ✓' : ` ${have.size} of ${c.puzzles.length}`));
+      li.append(bar, el('span', 'small', have.size === 0 ? (unfinishedVisit(c.id, have) >= 0 ? ' started · 0 passed' : ' not started') : have.size === c.puzzles.length ? ' complete ✓' : ` ${have.size} of ${c.puzzles.length}`));
       where.append(li);
     }
 
@@ -421,6 +427,12 @@
     const next = [];
     for (const c of courses) {
       const have = passed(c.id);
+      const last = unfinishedVisit(c.id, have);
+      const saved = c.puzzles.find(p => p.n === last);
+      if (saved) {
+        next.push({ c, p: saved, why: 'Continue the puzzle you last opened in this course.' });
+        continue;
+      }
       if (!have.size || have.size === c.puzzles.length) continue;
       const ready = c.puzzles.find(p => !have.has(p.n) && p.blocks.every(b => have.has(b)));
       const p = ready || c.puzzles.find(p => !have.has(p.n));
@@ -429,7 +441,7 @@
       next.push({ c, p, why });
     }
     for (const c of courses) {
-      if (passed(c.id).size || !c.assumes || !byId[c.assumes] || !done(byId[c.assumes])) continue;
+      if (next.some(item => item.c === c) || passed(c.id).size || !c.assumes || !byId[c.assumes] || !done(byId[c.assumes])) continue;
       next.push({ c, p: c.puzzles[0], why: `It builds on ${byId[c.assumes].title}, which you've finished.` });
     }
     if (!next.length) for (const id of ['android', 'sysdesign', 'security']) if (byId[id] && !passed(id).size) next.push({ c: byId[id], p: byId[id].puzzles[0], why: 'A course that starts from zero.' });
