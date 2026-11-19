@@ -16,9 +16,15 @@ In puzzle 5, Swift reached your Kotlin through an Objective-C header. Your share
 
 ## The building block
 
+Start with the value. Compare a flow of users with a flow of orders. Could a Swift caller distinguish them from the types in the generated header alone?
+
 **Generics.** Objective-C allows type parameters only on classes, not on interfaces. Kotlin's `Flow` is an interface, so `Flow<User>` arrives in Swift without its `User`: Swift sees "some Flow" and has to be told what's inside. A class like `Box<User>` keeps its `User`.
 
+Now keep the result type fixed. Imagine a function returning a single user. If that user arrives later, how does the caller learn the result is ready?
+
 **`suspend` functions.** Objective-C has no coroutines. Its way of saying "later" is a **completion handler**: a function you pass in, which is called with the result when it's ready. So each `suspend` function becomes a method that takes a completion handler. Swift has its own version of suspend: an **async function**, which the caller waits for with `await`, without blocking, much as a coroutine waits at a `suspend` call. Swift 5.5 and later can also expose an async form for the imported Kotlin function. The completion handler is the underlying interface. This bridge has limitations, so test the generated interface you ship.
+
+Finally, keep the timing fixed. Imagine an ordinary function that either returns the user immediately or throws `IOException`. Which failure did the generated header promise Swift could handle?
 
 **Exceptions.** Every Kotlin exception is unchecked: nothing forces the caller to handle it. Swift's errors are checked: a function that can fail says so with `throws`, and the caller must handle it. For this bridge, list the expected exceptions with **`@Throws`**. Those classes and their subclasses reach Swift as errors it can catch. An unexpected exception escaping the bridge can terminate the app. If a suspending function is asked to stop, it can pass the error that signals this even without `@Throws`.
 
@@ -32,7 +38,7 @@ The translation from puzzle 5 again. A word the third language doesn't have (a K
 
 - Your shared code exposes a `Flow<User>`. What does Swift see?::*A Flow, without knowing it carries users||Exactly that Flow with its type, because generics always cross >> Generics cross only on classes; Flow is an interface, so its type parameter is lost. >> s2||Nothing at all, because Flow can't cross the header >> The Flow does cross, as an Objective-C type; only its type parameter is lost. >> s2::Interface generics are lost in the Objective-C header.
 - An ordinary Kotlin function throws `IOException` and has no `@Throws`. Swift calls it, and it throws. What happens?::*The app ends: the exception isn't listed, so Swift can't catch it||Swift gets an error it can catch, like any `throws` function >> Only exceptions listed in `@Throws` become Swift errors; the rest end the app. >> s4||Kotlin catches it and returns null >> Nothing catches it on the way; an unlisted exception ends the app. >> s4::For ordinary functions, the annotation declares errors that may cross the bridge.
-- What's the difference between a `suspend` function in Kotlin and what Swift sees?::*Swift sees a method with a completion handler, called with await||Swift sees the same suspend function, since Swift has suspend too >> Swift has no suspend; Objective-C's bridge turns it into a completion handler. >> s3||Swift sees a function that blocks until the result is ready >> Nothing blocks: the completion handler is called later, with the result. >> s3::Suspend becomes "call me back when done".
+- What's the difference between a `suspend` function in Kotlin and what Swift sees?::*The bridge exposes a completion handler with an optional async form in Swift||Swift sees the same suspend function, since Swift has suspend too >> Swift has no suspend; Objective-C's bridge turns it into a completion handler. >> s3||Swift sees a function that blocks until the result is ready >> Nothing blocks: the completion handler is called later, with the result. >> s3::Suspend becomes "call me back when done".
 
 ## Sources
 

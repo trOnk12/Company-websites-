@@ -1,6 +1,6 @@
 // Course diagram player: plays each step-through diagram like a GIF.
 // Progressive enhancement: without this script the steps still work with the Back / Next labels.
-// Self-hosted, no dependencies, no tracking.
+// Self-hosted, no dependencies.
 (() => {
   'use strict';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -10,9 +10,12 @@
   // Events show how far people get: started, played a diagram, mastered puzzle N.
   const count = (p, event, title) => {
     if (!/(^|\.)pachulski\.dev$/.test(location.hostname)) return; // never count local previews or tests
-    const q = new URLSearchParams({ p, t: title || document.title, r: event ? '' : document.referrer, rnd: String(Math.random()).slice(2, 8) });
+    if (navigator.globalPrivacyControl || navigator.doNotTrack === '1') return;
+    const q = new URLSearchParams({ p, t: title || document.title, rnd: String(Math.random()).slice(2, 8) });
     if (event) q.set('e', 'true');
-    new Image().src = `https://pachulski.goatcounter.com/count?${q}`;
+    const pixel = new Image();
+    pixel.referrerPolicy = 'no-referrer';
+    pixel.src = `https://pachulski.goatcounter.com/count?${q}`;
   };
   count(location.pathname);
 
@@ -141,7 +144,7 @@
   const store = {
     get(course) { const s = slugs(course); return done(course).map(x => s.indexOf(x)).filter(i => i >= 0); },
     add(course, n) { const slug = slugs(course)[n]; if (!slug) return; const d = new Set(done(course)); d.add(slug); write(`course:${course}:done`, [...d]); },
-    clear(course) { try { ['done', 'mastered', 'missed'].forEach(k => localStorage.removeItem(`course:${course}:${k}`)); } catch {} },
+    clear(course) { try { ['done', 'mastered', 'missed', 'last'].forEach(k => localStorage.removeItem(`course:${course}:${k}`)); } catch {} },
     // Questions you first answered wrong: your weak spots, for the tutor prompt. Only in this browser.
     missed(course) {
       const s = slugs(course), order = IDX.legacy[course] || s;
@@ -160,6 +163,7 @@
   if (puzzle) {
     const course = puzzle.dataset.course;
     const n = Number(puzzle.dataset.n);
+    if (!store.get(course).includes(n)) write(`course:${course}:last`, slugs(course)[n]);
     const quizzes = [...puzzle.querySelectorAll('fieldset.quiz')];
     const next = puzzle.querySelector('.pager a.primary');
     const msg = puzzle.querySelector('.gate-msg');
@@ -270,6 +274,28 @@
   openLinkedDetail();
   window.addEventListener('hashchange', openLinkedDetail);
 
+  const search = document.querySelector('#puzzle-search');
+  if (search) {
+    const panel = search.closest('section');
+    const rows = [...panel.querySelectorAll('li')];
+    const status = panel.querySelector('[role="status"]');
+    const list = panel.querySelector('ul');
+    function filterPuzzles() {
+      const terms = search.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      let count = 0;
+      for (const row of rows) {
+        const words = (row.textContent + ' ' + row.dataset.summary).toLowerCase();
+        row.hidden = !terms.length || !terms.every(term => words.includes(term));
+        if (!row.hidden) count++;
+      }
+      list.hidden = !count;
+      status.textContent = !terms.length ? '' : count ? `${count} matching puzzle${count === 1 ? '' : 's'}` : 'No puzzles found. Try a shorter term or browse the courses below.';
+    }
+    filterPuzzles();
+    panel.hidden = false;
+    search.addEventListener('input', filterPuzzles);
+  }
+
   // ── Course cards on the catalog: resume an unfinished course ──
   for (const card of document.querySelectorAll('[data-progress]')) {
     const course = card.dataset.progress;
@@ -277,11 +303,12 @@
     const total = Number(card.dataset.total);
     const bar = card.querySelector('progress');
     bar.value = have.size;
-    if (!have.size) continue;
+    const last = slugs(course).indexOf(read(`course:${course}:last`));
+    if (!have.size && last < 0) continue;
     card.querySelector('.mine').textContent = have.size === total ? 'Completed' : `${have.size} of ${total} passed`;
     const go = card.querySelector('[data-puzzles]');
     const puzzles = go.dataset.puzzles.split(' ');
-    const next = puzzles.findIndex((_, i) => !have.has(i));
+    const next = last >= 0 && !have.has(last) ? last : puzzles.findIndex((_, i) => !have.has(i));
     go.textContent = next === -1 ? 'Review course' : 'Continue learning';
     if (next !== -1) go.href = `${course}/${puzzles[next]}.html`;
   }
@@ -291,14 +318,15 @@
   if (items.length) {
     const course = items[0].dataset.course;
     const have = new Set(store.get(course));
-    const next = items.find(li => !have.has(Number(li.dataset.n)));
+    const last = slugs(course).indexOf(read(`course:${course}:last`));
+    const next = items.find(li => Number(li.dataset.n) === last && !have.has(last)) || items.find(li => !have.has(Number(li.dataset.n)));
     items.forEach(li => {
       const passed = have.has(Number(li.dataset.n));
       li.dataset.state = passed ? 'done' : li === next ? 'next' : 'upcoming';
       li.querySelector('.puzzle-state').textContent = passed ? 'Passed' : li === next && have.size ? 'Up next' : '';
     });
     const resume = document.querySelector(`[data-resume="${course}"]`);
-    if (resume && have.size) {
+    if (resume && (have.size || last >= 0)) {
       if (next) {
         const lesson = next.querySelector('a');
         resume.textContent = `Continue: ${lesson.textContent}`;

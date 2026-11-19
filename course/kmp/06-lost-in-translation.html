@@ -96,8 +96,11 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
+<p>Start with the value. Compare a flow of users with a flow of orders. Could a Swift caller distinguish them from the types in the generated header alone?</p>
 <p><b>Generics.</b> Objective-C allows type parameters only on classes, not on interfaces. Kotlin's <code>Flow</code> is an interface, so <code>Flow&lt;User&gt;</code> arrives in Swift without its <code>User</code>: Swift sees &quot;some Flow&quot; and has to be told what's inside. A class like <code>Box&lt;User&gt;</code> keeps its <code>User</code>.</p>
+<p>Now keep the result type fixed. Imagine a function returning a single user. If that user arrives later, how does the caller learn the result is ready?</p>
 <p><b><code>suspend</code> functions.</b> Objective-C has no coroutines. Its way of saying &quot;later&quot; is a <b>completion handler</b>: a function you pass in, which is called with the result when it's ready. So each <code>suspend</code> function becomes a method that takes a completion handler. Swift has its own version of suspend: an <b>async function</b>, which the caller waits for with <code>await</code>, without blocking, much as a coroutine waits at a <code>suspend</code> call. Swift 5.5 and later can also expose an async form for the imported Kotlin function. The completion handler is the underlying interface. This bridge has limitations, so test the generated interface you ship.</p>
+<p>Finally, keep the timing fixed. Imagine an ordinary function that either returns the user immediately or throws <code>IOException</code>. Which failure did the generated header promise Swift could handle?</p>
 <p><b>Exceptions.</b> Every Kotlin exception is unchecked: nothing forces the caller to handle it. Swift's errors are checked: a function that can fail says so with <code>throws</code>, and the caller must handle it. For this bridge, list the expected exceptions with <b><code>@Throws</code></b>. Those classes and their subclasses reach Swift as errors it can catch. An unexpected exception escaping the bridge can terminate the app. If a suspending function is asked to stop, it can pass the error that signals this even without <code>@Throws</code>.</p>
 <p>None of this is a bug: it's the price of the bridge from puzzle 5. Knowing it lets you shape your API so Swift gets what it needs: generic classes instead of generic interfaces, and a deliberate error contract for functions you expose.</p>
       </section>
@@ -127,7 +130,7 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a <code>suspend</code> function in Kotlin and what Swift sees?</legend>
-<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-1" data-ok><label for="q-06-lost-in-translation-3-1">Swift sees a method with a completion handler, called with await</label>
+<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-1" data-ok><label for="q-06-lost-in-translation-3-1">The bridge exposes a completion handler with an optional async form in Swift</label>
 <input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-2"><label for="q-06-lost-in-translation-3-2">Swift sees a function that blocks until the result is ready</label>
 <input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-3"><label for="q-06-lost-in-translation-3-3">Swift sees the same suspend function, since Swift has suspend too</label>
 <p class="fb ok opt-1"><b>Right.</b> Suspend becomes &quot;call me back when done&quot;.</p>

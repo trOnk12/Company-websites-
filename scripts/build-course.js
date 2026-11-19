@@ -442,6 +442,12 @@ function renderIndex(cs) {
       </div>
     </section>
     <div class="wrap catalog-body" id="browse-courses">
+      <section hidden aria-labelledby="search-heading">
+        <h2 id="search-heading"><label for="puzzle-search">Find a puzzle</label></h2>
+        <input type="search" id="puzzle-search" placeholder="Try TLS, Flow or state">
+        <p class="small" role="status"></p>
+        <ul hidden>${cs.flatMap(c => c.puzzles.map(p => `<li data-summary="${L.esc(p.meta.summary)}"><a href="${c.id}/${p.slug}.html">${L.esc(p.meta.title)}</a> · ${L.esc(c.meta.title)}</li>`)).join('')}</ul>
+      </section>
       ${sections}
 ${soon ? `      <details class="course-extras"><summary>${L.esc(cat.title)}</summary><ul class="modules">${soon}</ul></details>\n` : ''}      <p class="catalog-method"><a href="how-its-made.html">How the puzzles are written and checked</a></p>
     </div>`;

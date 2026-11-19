@@ -914,3 +914,15 @@ li[data-state='done'] .puzzle-state { color: #245B37; background: #E3EFE1; }
   .puzzle.course-top { padding-top: 1.15rem; }
   .module-count { display: block; margin-left: 1rem; }
 }
+
+#puzzle-search {
+  width: min(100%, 36rem);
+  min-height: 2.75rem;
+  padding: .55rem .75rem;
+  font: inherit;
+  border: 1px solid currentColor;
+  border-radius: .4rem;
+}
+#search-heading ~ ul { list-style: none; padding: 0; }
+#search-heading ~ ul li { border-bottom: 1px solid var(--rule); padding: .35rem 0; }
+#search-heading ~ ul a { display: inline-block; padding-block: .55rem; }
