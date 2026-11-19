@@ -35,5 +35,8 @@
     "url": "",
     "label": "Buy me a coffee",
     "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
-  }
+  },
+  "relatedCourses": [
+    "transport"
+  ]
 }

@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="4" data-prev="03-reading-the-flames.html" data-prev-title="Reading the flames">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" class="done" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" class="done" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" class="done" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" aria-current="page" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Puzzle 4 · 5 of 10</p>
-      <h1>Slow isn't always busy</h1>
-      <p class="lede">A trace section on your main thread takes 120 ms, but a sample of the same moment shows almost nothing running. Both are right. Here's the line under every thread in a system trace that explains it.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="4">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Performance, under the hood</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 4 · 5 of 10</p>
+        <h1>Slow isn't always busy</h1>
+        <p class="lede">A trace section on your main thread takes 120 ms, but a sample of the same moment shows almost nothing running. Both are right. Here's the line under every thread in a system trace that explains it.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" aria-current="page" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="2"><details><summary><a href="02-a-photo-or-a-diary.html">Puzzle 2: A photo or a diary</a></summary><p>Sampling asks the kernel to snapshot a thread's call stack every so many CPU events; counting the snapshots shows where time goes, cheaply, but short calls can be missed. Method tracing injects a timestamp at every method's start and end: exact counts, but the instrumentation slows the app and skews the timings. Trace sections mark only the spans you choose.</p></details></li><li data-block="3"><details><summary><a href="03-reading-the-flames.html">Puzzle 3: Reading the flames</a></summary><p>A call chart draws each call along a timeline, callees under their caller. A flame chart merges identical call stacks into one bar, so width means total time and left to right means nothing. A wide bar with a wide child is slow because of the child; a bar wider than all its children is slow in its own code: its self time.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="One 120 ms span, four thread states underneath"><input type="radio" name="st-states" id="st-states-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-states" id="st-states-2" aria-label="Step 2 of 4"><input type="radio" name="st-states" id="st-states-3" aria-label="Step 3 of 4"><input type="radio" name="st-states" id="st-states-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ts-t"><title id="ts-t">A 120 ms trace section on the main thread; underneath, the thread's state line shows a short Running stretch, a long Sleeping stretch waiting for a lock held by another thread, a Runnable stretch waiting for a CPU, and an Uninterruptible Sleep stretch waiting for the disk</title><defs><marker id="ah-states-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-states-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-states-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-states-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ts-t"><title id="ts-t">A 120 ms trace section on the main thread; underneath, the thread's state line shows a short Running stretch, a long Sleeping stretch waiting for a lock held by another thread, a Runnable stretch waiting for a CPU, and an Uninterruptible Sleep stretch waiting for the disk</title><defs><marker id="ah-states-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-states-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-states-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-states-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><circle class="d-skin" cx="70" cy="150" r="15"/><rect class="d-roof" x="48" y="167" width="44" height="32" rx="12"/><rect class="d-wood" x="14" y="200" width="150" height="12" rx="3"/><text class="d-tiny" x="70" y="234" text-anchor="middle">main thread</text></g>
 <g class="step s1" data-pulse="1"><rect class="d-hl" x="150" y="60" width="460" height="34" rx="4"/><text class="d-a" x="380" y="82" text-anchor="middle">loadUser(): 120 ms</text></g>
@@ -76,6 +87,7 @@
 <g class="step s4" data-pulse="4"><text class="d-a" x="380" y="230" text-anchor="middle">only Running is slow code</text><text class="d-tiny" x="380" y="260" text-anchor="middle">so a sample barely sees this span</text></g>
 <g class="step s1" data-move="1:380,40 2:170,115 3:470,115 4:170,115"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Your trace section says <code>loadUser()</code> took 120 ms on the main thread. But was the thread working all that time?</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-states-2">Next →</label></div></li>
 <li><p>The <b>thread state</b> line underneath: <b>Running</b> for 10 ms, then <b>Sleeping</b>: another thread holds a lock the main thread needs.</p><div class="stepnav"><label for="st-states-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-states-3">Next →</label></div></li>
@@ -124,12 +136,8 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.android.com/topic/performance/tracing/navigate-report">Android Developers: Navigate a Systrace report</a> (&quot;Running: The thread is completing work related to a process or is responding to an interrupt. Runnable: The thread is available to run but isn't currently scheduled. Sleeping: The thread has no work to do, perhaps because the thread is blocked on a mutex lock. Uninterruptable sleep: The thread is blocked on I/O or waiting for a disk operation to complete.&quot;)</li><li><a href="https://perfetto.dev/docs/data-sources/cpu-scheduling">Perfetto: CPU scheduling events</a> (&quot;When Thread A suspends on the wait() it will enter the state S(sleeping) and get removed from the CPU run queue&quot;; end_state &quot;R Runnable … S Sleeping D Uninterruptible Sleep&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/topic/performance/tracing/navigate-report">Android Developers: Navigate a Systrace report</a> (&quot;Running: The thread is completing work related to a process or is responding to an interrupt. Runnable: The thread is available to run but isn't currently scheduled. Sleeping: The thread has no work to do, perhaps because the thread is blocked on a mutex lock. Uninterruptable sleep: The thread is blocked on I/O or waiting for a disk operation to complete.&quot;)</li><li><a href="https://perfetto.dev/docs/data-sources/cpu-scheduling">Perfetto: CPU scheduling events</a> (&quot;When Thread A suspends on the wait() it will enter the state S(sleeping) and get removed from the CPU run queue&quot;; end_state &quot;R Runnable … S Sleeping D Uninterruptible Sleep&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A system trace shows each thread's state as the kernel sees it: Running on a CPU, Runnable and waiting for one, Sleeping while blocked on a lock or a reply, or in Uninterruptible Sleep waiting for disk I/O. A slow span that's mostly Running needs faster code; mostly Sleeping or Uninterruptible Sleep, it's waiting on something else; mostly Runnable, other threads have the CPUs.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-reading-the-flames.html">← Puzzle 3</a>

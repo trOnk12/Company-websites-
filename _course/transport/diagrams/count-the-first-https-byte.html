@@ -1,0 +1,17 @@
+<!-- label: Where did the extra round trips go? -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Where did the extra round trips go?</title>
+<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">80 ms per RTT</text></g>
+<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">TCP setup</text></g>
+<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
+<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">TLS setup</text></g>
+<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
+<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">First byte</text></g>
+<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
+<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Forty milliseconds there and forty back makes an 80 ms round trip.</p></li>
+<li><p>The phone spends a round trip starting the TCP connection.</p></li>
+<li><p>The full TLS 1.3 server flight takes another round trip.</p></li>
+<li><p>The regular HTTP request and first response byte take a third under the model.</p></li>
+</ol>

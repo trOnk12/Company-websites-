@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="2" data-prev="01-bits-xor-and-a-toy-cipher.html" data-prev-title="Bits, XOR and a toy cipher">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" class="done" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" class="done" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" aria-current="page" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
-      <p class="eyebrow">Encryption, from the ground up · Puzzle 2 · 3 of 9</p>
-      <h1>One key for both</h1>
-      <p class="lede">In puzzle 0, encryption turned the password into gibberish. Here's how the standard way does it, why it's fast, and the one problem it leaves open.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="2">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Encryption, from the ground up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 2 · 3 of 9</p>
+        <h1>One key for both</h1>
+        <p class="lede">In puzzle 0, encryption turned the password into gibberish. Here's how the standard way does it, why it's fast, and the one problem it leaves open.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" aria-current="page" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-bits-xor-and-a-toy-cipher.html">Puzzle 1: Bits, XOR and a toy cipher</a></summary><p>Data is bits, and a key is a string of bits too. XOR combines two bits: 0 if they're equal, 1 if they differ; XOR the same key in twice and you're back where you started. A one-time pad XORs each data bit with a key bit: perfectly secret if the key is random, as long as the data, and used once. Reuse the key, and XORing two ciphertexts cancels it, leaking the two messages XORed together.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="AES: one key locks and unlocks, block by block"><input type="radio" name="st-aes" id="st-aes-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-aes" id="st-aes-2" aria-label="Step 2 of 4"><input type="radio" name="st-aes" id="st-aes-3" aria-label="Step 3 of 4"><input type="radio" name="st-aes" id="st-aes-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ae-t"><title id="ae-t">The same key encrypts and decrypts; AES cuts data into 128-bit blocks and scrambles each one; the open problem is getting the same key to both sides</title><defs><marker id="ah-aes-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-aes-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-aes-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-aes-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ae-t"><title id="ae-t">The same key encrypts and decrypts; AES cuts data into 128-bit blocks and scrambles each one; the open problem is getting the same key to both sides</title><defs><marker id="ah-aes-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-aes-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-aes-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-aes-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="30" y="110" width="64" height="120" rx="12"/><rect class="d-hl" x="37" y="124" width="50" height="86" rx="4"/><circle class="d-ink" cx="62" cy="220" r="3"/><text class="d-tiny" x="62" y="248" text-anchor="middle">your app</text></g>
 <g class="step s1"><rect class="d-wood" x="530" y="100" width="80" height="120" rx="6"/><rect class="d-paper" x="540" y="112" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="123" r="4"/><rect class="d-paper" x="540" y="144" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="155" r="4"/><rect class="d-paper" x="540" y="176" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="187" r="4"/><text class="d-tiny" x="570" y="238" text-anchor="middle">your server</text></g>
@@ -76,6 +87,7 @@
 <g class="step s4" data-pulse="4"><g><circle class="d-skin" cx="320" cy="268" r="15"/><rect class="d-bad" x="298" y="285" width="44" height="32" rx="12"/><text class="d-tiny" x="320" y="338" text-anchor="middle">listener</text></g><g><circle class="d-bad" cx="390" cy="280" r="10"/><circle class="d-paper" cx="390" cy="280" r="3"/><rect class="d-bad" x="398" y="277" width="30" height="6" rx="2"/><rect class="d-bad" x="420" y="282" width="5" height="7"/><rect class="d-bad" x="412" y="282" width="4" height="5"/><text class="d-tiny" x="404" y="306" text-anchor="middle">copy?</text></g></g>
 <path class="step only-4 d-arr-red" d="M100,80 C220,60 300,160 370,268" marker-end="url(#ah-aes-red)"/>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>One key, and both sides have it: lock with it, unlock with the same key. That's <b>symmetric encryption</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-aes-2">Next →</label></div></li>
 <li><p>The standard, <b>AES</b>, works in <b>blocks of 128 bits</b>, 16 bytes each.</p><div class="stepnav"><label for="st-aes-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-aes-3">Next →</label></div></li>
@@ -124,12 +136,8 @@
 <p class="fb no opt-2"><b>Not quite.</b> The block is your data; the key is separate, and must stay secret. <label class="show-me" for="st-aes-2" data-goto="st-aes">Show me step 2 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf">NIST FIPS 197: Advanced Encryption Standard (AES)</a> (&quot;The AES algorithm is a symmetric block cipher that can encrypt (encipher) and decrypt (decipher) digital information. The AES algorithm is capable of using cryptographic keys of 128, 192, and 256 bits to encrypt and decrypt data in blocks of 128 bits.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf">NIST FIPS 197: Advanced Encryption Standard (AES)</a> (&quot;The AES algorithm is a symmetric block cipher that can encrypt (encipher) and decrypt (decipher) digital information. The AES algorithm is capable of using cryptographic keys of 128, 192, and 256 bits to encrypt and decrypt data in blocks of 128 bits.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>In symmetric encryption, the same key locks and unlocks. AES, the standard, encrypts in blocks of 128 bits with a key of 128, 192 or 256 bits; it's fast enough for everything you send. Its open problem: both sides need the same key, and you can't just send it.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="01-bits-xor-and-a-toy-cipher.html">← Puzzle 1</a>

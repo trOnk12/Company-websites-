@@ -165,7 +165,7 @@
   },
   "bytecode": {
    "in": "00",
-   "def": "Instructions for a virtual machine, like the JVM, not for a CPU.",
+   "def": "Encoded instructions read by a program such as the JVM or ART.",
    "aliases": []
   },
   "native code": {
@@ -173,6 +173,9 @@
    "def": "Machine code that runs directly on the CPU, with no virtual machine.",
    "aliases": []
   },
+  "w0": {"in": "00", "def": "An Arm register in the addition example.", "kind": "code"},
+  "w1": {"in": "00", "def": "A second Arm register in the addition example.", "kind": "code"},
+  "add w1, w0, w1": {"in": "00", "def": "Arm addition with w1 as the destination.", "kind": "code"},
   "Kotlin/Native": {
    "in": "00",
    "def": "Kotlin's back end that produces native code, built on LLVM.",

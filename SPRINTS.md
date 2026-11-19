@@ -207,3 +207,14 @@ blocks, mastery checks, test-out), the mobile engineer's angle across platforms 
 block), every fact proved from source code or a spec, and material you can take with you (Obsidian, flashcards, a
 Claude tutor that knows what you've passed). And it improves from real learners: anonymous wrong-answer counts
 show which puzzle is broken.
+
+## Next stage: an AI engineering lab and verified learning log
+
+The public learning log will publish small experiments about new AI tools, chat integrations and repeatable agent workflows. Each article starts from an engineering question, gives the reader the same inputs and a rerun command, reports what actually happened, and names what still needs testing.
+
+1. **Text and evaluation.** The first lab compares TF-IDF and a pinned MiniLM model on the same synthetic help articles. The experiment records exact rankings and feeds two LLM course puzzles on retrieval and evidence. Extend it with exact identifiers, unseen cases, and unanswerable questions before generalizing.
+2. **Chat and tool use.** Connect a chat to a read-only search tool in a disposable support workspace. Compare a chat using search manually, a chat using a typed tool call, and a repeatable skill that makes the full workflow explicit. Give the setups the same corpus and permissions. Record tool calls, evidence, answer support, errors, latency and visible costs. Use fixed expectations for tool call inputs and outputs. Test missing evidence, tool errors, and instructions embedded in retrieved text as inputs to ignore. Gate any write behind explicit user approval.
+3. **Android and KMP.** Build a small shared Kotlin chat feature. Use fake tool and model adapters for deterministic shared tests, then compare streaming and cancellation in the real client. On Linux install an Android SDK and verify the build and JVM tests. Run Android device checks where a device or supported emulator is available. Use a macOS runner with Xcode for Apple-target builds, Simulator checks and iOS-specific behavior. Mark each result with the platform actually tested.
+4. **Publishing threshold.** Keep test data synthetic or public. Pin tool and model versions, save raw outcomes and publish a source or replay wherever permissions permit. For a new tool version, rerun the same cases before updating the claim.
+
+Implementation discussions can refer to the public articles. Credentials, real user data and paid services belong behind explicit access and scope decisions.

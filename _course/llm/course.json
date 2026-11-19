@@ -22,6 +22,14 @@
         "06-your-key-is-not-a-secret.md",
         "07-on-the-phone-or-in-the-cloud.md"
       ]
+    },
+    {
+      "title": "Module 2: Text retrieval and evidence",
+      "blurb": "Compare two ways to find text, and test selection separately from the claims an assistant makes.",
+      "puzzles": [
+        "08-find-evidence-before-writing.md",
+        "09-measure-retrieval-and-answer-separately.md"
+      ]
     }
   ],
   "upcoming": [
@@ -30,11 +38,11 @@
       "topics": "max_tokens and a cut-off answer, why output tokens cost more than input, rate limits and retries, prompt caching, and structured output you can parse."
     },
     {
-      "title": "Module 2: Tools and agents",
-      "topics": "Tool use: the model asks your code to act; structured output; the agent loop; letting it read your app's data safely; prompt injection."
+      "title": "Module 3: Tool use and chat assistants",
+      "topics": "Compare model tool calling and reusable skills with the same text cases. Under explicit permissions, connect a chat interface to a read-only test tool and inspect the tool logs."
     },
     {
-      "title": "Module 3: Shipping it",
+      "title": "Module 4: Shipping it",
       "topics": "Prompt caching and cost, evaluating answers, guardrails, latency budgets on mobile, and fallbacks when the model is down."
     }
   ],

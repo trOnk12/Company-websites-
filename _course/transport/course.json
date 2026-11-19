@@ -1,0 +1,29 @@
+{
+  "title": "TCP to HTTPS, one request under a microscope",
+  "intro": "Trace a mobile request from opening the connection to authenticating the server, counting the first byte and understanding what packet loss changes.",
+  "how": "Follow the mechanism, predict a change and check your answer. Optional depth is available from the same puzzle.",
+  "assumes": {
+    "title": "Mobile system design, from a packet to an app",
+    "href": "../sysdesign/"
+  },
+  "modules": [
+    {
+      "title": "Module 1: Open, secure and reuse a connection",
+      "blurb": "Follow sequence numbers, missing bytes, TLS proof and a first-byte budget.",
+      "puzzles": [
+        "00-open-the-tcp-connection.md",
+        "01-a-hole-in-the-byte-stream.md",
+        "02-who-proves-the-server-name.md",
+        "03-count-the-first-https-byte.md"
+      ]
+    },
+    {
+      "title": "Module 2: Share a connection under loss",
+      "blurb": "Compare delivery on HTTP/2 and HTTP/3 with the same two requests.",
+      "puzzles": [
+        "04-when-one-stream-loses-data.md"
+      ]
+    }
+  ],
+  "upcoming": []
+}

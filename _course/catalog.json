@@ -40,5 +40,44 @@
       "title": "Data structures that earn their keep",
       "topics": "Hash tables, heaps, graph search, B-trees and LSM trees, Bloom filters, CRDTs: what real systems use, and why."
     }
-  ]
+  ],
+  "groups": [
+    {
+      "title": "Mobile development",
+      "courses": [
+        "android",
+        "kmp",
+        "compose",
+        "ios",
+        "perf"
+      ]
+    },
+    {
+      "title": "Networking and security",
+      "courses": [
+        "sysdesign",
+        "transport",
+        "security",
+        "ble"
+      ]
+    },
+    {
+      "title": "AI for mobile",
+      "courses": [
+        "llm"
+      ]
+    }
+  ],
+  "descriptions": {
+    "android": "Follow processes, threads and Binder to explain frozen screens, lifecycle and process death.",
+    "kmp": "Follow one Kotlin function through the build, then see how Swift calls Kotlin and how Compose draws on iOS.",
+    "ios": "Use your Android experience to understand iOS lifecycle, the run loop, Swift concurrency and ARC.",
+    "perf": "Read traces and heap dumps to work out why a frame, a thread or the garbage collector is slow.",
+    "sysdesign": "Follow a request through DNS, HTTP and TLS, then build up to offline sync and safe retries.",
+    "security": "Build from bits and keys to hashes, signatures, certificates and the TLS handshake.",
+    "ble": "Follow a sensor from its first radio advertisement to a connection and a GATT notification.",
+    "llm": "Trace a model call from tokens to streaming, then compare two ways of finding evidence for a chat assistant.",
+    "compose": "Follow a shared screen through state reads, placement, native iOS interop and VoiceOver.",
+    "transport": "Work through TCP byte numbers, TLS identity checks, HTTPS timing and what packet loss does to HTTP/2 and HTTP/3."
+  }
 }

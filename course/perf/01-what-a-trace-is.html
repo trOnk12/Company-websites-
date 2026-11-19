@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="1" data-prev="00-threads-take-turns.html" data-prev-title="Threads take turns">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" aria-current="page" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Puzzle 1 · 2 of 10</p>
-      <h1>What a trace is</h1>
-      <p class="lede">Every performance tool in this course ends up drawing the same picture: rows of coloured bars over time. Before reading any of them, here's what that recording is, who writes it, and how to read one row.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="1">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Performance, under the hood</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 1 · 2 of 10</p>
+        <h1>What a trace is</h1>
+        <p class="lede">Every performance tool in this course ends up drawing the same picture: rows of coloured bars over time. Before reading any of them, here's what that recording is, who writes it, and how to read one row.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" aria-current="page" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="0"><details><summary><a href="00-threads-take-turns.html">Puzzle 0: Threads take turns</a></summary><p>A CPU core runs one thread at a time. The kernel's scheduler decides which ready thread runs on which core, and for how long; ready threads wait in a run queue, and a running thread can be switched out so others get a turn. A thread waiting for something (a lock, the disk, a message) leaves the queue entirely until the kernel wakes it. So a thread's elapsed time is its running time plus its waiting.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="One trace: tracks, slices, nesting"><input type="radio" name="st-trace" id="st-trace-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-trace" id="st-trace-2" aria-label="Step 2 of 4"><input type="radio" name="st-trace" id="st-trace-3" aria-label="Step 3 of 4"><input type="radio" name="st-trace" id="st-trace-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tr-t"><title id="tr-t">The kernel and the app write timestamped events into one recording; Perfetto draws them with time left to right, one track per thread, named slices on each track, and a slice under another one happening inside it</title><defs><marker id="ah-trace-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-trace-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-trace-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-trace-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tr-t"><title id="tr-t">The kernel and the app write timestamped events into one recording; Perfetto draws them with time left to right, one track per thread, named slices on each track, and a slice under another one happening inside it</title><defs><marker id="ah-trace-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-trace-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-trace-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-trace-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1 hide-2" data-pulse="1"><g><rect class="d-paper" x="270" y="70" width="100" height="130" rx="3"/><line class="d-line" x1="278" y1="84" x2="362" y2="84"/><line class="d-line" x1="278" y1="97" x2="354" y2="97"/><line class="d-line" x1="278" y1="110" x2="362" y2="110"/><line class="d-line" x1="278" y1="123" x2="354" y2="123"/><line class="d-line" x1="278" y1="136" x2="362" y2="136"/><line class="d-line" x1="278" y1="149" x2="354" y2="149"/><line class="d-line" x1="278" y1="162" x2="362" y2="162"/><text class="d-tiny" x="320" y="218" text-anchor="middle">trace</text></g><text class="d-tiny" x="120" y="110" text-anchor="middle">12.0 ms: main runs</text><text class="d-tiny" x="120" y="140" text-anchor="middle">12.3 ms: frame</text><text class="d-tiny" x="520" y="125" text-anchor="middle">12.8 ms: wakeup</text></g>
 <g class="step s2"><path class="d-arr-ink" d="M40,320 L610,320" marker-end="url(#ah-trace-ink)"/><text class="d-tiny" x="600" y="340" text-anchor="end">time</text></g>
@@ -74,6 +85,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-ok" x="130" y="118" width="110" height="22" rx="3"/><text class="d-tiny" x="185" y="134" text-anchor="middle">measure()</text><rect class="d-ok" x="250" y="118" width="150" height="22" rx="3"/><text class="d-tiny" x="325" y="134" text-anchor="middle">draw()</text><text class="d-a" x="330" y="295" text-anchor="middle">under means inside</text></g>
 <g class="step s1" data-move="1:320,55 2:60,105 3:105,102 4:118,129"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>A <b>trace</b>: the kernel and the app write events, each with a timestamp, into one recording. Afterwards the timeline can be rebuilt.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-trace-2">Next →</label></div></li>
 <li><p><b>Perfetto</b> draws it: time runs left to right, and each thread gets a row, a <b>track</b>.</p><div class="stepnav"><label for="st-trace-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-trace-3">Next →</label></div></li>
@@ -123,12 +135,8 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <label class="show-me" for="st-trace-2" data-goto="st-trace">Show me step 2 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://perfetto.dev/docs/tracing-101">Perfetto: What is tracing?</a> (&quot;Tracing involves collecting highly detailed data about the execution of a system. A single continuous session of recording is called a trace file or trace for short.&quot;; &quot;Traces contain enough detail to fully reconstruct the timeline of events. They often include low-level kernel events like scheduler context switches, thread wakeups, syscalls, etc.&quot;; &quot;Metrics are numerical values which track the performance of a system over time.&quot;)</li><li><a href="https://perfetto.dev/docs/data-sources/cpu-scheduling">Perfetto: CPU Scheduling events</a> (&quot;The UI represents individual scheduling events as slices&quot;; &quot;the scheduling events also create one track for each thread&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://perfetto.dev/docs/tracing-101">Perfetto: What is tracing?</a> (&quot;Tracing involves collecting highly detailed data about the execution of a system. A single continuous session of recording is called a trace file or trace for short.&quot;; &quot;Traces contain enough detail to fully reconstruct the timeline of events. They often include low-level kernel events like scheduler context switches, thread wakeups, syscalls, etc.&quot;; &quot;Metrics are numerical values which track the performance of a system over time.&quot;)</li><li><a href="https://perfetto.dev/docs/data-sources/cpu-scheduling">Perfetto: CPU Scheduling events</a> (&quot;The UI represents individual scheduling events as slices&quot;; &quot;the scheduling events also create one track for each thread&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A trace is one continuous recording of timestamped events, detailed enough to rebuild the timeline afterwards: which thread ran on which core, when threads woke, and the spans the app marked. Perfetto records and shows Android traces. Time runs left to right; each thread gets a track; on it, each slice is a named span with a start and an end, and a slice drawn under another happened inside it.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-threads-take-turns.html">← Start</a>

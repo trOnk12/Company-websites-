@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" aria-current="page" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
-      <p class="eyebrow">LLMs for mobile engineers, from tokens to your app · Start here · 1 of 8</p>
-      <h1>What a language model is</h1>
-      <p class="lede">Before anything else, the one idea everything stands on. You send a model some text; it continues it. Here's what that program is, where it runs, and how your app reaches it.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="0">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 0 · 1 of 10</p>
+        <h1>What a language model is</h1>
+        <p class="lede">Before anything else, the one idea everything stands on. You send a model some text; it continues it. Here's what that program is, where it runs, and how your app reaches it.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" aria-current="page" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li><li><a href="08-find-evidence-before-writing.html" title="Find evidence before asking the model">8</a></li><li><a href="09-measure-retrieval-and-answer-separately.html" title="Which step failed the answer?">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
 
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -61,7 +72,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A language model continues text; it runs on the provider's servers behind an API"><input type="radio" name="st-model" id="st-model-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-model" id="st-model-2" aria-label="Step 2 of 4"><input type="radio" name="st-model" id="st-model-3" aria-label="Step 3 of 4"><input type="radio" name="st-model" id="st-model-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="mo-t"><title id="mo-t">Training shows the model huge amounts of text; given the text "The capital of France is" it continues with Paris; it runs on a provider's servers; your app sends an HTTP request with text and a key and gets the continuation back</title><defs><marker id="ah-model-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-model-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-model-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-model-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="mo-t"><title id="mo-t">Training shows the model huge amounts of text; given the text "The capital of France is" it continues with Paris; it runs on a provider's servers; your app sends an HTTP request with text and a key and gets the continuation back</title><defs><marker id="ah-model-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-model-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-model-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-model-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><g><rect class="d-paper" x="30" y="40" width="120" height="90" rx="3"/><line class="d-line" x1="38" y1="54" x2="142" y2="54"/><line class="d-line" x1="38" y1="67" x2="134" y2="67"/><line class="d-line" x1="38" y1="80" x2="142" y2="80"/><line class="d-line" x1="38" y1="93" x2="134" y2="93"/><line class="d-line" x1="38" y1="106" x2="142" y2="106"/><text class="d-tiny" x="90" y="148" text-anchor="middle">lots of text</text></g><path class="d-arr-ink" d="M154,85 L236,120" marker-end="url(#ah-model-ink)"/></g>
 <g class="step s1"><rect class="d-wood" x="240" y="100" width="160" height="54" rx="8"/><line class="d-line" x1="265.0" y1="127.0" x2="270.0" y2="127.0"/><line class="d-line" x1="262.9" y1="131.9" x2="266.5" y2="135.5"/><line class="d-line" x1="258.0" y1="134.0" x2="258.0" y2="139.0"/><line class="d-line" x1="253.1" y1="131.9" x2="249.5" y2="135.5"/><line class="d-line" x1="251.0" y1="127.0" x2="246.0" y2="127.0"/><line class="d-line" x1="253.1" y1="122.1" x2="249.5" y2="118.5"/><line class="d-line" x1="258.0" y1="120.0" x2="258.0" y2="115.0"/><line class="d-line" x1="262.9" y1="122.1" x2="266.5" y2="118.5"/><circle class="d-paper" cx="258" cy="127" r="8"/><text class="d-tiny" x="337" y="132" text-anchor="middle">language model</text></g>
@@ -72,6 +83,7 @@
 <g class="step s4" data-pulse="4"><path class="d-arr-acc" d="M274,246 L436,190" marker-end="url(#ah-model-acc)"/><text class="d-a" x="400" y="300" text-anchor="middle">an API: request in, continuation out</text></g>
 <g class="step s1" data-move="1:90,170 2:320,90 3:485,230 4:200,290"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>In <b>training</b>, a program reads huge amounts of text, learning what tends to come next. The result is a <b>language model</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-model-2">Next →</label></div></li>
 <li><p>Give it any text and it continues it: "The capital of France is" becomes "Paris".</p><div class="stepnav"><label for="st-model-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-model-3">Next →</label></div></li>
@@ -120,12 +132,8 @@
 <p class="fb ok opt-2"><b>Right.</b> Learning vs answering.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, LLM</a> (&quot;Large language models (LLMs) are AI language models with many parameters that are capable of performing a variety of surprisingly useful tasks. These models are trained on vast amounts of text data and can generate human-like text, answer questions, summarize information, and more&quot;; models are &quot;pretrained to predict the next word, given the previous context of text&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, LLM</a> (&quot;Large language models (LLMs) are AI language models with many parameters that are capable of performing a variety of surprisingly useful tasks. These models are trained on vast amounts of text data and can generate human-like text, answer questions, summarize information, and more&quot;; models are &quot;pretrained to predict the next word, given the previous context of text&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Large ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="./">← Overview</a>

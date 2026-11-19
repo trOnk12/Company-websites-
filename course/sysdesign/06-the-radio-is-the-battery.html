@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="6" data-prev="05-one-connection-many-requests.html" data-prev-title="One connection, many requests">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" class="done" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" class="done" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" class="done" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" class="done" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" class="done" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" aria-current="page" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 6 · 7 of 11</p>
-      <h1>The radio is the battery</h1>
-      <p class="lede">Your app sends a tiny analytics ping every 20 seconds. Each is a few hundred bytes. Users report the app drains their battery. Here's why the size of a request has almost nothing to do with its cost.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="6">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Mobile system design, from a packet to an app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 6 · 7 of 11</p>
+        <h1>The radio is the battery</h1>
+        <p class="lede">Your app sends a tiny analytics ping every 20 seconds. Each is a few hundred bytes. Users report the app drains their battery. Here's why the size of a request has almost nothing to do with its cost.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" aria-current="page" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="3"><details><summary><a href="03-round-trips-not-bandwidth.html">Puzzle 3: Round trips, not bandwidth</a></summary><p>Latency is how long a packet takes to arrive; bandwidth is how much data fits through per second. Small requests are bound by latency, so the wait is the number of round trips times the round-trip time. Requests that wait for each other add their round trips together; cut the round trips, and the screen gets faster on every network.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Each send wakes the radio and keeps it on for a tail; batching lets it sleep"><input type="radio" name="st-radio" id="st-radio-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-radio" id="st-radio-2" aria-label="Step 2 of 4"><input type="radio" name="st-radio" id="st-radio-3" aria-label="Step 3 of 4"><input type="radio" name="st-radio" id="st-radio-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rd-t"><title id="rd-t">The radio sleeps at low power; a tiny send wakes it to high power, and it stays there for a tail time; sends every 20 seconds keep it awake all the time; one batched send wakes it once and lets it sleep</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rd-t"><title id="rd-t">The radio sleeps at low power; a tiny send wakes it to high power, and it stays there for a tail time; sends every 20 seconds keep it awake all the time; one batched send wakes it once and lets it sleep</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="20" y="60" width="60" height="110" rx="12"/><rect class="d-hl" x="27" y="74" width="46" height="76" rx="4"/><circle class="d-ink" cx="50" cy="160" r="3"/><text class="d-tiny" x="50" y="188" text-anchor="middle">phone</text></g>
 <g class="step s2"><path class="d-wave" d="M108.4,96 A14,14 0 0,1 108.4,124"/><path class="d-wave" d="M115.6,84 A26,26 0 0,1 115.6,136"/><path class="d-wave" d="M122.8,72 A38,38 0 0,1 122.8,148"/></g>
@@ -76,6 +87,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-hl" x="200" y="120" width="30" height="80"/><rect class="d-bad" x="230" y="120" width="140" height="80"/><text class="d-rt" x="300" y="165" text-anchor="middle">one batch</text><text class="d-a" x="500" y="180" text-anchor="middle">asleep</text></g>
 <g class="step s1" data-move="1:400,240 2:220,240 3:400,240 4:500,240"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The phone's radio, idle: its <b>radio state</b> is low power, only listening now and then.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-radio-2">Next →</label></div></li>
 <li><p>A 300-byte ping. The radio wakes to high power, sends it in a blink, then stays awake for its <b>tail time</b>, waiting for more.</p><div class="stepnav"><label for="st-radio-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-radio-3">Next →</label></div></li>
@@ -125,12 +137,8 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://hpbn.co/mobile-networks/">High Performance Browser Networking: Mobile networks</a> (&quot;RRC Idle: Device radio is in a low-power state (&lt;15 mW) and only listening to control traffic&quot;; &quot;RRC Connected: Device radio is in a high-power state (1000–3500 mW) while it either transmits data or waits for data&quot;)</li><li><a href="https://hpbn.co/optimizing-for-mobile-networks/">High Performance Browser Networking: Optimizing for mobile networks</a> (&quot;the mobile radio incurs a fixed power cost to cycle into the full power state, regardless of the amount of data to be transferred… there is no such thing as a 'small request' as far as the battery is concerned&quot;)</li><li><a href="https://developer.android.com/develop/connectivity/network-ops/network-access-optimization">Android Developers: Optimize network access</a> (&quot;for a typical 3G device, every data transfer session will cause the radio to draw energy for at least 18 seconds&quot;; &quot;if the same app bundled its data transfers… This would allow the radio to be on standby for 40 seconds of every minute&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://hpbn.co/mobile-networks/">High Performance Browser Networking: Mobile networks</a> (&quot;RRC Idle: Device radio is in a low-power state (&lt;15 mW) and only listening to control traffic&quot;; &quot;RRC Connected: Device radio is in a high-power state (1000–3500 mW) while it either transmits data or waits for data&quot;)</li><li><a href="https://hpbn.co/optimizing-for-mobile-networks/">High Performance Browser Networking: Optimizing for mobile networks</a> (&quot;the mobile radio incurs a fixed power cost to cycle into the full power state, regardless of the amount of data to be transferred… there is no such thing as a 'small request' as far as the battery is concerned&quot;)</li><li><a href="https://developer.android.com/develop/connectivity/network-ops/network-access-optimization">Android Developers: Optimize network access</a> (&quot;for a typical 3G device, every data transfer session will cause the radio to draw energy for at least 18 seconds&quot;; &quot;if the same app bundled its data transfers… This would allow the radio to be on standby for 40 seconds of every minute&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The phone's radio sleeps at low power and must wake to a high-power state to send anything, then stays there for a tail time waiting for more. So every network burst costs a fixed chunk of energy, whatever its size. Batching small transfers into fewer bursts lets the radio sleep; frequent tiny requests keep it awake.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="05-one-connection-many-requests.html">← Puzzle 5</a>

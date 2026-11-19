@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="3" data-prev="02-anatomy-of-an-http-call.html" data-prev-title="Anatomy of an HTTP call">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" class="done" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" class="done" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" aria-current="page" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 3 · 4 of 11</p>
-      <h1>Round trips, not bandwidth</h1>
-      <p class="lede">Your profile screen loads in a blink on office Wi-Fi and crawls on the train. The data is 60 KB. Here's what the user is actually waiting for, and why a faster network barely helps.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="3">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Mobile system design, from a packet to an app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 3 · 4 of 11</p>
+        <h1>Round trips, not bandwidth</h1>
+        <p class="lede">Your profile screen loads in a blink on office Wi-Fi and crawls on the train. The data is 60 KB. Here's what the user is actually waiting for, and why a faster network barely helps.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" aria-current="page" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="0"><details><summary><a href="00-what-actually-travels.html">Puzzle 0: What actually travels</a></summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></details></li></ul>
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Four requests in a row cost four round trips; in parallel, about one"><input type="radio" name="st-rtt" id="st-rtt-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-rtt" id="st-rtt-2" aria-label="Step 2 of 4"><input type="radio" name="st-rtt" id="st-rtt-3" aria-label="Step 3 of 4"><input type="radio" name="st-rtt" id="st-rtt-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rt-t"><title id="rt-t">A phone sends four requests to a server one after another, each waiting for the last, so the wait is four round trips; doubling bandwidth barely changes it; sending independent requests together takes about one round trip</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rt-t"><title id="rt-t">A phone sends four requests to a server one after another, each waiting for the last, so the wait is four round trips; doubling bandwidth barely changes it; sending independent requests together takes about one round trip</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="40" y="110" width="70" height="130" rx="12"/><rect class="d-hl" x="47" y="124" width="56" height="96" rx="4"/><circle class="d-ink" cx="75" cy="230" r="3"/><text class="d-tiny" x="75" y="258" text-anchor="middle">phone</text></g>
 <g class="step s1"><rect class="d-wood" x="520" y="90" width="80" height="120" rx="6"/><rect class="d-paper" x="530" y="102" width="60" height="22" rx="3"/><circle class="d-ok" cx="580" cy="113" r="4"/><rect class="d-paper" x="530" y="134" width="60" height="22" rx="3"/><circle class="d-ok" cx="580" cy="145" r="4"/><rect class="d-paper" x="530" y="166" width="60" height="22" rx="3"/><circle class="d-ok" cx="580" cy="177" r="4"/><text class="d-tiny" x="560" y="228" text-anchor="middle">server</text></g>
@@ -75,6 +86,7 @@
 <g class="step only-3" data-pulse="3"><text class="d-a" x="315" y="70" text-anchor="middle">twice the bandwidth: still about 1 second</text></g>
 <g class="step s4" data-pulse="4"><text class="d-a" x="315" y="270" text-anchor="middle">three together, then the avatar</text><text class="d-a" x="315" y="300" text-anchor="middle">2 trips: 500 ms</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>A <b>round trip</b>: the request goes to the server and the answer comes back. Each way takes the network's <b>latency</b>; this network's round trip is 250 ms.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-rtt-2">Next →</label></div></li>
 <li><p>Your screen makes four requests, each waiting for the one before. Four trips in a row: a full second, for a few kilobytes.</p><div class="stepnav"><label for="st-rtt-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-rtt-3">Next →</label></div></li>
@@ -125,12 +137,8 @@
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://hpbn.co/primer-on-latency-and-bandwidth/">Ilya Grigorik, High Performance Browser Networking: Primer on latency and bandwidth</a> (&quot;Latency: The time from the source sending a packet to the destination receiving it. Bandwidth: Maximum throughput of a logical or physical communication path&quot;; &quot;transmission delay is dictated by the available data rate of the transmitting link and has nothing to do with the distance between the client and the server&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://hpbn.co/primer-on-latency-and-bandwidth/">Ilya Grigorik, High Performance Browser Networking: Primer on latency and bandwidth</a> (&quot;Latency: The time from the source sending a packet to the destination receiving it. Bandwidth: Maximum throughput of a logical or physical communication path&quot;; &quot;transmission delay is dictated by the available data rate of the transmitting link and has nothing to do with the distance between the client and the server&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Latency is how long a packet takes to arrive; bandwidth is how much data fits through per second. Small requests are bound by latency, so the wait is the number of round trips times the round-trip time. Requests that wait for each other add their round trips together; cut the round trips, and the screen gets faster on every network.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-anatomy-of-an-http-call.html">← Puzzle 2</a>

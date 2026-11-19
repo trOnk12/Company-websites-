@@ -69,11 +69,6 @@ function linkRefs(course, html) {
   });
 }
 
-function gifSize(id, name) {
-  const b = fs.readFileSync(path.join(OUT, id, 'gifs', `${name}.gif`));
-  return [b.readUInt16LE(6), b.readUInt16LE(8)];
-}
-
 function gifLink(course, name) {
   return fs.existsSync(path.join(OUT, course.id, 'gifs', `${name}.gif`))
     ? `<p class="gif-link"><a href="gifs/${name}.gif" download>Save this diagram as a GIF</a></p>` : '';
@@ -93,7 +88,8 @@ function diagram(course, name, file) {
   const items = caps.map((c, i) => `<li>${c}<div class="stepnav">${i > 0 ? `<label for="${id}-${i}">← Back</label>` : '<span class="spacer"></span>'}<span class="count">Step ${i + 1} of ${n}</span>${i < n - 1 ? `<label class="next" for="${id}-${i + 2}">Next →</label>` : `<label for="${id}-1">↺ Again</label>`}</div></li>`).join('\n');
   const dots = caps.map((_, i) => `<label for="${id}-${i + 1}" title="Step ${i + 1}"></label>`).join('');
   return `<figure class="stepper" aria-label="${L.esc(label)}">${radios}
-<div class="stage">${svg[0]}</div>
+<div class="stage" tabindex="0" aria-label="Diagram">${svg[0]}</div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 ${items}
 </ol>
@@ -182,6 +178,8 @@ function buildsOnHere(course, p) {
       </aside>`;
 }
 
+const sectionId = title => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
 function renderPuzzle(course, p, terms) {
   const ctx = { file: p.file, cards: new Map(course.puzzles.map(q => [q.slug, q])), links: new Set() };
   const sections = L.parseBody(p.body, ctx);
@@ -191,13 +189,26 @@ function renderPuzzle(course, p, terms) {
   for (const m of p.raw.matchAll(L.TICKET_KEY)) if (!L.NOT_TICKETS.has(m[0].split('-')[0])) fail(p.file, `looks like a ticket key: ${m[0]}`);
   for (const t of terms) if (p.raw.toLowerCase().includes(t.toLowerCase())) fail(p.file, `contains a private term: ${t}`);
 
+  const depth = sections.filter(s => s.title.startsWith('Go deeper: '));
   const body = sections.map(s => {
-    const sid = s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const sid = sectionId(s.title);
     const html = s.title === 'Check yourself'
       ? s.blocks.map(b => b.type === 'ul' ? quiz(p, b.items, ctx, diagramOf(p)) : L.renderBlocks([b], ctx)).join('\n')
       : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
       ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
-      : L.renderBlocks([b], ctx, { recall: s.title === 'Check yourself' })).join('\n');
+      : L.renderBlocks([b], ctx, { recall: depth.includes(s) && b.type === 'ul' })).join('\n');
+    if (depth.includes(s)) {
+      return `      <details class="depth-puzzle" id="${sid}">
+        <summary><span class="depth-label">Go deeper</span>${L.inline(s.title.slice('Go deeper: '.length), ctx)}</summary>
+        <div class="depth-content">
+${html}
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>`;
+    }
+    if (s.title === 'Sources') {
+      return `      <details class="puzzle-sources" id="${sid}"><summary>Sources</summary>${html}</details>`;
+    }
     return `      <section aria-labelledby="${sid}">
         <h2 id="${sid}">${L.inline(s.title, ctx)}</h2>
 ${html}
@@ -207,8 +218,8 @@ ${html}
   const all = course.puzzles;
   const linked = linkRefs(course, body);
   const prev = all[p.n - 1], next = all[p.n + 1];
-  const progress = all.map(q => `<li><a href="${q.slug}.html"${q === p ? ' aria-current="page"' : q.n < p.n ? ' class="done"' : ''} title="${L.esc(q.meta.title)}">${q.n}</a></li>`).join('');
-  const label = p.n === 0 ? `Start here · 1 of ${all.length}` : `Puzzle ${p.n} · ${p.n + 1} of ${all.length}`;
+  const progress = all.map(q => `<li><a href="${q.slug}.html"${q === p ? ' aria-current="page"' : ''} title="${L.esc(q.meta.title)}">${q.n}</a></li>`).join('');
+  const label = `Puzzle ${p.n} · ${p.n + 1} of ${all.length}`;
   const nextUp = (course.meta.upcoming || [])[0];
   const fix = `mailto:${CONTACT}?subject=${encodeURIComponent(`Course: ${p.meta.title}`)}&body=${encodeURIComponent('Which part, and what was wrong or unclear?\n\n')}`;
   return L.page({
@@ -218,16 +229,26 @@ ${html}
     base: '../../', current: 'course', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
       <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
-    body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}" data-prev="${prev ? `${prev.slug}.html` : ''}" data-prev-title="${prev ? L.esc(prev.meta.title) : ''}">
-      <nav aria-label="Puzzles"><ol class="progress">${progress}</ol></nav>
-      <p class="eyebrow">${L.esc(course.meta.title)} · ${label}</p>
-      <h1>${L.esc(p.meta.title)}</h1>
-      <p class="lede">${L.inline(p.meta.summary, ctx)}</p>
+    body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">${L.esc(course.meta.title)}</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">${label}</p>
+        <h1>${L.esc(p.meta.title)}</h1>
+        <p class="lede">${L.inline(p.meta.summary, ctx)}</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress">${progress}</ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        ${titles.includes('See it') ? '<a href="#see-it">Diagram</a>' : ''}
+        ${titles.includes('The building block') ? '<a href="#the-building-block">Mechanism</a>' : ''}
+${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}        <a href="#check-yourself">Check your understanding</a>
+      </nav>
 ${buildsOn(course, p)}
 ${linked}
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>${L.inline(p.meta.takeaway, ctx)}</p></div></section>
-      ${support(course, 'puzzle')}
-      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
+${support(course, 'puzzle')}      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         ${prev ? `<a class="button" href="${prev.slug}.html">← ${prev.n === 0 ? 'Start' : `Puzzle ${prev.n}`}</a>` : '<a class="button" href="./">← Overview</a>'}
         ${next ? `<a class="button primary" href="${next.slug}.html">Puzzle ${next.n}: ${L.esc(next.meta.short || next.meta.title)} →</a>` : '<a class="button" href="./">Back to the overview →</a>'}
@@ -277,39 +298,41 @@ ${qs}
 // One course's overview: course/<id>/index.html.
 function renderOverview(c) {
   let i = 0;
-  const modules = c.meta.modules.map(m => {
+  const modules = c.meta.modules.map((m, k) => {
     const first = i;
-    const items = m.puzzles.map(() => c.puzzles[i++]).map(p => { const on = blocks(c.id)[p.n] || []; return `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}${on.length ? ` <span class="needs">Builds on ${on.join(', ')}.</span>` : ''}</span></li>`; }).join('');
-    return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')} <a href="check-${c.meta.modules.indexOf(m) + 1}.html">Know this already? Take the check →</a></p><ol start="${first}">${items}</ol></li>`;
+    const items = m.puzzles.map(() => c.puzzles[i++]).map(p =>
+      `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${L.esc(p.meta.title)}</a> <span class="puzzle-state"></span><span class="small puzzle-summary">${L.esc(p.meta.summary)}</span></li>`).join('');
+    return `<li><details class="course-module"${k === 0 ? ' open' : ''}>
+      <summary><span class="module-title">${L.esc(m.title)}</span><span class="module-count small">${m.puzzles.length} puzzles</span></summary>
+      <div class="module-body"><p>${L.esc(m.blurb || '')}</p><ol start="${first}">${items}</ol>
+      <a class="module-check-link" href="check-${k + 1}.html">Check what you already know</a></div>
+    </details></li>`;
   }).join('\n');
   const soon = (c.meta.upcoming || []).map((m, k) => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(${k === 0 ? 'next' : 'later'})</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
-  const hero = c.meta.hero || 'chain';
-  const gif = fs.existsSync(path.join(OUT, c.id, 'gifs', `${hero}.gif`))
-    ? `<img class="hero-gif" src="gifs/${hero}.gif" width="${gifSize(c.id, hero)[0]}" height="${gifSize(c.id, hero)[1]}" alt="${L.esc(c.meta.heroAlt || 'Animated diagram from the course.')}">` : '';
-  const body = `    <section class="hero" aria-labelledby="course-heading">
+  const related = (c.meta.relatedCourses || []).map(id => {
+    const target = loadCourse(id);
+    return `          <li><a href="../${target.id}/">${L.esc(target.meta.title)}</a></li>`;
+  }).join('\n');
+  const body = `    <section class="hero course-intro" aria-labelledby="course-heading">
       <div class="wrap narrow">
         <p class="eyebrow"><a href="../">Free courses</a> · ${c.puzzles.length} puzzles so far · about ${minutes(c)} minutes</p>
         <h1 id="course-heading">${L.esc(c.meta.title)}</h1>
         <p class="lede">${L.esc(c.meta.intro)}</p>
-        <p class="actions"><a class="button primary" href="${c.puzzles[0].slug}.html" data-resume="${c.id}">Start the first puzzle →</a> <a class="button" href="../me.html">Your learning →</a></p>
-        ${gif}
+${c.meta.assumes ? `        <p class="small">Builds on <a href="${L.esc(c.meta.assumes.href)}">${L.esc(c.meta.assumes.title)}</a>.</p>\n` : ''}
+        <p class="actions"><a class="button primary" href="${c.puzzles[0].slug}.html" data-resume="${c.id}">Start learning</a> <a class="button" href="#modules-heading">Browse modules</a></p>
       </div>
     </section>
-    <section class="section" aria-labelledby="how-heading">
+    <section class="section curriculum" aria-labelledby="modules-heading">
       <div class="wrap narrow">
-        <h2 id="how-heading">How it works</h2>
-        <p>${L.esc(c.meta.how)} <a href="../how-its-made.html">How these courses are made, and how they're checked →</a></p>
-        ${support(c, 'overview')}
-      </div>
-    </section>
-    <section class="section" aria-labelledby="modules-heading">
-      <div class="wrap narrow">
-        <h2 id="modules-heading">Modules</h2>
-        <p class="small">Every puzzle opens: start wherever you like. Each one builds on the ones before it; its check tells you you're ready for the next. ✓ marks the ones you've passed (saved only in this browser).</p>
+        <h2 id="modules-heading">Course outline</h2>
         <ul class="modules">
 ${modules}
-${soon}
         </ul>
+${soon ? `        <details class="course-extras"><summary>Planned modules</summary><ul class="modules">${soon}</ul></details>\n` : ''}${related ? `        <nav aria-label="Related courses"><h3>Continue with</h3><ul>\n${related}\n        </ul></nav>\n` : ''}
+        <details class="course-extras"><summary>How the course works</summary>
+          <p>Every puzzle is open from this outline. The check at the end of a puzzle unlocks its next button and saves your progress in this browser.</p>
+          <p><a href="../how-its-made.html">How lessons are written and checked</a> · <a href="../me.html">Your learning</a></p>
+${support(c, 'overview')}        </details>
       </div>
     </section>
     <section class="section take-it" aria-labelledby="take-heading">
@@ -390,39 +413,38 @@ function renderMe(cs) {
 function renderIndex(cs) {
   const cat = fs.existsSync(path.join(SRC, 'catalog.json')) ? JSON.parse(fs.readFileSync(path.join(SRC, 'catalog.json'), 'utf8')) : null;
   const live = new Set(cs.map(c => c.id));
-  const cards = cs.map(c => `<li class="course-card" data-progress="${c.id}" data-total="${c.puzzles.length}">
+  const byId = Object.fromEntries(cs.map(c => [c.id, c]));
+  const groups = cat?.groups || [];
+  const grouped = new Set(groups.flatMap(g => g.courses));
+  const others = cs.filter(c => !grouped.has(c.id)).map(c => c.id);
+  const card = c => `<li class="course-card" data-progress="${c.id}" data-total="${c.puzzles.length}">
           <h3><a href="${c.id}/">${L.esc(c.meta.title)}</a></h3>
-          <p>${L.esc(c.meta.intro)}</p>
-          <p class="small">${c.puzzles.length} puzzles · about ${minutes(c)} minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="${c.id}/">Open the course →</a></p>
-        </li>`).join('\n');
+          <p>${L.esc(cat?.descriptions?.[c.id] || c.meta.intro)}</p>
+          <p class="small card-status"><span>${c.puzzles.length} puzzles · ~${minutes(c)} min</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="${c.puzzles.length}" aria-label="${L.esc(c.meta.title)} progress"></progress>
+          <a class="button primary" href="${c.id}/" data-puzzles="${c.puzzles.map(p => p.slug).join(' ')}">Open course</a>
+        </li>`;
+  const sections = [...groups, ...(others.length ? [{ title: 'More courses', courses: others }] : [])]
+    .map((g, i) => {
+      const cards = g.courses.filter(id => byId[id]).map(id => card(byId[id])).join('\n');
+      return cards ? `<section class="catalog-group" aria-labelledby="catalog-group-${i}">
+        <h2 id="catalog-group-${i}">${L.esc(g.title)}</h2>
+        <ul class="courses">${cards}</ul>
+      </section>` : '';
+    }).join('\n');
   const soon = cat ? cat.upcoming.filter(m => !live.has(m.id)).map(m => `<li class="soon"><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n') : '';
-  const body = `    <section class="hero" aria-labelledby="courses-heading">
-      <div class="wrap narrow">
-        <p class="eyebrow">Free for everyone · no sign-up</p>
-        <h1 id="courses-heading">Courses that build from the foundation</h1>
-        <p class="lede">Each course is a chain of small puzzles. Every puzzle starts with a problem, adds one building block, shows it in a diagram that moves, and ends with a check that tells you you're ready for the next. No term is used before it's explained.</p>
-        <p><a href="how-its-made.html">How these courses are made, and how they're checked →</a></p>
-        <p class="actions"><a class="button primary" href="me.html">Your learning: progress and what to learn next →</a></p>
+  const body = `    <section class="catalog-hero" aria-labelledby="courses-heading">
+      <div class="wrap">
+        <p class="eyebrow">Free courses · no sign-up</p>
+        <h1 id="courses-heading">Understand how it works</h1>
+        <p class="lede">Build an explanation one puzzle at a time. Follow the mechanism, predict what happens next, and go deeper when a step raises another question.</p>
+        <p class="actions"><a class="button primary" href="#browse-courses">Browse courses</a> <a class="button" href="me.html">Your learning</a></p>
       </div>
     </section>
-    <section class="section" aria-labelledby="live-heading">
-      <div class="wrap narrow">
-        <h2 id="live-heading">Start here</h2>
-        <ul class="courses">
-        ${cards}
-        </ul>
-      </div>
-    </section>
-${soon ? `    <section class="section" aria-labelledby="catalog-heading">
-      <div class="wrap narrow">
-        <h2 id="catalog-heading">${L.esc(cat.title)}</h2>
-        <p>${L.esc(cat.intro)}</p>
-        <ul class="modules">
-${soon}
-        </ul>
-      </div>
-    </section>` : ''}`;
+    <div class="wrap catalog-body" id="browse-courses">
+      ${sections}
+${soon ? `      <details class="course-extras"><summary>${L.esc(cat.title)}</summary><ul class="modules">${soon}</ul></details>\n` : ''}      <p class="catalog-method"><a href="how-its-made.html">How the puzzles are written and checked</a></p>
+    </div>`;
   return L.page({
     title: 'Free courses – Mateusz Pachulski',
     description: 'Free courses on Android, Bluetooth Low Energy and more: small puzzles from the foundation up, with moving diagrams and a check after each one.',
