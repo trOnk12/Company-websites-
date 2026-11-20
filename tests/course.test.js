@@ -270,3 +270,105 @@ test('an unfinished visit appears in Your learning before the first pass', async
   await expect(page.locator('.me-next a[href="compose/03-pixels-and-voiceover.html"]')).toBeVisible();
   await expect(page.locator('.me-course').filter({ has: page.locator('a[href="compose/"]') })).toContainText('0 passed');
 });
+
+test('voice handoff copies the current puzzle and exposes the same text for manual copying', async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', {
+    configurable: true, value: { writeText: async text => { window.copiedLesson = text; } }
+  }));
+  await page.goto('/course/system-design/03-conditional-write.html');
+  await page.getByText('Discuss this lesson in Voice', { exact: true }).click();
+  await page.getByRole('button', { name: 'Copy lesson for Voice' }).click();
+  const packet = await page.evaluate(() => window.copiedLesson);
+  for (const expected of ['This lesson does not establish that.', 'How does the database choose a winner?',
+    '#the-building-block', 'UPDATE lot SET free', 'write skew', 'Ben\'s uncommitted grant',
+    'https://www.postgresql.org/docs/17/transaction-iso.html']) expect(packet).toContain(expected);
+  expect(packet).not.toContain('Step 1 of 4');
+  await expect(page.getByRole('link', { name: 'Open ChatGPT' })).toHaveAttribute('href', 'https://chatgpt.com/');
+  await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { value: undefined }));
+  await page.getByRole('button', { name: 'Copy lesson for Voice' }).click();
+  const manual = page.getByRole('textbox', { name: 'Lesson and instructions for Voice' });
+  await expect(manual).toBeVisible();
+  await expect(manual).toHaveValue(packet);
+  await page.goto('/course/jvm/04-shared-counter.html');
+  const other = await page.locator('.voice-preview textarea').inputValue();
+  expect(other).toContain('How can two increments produce eight?');
+  expect(other).not.toContain('Ben\'s uncommitted grant');
+});
+
+test('spoken practice uses lesson answers and handles an unknown voice command', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.SpeechRecognition = class {
+      start() { window.mockMic = this; }
+      abort() { this.onend?.(); }
+    };
+    Object.defineProperty(window, 'speechSynthesis', { value: { speak() {}, cancel() {} } });
+    window.SpeechSynthesisUtterance = class {};
+  });
+  await page.goto('/course/system-design/03-conditional-write.html');
+  await page.getByText('Discuss this lesson in Voice', { exact: true }).click();
+  const line = page.locator('.spoken-line');
+  await page.getByRole('button', { name: 'Ask me a question' }).click();
+  await expect(line).toHaveText('Why can a valid update affect zero rows?');
+  await page.getByRole('button', { name: 'Hear solution' }).click();
+  await expect(line).toContainText('Its condition no longer matches');
+  await expect(page.locator('.spoken-source')).toHaveAttribute('href', '#check-yourself');
+  async function say(transcript) {
+    await page.getByRole('button', { name: 'Speak a command' }).click();
+    await page.evaluate(text => window.mockMic.onresult({ results: [[{ transcript: text }]] }), transcript);
+  }
+  await say('explain');
+  await expect(line).toContainText('Use a transaction');
+  await expect(page.locator('.spoken-source')).toHaveAttribute('href', '#the-building-block');
+  await say('Which stock should I buy?');
+  await expect(page.locator('[data-mic-status]')).toContainText('For an open question');
+  await expect(line).toContainText('Use a transaction');
+  await expect(page.locator('article .quiz input:checked')).toHaveCount(0);
+});
+
+test('hands-free practice takes a spoken turn and stops without reopening the mic', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.SpeechRecognition = class {
+      start() { window.practiceMic = this; window.micCount = (window.micCount || 0) + 1; }
+      abort() { this.onend?.(); }
+    };
+    Object.defineProperty(window, 'speechSynthesis', { value: {
+      speak(utterance) { window.reading = utterance; }, cancel() {} } });
+    window.SpeechSynthesisUtterance = class {};
+  });
+  await page.goto('/course/system-design/03-conditional-write.html');
+  await page.getByText('Discuss this lesson in Voice', { exact: true }).click();
+  await page.getByRole('button', { name: 'Start hands-free' }).click();
+  async function finishReading() {
+    await page.evaluate(() => {
+      for (let n = 0; n < 40; n++) {
+        const reading = window.reading;
+        reading.onend();
+        if (window.reading === reading) break;
+      }
+    });
+  }
+  await finishReading();
+  await page.evaluate(() => window.practiceMic.onresult({ results: [[{ transcript: 'The other writer committed.' }]] }));
+  await expect(page.locator('.spoken-line')).toContainText('Its condition no longer matches');
+  await finishReading();
+  await page.evaluate(() => window.practiceMic.onresult({ results: [[{ transcript: 'stop' }]] }));
+  await expect(page.getByRole('button', { name: 'Start hands-free' })).toBeVisible();
+  expect(await page.evaluate(() => window.micCount)).toBe(2);
+});
+
+test('on-device lecturer only displays selected course text', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.LanguageModel = { availability: async () => 'available', create: async () => ({
+      prompt: async () => JSON.stringify({ passage: window.passageIndex ?? -1, followup: -1 }), destroy() {} }) };
+  });
+  await page.goto('/course/system-design/03-conditional-write.html');
+  await page.getByText('Discuss this lesson in Voice', { exact: true }).click();
+  await page.getByLabel('Use the installed on-device AI lecturer').check();
+  await page.getByLabel('Ask the lecturer').fill('An unsupported question');
+  await page.getByRole('button', { name: 'Ask', exact: true }).click();
+  await expect(page.locator('.spoken-line')).toHaveText('This lesson does not establish that.');
+  await page.evaluate(() => { window.passageIndex = 0; });
+  await page.getByRole('button', { name: 'Ask', exact: true }).click();
+  await expect(page.locator('.spoken-line')).toContainText('Both processes read one');
+  await expect(page.locator('.spoken-source')).toHaveAttribute('href', '#the-problem');
+});

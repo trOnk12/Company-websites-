@@ -926,3 +926,10 @@ li[data-state='done'] .puzzle-state { color: #245B37; background: #E3EFE1; }
 #search-heading ~ ul { list-style: none; padding: 0; }
 #search-heading ~ ul li { border-bottom: 1px solid var(--rule); padding: .35rem 0; }
 #search-heading ~ ul a { display: inline-block; padding-block: .55rem; }
+
+.voice-tutor { margin: 0 0 1.25rem; }
+.voice-tutor > summary { cursor: pointer; font-weight: 700; padding: .65rem 0; }
+.voice-preview > summary { cursor: pointer; padding: .5rem 0; }
+.voice-tutor [role="status"]:empty { display: none; }
+.spoken-practice { border-bottom: 1px solid var(--rule); padding-bottom: .75rem; }
+.spoken-practice [hidden] { display: none; }
