@@ -24,3 +24,7 @@ Run the deterministic selection tests from the repository root:
 ```sh
 node --test labs/voice-tutor/server.test.js
 ```
+
+## Listen and resume
+
+Choose **Listen to lesson** to hear the problem, diagram captions, explanation, analogy where available, and takeaway. The source link follows the passage being read. After a pause or page reload, **Resume lesson audio** starts at the beginning of the interrupted passage. In hands-free practice, say **teach me** to listen to the lesson and return to questions. **Resume hands-free** repeats the most recent question. Saying **next** after the final question ends that practice round. Audio bookmarks stay in this browser and do not count as passing a quiz.

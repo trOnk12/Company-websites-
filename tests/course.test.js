@@ -352,7 +352,7 @@ test('hands-free practice takes a spoken turn and stops without reopening the mi
   await expect(page.locator('.spoken-line')).toContainText('Its condition no longer matches');
   await finishReading();
   await page.evaluate(() => window.practiceMic.onresult({ results: [[{ transcript: 'stop' }]] }));
-  await expect(page.getByRole('button', { name: 'Start hands-free' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Resume hands-free' })).toBeVisible();
   expect(await page.evaluate(() => window.micCount)).toBe(2);
 });
 
@@ -371,4 +371,40 @@ test('on-device lecturer only displays selected course text', async ({ page }) =
   await page.getByRole('button', { name: 'Ask', exact: true }).click();
   await expect(page.locator('.spoken-line')).toContainText('Both processes read one');
   await expect(page.locator('.spoken-source')).toHaveAttribute('href', '#the-problem');
+});
+
+test('lesson narration and hands-free questions resume separately after reload', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.SpeechRecognition = class { start() {} abort() {} };
+    Object.defineProperty(window, 'speechSynthesis', { value: {
+      speak(utterance) { window.currentReading = utterance; }, cancel() {} } });
+    window.SpeechSynthesisUtterance = class {};
+  });
+  await page.goto('/course/system-design/03-conditional-write.html#voice-tutor');
+  const line = page.locator('.spoken-line');
+  await page.getByRole('button', { name: 'Listen to lesson' }).click();
+  await expect(line).toContainText('Both processes read one');
+  await page.evaluate(() => {
+    for (let i = 0; i < 20 && document.querySelector('.spoken-source').hash !== '#see-it'; i++) {
+      window.currentReading.onend();
+    }
+  });
+  const step = await line.textContent();
+  await expect(page.locator('.spoken-source')).toHaveAttribute('href', '#see-it');
+  await page.reload();
+  await expect(line).toBeEmpty();
+  await page.getByRole('button', { name: 'Resume lesson audio' }).click();
+  await expect(line).toHaveText(step);
+  await page.getByRole('button', { name: 'Start hands-free' }).click();
+  await page.getByRole('button', { name: 'Next question' }).click();
+  const second = await line.textContent();
+  await expect(line).toContainText('final count');
+  await page.reload();
+  await page.getByRole('button', { name: 'Resume hands-free' }).click();
+  await expect(line).toHaveText(second);
+  await page.getByRole('button', { name: 'Next question' }).click();
+  await page.getByRole('button', { name: 'Next question' }).click();
+  await expect(line).toContainText('final practice question');
+  await expect(page.getByRole('button', { name: 'Start hands-free' })).toBeVisible();
+  await expect(page.locator('article .quiz input:checked')).toHaveCount(0);
 });

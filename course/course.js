@@ -174,14 +174,15 @@
     const practice = document.createElement('div');
     practice.className = 'spoken-practice';
     practice.innerHTML = `<p>Practice on this page. Answer the question out loud, then compare your reasoning with the lesson.</p>
-      <p class="actions"><button type="button" class="button" data-action="question">Ask me a question</button>
+      <p class="actions"><button type="button" class="button" data-action="lesson" hidden>Listen to lesson</button>
+      <button type="button" class="button" data-action="question">Ask me a question</button>
       <button type="button" class="button" data-action="answer" disabled>Hear solution</button>
       <button type="button" class="button" data-action="explain">Explain the mechanism</button>
       <button type="button" class="button" data-action="repeat" disabled>Repeat</button>
       <button type="button" class="button" data-action="stop" hidden>Stop audio</button></p>
       <p class="spoken-line" aria-live="polite"></p>
       <a class="spoken-source" hidden>Read this part of the lesson</a>
-      <p class="small" data-mic-info hidden>Voice commands use your browser’s speech service, which may process audio online. Tap once, then say “quiz me”, “explain”, “answer” or “repeat”.</p>
+      <p class="small" data-mic-info hidden>Voice commands use your browser’s speech service, which may process audio online. Tap once, then say “teach me”, “quiz me”, “explain”, “answer” or “repeat”.</p>
       <p data-walk-info hidden>Keep this page open while moving around. Hands-free practice alternates speech and listening. Say “stop” to finish.</p>
       <button class="button" type="button" data-walk hidden>Start hands-free</button>
       <button class="button" type="button" data-mic hidden>Speak a command</button>
@@ -284,6 +285,50 @@
     let activeMic = null;
     let card = -1;
     let currentSpeech = null;
+    const lessonKey = 'voice:' + article.dataset.course + ':' + location.pathname.split('/').pop().replace(/\.html$/, '');
+    const quizKey = lessonKey + ':question';
+    const savedCard = read(quizKey);
+    let resumeCard = cards.findIndex(item => item.question === savedCard);
+    const narration = [];
+    for (const anchor of ['the-problem', 'see-it', 'the-building-block', 'the-analogy', 'takeaway']) {
+      const section = article.querySelector(`section[aria-labelledby="${anchor}"]`);
+      if (!section) continue;
+      const paragraphs = section.querySelectorAll(anchor === 'see-it' ? '.caps > li > p' : 'p');
+      for (const paragraph of paragraphs) {
+        const copy = paragraph.cloneNode(true);
+        copy.querySelectorAll('.pop, .show-me').forEach(node => node.remove());
+        const text = copy.textContent.trim();
+        if (text && !paragraph.closest('.gif-link, .diagram-scroll-hint')) narration.push({ text, anchor });
+      }
+    }
+    const savedParagraph = read(lessonKey);
+    let paragraphIndex = narration.findIndex(item => item.text === savedParagraph);
+    function refreshResumeLabels() {
+      button('lesson').textContent = paragraphIndex >= 0 ? 'Resume lesson audio' : 'Listen to lesson';
+      if (!walking) walk.textContent = resumeCard >= 0 ? 'Resume hands-free' : 'Start hands-free';
+    }
+    button('lesson').hidden = !canSpeak || !narration.length;
+    refreshResumeLabels();
+
+    function narrate(index) {
+      const part = narration[index];
+      if (!part) {
+        paragraphIndex = -1;
+        write(lessonKey, null);
+        refreshResumeLabels();
+        if (walking) resumeQuiz();
+        else respond('End of the lesson. You can now try the practice questions.', 'check-yourself');
+        return;
+      }
+      paragraphIndex = index;
+      write(lessonKey, part.text);
+      refreshResumeLabels();
+      respond(part.text, part.anchor, () => narrate(index + 1));
+    }
+    function resumeQuiz() {
+      card = resumeCard >= 0 ? resumeCard - 1 : -1;
+      perform('question');
+    }
     function silence() {
       if (currentSpeech) {
         currentSpeech = null;
@@ -291,7 +336,7 @@
       }
       button('stop').hidden = true;
     }
-    function respond(text, anchor) {
+    function respond(text, anchor, onFinished) {
       silence();
       line.textContent = text;
       source.href = '#' + anchor;
@@ -308,7 +353,9 @@
           if (index + 1 < sentences.length) { speakPart(index + 1); return; }
           currentSpeech = null;
           button('stop').hidden = true;
-          if (walking && panel.open && !document.hidden) listen();
+          if (!panel.open || document.hidden) return;
+          if (onFinished) onFinished();
+          else if (walking) listen();
         };
         utterance.onerror = () => {
           if (currentSpeech !== utterance) return;
@@ -321,9 +368,25 @@
       speakPart(0);
     }
     function perform(action) {
-      if (action === 'question') {
+      if (action === 'lesson' && canSpeak && narration.length) {
+        narrate(Math.max(0, paragraphIndex));
+      } else if (action === 'question') {
+        if (card === cards.length - 1 && walking) {
+          stopPractice();
+          card = -1;
+          resumeCard = -1;
+          write(quizKey, null);
+          refreshResumeLabels();
+          button('question').textContent = 'Ask me a question';
+          button('answer').disabled = true;
+          respond('That was the final practice question for this lesson.', 'check-yourself');
+          return;
+        }
         waitingForAnswer = true;
         card = (card + 1) % cards.length;
+        resumeCard = card;
+        write(quizKey, cards[card].question);
+        refreshResumeLabels();
         button('question').textContent = 'Next question';
         button('answer').disabled = false;
         respond(cards[card].question, 'check-yourself');
@@ -370,7 +433,7 @@
         releaseMic();
         if (words === 'stop' || words === 'stop listening') { stopPractice(); return; }
         const commands = { 'quiz me': 'question', 'next': 'question', 'next question': 'question',
-          'explain': 'explain', 'why': 'explain', 'answer': 'answer', 'repeat': 'repeat' };
+          'teach me': 'lesson', 'read the lesson': 'lesson', 'explain': 'explain', 'why': 'explain', 'answer': 'answer', 'repeat': 'repeat' };
         const action = Object.hasOwn(commands, words) && commands[words];
         if (!action && (deviceEnabled || personal?.querySelector('[data-code]')?.value.trim())) { askTutor(transcript); return; }
         if (!action && walking && waitingForAnswer) {
@@ -423,13 +486,13 @@
           navigator.wakeLock?.request('screen').then(lock => {
             if (walking) wake = lock; else lock.release().catch(() => {});
           }).catch(() => {});
-          perform('question');
+          resumeQuiz();
         });
       }
     }
     function stopPractice() {
       walking = false;
-      walk.textContent = 'Start hands-free';
+      refreshResumeLabels();
       wake?.release().catch(() => {});
       wake = null;
       pendingTurn?.abort();
