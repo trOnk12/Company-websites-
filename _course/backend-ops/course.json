@@ -1,0 +1,25 @@
+{
+  "title": "Backend and DevOps for Android developers",
+  "intro": "Build a bookmark service, survive a lost reply, ship a replacement and recover the data. Finish with a backend change and an operations incident report.",
+  "how": "Run the local lab alongside the puzzles. Use a computer with Python for the service and Docker for the release rehearsal.",
+  "modules": [
+    {
+      "title": "Build the backend",
+      "blurb": "Trace one write from the phone into durable storage.",
+      "puzzles": [
+        "00-request.md",
+        "01-retry.md",
+        "02-test.md"
+      ]
+    },
+    {
+      "title": "Operate the service",
+      "blurb": "Release, observe and recover the same service.",
+      "puzzles": [
+        "03-release.md",
+        "04-incident.md"
+      ]
+    }
+  ],
+  "upcoming": []
+}

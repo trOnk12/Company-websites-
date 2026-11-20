@@ -1,0 +1,18 @@
+{
+  "title": "JVM internals for Kotlin and Android developers",
+  "intro": "Trace a tiny bookmark program from compiled instructions to method frames, shared objects and reachability.",
+  "how": "Predict the output, change one line and inspect the compiled instructions with a local JDK.",
+  "modules": [
+    {
+      "title": "From source to a live object",
+      "blurb": "Follow the same counter through four experiments.",
+      "puzzles": [
+        "00-class-file.md",
+        "01-frame.md",
+        "02-reference.md",
+        "03-reachability.md"
+      ]
+    }
+  ],
+  "upcoming": []
+}

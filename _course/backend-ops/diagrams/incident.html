@@ -1,0 +1,17 @@
+<!-- label: Alive, ready, or serving the wrong thing? -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Alive, ready, or serving the wrong thing?</title>
+<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Live 200</text></g>
+<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Ready 503</text></g>
+<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
+<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Restore table</text></g>
+<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
+<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Write again</text></g>
+<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
+<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>The process still receives requests.</p></li>
+<li><p>A query cannot read the expected table.</p></li>
+<li><p>The operator restores the original name.</p></li>
+<li><p>A real write tests recovery.</p></li>
+</ol>

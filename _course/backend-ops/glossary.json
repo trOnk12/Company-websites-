@@ -1,0 +1,37 @@
+{
+  "baseline": {
+    "words": []
+  },
+  "terms": {
+    "route": {
+      "in": "00",
+      "def": "The rule that pairs a request method and path with the code that handles it."
+    },
+    "unique key": {
+      "in": "01",
+      "def": "A database rule allowing only one row for a given identity."
+    },
+    "integration test": {
+      "in": "02",
+      "def": "A test that exercises several real components together."
+    },
+    "named volume": {
+      "in": "03",
+      "def": "A storage location Docker can attach to successive containers."
+    },
+    "readiness probe": {
+      "in": "04",
+      "def": "A check that asks whether an instance can currently serve its expected work."
+    }
+  },
+  "from": {
+    "process": {
+      "course": "android",
+      "in": 0
+    },
+    "repository": {
+      "course": "sysdesign",
+      "in": 8
+    }
+  }
+}
