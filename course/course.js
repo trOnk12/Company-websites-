@@ -381,7 +381,7 @@
         ...(d.upcoming.length ? ['', 'Not written yet (good places to go next):', ...d.upcoming.map(u => `- ${u}`)] : []),
         ...(d.assumes ? ['', `The course assumes I know: ${d.assumes}.`] : []),
         '',
-        known.length ? 'Words I know from it:' : "I haven't passed a puzzle yet, so assume only that I know Kotlin and Android app basics.",
+        known.length ? 'Words I know from it:' : "I haven't passed a puzzle yet. Start from the stated prerequisites and check what I already know.",
         ...known.map(t => `- ${t.t}: ${t.def}`),
         ...(missed.length ? ['', 'Questions I got wrong at first (my weak spots):', ...missed.map(m => `- Puzzle ${m.n}: ${m.q}`)] : []),
         '',

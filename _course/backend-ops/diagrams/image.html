@@ -1,0 +1,17 @@
+<!-- label: What goes in a Docker image? -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">What goes in a Docker image?</title>
+<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Build</text></g>
+<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Start</text></g>
+<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
+<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Mount /data</text></g>
+<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
+<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Write row</text></g>
+<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
+<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>A build captures the program and its runtime.</p></li>
+<li><p>The process starts with a read-only container filesystem.</p></li>
+<li><p>The named volume supplies writable storage.</p></li>
+<li><p>A database write needs room for its journal.</p></li>
+</ol>

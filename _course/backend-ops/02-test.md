@@ -7,7 +7,7 @@ takeaway: An integration test can check replies, stored state and persistence ac
 
 ## The problem
 
-A mocked Android repository can return success without writing anything. How would a reviewer know your server actually preserved the bookmark?
+A test double standing in for the database can return success without writing anything. How would a reviewer know your server actually preserved the bookmark?
 
 ## See it
 

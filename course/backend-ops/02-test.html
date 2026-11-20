@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Test a retry through the running service and read what survived.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="Can two clients prove the rule? – Backend and DevOps for Android developers – Mateusz Pachulski">
+  <meta property="og:title" content="Can two clients prove the rule? – Backend engineering from first request to production – Mateusz Pachulski">
   <meta property="og:description" content="Test a retry through the running service and read what survived.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/backend-ops/02-test">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>Can two clients prove the rule? – Backend and DevOps for Android developers – Mateusz Pachulski</title>
+  <title>Can two clients prove the rule? – Backend engineering from first request to production – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/backend-ops/02-test">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -49,15 +49,15 @@
 
   <main id="main">
     <article class="puzzle course-top wrap narrow" data-support="" data-course="backend-ops" data-n="2">
-      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Backend and DevOps for Android developers</a></p>
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Backend engineering from first request to production</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 2 · 3 of 5</p>
+        <p class="eyebrow">Puzzle 2 · 3 of 17</p>
         <h1>Can two clients prove the rule?</h1>
         <p class="lede">Test a retry through the running service and read what survived.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-request.html" title="Which process answers the phone?">0</a></li><li><a href="01-retry.html" title="Did the first write happen?">1</a></li><li><a href="02-test.html" aria-current="page" title="Can two clients prove the rule?">2</a></li><li><a href="03-release.html" title="Where does the data live during a release?">3</a></li><li><a href="04-incident.html" title="Alive, ready, or serving the wrong thing?">4</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-request.html" title="What happens when a client sends a request?">0</a></li><li><a href="01-retry.html" title="Did the first write happen?">1</a></li><li><a href="02-test.html" aria-current="page" title="Can two clients prove the rule?">2</a></li><li><a href="03-release.html" title="Where does the data live during a release?">3</a></li><li><a href="04-incident.html" title="Alive, ready, or serving the wrong thing?">4</a></li><li><a href="05-contract.html" title="Can an old client read the new response?">5</a></li><li><a href="06-model.html" title="Can a bookmark point to a missing owner?">6</a></li><li><a href="07-commit.html" title="What if the service stops between two writes?">7</a></li><li><a href="08-query.html" title="Why does the same page cost less to read?">8</a></li><li><a href="09-owner.html" title="Whose bookmark may this request read?">9</a></li><li><a href="10-session.html" title="Who vouched for the caller?">10</a></li><li><a href="11-cache.html" title="When does a reader see yesterday’s list?">11</a></li><li><a href="12-migrate.html" title="Can two releases share one schema?">12</a></li><li><a href="13-image.html" title="What goes in a Docker image?">13</a></li><li><a href="14-pod.html" title="Who replaces a missing pod?">14</a></li><li><a href="15-signals.html" title="Which users felt the slowdown?">15</a></li><li><a href="16-deliver.html" title="What evidence earns a release?">16</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -68,10 +68,10 @@
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul><li data-block="1"><details><summary><a href="01-retry.html">Puzzle 1: Did the first write happen?</a></summary><p>A stable bookmark name and a unique database key let repeated writes converge on one row.</p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-request.html">0</a> → <a href="01-retry.html">1</a>. Know them already? Start here.</p>
-      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li><li><a href="../sysdesign/08-the-database-is-the-truth.html"><b>repository</b></a> <span class="small">Mobile system design, from a packet to an app, puzzle 8: The database is the truth</span></li></ul></aside>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>A mocked Android repository can return success without writing anything. How would a reviewer know your server actually preserved the bookmark?</p>
+<p>A test double standing in for the database can return success without writing anything. How would a reviewer know your server actually preserved the bookmark?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>

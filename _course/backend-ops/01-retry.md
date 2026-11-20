@@ -16,7 +16,7 @@ The save route accepts a bookmark name. Your app times out after tapping Save. T
 
 ## The building block
 
-A **unique key** lets the database enforce one row per name, even when two callers write together. Use river as the identity of the desired bookmark. The database accepts at most one row for that name. The insert asks it to ignore a conflicting key. The handler waits for the transaction to commit before replying. The first insertion returns 201. Repeating the same write returns 200 and leaves one row. Checking for the row in application code and inserting later leaves a gap where two callers can both see it missing.
+The database stores information in a table. Think of each row as one bookmark and each column as one property. **SQL** is a language for reading and changing these tables. A **unique key** lets the database enforce one row per name, even when two callers write together. Use river as the identity of the desired bookmark. The database accepts at most one row for that name. The insert asks it to ignore a conflicting key. The handler waits for the transaction to commit before replying. The first insertion returns 201. Repeating the same write returns 200 and leaves one row. Checking for the row in application code and inserting later leaves a gap where two callers can both see it missing.
 
 ## Try it
 

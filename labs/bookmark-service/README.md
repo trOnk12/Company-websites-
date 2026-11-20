@@ -1,6 +1,13 @@
 # Bookmark service lab
 
-Use Python 3.11+, curl and two terminals. Start in a fresh checkout:
+You will need Python 3.11+, Git, curl and a terminal. Basic variables, functions and running a script are enough to start. A terminal is the window where you enter these commands. To download the lab, run:
+
+```sh
+git clone --depth 1 https://github.com/trOnk12/Company-websites-.git
+cd Company-websites-
+```
+
+Start the server in that terminal:
 
 ```sh
 cd labs/bookmark-service
@@ -66,3 +73,67 @@ curl -i http://127.0.0.1:8080/ready
 ```
 
 Record the first failing signal, one hypothesis, the recovery action and the result of a real write. Turn the build and probe commands into a pipeline in your own portfolio repository. Keep the test log and demonstrate that a deliberately failing test stops the build. For the operations portfolio, include the incident timeline, before/after probes, image versions and proof the row survived rollback.
+
+## Docker filesystem drill
+
+From this directory build the lab image, then compare identical code with and without writable storage. Use a fresh volume name for the exercise.
+
+```sh
+docker build -t bookmark-lab:local .
+docker run --rm --network none --read-only bookmark-lab:local
+docker volume create bookmark-course-files
+docker run -d --name bookmark-course-files-test --network none --read-only -v bookmark-course-files:/data bookmark-lab:local
+docker exec bookmark-course-files-test python -c "from urllib.request import Request,urlopen; print(urlopen(Request('http://127.0.0.1:8080/bookmarks/river', method='PUT')).status)"
+docker stop bookmark-course-files-test
+```
+
+The first run should exit when it tries to create its database. The second should return 201 on a fresh volume. If the second process starts slowly, repeat the write. A later response of 200 means the row already exists. Inspect the Dockerfile to explain how the process user and mount location affect the outcome.
+
+Continue with the [local Kubernetes rollout](k8s/README.md). For the database experiments run `python3 data_drills.py`. The script operates entirely in memory.
+
+## Data drills
+
+Run `python3 data_drills.py`. Compare the effect of a rollback, redelivery, owner-filtered queries and an index. Save the output, your predictions and a counterexample for each design decision.
+
+## Backend portfolio checklist
+
+Use this as a second pass through the same service. Each row asks for a deliverable you can demonstrate in a code review.
+
+| Skill | Assignment | Acceptance check |
+|---|---|---|
+| API contracts and evolution | Define request validation, status codes, pagination and the error format in an OpenAPI document. Add one optional field. | Run an old client against the changed service. Record an invalid request, an empty result and a successful write. |
+| Relational design and migrations | Port the two-owner dataset to local PostgreSQL. Add a foreign key and a composite unique constraint. Introduce a nullable column, backfill it, then require it. | Run the old and new app versions during the compatible stage. Restore a backup into a fresh database and compare row counts and sample values. |
+| Concurrency and retries | Reuse the concurrent write test and the pending-event exercise. Retry only transient failures with a bounded budget and backoff. | Simulate a lost response, a duplicate event and permanent invalid input. Count attempts and durable effects separately. |
+| Authentication and authorization | Document how a verified session becomes an application principal. Implement owner checks for list, update and delete against synthetic users. | Check unauthenticated, owner and other-user cases for each operation. Use synthetic credentials only. |
+| Caching and freshness | Cache a list per owner. Choose an expiry and an invalidation rule. | Change one row and show when a reader sees the change. Prove one owner cannot see another owner’s cached response. |
+| Load and observability | Time a fixed local workload. Collect request counts, error counts, latency percentiles and database duration. | Compare identical workloads before and after the index. Identify one bottleneck from evidence and distinguish failures from slow successes. |
+| Delivery and operations | Gate the image build on tests. Record image identity, configuration, probe results, rollback steps and recovery time. | Demonstrate a failed test stopping the build and a restored service reading the expected data. |
+| System design | Sketch the path from phone to database and worker. Mark ownership of data, timeout boundaries, failure modes and capacity assumptions. | Explain what changes when traffic increases tenfold, a worker redelivers a message or the database becomes unavailable. |
+
+## Core workbench
+
+Run `python3 backend_basics.py`. Use a local copy to change one condition per run. You will parse a request, inspect a join, test a session boundary, expire a cache entry and compare a mean with a percentile. These fixtures isolate individual mechanisms. The graduation project combines them.
+
+## Graduation project
+
+Build an API for two synthetic users from a blank directory. You may consult the worked examples after writing a failing test. Use the language and web framework of your choice. Publish source and synthetic fixtures only if you choose to share your portfolio. Run the service locally.
+
+1. **Build.** Implement create, list and delete. Document validation, response shapes, ordering, duplicate requests and owner checks. Have a second client consume the contract.
+2. **Persist.** Supply a relational schema, one backwards-compatible migration, a transaction that records pending work, and a paginated query. Prove correctness under a repeated request and tied timestamps.
+3. **Operate.** Package the service in a container. Run tests before building. Capture latency and errors for a repeatable workload. Explain what readiness measures and what an operator should inspect first.
+4. **Recover.** Restore data into a fresh database. Rehearse a faulty release, revert to a compatible version and verify a write followed by a read. Submit the timeline and one design change justified by the evidence.
+
+Pass when a reviewer can start the project from a clean checkout, execute the tests, reproduce the failure and follow your recovery instructions. For a backend-focused submission, include the query plan and authorization tests. For an operations-focused submission, include the local Kubernetes rollout and probe evidence.
+
+## PostgreSQL extension
+
+From the lab directory, start a disposable PostgreSQL 17 database. Docker needs internet access to download the image the first time. The running database has no container network and publishes no port. The password is generated inside the container at startup. The following commands connect through its local socket.
+
+```sh
+docker run --rm -d --name bookmark-course-pg --network none --tmpfs /var/lib/postgresql/data postgres:17 sh -c 'export POSTGRES_PASSWORD="$(cat /proc/sys/kernel/random/uuid)"; exec docker-entrypoint.sh postgres'
+docker exec bookmark-course-pg pg_isready -U postgres
+docker exec -i bookmark-course-pg psql -U postgres -v ON_ERROR_STOP=1 < postgres.sql
+docker stop bookmark-course-pg
+```
+
+Wait until pg_isready reports accepting connections before running the SQL file. Expect Ada with one row and Ben with zero. Read the actual plan for this tiny dataset. Repeat with thousands of rows and a composite index before drawing a performance conclusion. The SQL runs inside a transaction and rolls back at the end.

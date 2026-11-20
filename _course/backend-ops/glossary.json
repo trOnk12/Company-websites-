@@ -1,37 +1,66 @@
 {
   "baseline": {
-    "words": []
+    "words": [
+      "HTTP",
+      "API",
+      "JSON",
+      "JavaScript"
+    ]
   },
   "terms": {
     "route": {
-      "in": "00",
+      "in": 0,
       "def": "The rule that pairs a request method and path with the code that handles it."
     },
     "unique key": {
-      "in": "01",
+      "in": 1,
       "def": "A database rule allowing only one row for a given identity."
     },
     "integration test": {
-      "in": "02",
+      "in": 2,
       "def": "A test that exercises several real components together."
     },
     "named volume": {
-      "in": "03",
+      "in": 3,
       "def": "A storage location Docker can attach to successive containers."
     },
     "readiness probe": {
-      "in": "04",
+      "in": 4,
       "def": "A check that asks whether an instance can currently serve its expected work."
+    },
+    "pod": {
+      "in": 14,
+      "def": "A unit scheduled by Kubernetes that can hold one or more containers."
+    },
+    "status code": {
+      "in": 0,
+      "def": "A number describing the outcome of a request."
+    },
+    "SQL": {
+      "in": 1,
+      "def": "A language for working with tables in a relational database."
+    },
+    "Hypertext Transfer Protocol": {
+      "in": 0,
+      "def": "The rules clients and servers use to exchange requests and responses."
+    },
+    "application programming interface": {
+      "in": 5,
+      "def": "The interface a program offers to its callers."
+    },
+    "JavaScript Object Notation": {
+      "in": 5,
+      "def": "A text format for structured values."
+    },
+    "response time": {
+      "in": 15,
+      "def": "Elapsed time for a request to receive a response."
     }
   },
   "from": {
     "process": {
       "course": "android",
       "in": 0
-    },
-    "repository": {
-      "course": "sysdesign",
-      "in": 8
     }
   }
 }

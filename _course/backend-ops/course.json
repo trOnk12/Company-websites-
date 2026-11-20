@@ -1,11 +1,11 @@
 {
-  "title": "Backend and DevOps for Android developers",
-  "intro": "Build a bookmark service, survive a lost reply, ship a replacement and recover the data. Finish with a backend change and an operations incident report.",
-  "how": "Run the local lab alongside the puzzles. Use a computer with Python for the service and Docker for the release rehearsal.",
+  "title": "Backend engineering from first request to production",
+  "intro": "Learn to design, build, test and operate a bookmark API. Start with a local request, then work through databases, identity, caching, Docker, Kubernetes and a release project.",
+  "how": "Start with Python. Add Docker for the filesystem lab, then kind and kubectl for the local cluster. The data drills need only Python.",
   "modules": [
     {
-      "title": "Build the backend",
-      "blurb": "Trace one write from the phone into durable storage.",
+      "title": "Build and test your first service",
+      "blurb": "Start with one request, one durable row and a test.",
       "puzzles": [
         "00-request.md",
         "01-retry.md",
@@ -13,13 +13,48 @@
       ]
     },
     {
-      "title": "Operate the service",
-      "blurb": "Release, observe and recover the same service.",
+      "title": "Release and recover a first version",
+      "blurb": "Follow the same row through a release and a storage incident.",
       "puzzles": [
         "03-release.md",
         "04-incident.md"
       ]
+    },
+    {
+      "title": "API contracts and relational databases",
+      "blurb": "Validate inputs, model owners, commit related changes and paginate results.",
+      "puzzles": [
+        "05-contract.md",
+        "06-model.md",
+        "07-commit.md",
+        "08-query.md"
+      ]
+    },
+    {
+      "title": "Identity and changes over time",
+      "blurb": "Limit access by owner, expire sessions, refresh caches and migrate data.",
+      "puzzles": [
+        "09-owner.md",
+        "10-session.md",
+        "11-cache.md",
+        "12-migrate.md"
+      ]
+    },
+    {
+      "title": "Docker, Kubernetes and production operations",
+      "blurb": "Package the service, replace a pod, measure performance and deliver your final project.",
+      "puzzles": [
+        "13-image.md",
+        "14-pod.md",
+        "15-signals.md",
+        "16-deliver.md"
+      ]
     }
   ],
-  "upcoming": []
+  "upcoming": [],
+  "relatedCourses": [
+    "transport",
+    "security",
+    "jvm"
+  ]
 }
