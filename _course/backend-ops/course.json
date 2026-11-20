@@ -49,6 +49,13 @@
         "15-signals.md",
         "16-deliver.md"
       ]
+    },
+    {
+      "title": "Concurrent edits",
+      "blurb": "A check at save time that detects a change since the client read a record.",
+      "puzzles": [
+        "17-edit-conflict.md"
+      ]
     }
   ],
   "upcoming": [],

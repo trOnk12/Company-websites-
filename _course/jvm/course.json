@@ -12,6 +12,13 @@
         "02-reference.md",
         "03-reachability.md"
       ]
+    },
+    {
+      "title": "Changing shared state",
+      "blurb": "A change applied only when the current value matches the expected value.",
+      "puzzles": [
+        "04-shared-counter.md"
+      ]
     }
   ],
   "upcoming": []

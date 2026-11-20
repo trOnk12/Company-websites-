@@ -55,6 +55,18 @@
     "response time": {
       "in": 15,
       "def": "Elapsed time for a request to receive a response."
+    },
+    "optimistic locking": {
+      "in": 17,
+      "def": "A check at save time that detects a change since the client read a record."
+    },
+    "header": {
+      "in": 17,
+      "def": "A named field carrying information about a request or response."
+    },
+    "ETag": {
+      "in": 17,
+      "def": "A response field that labels the version of the representation sent."
     }
   },
   "from": {

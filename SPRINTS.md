@@ -218,3 +218,7 @@ The public learning log will publish small experiments about new AI tools, chat 
 4. **Publishing threshold.** Keep test data synthetic or public. Pin tool and model versions, save raw outcomes and publish a source or replay wherever permissions permit. For a new tool version, rerun the same cases before updating the claim.
 
 Implementation discussions can refer to the public articles. Credentials, real user data and paid services belong behind explicit access and scope decisions.
+
+## JVM and backend practice — concurrent edits
+
+Added a deterministic Java 21 shared-counter exercise and a Python/SQLite HTTP exercise for two editors. Each course now has a linked lesson, a four-step diagram and three prediction checks. The graduation extension asks learners to defend the same invariant across two service instances.

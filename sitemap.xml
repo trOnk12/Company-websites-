@@ -232,6 +232,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/backend-ops/check-6</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/backend-ops/00-request</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -313,6 +318,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/backend-ops/16-deliver</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/backend-ops/17-edit-conflict</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -427,6 +437,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/jvm/check-2</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/jvm/00-class-file</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -443,6 +458,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/jvm/03-reachability</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/04-shared-counter</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -137,3 +137,16 @@ docker stop bookmark-course-pg
 ```
 
 Wait until pg_isready reports accepting connections before running the SQL file. Expect Ada with one row and Ben with zero. Read the actual plan for this tiny dataset. Repeat with thousands of rows and a composite index before drawing a performance conclusion. The SQL runs inside a transaction and rolls back at the end.
+
+## Two editors, one bookmark
+
+Run `python3 edit_conflict.py`. It uses the Python standard library, an ephemeral loopback port and a fresh SQLite file. Both clients finish reading before either sends its edit. The fixture accepts the single quoted version returned on its read endpoint. It models one bookmark with one editable text representation.
+
+| Predict before running | Observe |
+| --- | --- |
+| Both clients read River. Which tag does each keep? | Both receive `"7"`. |
+| Ada saves Lake. Ben sends Forest with the original tag. | Ada receives 204. Ben receives 412. |
+| Ben reads again. | The body is Lake and the tag is `"8"`. |
+| Ben reviews both titles and saves Lake and Forest with the new tag. | A subsequent read returns the chosen title at `"9"`. |
+
+For the graduation project, repeat this exercise with **two independently running service instances sharing the same database**. Route Ada to one instance and Ben to the other. Preserve the responses and final row as evidence. Explain where a version check must run for that evidence to hold, and what would happen if each instance kept a separate in-memory counter.

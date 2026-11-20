@@ -21,6 +21,10 @@
     "class file": {
       "in": 0,
       "def": "A file describing a compiled type and the instructions for its methods."
+    },
+    "conditional write": {
+      "in": 4,
+      "def": "A change applied only when the current value matches the expected value."
     }
   },
   "from": {
