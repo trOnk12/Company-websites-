@@ -24,7 +24,8 @@
     },
     {
       "title": "System design: the building blocks",
-      "topics": "Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity."
+      "topics": "Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity.",
+      "id": "system-design"
     },
     {
       "title": "How LLMs and AI agents work",

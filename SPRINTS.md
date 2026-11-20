@@ -222,3 +222,7 @@ Implementation discussions can refer to the public articles. Credentials, real u
 ## JVM and backend practice — concurrent edits
 
 Added a deterministic Java 21 shared-counter exercise and a Python/SQLite HTTP exercise for two editors. Each course now has a linked lesson, a four-step diagram and three prediction checks. The graduation extension asks learners to defend the same invariant across two service instances.
+
+## Backend system design in English
+
+Published a 15-lesson path through a parking reservation service, with three transfer cases, a Java/JDBC concurrency and restart lab, a queue model, module checkpoints and an offline vault. The design exam requires a capacity estimate, a failure timeline, reproducible evidence and a revised decision after an assumption changes.

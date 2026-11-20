@@ -1,0 +1,17 @@
+<!-- label: Is the database slow, or is the request waiting to reach it? -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Is the database slow, or is the request waiting to reach it?</title>
+<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Request</text></g>
+<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
+<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">920 ms waiting</text></g>
+<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
+<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">12 ms query</text></g>
+<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
+<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Response</text></g>
+<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>The request enters the service.</p></li>
+<li><p>Most of this trace is spent waiting for a connection.</p></li>
+<li><p>The database executes the query in twelve milliseconds.</p></li>
+<li><p>Which measurement could explain the long wait?</p></li>
+</ol>

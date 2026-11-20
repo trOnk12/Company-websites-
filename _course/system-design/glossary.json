@@ -1,0 +1,59 @@
+{
+  "baseline": {
+    "words": [
+      "HTTP",
+      "ID",
+      "CPU"
+    ]
+  },
+  "terms": {
+    "PostgreSQL": {
+      "in": 3,
+      "def": "A relational database management system.",
+      "kind": "code"
+    },
+    "token": {
+      "in": 8,
+      "def": "One permit consumed to admit a request."
+    },
+    "CAP": {
+      "in": 10,
+      "def": "A theorem relating consistency and availability during a network partition.",
+      "kind": "code"
+    },
+    "invariant": {
+      "in": 0,
+      "def": "A rule that must hold after every completed change."
+    },
+    "transactional outbox": {
+      "in": 7,
+      "def": "A durable list of messages stored with the business changes that create them."
+    },
+    "error budget": {
+      "in": 12,
+      "def": "The number or fraction of bad outcomes allowed by a service objective."
+    },
+    "reservation": {
+      "in": 0,
+      "def": "A durable claim by one driver on a space."
+    },
+    "in flight": {
+      "in": 1,
+      "def": "Already arrived, with the reply still outstanding."
+    },
+    "replica": {
+      "in": 6,
+      "def": "A separate copy that replays changes to the primary store."
+    }
+  },
+  "from": {
+    "JVM": {
+      "course": "kmp",
+      "in": 0
+    },
+    "process": {
+      "course": "android",
+      "in": 0
+    }
+  }
+}
