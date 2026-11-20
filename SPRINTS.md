@@ -226,13 +226,3 @@ Added a deterministic Java 21 shared-counter exercise and a Python/SQLite HTTP e
 ## Backend system design in English
 
 Published a 15-lesson path through a parking reservation service, with three transfer cases, a Java/JDBC concurrency and restart lab, a queue model, module checkpoints and an offline vault. The design exam requires a capacity estimate, a failure timeline, reproducible evidence and a revised decision after an assumption changes.
-
-## Source-grounded voice practice
-
-Every puzzle can now prepare its own explanation, worked examples, diagram steps, quiz key and reference links for a two-way ChatGPT Voice session. The learner can inspect the text before copying it. Tutor instructions distinguish examples from general guarantees and ask for a section reference or an explicit evidence gap on follow-up questions.
-
-Hands-free practice alternates a spoken question and one listening turn while the page is visible. A supported installed browser model or the optional private server selects course passages for open questions. The private server keeps the provider key server-side and bounds paid turns per run.
-
-## Resumable lesson audio
-
-Added lesson narration, spoken “teach me”, independent local bookmarks for the current question and passage, and an explicit end to a hands-free question round. Reloading a page restores the bookmarks and waits for the learner to start audio.
