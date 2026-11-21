@@ -68,7 +68,7 @@ function casesPage() {
   });
   return {
     file: 'parking-design/cases.html', course: 'system-design', title: heading.replace(/^# /, ''), intro,
-    parent: ['Reservation lab', './'],
+    parent: ['Reservation lab', './'], scripts: ['fencing.js'],
     body: cards.join('\n') + '\n<p class="lab-return"><a href="../../course/system-design/14-design-review.html#try-it">Return to the design review lesson</a></p>',
   };
 }

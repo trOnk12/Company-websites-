@@ -1,6 +1,6 @@
 # Three system design reviews
 
-Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions.
+Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions. After the three reviews, try the shorter parking-display failure drill.
 
 ## 1. Assigned concert seats
 
@@ -41,6 +41,24 @@ Using decimal units gives 400 gigabytes per day and twelve terabytes in thirty d
 Authorize the driver, create a pending metadata row and assign a distinct object key. Give the phone a short-lived right to upload that object directly to object storage. On completion, verify existence, expected size and the agreed integrity mechanism before transitioning the row to ready. Bind completion to the correct object identity and version. For multipart uploads retain the upload session and the list of completed parts. When serving the photo, distinguish the owner's read authorization from the transfer permission already issued. Decide how long an existing permission can remain valid after revocation.
 
 **Drill.** Fail after bytes arrive but before the metadata row is updated. Then fail after the ready state commits but before the phone receives a reply. Repeat completion and count ready receipts. Run cleanup of abandoned uploads after a grace period and race it against completion. Explain how ownership of the cleanup decision prevents deletion of a finished receipt.
+
+</details>
+
+## A paused worker publishes an old parking count
+
+Two workers update one parking display. Worker A observes an open space, prepares “open” and pauses. The coordinator hands the job to B. B now observes a full lot. Both workers can still reach the database. Predict the final message for each arrival order, first with ordinary writes and then with a generation check.
+
+Choose a write rule and arrival order below, then replay the handoff to inspect each write. To run the same experiment against real SQL, download [the Python fixture](https://pachulski.dev/labs/parking-design/fencing.py) and run `python3 fencing.py` locally. It uses two independent SQLite connections and creates four disposable databases. Each grant advances an integer on the display row. The handoff is explicit so you can repeat the same schedule without waiting for a real lease to expire.
+
+<details><summary>Worked review and failure drill</summary>
+
+If B publishes “full” and delayed A publishes “open” last, two ordinary updates succeed and the display lies. If A arrives first, the eventual “full” hides a brief stale write. Checking only the final message misses that error.
+
+The grant records generation 2 before either publish. Each guarded update checks its generation inside the same SQL statement that writes the message. A's generation 1 changes zero rows in either order. B's generation 2 changes one row. Predict the result if A checks the generation in a separate query, pauses, and later sends an unconditional update. B can take ownership between those operations.
+
+**Transfer check.** If B repeats a valid increment twice, does its generation suppress the duplicate? Both increments can pass the same ownership test. A non-repeatable effect needs its own operation identity and deduplication. This fixture keeps the granting authority and the protected write in one database. For a separate external display service, specify where it will persist and enforce ownership before promising the same guarantee.
+
+[Further reading on fencing tokens](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
 
 </details>
 
