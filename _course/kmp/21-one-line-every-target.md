@@ -54,7 +54,7 @@ Now follow your one line through puzzle 16's compilations. Each compilation asks
 
 - iosArm64's compilation gets the ios_arm64 variant: Ktor's iosArm64 klib.
 - iosSimulatorArm64's compilation gets the ios_simulator_arm64 variant: the other klib.
-- The Android build gets the jvm variant. Ktor's core publishes no Android-only variant, and Android builds can read JVM class files, as puzzle 0 showed.
+- The Android build gets the jvm variant. Ktor's core publishes no Android-only variant, and an Android build starts from JVM class files anyway, converting them to DEX, as puzzle 0 showed.
 - While Kotlin checks commonMain's own code, it gets a variant marked common: the declarations every target shares, so common code can only call what every target has.
 
 Now the OkHttp failure from puzzle 19 is exact. The OkHttp part's .module file lists only a common and a jvm variant. When the iosArm64 compilation asks for a variant matching ios_arm64, there's none, so Gradle stops the build with an error that no variant matches. It never silently gives iOS nothing.
