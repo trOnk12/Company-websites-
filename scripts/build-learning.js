@@ -285,6 +285,7 @@ function sitemap(cards) {
   const urls = [
     { loc: `${SITE}/`, freq: 'monthly', prio: '1.0' },
     { loc: `${SITE}/learning/`, freq: 'weekly', prio: '0.8' },
+    { loc: `${SITE}/korepetycje/`, freq: 'monthly', prio: '0.9' },
     ...cards.map(c => ({ loc: `${SITE}/learning/${c.slug}`, freq: 'monthly', prio: '0.6', mod: c.meta.date })),
     ...require('./build-course').courseUrls().map(loc => ({ loc, freq: 'monthly', prio: '0.7' })),
     ...require('./build-music').musicUrls().map(loc => ({ loc, freq: 'monthly', prio: '0.5' })),
