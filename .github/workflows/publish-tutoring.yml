@@ -1,0 +1,34 @@
+# Publishes the tutoring offer on Mateusz's Facebook Page every other Monday, and keeps the OLX advert up to date.
+# It does nothing until the secrets exist (Settings → Secrets and variables → Actions). See TUTORING.md.
+name: Publish tutoring offer
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 16 * * 1'   # Mondays 16:17 UTC (17:17 / 18:17 in Poland); the script skips odd weeks
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+      FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+      OLX_CLIENT_ID: ${{ secrets.OLX_CLIENT_ID }}
+      OLX_CLIENT_SECRET: ${{ secrets.OLX_CLIENT_SECRET }}
+      OLX_REFRESH_TOKEN: ${{ secrets.OLX_REFRESH_TOKEN }}
+      OLX_CATEGORY_ID: ${{ secrets.OLX_CATEGORY_ID }}
+      OLX_CITY_ID: ${{ secrets.OLX_CITY_ID }}
+      OLX_CONTACT_NAME: ${{ secrets.OLX_CONTACT_NAME }}
+      OLX_CONTACT_PHONE: ${{ secrets.OLX_CONTACT_PHONE }}
+      OLX_ATTRIBUTES: ${{ secrets.OLX_ATTRIBUTES }}
+      OLX_ADVERT_ID: ${{ secrets.OLX_ADVERT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Facebook Page post (every other week)
+        if: ${{ env.FB_PAGE_TOKEN != '' }}
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ $(( $(date +%V) % 2 )) -eq 1 ]; then echo "Odd week: skipping"; exit 0; fi
+          node scripts/publish-tutoring.mjs facebook --send
+      - name: OLX advert (create once, then keep it updated)
+        if: ${{ env.OLX_REFRESH_TOKEN != '' }}
+        run: node scripts/publish-tutoring.mjs olx --send

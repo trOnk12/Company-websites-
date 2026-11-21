@@ -21,6 +21,31 @@ klasy 4–6, 45 zł za 45 minut. Zmiany na stronie nie mogą psuć wyglądu, kt�
 5. **Numer telefonu** na stronie: wielu rodziców woli zadzwonić lub napisać SMS niż e-mail. Decyzja Mateusza;
    wtedy dodać przycisk „Zadzwoń” obok e-maila.
 
+## Automatyczna publikacja (`scripts/publish-tutoring.mjs` + `.github/workflows/publish-tutoring.yml`)
+
+Publikuje tylko tam, gdzie pozwala oficjalne API, i nic nie robi bez Twoich kluczy (sekrety w GitHub:
+Settings → Secrets and variables → Actions). Bez `--send` skrypt tylko pokazuje, co by wysłał.
+
+- **Fanpage na Facebooku**: co drugi poniedziałek post z linkiem do strony (3 wersje tekstu na zmianę).
+  Załóż stronę „Korepetycje z matematyki – Mateusz Pachulski”, w Meta for Developers utwórz aplikację, wygeneruj
+  długoterminowy token strony z uprawnieniem `pages_manage_posts`, zapisz `FB_PAGE_ID` i `FB_PAGE_TOKEN`.
+- **Grupy na Facebooku: nie da się automatycznie.** Meta wyłączyła publikowanie w grupach przez API (kwiecień 2024);
+  boty logujące się na prywatne konto łamią regulamin i kończą się blokadą. Udostępniaj post ze strony do grup
+  ręcznie (Udostępnij → W grupie), raz na 2 tygodnie, zgodnie z zasadami każdej grupy.
+- **OLX**: jedno ogłoszenie przez oficjalne Partner API, z automatycznym przedłużaniem; kolejne uruchomienia je
+  aktualizują. Kroki (jednorazowo):
+  1. developer.olx.pl → zaloguj się kontem OLX, „Partner details”, dodaj aplikację z Redirect URI
+     `https://pachulski.dev/korepetycje/olx/`; po akceptacji OLX dostaniesz `OLX_CLIENT_ID` i `OLX_CLIENT_SECRET`.
+  2. `node scripts/publish-tutoring.mjs olx-categories` (i dalej z `parentId`): znajdź kategorię korepetycji.
+     Uwaga: przez API w Polsce działa tylko część kategorii; jeśli korepetycji tam nie ma, ogłoszenie dodaj
+     ręcznie na olx.pl (raz; OLX sam je przedłuża), a skrypt pomiń.
+  3. `olx-attributes <id>`: wymagane atrybuty kategorii → sekret `OLX_ATTRIBUTES` (JSON).
+  4. Otwórz `https://www.olx.pl/oauth/authorize/?client_id=…&response_type=code&scope=read write v2&redirect_uri=https://pachulski.dev/korepetycje/olx/`,
+     skopiuj kod ze strony i uruchom `olx-token <kod>` → sekret `OLX_REFRESH_TOKEN`.
+  5. Sekrety `OLX_CATEGORY_ID`, `OLX_CITY_ID` (Lgiń lub Wschowa, z `/api/partner/cities`), `OLX_CONTACT_NAME`;
+     po pierwszym ogłoszeniu `OLX_ADVERT_ID`. Pierwsze uruchomienie zrób ręcznie (Actions → Run workflow)
+     i sprawdź ogłoszenie na OLX; format zapytania o token sprawdzimy wtedy na żywo.
+
 ## Gotowy post do grup
 
 > Dzień dobry! Mam na imię Mateusz, mieszkam w Lginiu. Prowadzę indywidualne korepetycje z matematyki online
