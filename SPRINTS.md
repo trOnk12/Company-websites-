@@ -170,7 +170,8 @@ To do, in order:
 Mateusz (21 November 2026): "complete the courses completely; analyse every piece of content". The book course
 (DDIA, private) comes after this.
 
-For each course, in this order: KMP and Compose (running), JVM, system design (distributed), mobile system design,
+For each course, in this order: KMP and Compose (running), JVM, system design (distributed), **Docker (complete, from
+an image layer to production; today inside backend operations: decide its own course vs a full module)**, mobile system design,
 iOS, Android, performance, LLM, security, transport, backend operations, BLE.
 1. `ROADMAP.md` to expert level (JVM's is written).
 2. Read every puzzle, diagram caption, quiz, practice topic and project against course-clarity passes 1–2f:
