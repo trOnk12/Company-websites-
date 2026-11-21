@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Korepetycje online · Mateusz Pachulski</title><meta name="description" content="Indywidualna matematyka dla klas 4–6 oraz Kotlin i Android online. Wypróbuj zadanie z ułamków i zaproponuj termin lekcji.">
+<style>@font-face{font-family:Atkinson;src:url('/fonts/atkinson-hyperlegible-next-var.woff2')}@font-face{font-family:Caveat;src:url('/fonts/caveat-var.woff2')}*{box-sizing:border-box}body{margin:0;background:#faf7ef;color:#203834;font:18px/1.5 Atkinson,system-ui,sans-serif}header,main,footer{width:min(1100px,91%);margin:auto}header,footer{display:flex;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid #bac6bb}.brand{font:bold 40px/.9 Georgia;text-decoration:none}.brand span,em{color:#a84328}.contact,footer a{margin-left:auto}a{color:inherit;text-underline-offset:.22em}.hero,.booking,.program{display:grid;grid-template-columns:1fr 1fr;gap:8%;align-items:center;padding:64px 0}.eyebrow{font-size:.83rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#3e635a;margin:0}.lead{max-width:38ch}h1,h2{font:normal clamp(48px,7.4vw,96px)/.97 Georgia,serif;letter-spacing:-.055em;margin:18px 0}h2{font-size:clamp(34px,4vw,52px)}.offer{margin:22px 0 14px}.offer strong{font-size:1.55em}.cta{display:inline-flex;justify-content:space-between;gap:32px;padding:13px 22px;border:0;border-radius:6px;background:#174d40;color:white;font:700 1rem Atkinson,sans-serif;text-decoration:none;cursor:pointer}.secondary,.direct{display:block;font-size:1rem;margin-top:14px}.sheet{padding:clamp(20px,3.5vw,42px);background-color:#fffdf5;background-image:linear-gradient(#83978c19 1px,transparent 1px),linear-gradient(90deg,#83978c19 1px,transparent 1px);background-size:22px 22px;border:1px solid #cfcebc;border-radius:3px 12px 5px 4px;box-shadow:5px 6px 0 #e2dfcd}.sheet h2{font:700 clamp(42px,5vw,66px)/1 Caveat,cursive;letter-spacing:-.03em}.bars{margin:20px 0}.bars div{display:flex;align-items:center;gap:12px;margin:8px 0}.bars b{font:32px Caveat,cursive}.bars i{display:block;width:80%;height:32px;border:2px solid #38463e;background:repeating-linear-gradient(90deg,transparent 0 calc(16.6667% - 1.5px),#38463e calc(16.6667% - 1.5px) 16.6667%),linear-gradient(90deg,var(--ink) var(--fill),#fffdf5 var(--fill))}.half{--ink:#e9ae54;--fill:50%}.third{--ink:#84b5a4;--fill:33.3333%}fieldset{padding:0;margin:0;border:0}legend{padding:0;margin-bottom:8px;font-weight:bold}fieldset button{font:inherit;padding:9px 16px;border:1px solid #64766c;background:#fffcf1;border-radius:5px;cursor:pointer}fieldset button[aria-pressed=true]{background:#214e41;color:white}summary{cursor:pointer;text-decoration:underline;padding:10px 0}output{display:block;font-weight:600}output:not(:empty){margin-top:12px}.program,.booking{border-top:1px solid #bbc6bc;align-items:start}.program p:first-child,.booking p:first-child{margin-top:0}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:block;font-weight:600;margin-bottom:15px}input,select{display:block;width:100%;min-width:0;background:#fffdf6;color:inherit;border:1px solid #76877c;padding:11px;border-radius:4px;font:inherit}.direct{overflow-wrap:anywhere}#draft{padding:0 15px 12px;border-left:3px solid #43785d}footer{border-top:1px solid #bbc6bc;border-bottom:none;font-size:1rem}a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #a84328;outline-offset:3px}@media(max-width:700px){.hero,.booking,.program{grid-template-columns:1fr;gap:25px;padding:30px 0}h1{font-size:clamp(52px,13vw,76px)}.cta{width:100%}.sheet{padding:22px}.lead{margin:12px 0}.contact{font-size:1rem}.program h2,.booking h2{margin-bottom:0}.fields{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}}
+#quick{margin:12px 0}#days{display:flex;flex-wrap:wrap;gap:6px}#days button,#copy{font:inherit;font-size:1rem;min-height:44px}#days button{padding:8px 12px}#copy{border:0;background:transparent;text-decoration:underline;color:#214e41;cursor:pointer}#message{white-space:pre-line;overflow-wrap:anywhere}label small{font-weight:400}
+
+:root{--line:#b5c7bc;--pine:#164d40}
+html{scroll-padding-top:1rem}body{background:#f8f8f1}
+header{padding-block:20px}.brand{color:var(--pine)}header b{font-size:1rem}
+.hero{gap:7%;padding-block:clamp(38px,6vw,90px)}
+.hero>section:first-child{min-width:0}.hero h1{font-size:clamp(58px,7.7vw,105px)}
+.sheet{position:relative;border-radius:3px 11px 5px 3px;box-shadow:5px 6px 0 #dde4d9;background-size:24px 24px}
+.sheet:before{content:'';display:block;position:absolute;top:-11px;left:calc(50% - 34px);width:68px;height:20px;background:#e6c784cc;transform:rotate(-4deg)}
+.sheet .bars b{width:1em}.sheet fieldset button{min-width:64px}.cta{align-items:center;justify-content:center;min-height:48px}
+.cta:hover{background:#103b30}.sheet details{margin-top:8px}
+.program{gap:7%;padding-block:42px}.program p{max-width:50ch}
+.booking{gap:7%}.booking form{background:#fffef8;border:1px solid var(--line);border-radius:12px;padding:clamp(16px,3vw,32px)}
+.weeknav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0}.weeknav button{min-width:44px;min-height:44px;padding:4px}.weeknav button:disabled{opacity:.4}.weeknav strong{font-size:1rem}
+#days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}#days button{display:grid;justify-items:center;padding:8px 1px;line-height:1.25;min-height:52px}#days small{font-size:.8rem}#days b{font-size:1.15rem}
+.lesson-note{font-size:1rem;color:#36584d;max-width:39ch}
+.skip{position:absolute;left:8px;top:-100px;background:white;padding:10px}.skip:focus{top:5px;z-index:3}
+@media(max-width:700px){.hero{gap:39px}.hero h1{font-size:clamp(56px,13vw,80px)}.program,.booking{gap:14px;padding-block:32px}header{gap:9px}.booking form{padding:15px}.fields{grid-template-columns:1fr}#days{gap:2px}}
+</style></head><body><a class="skip" href="#main">Przejdź do treści</a>
+<header><a href="https://pachulski.dev/" class="brand">mp<span>.</span></a><b>Mateusz Pachulski</b><a href="#termin" class="contact">Kontakt</a></header>
+<main id="main"><div class="hero"><section><p class="eyebrow">Matematyka · klasy 4–6 · online</p><h1>Rozgryźmy<br><em>te ułamki.</em></h1><p class="lead">Na pierwszą lekcję wystarczy jedno zadanie, na którym utknęło Twoje dziecko. Rozrysujemy je razem, a potem spróbujemy podobnego przykładu.</p><p class="offer"><strong>45 zł</strong> / 45 minut · indywidualnie</p><a class="cta" href="#termin" data-course="math">Zaproponuj termin</a><a class="secondary" href="#kotlin">Szukasz zajęć z programowania?</a></section>
+<section class="sheet" aria-labelledby="exercise"><p class="eyebrow">Spróbuj zadania z lekcji</p><h2 id="exercise">Ile to ½ + ⅓?</h2><p>Oba paski mają tę samą długość. W każdym policz zamalowane części.</p><div class="bars" role="img" aria-label="Połowa zajmuje 3 z 6 pól, a jedna trzecia 2 z 6."><div><b>½</b><i class="half"></i></div><div><b>⅓</b><i class="third"></i></div></div><fieldset><legend>Ile szóstych masz razem?</legend><button data-answer="2">2/6</button> <button data-answer="5">5/6</button> <button data-answer="6">6/6</button></fieldset><output id="answer" aria-live="polite"></output><details><summary>Pokaż rozwiązanie</summary>½ to 3/6, a ⅓ to 2/6. Dodajemy pola tej samej wielkości, więc 3/6 + 2/6 = 5/6.</details></section></div>
+<section id="kotlin" class="program"><div><p class="eyebrow">Programowanie · online</p><h2>Kotlin i Android</h2></div><div><p>Jestem programistą Androida i prowadziłem już korepetycje z programowania. Na zajęcia możesz przyjść z błędem we własnym projekcie albo zacząć ze mną od pierwszej aplikacji.</p><p><b>100 zł / 60 minut</b></p><a href="#termin" data-course="kotlin">Zaproponuj termin z Kotlina</a></div></section>
+<section id="termin" class="booking"><div><p class="eyebrow">Kontakt</p><h2>Kiedy Ci pasuje?</h2><p>Wybierz dogodny dzień i godzinę. Kalendarz pomoże Ci przygotować e-mail. Potwierdzę termin w odpowiedzi.</p></div><form><label>Przedmiot<select id="course"><option value="math">Matematyka · 45 zł / 45 min</option><option value="kotlin">Kotlin · 100 zł / 60 min</option></select></label><fieldset id="quick" hidden><legend>Wybierz dzień</legend><div class="weeknav"><button type="button" id="prev" aria-label="Poprzedni tydzień">‹</button><strong id="range" aria-live="polite"></strong><button type="button" id="next" aria-label="Następny tydzień">›</button></div><div id="days"></div></fieldset><div class="fields"><label>Dzień<input id="date" type="date" required></label><label>Godzina w Polsce<input id="hour" type="time" required></label></div><label>Co chcesz przećwiczyć? <small>(opcjonalnie)</small><input id="topic" maxlength="200" placeholder="Np. dodawanie ułamków"></label><button class="cta">Przygotuj wiadomość</button><div id="draft" hidden><p id="message"></p><a id="send" class="cta">Otwórz w poczcie</a><button type="button" id="copy">Kopiuj treść</button><output aria-live="polite" id="copied"></output></div><p class="direct">Możesz też napisać bezpośrednio<br><a href="mailto:m.pachulski94@gmail.com">m.pachulski94@gmail.com</a></p></form></section></main><footer>Mateusz Pachulski · Lgiń <a href="https://pachulski.dev/">pachulski.dev</a></footer><script>const get = id => document.getElementById(id);
+const feedback = {2:'Dwie szóste to drugi pasek. Dodaj jeszcze trzy pola z pierwszego.',5:'Tak! Trzy pola i dwa pola dają pięć szóstych.',6:'Do pełnego paska potrzeba sześciu pól. Policz zamalowane pola jeszcze raz.'};
+const answers = document.querySelectorAll('[data-answer]');
+for (const button of answers) {
+  button.setAttribute('aria-pressed','false');
+  button.onclick = () => {
+    for (const other of answers) other.setAttribute('aria-pressed',String(other === button));
+    get('answer').textContent = feedback[button.dataset.answer];
+  };
+}
+const form = document.querySelector('form');
+for (const link of document.querySelectorAll('[data-course]')) link.onclick = () => {
+  get('course').value = link.dataset.course;
+  updateSubject();
+  get('draft').hidden = true;
+};
+const warsaw = () => new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Warsaw',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date());
+get('date').min = warsaw().slice(0,10);
+const dateInput = get('date');
+const dayLabel = new Intl.DateTimeFormat('pl-PL', {weekday:'short', day:'numeric', month:'short', timeZone:'UTC'});
+const firstDay = new Date(dateInput.min + 'T12:00:00Z');
+let week = 0;
+function renderWeek() {
+  const start = new Date(firstDay);
+  start.setUTCDate(start.getUTCDate() + week * 7);
+  get('days').replaceChildren();
+  for (let i = 0; i < 7; i++) {
+    const day = new Date(start);
+    day.setUTCDate(start.getUTCDate() + i);
+    const iso = day.toISOString().slice(0,10);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.date = iso;
+    button.setAttribute('aria-label',dayLabel.format(day));
+    button.setAttribute('aria-pressed',String(iso === dateInput.value));
+    const weekday = document.createElement('small');
+    weekday.textContent = day.toLocaleDateString('pl-PL',{weekday:'short',timeZone:'UTC'});
+    const number = document.createElement('b');
+    number.textContent = day.getUTCDate();
+    button.append(weekday,number);
+    button.onclick = () => {
+      dateInput.value = iso;
+      dateInput.dispatchEvent(new Event('input',{bubbles:true}));
+    };
+    get('days').append(button);
+    if (i === 6) get('range').textContent = dayLabel.format(start)+' – '+dayLabel.format(day);
+  }
+  get('prev').disabled = week === 0;
+}
+get('next').onclick = () => { week++; renderWeek(); };
+get('prev').onclick = () => { if (week > 0) week--; renderWeek(); };
+renderWeek();
+get('quick').hidden = false;
+function updateSubject() {
+  get('topic').placeholder = get('course').value === 'math' ? 'Np. dodawanie ułamków' : 'Np. pierwszy ekran w Compose';
+}
+form.oninput = event => {
+  if (event.target === dateInput && dateInput.value >= dateInput.min) {
+    const delta = new Date(dateInput.value+'T12:00:00Z') - firstDay;
+    const target = Math.floor(delta / (7*86400000));
+    if (Number.isFinite(target) && target !== week) { week = target; renderWeek(); }
+  }
+  get('draft').hidden = true;
+  get('copied').textContent = '';
+  get('hour').setCustomValidity('');
+  updateSubject();
+  for (const choice of get('days').children) {
+    choice.setAttribute('aria-pressed', String(choice.dataset.date === dateInput.value));
+  }
+};
+get('copy').onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(get('message').textContent);
+    get('copied').textContent = 'Skopiowano wiadomość.';
+  } catch {
+    get('copied').textContent = 'Zaznacz tekst wiadomości powyżej i wybierz Kopiuj.';
+  }
+};
+form.onsubmit = event => {
+  event.preventDefault();
+  if (get('date').value+' '+get('hour').value <= warsaw()) {
+    get('hour').setCustomValidity('Wybierz przyszły termin.'); get('hour').reportValidity(); return;
+  }
+  const course = get('course').selectedOptions[0].textContent;
+  const topic = get('topic').value.trim();
+  const message = 'Dzień dobry, interesują mnie zajęcia online ('+course+'). Czy termin '+get('date').value+' o '+get('hour').value+' czasu polskiego jest wolny?' + (topic ? '\nTemat zajęć: ' + topic : '');
+  get('message').textContent = message;
+  get('send').href = 'mailto:m.pachulski94@gmail.com?subject='+encodeURIComponent('Korepetycje online — '+course)+'&body='+encodeURIComponent(message);
+  get('draft').hidden = false; get('send').focus();
+};
+if (location.hostname === 'pachulski.dev') {
+  const pixel = new Image();
+  pixel.referrerPolicy = 'no-referrer';
+  pixel.src = 'https://pachulski.goatcounter.com/count?p=%2Fkorepetycje%2F';
+}
+</script></body></html>
