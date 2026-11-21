@@ -16,7 +16,11 @@ Everything decided in conversation, so it isn't lost when a session ends. Sprint
 
 ## How we teach (non-negotiable)
 
-- Write learner-facing tutorials, exercises, diagrams, quizzes and solutions in English.
+- Write learner-facing tutorials, exercises, diagrams, quizzes and solutions in English. **Everything in the
+  course portal is English, including anything spoken** (voice navigation, narration, a voice tutor). The Polish
+  tutoring page (`korepetycje/`) stays Polish: it serves local pupils and parents.
+- Keep the click-by-click concept everywhere: every lesson is a short step you can follow in your head, the next
+  one unlocks after the checks, and nothing is skipped or assumed.
 
 - **Foundation first**, like mathematics: no concept is used before it's taught. Each puzzle has one core idea,
   a step-through diagram, an analogy, three checks, and sources with exact quotes that were fetched and verified.

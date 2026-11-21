@@ -22,14 +22,14 @@ only the blocks they're missing.
 
 ## Planned: hands-free course navigation and tutoring on a phone
 
-Start with the portal open in the foreground. The learner taps **Start voice session** once and grants microphone access. From there they can browse, choose a lesson, ask a follow-up, interrupt the answer, go back or end the session by voice. Accept Polish and English navigation commands. Keep course text and exercises in English and let the learner choose the spoken explanation language.
+Start with the portal open in the foreground. The learner taps **Start voice session** once and grants microphone access. From there they can browse, choose a lesson, ask a follow-up, interrupt the answer, go back or end the session by voice. Everything is in English, spoken and written: navigation commands, explanations, course text and exercises (owner's decision, 21 November 2026).
 
 **First journey on a phone**
 
-1. “Pokaż wszystkie kursy.” Open the actual catalog, show every published course and say how many there are. Read a few titles at a time. “Czytaj dalej” reads the next group. “Otwórz drugi” selects the second item in the group just spoken.
-2. “Otwórz system design.” If mobile and distributed system design both match, name both and wait for a choice. After navigation succeeds, speak the title of the course now on screen.
-3. “Znajdź lekcję o offsetach Kafki.” Open the matching published section. “Explain that with the shipment example” answers from that section and displays its source link. If the material cannot support the answer, say so and offer the nearest published lesson.
-4. “Zatrzymaj się. Powtórz wolniej. Wróć do kursów.” Interrupt playback immediately, replay the current passage more slowly on request, then return to the catalog. “Zakończ rozmowę” closes the session and releases the microphone.
+1. “Show all courses.” Open the actual catalog, show every published course and say how many there are. Read a few titles at a time. “Read on” reads the next group. “Open the second one” selects the second item in the group just spoken.
+2. “Open system design.” If mobile and distributed system design both match, name both and wait for a choice. After navigation succeeds, speak the title of the course now on screen.
+3. “Find the lesson on Kafka offsets.” Open the matching published section. “Explain that with the shipment example” answers from that section and displays its source link. If the material cannot support the answer, say so and offer the nearest published lesson.
+4. “Stop. Say that again, slower. Back to the courses.” Interrupt playback immediately, replay the current passage more slowly on request, then return to the catalog. “End the session” closes the session and releases the microphone.
 
 **Implementation sequence**
 
