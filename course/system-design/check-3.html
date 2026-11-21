@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,32 +55,32 @@
 <section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: How do you send an event after a crash?</p>
 <fieldset class="quiz" data-n="7">
 <legend>Which two writes belong together?</legend>
-<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-1" data-ok><label for="q-07-outbox-1-1">Grant and pending event</label>
-<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-2"><label for="q-07-outbox-1-2">Grant and any later log line</label>
+<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-1" data-ok><label for="q-07-outbox-1-1"><span>Grant and pending event</span></label>
+<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-2"><label for="q-07-outbox-1-2"><span>Grant and any later log line</span></label>
 <p class="fb ok opt-1"><b>Right.</b> An independent later write can disappear after a crash.</p>
 <p class="fb no opt-2"><b>Not quite.</b> An independent later write can disappear after a crash. <a class="show-me" href="07-outbox.html">Learn it in puzzle 7 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: Why can retries prolong an outage?</p>
 <fieldset class="quiz" data-n="8">
 <legend>What happens when arrivals equal capacity?</legend>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1">The old backlog disappears</label>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2">The backlog stays level in this model</label>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1"><span>The old backlog disappears</span></label>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2"><span>The backlog stays level in this model</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> There is no spare capacity to clear old work. <a class="show-me" href="08-overload.html">Learn it in puzzle 8 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> There is no spare capacity to clear old work.</p>
 </fieldset></section>
 <section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: When does splitting the data help?</p>
 <fieldset class="quiz" data-n="9">
 <legend>What can a month-based split help with?</legend>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1"><label for="q-09-partitioning-1-1">Every last-space conflict</label>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2" data-ok><label for="q-09-partitioning-1-2">Removing old periods</label>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1"><label for="q-09-partitioning-1-1"><span>Every last-space conflict</span></label>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2" data-ok><label for="q-09-partitioning-1-2"><span>Removing old periods</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> One hot inventory row can still serialize writes. <a class="show-me" href="09-partitioning.html">Learn it in puzzle 9 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> One hot inventory row can still serialize writes.</p>
 </fieldset></section>
 <section aria-label="Puzzle 10"><p class="eyebrow">Puzzle 10: Who can confirm a write when regions cannot talk?</p>
 <fieldset class="quiz" data-n="10">
 <legend>How many form a majority of five?</legend>
-<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-1"><label for="q-10-consensus-1-1">Two</label>
-<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-2" data-ok><label for="q-10-consensus-1-2">Three</label>
+<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-1"><label for="q-10-consensus-1-1"><span>Two</span></label>
+<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-2" data-ok><label for="q-10-consensus-1-2"><span>Three</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Two groups of two need not intersect. <a class="show-me" href="10-consensus.html">Learn it in puzzle 10 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Two groups of two need not intersect.</p>
 </fieldset></section>

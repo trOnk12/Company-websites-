@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-14">
         <p id="builds-on-14"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-freshness.html">Puzzle 6: Why does a confirmed space still look free?</a></summary><p>A cache can extend the staleness it inherited from its source.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: Why does a confirmed space still look free?</summary><p>A cache can extend the staleness it inherited from its source.</p><p><a href="06-freshness.html">Review puzzle 6</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="06-freshness.html">6</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -100,32 +101,35 @@
         <h2 id="the-building-block">The building block</h2>
 <p>For each boundary, name the data, the decision owner, the time budget and the result after a disconnect. Draw the smallest deployment that meets the assumptions. Include a capacity calculation and a measurable trigger for changing the architecture. For each guarantee, propose an experiment that could disprove it. Two successful grants of the same last space would be such a counterexample.</p>
 <p>Round one is the parking service. Keep the replies from two contenders and read the winning grant after restart. Round two is assigned seating. Counting remaining tickets is insufficient because two tickets can name the same chair. Enforce uniqueness of event and seat together. Round three is a social feed. Freshness, ordering and read cost matter more than exclusive inventory. Compare building feeds on read with distributing posts at publication time.</p>
+<h3>Defend a decision under a changed assumption</h3>
+<p>For a feed with two million followers and a ten-second visibility objective, writing one entry per follower would need 200,000 entries per second for that post alone. Suppose the measured writer sustains 50,000 per second including ordinary work. Even dedicating all of it to this post takes at least 40 seconds. Four times more queue space cannot shorten that lower bound.</p>
+<p>A candidate design merges that author's recent posts when a reader opens the feed. State the new cost: feed reads now perform merge work and must enforce current access rights. Test with the actual distribution of follows per reader and a private post revoked between reads. A reviewer can now challenge both the old throughput ceiling and the new read-latency assumption.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Submit a contract, an estimate with units, a diagram, a failure timeline, a repeatable test and a decision record. Have a reviewer change one assumption: a publisher now has a million followers, or one region loses contact. Predict the result before testing. Explain what measurement would make you change your own decision.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/blob/main/labs/parking-design/cases.md">Open the design cases, worked solutions and grading rubric</a></p>
+<p><a href="/labs/parking-design/cases.html">Open the three design cases and grading rubric</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What protects an assigned ticket?</legend>
-<input type="radio" name="q-14-design-review-1" id="q-14-design-review-1-1"><label for="q-14-design-review-1-1">A positive count of tickets</label>
-<input type="radio" name="q-14-design-review-1" id="q-14-design-review-1-2" data-ok><label for="q-14-design-review-1-2">Uniqueness of event and seat</label>
+<input type="radio" name="q-14-design-review-1" id="q-14-design-review-1-1"><label for="q-14-design-review-1-1"><span>A positive count of tickets</span></label>
+<input type="radio" name="q-14-design-review-1" id="q-14-design-review-1-2" data-ok><label for="q-14-design-review-1-2"><span>Uniqueness of event and seat</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Two tickets could name the same seat. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Two tickets could name the same seat.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What costs work when distributing a popular post on publication?</legend>
-<input type="radio" name="q-14-design-review-2" id="q-14-design-review-2-1"><label for="q-14-design-review-2-1">Always writing just one list</label>
-<input type="radio" name="q-14-design-review-2" id="q-14-design-review-2-2" data-ok><label for="q-14-design-review-2-2">Writing many recipient lists</label>
+<input type="radio" name="q-14-design-review-2" id="q-14-design-review-2-1"><label for="q-14-design-review-2-1"><span>Always writing just one list</span></label>
+<input type="radio" name="q-14-design-review-2" id="q-14-design-review-2-2" data-ok><label for="q-14-design-review-2-2"><span>Writing many recipient lists</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Each separate recipient list requires work. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Each separate recipient list requires work.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What demonstrates recovery?</legend>
-<input type="radio" name="q-14-design-review-3" id="q-14-design-review-3-1" data-ok><label for="q-14-design-review-3-1">Reproduce and verify the outcome</label>
-<input type="radio" name="q-14-design-review-3" id="q-14-design-review-3-2"><label for="q-14-design-review-3-2">Document the planned deployment</label>
+<input type="radio" name="q-14-design-review-3" id="q-14-design-review-3-1" data-ok><label for="q-14-design-review-3-1"><span>Reproduce and verify the outcome</span></label>
+<input type="radio" name="q-14-design-review-3" id="q-14-design-review-3-2"><label for="q-14-design-review-3-2"><span>Document the planned deployment</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A diagram expresses a hypothesis that a drill can test.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A diagram expresses a hypothesis that a drill can test. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
@@ -140,8 +144,8 @@
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>System design from first principles to design review</b>.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Does%20the%20design%20survive%20a%20changed%20assumption%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

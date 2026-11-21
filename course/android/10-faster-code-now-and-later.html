@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-the-kernel-is-in-charge.html">Puzzle 1: The kernel is in charge</a></summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p></details></li><li data-block="9"><details><summary><a href="09-whats-inside-the-apk.html">Puzzle 9: What's inside the APK</a></summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: The kernel is in charge</summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p><p><a href="01-the-kernel-is-in-charge.html">Review puzzle 1</a></p></details></li><li data-block="9"><details><summary>Puzzle 9: What's inside the APK</summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p><p><a href="09-whats-inside-the-apk.html">Review puzzle 9</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="09-whats-inside-the-apk.html">9</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -121,24 +121,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app gets faster a few days after install, without an update. Why?</legend>
-<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-1" data-ok><label for="q-10-faster-code-now-and-later-1-1">ART noted the hot code, and <code>dex2oat</code> later translated it ahead of time</label>
-<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-2"><label for="q-10-faster-code-now-and-later-1-2">The phone's CPU learned the app's code and kept it for next time</label>
-<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-3"><label for="q-10-faster-code-now-and-later-1-3">The JIT saved its machine code into the APK, so it ran fast on the next start</label>
+<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-1" data-ok><label for="q-10-faster-code-now-and-later-1-1"><span>ART noted the hot code, and <code>dex2oat</code> later translated it ahead of time</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-2"><label for="q-10-faster-code-now-and-later-1-2"><span>The phone's CPU learned the app's code and kept it for next time</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-3"><label for="q-10-faster-code-now-and-later-1-3"><span>The JIT saved its machine code into the APK, so it ran fast on the next start</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The profile survives; AOT translation from it is what makes the next starts faster.</p>
 <p class="fb no opt-2"><b>Not quite.</b> CPUs don't learn. The difference is which code is already translated. <label class="show-me" for="st-jit-4" data-goto="st-jit">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> JIT's machine code lives in memory while the app runs and is lost when it stops. The notebook is what's kept. <label class="show-me" for="st-jit-3" data-goto="st-jit">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why not translate all the DEX ahead of time, right at install?</legend>
-<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-1" data-ok><label for="q-10-faster-code-now-and-later-2-1">Because translating all of it costs time and space, so a profile picks</label>
-<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-2"><label for="q-10-faster-code-now-and-later-2-2">Because AOT can only translate code that has run at least once</label>
+<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-1" data-ok><label for="q-10-faster-code-now-and-later-2-1"><span>Because translating all of it costs time and space, so a profile picks</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-2"><label for="q-10-faster-code-now-and-later-2-2"><span>Because AOT can only translate code that has run at least once</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The profile focuses the work on code that's actually used.</p>
 <p class="fb no opt-2"><b>Not quite.</b> AOT translates DEX, but only what's worth it: the hot code from the profile. <label class="show-me" for="st-jit-4" data-goto="st-jit">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between JIT and AOT?</legend>
-<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-1"><label for="q-10-faster-code-now-and-later-3-1">Where: JIT runs on your computer when you build, AOT on the phone</label>
-<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-2" data-ok><label for="q-10-faster-code-now-and-later-3-2">When: JIT translates now, as the app runs, and AOT translates ahead of time, later</label>
+<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-1"><label for="q-10-faster-code-now-and-later-3-1"><span>Where: JIT runs on your computer when you build, AOT on the phone</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-2" data-ok><label for="q-10-faster-code-now-and-later-3-2"><span>When: JIT translates now, as the app runs, and AOT translates ahead of time, later</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Both happen on the phone. The difference is when. <label class="show-me" for="st-jit-2" data-goto="st-jit">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Same goal, different moment.</p>
 </fieldset>

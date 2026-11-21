@@ -68,8 +68,16 @@ function vault(c, blocks) {
     '---', `source: ${url(c)}`, `tags: [course/${c.id}]`, '---', '',
     `# ${c.meta.title}`, '', c.meta.intro, '',
     `From [pachulski.dev](${url(c)}), free. Each note builds on the ones it links to: open the graph view to see the building blocks. The "Check yourself" lines are flashcards for the Spaced Repetition plugin.`, '',
-    ...modules, soon ? `## Coming next\n\n${soon}\n` : '', '[[Glossary]]', '',
+    ...modules, '[[Final project]]', '', soon ? `## Coming next\n\n${soon}\n` : '', '[[Glossary]]', '',
   ].join('\n'));
+  const project = c.project;
+  files.set(`${dir}/Final project.md`, [
+    `# ${project.title}`, project.brief, '## Before you start', project.prerequisites, project.setup,
+    '## Run the investigation', project.steps.map((s, i) => `${i + 1}. ${s}`).join('\n'),
+    '## Evidence to keep', project.evidence.map(s => `- ${s}`).join('\n'),
+    '## Worked review', ...project.worked, '## Change one assumption', project.variation,
+    '## Check your reasoning', project.solution, '[[Course map]]'
+  ].join('\n\n'));
   for (const p of c.puzzles) files.set(`${dir}/${noteName(p)}.md`, puzzleNote(c, p, blocks));
   const terms = Object.entries(g.terms).sort((a, b) => Number(a[1].in) - Number(b[1].in) || a[0].localeCompare(b[0]));
   files.set(`${dir}/Glossary.md`, [

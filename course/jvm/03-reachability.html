@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-reference.html">Puzzle 2: Why do both names read eight?</a></summary><p>A copied reference can still point to the same object. Reassigning one local changes only that local.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Why do both names read eight?</summary><p>A copied reference can still point to the same object. Reassigning one local changes only that local.</p><p><a href="02-reference.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-class-file.html">0</a> → <a href="01-frame.html">1</a> → <a href="02-reference.html">2</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -99,22 +100,41 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Draw locals first and objects second. After edit returns, first and second still point to the original counter. Clearing second removes one arrow. The subsequent read through first still reaches eight. The temporary counter created inside edit has no surviving reference in this example. The runtime may reclaim its storage. The printed values cannot establish when collection ran, or whether an optimizing runtime materialized that temporary allocation at all. This distinction matters when investigating a long-lived cache that still points to old objects.</p>
+<p>The <b>garbage collector</b> manages storage for objects. To reason about ordinary, strongly held references, start with values that the running program can still use. A <b>root</b> is one of these starting points in your drawing. Follow their references and mark every object reached. A cache is a collection that keeps values for later reuse. If a live application keeps a cache, references stored in its entries also matter.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Change to the example</th><th scope="col">Objects still reachable</th><th scope="col">Path that proves it</th></tr></thead><tbody><tr><th scope="row">A live local and the cache both hold A. A holds B. Clear the local.</th><td>A and B</td><td>cache to A to B</td></tr><tr><th scope="row">Also remove A's link to B.</th><td>A only</td><td>cache to A</td></tr><tr><th scope="row">Instead, start again and clear both the local and the cache entry.</th><td>Neither A nor B</td><td>no path from a root</td></tr></tbody></table></div>
+<p>The rows assume there are no other references. Add a link from B back to A in the last row. The two objects now point at each other. A traversal starting from the roots still reaches neither. Conversely, retaining a single cache entry can keep a large group of objects alive. To diagnose unexpected retention, look for a path from a live owner to that group. The number of times a method returned tells you little about this path.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Complete experiment 4 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">local JVM lab</a>. Record your prediction before running the program.</p>
+<p><a href="/labs/jvm-workbench/#03-reachability">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
+<p>Complete experiment 4 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>. Record your prediction before running the program.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What does the last printed eight demonstrate?</legend>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1"><label for="q-03-reachability-1-1">The collector ran just before the final print</label>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2" data-ok><label for="q-03-reachability-1-2">The original counter was still reachable</label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1"><label for="q-03-reachability-1-1"><span>The collector ran just before the final print</span></label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2" data-ok><label for="q-03-reachability-1-2"><span>The original counter was still reachable</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A field read does not report collector activity. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Losing one reference leaves the object reachable while another live reference still leads to it.</p>
 </fieldset>
+<fieldset class="quiz">
+<legend>The local is cleared but the cache holds A, which holds B. Which objects can still be reached?</legend>
+<input type="radio" name="q-03-reachability-2" id="q-03-reachability-2-1"><label for="q-03-reachability-2-1"><span>Only A</span></label>
+<input type="radio" name="q-03-reachability-2" id="q-03-reachability-2-2" data-ok><label for="q-03-reachability-2-2"><span>Both A and B</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Following fields from A also reaches B. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Trace each surviving path beyond the first object.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Only A and B refer to each other and no live owner can reach them. What does the cycle prove?</legend>
+<input type="radio" name="q-03-reachability-3" id="q-03-reachability-3-1"><label for="q-03-reachability-3-1"><span>Both must stay alive forever</span></label>
+<input type="radio" name="q-03-reachability-3" id="q-03-reachability-3-2" data-ok><label for="q-03-reachability-3-2"><span>Neither is reachable from those roots</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Starting from the roots never enters the cycle. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Reachability depends on a path from a root, not the mere existence of incoming references.</p>
+</fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html">Oracle Java reference</a></li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.6.1">Java language specification, reachability</a> — “can be accessed in any potential continuing computation from any live thread”</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Losing one reference leaves the object reachable while another live reference still leads to it.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

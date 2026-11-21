@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -67,7 +67,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-who-hosts-the-native-view.html">Puzzle 2: Which side hosts the other?</a></summary><p>A shared screen can sit inside an iOS view controller. Inside that screen, a native view can be embedded with distinct creation and update steps.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Which side hosts the other?</summary><p>A shared screen can sit inside an iOS view controller. Inside that screen, a native view can be embedded with distinct creation and update steps.</p><p><a href="02-who-hosts-the-native-view.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-state-reads-and-ui.html">0</a> → <a href="01-read-in-the-right-phase.html">1</a> → <a href="02-who-hosts-the-native-view.html">2</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -115,27 +115,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The icon is solid after saving, but the action has no label or state. What is the missing signal?</legend>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-1"><label for="q-03-pixels-and-voiceover-1-1">A larger solid icon so the change is easier to see</label>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-2" data-ok><label for="q-03-pixels-and-voiceover-1-2">A semantic description of the action and its state</label>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-3"><label for="q-03-pixels-and-voiceover-1-3">An extra native navigation bar above the control</label>
+<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-1"><label for="q-03-pixels-and-voiceover-1-1"><span>A larger solid icon so the change is easier to see</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-2" data-ok><label for="q-03-pixels-and-voiceover-1-2"><span>A semantic description of the action and its state</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-3"><label for="q-03-pixels-and-voiceover-1-3"><span>An extra native navigation bar above the control</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Changing pixels does not expose a saved state to the screen reader. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Provide the meaning of the control along with its pixels.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The navigation bar does not describe an unlabeled bookmark. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The button already provides the full label. What can duplicate text on the icon cause?</legend>
-<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-1"><label for="q-03-pixels-and-voiceover-2-1">The button automatically loses its saved state</label>
-<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-2" data-ok><label for="q-03-pixels-and-voiceover-2-2">The same meaning may be announced more than once</label>
-<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-3"><label for="q-03-pixels-and-voiceover-2-3">The native field stops reporting text edits</label>
+<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-1"><label for="q-03-pixels-and-voiceover-2-1"><span>The button automatically loses its saved state</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-2" data-ok><label for="q-03-pixels-and-voiceover-2-2"><span>The same meaning may be announced more than once</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-3"><label for="q-03-pixels-and-voiceover-2-3"><span>The native field stops reporting text edits</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Duplicating the name does not remove the state. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Describe one logical control coherently.</p>
 <p class="fb no opt-3"><b>Not quite.</b> This concerns focus and labels on the bookmark. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>An automated check finds the icon. Which additional check best verifies the intended interaction?</legend>
-<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-1" data-ok><label for="q-03-pixels-and-voiceover-3-1">Focus and activate the bookmark with VoiceOver on an iPhone</label>
-<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-2"><label for="q-03-pixels-and-voiceover-3-2">Check only whether the page loads without crashing</label>
-<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-3"><label for="q-03-pixels-and-voiceover-3-3">Check only whether the icon is filled in a screenshot</label>
+<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-1" data-ok><label for="q-03-pixels-and-voiceover-3-1"><span>Focus and activate the bookmark with VoiceOver on an iPhone</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-2"><label for="q-03-pixels-and-voiceover-3-2"><span>Check only whether the page loads without crashing</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-3"><label for="q-03-pixels-and-voiceover-3-3"><span>Check only whether the icon is filled in a screenshot</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Check focus, spoken meaning and a changed state.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Successful navigation does not verify the label or toggle. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> A screenshot checks pixels instead of the screen reader interaction. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
@@ -151,8 +151,8 @@
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>Compose Multiplatform, one screen from state to pixels</b>.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Can%20VoiceOver%20understand%20the%20bookmark%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

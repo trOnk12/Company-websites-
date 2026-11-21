@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -54,33 +54,33 @@
       <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: Which program did you actually run?</p>
 <fieldset class="quiz" data-n="0">
-<legend>You edit the source and run the existing class. Which value changes?</legend>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1"><label for="q-00-class-file-1-1">The result immediately increases by one</label>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2" data-ok><label for="q-00-class-file-1-2">Neither printed value</label>
-<p class="fb no opt-1"><b>Not quite.</b> The launch command loads the class that already exists. <a class="show-me" href="00-class-file.html">Learn it in puzzle 0 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
+<legend>You edit the source and run the existing class. What does its first line show?</legend>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1" data-ok><label for="q-00-class-file-1-1"><span>The earlier 7 8</span></label>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2"><label for="q-00-class-file-1-2"><span>The updated 7 9</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The launch command loads the class that already exists. <a class="show-me" href="00-class-file.html">Learn it in puzzle 0 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: What does a method receive?</p>
 <fieldset class="quiz" data-n="1">
 <legend>After the addition and before the return, what is on the helper stack?</legend>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1" data-ok><label for="q-01-frame-1-1">One value, eight</label>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2"><label for="q-01-frame-1-2">Two values, seven and eight</label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1" data-ok><label for="q-01-frame-1-1"><span>One value, eight</span></label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2"><label for="q-01-frame-1-2"><span>Two values, seven and eight</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Each method invocation has its own frame with locals and an operand stack.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Addition consumes both of its inputs. <a class="show-me" href="01-frame.html">Learn it in puzzle 1 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Why do both names read eight?</p>
 <fieldset class="quiz" data-n="2">
 <legend>Reassign the parameter before writing eight. Which value does first see?</legend>
-<input type="radio" name="q-02-reference-1" id="q-02-reference-1-1"><label for="q-02-reference-1-1">Eight in the newly created counter</label>
-<input type="radio" name="q-02-reference-1" id="q-02-reference-1-2" data-ok><label for="q-02-reference-1-2">Seven in the original counter</label>
+<input type="radio" name="q-02-reference-1" id="q-02-reference-1-1"><label for="q-02-reference-1-1"><span>Eight in the newly created counter</span></label>
+<input type="radio" name="q-02-reference-1" id="q-02-reference-1-2" data-ok><label for="q-02-reference-1-2"><span>Seven in the original counter</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The caller still points at the original object. <a class="show-me" href="02-reference.html">Learn it in puzzle 2 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A copied reference can still point to the same object. Reassigning one local changes only that local.</p>
 </fieldset></section>
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: When can a counter be reclaimed?</p>
 <fieldset class="quiz" data-n="3">
 <legend>What does the last printed eight demonstrate?</legend>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1"><label for="q-03-reachability-1-1">The collector ran just before the final print</label>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2" data-ok><label for="q-03-reachability-1-2">The original counter was still reachable</label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1"><label for="q-03-reachability-1-1"><span>The collector ran just before the final print</span></label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2" data-ok><label for="q-03-reachability-1-2"><span>The original counter was still reachable</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A field read does not report collector activity. <a class="show-me" href="03-reachability.html">Learn it in puzzle 3 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Losing one reference leaves the object reachable while another live reference still leads to it.</p>
 </fieldset></section>

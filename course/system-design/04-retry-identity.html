@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -105,32 +106,35 @@
 PUT /sessions/ada-17    west    → 200 west
 PUT /sessions/ada-17    east    → 409 id already used
 GET /sessions/ada-17            → 200 west</code></pre>
+<h3>Keep the identity across a restart</h3>
+<p>Ada taps once, the phone sends request 17 and the app closes before it receives the reply. On restart the phone still has the pending intention and its ID. Resending 17 lets the service return the original result. If the app invents 18 for that same tap, a lot with two spaces could grant both. A unique ID per network attempt breaks this contract.</p>
+<p>Decide what a second deliberate tap means. If Ada wants a second space, it needs a new intention. If the service forgets completed identities after a day, a phone retrying a two-day-old request needs an explicit recovery rule. One option is to stop automatic retries after the supported window and look up the original reservation before offering a new purchase.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Compare a disconnect immediately before commit with one immediately after. Then compare retry identity with an edit version. One asks whether this intention was already carried out. The other asks whether the record is still the version the editor saw.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/parking-design">Open the runnable lab and instructions</a></p>
+<p><a href="/labs/parking-design/#retry">Drop the reply and retry</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What identity should the phone send on retry?</legend>
-<input type="radio" name="q-04-retry-identity-1" id="q-04-retry-identity-1-1"><label for="q-04-retry-identity-1-1">A freshly generated one</label>
-<input type="radio" name="q-04-retry-identity-1" id="q-04-retry-identity-1-2" data-ok><label for="q-04-retry-identity-1-2">The original identity</label>
+<input type="radio" name="q-04-retry-identity-1" id="q-04-retry-identity-1-1"><label for="q-04-retry-identity-1-1"><span>A freshly generated one</span></label>
+<input type="radio" name="q-04-retry-identity-1" id="q-04-retry-identity-1-2" data-ok><label for="q-04-retry-identity-1-2"><span>The original identity</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A fresh value looks like another intention. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A fresh value looks like another intention.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The same identity arrives for another lot. What follows?</legend>
-<input type="radio" name="q-04-retry-identity-2" id="q-04-retry-identity-2-1" data-ok><label for="q-04-retry-identity-2-1">Report a conflict</label>
-<input type="radio" name="q-04-retry-identity-2" id="q-04-retry-identity-2-2"><label for="q-04-retry-identity-2-2">Reserve the second lot</label>
+<input type="radio" name="q-04-retry-identity-2" id="q-04-retry-identity-2-1" data-ok><label for="q-04-retry-identity-2-1"><span>Report a conflict</span></label>
+<input type="radio" name="q-04-retry-identity-2" id="q-04-retry-identity-2-2"><label for="q-04-retry-identity-2-2"><span>Reserve the second lot</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The request changed meaning.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The request changed meaning. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What detects an edit based on stale data?</legend>
-<input type="radio" name="q-04-retry-identity-3" id="q-04-retry-identity-3-1"><label for="q-04-retry-identity-3-1">The number of network retries</label>
-<input type="radio" name="q-04-retry-identity-3" id="q-04-retry-identity-3-2" data-ok><label for="q-04-retry-identity-3-2">The version the editor saw</label>
+<input type="radio" name="q-04-retry-identity-3" id="q-04-retry-identity-3-1"><label for="q-04-retry-identity-3-1"><span>The number of network retries</span></label>
+<input type="radio" name="q-04-retry-identity-3" id="q-04-retry-identity-3-2" data-ok><label for="q-04-retry-identity-3-2"><span>The version the editor saw</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A fresh intention can still edit an old version. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A fresh intention can still edit an old version.</p>
 </fieldset>

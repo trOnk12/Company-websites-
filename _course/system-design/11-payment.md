@@ -20,6 +20,12 @@ Represent the process with explicit states such as pending, confirmed, expired a
 
 Expiry and payment success can race. Both try to transition from pending. The winner determines which transitions remain valid. If the space has been released, late payment success creates durable refund work. A refund is another operation that can fail or take time. The driver needs to distinguish an outstanding refund from one completed by the provider.
 
+### Trace one late payment
+
+At minute zero, hold H owns seat 12. At minute two, expiry releases it. At minute three a different driver acquires the seat. The provider then reports a successful charge for H. Keep the new owner's seat. Record the old charge reference and a pending refund as a durable decision. A second success notification for the same charge finds that decision and produces no additional refund work.
+
+Now lose the refund response. A worker needs a provider-supported way to query the refund or safely repeat the same refund identity. Mark it complete only after obtaining a confirmed outcome. If neither operation is available, keep it unresolved for reconciliation. Announcing a completed refund from the local send alone would give the driver a false financial status.
+
 ## Try it
 
 Write the allowed transitions. Trace success before expiry, success after expiry, duplicate success and no notification at all. In the last case, decide when to query the provider and when to escalate unresolved work. What stable identity prevents a repeated refund?

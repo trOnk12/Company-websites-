@@ -19,7 +19,6 @@ const L = require('./build-learning');
 
 const SRC = path.join(L.ROOT, '_course');
 const CONTACT = 'm.pachulski94@gmail.com'; // the address already shown on the home page
-const LINKEDIN = 'https://www.linkedin.com/in/mateusz-pachulski';
 const OUT = path.join(L.ROOT, 'course');
 const X = require('./export-course');
 const REQUIRED = ['The problem', 'Check yourself', 'Sources'];
@@ -41,7 +40,8 @@ function loadCourse(id) {
   });
   const gf = path.join(dir, 'glossary.json');
   const glossary = fs.existsSync(gf) ? JSON.parse(fs.readFileSync(gf, 'utf8')) : { terms: {} };
-  return { id, dir, meta, puzzles, glossary };
+  const project = JSON.parse(fs.readFileSync(path.join(dir, 'practicum.json'), 'utf8'));
+  return { id, dir, meta, puzzles, glossary, project };
 }
 
 function courses() {
@@ -50,7 +50,7 @@ function courses() {
 }
 
 function courseUrls() {
-  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/me`, `${L.SITE}/course/${c.id}/`, ...c.meta.modules.map((_, k) => `${L.SITE}/course/${c.id}/check-${k + 1}`), ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
+  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/me`, `${L.SITE}/course/${c.id}/`, `${L.SITE}/course/${c.id}/final-project`, ...c.meta.modules.map((_, k) => `${L.SITE}/course/${c.id}/check-${k + 1}`), ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
     .filter((u, i, a) => a.indexOf(u) === i);
 }
 
@@ -100,7 +100,7 @@ ${items}
 // "Question::*Right||Wrong >> the mismatch behind it >> s3||…::Why the right one is right"
 // Each wrong option names its own misconception and points back to the diagram step (sN) or section
 // that fixes it. Grades itself with CSS; course.js adds the unlock.
-function quiz(p, items, ctx, diagramName, learnAt) {
+function quiz(p, items, ctx, diagramName, learnAt, offset = 0) {
   const { parseQuestion } = require('./lint-course');
   return items.map((it, qi) => {
     const q = parseQuestion(it);
@@ -110,8 +110,8 @@ function quiz(p, items, ctx, diagramName, learnAt) {
     // Stable shuffle, so the right answer isn't always first but the page doesn't change between builds.
     let h = 0; for (const ch of q.q) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
     const order = q.opts.map((o, i) => ({ o, k: (h + i * 2654435761) >>> 0 })).sort((a, b) => a.k - b.k).map(x => x.o);
-    const name = `q-${p.slug}-${qi + 1}`;
-    const inputs = order.map((o, i) => `<input type="radio" name="${name}" id="${name}-${i + 1}"${o.ok ? ' data-ok' : ''}><label for="${name}-${i + 1}">${L.inline(o.text, ctx)}</label>`).join('\n');
+    const name = `q-${p.slug}-${offset + qi + 1}`;
+    const inputs = order.map((o, i) => `<input type="radio" name="${name}" id="${name}-${i + 1}"${o.ok ? ' data-ok' : ''}><label for="${name}-${i + 1}"><span>${L.inline(o.text, ctx)}</span></label>`).join('\n');
     const pointer = ptr => {
       const step = (ptr || '').match(/^s(\d)$/);
       if (step && diagramName && !learnAt) return `<label class="show-me" for="st-${diagramName}-${step[1]}" data-goto="st-${diagramName}">Show me step ${step[1]} again ↑</label>`;
@@ -170,7 +170,7 @@ function buildsOnHere(course, p) {
   walk(p.n);
   const ordered = [...path].sort((x, y) => x - y);
   const q = n => course.puzzles[n];
-  const items = need.map(n => `<li data-block="${n}"><details><summary><a href="${q(n).slug}.html">Puzzle ${n}: ${L.esc(q(n).meta.title)}</a></summary><p>${L.esc(q(n).meta.takeaway)}</p></details></li>`).join('');
+  const items = need.map(n => `<li data-block="${n}"><details><summary>Puzzle ${n}: ${L.esc(q(n).meta.title)}</summary><p>${L.esc(q(n).meta.takeaway)}</p><p><a href="${q(n).slug}.html">Review puzzle ${n}</a></p></details></li>`).join('');
   return `      <aside class="builds-on" aria-labelledby="builds-on-${p.n}">
         <p id="builds-on-${p.n}"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul>${items}</ul>
@@ -190,10 +190,16 @@ function renderPuzzle(course, p, terms) {
   for (const t of terms) if (p.raw.toLowerCase().includes(t.toLowerCase())) fail(p.file, `contains a private term: ${t}`);
 
   const depth = sections.filter(s => s.title.startsWith('Go deeper: '));
+  let questionCount = 0;
   const body = sections.map(s => {
     const sid = sectionId(s.title);
     const html = s.title === 'Check yourself'
-      ? s.blocks.map(b => b.type === 'ul' ? quiz(p, b.items, ctx, diagramOf(p)) : L.renderBlocks([b], ctx)).join('\n')
+      ? s.blocks.map(b => {
+        if (b.type !== 'ul') return L.renderBlocks([b], ctx);
+        const html = quiz(p, b.items, ctx, diagramOf(p), null, questionCount);
+        questionCount += b.items.length;
+        return html;
+      }).join('\n')
       : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
       ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
       : L.renderBlocks([b], ctx, { recall: depth.includes(s) && b.type === 'ul' })).join('\n');
@@ -226,7 +232,7 @@ ${html}
     title: `${p.meta.title} – ${course.meta.title} – Mateusz Pachulski`,
     description: p.meta.summary,
     canonical: `${L.SITE}/course/${course.id}/${p.slug}`,
-    base: '../../', current: 'course', feed: false, script: ['../progress-index.js', '../course.js'],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
       <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
     body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}">
@@ -243,7 +249,7 @@ ${html}
       <nav class="lesson-jumps" aria-label="In this puzzle">
         ${titles.includes('See it') ? '<a href="#see-it">Diagram</a>' : ''}
         ${titles.includes('The building block') ? '<a href="#the-building-block">Mechanism</a>' : ''}
-${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}        <a href="#check-yourself">Check your understanding</a>
+${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}${titles.includes('Try it') ? '        <a href="#try-it">Try it</a>\n' : ''}        <a href="#check-yourself">Check your understanding</a>
       </nav>
 ${buildsOn(course, p)}
 ${linked}
@@ -256,8 +262,8 @@ ${support(course, 'puzzle')}      <p class="gate-msg" hidden>Answer every questi
 ${next ? '' : `      <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>${L.esc(course.meta.title)}</b>.${nextUp ? ` Next: ${L.esc(nextUp.title)}, about ${L.esc(nextUp.topics.charAt(0).toLowerCase() + nextUp.topics.slice(1))}` : ''}</p>
-        <p>New puzzles are announced on <a href="${LINKEDIN}">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>`}
       <p class="small fix-link">Something wrong or unclear on this page? <a href="${fix}">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>`,
@@ -282,7 +288,7 @@ function renderCheck(c, k) {
     title: `Check: ${m.title} – ${c.meta.title} – Mateusz Pachulski`,
     description: `Already know ${m.title}? Answer one question per puzzle; each right answer marks that puzzle as passed.`,
     canonical: `${L.SITE}/course/${c.id}/check-${k + 1}`,
-    base: '../../', current: 'course', feed: false, script: ['../progress-index.js', '../course.js'],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: `      <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../">pachulski.dev</a></p>`,
     body: `    <article class="module-check course-top wrap narrow" data-course="${c.id}">
       <p class="eyebrow"><a href="./">${L.esc(c.meta.title)}</a> · check</p>
@@ -328,8 +334,11 @@ ${c.meta.assumes ? `        <p class="small">Builds on <a href="${L.esc(c.meta.a
         <ul class="modules">
 ${modules}
         </ul>
+        <h3>Final project</h3>
+        <p><a href="final-project.html">${L.esc(c.project.title)}</a> · ${L.esc(c.project.brief)}</p>
 ${soon ? `        <details class="course-extras"><summary>Planned modules</summary><ul class="modules">${soon}</ul></details>\n` : ''}${related ? `        <nav aria-label="Related courses"><h3>Continue with</h3><ul>\n${related}\n        </ul></nav>\n` : ''}
         <details class="course-extras"><summary>How the course works</summary>
+          <p>${L.esc(c.meta.how)}</p>
           <p>Every puzzle is open from this outline. The check at the end of a puzzle unlocks its next button and saves your progress in this browser.</p>
           <p><a href="../how-its-made.html">How lessons are written and checked</a> · <a href="../me.html">Your learning</a></p>
 ${support(c, 'overview')}        </details>
@@ -359,7 +368,7 @@ ${support(c, 'overview')}        </details>
     title: `${c.meta.title}: a free course – Mateusz Pachulski`,
     description: c.meta.intro,
     canonical: `${L.SITE}/course/${c.id}/`,
-    base: '../../', current: 'course', feed: false, script: ['../progress-index.js', '../course.js'],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page. Your progress is saved only in this browser.</p>
       <p class="small"><a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
     body,
@@ -374,7 +383,7 @@ function renderMethod(file) {
   const html = L.parseBody(body, ctx).map(s => `      <section><h2>${L.inline(s.title, ctx)}</h2>\n${L.renderBlocks(s.blocks, ctx)}</section>`).join('\n');
   return L.page({
     title: `${meta.title} – Mateusz Pachulski`, description: meta.summary, canonical: `${L.SITE}/course/how-its-made`,
-    base: '../', current: 'course', feed: false,
+    base: '../', current: 'courses', feed: false,
     footer: `      <p class="small"><a href="./">All courses</a> · <a href="../learning/">Learning log</a> · <a href="../">pachulski.dev</a></p>`,
     body: `    <article class="course-top wrap narrow">\n      <p class="eyebrow"><a href="./">Free courses</a></p>\n      <h1>${L.esc(meta.title)}</h1>\n      <p class="lede">${L.esc(meta.summary)}</p>\n${html}\n    </article>`,
   });
@@ -392,7 +401,7 @@ function renderMe(cs) {
     title: 'Your learning – Mateusz Pachulski',
     description: 'Your progress across every course, what to learn next, and the questions you slipped on. Saved only in your browser.',
     canonical: `${L.SITE}/course/me`,
-    base: '../', current: 'course', feed: false, script: ['progress-index.js', 'course.js'],
+    base: '../', current: 'courses', feed: false, script: ['progress-index.js', 'course.js'],
     footer: `      <p class="small"><a href="./">All courses</a> · <a href="../">pachulski.dev</a></p>`,
     body: `    <article class="me course-top wrap narrow">
       <p class="eyebrow"><a href="./">Free courses</a> · your learning</p>
@@ -422,13 +431,15 @@ function renderIndex(cs) {
           <p>${L.esc(cat?.descriptions?.[c.id] || c.meta.intro)}</p>
           <p class="small card-status"><span>${c.puzzles.length} puzzles · ~${minutes(c)} min</span><span class="mine">Not started</span></p>
           <progress class="card-progress" value="0" max="${c.puzzles.length}" aria-label="${L.esc(c.meta.title)} progress"></progress>
-          <a class="button primary" href="${c.id}/" data-puzzles="${c.puzzles.map(p => p.slug).join(' ')}">Open course</a>
+          <a class="button" href="${c.id}/${c.puzzles[0].slug}.html" data-puzzles="${c.puzzles.map(p => p.slug).join(' ')}">Start the first puzzle</a>
         </li>`;
   const sections = [...groups, ...(others.length ? [{ title: 'More courses', courses: others }] : [])]
     .map((g, i) => {
+      const anchor = g.id || `group-${i}`;
       const cards = g.courses.filter(id => byId[id]).map(id => card(byId[id])).join('\n');
-      return cards ? `<section class="catalog-group" aria-labelledby="catalog-group-${i}">
-        <h2 id="catalog-group-${i}">${L.esc(g.title)}</h2>
+      return cards ? `<section class="catalog-group" id="${anchor}" aria-labelledby="${anchor}-heading">
+        <h2 id="${anchor}-heading">${L.esc(g.title)}</h2>
+        ${g.intro ? `<p>${L.esc(g.intro)}</p>` : ''}
         <ul class="courses">${cards}</ul>
       </section>` : '';
     }).join('\n');
@@ -436,12 +447,13 @@ function renderIndex(cs) {
   const body = `    <section class="catalog-hero" aria-labelledby="courses-heading">
       <div class="wrap">
         <p class="eyebrow">Free courses · no sign-up</p>
-        <h1 id="courses-heading">Understand how it works</h1>
-        <p class="lede">Build an explanation one puzzle at a time. Follow the mechanism, predict what happens next, and go deeper when a step raises another question.</p>
-        <p class="actions"><a class="button primary" href="#browse-courses">Browse courses</a> <a class="button" href="me.html">Your learning</a></p>
+        <h1 id="courses-heading">Engineering courses</h1>
+        <p class="lede">New to backend engineering? Begin with one request from a client to a server. Work up to deploying a service and defending a system design.</p>
+        <p class="actions"><a class="button primary" href="backend-ops/${byId['backend-ops'].puzzles[0].slug}.html">Start with your first request</a> <a class="button" href="me.html">Your learning</a></p>
       </div>
     </section>
     <div class="wrap catalog-body" id="browse-courses">
+      <nav class="lesson-jumps" aria-label="Course paths">${groups.map(g => `<a href="#${g.id}">${L.esc(g.title)}</a>`).join(' ')}</nav>
       <section hidden aria-labelledby="search-heading">
         <h2 id="search-heading"><label for="puzzle-search">Find a puzzle</label></h2>
         <input type="search" id="puzzle-search" placeholder="Try TLS, Flow or state">
@@ -453,12 +465,36 @@ ${soon ? `      <details class="course-extras"><summary>${L.esc(cat.title)}</sum
     </div>`;
   return L.page({
     title: 'Free courses – Mateusz Pachulski',
-    description: 'Free courses on Android, Bluetooth Low Energy and more: small puzzles from the foundation up, with moving diagrams and a check after each one.',
+    description: 'Learn backend engineering, system design, Android, networking and device integrations through short lessons and practical experiments.',
     canonical: `${L.SITE}/course/`,
-    base: '../', current: 'course', feed: false, script: ['progress-index.js', 'course.js'],
+    base: '../', current: 'courses', feed: false, script: ['progress-index.js', 'course.js'],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against primary sources. Your progress is saved only in this browser.</p>
       <p class="small"><a href="../learning/">Learning log</a> · <a href="../">pachulski.dev</a></p>`,
     body,
+  });
+}
+
+function renderProject(c) {
+  const p = c.project;
+  const list = items => items.map(item => `<li>${L.esc(item)}</li>`).join('\n');
+  return L.page({
+    title: `${p.title} · Final project · ${c.meta.title}`, description: p.brief,
+    canonical: `${L.SITE}/course/${c.id}/final-project`, base: '../../', current: 'courses', feed: false,
+    footer: '<p class="small"><a href="./">Course outline</a> · <a href="../">All courses</a></p>',
+    body: `<article class="wrap narrow section">
+      <p class="eyebrow"><a href="./">${L.esc(c.meta.title)}</a> · Final project</p>
+      <h1>${L.esc(p.title)}</h1>
+      <p class="lede">${L.esc(p.brief)}</p>
+      <h2>Before you start</h2><p>${L.esc(p.prerequisites)}</p><p>${L.esc(p.setup)}</p>
+      <h2>Run the investigation</h2><ol>${list(p.steps)}</ol>
+      <h2>Evidence to keep</h2><ul>${list(p.evidence)}</ul>
+      <details class="course-extras"><summary>Compare with a worked review</summary>
+        ${p.worked.map(example => `<p>${L.esc(example)}</p>`).join('\n')}
+      </details>
+      <h2>Change one assumption</h2><p>${L.esc(p.variation)}</p>
+      <details class="course-extras"><summary>Check your reasoning</summary><p>${L.esc(p.solution)}</p></details>
+      <p class="actions"><a class="button" href="./">Return to course outline</a></p>
+    </article>`
   });
 }
 
@@ -470,6 +506,8 @@ function build() {
   for (const c of cs) out.set(path.join(OUT, c.id, 'index.html'), renderOverview(c));
   for (const c of cs) out.set(path.join(OUT, c.id, `${c.id}-obsidian.zip`), X.zip(X.vault(c, blocks(c.id))));
   for (const c of cs) c.meta.modules.forEach((_, k) => out.set(path.join(OUT, c.id, `check-${k + 1}.html`), renderCheck(c, k)));
+  for (const c of cs) out.set(path.join(OUT, c.id, 'final-project.html'), renderProject(c));
+  for (const [file, html] of require('./build-labs').labPages()) out.set(file, html);
   const made = path.join(SRC, 'how-its-made.md');
   if (fs.existsSync(made)) out.set(path.join(OUT, 'how-its-made.html'), renderMethod(made));
   if (cs.length) out.set(path.join(OUT, 'index.html'), renderIndex(cs));

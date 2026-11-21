@@ -1,0 +1,24 @@
+{
+  "title": "Diagnose a connected strap that never reports a sample",
+  "brief": "A test strap is visible and accepts a connection. The app still displays no readings. Locate the first missing event and design an experiment that distinguishes two independent switches.",
+  "prerequisites": "Use the puzzles on advertising, connection events, services, characteristics and notification subscription.",
+  "setup": "Use a fixture with a notifying characteristic, a fresh connection with notifications disabled, and a strap that emits a new sample every second after subscription. Paper is sufficient. An optional programmable peripheral can reproduce the sequence.",
+  "steps": [
+    "Write a timeline for advertisement → connection → service discovery → selection of the measurement characteristic. Mark which steps prove that the value can be identified.",
+    "Test two incomplete paths: enable delivery only on the phone, then in a fresh fixture enable only the peripheral subscription. Predict observations at the strap and in the app.",
+    "Enable both paths and wait for successful completion of the descriptor write before timing the first new sample. Record the observed characteristic and value.",
+    "Change the connection interval in a separate run. Explain which issue a faster connection could solve and which missing setup step it cannot repair."
+  ],
+  "evidence": [
+    "The diagnosis identifies the characteristic by service and characteristic identities and checks its notification property.",
+    "The trace treats local routing and the successful remote descriptor write as two observable milestones.",
+    "The timing claim accounts for when the peripheral actually produces a new sample."
+  ],
+  "worked": [
+    "In the first run the app registers locally but never writes the client configuration descriptor. Discovery succeeds, yet the fixture's subscription flag stays off. Increasing scan time cannot advance this connected exchange.",
+    "In the second run the strap is subscribed, but local delivery to this app has not been enabled. Record a transmission on the peripheral separately from a callback observed in the app. In the complete run the descriptor write succeeds, the next sample becomes available, and the app receives its characteristic callback.",
+    "With nominal 30 ms connection events and one fresh sample per second, more frequent radio meetings do not turn this sensor into a 33-sample-per-second source. Radio scheduling and sensor production constrain different parts of the timeline."
+  ],
+  "variation": "Suppose both switches are on, but the firmware sends an update only when the measured value changes. What does thirty seconds of silence prove?",
+  "solution": "Silence alone cannot establish a broken subscription. Induce one known change in a controlled fixture, record it on the peripheral and compare that event with the callback log."
+}

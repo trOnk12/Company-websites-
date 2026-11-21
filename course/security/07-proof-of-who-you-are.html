@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-7">
         <p id="builds-on-7"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="4"><details><summary><a href="04-the-man-in-the-middle.html">Puzzle 4: The man in the middle</a></summary><p>A man in the middle intercepts the key exchange and runs two: one with your app, pretending to be the server, and one with the server, pretending to be your app. Each side ends with a shared secret, but shares it with the attacker, who decrypts, reads or changes everything, and re-encrypts it. Encryption doesn't help. What stops it is proof of who sent the public values: a signature, puzzle 7.</p></details></li><li data-block="5"><details><summary><a href="05-a-fingerprint-for-data.html">Puzzle 5: A fingerprint for data</a></summary><p>A hash function turns any data into a short, fixed-size digest, like SHA-256's 256 bits. Change one bit of the data and the digest changes completely, and nobody can make data that matches a given digest. So comparing digests shows whether data was changed.</p></details></li></ul>
+        <ul><li data-block="4"><details><summary>Puzzle 4: The man in the middle</summary><p>A man in the middle intercepts the key exchange and runs two: one with your app, pretending to be the server, and one with the server, pretending to be your app. Each side ends with a shared secret, but shares it with the attacker, who decrypts, reads or changes everything, and re-encrypts it. Encryption doesn't help. What stops it is proof of who sent the public values: a signature, puzzle 7.</p><p><a href="04-the-man-in-the-middle.html">Review puzzle 4</a></p></details></li><li data-block="5"><details><summary>Puzzle 5: A fingerprint for data</summary><p>A hash function turns any data into a short, fixed-size digest, like SHA-256's 256 bits. Change one bit of the data and the digest changes completely, and nobody can make data that matches a given digest. So comparing digests shows whether data was changed.</p><p><a href="05-a-fingerprint-for-data.html">Review puzzle 5</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-anyone-on-the-line.html">0</a> → <a href="01-bits-xor-and-a-toy-cipher.html">1</a> → <a href="02-one-key-for-both.html">2</a> → <a href="03-a-secret-agreed-in-public.html">3</a> → <a href="04-the-man-in-the-middle.html">4</a> → <a href="05-a-fingerprint-for-data.html">5</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../sysdesign/04-what-https-adds.html"><b>HTTPS</b></a> <span class="small">Mobile system design, from a packet to an app, puzzle 4: What HTTPS adds</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -112,26 +112,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A listener makes its own certificate with your server's name and its own public key. What does your app see?</legend>
-<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-1"><label for="q-07-proof-of-who-you-are-1-1">A valid certificate, because the name on it is right</label>
-<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-2" data-ok><label for="q-07-proof-of-who-you-are-1-2">No trusted authority signed it, so the check fails</label>
-<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-3"><label for="q-07-proof-of-who-you-are-1-3">A valid certificate, once the listener signs it itself</label>
+<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-1"><label for="q-07-proof-of-who-you-are-1-1"><span>A valid certificate, because the name on it is right</span></label>
+<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-2" data-ok><label for="q-07-proof-of-who-you-are-1-2"><span>No trusted authority signed it, so the check fails</span></label>
+<input type="radio" name="q-07-proof-of-who-you-are-1" id="q-07-proof-of-who-you-are-1-3"><label for="q-07-proof-of-who-you-are-1-3"><span>A valid certificate, once the listener signs it itself</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The name isn't enough: the certificate must carry a trusted authority's signature. <label class="show-me" for="st-signature-4" data-goto="st-signature">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Only an authority's signature makes a certificate trusted.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Only a signature from an authority your phone trusts counts, and authorities check who controls the name. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why can't anyone make a signature that checks out with your server's public key?</legend>
-<input type="radio" name="q-07-proof-of-who-you-are-2" id="q-07-proof-of-who-you-are-2-1"><label for="q-07-proof-of-who-you-are-2-1">Because each signature is encrypted again with AES</label>
-<input type="radio" name="q-07-proof-of-who-you-are-2" id="q-07-proof-of-who-you-are-2-2"><label for="q-07-proof-of-who-you-are-2-2">Because public keys are kept secret by the phone</label>
-<input type="radio" name="q-07-proof-of-who-you-are-2" id="q-07-proof-of-who-you-are-2-3" data-ok><label for="q-07-proof-of-who-you-are-2-3">Because it takes the private key, which never leaves the server</label>
+<input type="radio" name="q-07-proof-of-who-you-are-2" id="q-07-proof-of-who-you-are-2-1"><label for="q-07-proof-of-who-you-are-2-1"><span>Because each signature is encrypted again with AES</span></label>
+<input type="radio" name="q-07-proof-of-who-you-are-2" id="q-07-proof-of-who-you-are-2-2"><label for="q-07-proof-of-who-you-are-2-2"><span>Because public keys are kept secret by the phone</span></label>
+<input type="radio" name="q-07-proof-of-who-you-are-2" id="q-07-proof-of-who-you-are-2-3" data-ok><label for="q-07-proof-of-who-you-are-2-3"><span>Because it takes the private key, which never leaves the server</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Signing doesn't need AES; it's the private key that makes it unforgeable. <label class="show-me" for="st-signature-2" data-goto="st-signature">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Public keys are meant to be shared; the protection is the private key. <label class="show-me" for="st-signature-1" data-goto="st-signature">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> No private key, no valid signature.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a server's private key and a key exchange's private value?</legend>
-<input type="radio" name="q-07-proof-of-who-you-are-3" id="q-07-proof-of-who-you-are-3-1"><label for="q-07-proof-of-who-you-are-3-1">They're the same number, used once for the exchange and once to sign</label>
-<input type="radio" name="q-07-proof-of-who-you-are-3" id="q-07-proof-of-who-you-are-3-2" data-ok><label for="q-07-proof-of-who-you-are-3-2">The private key lasts years and proves identity, while a private value is used once</label>
+<input type="radio" name="q-07-proof-of-who-you-are-3" id="q-07-proof-of-who-you-are-3-1"><label for="q-07-proof-of-who-you-are-3-1"><span>They're the same number, used once for the exchange and once to sign</span></label>
+<input type="radio" name="q-07-proof-of-who-you-are-3" id="q-07-proof-of-who-you-are-3-2" data-ok><label for="q-07-proof-of-who-you-are-3-2"><span>The private key lasts years and proves identity, while a private value is used once</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They're separate: one proves identity, the other makes this connection's secret. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Long-lived identity vs one-time secret.</p>
 </fieldset>

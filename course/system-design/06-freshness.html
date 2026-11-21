@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -100,6 +101,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>The primary store has committed the write. A <b>replica</b> is another copy that replays changes. Asynchronous replication lets that copy lag. A cache holds a previously computed answer for repeated reads. It can also be stale. These are independent sources of delay.</p>
 <p>Suppose a map answer is fetched from a copy already eight seconds behind and kept for another thirty seconds. Near expiry it can describe a state about 38 seconds old. A cache lifetime does not bound the age of its source. Return the committed result for the confirmation screen, or read from a source known to have observed that write. Measure end-to-end age to enforce the map's thirty-second promise.</p>
+<h3>Spend the freshness budget</h3>
+<p>Assume the response reports the time of a trustworthy source observation and the clocks agree. At second 100, a cache stores a reading from second 92. At second 115 the reader receives a value 23 seconds old. Seven seconds of a 30-second allowance remain. Keeping the entry until second 130 would exceed that allowance by eight seconds.</p>
+<p>What if refreshing it at second 122 returns the very same reading from second 92? Starting another 30-second timer hides the lag. Retain the source observation time. A map could mark availability unknown when the age limit is exceeded. The separate reservation path still checks the current inventory before granting a space.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -109,22 +113,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What can hide a committed write?</legend>
-<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-1"><label for="q-06-freshness-1-1">The presence of an index</label>
-<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-2" data-ok><label for="q-06-freshness-1-2">Replication delay</label>
+<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-1"><label for="q-06-freshness-1-1"><span>The presence of an index</span></label>
+<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-2" data-ok><label for="q-06-freshness-1-2"><span>Replication delay</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The copy may not have applied the change yet. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The copy may not have applied the change yet.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What measures the thirty-second promise?</legend>
-<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-1"><label for="q-06-freshness-2-1">Time since cache insertion alone</label>
-<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-2" data-ok><label for="q-06-freshness-2-2">Age from source to screen</label>
+<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-1"><label for="q-06-freshness-2-1"><span>Time since cache insertion alone</span></label>
+<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-2" data-ok><label for="q-06-freshness-2-2"><span>Age from source to screen</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The cached value may already have been old. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The cached value may already have been old.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Where can the first confirmation view come from?</legend>
-<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-1"><label for="q-06-freshness-3-1">Any old map entry</label>
-<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-2" data-ok><label for="q-06-freshness-3-2">The committed result</label>
+<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-1"><label for="q-06-freshness-3-1"><span>Any old map entry</span></label>
+<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-2" data-ok><label for="q-06-freshness-3-2"><span>The committed result</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Confirmation requires knowledge of the completed grant. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Confirmation requires knowledge of the completed grant.</p>
 </fieldset>

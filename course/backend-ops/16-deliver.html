@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,13 +62,14 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-16">
         <p id="builds-on-16"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-test.html">Puzzle 2: Can two clients prove the rule?</a></summary><p>An integration test can check replies, stored state and persistence across a fresh process.</p></details></li><li data-block="4"><details><summary><a href="04-incident.html">Puzzle 4: Alive, ready, or serving the wrong thing?</a></summary><p>A process can answer a simple probe while its storage path fails.</p></details></li><li data-block="15"><details><summary><a href="15-signals.html">Puzzle 15: Which users felt the slowdown?</a></summary><p>A percentile describes an ordered sample. Averages can hide a slow group.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Can two clients prove the rule?</summary><p>An integration test can check replies, stored state and persistence across a fresh process.</p><p><a href="02-test.html">Review puzzle 2</a></p></details></li><li data-block="4"><details><summary>Puzzle 4: Alive, ready, or serving the wrong thing?</summary><p>A process can answer a simple probe while its storage path fails.</p><p><a href="04-incident.html">Review puzzle 4</a></p></details></li><li data-block="15"><details><summary>Puzzle 15: Which users felt the slowdown?</summary><p>A percentile describes an ordered sample. Averages can hide a slow group.</p><p><a href="15-signals.html">Review puzzle 15</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 5 puzzles: <a href="00-request.html">0</a> → <a href="01-retry.html">1</a> → <a href="02-test.html">2</a> → <a href="04-incident.html">4</a> → <a href="15-signals.html">15</a>. Know them already? Start here.</p>
-      </aside>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>Your change passes on your laptop. What would another engineer need in order to release it and recover if it fails?</p>
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Start from a clean checkout and run the contract and integration tests. Build the image once and record its identity. Promote the tested artifact with environment-specific configuration supplied at runtime. A readiness probe covers one dependency path. Add a real write and read to the smoke test. Estimate load using requests per second and measured time per request. At a steady ten requests per second and an average response time of half a second, about five requests are in flight on average. Use a load experiment to find when queueing, errors or response times increase. Keep the previous compatible version available for rollback.</p>
+<h3>Rehearse the failure the release gate claims to cover</h3>
+<p>At noon the independent backup contains river. At 12:05 the service acknowledges hill. At 12:10 the data disk fails. Restoring only the noon snapshot recovers river and loses the acknowledged hill. Restoring that snapshot and an intact log containing the committed write can recover both. Run a read for both identities, make one new write and record the elapsed recovery time. A reviewer can now compare observed data loss and time offline with the promises made before release. A successful deployment test on an empty database covers a different failure.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#16-deliver">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Complete the final assessment. Deliver a project that a second person can run, test, diagnose and restore using only its instructions.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#graduation-project">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#graduation-project">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Which observation best closes the rollback drill?</legend>
-<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-1"><label for="q-16-deliver-1-1">A successful command to start the old image</label>
-<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-2" data-ok><label for="q-16-deliver-1-2">A real write and read on the recovered version</label>
+<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-1"><label for="q-16-deliver-1-1"><span>A successful command to start the old image</span></label>
+<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-2" data-ok><label for="q-16-deliver-1-2"><span>A real write and read on the recovered version</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Starting the image alone does not verify service behavior. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A release gate connects a reproducible artifact to evidence that the service can serve real requests.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Why keep the exact identity of the image tested in staging?</legend>
+<input type="radio" name="q-16-deliver-2" id="q-16-deliver-2-1" data-ok><label for="q-16-deliver-2-1"><span>To release the same artifact that passed the checks</span></label>
+<input type="radio" name="q-16-deliver-2" id="q-16-deliver-2-2"><label for="q-16-deliver-2-2"><span>To guarantee that any later rebuild behaves identically</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The release evidence refers to the tested artifact.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The release evidence refers to the tested artifact. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which evidence exposes the limit of a noon-only backup?</legend>
+<input type="radio" name="q-16-deliver-3" id="q-16-deliver-3-1"><label for="q-16-deliver-3-1"><span>A healthy readiness result after restart</span></label>
+<input type="radio" name="q-16-deliver-3" id="q-16-deliver-3-2" data-ok><label for="q-16-deliver-3-2"><span>A missing acknowledged 12:05 write in the restored copy</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A healthy process can still be missing committed history. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A healthy process can still be missing committed history.</p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/workbook/canarying-releases/">Technical reference</a></li></ul></details>

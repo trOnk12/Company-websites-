@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-15">
         <p id="builds-on-15"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="8"><details><summary><a href="08-letters-between-apps.html">Puzzle 8: Letters between apps</a></summary><p>An Intent is a letter to the town hall: &quot;open this screen&quot;. system_server checks the sender's permissions, then delivers it, or doesn't.</p></details></li></ul>
+        <ul><li data-block="8"><details><summary>Puzzle 8: Letters between apps</summary><p>An Intent is a letter to the town hall: &quot;open this screen&quot;. system_server checks the sender's permissions, then delivers it, or doesn't.</p><p><a href="08-letters-between-apps.html">Review puzzle 8</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 8 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -121,24 +121,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your main thread calls a method on a proxy, and system_server takes 2 seconds to answer. What does the user see?</legend>
-<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-1"><label for="q-15-inside-a-binder-call-1-1">Nothing: Binder calls run in the background, on a Binder thread</label>
-<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-2" data-ok><label for="q-15-inside-a-binder-call-1-2">A frozen screen for 2 seconds</label>
-<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-3"><label for="q-15-inside-a-binder-call-1-3">The call gives up after a moment and returns an empty result</label>
+<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-1"><label for="q-15-inside-a-binder-call-1-1"><span>Nothing: Binder calls run in the background, on a Binder thread</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-2" data-ok><label for="q-15-inside-a-binder-call-1-2"><span>A frozen screen for 2 seconds</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-3"><label for="q-15-inside-a-binder-call-1-3"><span>The call gives up after a moment and returns an empty result</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The calling thread waits until the reply comes back. If it's the main thread, nothing else on screen runs. <label class="show-me" for="st-binder-5" data-goto="st-binder">Show me step 5 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> A Binder call waits for its reply, so slow calls don't belong on the main thread.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Binder doesn't give up: your thread waits for the reply. <label class="show-me" for="st-binder-5" data-goto="st-binder">Show me step 5 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Can an app pretend to be another app in a Binder call?</legend>
-<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-1"><label for="q-15-inside-a-binder-call-2-1">Yes, by writing another UID into the Parcel</label>
-<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-2" data-ok><label for="q-15-inside-a-binder-call-2-2">No: Binder stamps the real UID, and the app can't change it</label>
+<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-1"><label for="q-15-inside-a-binder-call-2-1"><span>Yes, by writing another UID into the Parcel</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-2" data-ok><label for="q-15-inside-a-binder-call-2-2"><span>No: Binder stamps the real UID, and the app can't change it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The stamp isn't part of your envelope's contents: Binder adds it. <label class="show-me" for="st-binder-3" data-goto="st-binder">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The UID comes from the kernel, not from your data.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>In system_server, which thread first picks up your call?</legend>
-<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-1"><label for="q-15-inside-a-binder-call-3-1">Its main thread</label>
-<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-2" data-ok><label for="q-15-inside-a-binder-call-3-2">One of its Binder threads</label>
+<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-1"><label for="q-15-inside-a-binder-call-3-1"><span>Its main thread</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-2" data-ok><label for="q-15-inside-a-binder-call-3-2"><span>One of its Binder threads</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Incoming calls are picked up by the couriers, Binder threads, not by the main thread. <label class="show-me" for="st-binder-4" data-goto="st-binder">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Each process keeps a few Binder threads waiting for calls.</p>
 </fieldset>

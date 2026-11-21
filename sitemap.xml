@@ -67,6 +67,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/android/final-project</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/android/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -207,6 +212,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/backend-ops/final-project</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/backend-ops/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -332,6 +342,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/ble/final-project</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/ble/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -367,6 +382,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/compose/final-project</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/compose/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -393,6 +413,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/ios/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/ios/final-project</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -428,6 +453,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/jvm/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/final-project</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -468,6 +498,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/kmp/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/final-project</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -572,6 +607,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/llm/final-project</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/llm/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -633,6 +673,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/perf/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/perf/final-project</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -702,6 +747,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/security/final-project</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/security/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -753,6 +803,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/sysdesign/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/sysdesign/final-project</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -818,6 +873,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/system-design/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/system-design/final-project</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -918,6 +978,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/transport/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/transport/final-project</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

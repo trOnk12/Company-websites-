@@ -20,6 +20,12 @@ There are 86,400 seconds in a day. The averages are about 13.9 map reads and 1.3
 
 At a stable 400 completed requests per second and a mean of 0.15 seconds from arrival to reply, an average of 60 requests are **in flight**, meaning they have arrived but their replies are still outstanding. This is Little’s law. Keep the rate and duration inside the same measurement boundary. If each request holds a database connection for only 0.010 seconds, that part of the workload occupies four connections on average. Short bursts can require more.
 
+### Find the bottleneck hidden by the daily average
+
+Suppose each map response carries 12,000 bytes. At the 400-per-second peak the service sends 4.8 million bytes each second, about 38.4 million bits per second before protocol overhead. Doubling response size doubles outgoing bandwidth even when the number of database reads stays fixed.
+
+Now assume the backend completes only 350 reads per second for the ten-minute peak. Starting empty, with no abandoned or rejected work, 30,000 requests remain after those ten minutes: 50 unfinished requests per second for 600 seconds. Measuring only completions would understate offered demand. Once the queue keeps growing, stop using the steady-state estimate of 60 outstanding requests.
+
 ## Go deeper: What will storage cost in bytes?
 
 At 120,000 accepted sessions per day and 800 bytes of row and index data per session, one day adds 96 million bytes. After 365 days one copy contains about 35.04 billion bytes. Three full copies total about 105.12 billion before backups, engine overhead and spare space. Test the 800-byte assumption by measuring both table and index growth in a representative fixture.

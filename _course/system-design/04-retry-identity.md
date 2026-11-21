@@ -29,11 +29,17 @@ PUT /sessions/ada-17    east    → 409 id already used
 GET /sessions/ada-17            → 200 west
 ```
 
+### Keep the identity across a restart
+
+Ada taps once, the phone sends request 17 and the app closes before it receives the reply. On restart the phone still has the pending intention and its ID. Resending 17 lets the service return the original result. If the app invents 18 for that same tap, a lot with two spaces could grant both. A unique ID per network attempt breaks this contract.
+
+Decide what a second deliberate tap means. If Ada wants a second space, it needs a new intention. If the service forgets completed identities after a day, a phone retrying a two-day-old request needs an explicit recovery rule. One option is to stop automatic retries after the supported window and look up the original reservation before offering a new purchase.
+
 ## Try it
 
 Compare a disconnect immediately before commit with one immediately after. Then compare retry identity with an edit version. One asks whether this intention was already carried out. The other asks whether the record is still the version the editor saw.
 
-[Open the runnable lab and instructions](https://github.com/trOnk12/Company-websites-/tree/main/labs/parking-design)
+[Drop the reply and retry](https://pachulski.dev/labs/parking-design/#retry)
 
 ## Check yourself
 

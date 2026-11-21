@@ -20,6 +20,12 @@ The primary store has committed the write. A **replica** is another copy that re
 
 Suppose a map answer is fetched from a copy already eight seconds behind and kept for another thirty seconds. Near expiry it can describe a state about 38 seconds old. A cache lifetime does not bound the age of its source. Return the committed result for the confirmation screen, or read from a source known to have observed that write. Measure end-to-end age to enforce the map's thirty-second promise.
 
+### Spend the freshness budget
+
+Assume the response reports the time of a trustworthy source observation and the clocks agree. At second 100, a cache stores a reading from second 92. At second 115 the reader receives a value 23 seconds old. Seven seconds of a 30-second allowance remain. Keeping the entry until second 130 would exceed that allowance by eight seconds.
+
+What if refreshing it at second 122 returns the very same reading from second 92? Starting another 30-second timer hides the lag. Retain the source observation time. A map could mark availability unknown when the age limit is exceeded. The separate reservation path still checks the current inventory before granting a space.
+
 ## Try it
 
 Draw a write at second 10, a stale fetch at 17 and replication at 18. When can the cached response outlive the map promise? Now let many clients refresh one popular entry at expiry. Coalescing them into one in-flight fetch reduces duplicate work.

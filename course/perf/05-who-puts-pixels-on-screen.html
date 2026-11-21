@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -107,26 +107,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app's main thread and RenderThread finished early, but the GPU is still filling the buffer at the refresh. What does the display show?</legend>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-1" id="q-05-who-puts-pixels-on-screen-1-1"><label for="q-05-who-puts-pixels-on-screen-1-1">The new frame, since your app's threads finished in time</label>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-1" id="q-05-who-puts-pixels-on-screen-1-2" data-ok><label for="q-05-who-puts-pixels-on-screen-1-2">The previous picture, because the new buffer isn't ready</label>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-1" id="q-05-who-puts-pixels-on-screen-1-3"><label for="q-05-who-puts-pixels-on-screen-1-3">Half of the new frame and half of the old one</label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-1" id="q-05-who-puts-pixels-on-screen-1-1"><label for="q-05-who-puts-pixels-on-screen-1-1"><span>The new frame, since your app's threads finished in time</span></label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-1" id="q-05-who-puts-pixels-on-screen-1-2" data-ok><label for="q-05-who-puts-pixels-on-screen-1-2"><span>The previous picture, because the new buffer isn't ready</span></label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-1" id="q-05-who-puts-pixels-on-screen-1-3"><label for="q-05-who-puts-pixels-on-screen-1-3"><span>Half of the new frame and half of the old one</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The pixels are written by the GPU; until it's done, there's no new buffer. <label class="show-me" for="st-pixels-3" data-goto="st-pixels">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> No finished buffer, no new picture.</p>
 <p class="fb no opt-3"><b>Not quite.</b> SurfaceFlinger only takes finished buffers between refreshes, so there's no half picture. <label class="show-me" for="st-pixels-4" data-goto="st-pixels">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The status bar and your app are drawn by different processes. Who combines them?</legend>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-2" id="q-05-who-puts-pixels-on-screen-2-1" data-ok><label for="q-05-who-puts-pixels-on-screen-2-1">SurfaceFlinger, which composites every visible window's latest buffer</label>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-2" id="q-05-who-puts-pixels-on-screen-2-2"><label for="q-05-who-puts-pixels-on-screen-2-2">The GPU, which reads every app's views directly</label>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-2" id="q-05-who-puts-pixels-on-screen-2-3"><label for="q-05-who-puts-pixels-on-screen-2-3">Your app, which draws the status bar into its own buffer</label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-2" id="q-05-who-puts-pixels-on-screen-2-1" data-ok><label for="q-05-who-puts-pixels-on-screen-2-1"><span>SurfaceFlinger, which composites every visible window's latest buffer</span></label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-2" id="q-05-who-puts-pixels-on-screen-2-2"><label for="q-05-who-puts-pixels-on-screen-2-2"><span>The GPU, which reads every app's views directly</span></label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-2" id="q-05-who-puts-pixels-on-screen-2-3"><label for="q-05-who-puts-pixels-on-screen-2-3"><span>Your app, which draws the status bar into its own buffer</span></label>
 <p class="fb ok opt-1"><b>Right.</b> One service puts every window together.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The GPU fills buffers it's given commands for; combining them is SurfaceFlinger's job. <label class="show-me" for="st-pixels-4" data-goto="st-pixels">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Each window fills its own buffer; your app never draws the status bar. <label class="show-me" for="st-pixels-4" data-goto="st-pixels">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between vsync and a buffer?</legend>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-3" id="q-05-who-puts-pixels-on-screen-3-1"><label for="q-05-who-puts-pixels-on-screen-3-1">Vsync is memory that holds one picture, while a buffer is the display's signal before each refresh</label>
-<input type="radio" name="q-05-who-puts-pixels-on-screen-3" id="q-05-who-puts-pixels-on-screen-3-2" data-ok><label for="q-05-who-puts-pixels-on-screen-3-2">Vsync is the display's signal before each refresh, while a buffer is memory that holds one picture</label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-3" id="q-05-who-puts-pixels-on-screen-3-1"><label for="q-05-who-puts-pixels-on-screen-3-1"><span>Vsync is memory that holds one picture, while a buffer is the display's signal before each refresh</span></label>
+<input type="radio" name="q-05-who-puts-pixels-on-screen-3" id="q-05-who-puts-pixels-on-screen-3-2" data-ok><label for="q-05-who-puts-pixels-on-screen-3-2"><span>Vsync is the display's signal before each refresh, while a buffer is memory that holds one picture</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The beat vs the picture.</p>
 </fieldset>

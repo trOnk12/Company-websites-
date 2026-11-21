@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary><a href="03-a-secret-agreed-in-public.html">Puzzle 3: A secret agreed in public</a></summary><p>In a key exchange, each side keeps a private value and sends a public value made from it. Each combines its own private value with the other's public value, and both get the same shared secret. The listener sees only the public values and can't compute it. But it doesn't tell you who you agreed with.</p></details></li></ul>
+        <ul><li data-block="3"><details><summary>Puzzle 3: A secret agreed in public</summary><p>In a key exchange, each side keeps a private value and sends a public value made from it. Each combines its own private value with the other's public value, and both get the same shared secret. The listener sees only the public values and can't compute it. But it doesn't tell you who you agreed with.</p><p><a href="03-a-secret-agreed-in-public.html">Review puzzle 3</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-anyone-on-the-line.html">0</a> → <a href="01-bits-xor-and-a-toy-cipher.html">1</a> → <a href="02-one-key-for-both.html">2</a> → <a href="03-a-secret-agreed-in-public.html">3</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../sysdesign/04-what-https-adds.html"><b>HTTPS</b></a> <span class="small">Mobile system design, from a packet to an app, puzzle 4: What HTTPS adds</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -112,26 +112,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>In a man-in-the-middle attack, who does your app share its secret with?</legend>
-<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-1"><label for="q-04-the-man-in-the-middle-1-1">The server, because the key exchange guarantees it</label>
-<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-2" data-ok><label for="q-04-the-man-in-the-middle-1-2">The attacker, who answered in the server's place</label>
-<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-3"><label for="q-04-the-man-in-the-middle-1-3">Nobody, since the attacker blocks the exchange</label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-1"><label for="q-04-the-man-in-the-middle-1-1"><span>The server, because the key exchange guarantees it</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-2" data-ok><label for="q-04-the-man-in-the-middle-1-2"><span>The attacker, who answered in the server's place</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-3"><label for="q-04-the-man-in-the-middle-1-3"><span>Nobody, since the attacker blocks the exchange</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The exchange only guarantees a secret with whoever answered. <label class="show-me" for="st-mitm-3" data-goto="st-mitm">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> With whoever answered.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The exchange succeeds; it just succeeds with the attacker. <label class="show-me" for="st-mitm-3" data-goto="st-mitm">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why doesn't encryption stop a man in the middle?</legend>
-<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-1"><label for="q-04-the-man-in-the-middle-2-1">The two shared secrets are too short to be safe</label>
-<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-2"><label for="q-04-the-man-in-the-middle-2-2">The attacker breaks AES by trying keys on enough computers</label>
-<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-3" data-ok><label for="q-04-the-man-in-the-middle-2-3">The attacker holds both secrets</label>
+<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-1"><label for="q-04-the-man-in-the-middle-2-1"><span>The two shared secrets are too short to be safe</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-2"><label for="q-04-the-man-in-the-middle-2-2"><span>The attacker breaks AES by trying keys on enough computers</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-3" data-ok><label for="q-04-the-man-in-the-middle-2-3"><span>The attacker holds both secrets</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Length doesn't matter if you share the secret with the wrong party. <label class="show-me" for="st-mitm-4" data-goto="st-mitm">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> It doesn't need to break anything; it has the keys. <label class="show-me" for="st-mitm-4" data-goto="st-mitm">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Encrypted, but to the wrong party.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a listener and a man in the middle?</legend>
-<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-1"><label for="q-04-the-man-in-the-middle-3-1">A listener runs both exchanges and relays, while a man in the middle only reads what passes</label>
-<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-2" data-ok><label for="q-04-the-man-in-the-middle-3-2">A listener only reads what passes, while a man in the middle runs both exchanges and relays</label>
+<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-1"><label for="q-04-the-man-in-the-middle-3-1"><span>A listener runs both exchanges and relays, while a man in the middle only reads what passes</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-2" data-ok><label for="q-04-the-man-in-the-middle-3-2"><span>A listener only reads what passes, while a man in the middle runs both exchanges and relays</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Watching vs standing in between.</p>
 </fieldset>

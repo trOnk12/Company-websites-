@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -111,25 +111,25 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app sends a password, encrypted, over the café Wi-Fi. A machine in the middle copies every byte. What does it learn?</legend>
-<input type="radio" name="q-00-anyone-on-the-line-1" id="q-00-anyone-on-the-line-1-1"><label for="q-00-anyone-on-the-line-1-1">The password, because it saw every byte that passed</label>
-<input type="radio" name="q-00-anyone-on-the-line-1" id="q-00-anyone-on-the-line-1-2" data-ok><label for="q-00-anyone-on-the-line-1-2">Nothing useful: it has the ciphertext, not the key</label>
-<input type="radio" name="q-00-anyone-on-the-line-1" id="q-00-anyone-on-the-line-1-3"><label for="q-00-anyone-on-the-line-1-3">The password, but only if the Wi-Fi has no password</label>
+<input type="radio" name="q-00-anyone-on-the-line-1" id="q-00-anyone-on-the-line-1-1"><label for="q-00-anyone-on-the-line-1-1"><span>The password, because it saw every byte that passed</span></label>
+<input type="radio" name="q-00-anyone-on-the-line-1" id="q-00-anyone-on-the-line-1-2" data-ok><label for="q-00-anyone-on-the-line-1-2"><span>Nothing useful: it has the ciphertext, not the key</span></label>
+<input type="radio" name="q-00-anyone-on-the-line-1" id="q-00-anyone-on-the-line-1-3"><label for="q-00-anyone-on-the-line-1-3"><span>The password, but only if the Wi-Fi has no password</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Seeing the bytes isn't enough: without the key, ciphertext is gibberish. <label class="show-me" for="st-wire-3" data-goto="st-wire">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Ciphertext without the key means nothing.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The Wi-Fi's own password doesn't matter here: what matters is your data is encrypted. <label class="show-me" for="st-wire-3" data-goto="st-wire">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why isn't encryption alone enough?</legend>
-<input type="radio" name="q-00-anyone-on-the-line-2" id="q-00-anyone-on-the-line-2-1"><label for="q-00-anyone-on-the-line-2-1">Because the key can always be guessed in the end, given time</label>
-<input type="radio" name="q-00-anyone-on-the-line-2" id="q-00-anyone-on-the-line-2-2" data-ok><label for="q-00-anyone-on-the-line-2-2">Because it hides the data, but doesn't stop changes or pretending</label>
+<input type="radio" name="q-00-anyone-on-the-line-2" id="q-00-anyone-on-the-line-2-1"><label for="q-00-anyone-on-the-line-2-1"><span>Because the key can always be guessed in the end, given time</span></label>
+<input type="radio" name="q-00-anyone-on-the-line-2" id="q-00-anyone-on-the-line-2-2" data-ok><label for="q-00-anyone-on-the-line-2-2"><span>Because it hides the data, but doesn't stop changes or pretending</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A good key can't be guessed in any useful time; the gaps are changes and pretending. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Encryption stops reading, not the other two.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a key and ciphertext?</legend>
-<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-1"><label for="q-00-anyone-on-the-line-3-1">Ciphertext is the key after it's been encrypted</label>
-<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-2"><label for="q-00-anyone-on-the-line-3-2">The key is part of the ciphertext, sent along with it</label>
-<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-3" data-ok><label for="q-00-anyone-on-the-line-3-3">The key is the secret that unlocks, while ciphertext is the locked data</label>
+<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-1"><label for="q-00-anyone-on-the-line-3-1"><span>Ciphertext is the key after it's been encrypted</span></label>
+<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-2"><label for="q-00-anyone-on-the-line-3-2"><span>The key is part of the ciphertext, sent along with it</span></label>
+<input type="radio" name="q-00-anyone-on-the-line-3" id="q-00-anyone-on-the-line-3-3" data-ok><label for="q-00-anyone-on-the-line-3-3"><span>The key is the secret that unlocks, while ciphertext is the locked data</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Ciphertext is your data, encrypted; the key is what encrypts it. <label class="show-me" for="st-wire-3" data-goto="st-wire">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> The key is never sent with the data; that would unlock it for everyone. <label class="show-me" for="st-wire-3" data-goto="st-wire">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> The secret vs what it locks.</p>

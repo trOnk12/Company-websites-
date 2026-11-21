@@ -1,0 +1,23 @@
+{
+  "title": "Release a bookmark editor without losing either draft",
+  "brief": "Produce a release packet for an editor shared by two clients. Demonstrate a version conflict, verify committed state, then decide whether the release can be rolled back.",
+  "prerequisites": "Complete the conditional edit, persistence, migration, signals and release lessons. Know how a read exposes a version and how a write checks it.",
+  "setup": "Use the edit-conflict browser model or the local labs/bookmark-service/edit_conflict.py fixture. A single bookmark begins as River at version 7. Both clients read before either writes.",
+  "steps": [
+    "Record both reads. Let A change River to Lake with its observed version. Let B submit Forest with its earlier version. Predict and then check each response.",
+    "Have B fetch the committed row and deliberately combine the two titles. Record the final title and version, and say who made the merge decision.",
+    "Propose a two-release schema migration for an existing service that is adding the version field. Test how an older writer affects stale-write protection while both versions are serving traffic.",
+    "Define a release check using one real read and write and a separate conflicting update. Decide which failures should stop promotion."
+  ],
+  "evidence": [
+    "The stale edit leaves Lake at version 8. The deliberate merged edit succeeds at version 8 and results in Lake and Forest at version 9.",
+    "The migration plan demonstrates how every still-active writer advances or respects the version before the service promises stale-overwrite protection.",
+    "The release gate distinguishes an expected conflict from an unexpected write failure or an accepted stale write."
+  ],
+  "worked": [
+    "The two reads return River with tag \"7\". A supplies that tag and receives 204. B sends the same tag after A and receives 412. A fresh read returns Lake with tag \"8\". B can now submit Lake and Forest with \"8\", yielding the merged value at version 9. Automatically resending Forest against \"8\" would silently discard A’s edit.",
+    "Add a compatible version column, populate existing rows and arrange for all writers to update versions. Enforce the required precondition once incompatible writers are retired or routed away. If rollback reintroduces a writer that neither checks nor advances the version, schema compatibility alone fails to preserve the edit guarantee."
+  ],
+  "variation": "Two updates of the same title arrive with different operation IDs, and the second still holds the old version.",
+  "solution": "The version check rejects the stale precondition even if the requested text equals the stored text. Define any intentional no-op behavior in the contract. An operation ID can recover an earlier attempt’s outcome; it cannot establish that an independent editor saw the current version."
+}

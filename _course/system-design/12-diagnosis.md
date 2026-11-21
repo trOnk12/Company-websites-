@@ -20,6 +20,12 @@ Define a service-level objective from the driver's perspective. In a rolling thi
 
 Measure connection wait and query execution separately. In one trace, 920 milliseconds pass before a connection becomes available and twelve inside the query. A missing index is a poor first explanation of that trace. Inspect busy connections and how long requests hold them. If the program waits on another service inside an open transaction, adding connections may simply move the bottleneck.
 
+### Measure how quickly the budget is being spent
+
+The objective allows 0.1 percent bad attempts. A five-minute window contains 20,000 attempts and 200 bad outcomes. The observed bad fraction is 1 percent, ten times the permitted fraction. That ratio is the burn rate. If future traffic and failures stay at that proportion throughout a fresh 30-day window, it would use the budget in about three days.
+
+Inspect the same signal across a short and a longer window to separate a persistent incident from a brief spike. Then challenge the diagnosis. If slow traces consistently show connection acquisition under two milliseconds and query execution near one second, investigate the query path. The earlier 920-millisecond wait example called for a different investigation.
+
 ## Go deeper: How do you compare two releases?
 
 Send a small, representative group to a new version and keep a control group. Measure correct replies within the deadline, write failures and connection saturation. Comparing a new version at rush hour with an old version overnight mixes traffic and software effects. Decide the stopping threshold and check that the old version can still read new data.
@@ -39,3 +45,5 @@ Sort one hundred latencies: ninety-eight at 40 milliseconds and two at 2,000. Th
 ## Sources
 
 - [Google SRE · Implementing SLOs](https://sre.google/workbook/implementing-slos/) — “a target level for the reliability of your service”
+
+- [Google SRE · Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/)

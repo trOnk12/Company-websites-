@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-threads-are-the-workers.html">Puzzle 2: Threads are the workers</a></summary><p>A process can have many threads, but only one, the main thread, draws your screen and handles taps. If it's busy, the screen waits.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Threads are the workers</summary><p>A process can have many threads, but only one, the main thread, draws your screen and handles taps. If it's busy, the screen waits.</p><p><a href="02-threads-are-the-workers.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -120,24 +120,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The user switches from your app to another app. Who moves your Activity to &quot;stopped&quot;?</legend>
-<input type="radio" name="q-04-the-town-hall-decides-1" id="q-04-the-town-hall-decides-1-1"><label for="q-04-the-town-hall-decides-1-1">The kernel</label>
-<input type="radio" name="q-04-the-town-hall-decides-1" id="q-04-the-town-hall-decides-1-2"><label for="q-04-the-town-hall-decides-1-2">Your app, when it notices another app in front</label>
-<input type="radio" name="q-04-the-town-hall-decides-1" id="q-04-the-town-hall-decides-1-3" data-ok><label for="q-04-the-town-hall-decides-1-3">system_server</label>
+<input type="radio" name="q-04-the-town-hall-decides-1" id="q-04-the-town-hall-decides-1-1"><label for="q-04-the-town-hall-decides-1-1"><span>The kernel</span></label>
+<input type="radio" name="q-04-the-town-hall-decides-1" id="q-04-the-town-hall-decides-1-2"><label for="q-04-the-town-hall-decides-1-2"><span>Your app, when it notices another app in front</span></label>
+<input type="radio" name="q-04-the-town-hall-decides-1" id="q-04-the-town-hall-decides-1-3" data-ok><label for="q-04-the-town-hall-decides-1-3"><span>system_server</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The kernel shares the CPU and memory; screens and their stages are system_server's job. <label class="show-me" for="st-lifecycle-4" data-goto="st-lifecycle">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Your app finds out, but it doesn't make the decision. The town hall moves it. <label class="show-me" for="st-lifecycle-4" data-goto="st-lifecycle">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> system_server decides every lifecycle stage; your app is told.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why can't each app decide on its own which screen is in front?</legend>
-<input type="radio" name="q-04-the-town-hall-decides-2" id="q-04-the-town-hall-decides-2-1"><label for="q-04-the-town-hall-decides-2-1">Because only system_server is allowed to draw anything on screen</label>
-<input type="radio" name="q-04-the-town-hall-decides-2" id="q-04-the-town-hall-decides-2-2" data-ok><label for="q-04-the-town-hall-decides-2-2">Because only one screen can be in front, so one place that sees all apps has to decide</label>
+<input type="radio" name="q-04-the-town-hall-decides-2" id="q-04-the-town-hall-decides-2-1"><label for="q-04-the-town-hall-decides-2-1"><span>Because only system_server is allowed to draw anything on screen</span></label>
+<input type="radio" name="q-04-the-town-hall-decides-2" id="q-04-the-town-hall-decides-2-2" data-ok><label for="q-04-the-town-hall-decides-2-2"><span>Because only one screen can be in front, so one place that sees all apps has to decide</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Apps have plenty of screens. The question is who decides which one is in front. <label class="show-me" for="st-lifecycle-1" data-goto="st-lifecycle">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Only something that sees every app can fairly decide which screen is in front.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between an Activity and system_server?</legend>
-<input type="radio" name="q-04-the-town-hall-decides-3" id="q-04-the-town-hall-decides-3-1"><label for="q-04-the-town-hall-decides-3-1">They're the same: system_server is the Activity that's in front</label>
-<input type="radio" name="q-04-the-town-hall-decides-3" id="q-04-the-town-hall-decides-3-2" data-ok><label for="q-04-the-town-hall-decides-3-2">An Activity is one screen, while system_server is the process that manages them all</label>
+<input type="radio" name="q-04-the-town-hall-decides-3" id="q-04-the-town-hall-decides-3-1"><label for="q-04-the-town-hall-decides-3-1"><span>They're the same: system_server is the Activity that's in front</span></label>
+<input type="radio" name="q-04-the-town-hall-decides-3" id="q-04-the-town-hall-decides-3-2" data-ok><label for="q-04-the-town-hall-decides-3-2"><span>An Activity is one screen, while system_server is the process that manages them all</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> An Activity lives in your app's process; system_server is a separate process: the town hall. <label class="show-me" for="st-lifecycle-2" data-goto="st-lifecycle">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Your app holds the screens; the town hall holds the register and the decisions.</p>
 </fieldset>

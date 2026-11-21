@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -67,7 +67,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-state-reads-and-ui.html">Puzzle 0: Who read the bookmark count?</a></summary><p>A read of observable state gives Compose a dependency to track. When the value changes, Compose can revisit the parts that read it.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Who read the bookmark count?</summary><p>A read of observable state gives Compose a dependency to track. When the value changes, Compose can revisit the parts that read it.</p><p><a href="00-state-reads-and-ui.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-state-reads-and-ui.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -122,27 +122,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The position is read only during placement. What can Compose reuse for that change?</legend>
-<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-1"><label for="q-01-read-in-the-right-phase-1-1">Nothing, because scrolling always builds a new tree</label>
-<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-2"><label for="q-01-read-in-the-right-phase-1-2">Only the values read while drawing</label>
-<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-3" data-ok><label for="q-01-read-in-the-right-phase-1-3">The card description and its measured size</label>
+<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-1"><label for="q-01-read-in-the-right-phase-1-1"><span>Nothing, because scrolling always builds a new tree</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-2"><label for="q-01-read-in-the-right-phase-1-2"><span>Only the values read while drawing</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-3" data-ok><label for="q-01-read-in-the-right-phase-1-3"><span>The card description and its measured size</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The recorded read does not require composition for this change. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The position is read in placement, after measurement. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Moving an already measured card is placement work.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Moving the read into a local variable at the top of the composable has what effect?</legend>
-<input type="radio" name="q-01-read-in-the-right-phase-2" id="q-01-read-in-the-right-phase-2-1"><label for="q-01-read-in-the-right-phase-2-1">The modifier still reads the observable value during placement</label>
-<input type="radio" name="q-01-read-in-the-right-phase-2" id="q-01-read-in-the-right-phase-2-2" data-ok><label for="q-01-read-in-the-right-phase-2-2">The changed value can now invalidate composition</label>
-<input type="radio" name="q-01-read-in-the-right-phase-2" id="q-01-read-in-the-right-phase-2-3"><label for="q-01-read-in-the-right-phase-2-3">The read becomes untracked because it is local</label>
+<input type="radio" name="q-01-read-in-the-right-phase-2" id="q-01-read-in-the-right-phase-2-1"><label for="q-01-read-in-the-right-phase-2-1"><span>The modifier still reads the observable value during placement</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-2" id="q-01-read-in-the-right-phase-2-2" data-ok><label for="q-01-read-in-the-right-phase-2-2"><span>The changed value can now invalidate composition</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-2" id="q-01-read-in-the-right-phase-2-3"><label for="q-01-read-in-the-right-phase-2-3"><span>The read becomes untracked because it is local</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The modifier receives a value already evaluated in composition. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Follow where evaluation happens.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The location of a variable does not disable observation. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A value affects only paint and is read only during drawing. What follows when it changes?</legend>
-<input type="radio" name="q-01-read-in-the-right-phase-3" id="q-01-read-in-the-right-phase-3-1"><label for="q-01-read-in-the-right-phase-3-1">Layout has to run first again to get the new color</label>
-<input type="radio" name="q-01-read-in-the-right-phase-3" id="q-01-read-in-the-right-phase-3-2" data-ok><label for="q-01-read-in-the-right-phase-3-2">Drawing can run without relaying out the screen</label>
-<input type="radio" name="q-01-read-in-the-right-phase-3" id="q-01-read-in-the-right-phase-3-3"><label for="q-01-read-in-the-right-phase-3-3">The color cannot change until another value recomposes</label>
+<input type="radio" name="q-01-read-in-the-right-phase-3" id="q-01-read-in-the-right-phase-3-1"><label for="q-01-read-in-the-right-phase-3-1"><span>Layout has to run first again to get the new color</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-3" id="q-01-read-in-the-right-phase-3-2" data-ok><label for="q-01-read-in-the-right-phase-3-2"><span>Drawing can run without relaying out the screen</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-3" id="q-01-read-in-the-right-phase-3-3"><label for="q-01-read-in-the-right-phase-3-3"><span>The color cannot change until another value recomposes</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The layout has no new information to compute from the color. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A drawing dependency can invalidate drawing directly.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Drawing owns the dependency and can update independently. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 13"><p class="eyebrow">Puzzle 13: Compose in one puzzle</p>
 <fieldset class="quiz" data-n="13">
 <legend>The <code>name</code> passed to <code>Greeting</code> changes. What makes the text update?</legend>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-1" data-ok><label for="q-13-compose-in-one-puzzle-1-1">Compose calls <code>Greeting</code> again with the new name: recomposition</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-2"><label for="q-13-compose-in-one-puzzle-1-2">The Activity recreates the whole screen</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-3"><label for="q-13-compose-in-one-puzzle-1-3">Your code sets the new text on the Text object</label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-1" data-ok><label for="q-13-compose-in-one-puzzle-1-1"><span>Compose calls <code>Greeting</code> again with the new name: recomposition</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-2"><label for="q-13-compose-in-one-puzzle-1-2"><span>The Activity recreates the whole screen</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-3"><label for="q-13-compose-in-one-puzzle-1-3"><span>Your code sets the new text on the Text object</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Data changes, functions run again.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only the affected functions run again; nothing is recreated. <a class="show-me" href="13-compose-in-one-puzzle.html">Learn it in puzzle 13 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> You keep no Text object to set; you describe, Compose redraws. <a class="show-me" href="13-compose-in-one-puzzle.html">Learn it in puzzle 13 →</a></p>
@@ -65,9 +65,9 @@
 <section aria-label="Puzzle 14"><p class="eyebrow">Puzzle 14: What Compose actually shares</p>
 <fieldset class="quiz" data-n="14">
 <legend>Your app targets Android and iOS with Compose Multiplatform. Which build of <code>material3</code> does the Android app use?</legend>
-<input type="radio" name="q-14-what-compose-shares-1" id="q-14-what-compose-shares-1-1" data-ok><label for="q-14-what-compose-shares-1-1">Google's Jetpack Compose build</label>
-<input type="radio" name="q-14-what-compose-shares-1" id="q-14-what-compose-shares-1-2"><label for="q-14-what-compose-shares-1-2">No build at all, since material3 can't be called from commonMain</label>
-<input type="radio" name="q-14-what-compose-shares-1" id="q-14-what-compose-shares-1-3"><label for="q-14-what-compose-shares-1-3">JetBrains' build of the library, the same one the iOS target uses</label>
+<input type="radio" name="q-14-what-compose-shares-1" id="q-14-what-compose-shares-1-1" data-ok><label for="q-14-what-compose-shares-1-1"><span>Google's Jetpack Compose build</span></label>
+<input type="radio" name="q-14-what-compose-shares-1" id="q-14-what-compose-shares-1-2"><label for="q-14-what-compose-shares-1-2"><span>No build at all, since material3 can't be called from commonMain</span></label>
+<input type="radio" name="q-14-what-compose-shares-1" id="q-14-what-compose-shares-1-3"><label for="q-14-what-compose-shares-1-3"><span>JetBrains' build of the library, the same one the iOS target uses</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Android gets Google's artifacts.</p>
 <p class="fb no opt-2"><b>Not quite.</b> material3 is available from common code on all targets. <a class="show-me" href="14-what-compose-shares.html">Learn it in puzzle 14 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> On Android the build switches to Google's artifacts; JetBrains' builds are for the other targets. <a class="show-me" href="14-what-compose-shares.html">Learn it in puzzle 14 →</a></p>
@@ -75,9 +75,9 @@
 <section aria-label="Puzzle 15"><p class="eyebrow">Puzzle 15: One canvas on iOS</p>
 <fieldset class="quiz" data-n="15">
 <legend>Your Compose screen on iOS has a <code>Column</code> with a <code>Button</code>. What does UIKit see?</legend>
-<input type="radio" name="q-15-one-canvas-on-ios-1" id="q-15-one-canvas-on-ios-1-1" data-ok><label for="q-15-one-canvas-on-ios-1-1">One view hosted by <code>ComposeUIViewController</code>, with the whole screen drawn inside</label>
-<input type="radio" name="q-15-one-canvas-on-ios-1" id="q-15-one-canvas-on-ios-1-2"><label for="q-15-one-canvas-on-ios-1-2">Nothing at all, because Compose replaces UIKit on iOS</label>
-<input type="radio" name="q-15-one-canvas-on-ios-1" id="q-15-one-canvas-on-ios-1-3"><label for="q-15-one-canvas-on-ios-1-3">A <code>UIStackView</code> holding a <code>UIButton</code>, built from your composables</label>
+<input type="radio" name="q-15-one-canvas-on-ios-1" id="q-15-one-canvas-on-ios-1-1" data-ok><label for="q-15-one-canvas-on-ios-1-1"><span>One view hosted by <code>ComposeUIViewController</code>, with the whole screen drawn inside</span></label>
+<input type="radio" name="q-15-one-canvas-on-ios-1" id="q-15-one-canvas-on-ios-1-2"><label for="q-15-one-canvas-on-ios-1-2"><span>Nothing at all, because Compose replaces UIKit on iOS</span></label>
+<input type="radio" name="q-15-one-canvas-on-ios-1" id="q-15-one-canvas-on-ios-1-3"><label for="q-15-one-canvas-on-ios-1-3"><span>A <code>UIStackView</code> holding a <code>UIButton</code>, built from your composables</span></label>
 <p class="fb ok opt-1"><b>Right.</b> One view, drawn by Compose.</p>
 <p class="fb no opt-2"><b>Not quite.</b> UIKit still runs the app; Compose lives inside one of its screens. <a class="show-me" href="15-one-canvas-on-ios.html">Learn it in puzzle 15 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> Compose doesn't create UIKit objects for composables; it draws them itself. <a class="show-me" href="15-one-canvas-on-ios.html">Learn it in puzzle 15 →</a></p>

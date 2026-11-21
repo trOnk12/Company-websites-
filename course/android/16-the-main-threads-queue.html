@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-16">
         <p id="builds-on-16"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-you-dont-call-youre-called.html">Puzzle 6: You don't call. You're called.</a></summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p></details></li><li data-block="12"><details><summary><a href="12-sharing-memory.html">Puzzle 12: Sharing memory without sharing mistakes</a></summary><p>Memory comes in pages. After a fork, parent and child share every page; a page is copied only when one of them writes to it: copy-on-write.</p></details></li><li data-block="15"><details><summary><a href="15-inside-a-binder-call.html">Puzzle 15: Inside a Binder call</a></summary><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: You don't call. You're called.</summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p><p><a href="06-you-dont-call-youre-called.html">Review puzzle 6</a></p></details></li><li data-block="12"><details><summary>Puzzle 12: Sharing memory without sharing mistakes</summary><p>Memory comes in pages. After a fork, parent and child share every page; a page is copied only when one of them writes to it: copy-on-write.</p><p><a href="12-sharing-memory.html">Review puzzle 12</a></p></details></li><li data-block="15"><details><summary>Puzzle 15: Inside a Binder call</summary><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p><p><a href="15-inside-a-binder-call.html">Review puzzle 15</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 13 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="06-you-dont-call-youre-called.html">6</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a> → <a href="09-whats-inside-the-apk.html">9</a> → <a href="11-zygote.html">11</a> → <a href="12-sharing-memory.html">12</a> → <a href="15-inside-a-binder-call.html">15</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -134,8 +134,8 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Two Binder threads receive a message for your screen at the same moment. Can your buttons and text be changed by both at once?</legend>
-<input type="radio" name="q-16-the-main-threads-queue-1" id="q-16-the-main-threads-queue-1-1"><label for="q-16-the-main-threads-queue-1-1">Yes: they run at the same time, so each must first stop the other</label>
-<input type="radio" name="q-16-the-main-threads-queue-1" id="q-16-the-main-threads-queue-1-2" data-ok><label for="q-16-the-main-threads-queue-1-2">No: both are put in the main thread's queue and run one after the other</label>
+<input type="radio" name="q-16-the-main-threads-queue-1" id="q-16-the-main-threads-queue-1-1"><label for="q-16-the-main-threads-queue-1-1"><span>Yes: they run at the same time, so each must first stop the other</span></label>
+<input type="radio" name="q-16-the-main-threads-queue-1" id="q-16-the-main-threads-queue-1-2" data-ok><label for="q-16-the-main-threads-queue-1-2"><span>No: both are put in the main thread's queue and run one after the other</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Neither Binder thread touches the screen: they post to the queue, and only the main thread runs it. <label class="show-me" for="st-main-thread-2" data-goto="st-main-thread">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The queue turns many senders into one worker, in order.</p>
 </fieldset>
@@ -149,15 +149,15 @@
   784      msg.target = this;
     …
   789      }</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Handler.java#L438">Handler.java, line 438 · AOSP frameworks/base ↗</a></span></span> do?</legend>
-<input type="radio" name="q-16-the-main-threads-queue-2" id="q-16-the-main-threads-queue-2-1" data-ok><label for="q-16-the-main-threads-queue-2-1">Adds your code to the queue, and the main thread runs it when it gets there</label>
-<input type="radio" name="q-16-the-main-threads-queue-2" id="q-16-the-main-threads-queue-2-2"><label for="q-16-the-main-threads-queue-2-2">Runs your code right away, on a new thread made for it</label>
+<input type="radio" name="q-16-the-main-threads-queue-2" id="q-16-the-main-threads-queue-2-1" data-ok><label for="q-16-the-main-threads-queue-2-1"><span>Adds your code to the queue, and the main thread runs it when it gets there</span></label>
+<input type="radio" name="q-16-the-main-threads-queue-2" id="q-16-the-main-threads-queue-2-2"><label for="q-16-the-main-threads-queue-2-2"><span>Runs your code right away, on a new thread made for it</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A Handler is the slot into the queue.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A Handler starts nothing: it drops a message into one queue. <label class="show-me" for="st-main-thread-2" data-goto="st-main-thread">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a Binder thread and the main thread?</legend>
-<input type="radio" name="q-16-the-main-threads-queue-3" id="q-16-the-main-threads-queue-3-1"><label for="q-16-the-main-threads-queue-3-1">They're the same thread: the Binder thread also draws the screen</label>
-<input type="radio" name="q-16-the-main-threads-queue-3" id="q-16-the-main-threads-queue-3-2" data-ok><label for="q-16-the-main-threads-queue-3-2">A Binder thread receives calls, while the main thread runs screen code from the queue</label>
+<input type="radio" name="q-16-the-main-threads-queue-3" id="q-16-the-main-threads-queue-3-1"><label for="q-16-the-main-threads-queue-3-1"><span>They're the same thread: the Binder thread also draws the screen</span></label>
+<input type="radio" name="q-16-the-main-threads-queue-3" id="q-16-the-main-threads-queue-3-2" data-ok><label for="q-16-the-main-threads-queue-3-2"><span>A Binder thread receives calls, while the main thread runs screen code from the queue</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The courier receives; the clerk does the work. The Binder thread hands over through the queue. <label class="show-me" for="st-main-thread-2" data-goto="st-main-thread">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Couriers receive; one clerk works.</p>
 </fieldset>

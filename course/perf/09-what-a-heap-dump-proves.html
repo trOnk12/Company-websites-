@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-9">
         <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="7"><details><summary><a href="07-what-garbage-is.html">Puzzle 7: What garbage is</a></summary><p>Objects live in the heap; variables and fields hold references to them, not the objects themselves. GC roots are the references that are always in use: running threads' local variables and static fields. An object is reachable if a chain of references leads to it from a root; if none does, nothing can ever use it again, and it's garbage. The garbage collector finds the garbage and frees its memory.</p></details></li></ul>
+        <ul><li data-block="7"><details><summary>Puzzle 7: What garbage is</summary><p>Objects live in the heap; variables and fields hold references to them, not the objects themselves. GC roots are the references that are always in use: running threads' local variables and static fields. An object is reachable if a chain of references leads to it from a root; if none does, nothing can ever use it again, and it's garbage. The garbage collector finds the garbage and frees its memory.</p><p><a href="07-what-garbage-is.html">Review puzzle 7</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="07-what-garbage-is.html">7</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -111,26 +111,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>An old Activity has a shallow size of 400 bytes and a retained size of 12 MB. What does freeing it save?</legend>
-<input type="radio" name="q-09-what-a-heap-dump-proves-1" id="q-09-what-a-heap-dump-proves-1-1" data-ok><label for="q-09-what-a-heap-dump-proves-1-1">About 12 MB, since everything only it keeps alive goes too</label>
-<input type="radio" name="q-09-what-a-heap-dump-proves-1" id="q-09-what-a-heap-dump-proves-1-2"><label for="q-09-what-a-heap-dump-proves-1-2">Nothing until the next app restart, since Activities aren't collected</label>
-<input type="radio" name="q-09-what-a-heap-dump-proves-1" id="q-09-what-a-heap-dump-proves-1-3"><label for="q-09-what-a-heap-dump-proves-1-3">400 bytes, because that's the Activity's own size</label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-1" id="q-09-what-a-heap-dump-proves-1-1" data-ok><label for="q-09-what-a-heap-dump-proves-1-1"><span>About 12 MB, since everything only it keeps alive goes too</span></label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-1" id="q-09-what-a-heap-dump-proves-1-2"><label for="q-09-what-a-heap-dump-proves-1-2"><span>Nothing until the next app restart, since Activities aren't collected</span></label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-1" id="q-09-what-a-heap-dump-proves-1-3"><label for="q-09-what-a-heap-dump-proves-1-3"><span>400 bytes, because that's the Activity's own size</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Retained size is what you really get back.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A destroyed Activity is collected like any object, once unreachable. <label class="show-me" for="st-heap-3" data-goto="st-heap">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's shallow size; retained size counts everything that goes with it. <label class="show-me" for="st-heap-2" data-goto="st-heap">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The GC frees whatever it can't reach. How can an app leak?</legend>
-<input type="radio" name="q-09-what-a-heap-dump-proves-2" id="q-09-what-a-heap-dump-proves-2-1" data-ok><label for="q-09-what-a-heap-dump-proves-2-1">An object it no longer needs is still reachable from a GC root</label>
-<input type="radio" name="q-09-what-a-heap-dump-proves-2" id="q-09-what-a-heap-dump-proves-2-2"><label for="q-09-what-a-heap-dump-proves-2-2">Objects created on the main thread are never collected</label>
-<input type="radio" name="q-09-what-a-heap-dump-proves-2" id="q-09-what-a-heap-dump-proves-2-3"><label for="q-09-what-a-heap-dump-proves-2-3">The GC skips objects bigger than a few megabytes</label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-2" id="q-09-what-a-heap-dump-proves-2-1" data-ok><label for="q-09-what-a-heap-dump-proves-2-1"><span>An object it no longer needs is still reachable from a GC root</span></label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-2" id="q-09-what-a-heap-dump-proves-2-2"><label for="q-09-what-a-heap-dump-proves-2-2"><span>Objects created on the main thread are never collected</span></label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-2" id="q-09-what-a-heap-dump-proves-2-3"><label for="q-09-what-a-heap-dump-proves-2-3"><span>The GC skips objects bigger than a few megabytes</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Reachable but unneeded.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The thread that created an object doesn't matter; only whether it's reachable. <label class="show-me" for="st-heap-3" data-goto="st-heap">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Size doesn't matter to the GC; reachability does. <label class="show-me" for="st-heap-3" data-goto="st-heap">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between shallow size and retained size?</legend>
-<input type="radio" name="q-09-what-a-heap-dump-proves-3" id="q-09-what-a-heap-dump-proves-3-1" data-ok><label for="q-09-what-a-heap-dump-proves-3-1">Shallow size is the object alone, while retained size adds everything it alone keeps alive</label>
-<input type="radio" name="q-09-what-a-heap-dump-proves-3" id="q-09-what-a-heap-dump-proves-3-2"><label for="q-09-what-a-heap-dump-proves-3-2">Shallow size adds everything it alone keeps alive, while retained size is the object alone</label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-3" id="q-09-what-a-heap-dump-proves-3-1" data-ok><label for="q-09-what-a-heap-dump-proves-3-1"><span>Shallow size is the object alone, while retained size adds everything it alone keeps alive</span></label>
+<input type="radio" name="q-09-what-a-heap-dump-proves-3" id="q-09-what-a-heap-dump-proves-3-2"><label for="q-09-what-a-heap-dump-proves-3-2"><span>Shallow size adds everything it alone keeps alive, while retained size is the object alone</span></label>
 <p class="fb ok opt-1"><b>Right.</b> One object vs what goes with it.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
@@ -145,8 +145,8 @@
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>Performance, under the hood</b>. Next: Module 3: Measuring for real, about macrobenchmark and why one run proves nothing; baseline profiles and what ART compiles ahead of time; startup traced end to end; reading a Perfetto trace with SQL.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20What%20a%20heap%20dump%20proves&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

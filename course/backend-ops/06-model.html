@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A table stores rows with named columns. A primary key identifies one row. A foreign key asks the database to check that a referenced owner exists. The laboratory enables that check on its SQLite connection. A join combines rows by a matching key. A left join keeps accounts with no match. Counting the matched bookmark name yields zero for Ben. Counting every output row instead would count the empty match as one.</p>
+<h3>Write the intermediate rows before counting</h3>
+<p>Start with accounts Ada and Ben and a single bookmark, river, owned by Ada. A left join from accounts produces two pairs: (Ada, river) and (Ben, missing). Counting the nonmissing bookmark names in each group gives one and zero. An inner join drops Ben's pair completely. Adding a second Ada bookmark changes only her count. The foreign key guards a different promise: inserting a bookmark for an account that does not exist should fail when the constraint is enabled.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#06-model">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the owner constraint and count fixtures. Change the left join to an inner join and predict which owner disappears.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Ben has no bookmarks. What should his count be?</legend>
-<input type="radio" name="q-06-model-1" id="q-06-model-1-1"><label for="q-06-model-1-1">One because his account row exists</label>
-<input type="radio" name="q-06-model-1" id="q-06-model-1-2" data-ok><label for="q-06-model-1-2">Zero matching bookmark names</label>
+<input type="radio" name="q-06-model-1" id="q-06-model-1-1"><label for="q-06-model-1-1"><span>One because his account row exists</span></label>
+<input type="radio" name="q-06-model-1" id="q-06-model-1-2" data-ok><label for="q-06-model-1-2"><span>Zero matching bookmark names</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The account exists but has no matching bookmark. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A foreign key enforces a relationship; a left join can include owners with zero bookmarks.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which change makes Ben vanish from the result?</legend>
+<input type="radio" name="q-06-model-2" id="q-06-model-2-1"><label for="q-06-model-2-1"><span>Count matched bookmark names after the left join</span></label>
+<input type="radio" name="q-06-model-2" id="q-06-model-2-2" data-ok><label for="q-06-model-2-2"><span>Use an inner join</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> An inner join emits matching pairs only. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> An inner join emits matching pairs only.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>What stops a stored bookmark from referring to an absent account?</legend>
+<input type="radio" name="q-06-model-3" id="q-06-model-3-1" data-ok><label for="q-06-model-3-1"><span>An enforced foreign key</span></label>
+<input type="radio" name="q-06-model-3" id="q-06-model-3-2"><label for="q-06-model-3-2"><span>A left join in a reporting query</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Reading a relationship cannot enforce writes to it.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Reading a relationship cannot enforce writes to it. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.sqlite.org/foreignkeys.html">Technical reference</a></li></ul></details>

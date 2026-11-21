@@ -27,6 +27,12 @@ INSERT INTO parking_session(id, lot) VALUES (?, ?);
 UPDATE lot SET free = free - 1 WHERE name = ? AND free > 0;
 ```
 
+### Distinguish an empty lot from an old edit
+
+Suppose an operator opens a lot record at version 7. A second operator edits it and saves version 8. The first tries to save a new capacity only where the stored version still equals 7. Zero rows change. Here zero means the original version condition failed for an existing record. The service can return a conflict and ask the operator to review the current values.
+
+This is optimistic concurrency control: the reader starts work without reserving exclusive access and validates its earlier observation at write time. The inventory statement above checks a different condition. If three spaces remain, two increments of demand can both succeed in sequence. Requiring the exact old version in that case could reject an otherwise valid reservation.
+
 ## Go deeper: What if the rule spans different rows?
 
 Two attendants are on duty. Each may leave if another remains. Two transactions read the same initial picture, see two attendants, then update different rows. Locking just each writer’s own row leaves the shared rule unprotected. This anomaly is called write skew. Serialize the decision on a shared duty record, or use serializable isolation and retry an aborted transaction from the beginning, including its decision-making read.
@@ -35,9 +41,17 @@ Two attendants are on duty. Each may leave if another remains. Two transactions 
 
 ## Try it
 
-Run the JVM lab. It tests the same inventory rule with H2 over real HTTP. Record the winner's ID and try to read the losing reservation. Imagine committing the insert separately before decrementing the counter. Which row would survive a crash between the two commits?
+Run the browser lab. Start with one space, send both requests and inspect the surviving claims. Repeat with two spaces. Imagine committing the insert separately before decrementing the counter. Which row would survive a crash between the two commits?
 
-[Open the runnable lab and instructions](https://github.com/trOnk12/Company-websites-/tree/main/labs/parking-design)
+[Run two competing reservations](https://pachulski.dev/labs/parking-design/#race)
+
+### Predict the database result
+
+Ada has changed the last free space to zero, but her transaction is still open. Ben tries the same update. A third connection reads the lot. Predict what each connection sees. Now change just one event: Ada rolls back. Which results change? Verify both the free count and the name on the surviving claim.
+
+[Step through four PostgreSQL schedules](https://pachulski.dev/labs/parking-design/#isolation)
+
+The final two experiments move the rule across rows. Compare the number of attendants left on call under Repeatable Read and Serializable. When PostgreSQL rejects a decision, identify the first read that must be repeated.
 
 ## Check yourself
 

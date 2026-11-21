@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -67,7 +67,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-open-the-tcp-connection.html">Puzzle 0: Why TCP starts with three messages</a></summary><p>The TCP handshake exchanges starting byte numbers and confirms both directions. A peer that has received only the first two messages has different information from its peer.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Why TCP starts with three messages</summary><p>The TCP handshake exchanges starting byte numbers and confirms both directions. A peer that has received only the first two messages has different information from its peer.</p><p><a href="00-open-the-tcp-connection.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-open-the-tcp-connection.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -115,27 +115,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The receiver has bytes 101–104 and 109–112. What cumulative acknowledgment can it send?</legend>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-1"><label for="q-01-a-hole-in-the-byte-stream-1-1">109, the first byte of the latest segment</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-2"><label for="q-01-a-hole-in-the-byte-stream-1-2">113, the number after the highest buffered byte</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-3" data-ok><label for="q-01-a-hole-in-the-byte-stream-1-3">105, the first missing byte</label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-1"><label for="q-01-a-hole-in-the-byte-stream-1-1"><span>109, the first byte of the latest segment</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-2"><label for="q-01-a-hole-in-the-byte-stream-1-2"><span>113, the number after the highest buffered byte</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-3" data-ok><label for="q-01-a-hole-in-the-byte-stream-1-3"><span>105, the first missing byte</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The value names the missing position rather than the latest arrival. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The cumulative value cannot cross a gap. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Find the first hole after the contiguous prefix.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why can the app be waiting even while TCP has received new bytes?</legend>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-2" id="q-01-a-hole-in-the-byte-stream-2-1"><label for="q-01-a-hole-in-the-byte-stream-2-1">Every application read requires a brand-new connection</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-2" id="q-01-a-hole-in-the-byte-stream-2-2" data-ok><label for="q-01-a-hole-in-the-byte-stream-2-2">The new bytes sit after a gap in the ordered stream</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-2" id="q-01-a-hole-in-the-byte-stream-2-3"><label for="q-01-a-hole-in-the-byte-stream-2-3">Received bytes wait until the sender closes the connection</label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-2" id="q-01-a-hole-in-the-byte-stream-2-1"><label for="q-01-a-hole-in-the-byte-stream-2-1"><span>Every application read requires a brand-new connection</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-2" id="q-01-a-hole-in-the-byte-stream-2-2" data-ok><label for="q-01-a-hole-in-the-byte-stream-2-2"><span>The new bytes sit after a gap in the ordered stream</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-2" id="q-01-a-hole-in-the-byte-stream-2-3"><label for="q-01-a-hole-in-the-byte-stream-2-3"><span>Received bytes wait until the sender closes the connection</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Reads can use an existing connection. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Ordered application delivery and network arrival order can differ.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Contiguous bytes can be delivered before the connection closes. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>One application message covers bytes 101–112. The app first gets four bytes. What should it do?</legend>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-3" id="q-01-a-hole-in-the-byte-stream-3-1"><label for="q-01-a-hole-in-the-byte-stream-3-1">Discard the next eight bytes because the first read ended</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-3" id="q-01-a-hole-in-the-byte-stream-3-2"><label for="q-01-a-hole-in-the-byte-stream-3-2">Treat the four bytes as a complete network message</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-3" id="q-01-a-hole-in-the-byte-stream-3-3" data-ok><label for="q-01-a-hole-in-the-byte-stream-3-3">Read further until its message framing says it is complete</label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-3" id="q-01-a-hole-in-the-byte-stream-3-1"><label for="q-01-a-hole-in-the-byte-stream-3-1"><span>Discard the next eight bytes because the first read ended</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-3" id="q-01-a-hole-in-the-byte-stream-3-2"><label for="q-01-a-hole-in-the-byte-stream-3-2"><span>Treat the four bytes as a complete network message</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-3" id="q-01-a-hole-in-the-byte-stream-3-3" data-ok><label for="q-01-a-hole-in-the-byte-stream-3-3"><span>Read further until its message framing says it is complete</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A read ending says nothing about the boundary of the application message. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> TCP does not preserve application message boundaries. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Message boundaries belong to the next layer.</p>

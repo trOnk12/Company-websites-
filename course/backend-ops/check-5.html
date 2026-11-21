@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,32 +55,32 @@
 <section aria-label="Puzzle 13"><p class="eyebrow">Puzzle 13: What goes in a Docker image?</p>
 <fieldset class="quiz" data-n="13">
 <legend>Which path needs write access in this lab?</legend>
-<input type="radio" name="q-13-image-1" id="q-13-image-1-1"><label for="q-13-image-1-1">The entire application source directory</label>
-<input type="radio" name="q-13-image-1" id="q-13-image-1-2" data-ok><label for="q-13-image-1-2">The mounted data directory</label>
+<input type="radio" name="q-13-image-1" id="q-13-image-1-1"><label for="q-13-image-1-1"><span>The entire application source directory</span></label>
+<input type="radio" name="q-13-image-1" id="q-13-image-1-2" data-ok><label for="q-13-image-1-2"><span>The mounted data directory</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The service only reads its code. <a class="show-me" href="13-image.html">Learn it in puzzle 13 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The image supplies the program. A writable mount supplies the database when the container filesystem is read-only.</p>
 </fieldset></section>
 <section aria-label="Puzzle 14"><p class="eyebrow">Puzzle 14: Who replaces a missing pod?</p>
 <fieldset class="quiz" data-n="14">
 <legend>After a pod replacement, which observation proves the bookmark survived?</legend>
-<input type="radio" name="q-14-pod-1" id="q-14-pod-1-1" data-ok><label for="q-14-pod-1-1">Reading the original row</label>
-<input type="radio" name="q-14-pod-1" id="q-14-pod-1-2"><label for="q-14-pod-1-2">Seeing one ready replica again</label>
+<input type="radio" name="q-14-pod-1" id="q-14-pod-1-1" data-ok><label for="q-14-pod-1-1"><span>Reading the original row</span></label>
+<input type="radio" name="q-14-pod-1" id="q-14-pod-1-2"><label for="q-14-pod-1-2"><span>Seeing one ready replica again</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A Deployment describes the desired pods. Their storage lifetime depends on the selected volume.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The replacement can be ready with an empty directory. <a class="show-me" href="14-pod.html">Learn it in puzzle 14 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 15"><p class="eyebrow">Puzzle 15: Which users felt the slowdown?</p>
 <fieldset class="quiz" data-n="15">
 <legend>All failed requests return quickly. Which signal is essential alongside response time?</legend>
-<input type="radio" name="q-15-signals-1" id="q-15-signals-1-1"><label for="q-15-signals-1-1">Only the fastest observed duration</label>
-<input type="radio" name="q-15-signals-1" id="q-15-signals-1-2" data-ok><label for="q-15-signals-1-2">The fraction of failed requests</label>
+<input type="radio" name="q-15-signals-1" id="q-15-signals-1-1"><label for="q-15-signals-1-1"><span>Only the fastest observed duration</span></label>
+<input type="radio" name="q-15-signals-1" id="q-15-signals-1-2" data-ok><label for="q-15-signals-1-2"><span>The fraction of failed requests</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Fast failures still hurt availability. <a class="show-me" href="15-signals.html">Learn it in puzzle 15 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A percentile describes an ordered sample. Averages can hide a slow group.</p>
 </fieldset></section>
 <section aria-label="Puzzle 16"><p class="eyebrow">Puzzle 16: What evidence earns a release?</p>
 <fieldset class="quiz" data-n="16">
 <legend>Which observation best closes the rollback drill?</legend>
-<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-1"><label for="q-16-deliver-1-1">A successful command to start the old image</label>
-<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-2" data-ok><label for="q-16-deliver-1-2">A real write and read on the recovered version</label>
+<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-1"><label for="q-16-deliver-1-1"><span>A successful command to start the old image</span></label>
+<input type="radio" name="q-16-deliver-1" id="q-16-deliver-1-2" data-ok><label for="q-16-deliver-1-2"><span>A real write and read on the recovered version</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Starting the image alone does not verify service behavior. <a class="show-me" href="16-deliver.html">Learn it in puzzle 16 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A release gate connects a reproducible artifact to evidence that the service can serve real requests.</p>
 </fieldset></section>

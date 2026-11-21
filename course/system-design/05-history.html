@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary><a href="03-conditional-write.html">Puzzle 3: How does the database choose a winner?</a></summary><p>A zero-row conditional decrement lets the transaction roll back a claim on a full lot.</p></details></li></ul>
+        <ul><li data-block="3"><details><summary>Puzzle 3: How does the database choose a winner?</summary><p>A zero-row conditional decrement lets the transaction roll back a claim on a full lot.</p><p><a href="03-conditional-write.html">Review puzzle 3</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="03-conditional-write.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -107,6 +108,9 @@ ORDER BY started_at DESC, id DESC LIMIT 20;
 
 CREATE INDEX sessions_history ON sessions
     (owner_id, started_at DESC, id DESC);</code></pre>
+<h3>Walk a cursor by hand</h3>
+<p>Ada owns rows (10:00, 9), (10:00, 8) and (10:00, 7). Ben owns (10:00, 99). With a page size of two, Ada receives 9 and 8. The next request carries (10:00, 8). Insert Ada's new row (10:01, 10) before that request arrives. The next page still contains 7. Starting again from the first page would reveal 10.</p>
+<p>Compare skipping the first two rows instead. The live list now begins 10, 9, 8, 7. Skipping two would return 8 again. Decide whether a product needs a stable position for browsing or a frozen set for an export. For the latter, design how the export records its input snapshot and when that snapshot can expire.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -116,27 +120,28 @@ CREATE INDEX sessions_history ON sessions
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Why include a unique number in the cursor?</legend>
-<input type="radio" name="q-05-history-1" id="q-05-history-1-1" data-ok><label for="q-05-history-1-1">To break time ties</label>
-<input type="radio" name="q-05-history-1" id="q-05-history-1-2"><label for="q-05-history-1-2">To encrypt the timestamp</label>
+<input type="radio" name="q-05-history-1" id="q-05-history-1-1" data-ok><label for="q-05-history-1-1"><span>To break time ties</span></label>
+<input type="radio" name="q-05-history-1" id="q-05-history-1-2"><label for="q-05-history-1-2"><span>To encrypt the timestamp</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The number completes the ordering.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The number completes the ordering. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Does a cursor grant access to another owner's rows?</legend>
-<input type="radio" name="q-05-history-2" id="q-05-history-2-1" data-ok><label for="q-05-history-2-1">Keep the owner check</label>
-<input type="radio" name="q-05-history-2" id="q-05-history-2-2"><label for="q-05-history-2-2">Yes, if the cursor looks random</label>
+<input type="radio" name="q-05-history-2" id="q-05-history-2-1" data-ok><label for="q-05-history-2-1"><span>Keep the owner check</span></label>
+<input type="radio" name="q-05-history-2" id="q-05-history-2-2"><label for="q-05-history-2-2"><span>Yes, if the cursor looks random</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A position does not establish permission.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A position does not establish permission. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What exposes the cost of the index?</legend>
-<input type="radio" name="q-05-history-3" id="q-05-history-3-1" data-ok><label for="q-05-history-3-1">Measure writes and storage</label>
-<input type="radio" name="q-05-history-3" id="q-05-history-3-2"><label for="q-05-history-3-2">Measure only the fastest read</label>
+<input type="radio" name="q-05-history-3" id="q-05-history-3-1" data-ok><label for="q-05-history-3-1"><span>Measure writes and storage</span></label>
+<input type="radio" name="q-05-history-3" id="q-05-history-3-2"><label for="q-05-history-3-2"><span>Measure only the fastest read</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The database maintains an additional structure.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The database maintains an additional structure. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/indexes-multicolumn.html">PostgreSQL · Multicolumn Indexes</a> — “the index is most efficient when there are constraints on the leading (leftmost) columns”</li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/indexes-multicolumn.html">PostgreSQL · Multicolumn Indexes</a> — “the index is most efficient when there are constraints on the leading (leftmost) columns”</li></ul>
+<ul><li><a href="https://www.postgresql.org/docs/17/queries-limit.html">PostgreSQL · LIMIT and OFFSET</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Put the unique tie-breaker in both the sort order and the cursor.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

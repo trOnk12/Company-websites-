@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-anatomy-of-an-http-call.html">Puzzle 2: Anatomy of an HTTP call</a></summary><p>An HTTP request is a method (GET to read, POST to create, PUT to replace, DELETE to remove), a path, headers (name: value pairs about the message) and an optional body. The response has a status code, headers and a body. Status codes come in families: 2xx worked, 3xx look elsewhere or use what you have, 4xx your request was wrong, 5xx the server failed.</p></details></li><li data-block="9"><details><summary><a href="09-when-the-connection-breaks.html">Puzzle 9: When the connection breaks</a></summary><p>TCP is reliable only while the connection lasts; on a phone, connections break in lifts, tunnels and handovers between Wi-Fi and mobile data. OkHttp gives up after timeouts: connect (no connection made) and read (no answer arrived). A read timeout can't tell you whether the server did the work: the request may have arrived and the answer been lost. Puzzle 10 makes that safe to retry.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Anatomy of an HTTP call</summary><p>An HTTP request is a method (GET to read, POST to create, PUT to replace, DELETE to remove), a path, headers (name: value pairs about the message) and an optional body. The response has a status code, headers and a body. Status codes come in families: 2xx worked, 3xx look elsewhere or use what you have, 4xx your request was wrong, 5xx the server failed.</p><p><a href="02-anatomy-of-an-http-call.html">Review puzzle 2</a></p></details></li><li data-block="9"><details><summary>Puzzle 9: When the connection breaks</summary><p>TCP is reliable only while the connection lasts; on a phone, connections break in lifts, tunnels and handovers between Wi-Fi and mobile data. OkHttp gives up after timeouts: connect (no connection made) and read (no answer arrived). A read timeout can't tell you whether the server did the work: the request may have arrived and the answer been lost. Puzzle 10 makes that safe to retry.</p><p><a href="09-when-the-connection-breaks.html">Review puzzle 9</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-what-actually-travels.html">0</a> → <a href="01-finding-the-server.html">1</a> → <a href="02-anatomy-of-an-http-call.html">2</a> → <a href="09-when-the-connection-breaks.html">9</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -113,26 +113,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend><code>POST /payments</code> timed out. You retry with a new idempotency key. What can happen?</legend>
-<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-1"><label for="q-10-retry-without-charging-twice-1-1">The retry fails, because the server rejects repeated amounts</label>
-<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-2"><label for="q-10-retry-without-charging-twice-1-2">Nothing bad: the server recognises the retry because it's the same payment</label>
-<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-3" data-ok><label for="q-10-retry-without-charging-twice-1-3">The user may be charged twice, since the server sees two different requests</label>
+<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-1"><label for="q-10-retry-without-charging-twice-1-1"><span>The retry fails, because the server rejects repeated amounts</span></label>
+<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-2"><label for="q-10-retry-without-charging-twice-1-2"><span>Nothing bad: the server recognises the retry because it's the same payment</span></label>
+<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-3" data-ok><label for="q-10-retry-without-charging-twice-1-3"><span>The user may be charged twice, since the server sees two different requests</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Servers don't match by amount; only the key marks a retry. <label class="show-me" for="st-retry-3" data-goto="st-retry">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> The server recognises retries by the key; a new key looks like a new payment. <label class="show-me" for="st-retry-3" data-goto="st-retry">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Same action, same key.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>10,000 clients lost the connection at the same second. Why add jitter to their backoff?</legend>
-<input type="radio" name="q-10-retry-without-charging-twice-2" id="q-10-retry-without-charging-twice-2-1"><label for="q-10-retry-without-charging-twice-2-1">So the server can tell which clients retried</label>
-<input type="radio" name="q-10-retry-without-charging-twice-2" id="q-10-retry-without-charging-twice-2-2"><label for="q-10-retry-without-charging-twice-2-2">So each client retries faster than with plain backoff</label>
-<input type="radio" name="q-10-retry-without-charging-twice-2" id="q-10-retry-without-charging-twice-2-3" data-ok><label for="q-10-retry-without-charging-twice-2-3">So their retries spread out instead of all arriving at the same moments</label>
+<input type="radio" name="q-10-retry-without-charging-twice-2" id="q-10-retry-without-charging-twice-2-1"><label for="q-10-retry-without-charging-twice-2-1"><span>So the server can tell which clients retried</span></label>
+<input type="radio" name="q-10-retry-without-charging-twice-2" id="q-10-retry-without-charging-twice-2-2"><label for="q-10-retry-without-charging-twice-2-2"><span>So each client retries faster than with plain backoff</span></label>
+<input type="radio" name="q-10-retry-without-charging-twice-2" id="q-10-retry-without-charging-twice-2-3" data-ok><label for="q-10-retry-without-charging-twice-2-3"><span>So their retries spread out instead of all arriving at the same moments</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the idempotency key's job; jitter only spreads the timing. <label class="show-me" for="st-retry-4" data-goto="st-retry">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Jitter isn't about speed; it breaks up the waves. <label class="show-me" for="st-retry-4" data-goto="st-retry">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Randomness breaks up the stampede.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between an idempotency key and exponential backoff?</legend>
-<input type="radio" name="q-10-retry-without-charging-twice-3" id="q-10-retry-without-charging-twice-3-1" data-ok><label for="q-10-retry-without-charging-twice-3-1">The key makes a retry safe to repeat, while backoff decides when to retry</label>
-<input type="radio" name="q-10-retry-without-charging-twice-3" id="q-10-retry-without-charging-twice-3-2"><label for="q-10-retry-without-charging-twice-3-2">The key decides when to retry, while backoff makes a retry safe to repeat</label>
+<input type="radio" name="q-10-retry-without-charging-twice-3" id="q-10-retry-without-charging-twice-3-1" data-ok><label for="q-10-retry-without-charging-twice-3-1"><span>The key makes a retry safe to repeat, while backoff decides when to retry</span></label>
+<input type="radio" name="q-10-retry-without-charging-twice-3" id="q-10-retry-without-charging-twice-3-2"><label for="q-10-retry-without-charging-twice-3-2"><span>The key decides when to retry, while backoff makes a retry safe to repeat</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Whether it's safe vs when to do it.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
@@ -147,8 +147,8 @@
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>Mobile system design, from a packet to an app</b>. Next: Module 2: Designing a feature end to end, about a feed with pagination and cursors; images and their cache; sync with conflicts; real-time updates (polling, long polling, WebSockets, push); rolling out safely with flags.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Retry%20without%20charging%20twice&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

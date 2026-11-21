@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-frame.html">Puzzle 1: What does a method receive?</a></summary><p>Each method invocation has its own frame with locals and an operand stack.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: What does a method receive?</summary><p>Each method invocation has its own frame with locals and an operand stack.</p><p><a href="01-frame.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-class-file.html">0</a> → <a href="01-frame.html">1</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -99,22 +100,44 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Each variable holds a reference. The call copies that value into the helper frame. Writing eight into the object changes the field visible through both names. Reassigning the helper parameter to a newly created counter changes only the local copy. Reverse the two statements in edit. Now the write lands on the new object and both caller variables still see seven. Compare the order of the field write and local store in the disassembly.</p>
+<p>Call the original object A and the new one B. These letters label their identity so we can follow each object even when two objects happen to store the same number. A field belongs to an object. A parameter is a local name initialized when the call starts.</p>
+<pre><code class="language-java">Counter first = new Counter(7);
+Counter second = first;
+edit(second);</code></pre>
+<div class="table-wrap"><table><thead><tr><th scope="col">Operation inside the example</th><th scope="col">first</th><th scope="col">second</th><th scope="col">inside</th><th scope="col">Field values</th></tr></thead><tbody><tr><th scope="row">Enter edit</th><td>A</td><td>A</td><td>A</td><td>A holds 7</td></tr><tr><th scope="row">Write inside.value = 8</th><td>A</td><td>A</td><td>A</td><td>A holds 8</td></tr><tr><th scope="row">Assign inside = new Counter(99)</th><td>A</td><td>A</td><td>B</td><td>A holds 8, B holds 99</td></tr><tr><th scope="row">Return to caller</th><td>A</td><td>A</td><td>helper finished</td><td>caller reads 8 twice</td></tr></tbody></table></div>
+<p>Suppose the caller wants second to refer to B after the call. Have the helper return B, then assign that returned value to second in the caller. First continues to refer to A. This explains how one method can change a shared object's contents while replacing a caller's variable requires a separate assignment.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Complete experiment 3 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">local JVM lab</a>. Record your prediction before running the program.</p>
+<p><a href="/labs/jvm-workbench/#02-reference">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
+<p>Complete experiment 3 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>. Record your prediction before running the program.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Reassign the parameter before writing eight. Which value does first see?</legend>
-<input type="radio" name="q-02-reference-1" id="q-02-reference-1-1"><label for="q-02-reference-1-1">Eight in the newly created counter</label>
-<input type="radio" name="q-02-reference-1" id="q-02-reference-1-2" data-ok><label for="q-02-reference-1-2">Seven in the original counter</label>
+<input type="radio" name="q-02-reference-1" id="q-02-reference-1-1"><label for="q-02-reference-1-1"><span>Eight in the newly created counter</span></label>
+<input type="radio" name="q-02-reference-1" id="q-02-reference-1-2" data-ok><label for="q-02-reference-1-2"><span>Seven in the original counter</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The caller still points at the original object. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A copied reference can still point to the same object. Reassigning one local changes only that local.</p>
 </fieldset>
+<fieldset class="quiz">
+<legend>The helper writes eight, creates B and returns B. The caller ignores the result. Which object does second reach?</legend>
+<input type="radio" name="q-02-reference-2" id="q-02-reference-2-1"><label for="q-02-reference-2-1"><span>B</span></label>
+<input type="radio" name="q-02-reference-2" id="q-02-reference-2-2" data-ok><label for="q-02-reference-2-2"><span>A</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Returning a value does not assign it to second. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The caller still holds the copied reference to A.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>The caller assigns returned B to second. What does first reach?</legend>
+<input type="radio" name="q-02-reference-3" id="q-02-reference-3-1" data-ok><label for="q-02-reference-3-1"><span>A</span></label>
+<input type="radio" name="q-02-reference-3" id="q-02-reference-3-2"><label for="q-02-reference-3-2"><span>B</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Track the two names independently, even when they originally held the same value.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The assignment changed just the caller's second variable. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html">Oracle Java reference</a></li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-15.html#jls-15.12.4.5">Java language specification, method invocation</a> — “assign the argument values to corresponding freshly created parameter variables”</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A copied reference can still point to the same object. Reassigning one local changes only that local.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

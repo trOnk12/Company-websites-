@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-9">
         <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-a-running-app-is-a-process.html">Puzzle 0: A running app is a process</a></summary><p>An installed app is just files. A running app is a process, with its own memory that no other process can touch.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: A running app is a process</summary><p>An installed app is just files. A running app is a process, with its own memory that no other process can touch.</p><p><a href="00-a-running-app-is-a-process.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-a-running-app-is-a-process.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -124,24 +124,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>You ship the same APK to two phones with different CPUs. Why does it run on both?</legend>
-<input type="radio" name="q-09-whats-inside-the-apk-1" id="q-09-whats-inside-the-apk-1-1"><label for="q-09-whats-inside-the-apk-1-1">Google rebuilds it for each phone</label>
-<input type="radio" name="q-09-whats-inside-the-apk-1" id="q-09-whats-inside-the-apk-1-2"><label for="q-09-whats-inside-the-apk-1-2">It contains machine code for every CPU</label>
-<input type="radio" name="q-09-whats-inside-the-apk-1" id="q-09-whats-inside-the-apk-1-3" data-ok><label for="q-09-whats-inside-the-apk-1-3">It contains DEX, and ART on each phone runs it</label>
+<input type="radio" name="q-09-whats-inside-the-apk-1" id="q-09-whats-inside-the-apk-1-1"><label for="q-09-whats-inside-the-apk-1-1"><span>Google rebuilds it for each phone</span></label>
+<input type="radio" name="q-09-whats-inside-the-apk-1" id="q-09-whats-inside-the-apk-1-2"><label for="q-09-whats-inside-the-apk-1-2"><span>It contains machine code for every CPU</span></label>
+<input type="radio" name="q-09-whats-inside-the-apk-1" id="q-09-whats-inside-the-apk-1-3" data-ok><label for="q-09-whats-inside-the-apk-1-3"><span>It contains DEX, and ART on each phone runs it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Nobody rebuilds it: ART on the phone runs the same DEX. <label class="show-me" for="st-apk-3" data-goto="st-apk">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Then it would only run on the CPUs it was built for. DEX isn't for any CPU. <label class="show-me" for="st-apk-1" data-goto="st-apk">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> DEX isn't tied to a CPU; ART on each phone runs it.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Is there one ART for all the apps on the phone?</legend>
-<input type="radio" name="q-09-whats-inside-the-apk-2" id="q-09-whats-inside-the-apk-2-1"><label for="q-09-whats-inside-the-apk-2-1">Yes: one ART runs every app</label>
-<input type="radio" name="q-09-whats-inside-the-apk-2" id="q-09-whats-inside-the-apk-2-2" data-ok><label for="q-09-whats-inside-the-apk-2-2">No: each app's process runs its own ART</label>
+<input type="radio" name="q-09-whats-inside-the-apk-2" id="q-09-whats-inside-the-apk-2-1"><label for="q-09-whats-inside-the-apk-2-1"><span>Yes: one ART runs every app</span></label>
+<input type="radio" name="q-09-whats-inside-the-apk-2" id="q-09-whats-inside-the-apk-2-2" data-ok><label for="q-09-whats-inside-the-apk-2-2"><span>No: each app's process runs its own ART</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> ART lives inside each app's process, like a translator in every house. <label class="show-me" for="st-apk-2" data-goto="st-apk">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Each process has its own ART.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between DEX and machine code?</legend>
-<input type="radio" name="q-09-whats-inside-the-apk-3" id="q-09-whats-inside-the-apk-3-1" data-ok><label for="q-09-whats-inside-the-apk-3-1">Machine code is for one kind of CPU, while DEX is for any Android phone</label>
-<input type="radio" name="q-09-whats-inside-the-apk-3" id="q-09-whats-inside-the-apk-3-2"><label for="q-09-whats-inside-the-apk-3-2">They're the same: DEX is machine code for Android phones</label>
+<input type="radio" name="q-09-whats-inside-the-apk-3" id="q-09-whats-inside-the-apk-3-1" data-ok><label for="q-09-whats-inside-the-apk-3-1"><span>Machine code is for one kind of CPU, while DEX is for any Android phone</span></label>
+<input type="radio" name="q-09-whats-inside-the-apk-3" id="q-09-whats-inside-the-apk-3-2"><label for="q-09-whats-inside-the-apk-3-2"><span>They're the same: DEX is machine code for Android phones</span></label>
 <p class="fb ok opt-1"><b>Right.</b> DEX needs ART; machine code needs nothing.</p>
 <p class="fb no opt-2"><b>Not quite.</b> DEX has to be run by ART; machine code runs on the CPU directly. <label class="show-me" for="st-apk-4" data-goto="st-apk">Show me step 4 again ↑</label></p>
 </fieldset>

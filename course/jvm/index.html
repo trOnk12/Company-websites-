@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -72,8 +72,11 @@
       <a class="module-check-link" href="check-2.html">Check what you already know</a></div>
     </details></li>
         </ul>
+        <h3>Final project</h3>
+        <p><a href="final-project.html">Explain one run from class file to shared counter</a> · Trace a small program before running it. Defend which values belong to method frames, which objects remain reachable and which concurrent schedules lose an increment.</p>
 
         <details class="course-extras"><summary>How the course works</summary>
+          <p>Start by tracing one tiny program. Use the browser workbench to predict what changes in a frame or on the heap. Then use a local JDK to compare the model with compiled instructions and run the shared-counter exercise.</p>
           <p>Every puzzle is open from this outline. The check at the end of a puzzle unlocks its next button and saves your progress in this browser.</p>
           <p><a href="../how-its-made.html">How lessons are written and checked</a> · <a href="../me.html">Your learning</a></p>
         </details>
@@ -96,7 +99,7 @@
             <p><a class="button" href="jvm-obsidian.zip" download>Download the vault (.zip) ↓</a></p>
           </div>
         </div>
-        <script type="application/json" id="tutor-data">{"title":"JVM internals for Kotlin and Android developers","url":"https://pachulski.dev/course/jvm/","puzzles":[{"n":0,"title":"Which program did you actually run?","takeaway":"The compiler writes instructions into a class file. Running an existing class reads that earlier output.","url":"https://pachulski.dev/course/jvm/00-class-file"},{"n":1,"title":"What does a method receive?","takeaway":"Each method invocation has its own frame with locals and an operand stack.","url":"https://pachulski.dev/course/jvm/01-frame"},{"n":2,"title":"Why do both names read eight?","takeaway":"A copied reference can still point to the same object. Reassigning one local changes only that local.","url":"https://pachulski.dev/course/jvm/02-reference"},{"n":3,"title":"When can a counter be reclaimed?","takeaway":"Losing one reference leaves the object reachable while another live reference still leads to it.","url":"https://pachulski.dev/course/jvm/03-reachability"},{"n":4,"title":"How can two increments produce eight?","takeaway":"Checking the expected value and changing it in one indivisible step detects the stale increment.","url":"https://pachulski.dev/course/jvm/04-shared-counter"}],"terms":[{"t":"reference","in":2,"def":"A value through which code can reach an object."},{"t":"stack frame","in":1,"def":"The local variables and operand stack of one method invocation."},{"t":"class file","in":0,"def":"A file describing a compiled type and the instructions for its methods."},{"t":"conditional write","in":4,"def":"A change applied only when the current value matches the expected value."}],"upcoming":[],"assumes":""}</script>
+        <script type="application/json" id="tutor-data">{"title":"JVM internals for Kotlin and Android developers","url":"https://pachulski.dev/course/jvm/","puzzles":[{"n":0,"title":"Which program did you actually run?","takeaway":"The compiler writes instructions into a class file. Running an existing class reads that earlier output.","url":"https://pachulski.dev/course/jvm/00-class-file"},{"n":1,"title":"What does a method receive?","takeaway":"Each method invocation has its own frame with locals and an operand stack.","url":"https://pachulski.dev/course/jvm/01-frame"},{"n":2,"title":"Why do both names read eight?","takeaway":"A copied reference can still point to the same object. Reassigning one local changes only that local.","url":"https://pachulski.dev/course/jvm/02-reference"},{"n":3,"title":"When can a counter be reclaimed?","takeaway":"Losing one reference leaves the object reachable while another live reference still leads to it.","url":"https://pachulski.dev/course/jvm/03-reachability"},{"n":4,"title":"How can two increments produce eight?","takeaway":"Checking the expected value and changing it in one indivisible step detects the stale increment.","url":"https://pachulski.dev/course/jvm/04-shared-counter"}],"terms":[{"t":"reference","in":2,"def":"A value through which code can reach an object."},{"t":"stack frame","in":1,"def":"The local variables and operand stack of one method invocation."},{"t":"class file","in":0,"def":"A file describing a compiled type and the instructions for its methods."},{"t":"conditional write","in":4,"def":"A change applied only when the current value matches the expected value."},{"t":"iload_0","in":1,"def":"Copy the integer in local slot zero onto the operand stack."},{"t":"iconst_1","in":1,"def":"Push the integer constant one onto the operand stack."},{"t":"root","in":3,"def":"A starting point from which the runtime traces live references."},{"t":"garbage collector","in":3,"def":"The part of the runtime that automatically reclaims storage for objects the program can no longer reach."}],"upcoming":[],"assumes":""}</script>
       </div>
     </section>
   </main>

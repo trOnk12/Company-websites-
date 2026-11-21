@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-17">
         <p id="builds-on-17"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-retry.html">Puzzle 1: Did the first write happen?</a></summary><p>A stable bookmark name and a unique database key let repeated writes converge on one row.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: Did the first write happen?</summary><p>A stable bookmark name and a unique database key let repeated writes converge on one row.</p><p><a href="01-retry.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-request.html">0</a> → <a href="01-retry.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -108,10 +109,14 @@ WHERE id = ? AND version = ?;</code></pre>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
 <p>Two clerks copy edition seven of a filing card. The archive accepts a replacement only against the edition written on the clerk's slip. After the first replacement, the archive can show the second clerk edition eight while the clerk keeps the proposed text.</p>
+<h3>Distinguish replay from an edit conflict</h3>
+<p>A request identity answers whether a particular intention already took effect. A version answers whether the document still matches the copy a person edited. Suppose Ada's conditional save commits and its reply is lost. Retrying it with the old version can yield 412 even though Ada's first request succeeded. A new read reveals the current title and version. It cannot in general identify who wrote them. If the service promises to recover the precise outcome of each submitted edit, record a stable request identity and its outcome alongside the accepted edit.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Run the following command in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service">bookmark service lab</a>.</p>
+<p><a href="/labs/backend-workbench/#17-edit-conflict">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
+<p>Run the following command in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service">bookmark service source files</a>.</p>
 <pre><code class="language-sh">python3 edit_conflict.py</code></pre>
 <p>It starts a temporary local service and sends real reads and writes. Predict Ben's status, the stored title and the next tag before running. In a copy, remove the tag condition and its matching SQL parameter. Which assertion fails, and which title survived? Restore the condition and reverse the order of the two saves. Trace the losing client's next read.</p>
       </section>
@@ -119,22 +124,22 @@ WHERE id = ? AND version = ?;</code></pre>
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Ben's update matches zero rows. What title does the next read return?</legend>
-<input type="radio" name="q-17-edit-conflict-1" id="q-17-edit-conflict-1-1" data-ok><label for="q-17-edit-conflict-1-1">Lake</label>
-<input type="radio" name="q-17-edit-conflict-1" id="q-17-edit-conflict-1-2"><label for="q-17-edit-conflict-1-2">Forest</label>
+<input type="radio" name="q-17-edit-conflict-1" id="q-17-edit-conflict-1-1" data-ok><label for="q-17-edit-conflict-1-1"><span>Lake</span></label>
+<input type="radio" name="q-17-edit-conflict-1" id="q-17-edit-conflict-1-2"><label for="q-17-edit-conflict-1-2"><span>Forest</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Ada's committed title survives.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The condition rejected Ben's update. <label class="show-me" for="st-edit-conflict-3" data-goto="st-edit-conflict">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What tells the phone that its edit was stale?</legend>
-<input type="radio" name="q-17-edit-conflict-2" id="q-17-edit-conflict-2-1" data-ok><label for="q-17-edit-conflict-2-1">The 412 response</label>
-<input type="radio" name="q-17-edit-conflict-2" id="q-17-edit-conflict-2-2"><label for="q-17-edit-conflict-2-2">A database row count sent directly to the phone</label>
+<input type="radio" name="q-17-edit-conflict-2" id="q-17-edit-conflict-2-1" data-ok><label for="q-17-edit-conflict-2-1"><span>The 412 response</span></label>
+<input type="radio" name="q-17-edit-conflict-2" id="q-17-edit-conflict-2-2"><label for="q-17-edit-conflict-2-2"><span>A database row count sent directly to the phone</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The client sees the HTTP contract.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The service interprets that count and constructs a response. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Which retry preserves the user's choice?</legend>
-<input type="radio" name="q-17-edit-conflict-3" id="q-17-edit-conflict-3-1" data-ok><label for="q-17-edit-conflict-3-1">Show the current title and draft before saving a chosen edit</label>
-<input type="radio" name="q-17-edit-conflict-3" id="q-17-edit-conflict-3-2"><label for="q-17-edit-conflict-3-2">Fetch the latest tag and automatically send the old draft</label>
+<input type="radio" name="q-17-edit-conflict-3" id="q-17-edit-conflict-3-1" data-ok><label for="q-17-edit-conflict-3-1"><span>Show the current title and draft before saving a chosen edit</span></label>
+<input type="radio" name="q-17-edit-conflict-3" id="q-17-edit-conflict-3-2"><label for="q-17-edit-conflict-3-2"><span>Fetch the latest tag and automatically send the old draft</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A fresh tag establishes freshness, while the user decides the intended title.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That can overwrite the other edit silently. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
@@ -149,8 +154,8 @@ WHERE id = ? AND version = ?;</code></pre>
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>Backend engineering from first request to production</b>.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20What%20does%20the%20second%20editor%20see%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

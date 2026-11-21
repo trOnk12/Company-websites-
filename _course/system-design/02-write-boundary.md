@@ -20,6 +20,12 @@ The phone resolves a service name to an address and sends its request. A load ba
 
 Start with one deployable program backed by one relational database. All copies send reservations to the same store. That store commits the change before the process sends a success response. If the process stops after commit, a replacement can read the outcome. Map reads and reservations can be separate modules of the same program. Splitting them into services introduces another boundary where a request or reply can be lost.
 
+### Locate the last durable decision
+
+Ada's phone sends one reservation through process A. The database commits, then A stops before sending the reply. Process B takes the next request. B cannot inspect A's memory. It can read the stored grant if the client supplies an identity that points back to it. The next two lessons build the concurrency rule and that identity.
+
+Change the failure point: the database is unreachable before the write. B still has a healthy network connection to the phone. What can B promise? It can report that the service is unavailable. Returning a fabricated confirmation from its own memory would give the driver a reservation no replacement process could retrieve.
+
 ## Go deeper: Who may read this reservation?
 
 Ada is signed in but requests Ben’s reservation identity. Authentication establishes who Ada is. Authorization asks whether that person may perform this operation on this record. Query by the requested identity and the owner derived from the authenticated context. Include that owner restriction in cached answers or a shared cache entry could defeat the read check.

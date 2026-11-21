@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -113,27 +113,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The query and article express the same idea with different words. What should you measure?</legend>
-<input type="radio" name="q-08-find-evidence-before-writing-1" id="q-08-find-evidence-before-writing-1-1" data-ok><label for="q-08-find-evidence-before-writing-1-1">Whether each method still ranks the labeled article high enough</label>
-<input type="radio" name="q-08-find-evidence-before-writing-1" id="q-08-find-evidence-before-writing-1-2"><label for="q-08-find-evidence-before-writing-1-2">Whether one method produced a longer generated answer</label>
-<input type="radio" name="q-08-find-evidence-before-writing-1" id="q-08-find-evidence-before-writing-1-3"><label for="q-08-find-evidence-before-writing-1-3">Whether the articles can all be copied into the interface</label>
+<input type="radio" name="q-08-find-evidence-before-writing-1" id="q-08-find-evidence-before-writing-1-1" data-ok><label for="q-08-find-evidence-before-writing-1-1"><span>Whether each method still ranks the labeled article high enough</span></label>
+<input type="radio" name="q-08-find-evidence-before-writing-1" id="q-08-find-evidence-before-writing-1-2"><label for="q-08-find-evidence-before-writing-1-2"><span>Whether one method produced a longer generated answer</span></label>
+<input type="radio" name="q-08-find-evidence-before-writing-1" id="q-08-find-evidence-before-writing-1-3"><label for="q-08-find-evidence-before-writing-1-3"><span>Whether the articles can all be copied into the interface</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Hold the corpus fixed and compare the rankings.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Neither method in this run generates answers. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The problem is selecting evidence from the collection. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The model says something plausible after receiving the wrong article. Which stage already failed?</legend>
-<input type="radio" name="q-08-find-evidence-before-writing-2" id="q-08-find-evidence-before-writing-2-1"><label for="q-08-find-evidence-before-writing-2-1">The interface state that displayed the answer</label>
-<input type="radio" name="q-08-find-evidence-before-writing-2" id="q-08-find-evidence-before-writing-2-2" data-ok><label for="q-08-find-evidence-before-writing-2-2">Evidence selection before generation</label>
-<input type="radio" name="q-08-find-evidence-before-writing-2" id="q-08-find-evidence-before-writing-2-3"><label for="q-08-find-evidence-before-writing-2-3">The model’s choice of answer length</label>
+<input type="radio" name="q-08-find-evidence-before-writing-2" id="q-08-find-evidence-before-writing-2-1"><label for="q-08-find-evidence-before-writing-2-1"><span>The interface state that displayed the answer</span></label>
+<input type="radio" name="q-08-find-evidence-before-writing-2" id="q-08-find-evidence-before-writing-2-2" data-ok><label for="q-08-find-evidence-before-writing-2-2"><span>Evidence selection before generation</span></label>
+<input type="radio" name="q-08-find-evidence-before-writing-2" id="q-08-find-evidence-before-writing-2-3"><label for="q-08-find-evidence-before-writing-2-3"><span>The model’s choice of answer length</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The wrong article was selected before the answer reached the interface. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Locate the first broken step.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Answer length cannot repair choosing unrelated evidence. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Both methods score 6/6 on similar wording. What can you infer for this collection?</legend>
-<input type="radio" name="q-08-find-evidence-before-writing-3" id="q-08-find-evidence-before-writing-3-1"><label for="q-08-find-evidence-before-writing-3-1">Either method can answer any question from this domain</label>
-<input type="radio" name="q-08-find-evidence-before-writing-3" id="q-08-find-evidence-before-writing-3-2"><label for="q-08-find-evidence-before-writing-3-2">Both were equally successful on all paraphrases</label>
-<input type="radio" name="q-08-find-evidence-before-writing-3" id="q-08-find-evidence-before-writing-3-3" data-ok><label for="q-08-find-evidence-before-writing-3-3">Both methods got those six cases right</label>
+<input type="radio" name="q-08-find-evidence-before-writing-3" id="q-08-find-evidence-before-writing-3-1"><label for="q-08-find-evidence-before-writing-3-1"><span>Either method can answer any question from this domain</span></label>
+<input type="radio" name="q-08-find-evidence-before-writing-3" id="q-08-find-evidence-before-writing-3-2"><label for="q-08-find-evidence-before-writing-3-2"><span>Both were equally successful on all paraphrases</span></label>
+<input type="radio" name="q-08-find-evidence-before-writing-3" id="q-08-find-evidence-before-writing-3-3" data-ok><label for="q-08-find-evidence-before-writing-3-3"><span>Both methods got those six cases right</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The experiment tests a small retrieval set, not all questions or generated answers. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The table separates the paraphrases and shows a difference. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Limit the conclusion to the measured cases.</p>

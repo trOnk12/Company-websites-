@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-frozen-not-stopped.html">Puzzle 0: Frozen, not stopped</a></summary><p>An iOS app moves through app states: not running, inactive, active, background, suspended. Seconds after it goes to the background it's suspended: still in memory, running no code. iOS can end a suspended app without running any of your code, so save your state as you enter the background, not at the end.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Frozen, not stopped</summary><p>An iOS app moves through app states: not running, inactive, active, background, suspended. Seconds after it goes to the background it's suspended: still in memory, running no code. iOS can end a suspended app without running any of your code, so save your state as you enter the background, not at the end.</p><p><a href="00-frozen-not-stopped.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-frozen-not-stopped.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/02-how-kotlin-calls-apple.html"><b>framework</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 2: How Kotlin calls Apple</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -111,25 +111,25 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>On iOS, you read a large file on the main thread, and it takes 2 seconds. The user taps meanwhile. What happens?</legend>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-1"><label for="q-01-the-run-loop-is-your-looper-1-1">The tap is handled on another thread, so the screen stays smooth</label>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-2" data-ok><label for="q-01-the-run-loop-is-your-looper-1-2">The tap waits until the run loop gets back to it, and the screen seems frozen</label>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-3"><label for="q-01-the-run-loop-is-your-looper-1-3">The run loop pauses the file read, handles the tap, then resumes</label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-1"><label for="q-01-the-run-loop-is-your-looper-1-1"><span>The tap is handled on another thread, so the screen stays smooth</span></label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-2" data-ok><label for="q-01-the-run-loop-is-your-looper-1-2"><span>The tap waits until the run loop gets back to it, and the screen seems frozen</span></label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-3"><label for="q-01-the-run-loop-is-your-looper-1-3"><span>The run loop pauses the file read, handles the tap, then resumes</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Touches are the main run loop's job; they wait behind your file read. <label class="show-me" for="st-runloop-4" data-goto="st-runloop">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One loop, one thing at a time.</p>
 <p class="fb no opt-3"><b>Not quite.</b> A run loop runs each piece of work to the end; it can't pause your read halfway. <label class="show-me" for="st-runloop-4" data-goto="st-runloop">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does the main thread sleep when there's no work, instead of checking again and again?</legend>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-2" id="q-01-the-run-loop-is-your-looper-2-1"><label for="q-01-the-run-loop-is-your-looper-2-1">Because iOS ends threads that check too often</label>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-2" id="q-01-the-run-loop-is-your-looper-2-2" data-ok><label for="q-01-the-run-loop-is-your-looper-2-2">Because checking again and again burns CPU and battery</label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-2" id="q-01-the-run-loop-is-your-looper-2-1"><label for="q-01-the-run-loop-is-your-looper-2-1"><span>Because iOS ends threads that check too often</span></label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-2" id="q-01-the-run-loop-is-your-looper-2-2" data-ok><label for="q-01-the-run-loop-is-your-looper-2-2"><span>Because checking again and again burns CPU and battery</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Nothing is ended: sleeping is what saves the CPU and battery. <label class="show-me" for="st-runloop-2" data-goto="st-runloop">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Sleep until there's work: no wasted CPU.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a run loop and a thread?</legend>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-1" data-ok><label for="q-01-the-run-loop-is-your-looper-3-1">The thread does the work, while the run loop feeds it events</label>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-2"><label for="q-01-the-run-loop-is-your-looper-3-2">They're two names for the main thread</label>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-3"><label for="q-01-the-run-loop-is-your-looper-3-3">A run loop is a thread that only handles touches</label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-1" data-ok><label for="q-01-the-run-loop-is-your-looper-3-1"><span>The thread does the work, while the run loop feeds it events</span></label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-2"><label for="q-01-the-run-loop-is-your-looper-3-2"><span>They're two names for the main thread</span></label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-3" id="q-01-the-run-loop-is-your-looper-3-3"><label for="q-01-the-run-loop-is-your-looper-3-3"><span>A run loop is a thread that only handles touches</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Worker vs its routine.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Any thread can have one; the main thread is only one of them. <label class="show-me" for="st-runloop-1" data-goto="st-runloop">Show me step 1 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> A run loop isn't a thread: any thread can have one, feeding it its events. <label class="show-me" for="st-runloop-1" data-goto="st-runloop">Show me step 1 again ↑</label></p>

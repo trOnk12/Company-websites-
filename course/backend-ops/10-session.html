@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>After a successful sign-in, a service may issue a session identifier and keep its owner and expiry on the server. On each protected route it checks the session and then the permission for the resource. The workbench starts with invented session records. An unknown or expired record yields 401. In this exercise a known user without permission gets 403. A real login also needs secure credential handling, protected transport and a revocation policy. Use an established identity provider when implementing the portfolio version.</p>
+<h3>Place requests on the expiry boundary</h3>
+<p>In the model a session belongs to Ada and is valid while the server's current tick is strictly below 100. At 99 the lookup succeeds and her own bookmark is visible. At 100 it fails even if the record has not been physically removed. Revocation handles an earlier cutoff: deleting the record at 98 means a request arriving at 99 also fails. This separates how long a credential was originally issued for from whether the server still accepts it now.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#10-session">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Freeze time one tick before expiry and then exactly at expiry. Revoke a fixture and show that a subsequent request requires authentication.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The session expired but the owner still matches. What happens?</legend>
-<input type="radio" name="q-10-session-1" id="q-10-session-1-1"><label for="q-10-session-1-1">Permit the read based on the old owner</label>
-<input type="radio" name="q-10-session-1" id="q-10-session-1-2" data-ok><label for="q-10-session-1-2">Require fresh authentication</label>
+<input type="radio" name="q-10-session-1" id="q-10-session-1-1"><label for="q-10-session-1-1"><span>Permit the read based on the old owner</span></label>
+<input type="radio" name="q-10-session-1" id="q-10-session-1-2" data-ok><label for="q-10-session-1-2"><span>Require fresh authentication</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The earlier identity check has expired. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Session expiry and resource ownership answer different questions.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>What happens at exactly tick 100 in this contract?</legend>
+<input type="radio" name="q-10-session-2" id="q-10-session-2-1" data-ok><label for="q-10-session-2-1"><span>The request needs fresh authentication</span></label>
+<input type="radio" name="q-10-session-2" id="q-10-session-2-2"><label for="q-10-session-2-2"><span>The session always lasts one more tick</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The validity condition uses a strict less-than comparison.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The validity condition uses a strict less-than comparison. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Ada has a valid session and requests Ben's private record. What is still required?</legend>
+<input type="radio" name="q-10-session-3" id="q-10-session-3-1" data-ok><label for="q-10-session-3-1"><span>Check permission for that record</span></label>
+<input type="radio" name="q-10-session-3" id="q-10-session-3-2"><label for="q-10-session-3-2"><span>Serve it because the session is current</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Session validity establishes identity before resource authorization.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Session validity establishes identity before resource authorization. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html">Technical reference</a></li></ul></details>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -63,11 +63,12 @@
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
         <a href="#go-deeper-who-may-read-this-reservation">Go deeper</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -101,6 +102,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>The phone resolves a service name to an address and sends its request. A load balancer chooses a healthy process. That process validates the request and checks the driver's permission. The two processes have separate memory. If both keep their own authoritative count, each can see one free space.</p>
 <p>Start with one deployable program backed by one relational database. All copies send reservations to the same store. That store commits the change before the process sends a success response. If the process stops after commit, a replacement can read the outcome. Map reads and reservations can be separate modules of the same program. Splitting them into services introduces another boundary where a request or reply can be lost.</p>
+<h3>Locate the last durable decision</h3>
+<p>Ada's phone sends one reservation through process A. The database commits, then A stops before sending the reply. Process B takes the next request. B cannot inspect A's memory. It can read the stored grant if the client supplies an identity that points back to it. The next two lessons build the concurrency rule and that identity.</p>
+<p>Change the failure point: the database is unreachable before the write. B still has a healthy network connection to the phone. What can B promise? It can report that the service is unavailable. Returning a fabricated confirmation from its own memory would give the driver a reservation no replacement process could retrieve.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-who-may-read-this-reservation">
         <summary><span class="depth-label">Go deeper</span>Who may read this reservation?</summary>
@@ -118,22 +122,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What survives a restart of both instances?</legend>
-<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-1" data-ok><label for="q-02-write-boundary-1-1">A committed database row</label>
-<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-2"><label for="q-02-write-boundary-1-2">The counter in process A</label>
+<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-1" data-ok><label for="q-02-write-boundary-1-1"><span>A committed database row</span></label>
+<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-2"><label for="q-02-write-boundary-1-2"><span>The counter in process A</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Process memory disappears on restart.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Process memory disappears on restart. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What must precede a successful grant reply?</legend>
-<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-1" data-ok><label for="q-02-write-boundary-2-1">Committing the grant</label>
-<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-2"><label for="q-02-write-boundary-2-2">Starting the database call</label>
+<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-1" data-ok><label for="q-02-write-boundary-2-1"><span>Committing the grant</span></label>
+<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-2"><label for="q-02-write-boundary-2-2"><span>Starting the database call</span></label>
 <p class="fb ok opt-1"><b>Right.</b> An unfinished write can still roll back.</p>
 <p class="fb no opt-2"><b>Not quite.</b> An unfinished write can still roll back. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What does a second process add?</legend>
-<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-1"><label for="q-02-write-boundary-3-1">Another independent last space</label>
-<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-2" data-ok><label for="q-02-write-boundary-3-2">Another request handler</label>
+<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-1"><label for="q-02-write-boundary-3-1"><span>Another independent last space</span></label>
+<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-2" data-ok><label for="q-02-write-boundary-3-2"><span>Another request handler</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Both handlers must honor the same inventory. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Both handlers must honor the same inventory.</p>
 </fieldset>

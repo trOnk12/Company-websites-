@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-the-kernel-is-in-charge.html">Puzzle 1: The kernel is in charge</a></summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: The kernel is in charge</summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p><p><a href="01-the-kernel-is-in-charge.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -114,24 +114,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The main thread is busy for 3 seconds sorting a huge list. The user taps a button. What happens?</legend>
-<input type="radio" name="q-02-threads-are-the-workers-1" id="q-02-threads-are-the-workers-1-1"><label for="q-02-threads-are-the-workers-1-1">Another thread picks up the tap, so the screen answers right away</label>
-<input type="radio" name="q-02-threads-are-the-workers-1" id="q-02-threads-are-the-workers-1-2" data-ok><label for="q-02-threads-are-the-workers-1-2">The tap waits until the main thread is free</label>
-<input type="radio" name="q-02-threads-are-the-workers-1" id="q-02-threads-are-the-workers-1-3"><label for="q-02-threads-are-the-workers-1-3">The kernel pauses the sorting, handles the tap, then resumes it</label>
+<input type="radio" name="q-02-threads-are-the-workers-1" id="q-02-threads-are-the-workers-1-1"><label for="q-02-threads-are-the-workers-1-1"><span>Another thread picks up the tap, so the screen answers right away</span></label>
+<input type="radio" name="q-02-threads-are-the-workers-1" id="q-02-threads-are-the-workers-1-2" data-ok><label for="q-02-threads-are-the-workers-1-2"><span>The tap waits until the main thread is free</span></label>
+<input type="radio" name="q-02-threads-are-the-workers-1" id="q-02-threads-are-the-workers-1-3"><label for="q-02-threads-are-the-workers-1-3"><span>The kernel pauses the sorting, handles the tap, then resumes it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Taps and drawing are the main thread's job only. Other threads can't step in. <label class="show-me" for="st-threads-3" data-goto="st-threads">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Only the main thread handles taps and drawing, so while it's busy, the screen waits.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The kernel shares the CPU between threads, but it doesn't take over the main thread's work. <label class="show-me" for="st-threads-3" data-goto="st-threads">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why put a download on another thread, not the main thread?</legend>
-<input type="radio" name="q-02-threads-are-the-workers-2" id="q-02-threads-are-the-workers-2-1"><label for="q-02-threads-are-the-workers-2-1">Because only other threads can use the internet</label>
-<input type="radio" name="q-02-threads-are-the-workers-2" id="q-02-threads-are-the-workers-2-2" data-ok><label for="q-02-threads-are-the-workers-2-2">Because then the main thread stays free for the screen and taps</label>
+<input type="radio" name="q-02-threads-are-the-workers-2" id="q-02-threads-are-the-workers-2-1"><label for="q-02-threads-are-the-workers-2-1"><span>Because only other threads can use the internet</span></label>
+<input type="radio" name="q-02-threads-are-the-workers-2" id="q-02-threads-are-the-workers-2-2" data-ok><label for="q-02-threads-are-the-workers-2-2"><span>Because then the main thread stays free for the screen and taps</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Any thread can download. The point is to keep the main thread free. <label class="show-me" for="st-threads-2" data-goto="st-threads">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The main thread must stay free for the screen.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a process and a thread?</legend>
-<input type="radio" name="q-02-threads-are-the-workers-3" id="q-02-threads-are-the-workers-3-1"><label for="q-02-threads-are-the-workers-3-1">They're the same thing: each app runs as one thread, and a thread is a process</label>
-<input type="radio" name="q-02-threads-are-the-workers-3" id="q-02-threads-are-the-workers-3-2" data-ok><label for="q-02-threads-are-the-workers-3-2">A process is a running app with its own memory, while threads are the workers inside it</label>
+<input type="radio" name="q-02-threads-are-the-workers-3" id="q-02-threads-are-the-workers-3-1"><label for="q-02-threads-are-the-workers-3-1"><span>They're the same thing: each app runs as one thread, and a thread is a process</span></label>
+<input type="radio" name="q-02-threads-are-the-workers-3" id="q-02-threads-are-the-workers-3-2" data-ok><label for="q-02-threads-are-the-workers-3-2"><span>A process is a running app with its own memory, while threads are the workers inside it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A process is the house; threads are the people working inside it. One process, many threads. <label class="show-me" for="st-threads-1" data-goto="st-threads">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Threads live inside a process and share its memory.</p>
 </fieldset>

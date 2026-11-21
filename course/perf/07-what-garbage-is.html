@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -106,26 +106,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A function creates a <code>User</code> and keeps it only in a local variable. After the function returns, what is the <code>User</code>?</legend>
-<input type="radio" name="q-07-what-garbage-is-1" id="q-07-what-garbage-is-1-1"><label for="q-07-what-garbage-is-1-1">Reachable, since it was created by a running thread</label>
-<input type="radio" name="q-07-what-garbage-is-1" id="q-07-what-garbage-is-1-2" data-ok><label for="q-07-what-garbage-is-1-2">Garbage, unless a reference to it was stored somewhere else</label>
-<input type="radio" name="q-07-what-garbage-is-1" id="q-07-what-garbage-is-1-3"><label for="q-07-what-garbage-is-1-3">Freed at once, at the moment the function returns</label>
+<input type="radio" name="q-07-what-garbage-is-1" id="q-07-what-garbage-is-1-1"><label for="q-07-what-garbage-is-1-1"><span>Reachable, since it was created by a running thread</span></label>
+<input type="radio" name="q-07-what-garbage-is-1" id="q-07-what-garbage-is-1-2" data-ok><label for="q-07-what-garbage-is-1-2"><span>Garbage, unless a reference to it was stored somewhere else</span></label>
+<input type="radio" name="q-07-what-garbage-is-1" id="q-07-what-garbage-is-1-3"><label for="q-07-what-garbage-is-1-3"><span>Freed at once, at the moment the function returns</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Who created it doesn't matter; what matters is whether a chain from a root still leads to it. <label class="show-me" for="st-garbage-3" data-goto="st-garbage">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> No chain from a root means garbage.</p>
 <p class="fb no opt-3"><b>Not quite.</b> It becomes garbage then; the collector frees it later, when it runs. <label class="show-me" for="st-garbage-4" data-goto="st-garbage">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A singleton holds a list, and the list holds your <code>Activity</code>. Can the collector free the <code>Activity</code>?</legend>
-<input type="radio" name="q-07-what-garbage-is-2" id="q-07-what-garbage-is-2-1"><label for="q-07-what-garbage-is-2-1">Yes, since the GC frees objects that are big enough</label>
-<input type="radio" name="q-07-what-garbage-is-2" id="q-07-what-garbage-is-2-2"><label for="q-07-what-garbage-is-2-2">Yes, once the Activity is no longer on screen</label>
-<input type="radio" name="q-07-what-garbage-is-2" id="q-07-what-garbage-is-2-3" data-ok><label for="q-07-what-garbage-is-2-3">No: a chain from a root (the singleton) leads to it</label>
+<input type="radio" name="q-07-what-garbage-is-2" id="q-07-what-garbage-is-2-1"><label for="q-07-what-garbage-is-2-1"><span>Yes, since the GC frees objects that are big enough</span></label>
+<input type="radio" name="q-07-what-garbage-is-2" id="q-07-what-garbage-is-2-2"><label for="q-07-what-garbage-is-2-2"><span>Yes, once the Activity is no longer on screen</span></label>
+<input type="radio" name="q-07-what-garbage-is-2" id="q-07-what-garbage-is-2-3" data-ok><label for="q-07-what-garbage-is-2-3"><span>No: a chain from a root (the singleton) leads to it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Size doesn't matter to the GC; reachability does. <label class="show-me" for="st-garbage-3" data-goto="st-garbage">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Being off screen doesn't matter; the chain from the root keeps it reachable. <label class="show-me" for="st-garbage-3" data-goto="st-garbage">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Reachable from a root means kept.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a reference and an object?</legend>
-<input type="radio" name="q-07-what-garbage-is-3" id="q-07-what-garbage-is-3-1"><label for="q-07-what-garbage-is-3-1">A reference is the data in the heap, while an object is an arrow pointing at it</label>
-<input type="radio" name="q-07-what-garbage-is-3" id="q-07-what-garbage-is-3-2" data-ok><label for="q-07-what-garbage-is-3-2">An object is the data in the heap, while a reference is an arrow pointing at it</label>
+<input type="radio" name="q-07-what-garbage-is-3" id="q-07-what-garbage-is-3-1"><label for="q-07-what-garbage-is-3-1"><span>A reference is the data in the heap, while an object is an arrow pointing at it</span></label>
+<input type="radio" name="q-07-what-garbage-is-3" id="q-07-what-garbage-is-3-2" data-ok><label for="q-07-what-garbage-is-3-2"><span>An object is the data in the heap, while a reference is an arrow pointing at it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <label class="show-me" for="st-garbage-1" data-goto="st-garbage">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The thing vs the arrow to it.</p>
 </fieldset>

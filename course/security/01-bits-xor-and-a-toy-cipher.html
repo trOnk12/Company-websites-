@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-anyone-on-the-line.html">Puzzle 0: Anyone on the line</a></summary><p>Data crosses many machines on its way. Any of them can read it, change it, or pretend to be the other side. Encryption turns the data into ciphertext that only someone with the key can turn back, which stops the reading. The next puzzles stop the rest.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Anyone on the line</summary><p>Data crosses many machines on its way. Any of them can read it, change it, or pretend to be the other side. Encryption turns the data into ciphertext that only someone with the key can turn back, which stops the reading. The next puzzles stop the rest.</p><p><a href="00-anyone-on-the-line.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-anyone-on-the-line.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -112,26 +112,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Data 1100, key 1010. What is data XOR key?</legend>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-1"><label for="q-01-bits-xor-and-a-toy-cipher-1-1">1000: 1 only in places where both bits are 1</label>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-2"><label for="q-01-bits-xor-and-a-toy-cipher-1-2">1110: 1 wherever at least one of the two bits is 1</label>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-3" data-ok><label for="q-01-bits-xor-and-a-toy-cipher-1-3">0110: 1 where the bits differ, 0 where they're equal</label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-1"><label for="q-01-bits-xor-and-a-toy-cipher-1-1"><span>1000: 1 only in places where both bits are 1</span></label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-2"><label for="q-01-bits-xor-and-a-toy-cipher-1-2"><span>1110: 1 wherever at least one of the two bits is 1</span></label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-1" id="q-01-bits-xor-and-a-toy-cipher-1-3" data-ok><label for="q-01-bits-xor-and-a-toy-cipher-1-3"><span>0110: 1 where the bits differ, 0 where they're equal</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's AND; XOR gives 1 where the bits differ. <label class="show-me" for="st-xor-2" data-goto="st-xor">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> That's OR; XOR gives 0 when both bits are 1. <label class="show-me" for="st-xor-2" data-goto="st-xor">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Different gives 1, equal gives 0.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The same one-time pad key encrypts two messages. What can the listener do?</legend>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-2" id="q-01-bits-xor-and-a-toy-cipher-2-1"><label for="q-01-bits-xor-and-a-toy-cipher-2-1">Nothing more than before, since the key itself is still secret</label>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-2" id="q-01-bits-xor-and-a-toy-cipher-2-2" data-ok><label for="q-01-bits-xor-and-a-toy-cipher-2-2">XOR the two ciphertexts, cancelling the key</label>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-2" id="q-01-bits-xor-and-a-toy-cipher-2-3"><label for="q-01-bits-xor-and-a-toy-cipher-2-3">Read the whole key straight out of either ciphertext</label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-2" id="q-01-bits-xor-and-a-toy-cipher-2-1"><label for="q-01-bits-xor-and-a-toy-cipher-2-1"><span>Nothing more than before, since the key itself is still secret</span></label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-2" id="q-01-bits-xor-and-a-toy-cipher-2-2" data-ok><label for="q-01-bits-xor-and-a-toy-cipher-2-2"><span>XOR the two ciphertexts, cancelling the key</span></label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-2" id="q-01-bits-xor-and-a-toy-cipher-2-3"><label for="q-01-bits-xor-and-a-toy-cipher-2-3"><span>Read the whole key straight out of either ciphertext</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The key cancels out when the two ciphertexts are combined. <label class="show-me" for="st-xor-4" data-goto="st-xor">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Reusing the key cancels it.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Not directly; the leak comes from combining the two. <label class="show-me" for="st-xor-4" data-goto="st-xor">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a one-time pad key and a keystream?</legend>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-3" id="q-01-bits-xor-and-a-toy-cipher-3-1" data-ok><label for="q-01-bits-xor-and-a-toy-cipher-3-1">A one-time pad key is fully random and as long as the data, while a keystream is generated from a short key</label>
-<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-3" id="q-01-bits-xor-and-a-toy-cipher-3-2"><label for="q-01-bits-xor-and-a-toy-cipher-3-2">A one-time pad key is generated from a short key, while a keystream is fully random and as long as the data</label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-3" id="q-01-bits-xor-and-a-toy-cipher-3-1" data-ok><label for="q-01-bits-xor-and-a-toy-cipher-3-1"><span>A one-time pad key is fully random and as long as the data, while a keystream is generated from a short key</span></label>
+<input type="radio" name="q-01-bits-xor-and-a-toy-cipher-3" id="q-01-bits-xor-and-a-toy-cipher-3-2"><label for="q-01-bits-xor-and-a-toy-cipher-3-2"><span>A one-time pad key is generated from a short key, while a keystream is fully random and as long as the data</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Truly random vs generated.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

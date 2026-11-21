@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-threads-are-the-workers.html">Puzzle 2: Threads are the workers</a></summary><p>A process can have many threads, but only one, the main thread, draws your screen and handles taps. If it's busy, the screen waits.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Threads are the workers</summary><p>A process can have many threads, but only one, the main thread, draws your screen and handles taps. If it's busy, the screen waits.</p><p><a href="02-threads-are-the-workers.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -114,10 +114,10 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Two threads each add 1 to the same counter, 1,000 times, with no lock. The counter starts at 0. What can it end at?</legend>
-<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-1" data-ok><label for="q-03-threads-share-one-house-1-1">Sometimes 2,000, sometimes less: updates can be lost when their steps interleave</label>
-<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-2"><label for="q-03-threads-share-one-house-1-2">Always 1,000, because only one thread can run at a time</label>
-<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-3"><label for="q-03-threads-share-one-house-1-3">Always 2,000, because each addition is one quick step</label>
-<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-4"><label for="q-03-threads-share-one-house-1-4">Never more than 1,000: the second thread can't see the first one's changes</label>
+<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-1" data-ok><label for="q-03-threads-share-one-house-1-1"><span>Sometimes 2,000, sometimes less: updates can be lost when their steps interleave</span></label>
+<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-2"><label for="q-03-threads-share-one-house-1-2"><span>Always 1,000, because only one thread can run at a time</span></label>
+<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-3"><label for="q-03-threads-share-one-house-1-3"><span>Always 2,000, because each addition is one quick step</span></label>
+<input type="radio" name="q-03-threads-share-one-house-1" id="q-03-threads-share-one-house-1-4"><label for="q-03-threads-share-one-house-1-4"><span>Never more than 1,000: the second thread can't see the first one's changes</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Read, add, write: two threads can read the same old value.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Both run; the kernel switches between them, and sometimes their steps overlap. <label class="show-me" for="st-shared-2" data-goto="st-shared">Show me step 2 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Adding one is three steps (read, add, write), and two threads can interleave them. <label class="show-me" for="st-shared-3" data-goto="st-shared">Show me step 3 again ↑</label></p>
@@ -125,17 +125,17 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>A download thread has a result for the screen. What's the safe way to show it?</legend>
-<input type="radio" name="q-03-threads-share-one-house-2" id="q-03-threads-share-one-house-2-1" data-ok><label for="q-03-threads-share-one-house-2-1">Hand it to the main thread, which owns the screen, and let it update the text</label>
-<input type="radio" name="q-03-threads-share-one-house-2" id="q-03-threads-share-one-house-2-2"><label for="q-03-threads-share-one-house-2-2">Put a lock on the whole screen while the download thread writes</label>
-<input type="radio" name="q-03-threads-share-one-house-2" id="q-03-threads-share-one-house-2-3"><label for="q-03-threads-share-one-house-2-3">Change the text from the download thread, since the memory is shared anyway</label>
+<input type="radio" name="q-03-threads-share-one-house-2" id="q-03-threads-share-one-house-2-1" data-ok><label for="q-03-threads-share-one-house-2-1"><span>Hand it to the main thread, which owns the screen, and let it update the text</span></label>
+<input type="radio" name="q-03-threads-share-one-house-2" id="q-03-threads-share-one-house-2-2"><label for="q-03-threads-share-one-house-2-2"><span>Put a lock on the whole screen while the download thread writes</span></label>
+<input type="radio" name="q-03-threads-share-one-house-2" id="q-03-threads-share-one-house-2-3"><label for="q-03-threads-share-one-house-2-3"><span>Change the text from the download thread, since the memory is shared anyway</span></label>
 <p class="fb ok opt-1"><b>Right.</b> One owner: only the main thread touches the screen.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Android's screen code isn't built for locks; it has one owner, the main thread. <label class="show-me" for="st-shared-4" data-goto="st-shared">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Shared memory is exactly why that's unsafe: the main thread may be drawing the same text. <label class="show-me" for="st-shared-4" data-goto="st-shared">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a lock and one owner?</legend>
-<input type="radio" name="q-03-threads-share-one-house-3" id="q-03-threads-share-one-house-3-1"><label for="q-03-threads-share-one-house-3-1">A lock lets only one thread ever touch it; one owner lets every thread in, one at a time</label>
-<input type="radio" name="q-03-threads-share-one-house-3" id="q-03-threads-share-one-house-3-2" data-ok><label for="q-03-threads-share-one-house-3-2">A lock lets every thread in, but one at a time; one owner lets only one thread ever touch it</label>
+<input type="radio" name="q-03-threads-share-one-house-3" id="q-03-threads-share-one-house-3-1"><label for="q-03-threads-share-one-house-3-1"><span>A lock lets only one thread ever touch it; one owner lets every thread in, one at a time</span></label>
+<input type="radio" name="q-03-threads-share-one-house-3" id="q-03-threads-share-one-house-3-2" data-ok><label for="q-03-threads-share-one-house-3-2"><span>A lock lets every thread in, but one at a time; one owner lets only one thread ever touch it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <label class="show-me" for="st-shared-4" data-goto="st-shared">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Turns at the marker vs only the clerk writes.</p>
 </fieldset>

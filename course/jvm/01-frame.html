@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-class-file.html">Puzzle 0: Which program did you actually run?</a></summary><p>The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Which program did you actually run?</summary><p>The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p><p><a href="00-class-file.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-class-file.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -99,22 +100,41 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A <b>stack frame</b> belongs to one method call. It holds local variables and an operand stack for intermediate values. Calling increment copies the integer argument into its local slot. Inspect increment with javap. The load instruction pushes seven. The next instruction pushes one. Addition consumes both values and pushes eight. The integer return sends eight to the caller and the helper frame is discarded. The original local in the caller still holds seven.</p>
+<p>A local is a slot belonging to the current call. The operand stack is its scratch space. In the table the rightmost number is the top, where an instruction takes its next input. The caller passes seven to a static helper, so the helper's first local slot starts at seven.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Helper instruction</th><th scope="col">Action</th><th scope="col">Helper stack afterwards</th></tr></thead><tbody><tr><th scope="row">Before the first instruction</th><td>Receive seven in local slot zero</td><td>empty</td></tr><tr><th scope="row">iload_0</th><td>Copy the value in slot zero onto the stack</td><td>7</td></tr><tr><th scope="row">iconst_1</th><td>Push a constant one</td><td>7, 1</td></tr><tr><th scope="row">iadd</th><td>Remove the two numbers and push their sum</td><td>8</td></tr><tr><th scope="row">ireturn</th><td>Deliver eight to the caller and finish this call</td><td>frame discarded</td></tr></tbody></table></div>
+<p>Notice that loading a local copies its value. If the caller throws away the returned eight and calls the helper again with its original seven, it gets eight again. If it passes the returned eight as the next argument, it gets nine. Trace both paths by drawing a fresh row for each call. This is the execution model described by the instructions. A runtime may optimize how it implements that model.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Complete experiment 2 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">local JVM lab</a>. Record your prediction before running the program.</p>
+<p><a href="/labs/jvm-workbench/#01-frame">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
+<p>Complete experiment 2 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>. Record your prediction before running the program.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>After the addition and before the return, what is on the helper stack?</legend>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1" data-ok><label for="q-01-frame-1-1">One value, eight</label>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2"><label for="q-01-frame-1-2">Two values, seven and eight</label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1" data-ok><label for="q-01-frame-1-1"><span>One value, eight</span></label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2"><label for="q-01-frame-1-2"><span>Two values, seven and eight</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Each method invocation has its own frame with locals and an operand stack.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Addition consumes both of its inputs. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
+<fieldset class="quiz">
+<legend>The caller ignores the result and calls the helper again with its original seven. What comes back?</legend>
+<input type="radio" name="q-01-frame-2" id="q-01-frame-2-1"><label for="q-01-frame-2-1"><span>Nine</span></label>
+<input type="radio" name="q-01-frame-2" id="q-01-frame-2-2" data-ok><label for="q-01-frame-2-2"><span>Eight</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> No value was assigned to the caller's original local. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The second invocation receives seven in a fresh local slot.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>To get nine on the second call, which number must it receive?</legend>
+<input type="radio" name="q-01-frame-3" id="q-01-frame-3-1"><label for="q-01-frame-3-1"><span>The first call's unchanged input, seven</span></label>
+<input type="radio" name="q-01-frame-3" id="q-01-frame-3-2" data-ok><label for="q-01-frame-3-2"><span>The first call's result, eight</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The helper adds exactly one to the value it receives. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Passing the result explicitly connects two otherwise independent calls.</p>
+</fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javap.html">Oracle Java reference</a></li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.6">JVM specification, frames</a> — “A new frame is created each time a method is invoked.”</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javap.html">Java 21 disassembler guide</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Each method invocation has its own frame with locals and an operand stack.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

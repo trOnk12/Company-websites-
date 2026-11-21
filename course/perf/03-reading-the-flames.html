@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -116,26 +116,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>In a flame chart, <code>format()</code> is drawn left of <code>parseJson()</code>. What does that tell you?</legend>
-<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-1" data-ok><label for="q-03-reading-the-flames-1-1">Nothing about order: a flame chart's left-to-right isn't time</label>
-<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-2"><label for="q-03-reading-the-flames-1-2">That <code>format()</code> was called by <code>parseJson()</code></label>
-<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-3"><label for="q-03-reading-the-flames-1-3">That <code>format()</code> ran before <code>parseJson()</code> on the thread</label>
+<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-1" data-ok><label for="q-03-reading-the-flames-1-1"><span>Nothing about order: a flame chart's left-to-right isn't time</span></label>
+<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-2"><label for="q-03-reading-the-flames-1-2"><span>That <code>format()</code> was called by <code>parseJson()</code></span></label>
+<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-3"><label for="q-03-reading-the-flames-1-3"><span>That <code>format()</code> ran before <code>parseJson()</code> on the thread</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Width is time; position isn't.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A caller and its callees are stacked, not side by side. <label class="show-me" for="st-flames-2" data-goto="st-flames">Show me step 2 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's a call chart. In a flame chart the order is by width, not by when. <label class="show-me" for="st-flames-3" data-goto="st-flames">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend><code>onBind()</code> is 200 ms wide. Its only child, <code>parseJson()</code>, is 190 ms wide. Where's the time?</legend>
-<input type="radio" name="q-03-reading-the-flames-2" id="q-03-reading-the-flames-2-1" data-ok><label for="q-03-reading-the-flames-2-1">In <code>parseJson()</code>: <code>onBind()</code> has only 10 ms of self time</label>
-<input type="radio" name="q-03-reading-the-flames-2" id="q-03-reading-the-flames-2-2"><label for="q-03-reading-the-flames-2-2">Split evenly between both, since a bar's time is shared with its children</label>
-<input type="radio" name="q-03-reading-the-flames-2" id="q-03-reading-the-flames-2-3"><label for="q-03-reading-the-flames-2-3">In <code>onBind()</code>, because it's the widest bar on the chart</label>
+<input type="radio" name="q-03-reading-the-flames-2" id="q-03-reading-the-flames-2-1" data-ok><label for="q-03-reading-the-flames-2-1"><span>In <code>parseJson()</code>: <code>onBind()</code> has only 10 ms of self time</span></label>
+<input type="radio" name="q-03-reading-the-flames-2" id="q-03-reading-the-flames-2-2"><label for="q-03-reading-the-flames-2-2"><span>Split evenly between both, since a bar's time is shared with its children</span></label>
+<input type="radio" name="q-03-reading-the-flames-2" id="q-03-reading-the-flames-2-3"><label for="q-03-reading-the-flames-2-3"><span>In <code>onBind()</code>, because it's the widest bar on the chart</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Follow the child while it's as wide as the parent.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Total time includes children; self time is only the gap they don't cover. <label class="show-me" for="st-flames-4" data-goto="st-flames">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Its width includes its child; only 10 ms is its own. <label class="show-me" for="st-flames-4" data-goto="st-flames">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between self time and total time?</legend>
-<input type="radio" name="q-03-reading-the-flames-3" id="q-03-reading-the-flames-3-1" data-ok><label for="q-03-reading-the-flames-3-1">Self time is the function's own code, while total time adds every function it called</label>
-<input type="radio" name="q-03-reading-the-flames-3" id="q-03-reading-the-flames-3-2"><label for="q-03-reading-the-flames-3-2">Self time adds every function it called, while total time is only the function's own code</label>
+<input type="radio" name="q-03-reading-the-flames-3" id="q-03-reading-the-flames-3-1" data-ok><label for="q-03-reading-the-flames-3-1"><span>Self time is the function's own code, while total time adds every function it called</span></label>
+<input type="radio" name="q-03-reading-the-flames-3" id="q-03-reading-the-flames-3-2"><label for="q-03-reading-the-flames-3-2"><span>Self time adds every function it called, while total time is only the function's own code</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Own code vs own code plus callees.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

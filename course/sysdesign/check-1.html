@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: What actually travels</p>
 <fieldset class="quiz" data-n="0">
 <legend>A packet of your request is lost between two routers. Who notices and fixes it?</legend>
-<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-1" data-ok><label for="q-00-what-actually-travels-1-1">TCP: the missing packet isn't acknowledged, so it's sent again</label>
-<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-2"><label for="q-00-what-actually-travels-1-2">Your app: OkHttp sees the gap and asks for the packet</label>
-<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-3"><label for="q-00-what-actually-travels-1-3">IP: it reroutes the packet around the broken router</label>
+<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-1" data-ok><label for="q-00-what-actually-travels-1-1"><span>TCP: the missing packet isn't acknowledged, so it's sent again</span></label>
+<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-2"><label for="q-00-what-actually-travels-1-2"><span>Your app: OkHttp sees the gap and asks for the packet</span></label>
+<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-3"><label for="q-00-what-actually-travels-1-3"><span>IP: it reroutes the packet around the broken router</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Numbering, acknowledging, resending: TCP.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Your code sees a clean stream; TCP handles losses underneath. <a class="show-me" href="00-what-actually-travels.html">Learn it in puzzle 0 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> IP only does its best; recovering lost packets is TCP's job. <a class="show-me" href="00-what-actually-travels.html">Learn it in puzzle 0 →</a></p>
@@ -65,9 +65,9 @@
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: Finding the server</p>
 <fieldset class="quiz" data-n="1">
 <legend>Your app's first-ever request to <code>api.example.com</code> is slower than the next ones. Which part of that is DNS?</legend>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-1" data-ok><label for="q-01-finding-the-server-1-1">Looking up the host's IP address before anything can be sent</label>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-2"><label for="q-01-finding-the-server-1-2">Routers learning the new hostname</label>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-3"><label for="q-01-finding-the-server-1-3">Downloading the response data, which is bigger the first time</label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-1" data-ok><label for="q-01-finding-the-server-1-1"><span>Looking up the host's IP address before anything can be sent</span></label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-2"><label for="q-01-finding-the-server-1-2"><span>Routers learning the new hostname</span></label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-3"><label for="q-01-finding-the-server-1-3"><span>Downloading the response data, which is bigger the first time</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Name to address, once.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Routers deliver by address; the name is resolved by DNS first. <a class="show-me" href="01-finding-the-server.html">Learn it in puzzle 1 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The data is the same size; the extra wait is the lookup before sending. <a class="show-me" href="01-finding-the-server.html">Learn it in puzzle 1 →</a></p>
@@ -75,9 +75,9 @@
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Anatomy of an HTTP call</p>
 <fieldset class="quiz" data-n="2">
 <legend>Your app gets a 404 from <code>GET /users/42</code>. Should it retry the same request?</legend>
-<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-1" data-ok><label for="q-02-anatomy-of-an-http-call-1-1">No: a 4xx means the request itself was wrong</label>
-<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-2"><label for="q-02-anatomy-of-an-http-call-1-2">Yes, but sending it as a POST instead of a GET this time</label>
-<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-3"><label for="q-02-anatomy-of-an-http-call-1-3">Yes, since almost any network error might pass if you try again</label>
+<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-1" data-ok><label for="q-02-anatomy-of-an-http-call-1-1"><span>No: a 4xx means the request itself was wrong</span></label>
+<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-2"><label for="q-02-anatomy-of-an-http-call-1-2"><span>Yes, but sending it as a POST instead of a GET this time</span></label>
+<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-3"><label for="q-02-anatomy-of-an-http-call-1-3"><span>Yes, since almost any network error might pass if you try again</span></label>
 <p class="fb ok opt-1"><b>Right.</b> 4xx won't fix itself.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Changing the method changes the meaning; it doesn't fix a missing user. <a class="show-me" href="02-anatomy-of-an-http-call.html">Learn it in puzzle 2 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> Only server failures (5xx) might pass; a 4xx is about your request. <a class="show-me" href="02-anatomy-of-an-http-call.html">Learn it in puzzle 2 →</a></p>
@@ -85,9 +85,9 @@
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Round trips, not bandwidth</p>
 <fieldset class="quiz" data-n="3">
 <legend>Your screen's four requests each wait for the one before, on a 250 ms mobile network. Bandwidth doubles. Roughly how long does loading take now?</legend>
-<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-1"><label for="q-03-round-trips-not-bandwidth-1-1">A quarter as long, because the four requests now share the bandwidth</label>
-<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-2"><label for="q-03-round-trips-not-bandwidth-1-2">Half as long, because twice the bandwidth moves data twice as fast</label>
-<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-3" data-ok><label for="q-03-round-trips-not-bandwidth-1-3">About the same, about one second, since the wait is four round trips</label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-1"><label for="q-03-round-trips-not-bandwidth-1-1"><span>A quarter as long, because the four requests now share the bandwidth</span></label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-2"><label for="q-03-round-trips-not-bandwidth-1-2"><span>Half as long, because twice the bandwidth moves data twice as fast</span></label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-1" id="q-03-round-trips-not-bandwidth-1-3" data-ok><label for="q-03-round-trips-not-bandwidth-1-3"><span>About the same, about one second, since the wait is four round trips</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Sharing bandwidth doesn't shorten a trip. <a class="show-me" href="03-round-trips-not-bandwidth.html">Learn it in puzzle 3 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> For a few kilobytes the data takes almost no time; the trips do. <a class="show-me" href="03-round-trips-not-bandwidth.html">Learn it in puzzle 3 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Small requests wait for round trips.</p>
@@ -95,9 +95,9 @@
 <section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: What HTTPS adds</p>
 <fieldset class="quiz" data-n="4">
 <legend>A router on the café Wi-Fi changes one byte of your HTTPS response. What happens?</legend>
-<input type="radio" name="q-04-what-https-adds-1" id="q-04-what-https-adds-1-1"><label for="q-04-what-https-adds-1-1">The app receives the changed byte and shows it</label>
-<input type="radio" name="q-04-what-https-adds-1" id="q-04-what-https-adds-1-2" data-ok><label for="q-04-what-https-adds-1-2">TLS detects the change, so the data is rejected</label>
-<input type="radio" name="q-04-what-https-adds-1" id="q-04-what-https-adds-1-3"><label for="q-04-what-https-adds-1-3">Nothing, because routers can't touch HTTPS packets</label>
+<input type="radio" name="q-04-what-https-adds-1" id="q-04-what-https-adds-1-1"><label for="q-04-what-https-adds-1-1"><span>The app receives the changed byte and shows it</span></label>
+<input type="radio" name="q-04-what-https-adds-1" id="q-04-what-https-adds-1-2" data-ok><label for="q-04-what-https-adds-1-2"><span>TLS detects the change, so the data is rejected</span></label>
+<input type="radio" name="q-04-what-https-adds-1" id="q-04-what-https-adds-1-3"><label for="q-04-what-https-adds-1-3"><span>Nothing, because routers can't touch HTTPS packets</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Integrity means a change is detected, not passed on. <a class="show-me" href="04-what-https-adds.html">Learn it in puzzle 4 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Integrity: changes are caught.</p>
 <p class="fb no opt-3"><b>Not quite.</b> They can tamper; TLS makes tampering detectable. <a class="show-me" href="04-what-https-adds.html">Learn it in puzzle 4 →</a></p>
@@ -105,9 +105,9 @@
 <section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: One connection, many requests</p>
 <fieldset class="quiz" data-n="5">
 <legend>On a 250 ms network, the first HTTPS request on a new connection takes about 750 ms. Why?</legend>
-<input type="radio" name="q-05-one-connection-many-requests-1" id="q-05-one-connection-many-requests-1-1"><label for="q-05-one-connection-many-requests-1-1">The first request carries the app's certificate, which is large</label>
-<input type="radio" name="q-05-one-connection-many-requests-1" id="q-05-one-connection-many-requests-1-2"><label for="q-05-one-connection-many-requests-1-2">The server is slow to answer the first request of the day</label>
-<input type="radio" name="q-05-one-connection-many-requests-1" id="q-05-one-connection-many-requests-1-3" data-ok><label for="q-05-one-connection-many-requests-1-3">Two handshakes, TCP then TLS, each cost a round trip before the request's own</label>
+<input type="radio" name="q-05-one-connection-many-requests-1" id="q-05-one-connection-many-requests-1-1"><label for="q-05-one-connection-many-requests-1-1"><span>The first request carries the app's certificate, which is large</span></label>
+<input type="radio" name="q-05-one-connection-many-requests-1" id="q-05-one-connection-many-requests-1-2"><label for="q-05-one-connection-many-requests-1-2"><span>The server is slow to answer the first request of the day</span></label>
+<input type="radio" name="q-05-one-connection-many-requests-1" id="q-05-one-connection-many-requests-1-3" data-ok><label for="q-05-one-connection-many-requests-1-3"><span>Two handshakes, TCP then TLS, each cost a round trip before the request's own</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Size barely matters here; the cost is round trips. <a class="show-me" href="05-one-connection-many-requests.html">Learn it in puzzle 5 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The extra time is two round trips of handshakes, not the server. <a class="show-me" href="05-one-connection-many-requests.html">Learn it in puzzle 5 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Three round trips: TCP, TLS, then the request.</p>
@@ -115,9 +115,9 @@
 <section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: The radio is the battery</p>
 <fieldset class="quiz" data-n="6">
 <legend>Your app sends a 300-byte event every 20 seconds. Why does it drain the battery?</legend>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-1" data-ok><label for="q-06-the-radio-is-the-battery-1-1">Each send wakes the radio, and its tail time never lets it sleep</label>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-2"><label for="q-06-the-radio-is-the-battery-1-2">Analytics requests are encrypted, and encryption is costly</label>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-3"><label for="q-06-the-radio-is-the-battery-1-3">The 300 bytes every 20 seconds add up to a lot of data</label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-1" data-ok><label for="q-06-the-radio-is-the-battery-1-1"><span>Each send wakes the radio, and its tail time never lets it sleep</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-2"><label for="q-06-the-radio-is-the-battery-1-2"><span>Analytics requests are encrypted, and encryption is costly</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-3"><label for="q-06-the-radio-is-the-battery-1-3"><span>The 300 bytes every 20 seconds add up to a lot of data</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Size barely matters; wake-ups do.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The radio, not the encryption, is the expensive part. <a class="show-me" href="06-the-radio-is-the-battery.html">Learn it in puzzle 6 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> It's a few hundred kilobytes an hour; the cost is the wake-ups and tails. <a class="show-me" href="06-the-radio-is-the-battery.html">Learn it in puzzle 6 →</a></p>
@@ -125,9 +125,9 @@
 <section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Ask before you download</p>
 <fieldset class="quiz" data-n="7">
 <legend>The feed came with <code>Cache-Control: max-age=60</code>. The user reopens it 30 seconds later. What happens on the network?</legend>
-<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-1"><label for="q-07-ask-before-you-download-1-1">A conditional request, answered 304 if nothing changed</label>
-<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-2" data-ok><label for="q-07-ask-before-you-download-1-2">Nothing at all: the copy is still fresh, so it's used from the cache</label>
-<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-3"><label for="q-07-ask-before-you-download-1-3">A full download, because the screen was closed and reopened</label>
+<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-1"><label for="q-07-ask-before-you-download-1-1"><span>A conditional request, answered 304 if nothing changed</span></label>
+<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-2" data-ok><label for="q-07-ask-before-you-download-1-2"><span>Nothing at all: the copy is still fresh, so it's used from the cache</span></label>
+<input type="radio" name="q-07-ask-before-you-download-1" id="q-07-ask-before-you-download-1-3"><label for="q-07-ask-before-you-download-1-3"><span>A full download, because the screen was closed and reopened</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's after 60 seconds, when the copy is stale. <a class="show-me" href="07-ask-before-you-download.html">Learn it in puzzle 7 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Fresh means no network.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The stored response survives the screen closing. <a class="show-me" href="07-ask-before-you-download.html">Learn it in puzzle 7 →</a></p>
@@ -135,9 +135,9 @@
 <section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: The database is the truth</p>
 <fieldset class="quiz" data-n="8">
 <legend>In an offline-first app, the network returns a fresh list of notes. Where does it go?</legend>
-<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-1" data-ok><label for="q-08-the-database-is-the-truth-1-1">Into the local database, and the screens update from there</label>
-<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-2"><label for="q-08-the-database-is-the-truth-1-2">Into a separate in-memory cache next to the database</label>
-<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-3"><label for="q-08-the-database-is-the-truth-1-3">Straight to the screen that asked for it, then into the database</label>
+<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-1" data-ok><label for="q-08-the-database-is-the-truth-1-1"><span>Into the local database, and the screens update from there</span></label>
+<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-2"><label for="q-08-the-database-is-the-truth-1-2"><span>Into a separate in-memory cache next to the database</span></label>
+<input type="radio" name="q-08-the-database-is-the-truth-1" id="q-08-the-database-is-the-truth-1-3"><label for="q-08-the-database-is-the-truth-1-3"><span>Straight to the screen that asked for it, then into the database</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Network → database → screens.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A second store is a second source of truth: the thing this design removes. <a class="show-me" href="08-the-database-is-the-truth.html">Learn it in puzzle 8 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> Then other screens could disagree; results always go through the database. <a class="show-me" href="08-the-database-is-the-truth.html">Learn it in puzzle 8 →</a></p>
@@ -145,9 +145,9 @@
 <section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: When the connection breaks</p>
 <fieldset class="quiz" data-n="9">
 <legend>A read timeout fires on <code>POST /orders</code>. What do you know?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-1"><label for="q-09-when-the-connection-breaks-1-1">The order wasn't created, because the server didn't answer</label>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-2" data-ok><label for="q-09-when-the-connection-breaks-1-2">Not whether the order was created: the answer may just have been lost</label>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-3"><label for="q-09-when-the-connection-breaks-1-3">The order was created twice, by TCP's resending</label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-1"><label for="q-09-when-the-connection-breaks-1-1"><span>The order wasn't created, because the server didn't answer</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-2" data-ok><label for="q-09-when-the-connection-breaks-1-2"><span>Not whether the order was created: the answer may just have been lost</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-3"><label for="q-09-when-the-connection-breaks-1-3"><span>The order was created twice, by TCP's resending</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The server may have answered; only the answer went missing. <a class="show-me" href="09-when-the-connection-breaks.html">Learn it in puzzle 9 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A read timeout can't say if it happened.</p>
 <p class="fb no opt-3"><b>Not quite.</b> TCP resends packets inside one request; it doesn't send the request twice. <a class="show-me" href="09-when-the-connection-breaks.html">Learn it in puzzle 9 →</a></p>
@@ -155,9 +155,9 @@
 <section aria-label="Puzzle 10"><p class="eyebrow">Puzzle 10: Retry without charging twice</p>
 <fieldset class="quiz" data-n="10">
 <legend><code>POST /payments</code> timed out. You retry with a new idempotency key. What can happen?</legend>
-<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-1"><label for="q-10-retry-without-charging-twice-1-1">The retry fails, because the server rejects repeated amounts</label>
-<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-2"><label for="q-10-retry-without-charging-twice-1-2">Nothing bad: the server recognises the retry because it's the same payment</label>
-<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-3" data-ok><label for="q-10-retry-without-charging-twice-1-3">The user may be charged twice, since the server sees two different requests</label>
+<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-1"><label for="q-10-retry-without-charging-twice-1-1"><span>The retry fails, because the server rejects repeated amounts</span></label>
+<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-2"><label for="q-10-retry-without-charging-twice-1-2"><span>Nothing bad: the server recognises the retry because it's the same payment</span></label>
+<input type="radio" name="q-10-retry-without-charging-twice-1" id="q-10-retry-without-charging-twice-1-3" data-ok><label for="q-10-retry-without-charging-twice-1-3"><span>The user may be charged twice, since the server sees two different requests</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Servers don't match by amount; only the key marks a retry. <a class="show-me" href="10-retry-without-charging-twice.html">Learn it in puzzle 10 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The server recognises retries by the key; a new key looks like a new payment. <a class="show-me" href="10-retry-without-charging-twice.html">Learn it in puzzle 10 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Same action, same key.</p>

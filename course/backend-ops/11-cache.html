@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-11">
         <p id="builds-on-11"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A cache stores a previous result for reuse. Our key is the verified owner and the entry expires ten seconds after loading. At time zero Ada reads river. A write adds hill in the database. Reading at time nine still uses the cached list. At ten the entry expires and the next read loads both names. Clearing the owner’s entry after a successful write shortens this stale window. With several processes each private cache needs its own invalidation strategy.</p>
+<h3>Write the owner’s timeline</h3>
+<p>At tick 0 Ada reads [river] and her cache entry expires at 10. At tick 1 hill commits to storage. At tick 9 the cached copy can still answer [river]. Tick 10 forces a reload, so both names appear. Under immediate invalidation the tick 9 read would also reload. Before choosing either policy, write down the promise the interface makes after a save. If it promises the writer will see hill immediately, a ten-second lifetime alone cannot meet it. Include filters and page boundaries in the key when they change the response.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#11-cache">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the clock-controlled exercise. Invalidate after the write. Predict which assertion changes and why Ben’s list stays empty.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Which cache key keeps two owners separate?</legend>
-<input type="radio" name="q-11-cache-1" id="q-11-cache-1-1" data-ok><label for="q-11-cache-1-1">The verified owner plus list options</label>
-<input type="radio" name="q-11-cache-1" id="q-11-cache-1-2"><label for="q-11-cache-1-2">Only the common list route</label>
+<input type="radio" name="q-11-cache-1" id="q-11-cache-1-1" data-ok><label for="q-11-cache-1-1"><span>The verified owner plus list options</span></label>
+<input type="radio" name="q-11-cache-1" id="q-11-cache-1-2"><label for="q-11-cache-1-2"><span>Only the common list route</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A cache entry needs a suitable key and a freshness policy.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Both owners share that route. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Two pages for Ada have different filters. May they share one unqualified owner key?</legend>
+<input type="radio" name="q-11-cache-2" id="q-11-cache-2-1" data-ok><label for="q-11-cache-2-1"><span>No, the filters can select different rows</span></label>
+<input type="radio" name="q-11-cache-2" id="q-11-cache-2-2"><label for="q-11-cache-2-2"><span>Yes, because only one owner is involved</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A key must identify the requested result.</p>
+<p class="fb no opt-2"><b>Not quite.</b> A key must identify the requested result. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>When is it safe to tell the writer that storage now contains hill?</legend>
+<input type="radio" name="q-11-cache-3" id="q-11-cache-3-1"><label for="q-11-cache-3-1"><span>As soon as the old cache entry is removed</span></label>
+<input type="radio" name="q-11-cache-3" id="q-11-cache-3-2" data-ok><label for="q-11-cache-3-2"><span>After the storage transaction commits</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Removing a previous read result does not prove that the write succeeded. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Removing a previous read result does not prove that the write succeeded.</p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.rfc-editor.org/rfc/rfc9111.html">Technical reference</a></li></ul></details>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -114,27 +114,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The third message is lost and nothing else arrives. What is the server missing?</legend>
-<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-1" data-ok><label for="q-00-open-the-tcp-connection-1-1">Confirmation that the phone received the server’s starting number</label>
-<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-2"><label for="q-00-open-the-tcp-connection-1-2">The server’s own starting number for data</label>
-<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-3"><label for="q-00-open-the-tcp-connection-1-3">The starting number that the phone announced in the first message</label>
+<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-1" data-ok><label for="q-00-open-the-tcp-connection-1-1"><span>Confirmation that the phone received the server’s starting number</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-2"><label for="q-00-open-the-tcp-connection-1-2"><span>The server’s own starting number for data</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-3"><label for="q-00-open-the-tcp-connection-1-3"><span>The starting number that the phone announced in the first message</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Keep track of what each peer has actually received.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The server chose its own starting number before sending SYN-ACK. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The server already received that number in SYN. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The server proposes 800. What does the phone acknowledge?</legend>
-<input type="radio" name="q-00-open-the-tcp-connection-2" id="q-00-open-the-tcp-connection-2-1"><label for="q-00-open-the-tcp-connection-2-1">800, the position used by the server’s opening signal</label>
-<input type="radio" name="q-00-open-the-tcp-connection-2" id="q-00-open-the-tcp-connection-2-2" data-ok><label for="q-00-open-the-tcp-connection-2-2">801, the next position expected from the server</label>
-<input type="radio" name="q-00-open-the-tcp-connection-2" id="q-00-open-the-tcp-connection-2-3"><label for="q-00-open-the-tcp-connection-2-3">101, the next position in the phone’s own stream</label>
+<input type="radio" name="q-00-open-the-tcp-connection-2" id="q-00-open-the-tcp-connection-2-1"><label for="q-00-open-the-tcp-connection-2-1"><span>800, the position used by the server’s opening signal</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-2" id="q-00-open-the-tcp-connection-2-2" data-ok><label for="q-00-open-the-tcp-connection-2-2"><span>801, the next position expected from the server</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-2" id="q-00-open-the-tcp-connection-2-3"><label for="q-00-open-the-tcp-connection-2-3"><span>101, the next position in the phone’s own stream</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> SYN consumes a position. The acknowledgment says what is next. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The two sequence spaces are independent.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The acknowledgment refers to bytes from the other peer. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What has the phone established about the server after this exchange?</legend>
-<input type="radio" name="q-00-open-the-tcp-connection-3" id="q-00-open-the-tcp-connection-3-1" data-ok><label for="q-00-open-the-tcp-connection-3-1">It has synchronized byte numbers with the peer</label>
-<input type="radio" name="q-00-open-the-tcp-connection-3" id="q-00-open-the-tcp-connection-3-2"><label for="q-00-open-the-tcp-connection-3-2">It has learned that future packets cannot be lost</label>
-<input type="radio" name="q-00-open-the-tcp-connection-3" id="q-00-open-the-tcp-connection-3-3"><label for="q-00-open-the-tcp-connection-3-3">It has verified the server’s application identity</label>
+<input type="radio" name="q-00-open-the-tcp-connection-3" id="q-00-open-the-tcp-connection-3-1" data-ok><label for="q-00-open-the-tcp-connection-3-1"><span>It has synchronized byte numbers with the peer</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-3" id="q-00-open-the-tcp-connection-3-2"><label for="q-00-open-the-tcp-connection-3-2"><span>It has learned that future packets cannot be lost</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-3" id="q-00-open-the-tcp-connection-3-3"><label for="q-00-open-the-tcp-connection-3-3"><span>It has verified the server’s application identity</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Opening the byte stream answers a transport question.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Establishment does not eliminate packet loss. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> This exchange does not verify the application identity. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>

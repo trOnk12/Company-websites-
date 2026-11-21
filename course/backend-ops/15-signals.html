@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-15">
         <p id="builds-on-15"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Sort the hundred timings. Using nearest rank, the ninety-fifth percentile is the value at position 95. Here it is 200 milliseconds even though the mean is only 21.4. Record request count and failures separately. A fast error can lower mean response time while availability worsens. A log gives details for one event, a metric aggregates events, and a trace connects steps of one request. Compare a database span with total request time before blaming the database.</p>
+<h3>Calculate the threshold by hand</h3>
+<p>For 94 requests at 10 ms and six at 200 ms, total time is 2,140 ms across 100 requests. The mean is 21.4 ms. In sorted order positions 1 through 94 are fast and position 95 is slow. Change one slow request into a fast one: the 95th position drops to 10 ms while five callers still wait 200 ms. Alongside the percentile record the sample size, time window and outcomes. To combine two groups, combine their timings or compatible counts per duration range. Averaging the groups' percentile numbers loses how many requests each supplied.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#15-signals">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the response-time fixture. Reduce the slow group to five and predict the nearest-rank result. Write a service objective with a time window and an error threshold.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>All failed requests return quickly. Which signal is essential alongside response time?</legend>
-<input type="radio" name="q-15-signals-1" id="q-15-signals-1-1"><label for="q-15-signals-1-1">Only the fastest observed duration</label>
-<input type="radio" name="q-15-signals-1" id="q-15-signals-1-2" data-ok><label for="q-15-signals-1-2">The fraction of failed requests</label>
+<input type="radio" name="q-15-signals-1" id="q-15-signals-1-1"><label for="q-15-signals-1-1"><span>Only the fastest observed duration</span></label>
+<input type="radio" name="q-15-signals-1" id="q-15-signals-1-2" data-ok><label for="q-15-signals-1-2"><span>The fraction of failed requests</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Fast failures still hurt availability. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A percentile describes an ordered sample. Averages can hide a slow group.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Five of a hundred requests take 200 ms and the others take 10 ms. What is nearest-rank p95?</legend>
+<input type="radio" name="q-15-signals-2" id="q-15-signals-2-1"><label for="q-15-signals-2-1"><span>200 ms</span></label>
+<input type="radio" name="q-15-signals-2" id="q-15-signals-2-2" data-ok><label for="q-15-signals-2-2"><span>10 ms</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> In this sample position 95 is still fast. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> In this sample position 95 is still fast.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>One slow request lasts 200 ms but its database span is 15 ms. What does that establish?</legend>
+<input type="radio" name="q-15-signals-3" id="q-15-signals-3-1"><label for="q-15-signals-3-1"><span>The database accounts for the whole delay</span></label>
+<input type="radio" name="q-15-signals-3" id="q-15-signals-3-2" data-ok><label for="q-15-signals-3-2"><span>Most elapsed time is outside that measured span</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A measured part must be compared with the complete request. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A measured part must be compared with the complete request.</p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/sre-book/monitoring-distributed-systems/">Technical reference</a></li></ul></details>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,32 +55,32 @@
 <section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: Can an old client read the new response?</p>
 <fieldset class="quiz" data-n="5">
 <legend>Which change can break an old reader expecting text?</legend>
-<input type="radio" name="q-05-contract-1" id="q-05-contract-1-1"><label for="q-05-contract-1-1">Adding an optional field the reader ignores</label>
-<input type="radio" name="q-05-contract-1" id="q-05-contract-1-2" data-ok><label for="q-05-contract-1-2">Returning a list for name</label>
+<input type="radio" name="q-05-contract-1" id="q-05-contract-1-1"><label for="q-05-contract-1-1"><span>Adding an optional field the reader ignores</span></label>
+<input type="radio" name="q-05-contract-1" id="q-05-contract-1-2" data-ok><label for="q-05-contract-1-2"><span>Returning a list for name</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The reader still finds its original text field. <a class="show-me" href="05-contract.html">Learn it in puzzle 5 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> An API contract specifies methods, fields, validation, status codes and compatibility.</p>
 </fieldset></section>
 <section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: Can a bookmark point to a missing owner?</p>
 <fieldset class="quiz" data-n="6">
 <legend>Ben has no bookmarks. What should his count be?</legend>
-<input type="radio" name="q-06-model-1" id="q-06-model-1-1"><label for="q-06-model-1-1">One because his account row exists</label>
-<input type="radio" name="q-06-model-1" id="q-06-model-1-2" data-ok><label for="q-06-model-1-2">Zero matching bookmark names</label>
+<input type="radio" name="q-06-model-1" id="q-06-model-1-1"><label for="q-06-model-1-1"><span>One because his account row exists</span></label>
+<input type="radio" name="q-06-model-1" id="q-06-model-1-2" data-ok><label for="q-06-model-1-2"><span>Zero matching bookmark names</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The account exists but has no matching bookmark. <a class="show-me" href="06-model.html">Learn it in puzzle 6 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A foreign key enforces a relationship; a left join can include owners with zero bookmarks.</p>
 </fieldset></section>
 <section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: What if the service stops between two writes?</p>
 <fieldset class="quiz" data-n="7">
 <legend>The worker loses the acknowledgement. Which value should a second delivery reuse?</legend>
-<input type="radio" name="q-07-commit-1" id="q-07-commit-1-1"><label for="q-07-commit-1-1">A fresh identity for each delivery attempt</label>
-<input type="radio" name="q-07-commit-1" id="q-07-commit-1-2" data-ok><label for="q-07-commit-1-2">The original event identity</label>
+<input type="radio" name="q-07-commit-1" id="q-07-commit-1-1"><label for="q-07-commit-1-1"><span>A fresh identity for each delivery attempt</span></label>
+<input type="radio" name="q-07-commit-1" id="q-07-commit-1-2" data-ok><label for="q-07-commit-1-2"><span>The original event identity</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The consumer needs a stable identity to recognize redelivery. <a class="show-me" href="07-commit.html">Learn it in puzzle 7 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A transaction can commit both the bookmark and a pending event, or roll back both.</p>
 </fieldset></section>
 <section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: Why does the same page cost less to read?</p>
 <fieldset class="quiz" data-n="8">
 <legend>Two bookmarks share a time. What belongs in the page cursor?</legend>
-<input type="radio" name="q-08-query-1" id="q-08-query-1-1"><label for="q-08-query-1-1">Only the timestamp of the last row</label>
-<input type="radio" name="q-08-query-1" id="q-08-query-1-2" data-ok><label for="q-08-query-1-2">Time and the unique row number</label>
+<input type="radio" name="q-08-query-1" id="q-08-query-1-1"><label for="q-08-query-1-1"><span>Only the timestamp of the last row</span></label>
+<input type="radio" name="q-08-query-1" id="q-08-query-1-2" data-ok><label for="q-08-query-1-2"><span>Time and the unique row number</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A timestamp alone cannot distinguish the tied rows. <a class="show-me" href="08-query.html">Learn it in puzzle 8 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> An index matching the owner and sort order can serve the same page with less searching and sorting.</p>
 </fieldset></section>

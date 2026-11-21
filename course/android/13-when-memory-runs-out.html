@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-13">
         <p id="builds-on-13"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-you-dont-call-youre-called.html">Puzzle 6: You don't call. You're called.</a></summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: You don't call. You're called.</summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p><p><a href="06-you-dont-call-youre-called.html">Review puzzle 6</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="06-you-dont-call-youre-called.html">6</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -108,26 +108,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app is in the background and memory runs low. Another app is on screen. Which process goes first?</legend>
-<input type="radio" name="q-13-when-memory-runs-out-1" id="q-13-when-memory-runs-out-1-1"><label for="q-13-when-memory-runs-out-1-1">Neither: Android asks the user which app to close</label>
-<input type="radio" name="q-13-when-memory-runs-out-1" id="q-13-when-memory-runs-out-1-2"><label for="q-13-when-memory-runs-out-1-2">The app on screen, since it uses the most memory of all</label>
-<input type="radio" name="q-13-when-memory-runs-out-1" id="q-13-when-memory-runs-out-1-3" data-ok><label for="q-13-when-memory-runs-out-1-3">Yours: a cached app ranks below the one on screen</label>
+<input type="radio" name="q-13-when-memory-runs-out-1" id="q-13-when-memory-runs-out-1-1"><label for="q-13-when-memory-runs-out-1-1"><span>Neither: Android asks the user which app to close</span></label>
+<input type="radio" name="q-13-when-memory-runs-out-1" id="q-13-when-memory-runs-out-1-2"><label for="q-13-when-memory-runs-out-1-2"><span>The app on screen, since it uses the most memory of all</span></label>
+<input type="radio" name="q-13-when-memory-runs-out-1" id="q-13-when-memory-runs-out-1-3" data-ok><label for="q-13-when-memory-runs-out-1-3"><span>Yours: a cached app ranks below the one on screen</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> No one is asked: the low-memory killer decides on its own. <label class="show-me" for="st-lmk-3" data-goto="st-lmk">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Importance decides, not size: the app the user is using is the last to go. <label class="show-me" for="st-lmk-3" data-goto="st-lmk">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Least important first; the app on screen last.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The low-memory killer ended your app's process. What does your code get to run first?</legend>
-<input type="radio" name="q-13-when-memory-runs-out-2" id="q-13-when-memory-runs-out-2-1"><label for="q-13-when-memory-runs-out-2-1">A message on the main thread asking it to clean up</label>
-<input type="radio" name="q-13-when-memory-runs-out-2" id="q-13-when-memory-runs-out-2-2"><label for="q-13-when-memory-runs-out-2-2">Your Activity's last lifecycle callbacks, so it can save</label>
-<input type="radio" name="q-13-when-memory-runs-out-2" id="q-13-when-memory-runs-out-2-3" data-ok><label for="q-13-when-memory-runs-out-2-3">Nothing: the whole process ends at once, with no warning</label>
+<input type="radio" name="q-13-when-memory-runs-out-2" id="q-13-when-memory-runs-out-2-1"><label for="q-13-when-memory-runs-out-2-1"><span>A message on the main thread asking it to clean up</span></label>
+<input type="radio" name="q-13-when-memory-runs-out-2" id="q-13-when-memory-runs-out-2-2"><label for="q-13-when-memory-runs-out-2-2"><span>Your Activity's last lifecycle callbacks, so it can save</span></label>
+<input type="radio" name="q-13-when-memory-runs-out-2" id="q-13-when-memory-runs-out-2-3" data-ok><label for="q-13-when-memory-runs-out-2-3"><span>Nothing: the whole process ends at once, with no warning</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A message needs a running process; this one is ended outright. <label class="show-me" for="st-lmk-4" data-goto="st-lmk">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> There's no callback for this: the process and everything in its memory just disappear. <label class="show-me" for="st-lmk-4" data-goto="st-lmk">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Ended outright: plan for it before it happens.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a foreground process and a cached process?</legend>
-<input type="radio" name="q-13-when-memory-runs-out-3" id="q-13-when-memory-runs-out-3-1"><label for="q-13-when-memory-runs-out-3-1">Foreground is kept for later, ended first; cached is the app in use, ended last</label>
-<input type="radio" name="q-13-when-memory-runs-out-3" id="q-13-when-memory-runs-out-3-2" data-ok><label for="q-13-when-memory-runs-out-3-2">Foreground is the app in use, ended last; cached is kept for later, ended first</label>
+<input type="radio" name="q-13-when-memory-runs-out-3" id="q-13-when-memory-runs-out-3-1"><label for="q-13-when-memory-runs-out-3-1"><span>Foreground is kept for later, ended first; cached is the app in use, ended last</span></label>
+<input type="radio" name="q-13-when-memory-runs-out-3" id="q-13-when-memory-runs-out-3-2" data-ok><label for="q-13-when-memory-runs-out-3-2"><span>Foreground is the app in use, ended last; cached is kept for later, ended first</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <label class="show-me" for="st-lmk-2" data-goto="st-lmk">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> In use vs kept for later.</p>
 </fieldset>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary><a href="03-the-filing-cabinet.html">Puzzle 3: The filing cabinet</a></summary><p>GATT organizes a device's data like a filing cabinet: services are drawers, characteristics are folders holding one value, each named by a UUID. The GATT server holds them; the GATT client reads and writes them.</p></details></li></ul>
+        <ul><li data-block="3"><details><summary>Puzzle 3: The filing cabinet</summary><p>GATT organizes a device's data like a filing cabinet: services are drawers, characteristics are folders holding one value, each named by a UUID. The GATT server holds them; the GATT client reads and writes them.</p><p><a href="03-the-filing-cabinet.html">Review puzzle 3</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-a-year-on-a-coin-battery.html">0</a> → <a href="01-shouting-into-the-room.html">1</a> → <a href="02-a-timetable-for-two.html">2</a> → <a href="03-the-filing-cabinet.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -119,26 +119,26 @@ gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app calls <code>setCharacteristicNotification(characteristic, true)</code> and nothing else. The heart rate changes. What arrives?</legend>
-<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-1"><label for="q-04-dont-ask-get-told-1-1">Only the first change, then the strap waits to be asked</label>
-<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-2"><label for="q-04-dont-ask-get-told-1-2">Every change, right away, as notifications are now on</label>
-<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-3" data-ok><label for="q-04-dont-ask-get-told-1-3">Nothing: the CCCD on the strap was never written</label>
+<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-1"><label for="q-04-dont-ask-get-told-1-1"><span>Only the first change, then the strap waits to be asked</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-2"><label for="q-04-dont-ask-get-told-1-2"><span>Every change, right away, as notifications are now on</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-3" data-ok><label for="q-04-dont-ask-get-told-1-3"><span>Nothing: the CCCD on the strap was never written</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> No notifications are sent at all until the CCCD is written. <label class="show-me" for="st-notify-2" data-goto="st-notify">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> That call only prepares your own phone. The strap starts sending only when its CCCD is written. <label class="show-me" for="st-notify-4" data-goto="st-notify">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Two steps: your phone, and the switch on the strap.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why are notifications cheaper than reading again and again?</legend>
-<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-1"><label for="q-04-dont-ask-get-told-2-1">Because notifications travel outside the connection events</label>
-<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-2" data-ok><label for="q-04-dont-ask-get-told-2-2">Because it sends one packet only when the value changes, with no request first</label>
-<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-3"><label for="q-04-dont-ask-get-told-2-3">Because notifications are compressed into fewer bytes</label>
+<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-1"><label for="q-04-dont-ask-get-told-2-1"><span>Because notifications travel outside the connection events</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-2" data-ok><label for="q-04-dont-ask-get-told-2-2"><span>Because it sends one packet only when the value changes, with no request first</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-3"><label for="q-04-dont-ask-get-told-2-3"><span>Because notifications are compressed into fewer bytes</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They still travel at connection events; the saving is the request and answer packets, and fresher values. <label class="show-me" for="st-notify-3" data-goto="st-notify">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> No request, and nothing sent when nothing changed.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Same value, same bytes; the saving is not having to ask. <label class="show-me" for="st-notify-1" data-goto="st-notify">Show me step 1 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a characteristic and a descriptor?</legend>
-<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-1"><label for="q-04-dont-ask-get-told-3-1">A descriptor is a second copy of the value, kept as a backup</label>
-<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-2" data-ok><label for="q-04-dont-ask-get-told-3-2">A characteristic holds a value, while a descriptor is a setting attached to it</label>
+<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-1"><label for="q-04-dont-ask-get-told-3-1"><span>A descriptor is a second copy of the value, kept as a backup</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-2" data-ok><label for="q-04-dont-ask-get-told-3-2"><span>A characteristic holds a value, while a descriptor is a setting attached to it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> It's not the value: it describes or configures the characteristic. <label class="show-me" for="st-notify-2" data-goto="st-notify">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Value vs a setting about that value.</p>
 </fieldset>
@@ -153,8 +153,8 @@ gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>Bluetooth Low Energy, from the radio up</b>. Next: Module 2: Making it fast and reliable, about why only 20 bytes per packet (MTU, Data Length Extension, 2M PHY), throughput math, Android's one-operation-at-a-time rule and status 133.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Don't%20ask%2C%20get%20told&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

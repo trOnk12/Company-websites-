@@ -226,3 +226,15 @@ Added a deterministic Java 21 shared-counter exercise and a Python/SQLite HTTP e
 ## Backend system design in English
 
 Published a 15-lesson path through a parking reservation service, with three transfer cases, a Java/JDBC concurrency and restart lab, a queue model, module checkpoints and an offline vault. The design exam requires a capacity estimate, a failure timeline, reproducible evidence and a revised decision after an assumption changes.
+
+### System design · PostgreSQL concurrency lab
+
+Linked the conditional-write puzzle to four executable two-writer experiments. The runner observes an actual lock wait before releasing the first writer, checks both committed tables, reproduces write skew and retries the decision after SQLSTATE 40001. The adjacent-seat exercise transfers the reasoning to a two-row reservation. Verified the four schedules on PostgreSQL 17.6.
+
+### Site review · From course discovery to a running experiment
+
+Reviewed the home page, course catalog, lessons, learning log, music pages and practice tools on narrow and desktop layouts. Main problems were repository links at the point of practice, a missing catalog route for general system design, overflowing long quiz answers and inconsistent navigation between sections. Primary lab actions now open English activities on the site. Native project files remain available for deeper practice. Checked real browser database transactions and four PostgreSQL schedules separately. Tested lab variants, navigation, keyboard controls and narrow-screen layout.
+
+### Independent practice in every published engineering course
+
+The 13 course outlines and their final lessons lead into a course-specific investigation with stated prerequisites, a concrete fixture, evidence to collect, a worked review and a changed assumption. The same projects ship with the offline vaults. All 38 lessons in the Backend, JVM and general System Design path received a separate content review. Planned modules remain identifiable on their course outlines.

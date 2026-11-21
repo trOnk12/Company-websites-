@@ -1,0 +1,27 @@
+.lab { padding-block: clamp(1rem, 3vw, 2.25rem) 3rem; }
+.lab .lab-intro { margin-bottom: 1.5rem; }
+.lab .lab-intro .lede { margin-top: .6rem; }
+.lab .lesson-context { margin-bottom: 1rem; }
+.lab-card { padding: clamp(1rem, 3vw, 1.75rem); margin: 1.25rem 0; border: 1px solid var(--rule); border-radius: .35rem; }
+.lab-card h2 { font-size: clamp(1.35rem, 1rem + 1.1vw, 1.8rem); margin-bottom: .75rem; }
+.lab-card form, .lab-card .topics { display: flex; flex-wrap: wrap; gap: .7rem 1rem; align-items: end; margin: 1rem 0; }
+.lab-card label, .lab-field { display: grid; gap: .3rem; min-width: 0; max-width: 100%; font-weight: 650; }
+.lab-card input, .lab-card select, .lab-card button { font: inherit; min-height: 44px; max-width: 100%; }
+.lab-card input, .lab-card select { background: var(--bg); color: var(--ink); border: 1px solid var(--muted); border-radius: .25rem; padding: .45rem .5rem; }
+.lab-card input { width: 9rem; }
+.lab-card button { cursor: pointer; font-weight: 700; }
+.lab-card button:disabled { opacity: .55; cursor: default; }
+.lab-card summary { cursor: pointer; min-height: 44px; padding-block: .5rem; font-weight: 650; }
+.lab-card #fixture { margin-top: 1rem; }
+.lab-card output, .lab-card #result:not(:empty) { display: block; background: var(--bg-band); border-inline-start: .24rem solid var(--accent-deep); padding: .85rem 1rem; margin: 1rem 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.lab-card output, .lab-card #result pre { white-space: pre-wrap; font: .95rem/1.6 var(--mono); }
+.lab-card #result h2 { font-size: 1.25rem; }
+.lab-card #result p:last-child, .lab-card > :last-child { margin-bottom: 0; }
+.lab-return { margin-top: 1rem; }
+.lab .table-wrap { overflow-x: auto; }
+.lab .table-wrap th, .lab .table-wrap td { white-space: normal; word-break: normal; }
+@media (max-width: 32rem) {
+  .lab-card form { flex-direction: column; align-items: stretch; }
+  .lab-card input { width: 100%; }
+  .lab-card select { width: 100%; }
+}

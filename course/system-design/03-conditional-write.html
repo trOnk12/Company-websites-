@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -63,11 +63,12 @@
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
         <a href="#go-deeper-what-if-the-rule-spans-different-rows">Go deeper</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -104,6 +105,9 @@
 <p>In the JVM lab, both statements run inside one transaction. A zero update count causes a rollback.</p>
 <pre><code class="language-sql">INSERT INTO parking_session(id, lot) VALUES (?, ?);
 UPDATE lot SET free = free - 1 WHERE name = ? AND free &gt; 0;</code></pre>
+<h3>Distinguish an empty lot from an old edit</h3>
+<p>Suppose an operator opens a lot record at version 7. A second operator edits it and saves version 8. The first tries to save a new capacity only where the stored version still equals 7. Zero rows change. Here zero means the original version condition failed for an existing record. The service can return a conflict and ask the operator to review the current values.</p>
+<p>This is optimistic concurrency control: the reader starts work without reserving exclusive access and validates its earlier observation at write time. The inventory statement above checks a different condition. If three spaces remain, two increments of demand can both succeed in sequence. Requiring the exact old version in that case could reject an otherwise valid reservation.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-what-if-the-rule-spans-different-rows">
         <summary><span class="depth-label">Go deeper</span>What if the rule spans different rows?</summary>
@@ -115,29 +119,33 @@ UPDATE lot SET free = free - 1 WHERE name = ? AND free &gt; 0;</code></pre>
       </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Run the JVM lab. It tests the same inventory rule with H2 over real HTTP. Record the winner's ID and try to read the losing reservation. Imagine committing the insert separately before decrementing the counter. Which row would survive a crash between the two commits?</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/parking-design">Open the runnable lab and instructions</a></p>
+<p>Run the browser lab. Start with one space, send both requests and inspect the surviving claims. Repeat with two spaces. Imagine committing the insert separately before decrementing the counter. Which row would survive a crash between the two commits?</p>
+<p><a href="/labs/parking-design/#race">Run two competing reservations</a></p>
+<h3>Predict the database result</h3>
+<p>Ada has changed the last free space to zero, but her transaction is still open. Ben tries the same update. A third connection reads the lot. Predict what each connection sees. Now change just one event: Ada rolls back. Which results change? Verify both the free count and the name on the surviving claim.</p>
+<p><a href="/labs/parking-design/#isolation">Step through four PostgreSQL schedules</a></p>
+<p>The final two experiments move the rule across rows. Compare the number of attendants left on call under Repeatable Read and Serializable. When PostgreSQL rejects a decision, identify the first read that must be repeated.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Why can a valid update affect zero rows?</legend>
-<input type="radio" name="q-03-conditional-write-1" id="q-03-conditional-write-1-1" data-ok><label for="q-03-conditional-write-1-1">Its condition no longer matches</label>
-<input type="radio" name="q-03-conditional-write-1" id="q-03-conditional-write-1-2"><label for="q-03-conditional-write-1-2">The service never received the request</label>
+<input type="radio" name="q-03-conditional-write-1" id="q-03-conditional-write-1-1" data-ok><label for="q-03-conditional-write-1-1"><span>Its condition no longer matches</span></label>
+<input type="radio" name="q-03-conditional-write-1" id="q-03-conditional-write-1-2"><label for="q-03-conditional-write-1-2"><span>The service never received the request</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A successfully executed statement can match nothing.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A successfully executed statement can match nothing. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Does a final count of zero prove correctness?</legend>
-<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-1" data-ok><label for="q-03-conditional-write-2-1">Count the active grants too</label>
-<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-2"><label for="q-03-conditional-write-2-2">Yes, zero proves one sale</label>
+<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-1" data-ok><label for="q-03-conditional-write-2-1"><span>Count the active grants too</span></label>
+<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-2"><label for="q-03-conditional-write-2-2"><span>Yes, zero proves one sale</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Two grants could have written the same final count.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Two grants could have written the same final count. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What disappears when Ben rolls back?</legend>
-<input type="radio" name="q-03-conditional-write-3" id="q-03-conditional-write-3-1"><label for="q-03-conditional-write-3-1">Ada's committed grant</label>
-<input type="radio" name="q-03-conditional-write-3" id="q-03-conditional-write-3-2" data-ok><label for="q-03-conditional-write-3-2">Ben's uncommitted grant</label>
+<input type="radio" name="q-03-conditional-write-3" id="q-03-conditional-write-3-1"><label for="q-03-conditional-write-3-1"><span>Ada's committed grant</span></label>
+<input type="radio" name="q-03-conditional-write-3" id="q-03-conditional-write-3-2" data-ok><label for="q-03-conditional-write-3-2"><span>Ben's uncommitted grant</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Each attempt owns its own transaction. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Each attempt owns its own transaction.</p>
 </fieldset>

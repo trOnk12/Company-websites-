@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-lost-in-translation.html">Puzzle 6: Lost in translation</a></summary><p>Through the Objective-C header, generics on interfaces are lost (a Flow&lt;User&gt; arrives without its User), suspend functions become completion handlers (async in Swift), and an unexpected Kotlin exception escaping the bridge can terminate the app.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: Lost in translation</summary><p>Through the Objective-C header, generics on interfaces are lost (a Flow&lt;User&gt; arrives without its User), suspend functions become completion handlers (async in Swift), and an unexpected Kotlin exception escaping the bridge can terminate the app.</p><p><a href="06-lost-in-translation.html">Review puzzle 6</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 7 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a> → <a href="03-a-promise-and-its-keepers.html">3</a> → <a href="04-an-ios-app-in-one-puzzle.html">4</a> → <a href="05-how-swift-sees-your-kotlin.html">5</a> → <a href="06-lost-in-translation.html">6</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/02-threads-are-the-workers.html"><b>main thread</b></a> <span class="small">Android from the foundation, puzzle 2: Threads are the workers</span></li><li><a href="../android/16-the-main-threads-queue.html"><b>Looper</b></a> <span class="small">Android from the foundation, puzzle 16: The main thread's queue</span></li><li><a href="../android/16-the-main-threads-queue.html"><b>message queue</b></a> <span class="small">Android from the foundation, puzzle 16: The main thread's queue</span></li><li><a href="../android/16-the-main-threads-queue.html"><b>Handler</b></a> <span class="small">Android from the foundation, puzzle 16: The main thread's queue</span></li><li><a href="../android/17-frames-jank-and-anrs.html"><b>frame</b></a> <span class="small">Android from the foundation, puzzle 17: Frames, jank and ANRs</span></li><li><a href="../ios/02-queues-not-handlers.html"><b>DispatchQueue.main.async</b></a> <span class="small">iOS for Android developers, puzzle 2: Queues, not handlers</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -117,26 +117,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Which iOS piece plays the role of Android's MessageQueue?</legend>
-<input type="radio" name="q-10-the-main-thread-on-ios-1" id="q-10-the-main-thread-on-ios-1-1"><label for="q-10-the-main-thread-on-ios-1-1">UIKit, because the UI work lands there</label>
-<input type="radio" name="q-10-the-main-thread-on-ios-1" id="q-10-the-main-thread-on-ios-1-2"><label for="q-10-the-main-thread-on-ios-1-2">The run loop, because it handles the messages</label>
-<input type="radio" name="q-10-the-main-thread-on-ios-1" id="q-10-the-main-thread-on-ios-1-3" data-ok><label for="q-10-the-main-thread-on-ios-1-3">The main queue, where tasks wait for the main thread</label>
+<input type="radio" name="q-10-the-main-thread-on-ios-1" id="q-10-the-main-thread-on-ios-1-1"><label for="q-10-the-main-thread-on-ios-1-1"><span>UIKit, because the UI work lands there</span></label>
+<input type="radio" name="q-10-the-main-thread-on-ios-1" id="q-10-the-main-thread-on-ios-1-2"><label for="q-10-the-main-thread-on-ios-1-2"><span>The run loop, because it handles the messages</span></label>
+<input type="radio" name="q-10-the-main-thread-on-ios-1" id="q-10-the-main-thread-on-ios-1-3" data-ok><label for="q-10-the-main-thread-on-ios-1-3"><span>The main queue, where tasks wait for the main thread</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> UIKit is the screen framework; tasks wait in the main queue. <label class="show-me" for="st-mainthread-2" data-goto="st-mainthread">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> The run loop is the Looper; the line of waiting tasks is the main queue. <label class="show-me" for="st-mainthread-2" data-goto="st-mainthread">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> The waiting line is the main queue.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A background thread sets <code>imageView.image</code> directly. What's wrong?</legend>
-<input type="radio" name="q-10-the-main-thread-on-ios-2" id="q-10-the-main-thread-on-ios-2-1" data-ok><label for="q-10-the-main-thread-on-ios-2-1">UIKit may be touched only from the main thread, as on Android</label>
-<input type="radio" name="q-10-the-main-thread-on-ios-2" id="q-10-the-main-thread-on-ios-2-2"><label for="q-10-the-main-thread-on-ios-2-2">Only that it's slower than doing it on the main thread</label>
-<input type="radio" name="q-10-the-main-thread-on-ios-2" id="q-10-the-main-thread-on-ios-2-3"><label for="q-10-the-main-thread-on-ios-2-3">Nothing, because UIKit is thread-safe on iOS</label>
+<input type="radio" name="q-10-the-main-thread-on-ios-2" id="q-10-the-main-thread-on-ios-2-1" data-ok><label for="q-10-the-main-thread-on-ios-2-1"><span>UIKit may be touched only from the main thread, as on Android</span></label>
+<input type="radio" name="q-10-the-main-thread-on-ios-2" id="q-10-the-main-thread-on-ios-2-2"><label for="q-10-the-main-thread-on-ios-2-2"><span>Only that it's slower than doing it on the main thread</span></label>
+<input type="radio" name="q-10-the-main-thread-on-ios-2" id="q-10-the-main-thread-on-ios-2-3"><label for="q-10-the-main-thread-on-ios-2-3"><span>Nothing, because UIKit is thread-safe on iOS</span></label>
 <p class="fb ok opt-1"><b>Right.</b> UI: main thread only.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The problem is correctness: UI must be touched on the main thread. <label class="show-me" for="st-mainthread-4" data-goto="st-mainthread">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> It isn't: UI work belongs on the main thread. <label class="show-me" for="st-mainthread-4" data-goto="st-mainthread">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the run loop and the main queue?</legend>
-<input type="radio" name="q-10-the-main-thread-on-ios-3" id="q-10-the-main-thread-on-ios-3-1"><label for="q-10-the-main-thread-on-ios-3-1">The main queue keeps the main thread working, while the run loop is the line of tasks it takes from</label>
-<input type="radio" name="q-10-the-main-thread-on-ios-3" id="q-10-the-main-thread-on-ios-3-2" data-ok><label for="q-10-the-main-thread-on-ios-3-2">The run loop keeps the main thread working, while the main queue is the line of tasks it takes from</label>
+<input type="radio" name="q-10-the-main-thread-on-ios-3" id="q-10-the-main-thread-on-ios-3-1"><label for="q-10-the-main-thread-on-ios-3-1"><span>The main queue keeps the main thread working, while the run loop is the line of tasks it takes from</span></label>
+<input type="radio" name="q-10-the-main-thread-on-ios-3" id="q-10-the-main-thread-on-ios-3-2" data-ok><label for="q-10-the-main-thread-on-ios-3-2"><span>The run loop keeps the main thread working, while the main queue is the line of tasks it takes from</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The worker's loop vs its in-tray.</p>
 </fieldset>

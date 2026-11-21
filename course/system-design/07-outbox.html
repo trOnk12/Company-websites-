@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -63,11 +63,12 @@
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
         <a href="#go-deeper-what-if-events-arrive-out-of-order">Go deeper</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-7">
         <p id="builds-on-7"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -101,6 +102,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>Store an <b>event</b>, a record saying that something happened, such as a space being granted, in the same transaction as the reservation. This is the <b>transactional outbox pattern</b>. Another process reads committed events and delivers them. After a restart, the service can distinguish pending work from a reservation that never happened.</p>
 <p>A sender can deliver an event and crash before marking it complete. It will deliver again. A consumer can store the event identity and its own database effect in one transaction. That protects the database effect from repetition. An email provider forms another boundary. A local transaction alone cannot guarantee exactly one message in the driver's inbox.</p>
+<h3>Follow event 41 through a crash</h3>
+<p>Ada's committed reservation and event 41 appear together. A worker publishes 41 and stops before recording the delivery. A replacement publishes 41 again. On the receiving side, insert 41 into a table of processed identities and update the local reservation view in one transaction. The first delivery commits both changes. A duplicate detects the existing identity and leaves the view alone.</p>
+<p>Reverse the receiving order and commit the processed marker on its own first. A crash before the view update now loses the effect permanently: every retry finds a completed marker. To test the repaired version, stop the worker at each boundary, run the worker again, and count both distinct processed IDs and visible reservations.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-what-if-events-arrive-out-of-order">
         <summary><span class="depth-label">Go deeper</span>What if events arrive out of order?</summary>
@@ -118,22 +122,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Which two writes belong together?</legend>
-<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-1" data-ok><label for="q-07-outbox-1-1">Grant and pending event</label>
-<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-2"><label for="q-07-outbox-1-2">Grant and any later log line</label>
+<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-1" data-ok><label for="q-07-outbox-1-1"><span>Grant and pending event</span></label>
+<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-2"><label for="q-07-outbox-1-2"><span>Grant and any later log line</span></label>
 <p class="fb ok opt-1"><b>Right.</b> An independent later write can disappear after a crash.</p>
 <p class="fb no opt-2"><b>Not quite.</b> An independent later write can disappear after a crash. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>When can delivery repeat?</legend>
-<input type="radio" name="q-07-outbox-2" id="q-07-outbox-2-1" data-ok><label for="q-07-outbox-2-1">After a lost receipt</label>
-<input type="radio" name="q-07-outbox-2" id="q-07-outbox-2-2"><label for="q-07-outbox-2-2">Only before the grant exists</label>
+<input type="radio" name="q-07-outbox-2" id="q-07-outbox-2-1" data-ok><label for="q-07-outbox-2-1"><span>After a lost receipt</span></label>
+<input type="radio" name="q-07-outbox-2" id="q-07-outbox-2-2"><label for="q-07-outbox-2-2"><span>Only before the grant exists</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The sender cannot tell that its first delivery succeeded.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The sender cannot tell that its first delivery succeeded. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What identifies a redelivery?</legend>
-<input type="radio" name="q-07-outbox-3" id="q-07-outbox-3-1"><label for="q-07-outbox-3-1">The time of this attempt</label>
-<input type="radio" name="q-07-outbox-3" id="q-07-outbox-3-2" data-ok><label for="q-07-outbox-3-2">The original event identity</label>
+<input type="radio" name="q-07-outbox-3" id="q-07-outbox-3-1"><label for="q-07-outbox-3-1"><span>The time of this attempt</span></label>
+<input type="radio" name="q-07-outbox-3" id="q-07-outbox-3-2" data-ok><label for="q-07-outbox-3-2"><span>The original event identity</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A retry can arrive at a different time. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A retry can arrive at a different time.</p>
 </fieldset>

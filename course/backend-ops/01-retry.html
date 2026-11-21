@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>The database stores information in a table. Think of each row as one bookmark and each column as one property. <b>SQL</b> is a language for reading and changing these tables. A <b>unique key</b> lets the database enforce one row per name, even when two callers write together. Use river as the identity of the desired bookmark. The database accepts at most one row for that name. The insert asks it to ignore a conflicting key. The handler waits for the transaction to commit before replying. The first insertion returns 201. Repeating the same write returns 200 and leaves one row. Checking for the row in application code and inserting later leaves a gap where two callers can both see it missing.</p>
+<h3>Lose the reply after a successful save</h3>
+<p>Ada sends a write request for river. The database commits one row, but the connection closes before Ada sees the reply. Her phone knows only that the outcome is unknown. On the second attempt the database checks the same key and finds river already there. The reply changes from a lost 201 to a visible 200, yet the durable result is still one bookmark. This property is called <b>idempotence</b>: repeating the intended operation preserves its intended effect. Starting a new operation called hill is a different intention.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#01-retry">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run both writes. Predict the list after a third write with a new name. Check it and explain which component enforces uniqueness.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service">Open the runnable bookmark lab</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service">Open the local service source files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What if the retry invents a fresh name?</legend>
-<input type="radio" name="q-01-retry-1" id="q-01-retry-1-1" data-ok><label for="q-01-retry-1-1">A second row can be created</label>
-<input type="radio" name="q-01-retry-1" id="q-01-retry-1-2"><label for="q-01-retry-1-2">The database detects the same tap automatically</label>
+<input type="radio" name="q-01-retry-1" id="q-01-retry-1-1" data-ok><label for="q-01-retry-1-1"><span>A second row can be created</span></label>
+<input type="radio" name="q-01-retry-1" id="q-01-retry-1-2"><label for="q-01-retry-1-2"><span>The database detects the same tap automatically</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A stable bookmark name and a unique database key let repeated writes converge on one row.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The key identifies the name supplied by the client. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Does a client timeout tell you whether the insert committed?</legend>
+<input type="radio" name="q-01-retry-2" id="q-01-retry-2-1"><label for="q-01-retry-2-1"><span>Yes, a timeout rolls the insert back</span></label>
+<input type="radio" name="q-01-retry-2" id="q-01-retry-2-2" data-ok><label for="q-01-retry-2-2"><span>No, either outcome is possible</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Losing the reply and losing the write are different events. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Losing the reply and losing the write are different events.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>What evidence demonstrates a successful replay?</legend>
+<input type="radio" name="q-01-retry-3" id="q-01-retry-3-1" data-ok><label for="q-01-retry-3-1"><span>One durable row for river after both calls</span></label>
+<input type="radio" name="q-01-retry-3" id="q-01-retry-3-2"><label for="q-01-retry-3-2"><span>Identical status codes for every call</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The intended effect is the stored bookmark.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The intended effect is the stored bookmark. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.sqlite.org/lang_upsert.html">Technical reference</a></li></ul></details>

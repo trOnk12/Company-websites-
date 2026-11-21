@@ -1,0 +1,22 @@
+{
+  "title": "Explain a slow first response",
+  "brief": "Use a timing trace and a loss trace to decide whether to change the connection lifecycle, the server or the transport.",
+  "prerequisites": "Complete the TCP, TLS, first-byte and multiplexing lessons. Distinguish a round trip from a one-way delay.",
+  "setup": "A known address is 35 ms away each way. Use fresh TCP, full TLS 1.3, no early data, no key-share retry, negligible transfer time and 20 ms server work. A second request reuses the same healthy connection.",
+  "steps": [
+    "Draw send and receive times from the initial connection request to the first response byte. Mark which flights may share a network trip.",
+    "Draw the same timeline for the reused connection. Predict the savings and name one omitted factor that would increase both times.",
+    "On an already established HTTP/2 connection, model a missing TCP byte range from response A followed by intact bytes carrying response B. Identify what the application can deliver before the gap is repaired.",
+    "Repeat with independent HTTP/3 streams that have no application or header-decoding dependency on each other. Identify the unit whose ordering still matters."
+  ],
+  "evidence": [
+    "The stated model produces 230 ms cold and 90 ms warm. The calculation includes server work exactly once in each measurement.",
+    "The loss explanation identifies the ordered TCP byte stream for HTTP/2 and independent stream delivery for HTTP/3. It avoids promising identical throughput or zero delay under loss."
+  ],
+  "worked": [
+    "One RTT is 70 ms. Establishing TCP takes the first 70. The TLS client hello and server flight use the next 70. Sending the regular request and receiving the first byte takes another 70 plus 20 of server work: 230 ms total. The warm request needs 70 + 20 = 90 ms.",
+    "With HTTP/2 the bytes after the TCP gap can arrive at the receiver but cannot be delivered to the HTTP layer past the gap until repaired. With independent HTTP/3 streams, a missing byte on A does not by itself prevent B’s contiguous bytes from delivery. Congestion control and shared bandwidth can still affect both."
+  ],
+  "variation": "The reused request actually takes 240 ms, while server tracing reports 165 ms of work and the RTT remains 70 ms.",
+  "solution": "The stated network trip and measured work explain about 235 ms, leaving about 5 ms. Verify connection reuse and trace boundaries before proposing another transport. Under the original model, removing connection setup again would not remove those 165 ms."
+}

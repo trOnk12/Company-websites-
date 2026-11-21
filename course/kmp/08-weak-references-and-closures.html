@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-8">
         <p id="builds-on-8"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="7"><details><summary><a href="07-counting-or-tracing.html">Puzzle 7: Counting or tracing</a></summary><p>A tracing garbage collector starts from the roots, the references a program always has (local and global variables), follows every reference, and frees whatever it couldn't reach, even objects that point at each other. Reference counting keeps a count of strong references on every object and frees it the moment the count hits zero, but two objects holding each other never reach zero: a cycle it can't free.</p></details></li></ul>
+        <ul><li data-block="7"><details><summary>Puzzle 7: Counting or tracing</summary><p>A tracing garbage collector starts from the roots, the references a program always has (local and global variables), follows every reference, and frees whatever it couldn't reach, even objects that point at each other. Reference counting keeps a count of strong references on every object and frees it the moment the count hits zero, but two objects holding each other never reach zero: a cycle it can't free.</p><p><a href="07-counting-or-tracing.html">Review puzzle 7</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 5 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a> → <a href="04-an-ios-app-in-one-puzzle.html">4</a> → <a href="07-counting-or-tracing.html">7</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../perf/07-what-garbage-is.html"><b>reference</b></a> <span class="small">Performance, under the hood, puzzle 7: What garbage is</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -122,26 +122,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The screen stores a closure that uses <code>self</code> strongly. The user leaves. What happens?</legend>
-<input type="radio" name="q-08-weak-references-and-closures-1" id="q-08-weak-references-and-closures-1-1"><label for="q-08-weak-references-and-closures-1-1">The screen is freed, because the user left it</label>
-<input type="radio" name="q-08-weak-references-and-closures-1" id="q-08-weak-references-and-closures-1-2" data-ok><label for="q-08-weak-references-and-closures-1-2">The screen is never freed: it and the closure hold each other</label>
-<input type="radio" name="q-08-weak-references-and-closures-1" id="q-08-weak-references-and-closures-1-3"><label for="q-08-weak-references-and-closures-1-3">The closure is freed, and the screen with it</label>
+<input type="radio" name="q-08-weak-references-and-closures-1" id="q-08-weak-references-and-closures-1-1"><label for="q-08-weak-references-and-closures-1-1"><span>The screen is freed, because the user left it</span></label>
+<input type="radio" name="q-08-weak-references-and-closures-1" id="q-08-weak-references-and-closures-1-2" data-ok><label for="q-08-weak-references-and-closures-1-2"><span>The screen is never freed: it and the closure hold each other</span></label>
+<input type="radio" name="q-08-weak-references-and-closures-1" id="q-08-weak-references-and-closures-1-3"><label for="q-08-weak-references-and-closures-1-3"><span>The closure is freed, and the screen with it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Leaving doesn't change counts; the closure still holds the screen. <label class="show-me" for="st-weak-2" data-goto="st-weak">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Self stores a closure that holds self: a cycle.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The screen holds the closure, so neither count reaches zero. <label class="show-me" for="st-weak-2" data-goto="st-weak">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>With <code>[weak self]</code>, the screen is freed while the closure is still stored. What does <code>self</code> become inside it?</legend>
-<input type="radio" name="q-08-weak-references-and-closures-2" id="q-08-weak-references-and-closures-2-1"><label for="q-08-weak-references-and-closures-2-1">Still the screen, because the closure was created first</label>
-<input type="radio" name="q-08-weak-references-and-closures-2" id="q-08-weak-references-and-closures-2-2"><label for="q-08-weak-references-and-closures-2-2">A copy of the screen kept by the closure</label>
-<input type="radio" name="q-08-weak-references-and-closures-2" id="q-08-weak-references-and-closures-2-3" data-ok><label for="q-08-weak-references-and-closures-2-3"><code>nil</code>, since a weak reference empties when its object is freed</label>
+<input type="radio" name="q-08-weak-references-and-closures-2" id="q-08-weak-references-and-closures-2-1"><label for="q-08-weak-references-and-closures-2-1"><span>Still the screen, because the closure was created first</span></label>
+<input type="radio" name="q-08-weak-references-and-closures-2" id="q-08-weak-references-and-closures-2-2"><label for="q-08-weak-references-and-closures-2-2"><span>A copy of the screen kept by the closure</span></label>
+<input type="radio" name="q-08-weak-references-and-closures-2" id="q-08-weak-references-and-closures-2-3" data-ok><label for="q-08-weak-references-and-closures-2-3"><span><code>nil</code>, since a weak reference empties when its object is freed</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Order doesn't matter; weak never keeps the object alive. <label class="show-me" for="st-weak-4" data-goto="st-weak">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> A weak reference keeps nothing; it becomes nil. <label class="show-me" for="st-weak-4" data-goto="st-weak">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Weak references become nil.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a strong and a weak reference?</legend>
-<input type="radio" name="q-08-weak-references-and-closures-3" id="q-08-weak-references-and-closures-3-1"><label for="q-08-weak-references-and-closures-3-1">A weak one adds to the count and keeps the object alive, while a strong one doesn't</label>
-<input type="radio" name="q-08-weak-references-and-closures-3" id="q-08-weak-references-and-closures-3-2" data-ok><label for="q-08-weak-references-and-closures-3-2">A strong one adds to the count and keeps the object alive, while a weak one doesn't</label>
+<input type="radio" name="q-08-weak-references-and-closures-3" id="q-08-weak-references-and-closures-3-1"><label for="q-08-weak-references-and-closures-3-1"><span>A weak one adds to the count and keeps the object alive, while a strong one doesn't</span></label>
+<input type="radio" name="q-08-weak-references-and-closures-3" id="q-08-weak-references-and-closures-3-2" data-ok><label for="q-08-weak-references-and-closures-3-2"><span>A strong one adds to the count and keeps the object alive, while a weak one doesn't</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Counted vs not counted.</p>
 </fieldset>

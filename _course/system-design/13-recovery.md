@@ -20,6 +20,12 @@ Define the acceptable amount of data loss in time, the recovery point objective,
 
 Restore synthetic reservations into a separate database. Count confirmations, compare identities and make a new reservation. If valid requests arrived after the deletion, rewinding the entire database can also remove them. Reconcile those requests and external payments. Healthy replicas may have copied the original mistake perfectly.
 
+### Score a recovery by the clock
+
+The deletion occurs at 10:07. A monitor detects it at 10:10, the operator finishes restoring at 10:18, and validation permits traffic again at 10:24. If interruption began at 10:07, recovery took 17 minutes and missed a 15-minute objective. Measuring only the eight minutes spent restoring would hide the miss.
+
+Suppose the newest consistent state you can actually recover is 10:04. The gap at deletion time is three minutes. That fails a two-minute recovery point objective even if the database restarts instantly. Choose one known reservation from 10:03 and one from 10:06, look them up after restoration, then reconcile any later external charge independently.
+
 ## Try it
 
 Record detection, decision, restore, validation and reopening times. A fifteen-minute interruption budget covers that entire path. For a schema change, first add a compatible field, switch writers and readers, and remove the old field after the compatibility window. Run the old application against the upgraded schema before relying on rollback.

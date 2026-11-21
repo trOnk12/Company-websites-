@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="4"><details><summary><a href="04-the-town-hall-decides.html">Puzzle 4: Who decides about your screens</a></summary><p>system_server is the town hall. It keeps the register of every app's screens and moves each screen through its lifecycle. Your app follows.</p></details></li></ul>
+        <ul><li data-block="4"><details><summary>Puzzle 4: Who decides about your screens</summary><p>system_server is the town hall. It keeps the register of every app's screens and moves each screen through its lifecycle. Your app follows.</p><p><a href="04-the-town-hall-decides.html">Review puzzle 4</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="04-the-town-hall-decides.html">4</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -109,22 +109,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>system_server wants your Activity to pause. Can it change your app's memory directly?</legend>
-<input type="radio" name="q-05-the-post-office-carries-letters-1" id="q-05-the-post-office-carries-letters-1-1"><label for="q-05-the-post-office-carries-letters-1-1">Yes: system_server is part of Android, so it can</label>
-<input type="radio" name="q-05-the-post-office-carries-letters-1" id="q-05-the-post-office-carries-letters-1-2" data-ok><label for="q-05-the-post-office-carries-letters-1-2">No: it sends a message, and Binder carries it into your app</label>
+<input type="radio" name="q-05-the-post-office-carries-letters-1" id="q-05-the-post-office-carries-letters-1-1"><label for="q-05-the-post-office-carries-letters-1-1"><span>Yes: system_server is part of Android, so it can</span></label>
+<input type="radio" name="q-05-the-post-office-carries-letters-1" id="q-05-the-post-office-carries-letters-1-2" data-ok><label for="q-05-the-post-office-carries-letters-1-2"><span>No: it sends a message, and Binder carries it into your app</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Being Android's own process doesn't give it access to yours. Only the kernel reaches into every process. <label class="show-me" for="st-post-office-2" data-goto="st-post-office">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Separate processes never touch each other's memory; Binder carries the message.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does the message go through the kernel?</legend>
-<input type="radio" name="q-05-the-post-office-carries-letters-2" id="q-05-the-post-office-carries-letters-2-1" data-ok><label for="q-05-the-post-office-carries-letters-2-1">Because only the kernel can reach into every process</label>
-<input type="radio" name="q-05-the-post-office-carries-letters-2" id="q-05-the-post-office-carries-letters-2-2"><label for="q-05-the-post-office-carries-letters-2-2">Because the kernel decides when screens pause</label>
+<input type="radio" name="q-05-the-post-office-carries-letters-2" id="q-05-the-post-office-carries-letters-2-1" data-ok><label for="q-05-the-post-office-carries-letters-2-1"><span>Because only the kernel can reach into every process</span></label>
+<input type="radio" name="q-05-the-post-office-carries-letters-2" id="q-05-the-post-office-carries-letters-2-2"><label for="q-05-the-post-office-carries-letters-2-2"><span>Because the kernel decides when screens pause</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The kernel is the only code that can reach any process, so it does the carrying.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The kernel only carries the letter. The decision was the town hall's. <label class="show-me" for="st-post-office-3" data-goto="st-post-office">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between Binder and system_server?</legend>
-<input type="radio" name="q-05-the-post-office-carries-letters-3" id="q-05-the-post-office-carries-letters-3-1"><label for="q-05-the-post-office-carries-letters-3-1">Binder is the part of system_server that decides what each app does</label>
-<input type="radio" name="q-05-the-post-office-carries-letters-3" id="q-05-the-post-office-carries-letters-3-2" data-ok><label for="q-05-the-post-office-carries-letters-3-2">Binder carries messages, while system_server decides what they say</label>
+<input type="radio" name="q-05-the-post-office-carries-letters-3" id="q-05-the-post-office-carries-letters-3-1"><label for="q-05-the-post-office-carries-letters-3-1"><span>Binder is the part of system_server that decides what each app does</span></label>
+<input type="radio" name="q-05-the-post-office-carries-letters-3" id="q-05-the-post-office-carries-letters-3-2" data-ok><label for="q-05-the-post-office-carries-letters-3-2"><span>Binder carries messages, while system_server decides what they say</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Binder is a part of the kernel, the post office. system_server is a process, the town hall. <label class="show-me" for="st-post-office-1" data-goto="st-post-office">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The post office delivers; the town hall decides.</p>
 </fieldset>

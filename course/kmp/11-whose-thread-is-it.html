@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-11">
         <p id="builds-on-11"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="10"><details><summary><a href="10-the-main-thread-on-ios.html">Puzzle 10: The main thread on iOS</a></summary><p>iOS's main thread runs a run loop, the role of Android's Looper: it waits for work, handles it, and waits again. Work for it waits in the main queue, the role of the MessageQueue, and DispatchQueue.main.async plays handler.post. As on Android, UIKit may be touched only from the main thread, and slow work there freezes the screen.</p></details></li></ul>
+        <ul><li data-block="10"><details><summary>Puzzle 10: The main thread on iOS</summary><p>iOS's main thread runs a run loop, the role of Android's Looper: it waits for work, handles it, and waits again. Work for it waits in the main queue, the role of the MessageQueue, and DispatchQueue.main.async plays handler.post. As on Android, UIKit may be touched only from the main thread, and slow work there freezes the screen.</p><p><a href="10-the-main-thread-on-ios.html">Review puzzle 10</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 8 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a> → <a href="03-a-promise-and-its-keepers.html">3</a> → <a href="04-an-ios-app-in-one-puzzle.html">4</a> → <a href="05-how-swift-sees-your-kotlin.html">5</a> → <a href="06-lost-in-translation.html">6</a> → <a href="10-the-main-thread-on-ios.html">10</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/02-threads-are-the-workers.html"><b>main thread</b></a> <span class="small">Android from the foundation, puzzle 2: Threads are the workers</span></li><li><a href="../android/16-the-main-threads-queue.html"><b>Looper</b></a> <span class="small">Android from the foundation, puzzle 16: The main thread's queue</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -110,26 +110,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your shared code resumes a coroutine on <code>Dispatchers.Main</code> on iOS. Which thread runs it?</legend>
-<input type="radio" name="q-11-whose-thread-is-it-1" id="q-11-whose-thread-is-it-1-1" data-ok><label for="q-11-whose-thread-is-it-1-1">The main thread, through the main queue</label>
-<input type="radio" name="q-11-whose-thread-is-it-1" id="q-11-whose-thread-is-it-1-2"><label for="q-11-whose-thread-is-it-1-2">Whichever thread called the suspend function from Swift</label>
-<input type="radio" name="q-11-whose-thread-is-it-1" id="q-11-whose-thread-is-it-1-3"><label for="q-11-whose-thread-is-it-1-3">A Kotlin worker thread, because there's no Looper on iOS</label>
+<input type="radio" name="q-11-whose-thread-is-it-1" id="q-11-whose-thread-is-it-1-1" data-ok><label for="q-11-whose-thread-is-it-1-1"><span>The main thread, through the main queue</span></label>
+<input type="radio" name="q-11-whose-thread-is-it-1" id="q-11-whose-thread-is-it-1-2"><label for="q-11-whose-thread-is-it-1-2"><span>Whichever thread called the suspend function from Swift</span></label>
+<input type="radio" name="q-11-whose-thread-is-it-1" id="q-11-whose-thread-is-it-1-3"><label for="q-11-whose-thread-is-it-1-3"><span>A Kotlin worker thread, because there's no Looper on iOS</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Main is still the main thread on iOS.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The dispatcher decides, not the caller: Main means the main queue. <label class="show-me" for="st-dispatch-2" data-goto="st-dispatch">Show me step 2 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> On iOS, Main is backed by the main queue, so it still runs on the main thread. <label class="show-me" for="st-dispatch-2" data-goto="st-dispatch">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A Swift task awaits your suspend function, then is cancelled. You use no bridge library. What happens to the Kotlin coroutine?</legend>
-<input type="radio" name="q-11-whose-thread-is-it-2" id="q-11-whose-thread-is-it-2-1"><label for="q-11-whose-thread-is-it-2-1">It's cancelled with the Swift task, as it would be in Kotlin</label>
-<input type="radio" name="q-11-whose-thread-is-it-2" id="q-11-whose-thread-is-it-2-2" data-ok><label for="q-11-whose-thread-is-it-2-2">It keeps running, since the completion-handler bridge can't pass cancellation</label>
-<input type="radio" name="q-11-whose-thread-is-it-2" id="q-11-whose-thread-is-it-2-3"><label for="q-11-whose-thread-is-it-2-3">It's paused until the Swift task is restarted</label>
+<input type="radio" name="q-11-whose-thread-is-it-2" id="q-11-whose-thread-is-it-2-1"><label for="q-11-whose-thread-is-it-2-1"><span>It's cancelled with the Swift task, as it would be in Kotlin</span></label>
+<input type="radio" name="q-11-whose-thread-is-it-2" id="q-11-whose-thread-is-it-2-2" data-ok><label for="q-11-whose-thread-is-it-2-2"><span>It keeps running, since the completion-handler bridge can't pass cancellation</span></label>
+<input type="radio" name="q-11-whose-thread-is-it-2" id="q-11-whose-thread-is-it-2-3"><label for="q-11-whose-thread-is-it-2-3"><span>It's paused until the Swift task is restarted</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The plain bridge is a completion handler, which has no way to carry the cancellation across. <label class="show-me" for="st-dispatch-3" data-goto="st-dispatch">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Without a bridge, cancellation doesn't cross.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Nothing pauses it; it runs to the end, and nothing stops it. <label class="show-me" for="st-dispatch-3" data-goto="st-dispatch">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between <code>Dispatchers.Main</code> on Android and on iOS?</legend>
-<input type="radio" name="q-11-whose-thread-is-it-3" id="q-11-whose-thread-is-it-3-1" data-ok><label for="q-11-whose-thread-is-it-3-1">Android backs it with the main Looper, iOS with the main queue, both on the main thread</label>
-<input type="radio" name="q-11-whose-thread-is-it-3" id="q-11-whose-thread-is-it-3-2"><label for="q-11-whose-thread-is-it-3-2">On iOS it runs on a worker thread, because UIKit has no main thread</label>
+<input type="radio" name="q-11-whose-thread-is-it-3" id="q-11-whose-thread-is-it-3-1" data-ok><label for="q-11-whose-thread-is-it-3-1"><span>Android backs it with the main Looper, iOS with the main queue, both on the main thread</span></label>
+<input type="radio" name="q-11-whose-thread-is-it-3" id="q-11-whose-thread-is-it-3-2"><label for="q-11-whose-thread-is-it-3-2"><span>On iOS it runs on a worker thread, because UIKit has no main thread</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Different machinery, same thread.</p>
 <p class="fb no opt-2"><b>Not quite.</b> UIKit has a main thread too; Main runs there on both platforms. <label class="show-me" for="st-dispatch-2" data-goto="st-dispatch">Show me step 2 again ↑</label></p>
 </fieldset>

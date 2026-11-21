@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: Can a lost image slow a text response?</p>
 <fieldset class="quiz" data-n="4">
 <legend>The text bytes arrive after a missing cover range in the same TCP stream. Why can HTTP/2 wait?</legend>
-<input type="radio" name="q-04-when-one-stream-loses-data-1" id="q-04-when-one-stream-loses-data-1-1"><label for="q-04-when-one-stream-loses-data-1-1">HTTP/2 requires the app to request images and text in separate sessions</label>
-<input type="radio" name="q-04-when-one-stream-loses-data-1" id="q-04-when-one-stream-loses-data-1-2" data-ok><label for="q-04-when-one-stream-loses-data-1-2">TCP delivers the shared stream in byte order</label>
-<input type="radio" name="q-04-when-one-stream-loses-data-1" id="q-04-when-one-stream-loses-data-1-3"><label for="q-04-when-one-stream-loses-data-1-3">The text response has to include a complete copy of the cover</label>
+<input type="radio" name="q-04-when-one-stream-loses-data-1" id="q-04-when-one-stream-loses-data-1-1"><label for="q-04-when-one-stream-loses-data-1-1"><span>HTTP/2 requires the app to request images and text in separate sessions</span></label>
+<input type="radio" name="q-04-when-one-stream-loses-data-1" id="q-04-when-one-stream-loses-data-1-2" data-ok><label for="q-04-when-one-stream-loses-data-1-2"><span>TCP delivers the shared stream in byte order</span></label>
+<input type="radio" name="q-04-when-one-stream-loses-data-1" id="q-04-when-one-stream-loses-data-1-3"><label for="q-04-when-one-stream-loses-data-1-3"><span>The text response has to include a complete copy of the cover</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> HTTP/2 can share a connection across both requests. <a class="show-me" href="04-when-one-stream-loses-data.html">Learn it in puzzle 4 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Separate HTTP streams share the TCP delivery order.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The text bytes can be complete yet unavailable behind the TCP gap. <a class="show-me" href="04-when-one-stream-loses-data.html">Learn it in puzzle 4 →</a></p>

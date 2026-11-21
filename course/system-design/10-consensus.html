@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-freshness.html">Puzzle 6: Why does a confirmed space still look free?</a></summary><p>A cache can extend the staleness it inherited from its source.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: Why does a confirmed space still look free?</summary><p>A cache can extend the staleness it inherited from its source.</p><p><a href="06-freshness.html">Review puzzle 6</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="06-freshness.html">6</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -101,6 +102,9 @@
 <p>In a replicated log, a leader proposes entries for an agreed order. A majority of three is two. Any two majorities intersect. Raft combines this property with election rules, numbered leadership terms and rules for committing entries. Counting two arbitrary replies does not implement consensus. A leader also needs evidence that its decisions belong to the correct history.</p>
 <p>In a two-plus-one split, the pair can continue committing under a valid leader. The solitary node cannot independently confirm a new grant in that protocol. It can refuse or serve a read whose contract permits stale data. Continuing one global order costs write availability on the isolated side. An ordinary asynchronous database copy does not become a consensus protocol by adding another replica.</p>
 <p>The CAP theorem describes a choice during a network partition. An isolated node cannot always complete every valid operation successfully while maintaining the behavior of one current copy. Here the desired consistency is linearizability: completed operations fit one order that respects real-time precedence. Choose a contract per operation. Map reads and last-space writes can have different contracts.</p>
+<h3>Reason from the driver's timeline</h3>
+<p>A, B and C are voting nodes. Ada receives a successful grant after the current leader A commits it with B. A becomes isolated. B and C can elect a valid new leader under Raft's election rules. A may still think it leads, but it cannot commit another shared grant on its own. A driver reaching only A might therefore time out even though another driver can use B.</p>
+<p>In a fresh run, isolate C before Ada makes her reservation. Move Ben's read until after Ada receives confirmation from A. If Ben asks C for the latest committed inventory and sees the original free space, that history violates the real-time ordering promise in this one-space example. A map read explicitly allowed to be stale can return the very same value within its age limit. Check the operation's contract before calling either result correct.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -110,22 +114,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>How many form a majority of five?</legend>
-<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-1"><label for="q-10-consensus-1-1">Two</label>
-<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-2" data-ok><label for="q-10-consensus-1-2">Three</label>
+<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-1"><label for="q-10-consensus-1-1"><span>Two</span></label>
+<input type="radio" name="q-10-consensus-1" id="q-10-consensus-1-2" data-ok><label for="q-10-consensus-1-2"><span>Three</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Two groups of two need not intersect. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Two groups of two need not intersect.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What can the isolated node safely do here?</legend>
-<input type="radio" name="q-10-consensus-2" id="q-10-consensus-2-1" data-ok><label for="q-10-consensus-2-1">Refuse a new grant</label>
-<input type="radio" name="q-10-consensus-2" id="q-10-consensus-2-2"><label for="q-10-consensus-2-2">Confirm a new shared grant alone</label>
+<input type="radio" name="q-10-consensus-2" id="q-10-consensus-2-1" data-ok><label for="q-10-consensus-2-1"><span>Refuse a new grant</span></label>
+<input type="radio" name="q-10-consensus-2" id="q-10-consensus-2-2"><label for="q-10-consensus-2-2"><span>Confirm a new shared grant alone</span></label>
 <p class="fb ok opt-1"><b>Right.</b> One node does not form a majority of three.</p>
 <p class="fb no opt-2"><b>Not quite.</b> One node does not form a majority of three. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What else protects the history besides voting counts?</legend>
-<input type="radio" name="q-10-consensus-3" id="q-10-consensus-3-1" data-ok><label for="q-10-consensus-3-1">Election and commit rules</label>
-<input type="radio" name="q-10-consensus-3" id="q-10-consensus-3-2"><label for="q-10-consensus-3-2">The fastest phone clock</label>
+<input type="radio" name="q-10-consensus-3" id="q-10-consensus-3-1" data-ok><label for="q-10-consensus-3-1"><span>Election and commit rules</span></label>
+<input type="radio" name="q-10-consensus-3" id="q-10-consensus-3-2"><label for="q-10-consensus-3-2"><span>The fastest phone clock</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Client time does not establish a valid log.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Client time does not establish a valid log. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

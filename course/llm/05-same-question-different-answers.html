@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-your-first-call.html">Puzzle 2: Your first call</a></summary><p>A call to a model is one HTTP POST: a model name, max_tokens (the most it may write), and messages, a list of turns each marked user or assistant. The response holds the continuation, a stop_reason (end_turn when it finished, max_tokens when it was cut off), and usage: the input and output tokens you pay for. Output tokens cost more than input ones, and each one takes time to generate.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Your first call</summary><p>A call to a model is one HTTP POST: a model name, max_tokens (the most it may write), and messages, a list of turns each marked user or assistant. The response holds the continuation, a stop_reason (end_turn when it finished, max_tokens when it was cut off), and usage: the input and output tokens you pay for. Output tokens cost more than input ones, and each one takes time to generate.</p><p><a href="02-your-first-call.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-what-a-language-model-is.html">0</a> → <a href="01-one-token-at-a-time.html">1</a> → <a href="02-your-first-call.html">2</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -111,26 +111,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>You set temperature to 0. Can you now assert the exact output string in a test?</legend>
-<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-1"><label for="q-05-same-question-different-answers-1-1">Yes, because temperature 0 always picks the single most likely token</label>
-<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-2" data-ok><label for="q-05-same-question-different-answers-1-2">No: even at 0 the output isn't guaranteed to be identical</label>
-<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-3"><label for="q-05-same-question-different-answers-1-3">Only if the prompt is shorter than one sentence</label>
+<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-1"><label for="q-05-same-question-different-answers-1-1"><span>Yes, because temperature 0 always picks the single most likely token</span></label>
+<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-2" data-ok><label for="q-05-same-question-different-answers-1-2"><span>No: even at 0 the output isn't guaranteed to be identical</span></label>
+<input type="radio" name="q-05-same-question-different-answers-1" id="q-05-same-question-different-answers-1-3"><label for="q-05-same-question-different-answers-1-3"><span>Only if the prompt is shorter than one sentence</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Anthropic's docs say even at 0 the results won't be fully deterministic. <label class="show-me" for="st-sampling-4" data-goto="st-sampling">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Test properties, not strings.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Prompt length doesn't make the output deterministic. <label class="show-me" for="st-sampling-4" data-goto="st-sampling">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Your app extracts a date and an amount from a receipt photo. Which temperature suits it?</legend>
-<input type="radio" name="q-05-same-question-different-answers-2" id="q-05-same-question-different-answers-2-1" data-ok><label for="q-05-same-question-different-answers-2-1">A low one, since you want the most likely, consistent answer</label>
-<input type="radio" name="q-05-same-question-different-answers-2" id="q-05-same-question-different-answers-2-2"><label for="q-05-same-question-different-answers-2-2">It doesn't matter, because extraction has only one right answer</label>
-<input type="radio" name="q-05-same-question-different-answers-2" id="q-05-same-question-different-answers-2-3"><label for="q-05-same-question-different-answers-2-3">A high one, since receipts vary a lot from shop to shop</label>
+<input type="radio" name="q-05-same-question-different-answers-2" id="q-05-same-question-different-answers-2-1" data-ok><label for="q-05-same-question-different-answers-2-1"><span>A low one, since you want the most likely, consistent answer</span></label>
+<input type="radio" name="q-05-same-question-different-answers-2" id="q-05-same-question-different-answers-2-2"><label for="q-05-same-question-different-answers-2-2"><span>It doesn't matter, because extraction has only one right answer</span></label>
+<input type="radio" name="q-05-same-question-different-answers-2" id="q-05-same-question-different-answers-2-3"><label for="q-05-same-question-different-answers-2-3"><span>A high one, since receipts vary a lot from shop to shop</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Consistency wants low temperature.</p>
 <p class="fb no opt-2"><b>Not quite.</b> It does: higher temperature makes less likely, possibly wrong, tokens more frequent. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Varied inputs don't need varied outputs; you want consistency. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between sampling and temperature?</legend>
-<input type="radio" name="q-05-same-question-different-answers-3" id="q-05-same-question-different-answers-3-1"><label for="q-05-same-question-different-answers-3-1">Sampling sets how adventurous the choice is, while temperature is choosing the token at random</label>
-<input type="radio" name="q-05-same-question-different-answers-3" id="q-05-same-question-different-answers-3-2" data-ok><label for="q-05-same-question-different-answers-3-2">Sampling is choosing the next token at random by likelihood, while temperature sets how adventurous that choice is</label>
+<input type="radio" name="q-05-same-question-different-answers-3" id="q-05-same-question-different-answers-3-1"><label for="q-05-same-question-different-answers-3-1"><span>Sampling sets how adventurous the choice is, while temperature is choosing the token at random</span></label>
+<input type="radio" name="q-05-same-question-different-answers-3" id="q-05-same-question-different-answers-3-2" data-ok><label for="q-05-same-question-different-answers-3-2"><span>Sampling is choosing the next token at random by likelihood, while temperature sets how adventurous that choice is</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The choice vs the knob on it.</p>
 </fieldset>

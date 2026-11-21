@@ -1,0 +1,24 @@
+{
+  "title": "Explain one run from class file to shared counter",
+  "brief": "Trace a small program before running it. Defend which values belong to method frames, which objects remain reachable and which concurrent schedules lose an increment.",
+  "prerequisites": "Complete all five JVM puzzles. Know the difference between a primitive value, a reference value, a frame and an object.",
+  "setup": "Use the JVM workbench or labs/jvm/Bookmark.java. The program makes a Counter(7), assigns first and second to it, calls edit(second), then clears second. The edit method writes 8 through its argument and rebinds the argument to a new Counter(99).",
+  "steps": [
+    "Sketch the caller’s slots before and after edit. Give each heap object its own label. Predict every line printed by Bookmark before running it.",
+    "Trace increment(7) as a separate frame. Explain which operation puts eight back in the caller, and why original still prints seven.",
+    "Identify the earliest point where the Counter(99) can become unreachable in this example. Explain what clearing second changes while first still exists.",
+    "Switch to the shared-counter puzzle. Starting from seven, schedule two reads before either write. Then repeat with a conditional atomic change and retry the failed increment."
+  ],
+  "evidence": [
+    "The predicted lines are “7 8”, “8 8” and “8”. Your graph shows two caller references to the original counter after edit returns.",
+    "The explanation distinguishes becoming unreachable from a guaranteed collection time and traces both attempts in the lost-update example.",
+    "A conditional write returning false is handled as an outstanding increment, yielding nine after both intended increments complete."
+  ],
+  "worked": [
+    "Call the first object C1. first and second both contain references to C1. The callee receives a copy of that reference. Writing inside.value changes C1 to 8. Assigning inside to a new C2 changes only the callee’s local reference. Once no live reference to C2 is needed it may become unreachable; nothing in this program fixes the time of collection.",
+    "increment receives the primitive 7, computes 8 and returns that value for printing. It never writes the caller’s original slot. Clearing second leaves first pointing to C1, so the final read through first still returns 8.",
+    "Two separate read-add-write sequences can both read 7, compute 8 and store 8. A conditional atomic change from 7 to 8 lets one succeed. The second observes failure, reads the new value and tries 8 to 9. This schedule concerns a shared counter across callers; rebinding a reference in one frame is a separate mechanism."
+  ],
+  "variation": "Change edit so that it rebinds inside to Counter(99) before writing inside.value = 8. Which printed lines change?",
+  "solution": "The write now changes C2. Neither caller reference was redirected, so C1 stays at 7. The three lines become “7 8”, “7 7” and “7”. Reassigning the local argument never modified first or second."
+}

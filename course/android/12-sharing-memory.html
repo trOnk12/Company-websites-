@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-12">
         <p id="builds-on-12"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="11"><details><summary><a href="11-zygote.html">Puzzle 11: Zygote, the process every app starts from</a></summary><p>Zygote starts with the phone, with ART and the framework loaded. Every app's process begins as a copy of it, a fork, so apps start fast.</p></details></li></ul>
+        <ul><li data-block="11"><details><summary>Puzzle 11: Zygote, the process every app starts from</summary><p>Zygote starts with the phone, with ART and the framework loaded. Every app's process begins as a copy of it, a fork, so apps start fast.</p><p><a href="11-zygote.html">Review puzzle 11</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 8 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="09-whats-inside-the-apk.html">9</a> → <a href="11-zygote.html">11</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -113,24 +113,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Twenty apps are running. How many copies of the framework's pages are in memory?</legend>
-<input type="radio" name="q-12-sharing-memory-1" id="q-12-sharing-memory-1-1"><label for="q-12-sharing-memory-1-1">Twenty, one per app, because each app needs its own framework</label>
-<input type="radio" name="q-12-sharing-memory-1" id="q-12-sharing-memory-1-2" data-ok><label for="q-12-sharing-memory-1-2">Mostly one, shared by all of them</label>
+<input type="radio" name="q-12-sharing-memory-1" id="q-12-sharing-memory-1-1"><label for="q-12-sharing-memory-1-1"><span>Twenty, one per app, because each app needs its own framework</span></label>
+<input type="radio" name="q-12-sharing-memory-1" id="q-12-sharing-memory-1-2" data-ok><label for="q-12-sharing-memory-1-2"><span>Mostly one, shared by all of them</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Forking shares pages; it doesn't duplicate them. <label class="show-me" for="st-pages-2" data-goto="st-pages">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Untouched pages stay shared after a fork.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Your app changes one shared page. What happens in the other apps?</legend>
-<input type="radio" name="q-12-sharing-memory-2" id="q-12-sharing-memory-2-1" data-ok><label for="q-12-sharing-memory-2-1">Nothing: your app gets its own copy of that page first</label>
-<input type="radio" name="q-12-sharing-memory-2" id="q-12-sharing-memory-2-2"><label for="q-12-sharing-memory-2-2">The change is refused</label>
-<input type="radio" name="q-12-sharing-memory-2" id="q-12-sharing-memory-2-3"><label for="q-12-sharing-memory-2-3">They see your change too, since the page is shared</label>
+<input type="radio" name="q-12-sharing-memory-2" id="q-12-sharing-memory-2-1" data-ok><label for="q-12-sharing-memory-2-1"><span>Nothing: your app gets its own copy of that page first</span></label>
+<input type="radio" name="q-12-sharing-memory-2" id="q-12-sharing-memory-2-2"><label for="q-12-sharing-memory-2-2"><span>The change is refused</span></label>
+<input type="radio" name="q-12-sharing-memory-2" id="q-12-sharing-memory-2-3"><label for="q-12-sharing-memory-2-3"><span>They see your change too, since the page is shared</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Only the writer gets a copy; everyone else keeps the original.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Writing is allowed; it just goes into a private copy. <label class="show-me" for="st-pages-3" data-goto="st-pages">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's exactly what copy-on-write prevents: you write into your own copy. <label class="show-me" for="st-pages-3" data-goto="st-pages">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why doesn't the kernel copy every page at fork?</legend>
-<input type="radio" name="q-12-sharing-memory-3" id="q-12-sharing-memory-3-1"><label for="q-12-sharing-memory-3-1">Because the kernel has no way to copy a page between processes</label>
-<input type="radio" name="q-12-sharing-memory-3" id="q-12-sharing-memory-3-2" data-ok><label for="q-12-sharing-memory-3-2">Because copying everything wastes memory, and most pages are never changed</label>
+<input type="radio" name="q-12-sharing-memory-3" id="q-12-sharing-memory-3-1"><label for="q-12-sharing-memory-3-1"><span>Because the kernel has no way to copy a page between processes</span></label>
+<input type="radio" name="q-12-sharing-memory-3" id="q-12-sharing-memory-3-2" data-ok><label for="q-12-sharing-memory-3-2"><span>Because copying everything wastes memory, and most pages are never changed</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Pages can be copied, and are, when written. Doing it up front would waste memory. <label class="show-me" for="st-pages-4" data-goto="st-pages">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Copy only what changes.</p>
 </fieldset>

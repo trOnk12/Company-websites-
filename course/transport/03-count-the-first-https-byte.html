@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -67,7 +67,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-who-proves-the-server-name.html">Puzzle 2: Who proves the server’s identity?</a></summary><p>In a typical certificate-authenticated TLS 1.3 handshake, the certificate links an identity and key, CertificateVerify proves possession, and Finished binds the handshake to the derived secrets.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Who proves the server’s identity?</summary><p>In a typical certificate-authenticated TLS 1.3 handshake, the certificate links an identity and key, CertificateVerify proves possession, and Finished binds the handshake to the derived secrets.</p><p><a href="02-who-proves-the-server-name.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-open-the-tcp-connection.html">0</a> → <a href="02-who-proves-the-server-name.html">2</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -115,27 +115,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>On this model, the RTT rises to 100 ms. What is the approximate first-byte time over a fresh connection?</legend>
-<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-1"><label for="q-03-count-the-first-https-byte-1-1">200 ms, because encryption includes the request response</label>
-<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-2" data-ok><label for="q-03-count-the-first-https-byte-1-2">300 ms, three round trips</label>
-<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-3"><label for="q-03-count-the-first-https-byte-1-3">100 ms, because only the response carries application data</label>
+<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-1"><label for="q-03-count-the-first-https-byte-1-1"><span>200 ms, because encryption includes the request response</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-2" data-ok><label for="q-03-count-the-first-https-byte-1-2"><span>300 ms, three round trips</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-3"><label for="q-03-count-the-first-https-byte-1-3"><span>100 ms, because only the response carries application data</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The regular request still adds another trip. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Count dependencies before calculating time.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The setup exchanges happen before the regular request. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The app reuses the open connection. What is removed in this model?</legend>
-<input type="radio" name="q-03-count-the-first-https-byte-2" id="q-03-count-the-first-https-byte-2-1" data-ok><label for="q-03-count-the-first-https-byte-2-1">Both connection setup exchanges</label>
-<input type="radio" name="q-03-count-the-first-https-byte-2" id="q-03-count-the-first-https-byte-2-2"><label for="q-03-count-the-first-https-byte-2-2">Only the second half of the first round trip</label>
-<input type="radio" name="q-03-count-the-first-https-byte-2" id="q-03-count-the-first-https-byte-2-3"><label for="q-03-count-the-first-https-byte-2-3">Only the transfer from the server back to the phone</label>
+<input type="radio" name="q-03-count-the-first-https-byte-2" id="q-03-count-the-first-https-byte-2-1" data-ok><label for="q-03-count-the-first-https-byte-2-1"><span>Both connection setup exchanges</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-2" id="q-03-count-the-first-https-byte-2-2"><label for="q-03-count-the-first-https-byte-2-2"><span>Only the second half of the first round trip</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-2" id="q-03-count-the-first-https-byte-2-3"><label for="q-03-count-the-first-https-byte-2-3"><span>Only the transfer from the server back to the phone</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Reuse leaves the regular request and response trip.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Both TCP and TLS are already ready on the reused connection. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> A response still needs the return path. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The first byte arrives at the same time, but a larger response finishes later. What changed?</legend>
-<input type="radio" name="q-03-count-the-first-https-byte-3" id="q-03-count-the-first-https-byte-3-1"><label for="q-03-count-the-first-https-byte-3-1">The network round trip doubled for every packet</label>
-<input type="radio" name="q-03-count-the-first-https-byte-3" id="q-03-count-the-first-https-byte-3-2"><label for="q-03-count-the-first-https-byte-3-2">The TCP setup took a longer time than before</label>
-<input type="radio" name="q-03-count-the-first-https-byte-3" id="q-03-count-the-first-https-byte-3-3" data-ok><label for="q-03-count-the-first-https-byte-3-3">Transfer completion, while time to first byte stayed the same</label>
+<input type="radio" name="q-03-count-the-first-https-byte-3" id="q-03-count-the-first-https-byte-3-1"><label for="q-03-count-the-first-https-byte-3-1"><span>The network round trip doubled for every packet</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-3" id="q-03-count-the-first-https-byte-3-2"><label for="q-03-count-the-first-https-byte-3-2"><span>The TCP setup took a longer time than before</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-3" id="q-03-count-the-first-https-byte-3-3" data-ok><label for="q-03-count-the-first-https-byte-3-3"><span>Transfer completion, while time to first byte stayed the same</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> More bytes can take longer without changing round-trip time. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The comparison holds response start time fixed. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Distinguish the start of the response from its end.</p>

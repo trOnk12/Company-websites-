@@ -20,11 +20,17 @@ A map helps someone choose a destination. A **reservation** gives someone a clai
 
 Write the contract from the driver's perspective. A confirmation names a durable reservation the driver can retrieve later. A refusal means no space was granted by that attempt. Silence means the phone stopped waiting. The service might already have saved the reservation. Later lessons turn each sentence into a test.
 
+### Turn the promise into a failing test
+
+At 09:00 the map shows one space. At 09:00:05 Ada reserves it. At 09:00:07 Ben still sees the green pin and tries to reserve. A refusal for Ben and a retrievable confirmation for Ada satisfy both promises. A second confirmation breaks the inventory rule immediately, even if the map turns red one millisecond later.
+
+Try the same reasoning with a concert seat. Two customers may view seat B12 as available. What evidence would prove a violation? Two simultaneously valid tickets for B12 at the same event. A screenshot of the seating chart alone proves nothing about issued tickets.
+
 ## Try it
 
 Use two slips of paper for the phones and one for the space. List the possible pairs of replies if both attempts finish and no one cancels. Change the map's freshness promise to one second. Which read becomes harder to serve? Does the reservation rule change?
 
-[Open the runnable lab and instructions](https://github.com/trOnk12/Company-websites-/tree/main/labs/parking-design)
+[Run the two-phone race](https://pachulski.dev/labs/parking-design/#race)
 
 ## Check yourself
 

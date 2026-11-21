@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-threads-take-turns.html">Puzzle 0: Threads take turns</a></summary><p>A CPU core runs one thread at a time. The kernel's scheduler decides which ready thread runs on which core, and for how long; ready threads wait in a run queue, and a running thread can be switched out so others get a turn. A thread waiting for something (a lock, the disk, a message) leaves the queue entirely until the kernel wakes it. So a thread's elapsed time is its running time plus its waiting.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Threads take turns</summary><p>A CPU core runs one thread at a time. The kernel's scheduler decides which ready thread runs on which core, and for how long; ready threads wait in a run queue, and a running thread can be switched out so others get a turn. A thread waiting for something (a lock, the disk, a message) leaves the queue entirely until the kernel wakes it. So a thread's elapsed time is its running time plus its waiting.</p><p><a href="00-threads-take-turns.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-threads-take-turns.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -111,26 +111,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>CPU usage was 60% during startup. What does a trace add?</legend>
-<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-1" data-ok><label for="q-01-what-a-trace-is-1-1">Which threads did what, and when, event by event</label>
-<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-2"><label for="q-01-what-a-trace-is-1-2">Nothing, since CPU usage already includes every thread</label>
-<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-3"><label for="q-01-what-a-trace-is-1-3">A more precise number, like 60.4% instead of 60%</label>
+<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-1" data-ok><label for="q-01-what-a-trace-is-1-1"><span>Which threads did what, and when, event by event</span></label>
+<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-2"><label for="q-01-what-a-trace-is-1-2"><span>Nothing, since CPU usage already includes every thread</span></label>
+<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-3"><label for="q-01-what-a-trace-is-1-3"><span>A more precise number, like 60.4% instead of 60%</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A number says how much; a trace says what and when.</p>
 <p class="fb no opt-2"><b>Not quite.</b> It adds them up; the trace keeps them apart, in time. <label class="show-me" for="st-trace-1" data-goto="st-trace">Show me step 1 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> A trace isn't a better number; it's the timeline behind it. <label class="show-me" for="st-trace-1" data-goto="st-trace">Show me step 1 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>On a thread's track, <code>measure()</code> is drawn under <code>Choreographer#doFrame</code>. What does that mean?</legend>
-<input type="radio" name="q-01-what-a-trace-is-2" id="q-01-what-a-trace-is-2-1" data-ok><label for="q-01-what-a-trace-is-2-1"><code>measure()</code> ran inside that frame's work</label>
-<input type="radio" name="q-01-what-a-trace-is-2" id="q-01-what-a-trace-is-2-2"><label for="q-01-what-a-trace-is-2-2"><code>measure()</code> ran on another thread at the same time</label>
-<input type="radio" name="q-01-what-a-trace-is-2" id="q-01-what-a-trace-is-2-3"><label for="q-01-what-a-trace-is-2-3"><code>measure()</code> ran after <code>Choreographer#doFrame</code> finished</label>
+<input type="radio" name="q-01-what-a-trace-is-2" id="q-01-what-a-trace-is-2-1" data-ok><label for="q-01-what-a-trace-is-2-1"><span><code>measure()</code> ran inside that frame's work</span></label>
+<input type="radio" name="q-01-what-a-trace-is-2" id="q-01-what-a-trace-is-2-2"><label for="q-01-what-a-trace-is-2-2"><span><code>measure()</code> ran on another thread at the same time</span></label>
+<input type="radio" name="q-01-what-a-trace-is-2" id="q-01-what-a-trace-is-2-3"><label for="q-01-what-a-trace-is-2-3"><span><code>measure()</code> ran after <code>Choreographer#doFrame</code> finished</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Under means inside.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Each thread has its own track; this is one thread's track. <label class="show-me" for="st-trace-3" data-goto="st-trace">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> After would be further right on the same row, not underneath. <label class="show-me" for="st-trace-3" data-goto="st-trace">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a track and a slice?</legend>
-<input type="radio" name="q-01-what-a-trace-is-3" id="q-01-what-a-trace-is-3-1" data-ok><label for="q-01-what-a-trace-is-3-1">A track is one thread's row, while a slice is one named span on it</label>
-<input type="radio" name="q-01-what-a-trace-is-3" id="q-01-what-a-trace-is-3-2"><label for="q-01-what-a-trace-is-3-2">A track is one named span, while a slice is one thread's row</label>
+<input type="radio" name="q-01-what-a-trace-is-3" id="q-01-what-a-trace-is-3-1" data-ok><label for="q-01-what-a-trace-is-3-1"><span>A track is one thread's row, while a slice is one named span on it</span></label>
+<input type="radio" name="q-01-what-a-trace-is-3" id="q-01-what-a-trace-is-3-2"><label for="q-01-what-a-trace-is-3-2"><span>A track is one named span, while a slice is one thread's row</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The row vs a bar on the row.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <label class="show-me" for="st-trace-2" data-goto="st-trace">Show me step 2 again ↑</label></p>
 </fieldset>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -110,26 +110,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A packet of your request is lost between two routers. Who notices and fixes it?</legend>
-<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-1" data-ok><label for="q-00-what-actually-travels-1-1">TCP: the missing packet isn't acknowledged, so it's sent again</label>
-<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-2"><label for="q-00-what-actually-travels-1-2">Your app: OkHttp sees the gap and asks for the packet</label>
-<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-3"><label for="q-00-what-actually-travels-1-3">IP: it reroutes the packet around the broken router</label>
+<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-1" data-ok><label for="q-00-what-actually-travels-1-1"><span>TCP: the missing packet isn't acknowledged, so it's sent again</span></label>
+<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-2"><label for="q-00-what-actually-travels-1-2"><span>Your app: OkHttp sees the gap and asks for the packet</span></label>
+<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-3"><label for="q-00-what-actually-travels-1-3"><span>IP: it reroutes the packet around the broken router</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Numbering, acknowledging, resending: TCP.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Your code sees a clean stream; TCP handles losses underneath. <label class="show-me" for="st-layers-3" data-goto="st-layers">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> IP only does its best; recovering lost packets is TCP's job. <label class="show-me" for="st-layers-3" data-goto="st-layers">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why must a TCP connection be set up before the first request?</legend>
-<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-1"><label for="q-00-what-actually-travels-2-1">IP needs the server's location confirmed first</label>
-<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-2" data-ok><label for="q-00-what-actually-travels-2-2">Both sides must agree to talk and start numbering packets</label>
-<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-3"><label for="q-00-what-actually-travels-2-3">TLS refuses to send data without one</label>
+<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-1"><label for="q-00-what-actually-travels-2-1"><span>IP needs the server's location confirmed first</span></label>
+<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-2" data-ok><label for="q-00-what-actually-travels-2-2"><span>Both sides must agree to talk and start numbering packets</span></label>
+<input type="radio" name="q-00-what-actually-travels-2" id="q-00-what-actually-travels-2-3"><label for="q-00-what-actually-travels-2-3"><span>TLS refuses to send data without one</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> IP delivers every packet anyway; the setup is TCP's bookkeeping. <label class="show-me" for="st-layers-4" data-goto="st-layers">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Reliability needs shared bookkeeping.</p>
 <p class="fb no opt-3"><b>Not quite.</b> TLS runs on top of TCP, but the setup is TCP's own need. <label class="show-me" for="st-layers-4" data-goto="st-layers">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between IP and TCP?</legend>
-<input type="radio" name="q-00-what-actually-travels-3" id="q-00-what-actually-travels-3-1" data-ok><label for="q-00-what-actually-travels-3-1">IP delivers single packets as best it can, while TCP makes them a reliable, ordered stream</label>
-<input type="radio" name="q-00-what-actually-travels-3" id="q-00-what-actually-travels-3-2"><label for="q-00-what-actually-travels-3-2">IP makes packets a reliable, ordered stream, while TCP delivers single packets as best it can</label>
+<input type="radio" name="q-00-what-actually-travels-3" id="q-00-what-actually-travels-3-1" data-ok><label for="q-00-what-actually-travels-3-1"><span>IP delivers single packets as best it can, while TCP makes them a reliable, ordered stream</span></label>
+<input type="radio" name="q-00-what-actually-travels-3" id="q-00-what-actually-travels-3-2"><label for="q-00-what-actually-travels-3-2"><span>IP makes packets a reliable, ordered stream, while TCP delivers single packets as best it can</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Best effort vs reliable.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

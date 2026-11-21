@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="4"><details><summary><a href="04-an-ios-app-in-one-puzzle.html">Puzzle 4: An iOS app in one puzzle</a></summary><p>iOS apps are written in Swift, in Xcode, Apple's IDE. Screens are built with UIKit, Apple's screen framework (or the newer SwiftUI). A view controller manages one screen's UI elements and reacts to the user, much like an Activity or Fragment. Swift looks like Kotlin: let is val, var is var, and a class can subclass UIViewController the way yours subclasses Activity.</p></details></li></ul>
+        <ul><li data-block="4"><details><summary>Puzzle 4: An iOS app in one puzzle</summary><p>iOS apps are written in Swift, in Xcode, Apple's IDE. Screens are built with UIKit, Apple's screen framework (or the newer SwiftUI). A view controller manages one screen's UI elements and reacts to the user, much like an Activity or Fragment. Swift looks like Kotlin: let is val, var is var, and a class can subclass UIViewController the way yours subclasses Activity.</p><p><a href="04-an-ios-app-in-one-puzzle.html">Review puzzle 4</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a> → <a href="04-an-ios-app-in-one-puzzle.html">4</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -109,25 +109,25 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The iOS team opens your framework in Xcode. What do they read to learn your API?</legend>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-1"><label for="q-05-how-swift-sees-your-kotlin-1-1">A Swift file Kotlin/Native generated for each class</label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-2"><label for="q-05-how-swift-sees-your-kotlin-1-2">Your Kotlin files, which Xcode can open directly</label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-3" data-ok><label for="q-05-how-swift-sees-your-kotlin-1-3">The Objective-C header Kotlin/Native wrote for it</label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-1"><label for="q-05-how-swift-sees-your-kotlin-1-1"><span>A Swift file Kotlin/Native generated for each class</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-2"><label for="q-05-how-swift-sees-your-kotlin-1-2"><span>Your Kotlin files, which Xcode can open directly</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-3" data-ok><label for="q-05-how-swift-sees-your-kotlin-1-3"><span>The Objective-C header Kotlin/Native wrote for it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Kotlin describes your code in Objective-C, not Swift; Swift reads that. <label class="show-me" for="st-swift-3" data-goto="st-swift">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> The framework holds native code and an Objective-C description; Swift never reads Kotlin. <label class="show-me" for="st-swift-3" data-goto="st-swift">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Swift learns your API from the Objective-C header.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does Kotlin describe your code in Objective-C, not in Swift?</legend>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-1" data-ok><label for="q-05-how-swift-sees-your-kotlin-2-1">Because Swift can call Objective-C directly, so it's the bridge both sides understand</label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-2"><label for="q-05-how-swift-sees-your-kotlin-2-2">Because Swift can't run native code unless Objective-C starts it</label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-1" data-ok><label for="q-05-how-swift-sees-your-kotlin-2-1"><span>Because Swift can call Objective-C directly, so it's the bridge both sides understand</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-2"><label for="q-05-how-swift-sees-your-kotlin-2-2"><span>Because Swift can't run native code unless Objective-C starts it</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Objective-C is the language Swift already knows how to call.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Swift runs native code fine; it needs a description it can read, and Objective-C is one. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a framework and a header?</legend>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-3" id="q-05-how-swift-sees-your-kotlin-3-1"><label for="q-05-how-swift-sees-your-kotlin-3-1">The header holds the code; the framework only lists it</label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-3" id="q-05-how-swift-sees-your-kotlin-3-2"><label for="q-05-how-swift-sees-your-kotlin-3-2">They're the same file under two names</label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-3" id="q-05-how-swift-sees-your-kotlin-3-3" data-ok><label for="q-05-how-swift-sees-your-kotlin-3-3">The framework is the package; the header describes its API</label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-3" id="q-05-how-swift-sees-your-kotlin-3-1"><label for="q-05-how-swift-sees-your-kotlin-3-1"><span>The header holds the code; the framework only lists it</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-3" id="q-05-how-swift-sees-your-kotlin-3-2"><label for="q-05-how-swift-sees-your-kotlin-3-2"><span>They're the same file under two names</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-3" id="q-05-how-swift-sees-your-kotlin-3-3" data-ok><label for="q-05-how-swift-sees-your-kotlin-3-3"><span>The framework is the package; the header describes its API</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> It's the other way round: the header lists, the framework holds the code too. <label class="show-me" for="st-swift-2" data-goto="st-swift">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> A framework contains the header, plus the compiled code the header describes. <label class="show-me" for="st-swift-2" data-goto="st-swift">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Package vs its description.</p>

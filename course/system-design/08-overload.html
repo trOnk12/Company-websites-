@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -63,11 +63,12 @@
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
         <a href="#go-deeper-how-do-you-admit-a-short-burst">Go deeper</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-8">
         <p id="builds-on-8"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-demand.html">Puzzle 1: How much traffic arrives after a concert?</a></summary><p>Size for a measured burst and use throughput times mean duration to estimate concurrent work.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: How much traffic arrives after a concert?</summary><p>Size for a measured burst and use throughput times mean duration to estimate concurrent work.</p><p><a href="01-demand.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="01-demand.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -101,6 +102,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>With constant rates, no rejections and no retries, the <b>backlog</b>, the number of requests still waiting, grows by twenty per second. After a minute, 1,200 requests are waiting. When arrivals drop to eighty per second, twenty completions per second are available to drain the backlog. Recovery takes another minute. If arrivals stay at one hundred, the old backlog stays.</p>
 <p>Bound both work in flight and waiting work. Before admitting work, ask whether it can finish before the caller's deadline. Distinguish a per-client limit from whole-service overload. Give retries one owner, a maximum number of attempts, increasing delays and randomized timing. Three layers each making three total attempts can generate up to twenty-seven calls at the last dependency.</p>
+<h3>Decide what to do at the door</h3>
+<p>A service can finish 100 equal-cost requests per second. With 300 already waiting ahead of you, the approximate wait alone is three seconds. A caller with half a second left would time out before service even begins. Refusing that work early frees room for useful requests. This estimate assumes a fixed completion rate and arrival order.</p>
+<p>Run the browser model with peak 120, recovery 80, capacity 100 and a waiting limit of 300. After one minute, 1,200 more requests have arrived than could be served: 300 wait and 900 have been dropped. With spare capacity of 20 per second the queue drains in 15 seconds. A shorter queue improves waiting time by rejecting some work; count those refusals in your result.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-how-do-you-admit-a-short-burst">
         <summary><span class="depth-label">Go deeper</span>How do you admit a short burst?</summary>
@@ -113,28 +117,28 @@
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Give a request 500 milliseconds. Entry processing takes 60, the first dependency call takes 200, and the retry delay takes 100. Only 140 remain for all remaining work. Would you start a call that usually needs 180? Run the queue model and change only the arrival rate after the peak.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/parking-design">Open the runnable lab and instructions</a></p>
+<p><a href="/labs/parking-design/#queue">Run the overload experiment</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What happens when arrivals equal capacity?</legend>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1">The old backlog disappears</label>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2">The backlog stays level in this model</label>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1"><span>The old backlog disappears</span></label>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2"><span>The backlog stays level in this model</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> There is no spare capacity to clear old work. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> There is no spare capacity to clear old work.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>How much of the deadline remains?</legend>
-<input type="radio" name="q-08-overload-2" id="q-08-overload-2-1" data-ok><label for="q-08-overload-2-1">140 milliseconds</label>
-<input type="radio" name="q-08-overload-2" id="q-08-overload-2-2"><label for="q-08-overload-2-2">240 milliseconds</label>
+<input type="radio" name="q-08-overload-2" id="q-08-overload-2-1" data-ok><label for="q-08-overload-2-1"><span>140 milliseconds</span></label>
+<input type="radio" name="q-08-overload-2" id="q-08-overload-2-2"><label for="q-08-overload-2-2"><span>240 milliseconds</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The delay between attempts consumes the deadline too.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The delay between attempts consumes the deadline too. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What spreads simultaneous retries over time?</legend>
-<input type="radio" name="q-08-overload-3" id="q-08-overload-3-1"><label for="q-08-overload-3-1">One fixed retry time</label>
-<input type="radio" name="q-08-overload-3" id="q-08-overload-3-2" data-ok><label for="q-08-overload-3-2">Randomized delays</label>
+<input type="radio" name="q-08-overload-3" id="q-08-overload-3-1"><label for="q-08-overload-3-1"><span>One fixed retry time</span></label>
+<input type="radio" name="q-08-overload-3" id="q-08-overload-3-2" data-ok><label for="q-08-overload-3-2"><span>Randomized delays</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A common retry time can recreate the burst. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A common retry time can recreate the burst.</p>
 </fieldset>

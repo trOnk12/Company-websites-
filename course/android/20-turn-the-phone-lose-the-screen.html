@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-20">
         <p id="builds-on-20"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-you-dont-call-youre-called.html">Puzzle 6: You don't call. You're called.</a></summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: You don't call. You're called.</summary><p>system_server decides → Binder carries the message → your main thread receives it → your code runs. You write onCreate(); you never call it.</p><p><a href="06-you-dont-call-youre-called.html">Review puzzle 6</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="06-you-dont-call-youre-called.html">6</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -115,27 +115,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your Activity keeps the list the user scrolled in a field. The user switches the phone to dark mode. What happens to the field?</legend>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-1" data-ok><label for="q-20-turn-the-phone-lose-the-screen-1-1">It's gone: dark mode is a configuration change, so a new Activity is created</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-2"><label for="q-20-turn-the-phone-lose-the-screen-1-2">It stays, because the process wasn't killed</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-3"><label for="q-20-turn-the-phone-lose-the-screen-1-3">It stays: only turning the phone recreates the Activity</label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-1" data-ok><label for="q-20-turn-the-phone-lose-the-screen-1-1"><span>It's gone: dark mode is a configuration change, so a new Activity is created</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-2"><label for="q-20-turn-the-phone-lose-the-screen-1-2"><span>It stays, because the process wasn't killed</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-3"><label for="q-20-turn-the-phone-lose-the-screen-1-3"><span>It stays: only turning the phone recreates the Activity</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Any configuration change recreates the Activity.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The process lives on, but the Activity object is a new one, and the old fields went with the old object. <label class="show-me" for="st-rotate-4" data-goto="st-rotate">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Turning the phone is one configuration change of many; dark mode and language are too. <label class="show-me" for="st-rotate-2" data-goto="st-rotate">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does Android build a new Activity instead of reshaping the old screen?</legend>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-2" id="q-20-turn-the-phone-lose-the-screen-2-1"><label for="q-20-turn-the-phone-lose-the-screen-2-1">Because the process crashed and Android restarted it</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-2" id="q-20-turn-the-phone-lose-the-screen-2-2"><label for="q-20-turn-the-phone-lose-the-screen-2-2">To free the memory the old screen used</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-2" id="q-20-turn-the-phone-lose-the-screen-2-3" data-ok><label for="q-20-turn-the-phone-lose-the-screen-2-3">Building from scratch picks up everything the new configuration needs</label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-2" id="q-20-turn-the-phone-lose-the-screen-2-1"><label for="q-20-turn-the-phone-lose-the-screen-2-1"><span>Because the process crashed and Android restarted it</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-2" id="q-20-turn-the-phone-lose-the-screen-2-2"><label for="q-20-turn-the-phone-lose-the-screen-2-2"><span>To free the memory the old screen used</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-2" id="q-20-turn-the-phone-lose-the-screen-2-3" data-ok><label for="q-20-turn-the-phone-lose-the-screen-2-3"><span>Building from scratch picks up everything the new configuration needs</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Nothing crashed: the process lives on; only the Activity is replaced. <label class="show-me" for="st-rotate-3" data-goto="st-rotate">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Recreating costs work. It's about getting the screen right for the new configuration. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Rebuilding from scratch is the simplest way to apply everything that changed.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>After the phone turns, what's new and what's the same?</legend>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-3" id="q-20-turn-the-phone-lose-the-screen-3-1"><label for="q-20-turn-the-phone-lose-the-screen-3-1">Both are new: the process restarts with the new shape</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-3" id="q-20-turn-the-phone-lose-the-screen-3-2" data-ok><label for="q-20-turn-the-phone-lose-the-screen-3-2">The Activity object is new, while the process is the same</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-3" id="q-20-turn-the-phone-lose-the-screen-3-3"><label for="q-20-turn-the-phone-lose-the-screen-3-3">Both are the same: the Activity is only resized</label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-3" id="q-20-turn-the-phone-lose-the-screen-3-1"><label for="q-20-turn-the-phone-lose-the-screen-3-1"><span>Both are new: the process restarts with the new shape</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-3" id="q-20-turn-the-phone-lose-the-screen-3-2" data-ok><label for="q-20-turn-the-phone-lose-the-screen-3-2"><span>The Activity object is new, while the process is the same</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-3" id="q-20-turn-the-phone-lose-the-screen-3-3"><label for="q-20-turn-the-phone-lose-the-screen-3-3"><span>Both are the same: the Activity is only resized</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The house stays; only one room is rebuilt. <label class="show-me" for="st-rotate-4" data-goto="st-rotate">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> New Activity, same process: so something in the process could keep data across the rebuild. The next puzzle shows what.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The old Activity was destroyed, and <span class="ref" tabindex="0" aria-describedby="ref-3"><code>onCreate()</code><span class="pop" role="tooltip" id="ref-3"><span class="pop-what">Your override of this method is what the main thread calls when system_server says &quot;create&quot;.</span><span class="pop-code"> 1864  protected void onCreate(@Nullable Bundle savedInstanceState) {</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/Activity.java#L1864">Activity.java, line 1864 · AOSP frameworks/base ↗</a></span></span> ran on a new one. <label class="show-me" for="st-rotate-3" data-goto="st-rotate">Show me step 3 again ↑</label></p>

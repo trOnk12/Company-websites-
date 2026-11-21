@@ -20,11 +20,17 @@ For each boundary, name the data, the decision owner, the time budget and the re
 
 Round one is the parking service. Keep the replies from two contenders and read the winning grant after restart. Round two is assigned seating. Counting remaining tickets is insufficient because two tickets can name the same chair. Enforce uniqueness of event and seat together. Round three is a social feed. Freshness, ordering and read cost matter more than exclusive inventory. Compare building feeds on read with distributing posts at publication time.
 
+### Defend a decision under a changed assumption
+
+For a feed with two million followers and a ten-second visibility objective, writing one entry per follower would need 200,000 entries per second for that post alone. Suppose the measured writer sustains 50,000 per second including ordinary work. Even dedicating all of it to this post takes at least 40 seconds. Four times more queue space cannot shorten that lower bound.
+
+A candidate design merges that author's recent posts when a reader opens the feed. State the new cost: feed reads now perform merge work and must enforce current access rights. Test with the actual distribution of follows per reader and a private post revoked between reads. A reviewer can now challenge both the old throughput ceiling and the new read-latency assumption.
+
 ## Try it
 
 Submit a contract, an estimate with units, a diagram, a failure timeline, a repeatable test and a decision record. Have a reviewer change one assumption: a publisher now has a million followers, or one region loses contact. Predict the result before testing. Explain what measurement would make you change your own decision.
 
-[Open the design cases, worked solutions and grading rubric](https://github.com/trOnk12/Company-websites-/blob/main/labs/parking-design/cases.md)
+[Open the three design cases and grading rubric](https://pachulski.dev/labs/parking-design/cases.html)
 
 ## Check yourself
 

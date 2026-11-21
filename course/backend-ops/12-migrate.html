@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-12">
         <p id="builds-on-12"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Start with a nullable label column. Old readers selecting the name keep working. Backfill existing rows and deploy writers that populate the new field. While an old writer still runs it can create another missing label. Verify the backfill after old writers retire before enforcing the new rule. Test rollback of the application against the expanded database. Take a backup and read sample rows from an independent restored copy. A successful image rollback cannot reconstruct a dropped column.</p>
+<h3>Practice a mixed-version rollout</h3>
+<p>At noon the new label field is optional. The backfill copies river into its label. At 12:01 an old writer inserts hill and supplies no label. Counting missing labels now returns one, even though the earlier job reported success. Let new writers fill the label while old readers still request only the existing fields. Once old writers are gone, run the catch-up pass, count missing labels again, and then enforce the rule. Keep the compatibility window open until rolling back to the previous application is no longer required.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#12-migrate">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the migration and snapshot exercise. Add an old-style insert after the backfill. Demonstrate the missing label and restore a sample into a separate database.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#data-drills">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#data-drills">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A backfill finished but an old writer still runs. What can happen?</legend>
-<input type="radio" name="q-12-migrate-1" id="q-12-migrate-1-1"><label for="q-12-migrate-1-1">All future rows inherit the earlier backfill</label>
-<input type="radio" name="q-12-migrate-1" id="q-12-migrate-1-2" data-ok><label for="q-12-migrate-1-2">A new row can lack its label</label>
+<input type="radio" name="q-12-migrate-1" id="q-12-migrate-1-1"><label for="q-12-migrate-1-1"><span>All future rows inherit the earlier backfill</span></label>
+<input type="radio" name="q-12-migrate-1" id="q-12-migrate-1-2" data-ok><label for="q-12-migrate-1-2"><span>A new row can lack its label</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The backfill touched only the rows present at the time. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> An additive migration gives old and new application versions a period of compatibility.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which observation should precede requiring every label?</legend>
+<input type="radio" name="q-12-migrate-2" id="q-12-migrate-2-1"><label for="q-12-migrate-2-1"><span>The first backfill succeeded while old writers were still active</span></label>
+<input type="radio" name="q-12-migrate-2" id="q-12-migrate-2-2" data-ok><label for="q-12-migrate-2-2"><span>Old writers retired and no missing labels remain</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A still-active old writer can introduce new gaps. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A still-active old writer can introduce new gaps.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which exercise tests recovery of previously stored values?</legend>
+<input type="radio" name="q-12-migrate-3" id="q-12-migrate-3-1"><label for="q-12-migrate-3-1"><span>Start an older application against an empty database</span></label>
+<input type="radio" name="q-12-migrate-3" id="q-12-migrate-3-2" data-ok><label for="q-12-migrate-3-2"><span>Restore the backup separately and read representative rows</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A program rollback alone does not restore data. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A program rollback alone does not restore data.</p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.sqlite.org/backup.html">Technical reference</a></li></ul></details>

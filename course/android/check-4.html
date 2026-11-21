@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 20"><p class="eyebrow">Puzzle 20: Turn the phone, lose your screen</p>
 <fieldset class="quiz" data-n="20">
 <legend>Your Activity keeps the list the user scrolled in a field. The user switches the phone to dark mode. What happens to the field?</legend>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-1" data-ok><label for="q-20-turn-the-phone-lose-the-screen-1-1">It's gone: dark mode is a configuration change, so a new Activity is created</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-2"><label for="q-20-turn-the-phone-lose-the-screen-1-2">It stays, because the process wasn't killed</label>
-<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-3"><label for="q-20-turn-the-phone-lose-the-screen-1-3">It stays: only turning the phone recreates the Activity</label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-1" data-ok><label for="q-20-turn-the-phone-lose-the-screen-1-1"><span>It's gone: dark mode is a configuration change, so a new Activity is created</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-2"><label for="q-20-turn-the-phone-lose-the-screen-1-2"><span>It stays, because the process wasn't killed</span></label>
+<input type="radio" name="q-20-turn-the-phone-lose-the-screen-1" id="q-20-turn-the-phone-lose-the-screen-1-3"><label for="q-20-turn-the-phone-lose-the-screen-1-3"><span>It stays: only turning the phone recreates the Activity</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Any configuration change recreates the Activity.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The process lives on, but the Activity object is a new one, and the old fields went with the old object. <a class="show-me" href="20-turn-the-phone-lose-the-screen.html">Learn it in puzzle 20 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> Turning the phone is one configuration change of many; dark mode and language are too. <a class="show-me" href="20-turn-the-phone-lose-the-screen.html">Learn it in puzzle 20 →</a></p>
@@ -65,9 +65,9 @@
 <section aria-label="Puzzle 21"><p class="eyebrow">Puzzle 21: The ViewModel outlives the screen</p>
 <fieldset class="quiz" data-n="21">
 <legend>A ViewModel downloads a list when it's created, like the one above. The user turns the phone twice. How many times is the list downloaded?</legend>
-<input type="radio" name="q-21-the-viewmodel-outlives-the-screen-1" id="q-21-the-viewmodel-outlives-the-screen-1-1"><label for="q-21-the-viewmodel-outlives-the-screen-1-1">Three times, once per Activity</label>
-<input type="radio" name="q-21-the-viewmodel-outlives-the-screen-1" id="q-21-the-viewmodel-outlives-the-screen-1-2" data-ok><label for="q-21-the-viewmodel-outlives-the-screen-1-2">Once: the same ViewModel is handed to each new Activity</label>
-<input type="radio" name="q-21-the-viewmodel-outlives-the-screen-1" id="q-21-the-viewmodel-outlives-the-screen-1-3"><label for="q-21-the-viewmodel-outlives-the-screen-1-3">Twice, once after each turn, because turning clears the store</label>
+<input type="radio" name="q-21-the-viewmodel-outlives-the-screen-1" id="q-21-the-viewmodel-outlives-the-screen-1-1"><label for="q-21-the-viewmodel-outlives-the-screen-1-1"><span>Three times, once per Activity</span></label>
+<input type="radio" name="q-21-the-viewmodel-outlives-the-screen-1" id="q-21-the-viewmodel-outlives-the-screen-1-2" data-ok><label for="q-21-the-viewmodel-outlives-the-screen-1-2"><span>Once: the same ViewModel is handed to each new Activity</span></label>
+<input type="radio" name="q-21-the-viewmodel-outlives-the-screen-1" id="q-21-the-viewmodel-outlives-the-screen-1-3"><label for="q-21-the-viewmodel-outlives-the-screen-1-3"><span>Twice, once after each turn, because turning clears the store</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The Activities are new, but the ViewModel waits in the store and is handed over. <a class="show-me" href="21-the-viewmodel-outlives-the-screen.html">Learn it in puzzle 21 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The store survives configuration changes, so the ViewModel and its list do too.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The store is cleared only when the screen closes for good, not on a configuration change. <a class="show-me" href="21-the-viewmodel-outlives-the-screen.html">Learn it in puzzle 21 →</a></p>
@@ -75,9 +75,9 @@
 <section aria-label="Puzzle 22"><p class="eyebrow">Puzzle 22: When the process is gone</p>
 <fieldset class="quiz" data-n="22">
 <legend>The user typed a long message, kept only in a ViewModel. They switch apps, and Android ends your process to free memory. They come back. What do they see?</legend>
-<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-1" data-ok><label for="q-22-when-the-process-is-gone-1-1">An empty message: the ViewModel ended with the process</label>
-<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-2"><label for="q-22-when-the-process-is-gone-1-2">The message, because system_server keeps every ViewModel</label>
-<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-3"><label for="q-22-when-the-process-is-gone-1-3">The message: a ViewModel survives everything</label>
+<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-1" data-ok><label for="q-22-when-the-process-is-gone-1-1"><span>An empty message: the ViewModel ended with the process</span></label>
+<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-2"><label for="q-22-when-the-process-is-gone-1-2"><span>The message, because system_server keeps every ViewModel</span></label>
+<input type="radio" name="q-22-when-the-process-is-gone-1" id="q-22-when-the-process-is-gone-1-3"><label for="q-22-when-the-process-is-gone-1-3"><span>The message: a ViewModel survives everything</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Only what was in the saved state (or in a file) comes back.</p>
 <p class="fb no opt-2"><b>Not quite.</b> system_server keeps only the small Bundle your app sent, never your objects. <a class="show-me" href="22-when-the-process-is-gone.html">Learn it in puzzle 22 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> A ViewModel lives in your process; when the process is gone, so is it. <a class="show-me" href="22-when-the-process-is-gone.html">Learn it in puzzle 22 →</a></p>

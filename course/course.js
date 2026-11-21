@@ -233,11 +233,11 @@
       const gate = document.createElement('div');
       gate.className = 'gate';
       gate.setAttribute('role', 'note');
-      const prerequisite = missing[0].querySelector('summary a');
+      const prerequisite = missing[0].querySelector('details a');
       gate.innerHTML = '<p><b>Building blocks to review</b></p><p class="actions"><a class="button primary"></a><button type="button" class="button">Continue anyway</button></p>';
       const review = gate.querySelector('a');
       review.href = prerequisite.href;
-      review.textContent = prerequisite.textContent;
+      review.textContent = missing[0].querySelector('summary').textContent;
       gate.querySelector('button').addEventListener('click', () => { gate.remove(); count(`skipped to ${course} ${n}`, true, `Skipped ahead to puzzle ${n}`); });
       puzzle.querySelector('.lesson-jumps').after(gate);
     }

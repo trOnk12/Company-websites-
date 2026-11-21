@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-8">
         <p id="builds-on-8"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="5"><details><summary><a href="05-the-post-office-carries-letters.html">Puzzle 5: The post office carries letters</a></summary><p>Between processes, nothing is reached directly. Binder, a driver in the kernel, carries the message, like a post office.</p></details></li><li data-block="7"><details><summary><a href="07-each-app-is-its-own-user.html">Puzzle 7: Each app gets its own account</a></summary><p>Every app gets its own UID, its key. The kernel checks that key on every file, so one app can never open another's private files: the sandbox.</p></details></li></ul>
+        <ul><li data-block="5"><details><summary>Puzzle 5: The post office carries letters</summary><p>Between processes, nothing is reached directly. Binder, a driver in the kernel, carries the message, like a post office.</p><p><a href="05-the-post-office-carries-letters.html">Review puzzle 5</a></p></details></li><li data-block="7"><details><summary>Puzzle 7: Each app gets its own account</summary><p>Every app gets its own UID, its key. The kernel checks that key on every file, so one app can never open another's private files: the sandbox.</p><p><a href="07-each-app-is-its-own-user.html">Review puzzle 7</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 7 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="07-each-app-is-its-own-user.html">7</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -122,24 +122,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A game sends an Intent asking to start a phone call, but the user never granted it the phone-call permission. What happens?</legend>
-<input type="radio" name="q-08-letters-between-apps-1" id="q-08-letters-between-apps-1-1" data-ok><label for="q-08-letters-between-apps-1-1">system_server refuses the request</label>
-<input type="radio" name="q-08-letters-between-apps-1" id="q-08-letters-between-apps-1-2"><label for="q-08-letters-between-apps-1-2">The kernel blocks the Intent at the game's door</label>
-<input type="radio" name="q-08-letters-between-apps-1" id="q-08-letters-between-apps-1-3"><label for="q-08-letters-between-apps-1-3">The call starts anyway, because Intents always get delivered</label>
+<input type="radio" name="q-08-letters-between-apps-1" id="q-08-letters-between-apps-1-1" data-ok><label for="q-08-letters-between-apps-1-1"><span>system_server refuses the request</span></label>
+<input type="radio" name="q-08-letters-between-apps-1" id="q-08-letters-between-apps-1-2"><label for="q-08-letters-between-apps-1-2"><span>The kernel blocks the Intent at the game's door</span></label>
+<input type="radio" name="q-08-letters-between-apps-1" id="q-08-letters-between-apps-1-3"><label for="q-08-letters-between-apps-1-3"><span>The call starts anyway, because Intents always get delivered</span></label>
 <p class="fb ok opt-1"><b>Right.</b> system_server checks the sender's permissions before acting.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The kernel guards files and memory. Permissions for actions are checked by system_server. <label class="show-me" for="st-intents-3" data-goto="st-intents">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Delivery isn't automatic: the town hall checks permissions first. <label class="show-me" for="st-intents-3" data-goto="st-intents">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does an Intent go to system_server instead of straight to the other app?</legend>
-<input type="radio" name="q-08-letters-between-apps-2" id="q-08-letters-between-apps-2-1"><label for="q-08-letters-between-apps-2-1">Because Intents are too big for one app to send straight to another</label>
-<input type="radio" name="q-08-letters-between-apps-2" id="q-08-letters-between-apps-2-2" data-ok><label for="q-08-letters-between-apps-2-2">Because apps can't reach each other, so the town hall delivers and checks permissions</label>
+<input type="radio" name="q-08-letters-between-apps-2" id="q-08-letters-between-apps-2-1"><label for="q-08-letters-between-apps-2-1"><span>Because Intents are too big for one app to send straight to another</span></label>
+<input type="radio" name="q-08-letters-between-apps-2" id="q-08-letters-between-apps-2-2" data-ok><label for="q-08-letters-between-apps-2-2"><span>Because apps can't reach each other, so the town hall delivers and checks permissions</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Size has nothing to do with it: the sandbox means only the town hall can deliver. <label class="show-me" for="st-intents-2" data-goto="st-intents">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Only the town hall can deliver between sandboxes, and it checks the sender on the way.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the sandbox and a permission?</legend>
-<input type="radio" name="q-08-letters-between-apps-3" id="q-08-letters-between-apps-3-1"><label for="q-08-letters-between-apps-3-1">They're the same protection, checked by system_server for every app</label>
-<input type="radio" name="q-08-letters-between-apps-3" id="q-08-letters-between-apps-3-2" data-ok><label for="q-08-letters-between-apps-3-2">The sandbox closes each app off, while a permission allows one specific action</label>
+<input type="radio" name="q-08-letters-between-apps-3" id="q-08-letters-between-apps-3-1"><label for="q-08-letters-between-apps-3-1"><span>They're the same protection, checked by system_server for every app</span></label>
+<input type="radio" name="q-08-letters-between-apps-3" id="q-08-letters-between-apps-3-2" data-ok><label for="q-08-letters-between-apps-3-2"><span>The sandbox closes each app off, while a permission allows one specific action</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The sandbox is walls the kernel enforces for every app; permissions are rights system_server grants per action. <label class="show-me" for="st-intents-1" data-goto="st-intents">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Walls by the kernel; rights by the town hall.</p>
 </fieldset>

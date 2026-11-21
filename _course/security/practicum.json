@@ -1,0 +1,24 @@
+{
+  "title": "Review a client before it sends a private receipt",
+  "brief": "Review a mobile client’s HTTPS trust decision using synthetic handshake records. Decide which evidence authorizes the client to send its first private request.",
+  "prerequisites": "Complete the key exchange, hash, keyed check, signature, certificate and TLS lessons.",
+  "setup": "Use the intended name receipts.example and a full certificate-authenticated TLS 1.3 connection with no early data. The working fixture has a trusted certificate chain, a matching server name, a valid handshake signature and a valid Finished check.",
+  "steps": [
+    "Draw three columns for public material, private keys and shared traffic keys. Place the certificate, public key shares, server signing key and derived traffic keys.",
+    "Annotate the client decision for three fixtures: all checks pass; the trusted certificate names another host; the certificate matches but signature verification fails. Identify the earliest decisive failure in each supplied description.",
+    "Explain what the receiver checks before releasing an application record to its caller. Record which metadata a passive observer can still see.",
+    "Trace receipt upload after a successful handshake. Identify the separate application decision that binds the signed-in user to this receipt."
+  ],
+  "evidence": [
+    "A private request proceeds only in the all-valid fixture. The explanation separately covers the server name, possession of the signing key and integrity of the handshake.",
+    "The design uses platform TLS verification and authenticated record protection. Public certificates are never treated as secret keys.",
+    "The review identifies a concrete ownership check beyond the secure channel and says what happens on denial."
+  ],
+  "worked": [
+    "A trusted chain plus a matching name ties the presented public key to receipts.example under the client’s trust policy. A valid handshake signature proves use of the corresponding private key for this exchange. Finished checks the handshake transcript under a secret derived during the connection. The platform completes these checks before the regular upload.",
+    "In the wrong-name fixture, a valid signature for the other name still leaves the intended server unverified. In the failed-signature fixture, the matching certificate alone is insufficient. A rejected record tag also withholds that record’s plaintext from the application. Traffic timing and sizes may still be observable.",
+    "A verified connection to the right server can carry an unauthorized application request. The receipt service derives the owner from its authenticated session and checks permission for that receipt before returning private bytes."
+  ],
+  "variation": "The service renews its certificate with a new key pair. The platform trusts the new chain, and the new certificate matches the same server name.",
+  "solution": "With the stated system trust policy, ordinary clients accept a valid handshake under the renewed certificate and key. Keep hostname, chain, validity and signature verification enabled during rotation. A client with an additional pin would need its own planned key-transition policy."
+}

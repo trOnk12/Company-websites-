@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-8">
         <p id="builds-on-8"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>The data drill generates repeated timestamps and several owners. The query filters by owner and sorts by time, then by a unique row number to settle ties. Without a matching index the database scans the table and uses temporary storage for sorting in this example. An index arranged by owner, time and row number can locate the matching range in order. Compare the plans and the actual rows. Extra indexes occupy space and must be maintained on writes. For the next page, carry the last time and row number together and continue below that pair using the same ordering.</p>
+<h3>Trace the page boundary</h3>
+<p>Use ascending order for this small example. The rows for one owner are (time 10, id 1), (10, 2) and (11, 3). With a page size of one, the first response ends at (10, 1). A next-page filter requiring a time greater than ten jumps straight to row 3. A filter accepting a later time or the same time and a larger row number returns row 2. For descending order, reverse the direction of both the ordering and continuation comparison. First verify the pages contain the right rows in order. Then inspect the query plan to learn how much searching and sorting produced them.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#08-query">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the data drills, inspect both plans and implement a second page. Check that two tied rows across the page boundary are each returned once.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#data-drills">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#data-drills">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Two bookmarks share a time. What belongs in the page cursor?</legend>
-<input type="radio" name="q-08-query-1" id="q-08-query-1-1"><label for="q-08-query-1-1">Only the timestamp of the last row</label>
-<input type="radio" name="q-08-query-1" id="q-08-query-1-2" data-ok><label for="q-08-query-1-2">Time and the unique row number</label>
+<input type="radio" name="q-08-query-1" id="q-08-query-1-1"><label for="q-08-query-1-1"><span>Only the timestamp of the last row</span></label>
+<input type="radio" name="q-08-query-1" id="q-08-query-1-2" data-ok><label for="q-08-query-1-2"><span>Time and the unique row number</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A timestamp alone cannot distinguish the tied rows. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> An index matching the owner and sort order can serve the same page with less searching and sorting.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which failure can a fast query still have?</legend>
+<input type="radio" name="q-08-query-2" id="q-08-query-2-1" data-ok><label for="q-08-query-2-1"><span>It can skip a row tied on the timestamp</span></label>
+<input type="radio" name="q-08-query-2" id="q-08-query-2-2"><label for="q-08-query-2-2"><span>It must always return a complete page sequence</span></label>
+<p class="fb ok opt-1"><b>Right.</b> An index speeds access but cannot repair the wrong continuation condition.</p>
+<p class="fb no opt-2"><b>Not quite.</b> An index speeds access but cannot repair the wrong continuation condition. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Why include the owner before time in this particular index?</legend>
+<input type="radio" name="q-08-query-3" id="q-08-query-3-1" data-ok><label for="q-08-query-3-1"><span>The query restricts one owner then orders that owner's rows</span></label>
+<input type="radio" name="q-08-query-3" id="q-08-query-3-2"><label for="q-08-query-3-2"><span>Every query in a database filters by owner</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Choose an index for the actual filter and ordering.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Choose an index for the actual filter and ordering. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.sqlite.org/queryplanner.html">Technical reference</a></li></ul></details>

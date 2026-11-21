@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -67,7 +67,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-open-the-tcp-connection.html">Puzzle 0: Why TCP starts with three messages</a></summary><p>The TCP handshake exchanges starting byte numbers and confirms both directions. A peer that has received only the first two messages has different information from its peer.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Why TCP starts with three messages</summary><p>The TCP handshake exchanges starting byte numbers and confirms both directions. A peer that has received only the first two messages has different information from its peer.</p><p><a href="00-open-the-tcp-connection.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-open-the-tcp-connection.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../security/07-proof-of-who-you-are.html"><b>certificate</b></a> <span class="small">Encryption, from the ground up, puzzle 7: Proof of who you are</span></li><li><a href="../security/07-proof-of-who-you-are.html"><b>private key</b></a> <span class="small">Encryption, from the ground up, puzzle 7: Proof of who you are</span></li><li><a href="../security/07-proof-of-who-you-are.html"><b>signature</b></a> <span class="small">Encryption, from the ground up, puzzle 7: Proof of who you are</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -115,27 +115,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The peer proves it owns a key for images.example.com. The phone asked for api.example.com. What fails?</legend>
-<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-1"><label for="q-02-who-proves-the-server-name-1-1">The generation of the phone’s initial TCP byte number</label>
-<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-2" data-ok><label for="q-02-who-proves-the-server-name-1-2">The expected service identity check</label>
-<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-3"><label for="q-02-who-proves-the-server-name-1-3">The proof of possession automatically fails</label>
+<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-1"><label for="q-02-who-proves-the-server-name-1-1"><span>The generation of the phone’s initial TCP byte number</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-2" data-ok><label for="q-02-who-proves-the-server-name-1-2"><span>The expected service identity check</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-3"><label for="q-02-who-proves-the-server-name-1-3"><span>The proof of possession automatically fails</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The TCP setup can succeed regardless of the name. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Key ownership and the intended name are distinct checks.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Possession of that other service’s key can still be proved. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What additional evidence does CertificateVerify give beyond presenting a certificate?</legend>
-<input type="radio" name="q-02-who-proves-the-server-name-2" id="q-02-who-proves-the-server-name-2-1" data-ok><label for="q-02-who-proves-the-server-name-2-1">Proof of control of the matching key for this handshake</label>
-<input type="radio" name="q-02-who-proves-the-server-name-2" id="q-02-who-proves-the-server-name-2-2"><label for="q-02-who-proves-the-server-name-2-2">Proof that all later application responses will succeed</label>
-<input type="radio" name="q-02-who-proves-the-server-name-2" id="q-02-who-proves-the-server-name-2-3"><label for="q-02-who-proves-the-server-name-2-3">Proof that the initial TCP segment contained no private data</label>
+<input type="radio" name="q-02-who-proves-the-server-name-2" id="q-02-who-proves-the-server-name-2-1" data-ok><label for="q-02-who-proves-the-server-name-2-1"><span>Proof of control of the matching key for this handshake</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-2" id="q-02-who-proves-the-server-name-2-2"><label for="q-02-who-proves-the-server-name-2-2"><span>Proof that all later application responses will succeed</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-2" id="q-02-who-proves-the-server-name-2-3"><label for="q-02-who-proves-the-server-name-2-3"><span>Proof that the initial TCP segment contained no private data</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The peer actively signs data tied to the exchange.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Authentication does not guarantee an application outcome. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The certificate proof concerns the TLS exchange. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What does the Finished message check?</legend>
-<input type="radio" name="q-02-who-proves-the-server-name-3" id="q-02-who-proves-the-server-name-3-1" data-ok><label for="q-02-who-proves-the-server-name-3-1">The transcript against a key derived from handshake secrets</label>
-<input type="radio" name="q-02-who-proves-the-server-name-3" id="q-02-who-proves-the-server-name-3-2"><label for="q-02-who-proves-the-server-name-3-2">The expiration date printed inside the peer’s certificate</label>
-<input type="radio" name="q-02-who-proves-the-server-name-3" id="q-02-who-proves-the-server-name-3-3"><label for="q-02-who-proves-the-server-name-3-3">The order of the application requests seen by the application</label>
+<input type="radio" name="q-02-who-proves-the-server-name-3" id="q-02-who-proves-the-server-name-3-1" data-ok><label for="q-02-who-proves-the-server-name-3-1"><span>The transcript against a key derived from handshake secrets</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-3" id="q-02-who-proves-the-server-name-3-2"><label for="q-02-who-proves-the-server-name-3-2"><span>The expiration date printed inside the peer’s certificate</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-3" id="q-02-who-proves-the-server-name-3-3"><label for="q-02-who-proves-the-server-name-3-3"><span>The order of the application requests seen by the application</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Finished ties the transcript to the negotiated secrets.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Certificate validity is a separate verification step. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The regular application request is a separate step. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>

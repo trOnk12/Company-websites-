@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-8">
         <p id="builds-on-8"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-a-hash-with-a-secret.html">Puzzle 6: A hash with a secret</a></summary><p>A MAC (message authentication code) is a short value computed from the data and a secret key together; HMAC builds one from a hash function. The sender attaches it as a tag; the receiver, who has the same key, recomputes it and compares. An attacker who changes the data can't compute the matching tag without the key, so any change is caught. TLS protects every chunk of your data this way.</p></details></li><li data-block="7"><details><summary><a href="07-proof-of-who-you-are.html">Puzzle 7: Proof of who you are</a></summary><p>A key pair is a private key the owner keeps and a public key anyone may have. Signing computes a signature from a digest and the private key; anyone can check it with the public key, and nobody can fake it without the private key. A certificate is a server's name and public key, signed by a certificate authority your phone already trusts.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: A hash with a secret</summary><p>A MAC (message authentication code) is a short value computed from the data and a secret key together; HMAC builds one from a hash function. The sender attaches it as a tag; the receiver, who has the same key, recomputes it and compares. An attacker who changes the data can't compute the matching tag without the key, so any change is caught. TLS protects every chunk of your data this way.</p><p><a href="06-a-hash-with-a-secret.html">Review puzzle 6</a></p></details></li><li data-block="7"><details><summary>Puzzle 7: Proof of who you are</summary><p>A key pair is a private key the owner keeps and a public key anyone may have. Signing computes a signature from a digest and the private key; anyone can check it with the public key, and nobody can fake it without the private key. A certificate is a server's name and public key, signed by a certificate authority your phone already trusts.</p><p><a href="07-proof-of-who-you-are.html">Review puzzle 7</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 8 puzzles: <a href="00-anyone-on-the-line.html">0</a> → <a href="01-bits-xor-and-a-toy-cipher.html">1</a> → <a href="02-one-key-for-both.html">2</a> → <a href="03-a-secret-agreed-in-public.html">3</a> → <a href="04-the-man-in-the-middle.html">4</a> → <a href="05-a-fingerprint-for-data.html">5</a> → <a href="06-a-hash-with-a-secret.html">6</a> → <a href="07-proof-of-who-you-are.html">7</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../sysdesign/03-round-trips-not-bandwidth.html"><b>round trip</b></a> <span class="small">Mobile system design, from a packet to an app, puzzle 3: Round trips, not bandwidth</span></li><li><a href="../sysdesign/04-what-https-adds.html"><b>HTTPS</b></a> <span class="small">Mobile system design, from a packet to an app, puzzle 4: What HTTPS adds</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -117,26 +117,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app connects to your server over HTTPS on the café Wi-Fi. A machine in the middle replaces one byte of the response. What happens?</legend>
-<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-1" data-ok><label for="q-08-tls-the-blocks-together-1-1">The MAC on that record fails, so your app rejects it</label>
-<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-2"><label for="q-08-tls-the-blocks-together-1-2">Nothing, because the change is encrypted too</label>
-<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-3"><label for="q-08-tls-the-blocks-together-1-3">Your app uses the slightly changed response without noticing</label>
+<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-1" data-ok><label for="q-08-tls-the-blocks-together-1-1"><span>The MAC on that record fails, so your app rejects it</span></label>
+<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-2"><label for="q-08-tls-the-blocks-together-1-2"><span>Nothing, because the change is encrypted too</span></label>
+<input type="radio" name="q-08-tls-the-blocks-together-1" id="q-08-tls-the-blocks-together-1-3"><label for="q-08-tls-the-blocks-together-1-3"><span>Your app uses the slightly changed response without noticing</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Every record is checked as well as encrypted.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Encryption alone wouldn't notice; the per-record check is what catches it. <label class="show-me" for="st-tls-4" data-goto="st-tls">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Every record carries a keyed check; a changed byte makes it fail, and the listener can't recompute it. <label class="show-me" for="st-tls-4" data-goto="st-tls">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does the server sign the handshake, not only send its certificate?</legend>
-<input type="radio" name="q-08-tls-the-blocks-together-2" id="q-08-tls-the-blocks-together-2-1" data-ok><label for="q-08-tls-the-blocks-together-2-1">Because certificates are public and copyable, but only the private key can sign</label>
-<input type="radio" name="q-08-tls-the-blocks-together-2" id="q-08-tls-the-blocks-together-2-2"><label for="q-08-tls-the-blocks-together-2-2">Because the signature is what encrypts the data afterwards</label>
-<input type="radio" name="q-08-tls-the-blocks-together-2" id="q-08-tls-the-blocks-together-2-3"><label for="q-08-tls-the-blocks-together-2-3">Because the certificate is too big to send in one handshake</label>
+<input type="radio" name="q-08-tls-the-blocks-together-2" id="q-08-tls-the-blocks-together-2-1" data-ok><label for="q-08-tls-the-blocks-together-2-1"><span>Because certificates are public and copyable, but only the private key can sign</span></label>
+<input type="radio" name="q-08-tls-the-blocks-together-2" id="q-08-tls-the-blocks-together-2-2"><label for="q-08-tls-the-blocks-together-2-2"><span>Because the signature is what encrypts the data afterwards</span></label>
+<input type="radio" name="q-08-tls-the-blocks-together-2" id="q-08-tls-the-blocks-together-2-3"><label for="q-08-tls-the-blocks-together-2-3"><span>Because the certificate is too big to send in one handshake</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A certificate can be copied; a signature can't.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The data is encrypted with symmetric keys from the key exchange, not with the signature. <label class="show-me" for="st-tls-3" data-goto="st-tls">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Size isn't the issue: a copied certificate proves nothing without a signature. <label class="show-me" for="st-tls-2" data-goto="st-tls">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the handshake and everything after it?</legend>
-<input type="radio" name="q-08-tls-the-blocks-together-3" id="q-08-tls-the-blocks-together-3-1"><label for="q-08-tls-the-blocks-together-3-1">The handshake is encrypted with the server's private key; the rest isn't</label>
-<input type="radio" name="q-08-tls-the-blocks-together-3" id="q-08-tls-the-blocks-together-3-2" data-ok><label for="q-08-tls-the-blocks-together-3-2">The handshake sets up keys and proves identity; then data uses those keys</label>
+<input type="radio" name="q-08-tls-the-blocks-together-3" id="q-08-tls-the-blocks-together-3-1"><label for="q-08-tls-the-blocks-together-3-1"><span>The handshake is encrypted with the server's private key; the rest isn't</span></label>
+<input type="radio" name="q-08-tls-the-blocks-together-3" id="q-08-tls-the-blocks-together-3-2" data-ok><label for="q-08-tls-the-blocks-together-3-2"><span>The handshake sets up keys and proves identity; then data uses those keys</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Afterwards everything is encrypted, with symmetric keys from the key exchange. <label class="show-me" for="st-tls-4" data-goto="st-tls">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Setting up vs using.</p>
 </fieldset>
@@ -151,8 +151,8 @@
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>Encryption, from the ground up</b>. Next: Module 2: Secrets on the phone, about where an app keeps keys and tokens: the Android Keystore and hardware-backed keys, encrypted storage, certificate pinning and when it backfires.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20TLS%2C%20the%20blocks%20together&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

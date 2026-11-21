@@ -20,6 +20,12 @@ Store an **event**, a record saying that something happened, such as a space bei
 
 A sender can deliver an event and crash before marking it complete. It will deliver again. A consumer can store the event identity and its own database effect in one transaction. That protects the database effect from repetition. An email provider forms another boundary. A local transaction alone cannot guarantee exactly one message in the driver's inbox.
 
+### Follow event 41 through a crash
+
+Ada's committed reservation and event 41 appear together. A worker publishes 41 and stops before recording the delivery. A replacement publishes 41 again. On the receiving side, insert 41 into a table of processed identities and update the local reservation view in one transaction. The first delivery commits both changes. A duplicate detects the existing identity and leaves the view alone.
+
+Reverse the receiving order and commit the processed marker on its own first. A crash before the view update now loses the effect permanently: every retry finds a completed marker. To test the repaired version, stop the worker at each boundary, run the worker again, and count both distinct processed IDs and visible reservations.
+
 ## Go deeper: What if events arrive out of order?
 
 Grant has version one and a later reversal version two. Applying two and then one blindly can resurrect a cancelled grant. Event identity detects a duplicate, but cannot order two different events. For complete state snapshots a consumer can retain the highest applied version per object. For incremental changes, a gap may require replay or rebuilding from an authoritative snapshot.

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-12">
         <p id="builds-on-12"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="7"><details><summary><a href="07-counting-or-tracing.html">Puzzle 7: Counting or tracing</a></summary><p>A tracing garbage collector starts from the roots, the references a program always has (local and global variables), follows every reference, and frees whatever it couldn't reach, even objects that point at each other. Reference counting keeps a count of strong references on every object and frees it the moment the count hits zero, but two objects holding each other never reach zero: a cycle it can't free.</p></details></li></ul>
+        <ul><li data-block="7"><details><summary>Puzzle 7: Counting or tracing</summary><p>A tracing garbage collector starts from the roots, the references a program always has (local and global variables), follows every reference, and frees whatever it couldn't reach, even objects that point at each other. Reference counting keeps a count of strong references on every object and frees it the moment the count hits zero, but two objects holding each other never reach zero: a cycle it can't free.</p><p><a href="07-counting-or-tracing.html">Review puzzle 7</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 5 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a> → <a href="04-an-ios-app-in-one-puzzle.html">4</a> → <a href="07-counting-or-tracing.html">7</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -113,27 +113,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>An app imports two Kotlin frameworks, and both contain the same <code>User</code> class. Swift passes a <code>User</code> from one to the other. What happens?</legend>
-<input type="radio" name="q-12-one-framework-not-two-1" id="q-12-one-framework-not-two-1-1"><label for="q-12-one-framework-not-two-1-1">It works, because the class has the same name in both</label>
-<input type="radio" name="q-12-one-framework-not-two-1" id="q-12-one-framework-not-two-1-2" data-ok><label for="q-12-one-framework-not-two-1-2">It doesn't work: the two <code>User</code> types are different types to Swift</label>
-<input type="radio" name="q-12-one-framework-not-two-1" id="q-12-one-framework-not-two-1-3"><label for="q-12-one-framework-not-two-1-3">It works, but only for classes from <code>commonMain</code></label>
+<input type="radio" name="q-12-one-framework-not-two-1" id="q-12-one-framework-not-two-1-1"><label for="q-12-one-framework-not-two-1-1"><span>It works, because the class has the same name in both</span></label>
+<input type="radio" name="q-12-one-framework-not-two-1" id="q-12-one-framework-not-two-1-2" data-ok><label for="q-12-one-framework-not-two-1-2"><span>It doesn't work: the two <code>User</code> types are different types to Swift</span></label>
+<input type="radio" name="q-12-one-framework-not-two-1" id="q-12-one-framework-not-two-1-3"><label for="q-12-one-framework-not-two-1-3"><span>It works, but only for classes from <code>commonMain</code></span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Each framework has its own runtime and its own copy of the class; to Swift they're different types. <label class="show-me" for="st-umbrella-2" data-goto="st-umbrella">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Two frameworks, two copies of every type.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Where the class came from doesn't help: two frameworks, two types. <label class="show-me" for="st-umbrella-2" data-goto="st-umbrella">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why export only the modules Swift calls, instead of everything?</legend>
-<input type="radio" name="q-12-one-framework-not-two-2" id="q-12-one-framework-not-two-2-1"><label for="q-12-one-framework-not-two-2-1">Because unexported modules aren't compiled into the framework at all</label>
-<input type="radio" name="q-12-one-framework-not-two-2" id="q-12-one-framework-not-two-2-2"><label for="q-12-one-framework-not-two-2-2">Because Swift can't read more than one exported module</label>
-<input type="radio" name="q-12-one-framework-not-two-2" id="q-12-one-framework-not-two-2-3" data-ok><label for="q-12-one-framework-not-two-2-3">Because each exported module comes in whole, so less code can be left out</label>
+<input type="radio" name="q-12-one-framework-not-two-2" id="q-12-one-framework-not-two-2-1"><label for="q-12-one-framework-not-two-2-1"><span>Because unexported modules aren't compiled into the framework at all</span></label>
+<input type="radio" name="q-12-one-framework-not-two-2" id="q-12-one-framework-not-two-2-2"><label for="q-12-one-framework-not-two-2-2"><span>Because Swift can't read more than one exported module</span></label>
+<input type="radio" name="q-12-one-framework-not-two-2" id="q-12-one-framework-not-two-2-3" data-ok><label for="q-12-one-framework-not-two-2-3"><span>Because each exported module comes in whole, so less code can be left out</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They are compiled in, and trimmed to what's used; only exports come in whole. <label class="show-me" for="st-umbrella-4" data-goto="st-umbrella">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Swift can read many; the cost is size, since exported code isn't trimmed. <label class="show-me" for="st-umbrella-4" data-goto="st-umbrella">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Exports are kept whole; the rest is trimmed.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between an umbrella framework and an XCFramework?</legend>
-<input type="radio" name="q-12-one-framework-not-two-3" id="q-12-one-framework-not-two-3-1" data-ok><label for="q-12-one-framework-not-two-3-1">The umbrella holds all your Kotlin modules, while an XCFramework bundles builds for every Apple device</label>
-<input type="radio" name="q-12-one-framework-not-two-3" id="q-12-one-framework-not-two-3-2"><label for="q-12-one-framework-not-two-3-2">An XCFramework holds all your Kotlin modules, while an umbrella is built per device</label>
-<input type="radio" name="q-12-one-framework-not-two-3" id="q-12-one-framework-not-two-3-3"><label for="q-12-one-framework-not-two-3-3">They're two names for the same bundle that holds your Kotlin modules for Swift</label>
+<input type="radio" name="q-12-one-framework-not-two-3" id="q-12-one-framework-not-two-3-1" data-ok><label for="q-12-one-framework-not-two-3-1"><span>The umbrella holds all your Kotlin modules, while an XCFramework bundles builds for every Apple device</span></label>
+<input type="radio" name="q-12-one-framework-not-two-3" id="q-12-one-framework-not-two-3-2"><label for="q-12-one-framework-not-two-3-2"><span>An XCFramework holds all your Kotlin modules, while an umbrella is built per device</span></label>
+<input type="radio" name="q-12-one-framework-not-two-3" id="q-12-one-framework-not-two-3-3"><label for="q-12-one-framework-not-two-3-3"><span>They're two names for the same bundle that holds your Kotlin modules for Swift</span></label>
 <p class="fb ok opt-1"><b>Right.</b> What's inside vs which devices.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> One is about which modules are inside; the other about which devices it's built for. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>

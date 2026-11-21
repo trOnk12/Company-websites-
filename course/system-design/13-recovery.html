@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-13">
         <p id="builds-on-13"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary><a href="06-freshness.html">Puzzle 6: Why does a confirmed space still look free?</a></summary><p>A cache can extend the staleness it inherited from its source.</p></details></li></ul>
+        <ul><li data-block="6"><details><summary>Puzzle 6: Why does a confirmed space still look free?</summary><p>A cache can extend the staleness it inherited from its source.</p><p><a href="06-freshness.html">Review puzzle 6</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="06-freshness.html">6</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -100,6 +101,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>Define the acceptable amount of data loss in time, the recovery point objective, and the acceptable restoration time, the recovery time objective. A deletion at 10:07 and a usable base copy from 10:00 leave seven minutes of intervening work to account for. A base backup and archived change log can allow recovery to a point immediately before the mistake.</p>
 <p>Restore synthetic reservations into a separate database. Count confirmations, compare identities and make a new reservation. If valid requests arrived after the deletion, rewinding the entire database can also remove them. Reconcile those requests and external payments. Healthy replicas may have copied the original mistake perfectly.</p>
+<h3>Score a recovery by the clock</h3>
+<p>The deletion occurs at 10:07. A monitor detects it at 10:10, the operator finishes restoring at 10:18, and validation permits traffic again at 10:24. If interruption began at 10:07, recovery took 17 minutes and missed a 15-minute objective. Measuring only the eight minutes spent restoring would hide the miss.</p>
+<p>Suppose the newest consistent state you can actually recover is 10:04. The gap at deletion time is three minutes. That fails a two-minute recovery point objective even if the database restarts instantly. Choose one known reservation from 10:03 and one from 10:06, look them up after restoration, then reconcile any later external charge independently.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -109,22 +113,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What can damage all current replicas logically?</legend>
-<input type="radio" name="q-13-recovery-1" id="q-13-recovery-1-1"><label for="q-13-recovery-1-1">Reading a backup file</label>
-<input type="radio" name="q-13-recovery-1" id="q-13-recovery-1-2" data-ok><label for="q-13-recovery-1-2">A replicated deletion</label>
+<input type="radio" name="q-13-recovery-1" id="q-13-recovery-1-1"><label for="q-13-recovery-1-1"><span>Reading a backup file</span></label>
+<input type="radio" name="q-13-recovery-1" id="q-13-recovery-1-2" data-ok><label for="q-13-recovery-1-2"><span>A replicated deletion</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Replication propagates unwanted changes too. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Replication propagates unwanted changes too.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What does restoring only the 10:00 copy omit?</legend>
-<input type="radio" name="q-13-recovery-2" id="q-13-recovery-2-1" data-ok><label for="q-13-recovery-2-1">Seven minutes before the error</label>
-<input type="radio" name="q-13-recovery-2" id="q-13-recovery-2-2"><label for="q-13-recovery-2-2">No valid writes at all</label>
+<input type="radio" name="q-13-recovery-2" id="q-13-recovery-2-1" data-ok><label for="q-13-recovery-2-1"><span>Seven minutes before the error</span></label>
+<input type="radio" name="q-13-recovery-2" id="q-13-recovery-2-2"><label for="q-13-recovery-2-2"><span>No valid writes at all</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Drivers may have completed reservations in that period.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Drivers may have completed reservations in that period. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What finishes a recovery drill?</legend>
-<input type="radio" name="q-13-recovery-3" id="q-13-recovery-3-1" data-ok><label for="q-13-recovery-3-1">Verified data and a successful write</label>
-<input type="radio" name="q-13-recovery-3" id="q-13-recovery-3-2"><label for="q-13-recovery-3-2">The database process starting</label>
+<input type="radio" name="q-13-recovery-3" id="q-13-recovery-3-1" data-ok><label for="q-13-recovery-3-1"><span>Verified data and a successful write</span></label>
+<input type="radio" name="q-13-recovery-3" id="q-13-recovery-3-2"><label for="q-13-recovery-3-2"><span>The database process starting</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A running process does not establish a correct history.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A running process does not establish a correct history. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,24 +55,24 @@
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: What happens when a client sends a request?</p>
 <fieldset class="quiz" data-n="0">
 <legend>After stopping the only listener, what arrives?</legend>
-<input type="radio" name="q-00-request-1" id="q-00-request-1-1" data-ok><label for="q-00-request-1-1">A connection error</label>
-<input type="radio" name="q-00-request-1" id="q-00-request-1-2"><label for="q-00-request-1-2">A response with status 404</label>
+<input type="radio" name="q-00-request-1" id="q-00-request-1-1" data-ok><label for="q-00-request-1-1"><span>A connection error</span></label>
+<input type="radio" name="q-00-request-1" id="q-00-request-1-2"><label for="q-00-request-1-2"><span>A response with status 404</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A route matches the method and path before a handler runs.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only a running server can send that response. <a class="show-me" href="00-request.html">Learn it in puzzle 0 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: Did the first write happen?</p>
 <fieldset class="quiz" data-n="1">
 <legend>What if the retry invents a fresh name?</legend>
-<input type="radio" name="q-01-retry-1" id="q-01-retry-1-1" data-ok><label for="q-01-retry-1-1">A second row can be created</label>
-<input type="radio" name="q-01-retry-1" id="q-01-retry-1-2"><label for="q-01-retry-1-2">The database detects the same tap automatically</label>
+<input type="radio" name="q-01-retry-1" id="q-01-retry-1-1" data-ok><label for="q-01-retry-1-1"><span>A second row can be created</span></label>
+<input type="radio" name="q-01-retry-1" id="q-01-retry-1-2"><label for="q-01-retry-1-2"><span>The database detects the same tap automatically</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A stable bookmark name and a unique database key let repeated writes converge on one row.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The key identifies the name supplied by the client. <a class="show-me" href="01-retry.html">Learn it in puzzle 1 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Can two clients prove the rule?</p>
 <fieldset class="quiz" data-n="2">
 <legend>Both calls return a success status. What evidence is still missing?</legend>
-<input type="radio" name="q-02-test-1" id="q-02-test-1-1"><label for="q-02-test-1-1">The order in which the two workers began</label>
-<input type="radio" name="q-02-test-1" id="q-02-test-1-2" data-ok><label for="q-02-test-1-2">The saved rows after restart</label>
+<input type="radio" name="q-02-test-1" id="q-02-test-1-1"><label for="q-02-test-1-1"><span>The order in which the two workers began</span></label>
+<input type="radio" name="q-02-test-1" id="q-02-test-1-2" data-ok><label for="q-02-test-1-2"><span>The saved rows after restart</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Start order cannot establish persistence. <a class="show-me" href="02-test.html">Learn it in puzzle 2 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> An integration test can check replies, stored state and persistence across a fresh process.</p>
 </fieldset></section>

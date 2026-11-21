@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -63,11 +63,12 @@
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
         <a href="#go-deeper-how-do-you-compare-two-releases">Go deeper</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-12">
         <p id="builds-on-12"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-demand.html">Puzzle 1: How much traffic arrives after a concert?</a></summary><p>Size for a measured burst and use throughput times mean duration to estimate concurrent work.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: How much traffic arrives after a concert?</summary><p>Size for a measured burst and use throughput times mean duration to estimate concurrent work.</p><p><a href="01-demand.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="01-demand.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -101,6 +102,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>Define a service-level objective from the driver's perspective. In a rolling thirty-day window, suppose 99.9 percent of well-formed attempts must return a correct business result within 500 milliseconds. A timely refusal for a full lot meets this contract. A lost reply, server error or two-second success consumes the <b>error budget</b>. With exactly one million attempts, the budget is one thousand bad attempts.</p>
 <p>Measure connection wait and query execution separately. In one trace, 920 milliseconds pass before a connection becomes available and twelve inside the query. A missing index is a poor first explanation of that trace. Inspect busy connections and how long requests hold them. If the program waits on another service inside an open transaction, adding connections may simply move the bottleneck.</p>
+<h3>Measure how quickly the budget is being spent</h3>
+<p>The objective allows 0.1 percent bad attempts. A five-minute window contains 20,000 attempts and 200 bad outcomes. The observed bad fraction is 1 percent, ten times the permitted fraction. That ratio is the burn rate. If future traffic and failures stay at that proportion throughout a fresh 30-day window, it would use the budget in about three days.</p>
+<p>Inspect the same signal across a short and a longer window to separate a persistent incident from a brief spike. Then challenge the diagnosis. If slow traces consistently show connection acquisition under two milliseconds and query execution near one second, investigate the query path. The earlier 920-millisecond wait example called for a different investigation.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-how-do-you-compare-two-releases">
         <summary><span class="depth-label">Go deeper</span>How do you compare two releases?</summary>
@@ -118,27 +122,28 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What does this objective measure?</legend>
-<input type="radio" name="q-12-diagnosis-1" id="q-12-diagnosis-1-1" data-ok><label for="q-12-diagnosis-1-1">Correctness and response time</label>
-<input type="radio" name="q-12-diagnosis-1" id="q-12-diagnosis-1-2"><label for="q-12-diagnosis-1-2">Only processor utilization</label>
+<input type="radio" name="q-12-diagnosis-1" id="q-12-diagnosis-1-1" data-ok><label for="q-12-diagnosis-1-1"><span>Correctness and response time</span></label>
+<input type="radio" name="q-12-diagnosis-1" id="q-12-diagnosis-1-2"><label for="q-12-diagnosis-1-2"><span>Only processor utilization</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The contract concerns the driver's result.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The contract concerns the driver's result. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Which part of this trace deserves investigation first?</legend>
-<input type="radio" name="q-12-diagnosis-2" id="q-12-diagnosis-2-1"><label for="q-12-diagnosis-2-1">Index size alone</label>
-<input type="radio" name="q-12-diagnosis-2" id="q-12-diagnosis-2-2" data-ok><label for="q-12-diagnosis-2-2">Connection wait</label>
+<input type="radio" name="q-12-diagnosis-2" id="q-12-diagnosis-2-1"><label for="q-12-diagnosis-2-1"><span>Index size alone</span></label>
+<input type="radio" name="q-12-diagnosis-2" id="q-12-diagnosis-2-2" data-ok><label for="q-12-diagnosis-2-2"><span>Connection wait</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Most elapsed time precedes query execution. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Most elapsed time precedes query execution.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What is the budget at 99.9 percent of one million attempts?</legend>
-<input type="radio" name="q-12-diagnosis-3" id="q-12-diagnosis-3-1"><label for="q-12-diagnosis-3-1">100 bad attempts</label>
-<input type="radio" name="q-12-diagnosis-3" id="q-12-diagnosis-3-2" data-ok><label for="q-12-diagnosis-3-2">1000 bad attempts</label>
+<input type="radio" name="q-12-diagnosis-3" id="q-12-diagnosis-3-1"><label for="q-12-diagnosis-3-1"><span>100 bad attempts</span></label>
+<input type="radio" name="q-12-diagnosis-3" id="q-12-diagnosis-3-2" data-ok><label for="q-12-diagnosis-3-2"><span>1000 bad attempts</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> One thousandth of one million is one thousand. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> One thousandth of one million is one thousand.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a> — “a target level for the reliability of your service”</li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a> — “a target level for the reliability of your service”</li></ul>
+<ul><li><a href="https://sre.google/workbook/alerting-on-slos/">Google SRE · Alerting on SLOs</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Separate time spent waiting for a connection from time spent executing a query.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

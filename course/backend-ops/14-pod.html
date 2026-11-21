@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,13 +62,14 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-14">
         <p id="builds-on-14"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="4"><details><summary><a href="04-incident.html">Puzzle 4: Alive, ready, or serving the wrong thing?</a></summary><p>A process can answer a simple probe while its storage path fails.</p></details></li></ul>
+        <ul><li data-block="4"><details><summary>Puzzle 4: Alive, ready, or serving the wrong thing?</summary><p>A process can answer a simple probe while its storage path fails.</p><p><a href="04-incident.html">Review puzzle 4</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-request.html">0</a> → <a href="04-incident.html">4</a>. Know them already? Start here.</p>
-      </aside>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>A <b>pod</b> groups containers that run together. Docker can restart your app. Who notices when its whole pod disappears? Will the bookmark come back with it?</p>
@@ -99,23 +100,42 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A pod is the unit Kubernetes schedules. A Deployment declares the desired application and replica count. Its controller manages a replica set, which creates pods to reach that count. Kubernetes selects a node and the node starts the container. A readiness probe checks when the instance can serve work. Our database uses a directory scoped to this pod. Restarting a container in the same pod preserves it. Replacing the whole pod gives the new instance a fresh directory. A green probe can therefore coexist with missing data.</p>
+<h3>Trace the three lifetimes</h3>
+<p>An application process runs in a container, and Kubernetes runs that container inside a pod. In this exercise the pod mounts a temporary directory belonging to that pod. Container A writes river, stops, and restarts within the same pod: the volume is still there. A rollout creates a replacement pod, whose own empty directory starts without river. To preserve the row across replacement, the new pod must attach storage that outlives the old one. The workbench assumes one writer. Adding replicas with their own temporary databases would create separate copies of the service state.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#14-pod">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the isolated cluster drill. Record the pod identities and list contents before and after the rollout. Explain why adding another replica would give inconsistent lists here.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service/k8s">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service/k8s">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>After a pod replacement, which observation proves the bookmark survived?</legend>
-<input type="radio" name="q-14-pod-1" id="q-14-pod-1-1" data-ok><label for="q-14-pod-1-1">Reading the original row</label>
-<input type="radio" name="q-14-pod-1" id="q-14-pod-1-2"><label for="q-14-pod-1-2">Seeing one ready replica again</label>
+<input type="radio" name="q-14-pod-1" id="q-14-pod-1-1" data-ok><label for="q-14-pod-1-1"><span>Reading the original row</span></label>
+<input type="radio" name="q-14-pod-1" id="q-14-pod-1-2"><label for="q-14-pod-1-2"><span>Seeing one ready replica again</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A Deployment describes the desired pods. Their storage lifetime depends on the selected volume.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The replacement can be ready with an empty directory. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
+<fieldset class="quiz">
+<legend>Which event ends the lifetime of this pod's temporary storage?</legend>
+<input type="radio" name="q-14-pod-2" id="q-14-pod-2-1"><label for="q-14-pod-2-1"><span>Restarting only its container inside the same pod</span></label>
+<input type="radio" name="q-14-pod-2" id="q-14-pod-2-2" data-ok><label for="q-14-pod-2-2"><span>Removal of that pod</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The temporary volume belongs to the pod lifetime. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The temporary volume belongs to the pod lifetime.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Two pods each serve their own local database. What could alternating reads reveal?</legend>
+<input type="radio" name="q-14-pod-3" id="q-14-pod-3-1" data-ok><label for="q-14-pod-3-1"><span>Different lists from different pods</span></label>
+<input type="radio" name="q-14-pod-3" id="q-14-pod-3-2"><label for="q-14-pod-3-2"><span>One automatically merged list from both pods</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A shared service address does not combine pod-local data.</p>
+<p class="fb no opt-2"><b>Not quite.</b> A shared service address does not combine pod-local data. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">Technical reference</a></li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/">Technical reference</a></li></ul>
+<ul><li><a href="https://kubernetes.io/docs/concepts/storage/volumes/#emptydir">Kubernetes temporary volume lifetime</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A Deployment describes the desired pods. Their storage lifetime depends on the selected volume.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

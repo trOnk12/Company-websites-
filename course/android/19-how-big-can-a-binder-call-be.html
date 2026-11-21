@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-19">
         <p id="builds-on-19"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="15"><details><summary><a href="15-inside-a-binder-call.html">Puzzle 15: Inside a Binder call</a></summary><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p></details></li></ul>
+        <ul><li data-block="15"><details><summary>Puzzle 15: Inside a Binder call</summary><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p><p><a href="15-inside-a-binder-call.html">Review puzzle 15</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 9 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a> → <a href="15-inside-a-binder-call.html">15</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -118,27 +118,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>You put a 3 MB photo into an Intent and start an Activity. What happens?</legend>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-1"><label for="q-19-how-big-can-a-binder-call-be-1-1">It works, just more slowly</label>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-2"><label for="q-19-how-big-can-a-binder-call-be-1-2">It works: the Intent object is handed over as it is</label>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-1-3">It fails with <code>TransactionTooLargeException</code></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-1"><label for="q-19-how-big-can-a-binder-call-be-1-1"><span>It works, just more slowly</span></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-2"><label for="q-19-how-big-can-a-binder-call-be-1-2"><span>It works: the Intent object is handed over as it is</span></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-1" id="q-19-how-big-can-a-binder-call-be-1-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-1-3"><span>It fails with <code>TransactionTooLargeException</code></span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The buffer has a fixed size of about 1 MB. A Parcel that doesn't fit fails; it doesn't wait. <label class="show-me" for="st-buffer-3" data-goto="st-buffer">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Objects can't leave a process: the Intent is packed into a Parcel and must fit the receiver's Binder buffer. <label class="show-me" for="st-buffer-3" data-goto="st-buffer">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Every Intent crosses Binder, through a buffer of about 1 MB.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Your app's call into system_server carries 400,000 bytes (0.4 MB). It works most of the time but fails now and then. Why?</legend>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-1" data-ok><label for="q-19-how-big-can-a-binder-call-be-2-1">The 1 MB is shared by every call in progress, so when others are waiting there's less room</label>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-2"><label for="q-19-how-big-can-a-binder-call-be-2-2">The kernel shrinks the buffer when the phone is busy, then grows it back</label>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-3"><label for="q-19-how-big-can-a-binder-call-be-2-3">0.4 MB is over the limit for one call, so it fails at random</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-1" data-ok><label for="q-19-how-big-can-a-binder-call-be-2-1"><span>The 1 MB is shared by every call in progress, so when others are waiting there's less room</span></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-2"><label for="q-19-how-big-can-a-binder-call-be-2-2"><span>The kernel shrinks the buffer when the phone is busy, then grows it back</span></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-2" id="q-19-how-big-can-a-binder-call-be-2-3"><label for="q-19-how-big-can-a-binder-call-be-2-3"><span>0.4 MB is over the limit for one call, so it fails at random</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A shared, fixed-size buffer: other calls take room too.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The buffer's size is fixed when the process first uses Binder; it never changes. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The limit is about 1 MB, more than 0.4 MB. It's the sharing that hurts. <label class="show-me" for="st-buffer-2" data-goto="st-buffer">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>How do you show a big photo on another screen of your own app?</legend>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-1"><label for="q-19-how-big-can-a-binder-call-be-3-1">Send it in many small Intents, one after another</label>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-2"><label for="q-19-how-big-can-a-binder-call-be-3-2">Pack it into a bigger Parcel</label>
-<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-3-3">Save it to a file and send the file's name</label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-1"><label for="q-19-how-big-can-a-binder-call-be-3-1"><span>Send it in many small Intents, one after another</span></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-2"><label for="q-19-how-big-can-a-binder-call-be-3-2"><span>Pack it into a bigger Parcel</span></label>
+<input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-3-3"><span>Save it to a file and send the file's name</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They all cross the same shared 1 MB, and the receiver has to glue them back together. Send where the photo is, not the photo. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The Parcel isn't the limit; the receiver's buffer is, and it's fixed. <label class="show-me" for="st-buffer-4" data-goto="st-buffer">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Send a small reference; let the other side read the data itself.</p>

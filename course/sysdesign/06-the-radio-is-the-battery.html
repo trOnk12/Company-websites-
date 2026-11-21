@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary><a href="03-round-trips-not-bandwidth.html">Puzzle 3: Round trips, not bandwidth</a></summary><p>Latency is how long a packet takes to arrive; bandwidth is how much data fits through per second. Small requests are bound by latency, so the wait is the number of round trips times the round-trip time. Requests that wait for each other add their round trips together; cut the round trips, and the screen gets faster on every network.</p></details></li></ul>
+        <ul><li data-block="3"><details><summary>Puzzle 3: Round trips, not bandwidth</summary><p>Latency is how long a packet takes to arrive; bandwidth is how much data fits through per second. Small requests are bound by latency, so the wait is the number of round trips times the round-trip time. Requests that wait for each other add their round trips together; cut the round trips, and the screen gets faster on every network.</p><p><a href="03-round-trips-not-bandwidth.html">Review puzzle 3</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-what-actually-travels.html">0</a> → <a href="03-round-trips-not-bandwidth.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -113,26 +113,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app sends a 300-byte event every 20 seconds. Why does it drain the battery?</legend>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-1" data-ok><label for="q-06-the-radio-is-the-battery-1-1">Each send wakes the radio, and its tail time never lets it sleep</label>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-2"><label for="q-06-the-radio-is-the-battery-1-2">Analytics requests are encrypted, and encryption is costly</label>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-3"><label for="q-06-the-radio-is-the-battery-1-3">The 300 bytes every 20 seconds add up to a lot of data</label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-1" data-ok><label for="q-06-the-radio-is-the-battery-1-1"><span>Each send wakes the radio, and its tail time never lets it sleep</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-2"><label for="q-06-the-radio-is-the-battery-1-2"><span>Analytics requests are encrypted, and encryption is costly</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-3"><label for="q-06-the-radio-is-the-battery-1-3"><span>The 300 bytes every 20 seconds add up to a lot of data</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Size barely matters; wake-ups do.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The radio, not the encryption, is the expensive part. <label class="show-me" for="st-radio-3" data-goto="st-radio">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> It's a few hundred kilobytes an hour; the cost is the wake-ups and tails. <label class="show-me" for="st-radio-3" data-goto="st-radio">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Which change saves the most battery for that analytics?</legend>
-<input type="radio" name="q-06-the-radio-is-the-battery-2" id="q-06-the-radio-is-the-battery-2-1"><label for="q-06-the-radio-is-the-battery-2-1">Send each event over a new connection to avoid queuing</label>
-<input type="radio" name="q-06-the-radio-is-the-battery-2" id="q-06-the-radio-is-the-battery-2-2"><label for="q-06-the-radio-is-the-battery-2-2">Compress each event before sending it</label>
-<input type="radio" name="q-06-the-radio-is-the-battery-2" id="q-06-the-radio-is-the-battery-2-3" data-ok><label for="q-06-the-radio-is-the-battery-2-3">Queue the events and send them in one batch every few minutes</label>
+<input type="radio" name="q-06-the-radio-is-the-battery-2" id="q-06-the-radio-is-the-battery-2-1"><label for="q-06-the-radio-is-the-battery-2-1"><span>Send each event over a new connection to avoid queuing</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-2" id="q-06-the-radio-is-the-battery-2-2"><label for="q-06-the-radio-is-the-battery-2-2"><span>Compress each event before sending it</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-2" id="q-06-the-radio-is-the-battery-2-3" data-ok><label for="q-06-the-radio-is-the-battery-2-3"><span>Queue the events and send them in one batch every few minutes</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> More connections, more wake-ups and handshakes. <label class="show-me" for="st-radio-4" data-goto="st-radio">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Smaller bursts still wake the radio just as often. <label class="show-me" for="st-radio-4" data-goto="st-radio">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Fewer bursts, not smaller ones.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the wake-up delay and tail time?</legend>
-<input type="radio" name="q-06-the-radio-is-the-battery-3" id="q-06-the-radio-is-the-battery-3-1" data-ok><label for="q-06-the-radio-is-the-battery-3-1">The wake-up delay comes before the send, while tail time is the radio staying on after it</label>
-<input type="radio" name="q-06-the-radio-is-the-battery-3" id="q-06-the-radio-is-the-battery-3-2"><label for="q-06-the-radio-is-the-battery-3-2">The wake-up delay is the radio staying on after the send, while tail time comes before it</label>
+<input type="radio" name="q-06-the-radio-is-the-battery-3" id="q-06-the-radio-is-the-battery-3-1" data-ok><label for="q-06-the-radio-is-the-battery-3-1"><span>The wake-up delay comes before the send, while tail time is the radio staying on after it</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-3" id="q-06-the-radio-is-the-battery-3-2"><label for="q-06-the-radio-is-the-battery-3-2"><span>The wake-up delay is the radio staying on after the send, while tail time comes before it</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Before the send vs after it.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

@@ -31,6 +31,12 @@ CREATE INDEX sessions_history ON sessions
     (owner_id, started_at DESC, id DESC);
 ```
 
+### Walk a cursor by hand
+
+Ada owns rows (10:00, 9), (10:00, 8) and (10:00, 7). Ben owns (10:00, 99). With a page size of two, Ada receives 9 and 8. The next request carries (10:00, 8). Insert Ada's new row (10:01, 10) before that request arrives. The next page still contains 7. Starting again from the first page would reveal 10.
+
+Compare skipping the first two rows instead. The live list now begins 10, 9, 8, 7. Skipping two would return 8 again. Decide whether a product needs a stable position for browsing or a frozen set for an export. For the latter, design how the export records its input snapshot and when that snapshot can expire.
+
 ## Try it
 
 Create five rows across two owners, including a time tie. Fetch two at a time and insert a newer session between page requests. Trace the next page. On a larger fixture, compare execution plans with and without the matching index. Record rows visited as well as elapsed time.
@@ -44,3 +50,5 @@ Create five rows across two owners, including a time tie. Fetch two at a time an
 ## Sources
 
 - [PostgreSQL · Multicolumn Indexes](https://www.postgresql.org/docs/17/indexes-multicolumn.html) — “the index is most efficient when there are constraints on the leading (leftmost) columns”
+
+- [PostgreSQL · LIMIT and OFFSET](https://www.postgresql.org/docs/17/queries-limit.html)

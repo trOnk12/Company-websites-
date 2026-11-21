@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -63,11 +63,12 @@
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
         <a href="#go-deeper-how-do-you-move-a-lot-while-it-is-accepting-reservations">Go deeper</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-9">
         <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -101,6 +102,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>Partitioning divides rows into pieces by a rule. A month-based split can make old history easier to remove. All pieces can still live on one machine. When pieces live in independent databases, the service must also find the owner of each key and move ownership while requests continue.</p>
 <p>Splitting by lot keeps one reservation and its count together. A driver's history across lots may need reads from several pieces or a separate read model. If seventy percent of traffic goes to one lot, the hot key still goes to one owner. A different design allocates independent rights to regional pools. Transfers between pools must preserve the total number of rights.</p>
+<h3>Test both balance and ownership</h3>
+<p>A thousand reservation attempts arrive per second. Seven hundred go to west. With sixteen equally fast storage owners, hashing by lot still sends at least 700 attempts per second to one owner. Dividing 1,000 by sixteen gives an average of 62.5 and hides west. Measure the busiest owner's rate when deciding whether the split helped.</p>
+<p>To transfer two unused rights from west to east, subtract two at west and record a durable transfer identity before east can spend them. East credits that identity at most once. If delivery pauses, the two rights may be temporarily unspendable. Retry the same transfer twice and reconcile available, granted and in-transit rights against the original capacity.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-how-do-you-move-a-lot-while-it-is-accepting-reservations">
         <summary><span class="depth-label">Go deeper</span>How do you move a lot while it is accepting reservations?</summary>
@@ -118,22 +122,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What can a month-based split help with?</legend>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1"><label for="q-09-partitioning-1-1">Every last-space conflict</label>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2" data-ok><label for="q-09-partitioning-1-2">Removing old periods</label>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1"><label for="q-09-partitioning-1-1"><span>Every last-space conflict</span></label>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2" data-ok><label for="q-09-partitioning-1-2"><span>Removing old periods</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> One hot inventory row can still serialize writes. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> One hot inventory row can still serialize writes.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Where do writes for one lot go when the key is the lot?</legend>
-<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-1" data-ok><label for="q-09-partitioning-2-1">To the same piece</label>
-<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-2"><label for="q-09-partitioning-2-2">Evenly across sixteen pieces</label>
+<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-1" data-ok><label for="q-09-partitioning-2-1"><span>To the same piece</span></label>
+<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-2"><label for="q-09-partitioning-2-2"><span>Evenly across sixteen pieces</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Equal keys follow the same routing rule.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Equal keys follow the same routing rule. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>How many rights may the pools own in total?</legend>
-<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-1"><label for="q-09-partitioning-3-1">Ten per region</label>
-<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-2" data-ok><label for="q-09-partitioning-3-2">At most ten</label>
+<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-1"><label for="q-09-partitioning-3-1"><span>Ten per region</span></label>
+<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-2" data-ok><label for="q-09-partitioning-3-2"><span>At most ten</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Copying rights would allow double allocation. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Copying rights would allow double allocation.</p>
 </fieldset>

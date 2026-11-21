@@ -1,7 +1,7 @@
 {
   "title": "System design from first principles to design review",
   "intro": "Build a parking reservation service on paper and on the JVM. Estimate a concert peak, race for the last space, lose a payment reply and recover after a bad release. Transfer your reasoning to tickets, feeds and private uploads.",
-  "how": "Predict each result before stepping through the diagram. Try the exercises on paper first. The local service lab uses JDK 21 and Python 3. Finish with a design review that changes one assumption.",
+  "how": "Start with the promise a reservation makes to a driver. Predict the outcome, step through the diagram and run the browser labs. Finish by defending your design when a reviewer changes the load, the failure or the ownership rule.",
   "modules": [
     {
       "title": "From promises to a write path",

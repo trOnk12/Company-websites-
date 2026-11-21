@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-7">
         <p id="builds-on-7"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="4"><details><summary><a href="04-an-ios-app-in-one-puzzle.html">Puzzle 4: An iOS app in one puzzle</a></summary><p>iOS apps are written in Swift, in Xcode, Apple's IDE. Screens are built with UIKit, Apple's screen framework (or the newer SwiftUI). A view controller manages one screen's UI elements and reacts to the user, much like an Activity or Fragment. Swift looks like Kotlin: let is val, var is var, and a class can subclass UIViewController the way yours subclasses Activity.</p></details></li></ul>
+        <ul><li data-block="4"><details><summary>Puzzle 4: An iOS app in one puzzle</summary><p>iOS apps are written in Swift, in Xcode, Apple's IDE. Screens are built with UIKit, Apple's screen framework (or the newer SwiftUI). A view controller manages one screen's UI elements and reacts to the user, much like an Activity or Fragment. Swift looks like Kotlin: let is val, var is var, and a class can subclass UIViewController the way yours subclasses Activity.</p><p><a href="04-an-ios-app-in-one-puzzle.html">Review puzzle 4</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a> → <a href="04-an-ios-app-in-one-puzzle.html">4</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../perf/07-what-garbage-is.html"><b>reference</b></a> <span class="small">Performance, under the hood, puzzle 7: What garbage is</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -111,26 +111,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Two objects point only at each other; nothing else points at them. What does a tracing GC do?</legend>
-<input type="radio" name="q-07-counting-or-tracing-1" id="q-07-counting-or-tracing-1-1"><label for="q-07-counting-or-tracing-1-1">Frees one of them and keeps the other</label>
-<input type="radio" name="q-07-counting-or-tracing-1" id="q-07-counting-or-tracing-1-2"><label for="q-07-counting-or-tracing-1-2">Keeps both, because each still has a reference</label>
-<input type="radio" name="q-07-counting-or-tracing-1" id="q-07-counting-or-tracing-1-3" data-ok><label for="q-07-counting-or-tracing-1-3">Frees both, since neither can be reached from a root</label>
+<input type="radio" name="q-07-counting-or-tracing-1" id="q-07-counting-or-tracing-1-1"><label for="q-07-counting-or-tracing-1-1"><span>Frees one of them and keeps the other</span></label>
+<input type="radio" name="q-07-counting-or-tracing-1" id="q-07-counting-or-tracing-1-2"><label for="q-07-counting-or-tracing-1-2"><span>Keeps both, because each still has a reference</span></label>
+<input type="radio" name="q-07-counting-or-tracing-1" id="q-07-counting-or-tracing-1-3" data-ok><label for="q-07-counting-or-tracing-1-3"><span>Frees both, since neither can be reached from a root</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Neither is reachable, so both are freed. <label class="show-me" for="st-trace-3" data-goto="st-trace">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Tracing doesn't count; it frees what it can't reach from the roots. <label class="show-me" for="st-trace-3" data-goto="st-trace">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Unreachable means freed, cycles included.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The same two objects under reference counting. What happens?</legend>
-<input type="radio" name="q-07-counting-or-tracing-2" id="q-07-counting-or-tracing-2-1"><label for="q-07-counting-or-tracing-2-1">Both are freed at once, because nothing else uses them</label>
-<input type="radio" name="q-07-counting-or-tracing-2" id="q-07-counting-or-tracing-2-2"><label for="q-07-counting-or-tracing-2-2">Both are freed when the program next pauses</label>
-<input type="radio" name="q-07-counting-or-tracing-2" id="q-07-counting-or-tracing-2-3" data-ok><label for="q-07-counting-or-tracing-2-3">Neither is freed: each keeps the other's count at 1</label>
+<input type="radio" name="q-07-counting-or-tracing-2" id="q-07-counting-or-tracing-2-1"><label for="q-07-counting-or-tracing-2-1"><span>Both are freed at once, because nothing else uses them</span></label>
+<input type="radio" name="q-07-counting-or-tracing-2" id="q-07-counting-or-tracing-2-2"><label for="q-07-counting-or-tracing-2-2"><span>Both are freed when the program next pauses</span></label>
+<input type="radio" name="q-07-counting-or-tracing-2" id="q-07-counting-or-tracing-2-3" data-ok><label for="q-07-counting-or-tracing-2-3"><span>Neither is freed: each keeps the other's count at 1</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Counting can't see that; it only sees each count, still 1. <label class="show-me" for="st-trace-4" data-goto="st-trace">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Counting has no passes; it frees only at zero, and neither reaches zero. <label class="show-me" for="st-trace-4" data-goto="st-trace">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> A cycle never reaches zero.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between tracing and reference counting?</legend>
-<input type="radio" name="q-07-counting-or-tracing-3" id="q-07-counting-or-tracing-3-1"><label for="q-07-counting-or-tracing-3-1">Tracing frees each object at zero, while counting frees what roots can't reach, in passes</label>
-<input type="radio" name="q-07-counting-or-tracing-3" id="q-07-counting-or-tracing-3-2" data-ok><label for="q-07-counting-or-tracing-3-2">Tracing frees what roots can't reach, in passes, while counting frees each object at zero</label>
+<input type="radio" name="q-07-counting-or-tracing-3" id="q-07-counting-or-tracing-3-1"><label for="q-07-counting-or-tracing-3-1"><span>Tracing frees each object at zero, while counting frees what roots can't reach, in passes</span></label>
+<input type="radio" name="q-07-counting-or-tracing-3" id="q-07-counting-or-tracing-3-2" data-ok><label for="q-07-counting-or-tracing-3-2"><span>Tracing frees what roots can't reach, in passes, while counting frees each object at zero</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Reachability vs counts.</p>
 </fieldset>

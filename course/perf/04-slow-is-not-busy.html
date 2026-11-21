@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-a-photo-or-a-diary.html">Puzzle 2: A photo or a diary</a></summary><p>Sampling asks the kernel to snapshot a thread's call stack every so many CPU events; counting the snapshots shows where time goes, cheaply, but short calls can be missed. Method tracing injects a timestamp at every method's start and end: exact counts, but the instrumentation slows the app and skews the timings. Trace sections mark only the spans you choose.</p></details></li><li data-block="3"><details><summary><a href="03-reading-the-flames.html">Puzzle 3: Reading the flames</a></summary><p>A call chart draws each call along a timeline, callees under their caller. A flame chart merges identical call stacks into one bar, so width means total time and left to right means nothing. A wide bar with a wide child is slow because of the child; a bar wider than all its children is slow in its own code: its self time.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: A photo or a diary</summary><p>Sampling asks the kernel to snapshot a thread's call stack every so many CPU events; counting the snapshots shows where time goes, cheaply, but short calls can be missed. Method tracing injects a timestamp at every method's start and end: exact counts, but the instrumentation slows the app and skews the timings. Trace sections mark only the spans you choose.</p><p><a href="02-a-photo-or-a-diary.html">Review puzzle 2</a></p></details></li><li data-block="3"><details><summary>Puzzle 3: Reading the flames</summary><p>A call chart draws each call along a timeline, callees under their caller. A flame chart merges identical call stacks into one bar, so width means total time and left to right means nothing. A wide bar with a wide child is slow because of the child; a bar wider than all its children is slow in its own code: its self time.</p><p><a href="03-reading-the-flames.html">Review puzzle 3</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-threads-take-turns.html">0</a> → <a href="01-what-a-trace-is.html">1</a> → <a href="02-a-photo-or-a-diary.html">2</a> → <a href="03-reading-the-flames.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -112,26 +112,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>In another trace, a 120 ms main-thread span is 110 ms Sleeping. What will making its code faster save?</legend>
-<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-1"><label for="q-04-slow-is-not-busy-1-1">Most of the 120 ms, since the span is slow code</label>
-<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-2" data-ok><label for="q-04-slow-is-not-busy-1-2">Almost nothing: only 10 ms of it was Running</label>
-<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-3"><label for="q-04-slow-is-not-busy-1-3">All 120 ms, because a faster CPU wakes the thread sooner</label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-1"><label for="q-04-slow-is-not-busy-1-1"><span>Most of the 120 ms, since the span is slow code</span></label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-2" data-ok><label for="q-04-slow-is-not-busy-1-2"><span>Almost nothing: only 10 ms of it was Running</span></label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-3"><label for="q-04-slow-is-not-busy-1-3"><span>All 120 ms, because a faster CPU wakes the thread sooner</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Only Running time is code running; Sleeping is waiting for something else. <label class="show-me" for="st-states-2" data-goto="st-states">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Faster code shortens only Running.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Sleeping ends when what it waits for arrives, not when the CPU is faster. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A span is mostly Uninterruptible Sleep. What is the thread most likely doing?</legend>
-<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-1" data-ok><label for="q-04-slow-is-not-busy-2-1">Waiting for the disk, such as a file or database read</label>
-<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-2"><label for="q-04-slow-is-not-busy-2-2">Running your code, but too slowly</label>
-<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-3"><label for="q-04-slow-is-not-busy-2-3">Waiting for a free CPU, because others are running</label>
+<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-1" data-ok><label for="q-04-slow-is-not-busy-2-1"><span>Waiting for the disk, such as a file or database read</span></label>
+<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-2"><label for="q-04-slow-is-not-busy-2-2"><span>Running your code, but too slowly</span></label>
+<input type="radio" name="q-04-slow-is-not-busy-2" id="q-04-slow-is-not-busy-2-3"><label for="q-04-slow-is-not-busy-2-3"><span>Waiting for a free CPU, because others are running</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Uninterruptible Sleep usually means disk I/O.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Running is its own state; in Uninterruptible Sleep the thread isn't on a CPU. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's Runnable: ready, but no CPU is free. <label class="show-me" for="st-states-3" data-goto="st-states">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between Runnable and Sleeping?</legend>
-<input type="radio" name="q-04-slow-is-not-busy-3" id="q-04-slow-is-not-busy-3-1" data-ok><label for="q-04-slow-is-not-busy-3-1">Runnable is ready and waiting for a CPU, while Sleeping waits for an event</label>
-<input type="radio" name="q-04-slow-is-not-busy-3" id="q-04-slow-is-not-busy-3-2"><label for="q-04-slow-is-not-busy-3-2">Runnable waits for an event like a lock, while Sleeping is ready and waiting for a CPU</label>
+<input type="radio" name="q-04-slow-is-not-busy-3" id="q-04-slow-is-not-busy-3-1" data-ok><label for="q-04-slow-is-not-busy-3-1"><span>Runnable is ready and waiting for a CPU, while Sleeping waits for an event</span></label>
+<input type="radio" name="q-04-slow-is-not-busy-3" id="q-04-slow-is-not-busy-3-2"><label for="q-04-slow-is-not-busy-3-2"><span>Runnable waits for an event like a lock, while Sleeping is ready and waiting for a CPU</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Ready but no CPU vs not ready.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

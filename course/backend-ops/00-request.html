@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,6 +62,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
@@ -95,20 +96,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A <b>route</b> pairs a request method and path with the code that handles it. <b>Hypertext Transfer Protocol</b> (HTTP) is the set of rules the programs use for requests and responses. The method names the action. The path identifies the requested resource. A port is the number the operating system uses to deliver the connection to the listening program. Start the lab server in one terminal. In another, send the first write from the lab guide. The server listens on port 8080. Its handler receives the method and path and checks the name. A <b>status code</b> is a number describing the outcome. A valid write returns a status and the saved name. Change only the path to /unknown. The server can answer 404 because the request reached it. Stop the process and repeat. Now the client cannot connect to that port, so there is no response status.</p>
+<h3>Follow a read before attempting a write</h3>
+<p>The client asks to read the list. Its request line names the read method and the /bookmarks path. The listener accepts the connection, finds the read route, reads one stored name and sends status 200 with a list containing river. Change only the path to /missing and keep the server running. The connection succeeds again, but the response is now 404. Stop the server and repeat on the same port. This time there are no HTTP response bytes to inspect. Work from the outside inward: was there a connection, was there a response, and what does its body say?</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#00-request">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Compare the wrong-path response with the stopped-process result. Save both outputs.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service">Open the runnable bookmark lab</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service">Open the local service source files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>After stopping the only listener, what arrives?</legend>
-<input type="radio" name="q-00-request-1" id="q-00-request-1-1" data-ok><label for="q-00-request-1-1">A connection error</label>
-<input type="radio" name="q-00-request-1" id="q-00-request-1-2"><label for="q-00-request-1-2">A response with status 404</label>
+<input type="radio" name="q-00-request-1" id="q-00-request-1-1" data-ok><label for="q-00-request-1-1"><span>A connection error</span></label>
+<input type="radio" name="q-00-request-1" id="q-00-request-1-2"><label for="q-00-request-1-2"><span>A response with status 404</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A route matches the method and path before a handler runs.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only a running server can send that response. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which observation proves that a server answered?</legend>
+<input type="radio" name="q-00-request-2" id="q-00-request-2-1"><label for="q-00-request-2-1"><span>A refusal while opening the connection</span></label>
+<input type="radio" name="q-00-request-2" id="q-00-request-2-2" data-ok><label for="q-00-request-2-2"><span>An HTTP response containing 404</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A status code arrives in a response assembled by a server. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A status code arrives in a response assembled by a server.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Two services run on one machine. Why record the port along with the path?</legend>
+<input type="radio" name="q-00-request-3" id="q-00-request-3-1"><label for="q-00-request-3-1"><span>A path always selects the same process across all ports</span></label>
+<input type="radio" name="q-00-request-3" id="q-00-request-3-2" data-ok><label for="q-00-request-3-2"><span>The port selects the listener before a route is matched</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Routes are evaluated by the service that received the request. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Routes are evaluated by the service that received the request.</p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.python.org/3/library/http.server.html">Technical reference</a></li></ul></details>

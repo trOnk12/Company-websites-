@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: Who read the bookmark count?</p>
 <fieldset class="quiz" data-n="0">
 <legend>Only the count changes. Which UI code depends directly on the count?</legend>
-<input type="radio" name="q-00-state-reads-and-ui-1" id="q-00-state-reads-and-ui-1-1"><label for="q-00-state-reads-and-ui-1-1">Only the code handling the tap</label>
-<input type="radio" name="q-00-state-reads-and-ui-1" id="q-00-state-reads-and-ui-1-2"><label for="q-00-state-reads-and-ui-1-2">Every sibling on the screen</label>
-<input type="radio" name="q-00-state-reads-and-ui-1" id="q-00-state-reads-and-ui-1-3" data-ok><label for="q-00-state-reads-and-ui-1-3">The header that read the count</label>
+<input type="radio" name="q-00-state-reads-and-ui-1" id="q-00-state-reads-and-ui-1-1"><label for="q-00-state-reads-and-ui-1-1"><span>Only the code handling the tap</span></label>
+<input type="radio" name="q-00-state-reads-and-ui-1" id="q-00-state-reads-and-ui-1-2"><label for="q-00-state-reads-and-ui-1-2"><span>Every sibling on the screen</span></label>
+<input type="radio" name="q-00-state-reads-and-ui-1" id="q-00-state-reads-and-ui-1-3" data-ok><label for="q-00-state-reads-and-ui-1-3"><span>The header that read the count</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The tap writes the value. The header reads it. <a class="show-me" href="00-state-reads-and-ui.html">Learn it in puzzle 0 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> A sibling without the read has no direct dependency. <a class="show-me" href="00-state-reads-and-ui.html">Learn it in puzzle 0 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Locate the observable read.</p>
@@ -65,9 +65,9 @@
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: Which work does a moving card need?</p>
 <fieldset class="quiz" data-n="1">
 <legend>The position is read only during placement. What can Compose reuse for that change?</legend>
-<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-1"><label for="q-01-read-in-the-right-phase-1-1">Nothing, because scrolling always builds a new tree</label>
-<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-2"><label for="q-01-read-in-the-right-phase-1-2">Only the values read while drawing</label>
-<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-3" data-ok><label for="q-01-read-in-the-right-phase-1-3">The card description and its measured size</label>
+<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-1"><label for="q-01-read-in-the-right-phase-1-1"><span>Nothing, because scrolling always builds a new tree</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-2"><label for="q-01-read-in-the-right-phase-1-2"><span>Only the values read while drawing</span></label>
+<input type="radio" name="q-01-read-in-the-right-phase-1" id="q-01-read-in-the-right-phase-1-3" data-ok><label for="q-01-read-in-the-right-phase-1-3"><span>The card description and its measured size</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The recorded read does not require composition for this change. <a class="show-me" href="01-read-in-the-right-phase.html">Learn it in puzzle 1 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The position is read in placement, after measurement. <a class="show-me" href="01-read-in-the-right-phase.html">Learn it in puzzle 1 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Moving an already measured card is placement work.</p>
@@ -75,9 +75,9 @@
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Which side hosts the other?</p>
 <fieldset class="quiz" data-n="2">
 <legend>An existing UIKit navigation controller must present a shared screen. Which object belongs in its screen stack?</legend>
-<input type="radio" name="q-02-who-hosts-the-native-view-1" id="q-02-who-hosts-the-native-view-1-1"><label for="q-02-who-hosts-the-native-view-1-1">A shared button with no containing controller</label>
-<input type="radio" name="q-02-who-hosts-the-native-view-1" id="q-02-who-hosts-the-native-view-1-2"><label for="q-02-who-hosts-the-native-view-1-2">The UIKitView nested inside a shared field</label>
-<input type="radio" name="q-02-who-hosts-the-native-view-1" id="q-02-who-hosts-the-native-view-1-3" data-ok><label for="q-02-who-hosts-the-native-view-1-3">A controller returned by ComposeUIViewController</label>
+<input type="radio" name="q-02-who-hosts-the-native-view-1" id="q-02-who-hosts-the-native-view-1-1"><label for="q-02-who-hosts-the-native-view-1-1"><span>A shared button with no containing controller</span></label>
+<input type="radio" name="q-02-who-hosts-the-native-view-1" id="q-02-who-hosts-the-native-view-1-2"><label for="q-02-who-hosts-the-native-view-1-2"><span>The UIKitView nested inside a shared field</span></label>
+<input type="radio" name="q-02-who-hosts-the-native-view-1" id="q-02-who-hosts-the-native-view-1-3" data-ok><label for="q-02-who-hosts-the-native-view-1-3"><span>A controller returned by ComposeUIViewController</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The host needs an iOS controller that contains the shared UI. <a class="show-me" href="02-who-hosts-the-native-view.html">Learn it in puzzle 2 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> UIKitView embeds a native view in the other direction. <a class="show-me" href="02-who-hosts-the-native-view.html">Learn it in puzzle 2 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Start from whoever owns the surrounding region.</p>
@@ -85,9 +85,9 @@
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Can VoiceOver understand the bookmark?</p>
 <fieldset class="quiz" data-n="3">
 <legend>The icon is solid after saving, but the action has no label or state. What is the missing signal?</legend>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-1"><label for="q-03-pixels-and-voiceover-1-1">A larger solid icon so the change is easier to see</label>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-2" data-ok><label for="q-03-pixels-and-voiceover-1-2">A semantic description of the action and its state</label>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-3"><label for="q-03-pixels-and-voiceover-1-3">An extra native navigation bar above the control</label>
+<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-1"><label for="q-03-pixels-and-voiceover-1-1"><span>A larger solid icon so the change is easier to see</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-2" data-ok><label for="q-03-pixels-and-voiceover-1-2"><span>A semantic description of the action and its state</span></label>
+<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-3"><label for="q-03-pixels-and-voiceover-1-3"><span>An extra native navigation bar above the control</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Changing pixels does not expose a saved state to the screen reader. <a class="show-me" href="03-pixels-and-voiceover.html">Learn it in puzzle 3 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Provide the meaning of the control along with its pixels.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The navigation bar does not describe an unlabeled bookmark. <a class="show-me" href="03-pixels-and-voiceover.html">Learn it in puzzle 3 →</a></p>

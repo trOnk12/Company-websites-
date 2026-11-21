@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-queues-not-handlers.html">Puzzle 2: Queues, not handlers</a></summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Queues, not handlers</summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p><p><a href="02-queues-not-handlers.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-frozen-not-stopped.html">0</a> → <a href="01-the-run-loop-is-your-looper.html">1</a> → <a href="02-queues-not-handlers.html">2</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/04-an-ios-app-in-one-puzzle.html"><b>Swift</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 4: An iOS app in one puzzle</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -113,25 +113,25 @@ func showProfile() async {
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Inside a <code>@MainActor</code> function, you <code>await</code> a network call that takes 2 seconds. Does the screen freeze?</legend>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-1" data-ok><label for="q-03-the-main-actor-1-1">No: while it waits, the function gives up the main thread</label>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-2"><label for="q-03-the-main-actor-1-2">Yes, unless the call is moved to a global dispatch queue first</label>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-3"><label for="q-03-the-main-actor-1-3">Yes: it's on the main actor, so the main thread waits too</label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-1" data-ok><label for="q-03-the-main-actor-1-1"><span>No: while it waits, the function gives up the main thread</span></label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-2"><label for="q-03-the-main-actor-1-2"><span>Yes, unless the call is moved to a global dispatch queue first</span></label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-3"><label for="q-03-the-main-actor-1-3"><span>Yes: it's on the main actor, so the main thread waits too</span></label>
 <p class="fb ok opt-1"><b>Right.</b> await gives the thread back while waiting.</p>
 <p class="fb no opt-2"><b>Not quite.</b> For a real network call, no: while it waits, await lets the main thread go. (Heavy work the function does itself is another matter, see the building block.) <label class="show-me" for="st-actor-2" data-goto="st-actor">Show me step 2 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> At an await, the function gives up its thread; the main thread keeps handling touches. <label class="show-me" for="st-actor-2" data-goto="st-actor">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why can't two tasks change an actor's data at the same moment?</legend>
-<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-1"><label for="q-03-the-main-actor-2-1">Because every actor runs on the main thread, one thing at a time</label>
-<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-2" data-ok><label for="q-03-the-main-actor-2-2">Because an actor lets only one task at a time touch its data</label>
+<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-1"><label for="q-03-the-main-actor-2-1"><span>Because every actor runs on the main thread, one thing at a time</span></label>
+<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-2" data-ok><label for="q-03-the-main-actor-2-2"><span>Because an actor lets only one task at a time touch its data</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Only the main actor is tied to the main thread; others run anywhere, still one task at a time. <label class="show-me" for="st-actor-3" data-goto="st-actor">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One task inside at a time.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the main actor and the main queue from puzzle 2?</legend>
-<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-1"><label for="q-03-the-main-actor-3-1">The main actor runs on its own thread, next to the main queue</label>
-<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-2" data-ok><label for="q-03-the-main-actor-3-2">Both run on the main thread; the main actor is how async/await code says it</label>
-<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-3"><label for="q-03-the-main-actor-3-3">The main queue is for UI; the main actor is for data only</label>
+<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-1"><label for="q-03-the-main-actor-3-1"><span>The main actor runs on its own thread, next to the main queue</span></label>
+<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-2" data-ok><label for="q-03-the-main-actor-3-2"><span>Both run on the main thread; the main actor is how async/await code says it</span></label>
+<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-3"><label for="q-03-the-main-actor-3-3"><span>The main queue is for UI; the main actor is for data only</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The main actor runs on the main thread: that's what makes UI work safe. <label class="show-me" for="st-actor-4" data-goto="st-actor">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Two ways of saying &quot;on the main thread&quot;.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The main actor protects UI data, and its code runs on the main thread. <label class="show-me" for="st-actor-4" data-goto="st-actor">Show me step 4 again ↑</label></p>

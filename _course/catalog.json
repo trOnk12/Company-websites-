@@ -44,34 +44,43 @@
   ],
   "groups": [
     {
-      "title": "Mobile development",
+      "id": "backend",
+      "title": "Backend and system design",
+      "intro": "Start with a single request and take a bookmark service through deployment. Then inspect the JVM that runs the code. Finish by defending a reservation design when clients retry and servers fail.",
+      "courses": [
+        "backend-ops",
+        "jvm",
+        "system-design"
+      ]
+    },
+    {
+      "id": "mobile",
+      "title": "Android and multiplatform apps",
+      "intro": "Begin with Android processes and threads. Learn how iOS owns a screen, share Kotlin across both platforms, build a shared UI, then diagnose a slow frame.",
       "courses": [
         "android",
+        "ios",
         "kmp",
         "compose",
-        "ios",
         "perf"
       ]
     },
     {
-      "title": "Backend, DevOps and the JVM",
-      "courses": [
-        "backend-ops",
-        "jvm"
-      ]
-    },
-    {
-      "title": "Networking and security",
+      "id": "networks",
+      "title": "Networks and secure connections",
+      "intro": "Follow a mobile request through an unreliable network. Trace packets and connection setup, then examine the keys and certificates that protect the exchange.",
       "courses": [
         "sysdesign",
         "transport",
-        "security",
-        "ble"
+        "security"
       ]
     },
     {
-      "title": "AI for mobile",
+      "id": "device",
+      "title": "Device integrations",
+      "intro": "Choose the feature you want to build: connect an app to a nearby sensor, or add a model that streams responses.",
       "courses": [
+        "ble",
         "llm"
       ]
     }

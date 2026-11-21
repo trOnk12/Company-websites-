@@ -20,13 +20,28 @@ Write each caller's calculation on paper. A reads seven and calculates eight. B 
 
 A **conditional write** changes a value only if it still matches an expected value. Java's atomic integer offers a method that compares and writes as one indivisible step. A supplies seven as the expected value and eight as the replacement. It succeeds. B supplies the same pair and gets false because the counter already holds eight. B still owes one increment. The lab finishes it with a single operation that adds one to the current value.
 
+| Event | A's observed value | B's observed value | Shared counter |
+| --- | --- | --- | --- |
+| Both read | 7 | 7 | 7 |
+| A compares seven and replaces it with eight | 7 | 7 | 8 |
+| B compares seven and proposes eight | 7 | 7 | 8 |
+| B reads again, compares eight and proposes nine | 7 | 8 | 9 |
+
+The final row assumes no other writer changes eight before B's comparison. If another writer does, B must calculate a fresh candidate again. Reporting success after B's first rejected attempt would quietly lose a requested increment. Java also supplies an atomic increment operation when adding one is the entire rule.
+
+Now change the rule: both callers want to claim the final seat. A changes one to zero. B's original comparison fails. A fresh read for B returns zero. Retrying the business decision now means declining the reservation. Whether to try another write depends on what the operation promises. A single shared counter in one JVM only coordinates callers using that same object. Two servers with separate counters need a shared authority for the last seat.
+
 ## The analogy
 
 Two clerks copy the same tally from a shared sheet. If each replaces the tally with their pencilled answer, one arrival disappears. If the clerk checks and changes the tally while holding the sheet, the second clerk can see the mismatch.
 
 ## Try it
 
-Run the following command from the [JVM lab](https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm).
+[Run the browser experiment](https://pachulski.dev/labs/jvm-workbench/#04-shared-counter)
+
+### Optional local lab
+
+Run the following command from the [JVM source files](https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm).
 
 ```sh
 java SharedCounter.java
@@ -38,7 +53,7 @@ The statements replay one possible order so you can reproduce it on every run. B
 
 - B reads only after A writes eight. What does B calculate?::*Nine||Eight >> B starts from the value A just stored. >> the-building-block::B reads eight and adds one.
 - Both expect seven. A succeeds. What does B's conditional write report?::Success >> Seven no longer matches eight. >> s3||*False::The rejected write leaves eight in place.
-- Which part must stay together to detect a stale write?::*Compare and replace||Read and calculate the candidate >> The shared value can change before a later write. >> the-building-block::Compare against the live value at the instant of replacement.
+- A claims the final seat. B's comparison fails and a fresh read returns zero. What should B do?::*Decline the reservation||Subtract one from the new value >> No seat remains to grant. >> the-building-block::Repeat the business decision using the fresh count.
 
 ## Sources
 

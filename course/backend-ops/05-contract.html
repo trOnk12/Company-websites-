@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>An <b>application programming interface</b> (API) is the interface a program offers its callers. A contract is an agreement about what each side accepts and returns. First parse the bytes as <b>JavaScript Object Notation</b> (JSON), a text format for objects, arrays and simple values. Then validate the fields the operation needs. For this exercise a missing or blank name fails validation, while unknown fields are ignored. An additive field works only when readers tolerate it. Changing a field from text to a list can break existing readers even when the status stays 200. Document the rule and test both client versions.</p>
+<h3>Walk one body through both checks</h3>
+<p>A lone opening brace cannot be parsed, so the fixture returns 400 before field validation. A body containing a name field set to a list of names parses successfully; the name has the wrong type, so the fixture returns 422. A body with the text fields name (river) and color (blue) passes because the required name is text and this reader ignores the extra field. For a version change, test old client with new server and new client with old server separately. A new client that requires color will still fail when the old server omits it.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#05-contract">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the contract fixtures. Add cases for a blank name and a list. Write down the response an old client expects.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#core-workbench">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Which change can break an old reader expecting text?</legend>
-<input type="radio" name="q-05-contract-1" id="q-05-contract-1-1"><label for="q-05-contract-1-1">Adding an optional field the reader ignores</label>
-<input type="radio" name="q-05-contract-1" id="q-05-contract-1-2" data-ok><label for="q-05-contract-1-2">Returning a list for name</label>
+<input type="radio" name="q-05-contract-1" id="q-05-contract-1-1"><label for="q-05-contract-1-1"><span>Adding an optional field the reader ignores</span></label>
+<input type="radio" name="q-05-contract-1" id="q-05-contract-1-2" data-ok><label for="q-05-contract-1-2"><span>Returning a list for name</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The reader still finds its original text field. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> An API contract specifies methods, fields, validation, status codes and compatibility.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>What does a successful parse establish?</legend>
+<input type="radio" name="q-05-contract-2" id="q-05-contract-2-1" data-ok><label for="q-05-contract-2-1"><span>The input has valid JSON syntax</span></label>
+<input type="radio" name="q-05-contract-2" id="q-05-contract-2-2"><label for="q-05-contract-2-2"><span>Every required field has the right type</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Field validation follows parsing.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Field validation follows parsing. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>How can a new client safely read responses from the old server?</legend>
+<input type="radio" name="q-05-contract-3" id="q-05-contract-3-1"><label for="q-05-contract-3-1"><span>Require every older response to contain color</span></label>
+<input type="radio" name="q-05-contract-3" id="q-05-contract-3-2" data-ok><label for="q-05-contract-3-2"><span>Define behavior for a missing optional color</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> An older producer cannot supply a field it never implemented. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> An older producer cannot supply a field it never implemented.</p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://spec.openapis.org/oas/latest.html">Technical reference</a></li></ul></details>

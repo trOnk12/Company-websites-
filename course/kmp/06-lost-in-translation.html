@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary><a href="03-a-promise-and-its-keepers.html">Puzzle 3: A promise and its keepers</a></summary><p>An expect declaration in common code is a promise; every platform source set keeps it with an actual declaration. The compiler checks that every target has one. For anything bigger, an interface implemented per platform does the same job and is easier to test.</p></details></li><li data-block="5"><details><summary><a href="05-how-swift-sees-your-kotlin.html">Puzzle 5: How Swift sees your Kotlin</a></summary><p>Kotlin/Native packs your shared code into a framework, Apple's format for a library. Its description is an Objective-C header, because Swift can call Objective-C directly; Swift reads that header and calls your Kotlin as if it were Objective-C.</p></details></li></ul>
+        <ul><li data-block="3"><details><summary>Puzzle 3: A promise and its keepers</summary><p>An expect declaration in common code is a promise; every platform source set keeps it with an actual declaration. The compiler checks that every target has one. For anything bigger, an interface implemented per platform does the same job and is easier to test.</p><p><a href="03-a-promise-and-its-keepers.html">Review puzzle 3</a></p></details></li><li data-block="5"><details><summary>Puzzle 5: How Swift sees your Kotlin</summary><p>Kotlin/Native packs your shared code into a framework, Apple's format for a library. Its description is an Objective-C header, because Swift can call Objective-C directly; Swift reads that header and calls your Kotlin as if it were Objective-C.</p><p><a href="05-how-swift-sees-your-kotlin.html">Review puzzle 5</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a> → <a href="03-a-promise-and-its-keepers.html">3</a> → <a href="04-an-ios-app-in-one-puzzle.html">4</a> → <a href="05-how-swift-sees-your-kotlin.html">5</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -112,27 +112,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your shared code exposes a <code>Flow&lt;User&gt;</code>. What does Swift see?</legend>
-<input type="radio" name="q-06-lost-in-translation-1" id="q-06-lost-in-translation-1-1"><label for="q-06-lost-in-translation-1-1">Exactly that Flow with its type, because generics always cross</label>
-<input type="radio" name="q-06-lost-in-translation-1" id="q-06-lost-in-translation-1-2" data-ok><label for="q-06-lost-in-translation-1-2">A Flow, without knowing it carries users</label>
-<input type="radio" name="q-06-lost-in-translation-1" id="q-06-lost-in-translation-1-3"><label for="q-06-lost-in-translation-1-3">Nothing at all, because Flow can't cross the header</label>
+<input type="radio" name="q-06-lost-in-translation-1" id="q-06-lost-in-translation-1-1"><label for="q-06-lost-in-translation-1-1"><span>Exactly that Flow with its type, because generics always cross</span></label>
+<input type="radio" name="q-06-lost-in-translation-1" id="q-06-lost-in-translation-1-2" data-ok><label for="q-06-lost-in-translation-1-2"><span>A Flow, without knowing it carries users</span></label>
+<input type="radio" name="q-06-lost-in-translation-1" id="q-06-lost-in-translation-1-3"><label for="q-06-lost-in-translation-1-3"><span>Nothing at all, because Flow can't cross the header</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Generics cross only on classes; Flow is an interface, so its type parameter is lost. <label class="show-me" for="st-lost-2" data-goto="st-lost">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Interface generics are lost in the Objective-C header.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The Flow does cross, as an Objective-C type; only its type parameter is lost. <label class="show-me" for="st-lost-2" data-goto="st-lost">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>An ordinary Kotlin function throws <code>IOException</code> and has no <code>@Throws</code>. Swift calls it, and it throws. What happens?</legend>
-<input type="radio" name="q-06-lost-in-translation-2" id="q-06-lost-in-translation-2-1"><label for="q-06-lost-in-translation-2-1">Swift gets an error it can catch, like any <code>throws</code> function</label>
-<input type="radio" name="q-06-lost-in-translation-2" id="q-06-lost-in-translation-2-2" data-ok><label for="q-06-lost-in-translation-2-2">The app ends: the exception isn't listed, so Swift can't catch it</label>
-<input type="radio" name="q-06-lost-in-translation-2" id="q-06-lost-in-translation-2-3"><label for="q-06-lost-in-translation-2-3">Kotlin catches it and returns null</label>
+<input type="radio" name="q-06-lost-in-translation-2" id="q-06-lost-in-translation-2-1"><label for="q-06-lost-in-translation-2-1"><span>Swift gets an error it can catch, like any <code>throws</code> function</span></label>
+<input type="radio" name="q-06-lost-in-translation-2" id="q-06-lost-in-translation-2-2" data-ok><label for="q-06-lost-in-translation-2-2"><span>The app ends: the exception isn't listed, so Swift can't catch it</span></label>
+<input type="radio" name="q-06-lost-in-translation-2" id="q-06-lost-in-translation-2-3"><label for="q-06-lost-in-translation-2-3"><span>Kotlin catches it and returns null</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Only exceptions listed in <code>@Throws</code> become Swift errors; the rest end the app. <label class="show-me" for="st-lost-4" data-goto="st-lost">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> For ordinary functions, the annotation declares errors that may cross the bridge.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Nothing catches it on the way; an unlisted exception ends the app. <label class="show-me" for="st-lost-4" data-goto="st-lost">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a <code>suspend</code> function in Kotlin and what Swift sees?</legend>
-<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-1" data-ok><label for="q-06-lost-in-translation-3-1">The bridge exposes a completion handler with an optional async form in Swift</label>
-<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-2"><label for="q-06-lost-in-translation-3-2">Swift sees a function that blocks until the result is ready</label>
-<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-3"><label for="q-06-lost-in-translation-3-3">Swift sees the same suspend function, since Swift has suspend too</label>
+<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-1" data-ok><label for="q-06-lost-in-translation-3-1"><span>The bridge exposes a completion handler with an optional async form in Swift</span></label>
+<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-2"><label for="q-06-lost-in-translation-3-2"><span>Swift sees a function that blocks until the result is ready</span></label>
+<input type="radio" name="q-06-lost-in-translation-3" id="q-06-lost-in-translation-3-3"><label for="q-06-lost-in-translation-3-3"><span>Swift sees the same suspend function, since Swift has suspend too</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Suspend becomes &quot;call me back when done&quot;.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Nothing blocks: the completion handler is called later, with the result. <label class="show-me" for="st-lost-3" data-goto="st-lost">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Swift has no suspend; Objective-C's bridge turns it into a completion handler. <label class="show-me" for="st-lost-3" data-goto="st-lost">Show me step 3 again ↑</label></p>

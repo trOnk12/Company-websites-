@@ -20,6 +20,12 @@ Partitioning divides rows into pieces by a rule. A month-based split can make ol
 
 Splitting by lot keeps one reservation and its count together. A driver's history across lots may need reads from several pieces or a separate read model. If seventy percent of traffic goes to one lot, the hot key still goes to one owner. A different design allocates independent rights to regional pools. Transfers between pools must preserve the total number of rights.
 
+### Test both balance and ownership
+
+A thousand reservation attempts arrive per second. Seven hundred go to west. With sixteen equally fast storage owners, hashing by lot still sends at least 700 attempts per second to one owner. Dividing 1,000 by sixteen gives an average of 62.5 and hides west. Measure the busiest owner's rate when deciding whether the split helped.
+
+To transfer two unused rights from west to east, subtract two at west and record a durable transfer identity before east can spend them. East credits that identity at most once. If delivery pauses, the two rights may be temporarily unspendable. Retry the same transfer twice and reconcile available, granted and in-transit rights against the original capacity.
+
 ## Go deeper: How do you move a lot while it is accepting reservations?
 
 Moving the west lot from storage A to B takes time. Copying the current rows alone misses later writes. Record a starting position, copy the snapshot, replay subsequent changes, and compare results. At cutover, identify one active write owner and define what happens to requests sent using stale routing information. Otherwise both stores can grant the last space.

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-5">
         <p id="builds-on-5"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-bits-xor-and-a-toy-cipher.html">Puzzle 1: Bits, XOR and a toy cipher</a></summary><p>Data is bits, and a key is a string of bits too. XOR combines two bits: 0 if they're equal, 1 if they differ; XOR the same key in twice and you're back where you started. A one-time pad XORs each data bit with a key bit: perfectly secret if the key is random, as long as the data, and used once. Reuse the key, and XORing two ciphertexts cancels it, leaking the two messages XORed together.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: Bits, XOR and a toy cipher</summary><p>Data is bits, and a key is a string of bits too. XOR combines two bits: 0 if they're equal, 1 if they differ; XOR the same key in twice and you're back where you started. A one-time pad XORs each data bit with a key bit: perfectly secret if the key is random, as long as the data, and used once. Reuse the key, and XORing two ciphertexts cancels it, leaking the two messages XORed together.</p><p><a href="01-bits-xor-and-a-toy-cipher.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-anyone-on-the-line.html">0</a> → <a href="01-bits-xor-and-a-toy-cipher.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -113,25 +113,25 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>One bit of a 10 MB file is flipped on the way. What happens to its <code>SHA-256</code> digest?</legend>
-<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-1"><label for="q-05-a-fingerprint-for-data-1-1">It changes by one bit, matching the one bit that changed</label>
-<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-2" data-ok><label for="q-05-a-fingerprint-for-data-1-2">It changes completely, so a comparison shows the file was changed</label>
-<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-3"><label for="q-05-a-fingerprint-for-data-1-3">It stays the same, because one bit is too small to matter</label>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-1"><label for="q-05-a-fingerprint-for-data-1-1"><span>It changes by one bit, matching the one bit that changed</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-2" data-ok><label for="q-05-a-fingerprint-for-data-1-2"><span>It changes completely, so a comparison shows the file was changed</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-3"><label for="q-05-a-fingerprint-for-data-1-3"><span>It stays the same, because one bit is too small to matter</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A hash doesn't map bits to bits: one flipped bit changes the whole digest. <label class="show-me" for="st-hash-3" data-goto="st-hash">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One bit changed, a different digest.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Any change, even one bit, gives a different digest. <label class="show-me" for="st-hash-3" data-goto="st-hash">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why can't an attacker just make new data that has the expected digest?</legend>
-<input type="radio" name="q-05-a-fingerprint-for-data-2" id="q-05-a-fingerprint-for-data-2-1"><label for="q-05-a-fingerprint-for-data-2-1">Because the digest is encrypted with AES on the way</label>
-<input type="radio" name="q-05-a-fingerprint-for-data-2" id="q-05-a-fingerprint-for-data-2-2" data-ok><label for="q-05-a-fingerprint-for-data-2-2">Because nobody knows how to build data for a given digest</label>
+<input type="radio" name="q-05-a-fingerprint-for-data-2" id="q-05-a-fingerprint-for-data-2-1"><label for="q-05-a-fingerprint-for-data-2-1"><span>Because the digest is encrypted with AES on the way</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-2" id="q-05-a-fingerprint-for-data-2-2" data-ok><label for="q-05-a-fingerprint-for-data-2-2"><span>Because nobody knows how to build data for a given digest</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The digest's strength is in the hash function itself, not in AES. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Going from digest back to data is the hard direction.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a digest and ciphertext?</legend>
-<input type="radio" name="q-05-a-fingerprint-for-data-3" id="q-05-a-fingerprint-for-data-3-1"><label for="q-05-a-fingerprint-for-data-3-1">A digest is ciphertext made with a shorter key</label>
-<input type="radio" name="q-05-a-fingerprint-for-data-3" id="q-05-a-fingerprint-for-data-3-2" data-ok><label for="q-05-a-fingerprint-for-data-3-2">A digest can't be turned back, while ciphertext can, with the key</label>
-<input type="radio" name="q-05-a-fingerprint-for-data-3" id="q-05-a-fingerprint-for-data-3-3"><label for="q-05-a-fingerprint-for-data-3-3">Ciphertext is shorter than a digest</label>
+<input type="radio" name="q-05-a-fingerprint-for-data-3" id="q-05-a-fingerprint-for-data-3-1"><label for="q-05-a-fingerprint-for-data-3-1"><span>A digest is ciphertext made with a shorter key</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-3" id="q-05-a-fingerprint-for-data-3-2" data-ok><label for="q-05-a-fingerprint-for-data-3-2"><span>A digest can't be turned back, while ciphertext can, with the key</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-3" id="q-05-a-fingerprint-for-data-3-3"><label for="q-05-a-fingerprint-for-data-3-3"><span>Ciphertext is shorter than a digest</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A hash uses no key at all, and there's no way back from a digest. <label class="show-me" for="st-hash-1" data-goto="st-hash">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> A fingerprint vs locked data.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Ciphertext is about as long as the data; a digest is always the same short size. <label class="show-me" for="st-hash-2" data-goto="st-hash">Show me step 2 again ↑</label></p>

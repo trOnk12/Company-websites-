@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-what-actually-travels.html">Puzzle 0: What actually travels</a></summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -111,26 +111,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app's first-ever request to <code>api.example.com</code> is slower than the next ones. Which part of that is DNS?</legend>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-1" data-ok><label for="q-01-finding-the-server-1-1">Looking up the host's IP address before anything can be sent</label>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-2"><label for="q-01-finding-the-server-1-2">Routers learning the new hostname</label>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-3"><label for="q-01-finding-the-server-1-3">Downloading the response data, which is bigger the first time</label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-1" data-ok><label for="q-01-finding-the-server-1-1"><span>Looking up the host's IP address before anything can be sent</span></label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-2"><label for="q-01-finding-the-server-1-2"><span>Routers learning the new hostname</span></label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-3"><label for="q-01-finding-the-server-1-3"><span>Downloading the response data, which is bigger the first time</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Name to address, once.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Routers deliver by address; the name is resolved by DNS first. <label class="show-me" for="st-dns-3" data-goto="st-dns">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> The data is the same size; the extra wait is the lookup before sending. <label class="show-me" for="st-dns-3" data-goto="st-dns">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why are DNS answers cached?</legend>
-<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-1" data-ok><label for="q-01-finding-the-server-2-1">So later requests skip the lookup and its waiting</label>
-<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-2"><label for="q-01-finding-the-server-2-2">So the app can work without an IP address</label>
-<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-3"><label for="q-01-finding-the-server-2-3">Because DNS servers can only answer once per app</label>
+<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-1" data-ok><label for="q-01-finding-the-server-2-1"><span>So later requests skip the lookup and its waiting</span></label>
+<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-2"><label for="q-01-finding-the-server-2-2"><span>So the app can work without an IP address</span></label>
+<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-3"><label for="q-01-finding-the-server-2-3"><span>Because DNS servers can only answer once per app</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Look up once, reuse.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Packets always need an address; caching only keeps it. <label class="show-me" for="st-dns-4" data-goto="st-dns">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> They answer many times; caching saves the wait. <label class="show-me" for="st-dns-4" data-goto="st-dns">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a hostname and an IP address?</legend>
-<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-1"><label for="q-01-finding-the-server-3-1">A hostname is the number routers deliver to, while an IP address is the name code uses</label>
-<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-2" data-ok><label for="q-01-finding-the-server-3-2">A hostname is the name code uses, while an IP address is the number routers deliver to</label>
+<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-1"><label for="q-01-finding-the-server-3-1"><span>A hostname is the number routers deliver to, while an IP address is the name code uses</span></label>
+<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-2" data-ok><label for="q-01-finding-the-server-3-2"><span>A hostname is the name code uses, while an IP address is the number routers deliver to</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Name vs number.</p>
 </fieldset>

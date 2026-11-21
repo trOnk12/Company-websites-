@@ -1,7 +1,7 @@
 {
   "title": "JVM internals for Kotlin and Android developers",
   "intro": "Trace a tiny bookmark program from compiled instructions to method frames, shared objects and reachability.",
-  "how": "Predict the output, change one line and inspect the compiled instructions with a local JDK.",
+  "how": "Start by tracing one tiny program. Use the browser workbench to predict what changes in a frame or on the heap. Then use a local JDK to compare the model with compiled instructions and run the shared-counter exercise.",
   "modules": [
     {
       "title": "From source to a live object",

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -63,11 +63,12 @@
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
         <a href="#go-deeper-what-will-storage-cost-in-bytes">Go deeper</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -101,6 +102,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>There are 86,400 seconds in a day. The averages are about 13.9 map reads and 1.39 reservation attempts per second. Now suppose one fifth of all map reads arrive in the same ten minutes after a concert. That gives 240,000 / 600 = 400 reads per second. The traffic distribution is an assumption. Daily totals alone cannot tell you the peak.</p>
 <p>At a stable 400 completed requests per second and a mean of 0.15 seconds from arrival to reply, an average of 60 requests are <b>in flight</b>, meaning they have arrived but their replies are still outstanding. This is Little’s law. Keep the rate and duration inside the same measurement boundary. If each request holds a database connection for only 0.010 seconds, that part of the workload occupies four connections on average. Short bursts can require more.</p>
+<h3>Find the bottleneck hidden by the daily average</h3>
+<p>Suppose each map response carries 12,000 bytes. At the 400-per-second peak the service sends 4.8 million bytes each second, about 38.4 million bits per second before protocol overhead. Doubling response size doubles outgoing bandwidth even when the number of database reads stays fixed.</p>
+<p>Now assume the backend completes only 350 reads per second for the ten-minute peak. Starting empty, with no abandoned or rejected work, 30,000 requests remain after those ten minutes: 50 unfinished requests per second for 600 seconds. Measuring only completions would understate offered demand. Once the queue keeps growing, stop using the steady-state estimate of 60 outstanding requests.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-what-will-storage-cost-in-bytes">
         <summary><span class="depth-label">Go deeper</span>What will storage cost in bytes?</summary>
@@ -118,22 +122,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Which interval belongs in the peak calculation?</legend>
-<input type="radio" name="q-01-demand-1" id="q-01-demand-1-1" data-ok><label for="q-01-demand-1-1">600 seconds</label>
-<input type="radio" name="q-01-demand-1" id="q-01-demand-1-2"><label for="q-01-demand-1-2">86,400 seconds</label>
+<input type="radio" name="q-01-demand-1" id="q-01-demand-1-1" data-ok><label for="q-01-demand-1-1"><span>600 seconds</span></label>
+<input type="radio" name="q-01-demand-1" id="q-01-demand-1-2"><label for="q-01-demand-1-2"><span>86,400 seconds</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Use the duration of the burst.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Use the duration of the burst. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>At 400 per second and 0.15 seconds each, how many are in flight on average?</legend>
-<input type="radio" name="q-01-demand-2" id="q-01-demand-2-1" data-ok><label for="q-01-demand-2-1">60</label>
-<input type="radio" name="q-01-demand-2" id="q-01-demand-2-2"><label for="q-01-demand-2-2">2667</label>
+<input type="radio" name="q-01-demand-2" id="q-01-demand-2-1" data-ok><label for="q-01-demand-2-1"><span>60</span></label>
+<input type="radio" name="q-01-demand-2" id="q-01-demand-2-2"><label for="q-01-demand-2-2"><span>2667</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Multiply throughput by mean duration.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Multiply throughput by mean duration. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Does four occupied connections on average determine the pool limit?</legend>
-<input type="radio" name="q-01-demand-3" id="q-01-demand-3-1"><label for="q-01-demand-3-1">Yes, choose exactly four</label>
-<input type="radio" name="q-01-demand-3" id="q-01-demand-3-2" data-ok><label for="q-01-demand-3-2">Measure waits and bursts</label>
+<input type="radio" name="q-01-demand-3" id="q-01-demand-3-1"><label for="q-01-demand-3-1"><span>Yes, choose exactly four</span></label>
+<input type="radio" name="q-01-demand-3" id="q-01-demand-3-2" data-ok><label for="q-01-demand-3-2"><span>Measure waits and bursts</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Averages hide brief periods of saturation. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Averages hide brief periods of saturation.</p>
 </fieldset>

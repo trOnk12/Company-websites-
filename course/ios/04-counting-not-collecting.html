@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-queues-not-handlers.html">Puzzle 2: Queues, not handlers</a></summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Queues, not handlers</summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p><p><a href="02-queues-not-handlers.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-frozen-not-stopped.html">0</a> → <a href="01-the-run-loop-is-your-looper.html">1</a> → <a href="02-queues-not-handlers.html">2</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/04-an-ios-app-in-one-puzzle.html"><b>Swift</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 4: An iOS app in one puzzle</span></li><li><a href="../kmp/08-weak-references-and-closures.html"><b>[weak self]</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 8: Weak references and closures</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -112,26 +112,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A screen holds its view model strongly, and the view model holds the screen strongly. The user closes the screen. What happens on iOS?</legend>
-<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-1" data-ok><label for="q-04-counting-not-collecting-1-1">Neither is freed: each still counts one reference, the other</label>
-<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-2"><label for="q-04-counting-not-collecting-1-2">Only the view model is freed, because the screen is closed</label>
-<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-3"><label for="q-04-counting-not-collecting-1-3">Both are freed, like a garbage collector would do</label>
+<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-1" data-ok><label for="q-04-counting-not-collecting-1-1"><span>Neither is freed: each still counts one reference, the other</span></label>
+<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-2"><label for="q-04-counting-not-collecting-1-2"><span>Only the view model is freed, because the screen is closed</span></label>
+<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-3"><label for="q-04-counting-not-collecting-1-3"><span>Both are freed, like a garbage collector would do</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A cycle keeps both counts above zero.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Closing the screen doesn't change the counts; both stay at one. <label class="show-me" for="st-arc-3" data-goto="st-arc">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> There's no collector to notice: ARC only counts, and each count stays at one. <label class="show-me" for="st-arc-3" data-goto="st-arc">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does a weak reference break the cycle?</legend>
-<input type="radio" name="q-04-counting-not-collecting-2" id="q-04-counting-not-collecting-2-1"><label for="q-04-counting-not-collecting-2-1">Because ARC skips cycles that contain a weak reference</label>
-<input type="radio" name="q-04-counting-not-collecting-2" id="q-04-counting-not-collecting-2-2" data-ok><label for="q-04-counting-not-collecting-2-2">Because it doesn't add to the count, so the other can reach zero</label>
-<input type="radio" name="q-04-counting-not-collecting-2" id="q-04-counting-not-collecting-2-3"><label for="q-04-counting-not-collecting-2-3">Because a weak reference frees its object straight away</label>
+<input type="radio" name="q-04-counting-not-collecting-2" id="q-04-counting-not-collecting-2-1"><label for="q-04-counting-not-collecting-2-1"><span>Because ARC skips cycles that contain a weak reference</span></label>
+<input type="radio" name="q-04-counting-not-collecting-2" id="q-04-counting-not-collecting-2-2" data-ok><label for="q-04-counting-not-collecting-2-2"><span>Because it doesn't add to the count, so the other can reach zero</span></label>
+<input type="radio" name="q-04-counting-not-collecting-2" id="q-04-counting-not-collecting-2-3"><label for="q-04-counting-not-collecting-2-3"><span>Because a weak reference frees its object straight away</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> ARC doesn't look for cycles at all; the weak side doesn't count. <label class="show-me" for="st-arc-4" data-goto="st-arc">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Weak references aren't counted.</p>
 <p class="fb no opt-3"><b>Not quite.</b> It doesn't free anything; it just doesn't keep the object alive. <label class="show-me" for="st-arc-4" data-goto="st-arc">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between ARC and Android's garbage collector?</legend>
-<input type="radio" name="q-04-counting-not-collecting-3" id="q-04-counting-not-collecting-3-1"><label for="q-04-counting-not-collecting-3-1">ARC runs in passes like a collector, only more often</label>
-<input type="radio" name="q-04-counting-not-collecting-3" id="q-04-counting-not-collecting-3-2" data-ok><label for="q-04-counting-not-collecting-3-2">ARC frees at once, while a collector frees later, in passes</label>
+<input type="radio" name="q-04-counting-not-collecting-3" id="q-04-counting-not-collecting-3-1"><label for="q-04-counting-not-collecting-3-1"><span>ARC runs in passes like a collector, only more often</span></label>
+<input type="radio" name="q-04-counting-not-collecting-3" id="q-04-counting-not-collecting-3-2" data-ok><label for="q-04-counting-not-collecting-3-2"><span>ARC frees at once, while a collector frees later, in passes</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> ARC doesn't run in passes: it frees the moment the count reaches zero. <label class="show-me" for="st-arc-2" data-goto="st-arc">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Counting now vs searching later.</p>
 </fieldset>
@@ -146,8 +146,8 @@
       <section class="finish" aria-labelledby="finish-heading">
         <h2 id="finish-heading">That's everything published so far</h2>
         <p>You've reached the last puzzle of <b>iOS for Android developers</b>. Next: Module 2: Screens and the system, about scenes and windows, SwiftUI's rendering model vs UIKit, background execution and Jetsam, launch time.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <p>Apply the published lessons to an independent case, then compare your evidence with a worked review.</p>
+        <p class="actions"><a class="button primary" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Counting%2C%20not%20collecting&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-how-kotlin-calls-apple.html">Puzzle 2: How Kotlin calls Apple</a></summary><p>Kotlin/Native ships platform libraries: prebuilt Kotlin bindings for each target's native libraries. On Apple targets they cover Apple's frameworks, such as Foundation and UIKit, so code in iosMain can import platform.UIKit.UIDevice and call it like Kotlin. They exist only on Apple targets, which is why such calls live in iosMain, never in commonMain.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: How Kotlin calls Apple</summary><p>Kotlin/Native ships platform libraries: prebuilt Kotlin bindings for each target's native libraries. On Apple targets they cover Apple's frameworks, such as Foundation and UIKit, so code in iosMain can import platform.UIKit.UIDevice and call it like Kotlin. They exist only on Apple targets, which is why such calls live in iosMain, never in commonMain.</p><p><a href="02-how-kotlin-calls-apple.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a> → <a href="02-how-kotlin-calls-apple.html">2</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -122,26 +122,26 @@ class GreetingViewController: UIViewController {
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Which iOS piece plays the role of an Activity?</legend>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-1" id="q-04-an-ios-app-in-one-puzzle-1-1" data-ok><label for="q-04-an-ios-app-in-one-puzzle-1-1">A view controller: it runs one screen and reacts to the user</label>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-1" id="q-04-an-ios-app-in-one-puzzle-1-2"><label for="q-04-an-ios-app-in-one-puzzle-1-2">UIKit itself, since it holds the screen</label>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-1" id="q-04-an-ios-app-in-one-puzzle-1-3"><label for="q-04-an-ios-app-in-one-puzzle-1-3">Xcode, because it starts the app the way Android starts an Activity</label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-1" id="q-04-an-ios-app-in-one-puzzle-1-1" data-ok><label for="q-04-an-ios-app-in-one-puzzle-1-1"><span>A view controller: it runs one screen and reacts to the user</span></label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-1" id="q-04-an-ios-app-in-one-puzzle-1-2"><label for="q-04-an-ios-app-in-one-puzzle-1-2"><span>UIKit itself, since it holds the screen</span></label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-1" id="q-04-an-ios-app-in-one-puzzle-1-3"><label for="q-04-an-ios-app-in-one-puzzle-1-3"><span>Xcode, because it starts the app the way Android starts an Activity</span></label>
 <p class="fb ok opt-1"><b>Right.</b> One screen, one view controller.</p>
 <p class="fb no opt-2"><b>Not quite.</b> UIKit is the framework; a view controller is one screen built with it. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> Xcode is the IDE; it builds the app, it isn't part of it. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>In Swift, <code>let label = UILabel()</code>. What's the Kotlin equivalent of <code>let</code>?</legend>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-2" id="q-04-an-ios-app-in-one-puzzle-2-1" data-ok><label for="q-04-an-ios-app-in-one-puzzle-2-1"><code>val</code>: set once, never reassigned</label>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-2" id="q-04-an-ios-app-in-one-puzzle-2-2"><label for="q-04-an-ios-app-in-one-puzzle-2-2"><code>fun</code>: it declares a function named label</label>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-2" id="q-04-an-ios-app-in-one-puzzle-2-3"><label for="q-04-an-ios-app-in-one-puzzle-2-3">A variable you can reassign later</label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-2" id="q-04-an-ios-app-in-one-puzzle-2-1" data-ok><label for="q-04-an-ios-app-in-one-puzzle-2-1"><span><code>val</code>: set once, never reassigned</span></label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-2" id="q-04-an-ios-app-in-one-puzzle-2-2"><label for="q-04-an-ios-app-in-one-puzzle-2-2"><span><code>fun</code>: it declares a function named label</span></label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-2" id="q-04-an-ios-app-in-one-puzzle-2-3"><label for="q-04-an-ios-app-in-one-puzzle-2-3"><span>A variable you can reassign later</span></label>
 <p class="fb ok opt-1"><b>Right.</b> let is val.</p>
 <p class="fb no opt-2"><b>Not quite.</b> <code>let</code> declares a value, like <code>val</code>. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's Swift's var; <code>let</code> is fixed once set. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between UIKit and SwiftUI?</legend>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-3" id="q-04-an-ios-app-in-one-puzzle-3-1"><label for="q-04-an-ios-app-in-one-puzzle-3-1">UIKit describes screens declaratively, like Compose, while SwiftUI builds them from UI objects you change</label>
-<input type="radio" name="q-04-an-ios-app-in-one-puzzle-3" id="q-04-an-ios-app-in-one-puzzle-3-2" data-ok><label for="q-04-an-ios-app-in-one-puzzle-3-2">UIKit builds screens from UI objects you change, while SwiftUI describes them declaratively, like Compose</label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-3" id="q-04-an-ios-app-in-one-puzzle-3-1"><label for="q-04-an-ios-app-in-one-puzzle-3-1"><span>UIKit describes screens declaratively, like Compose, while SwiftUI builds them from UI objects you change</span></label>
+<input type="radio" name="q-04-an-ios-app-in-one-puzzle-3" id="q-04-an-ios-app-in-one-puzzle-3-2" data-ok><label for="q-04-an-ios-app-in-one-puzzle-3-2"><span>UIKit builds screens from UI objects you change, while SwiftUI describes them declaratively, like Compose</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Objects vs descriptions.</p>
 </fieldset>

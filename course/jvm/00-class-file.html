@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,9 +62,10 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
-      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/09-whats-inside-the-apk.html"><b>DEX</b></a> <span class="small">Android from the foundation, puzzle 9: What's inside the APK</span></li><li><a href="../android/09-whats-inside-the-apk.html"><b>ART</b></a> <span class="small">Android from the foundation, puzzle 9: What's inside the APK</span></li><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>compiler</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
+      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>compiler</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
 <p>A <b>class file</b> stores a compiled type and its instructions. You change a constant from one to two. The next run still prints the old answer. Which file did that run consume?</p>
@@ -94,23 +95,45 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>The Java Virtual Machine (JVM) executes a program described by class files. The compiler reads the source and writes those files. The launcher in this lab loads Bookmark from the out directory. Editing the source alone leaves the old class there. Use the four commands in the lab guide, change the addition and run the old class before recompiling. On Android you may recognize the source language, but installed Android apps normally execute DEX code on ART. This lab runs the desktop Java runtime.</p>
+<p>A source file is the text you edit. The Java compiler reads that text and writes a class file containing instructions. The Java Virtual Machine (JVM) can execute those instructions. In this exercise the launcher looks for Bookmark in a directory named out. Separate the two operations on paper. Under compile, write the input and output filenames. Under launch, write the name of the program and the directory searched for its classes.</p>
+<pre><code class="language-sh">javac -d out Bookmark.java
+java -cp out Bookmark
+javap -classpath out -c Bookmark</code></pre>
+<p>The first command places the compiled classes in the directory named out. The second looks there for Bookmark and starts its main method. The third prints a readable listing of the instructions in the class. Find the helper named increment. You can inspect a compiled class even if the editor currently shows different source.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Action</th><th scope="col">Addition in the editor</th><th scope="col">Addition in out</th><th scope="col">First printed line</th></tr></thead><tbody><tr><th scope="row">Compile and launch the original</th><td>add one</td><td>add one</td><td>7 8</td></tr><tr><th scope="row">Edit only, then launch the existing class</th><td>add two</td><td>add one</td><td>7 8</td></tr><tr><th scope="row">Compile the edit into out and launch again</th><td>add two</td><td>add two</td><td>7 9</td></tr></tbody></table></div>
+<p>Imagine you compile the fix into another directory called next, then launch using the same command as before. The build succeeds. The result still comes from out. To investigate a stale deployment, identify the artifact the launcher selected and inspect that artifact's instructions. A screenshot of the corrected source cannot establish what ran.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Complete experiment 1 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">local JVM lab</a>. Record your prediction before running the program.</p>
+<p><a href="/labs/jvm-workbench/#00-class-file">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
+<p>Complete experiment 1 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>. Record your prediction before running the program.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>You edit the source and run the existing class. Which value changes?</legend>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1"><label for="q-00-class-file-1-1">The result immediately increases by one</label>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2" data-ok><label for="q-00-class-file-1-2">Neither printed value</label>
-<p class="fb no opt-1"><b>Not quite.</b> The launch command loads the class that already exists. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
+<legend>You edit the source and run the existing class. What does its first line show?</legend>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1" data-ok><label for="q-00-class-file-1-1"><span>The earlier 7 8</span></label>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2"><label for="q-00-class-file-1-2"><span>The updated 7 9</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The launch command loads the class that already exists. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>You compiled the edit into next but still launch from out. Which result appears?</legend>
+<input type="radio" name="q-00-class-file-2" id="q-00-class-file-2-1"><label for="q-00-class-file-2-1"><span>The new 7 9</span></label>
+<input type="radio" name="q-00-class-file-2" id="q-00-class-file-2-2" data-ok><label for="q-00-class-file-2-2"><span>The earlier 7 8</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The launch command still names out. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Compilation can succeed while the running program uses an older artifact.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which evidence distinguishes stale compiled output from a source edit?</legend>
+<input type="radio" name="q-00-class-file-3" id="q-00-class-file-3-1" data-ok><label for="q-00-class-file-3-1"><span>Inspect the class in the launch directory</span></label>
+<input type="radio" name="q-00-class-file-3" id="q-00-class-file-3-2"><label for="q-00-class-file-3-2"><span>Inspect the most recently edited source file</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Inspect the actual artifact selected at launch.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The editor shows the intended input to a future compilation. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html">Oracle Java reference</a></li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html">Java 21 compiler guide</a> — “compiles them into class files”</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html">Java 21 launcher guide</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-13">
         <p id="builds-on-13"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-one-kotlin-many-machines.html">Puzzle 0: One Kotlin function, two ways to run it</a></summary><p>For Android, Kotlin produces class files, the Android build turns them into DEX, and ART runs the DEX on the phone. For iOS, Kotlin/Native produces machine code during the build. In both cases, the processor ultimately runs machine instructions.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: One Kotlin function, two ways to run it</summary><p>For Android, Kotlin produces class files, the Android build turns them into DEX, and ART runs the DEX on the phone. For iOS, Kotlin/Native produces machine code during the build. In both cases, the processor ultimately runs machine instructions.</p><p><a href="00-one-kotlin-many-machines.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-one-kotlin-many-machines.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -116,26 +116,26 @@ fun Greeting(name: String) {
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The <code>name</code> passed to <code>Greeting</code> changes. What makes the text update?</legend>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-1" data-ok><label for="q-13-compose-in-one-puzzle-1-1">Compose calls <code>Greeting</code> again with the new name: recomposition</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-2"><label for="q-13-compose-in-one-puzzle-1-2">The Activity recreates the whole screen</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-3"><label for="q-13-compose-in-one-puzzle-1-3">Your code sets the new text on the Text object</label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-1" data-ok><label for="q-13-compose-in-one-puzzle-1-1"><span>Compose calls <code>Greeting</code> again with the new name: recomposition</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-2"><label for="q-13-compose-in-one-puzzle-1-2"><span>The Activity recreates the whole screen</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-3"><label for="q-13-compose-in-one-puzzle-1-3"><span>Your code sets the new text on the Text object</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Data changes, functions run again.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only the affected functions run again; nothing is recreated. <label class="show-me" for="st-compose-3" data-goto="st-compose">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> You keep no Text object to set; you describe, Compose redraws. <label class="show-me" for="st-compose-3" data-goto="st-compose">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does a counter need <code>remember</code>?</legend>
-<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-1"><label for="q-13-compose-in-one-puzzle-2-1">So Compose knows the counter is on screen</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-2" data-ok><label for="q-13-compose-in-one-puzzle-2-2">So its value survives each recomposition instead of resetting</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-3"><label for="q-13-compose-in-one-puzzle-2-3">So the counter is saved when the app is closed</label>
+<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-1"><label for="q-13-compose-in-one-puzzle-2-1"><span>So Compose knows the counter is on screen</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-2" data-ok><label for="q-13-compose-in-one-puzzle-2-2"><span>So its value survives each recomposition instead of resetting</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-3"><label for="q-13-compose-in-one-puzzle-2-3"><span>So the counter is saved when the app is closed</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> remember is about keeping the value across calls, not visibility. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Kept across calls.</p>
 <p class="fb no opt-3"><b>Not quite.</b> remember lasts across recompositions, not after the app is killed. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a composable and the Compose compiler plugin?</legend>
-<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-1" data-ok><label for="q-13-compose-in-one-puzzle-3-1">A composable describes UI for its data, while the plugin rewrites composables so the runtime can track them</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-2"><label for="q-13-compose-in-one-puzzle-3-2">A composable rewrites functions so the runtime can track them, while the plugin describes UI for its data</label>
+<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-1" data-ok><label for="q-13-compose-in-one-puzzle-3-1"><span>A composable describes UI for its data, while the plugin rewrites composables so the runtime can track them</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-2"><label for="q-13-compose-in-one-puzzle-3-2"><span>A composable rewrites functions so the runtime can track them, while the plugin describes UI for its data</span></label>
 <p class="fb ok opt-1"><b>Right.</b> What you write vs what the compiler adds.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

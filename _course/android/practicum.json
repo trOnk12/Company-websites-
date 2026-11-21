@@ -1,0 +1,24 @@
+{
+  "title": "Recover a half-written trail note",
+  "brief": "A walker opens trail 41, types a draft and rotates the phone. Later, Android reclaims the stopped app process. Design the restoration path and explain why rotating the device exercises only half of it.",
+  "prerequisites": "Trace activity recreation, the ViewModel store, Binder and process death through the final three Android puzzles.",
+  "setup": "Use a paper trace with process P1, activity A1, ViewModel V1, trail ID 41, published note “Bridge open” and unsaved draft “Bridge closed”. Optionally repeat on an Android emulator with the task retained.",
+  "steps": [
+    "Draw three columns: activity instance, process memory and persistent or framework-saved state. Place every value in its actual owner.",
+    "Rotate once and name the activity and ViewModel after recreation. Record which value can be shown immediately.",
+    "Background the task after its small restoration state has been saved. End its process and return through the retained task. Trace how a new screen reconstructs the trail and draft.",
+    "Compare with opening a completely new task. Define what must survive even when no saved instance state is available."
+  ],
+  "evidence": [
+    "After rotation the trace has a new activity and the same retained ViewModel; after process death it has a new process and ViewModel.",
+    "The restored screen gets trail 41 from a small key, reads its published note from durable storage, and can account for the draft separately.",
+    "The answer distinguishes a saved UI draft from a note the service has already committed."
+  ],
+  "worked": [
+    "For rotation the trace reads P1/A1/V1 → P1/A2/V1. A2 attaches to V1, which still holds the draft. A field owned only by A1 would have disappeared.",
+    "After process reclamation the trace reads P2/A3/V2. If the retained task supplies trail ID 41 and the short draft, V2 reloads the published record and overlays the draft. Storing only the ID would restore “Bridge open” and lose the pending edit.",
+    "A fresh launch may have no restoration bundle. If losing the draft would break the promise to the walker, save drafts durably under their trail IDs and define when to clear them. Keep a photo in file storage and pass its identifier across the restoration boundary."
+  ],
+  "variation": "What if the user submits the note just before the process dies and never sees the reply?",
+  "solution": "Keep the draft and its submission identity until the service can report the outcome. Reconstructing an activity can restore the screen, but cannot determine from memory whether the remote write committed."
+}

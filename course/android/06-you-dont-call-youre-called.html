@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="5"><details><summary><a href="05-the-post-office-carries-letters.html">Puzzle 5: The post office carries letters</a></summary><p>Between processes, nothing is reached directly. Binder, a driver in the kernel, carries the message, like a post office.</p></details></li></ul>
+        <ul><li data-block="5"><details><summary>Puzzle 5: The post office carries letters</summary><p>Between processes, nothing is reached directly. Binder, a driver in the kernel, carries the message, like a post office.</p><p><a href="05-the-post-office-carries-letters.html">Review puzzle 5</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 5 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -113,24 +113,24 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app calls <span class="ref" tabindex="0" aria-describedby="ref-5"><code>onCreate()</code><span class="pop" role="tooltip" id="ref-5"><span class="pop-what">Your override of this method is what the main thread calls when system_server says &quot;create&quot;.</span><span class="pop-code"> 1864  protected void onCreate(@Nullable Bundle savedInstanceState) {</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/Activity.java#L1864">Activity.java, line 1864 · AOSP frameworks/base ↗</a></span></span> on its own Activity, by hand. What have you done?</legend>
-<input type="radio" name="q-06-you-dont-call-youre-called-1" id="q-06-you-dont-call-youre-called-1-1" data-ok><label for="q-06-you-dont-call-youre-called-1-1">Run your setup code, before the screen is created or shown</label>
-<input type="radio" name="q-06-you-dont-call-youre-called-1" id="q-06-you-dont-call-youre-called-1-2"><label for="q-06-you-dont-call-youre-called-1-2">Created and shown the screen, because onCreate() is where screens appear</label>
+<input type="radio" name="q-06-you-dont-call-youre-called-1" id="q-06-you-dont-call-youre-called-1-1" data-ok><label for="q-06-you-dont-call-youre-called-1-1"><span>Run your setup code, before the screen is created or shown</span></label>
+<input type="radio" name="q-06-you-dont-call-youre-called-1" id="q-06-you-dont-call-youre-called-1-2"><label for="q-06-you-dont-call-youre-called-1-2"><span>Created and shown the screen, because onCreate() is where screens appear</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A callback is run by your main thread when system_server says it's time. Calling it yourself doesn't change what system_server decided.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only system_server moves an Activity through its lifecycle. Calling the callback yourself just runs your method. <label class="show-me" for="st-chain-2" data-goto="st-chain">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Which thread runs your <span class="ref" tabindex="0" aria-describedby="ref-6"><code>onCreate()</code><span class="pop" role="tooltip" id="ref-6"><span class="pop-what">Your override of this method is what the main thread calls when system_server says &quot;create&quot;.</span><span class="pop-code"> 1864  protected void onCreate(@Nullable Bundle savedInstanceState) {</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/app/Activity.java#L1864">Activity.java, line 1864 · AOSP frameworks/base ↗</a></span></span>?</legend>
-<input type="radio" name="q-06-you-dont-call-youre-called-2" id="q-06-you-dont-call-youre-called-2-1" data-ok><label for="q-06-you-dont-call-youre-called-2-1">Your app's main thread</label>
-<input type="radio" name="q-06-you-dont-call-youre-called-2" id="q-06-you-dont-call-youre-called-2-2"><label for="q-06-you-dont-call-youre-called-2-2">Whichever thread delivered the message</label>
-<input type="radio" name="q-06-you-dont-call-youre-called-2" id="q-06-you-dont-call-youre-called-2-3"><label for="q-06-you-dont-call-youre-called-2-3">A thread inside system_server</label>
+<input type="radio" name="q-06-you-dont-call-youre-called-2" id="q-06-you-dont-call-youre-called-2-1" data-ok><label for="q-06-you-dont-call-youre-called-2-1"><span>Your app's main thread</span></label>
+<input type="radio" name="q-06-you-dont-call-youre-called-2" id="q-06-you-dont-call-youre-called-2-2"><label for="q-06-you-dont-call-youre-called-2-2"><span>Whichever thread delivered the message</span></label>
+<input type="radio" name="q-06-you-dont-call-youre-called-2" id="q-06-you-dont-call-youre-called-2-3"><label for="q-06-you-dont-call-youre-called-2-3"><span>A thread inside system_server</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The message reaches your main thread, which runs your callback.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Screen code always runs on the main thread, the clerk. <label class="show-me" for="st-chain-4" data-goto="st-chain">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> system_server only sends the message. Your code runs in your process, on your main thread. <label class="show-me" for="st-chain-5" data-goto="st-chain">Show me step 5 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does Android use callbacks instead of letting apps decide?</legend>
-<input type="radio" name="q-06-you-dont-call-youre-called-3" id="q-06-you-dont-call-youre-called-3-1"><label for="q-06-you-dont-call-youre-called-3-1">Because callbacks run faster than code you call yourself, so Android prefers them</label>
-<input type="radio" name="q-06-you-dont-call-youre-called-3" id="q-06-you-dont-call-youre-called-3-2" data-ok><label for="q-06-you-dont-call-youre-called-3-2">Because system_server makes the decisions, while your code only says what to do when they happen</label>
+<input type="radio" name="q-06-you-dont-call-youre-called-3" id="q-06-you-dont-call-youre-called-3-1"><label for="q-06-you-dont-call-youre-called-3-1"><span>Because callbacks run faster than code you call yourself, so Android prefers them</span></label>
+<input type="radio" name="q-06-you-dont-call-youre-called-3" id="q-06-you-dont-call-youre-called-3-2" data-ok><label for="q-06-you-dont-call-youre-called-3-2"><span>Because system_server makes the decisions, while your code only says what to do when they happen</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Speed isn't the point: who decides is. <label class="show-me" for="st-chain-2" data-goto="st-chain">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The town hall decides when; your callback says what.</p>
 </fieldset>

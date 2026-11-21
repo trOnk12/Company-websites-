@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-9">
         <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-what-actually-travels.html">Puzzle 0: What actually travels</a></summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -113,26 +113,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A read timeout fires on <code>POST /orders</code>. What do you know?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-1"><label for="q-09-when-the-connection-breaks-1-1">The order wasn't created, because the server didn't answer</label>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-2" data-ok><label for="q-09-when-the-connection-breaks-1-2">Not whether the order was created: the answer may just have been lost</label>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-3"><label for="q-09-when-the-connection-breaks-1-3">The order was created twice, by TCP's resending</label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-1"><label for="q-09-when-the-connection-breaks-1-1"><span>The order wasn't created, because the server didn't answer</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-2" data-ok><label for="q-09-when-the-connection-breaks-1-2"><span>Not whether the order was created: the answer may just have been lost</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-3"><label for="q-09-when-the-connection-breaks-1-3"><span>The order was created twice, by TCP's resending</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The server may have answered; only the answer went missing. <label class="show-me" for="st-timeout-3" data-goto="st-timeout">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> A read timeout can't say if it happened.</p>
 <p class="fb no opt-3"><b>Not quite.</b> TCP resends packets inside one request; it doesn't send the request twice. <label class="show-me" for="st-timeout-3" data-goto="st-timeout">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A connect timeout fires. Is it safe to retry a payment request?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-1"><label for="q-09-when-the-connection-breaks-2-1">Only after checking the server's logs</label>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-2"><label for="q-09-when-the-connection-breaks-2-2">No: the server may have charged the card already</label>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-3" data-ok><label for="q-09-when-the-connection-breaks-2-3">Yes: no connection was made, so the request never left the phone</label>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-1"><label for="q-09-when-the-connection-breaks-2-1"><span>Only after checking the server's logs</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-2"><label for="q-09-when-the-connection-breaks-2-2"><span>No: the server may have charged the card already</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-3" data-ok><label for="q-09-when-the-connection-breaks-2-3"><span>Yes: no connection was made, so the request never left the phone</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> No connection means nothing was sent; there's nothing to check. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> With no connection, the request couldn't reach the server. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> No connection, nothing sent.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a connect timeout and a read timeout?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-1"><label for="q-09-when-the-connection-breaks-3-1">A connect timeout means the answer didn't arrive, while a read timeout means nothing was sent</label>
-<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-2" data-ok><label for="q-09-when-the-connection-breaks-3-2">A connect timeout means nothing was sent, while a read timeout means the answer didn't arrive</label>
+<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-1"><label for="q-09-when-the-connection-breaks-3-1"><span>A connect timeout means the answer didn't arrive, while a read timeout means nothing was sent</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-2" data-ok><label for="q-09-when-the-connection-breaks-3-2"><span>A connect timeout means nothing was sent, while a read timeout means the answer didn't arrive</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Never left vs no answer back.</p>
 </fieldset>

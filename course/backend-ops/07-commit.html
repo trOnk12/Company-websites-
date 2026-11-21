@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-7">
         <p id="builds-on-7"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-request.html">Puzzle 0: What happens when a client sends a request?</a></summary><p>A route matches the method and path before a handler runs.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What happens when a client sends a request?</summary><p>A route matches the method and path before a handler runs.</p><p><a href="00-request.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-request.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -99,20 +100,38 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A transaction groups database changes behind one commit. Put the saved row and the pending event in the same database transaction. A failure before commit leaves neither change. A successful commit makes both available. A worker can deliver the pending event afterward. If it sends successfully but stops before recording completion, it may send again. Give the event a stable identity. The consumer can record that identity and a database effect together to avoid applying that effect twice. Sending an email introduces another system and needs its own delivery contract.</p>
+<h3>Move the crash one statement at a time</h3>
+<p>Think of the event as a durable to-do note named E17. With separate commits, a crash after saving river can leave a bookmark and no E17. The worker can never discover the missing note by polling its event table. In one transaction, a crash before commit discards both writes; after commit, the worker can find E17 again after restart. This is the <b>transactional outbox</b> pattern. A later crash after sending but before marking E17 delivered creates a different problem: the worker knows it owes delivery, but cannot tell whether the receiver already acted.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/backend-workbench/#07-commit">Run the browser experiment</a></p>
+<h3>Optional local lab</h3>
 <p>Run the data drills. Move the pending insert to a second transaction in a disposable copy. Stop between commits and inspect both tables.</p>
-<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#data-drills">Open the local exercise</a></p>
+<p><a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service#data-drills">Open the local exercise files</a></p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The worker loses the acknowledgement. Which value should a second delivery reuse?</legend>
-<input type="radio" name="q-07-commit-1" id="q-07-commit-1-1"><label for="q-07-commit-1-1">A fresh identity for each delivery attempt</label>
-<input type="radio" name="q-07-commit-1" id="q-07-commit-1-2" data-ok><label for="q-07-commit-1-2">The original event identity</label>
+<input type="radio" name="q-07-commit-1" id="q-07-commit-1-1"><label for="q-07-commit-1-1"><span>A fresh identity for each delivery attempt</span></label>
+<input type="radio" name="q-07-commit-1" id="q-07-commit-1-2" data-ok><label for="q-07-commit-1-2"><span>The original event identity</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The consumer needs a stable identity to recognize redelivery. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> A transaction can commit both the bookmark and a pending event, or roll back both.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Which database state contradicts the promise that every saved bookmark schedules delivery?</legend>
+<input type="radio" name="q-07-commit-2" id="q-07-commit-2-1"><label for="q-07-commit-2-1"><span>Both writes were discarded before commit</span></label>
+<input type="radio" name="q-07-commit-2" id="q-07-commit-2-2" data-ok><label for="q-07-commit-2-2"><span>River exists but its pending event was never recorded</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A committed bookmark must have scheduled its event. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A committed bookmark must have scheduled its event.</p>
+</fieldset>
+<fieldset class="quiz">
+<legend>Where must a consumer record an event identity to guard a local balance update against repeats?</legend>
+<input type="radio" name="q-07-commit-3" id="q-07-commit-3-1" data-ok><label for="q-07-commit-3-1"><span>In the same transaction as the balance update</span></label>
+<input type="radio" name="q-07-commit-3" id="q-07-commit-3-2"><label for="q-07-commit-3-2"><span>Only in memory after acknowledging the message</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The deduplication decision and the protected effect must survive a crash together.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The deduplication decision and the protected effect must survive a crash together. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.sqlite.org/lang_transaction.html">Technical reference</a></li></ul></details>

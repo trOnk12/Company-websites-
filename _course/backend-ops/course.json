@@ -1,7 +1,7 @@
 {
   "title": "Backend engineering from first request to production",
   "intro": "Learn to design, build, test and operate a bookmark API. Start with a local request, then work through databases, identity, caching, Docker, Kubernetes and a release project.",
-  "how": "Start with Python. Add Docker for the filesystem lab, then kind and kubectl for the local cluster. The data drills need only Python.",
+  "how": "Start with one request. In each lesson, predict the result, run the browser experiment and change one condition. The local project then asks you to build the service, run its tests, deploy it and recover its data.",
   "modules": [
     {
       "title": "Build and test your first service",

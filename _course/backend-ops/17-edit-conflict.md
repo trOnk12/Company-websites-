@@ -32,9 +32,17 @@ For Ben the same condition now matches zero rows. In this fixture the bookmark a
 
 Two clerks copy edition seven of a filing card. The archive accepts a replacement only against the edition written on the clerk's slip. After the first replacement, the archive can show the second clerk edition eight while the clerk keeps the proposed text.
 
+### Distinguish replay from an edit conflict
+
+A request identity answers whether a particular intention already took effect. A version answers whether the document still matches the copy a person edited. Suppose Ada's conditional save commits and its reply is lost. Retrying it with the old version can yield 412 even though Ada's first request succeeded. A new read reveals the current title and version. It cannot in general identify who wrote them. If the service promises to recover the precise outcome of each submitted edit, record a stable request identity and its outcome alongside the accepted edit.
+
 ## Try it
 
-Run the following command in the [bookmark service lab](https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service).
+[Run the browser experiment](https://pachulski.dev/labs/backend-workbench/#17-edit-conflict)
+
+### Optional local lab
+
+Run the following command in the [bookmark service source files](https://github.com/trOnk12/Company-websites-/tree/main/labs/bookmark-service).
 
 ```sh
 python3 edit_conflict.py

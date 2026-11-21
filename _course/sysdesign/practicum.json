@@ -1,0 +1,23 @@
+{
+  "title": "Recover a mobile edit after a tunnel",
+  "brief": "Design a notes app whose list and detail screens stay consistent when a phone loses coverage, closes and retries a saved edit.",
+  "prerequisites": "Complete the offline database, retry and request identity puzzles. Know the roles of the repository, local store and remote service.",
+  "setup": "Note 32 begins as “Gate A” on both client and server. Both screens observe the same stored note. The phone enters a tunnel, the user changes the title to “Gate B”, then closes the app. Assume there is one editor for the first run.",
+  "steps": [
+    "Record the local note, pending operation ID, remote note and both screen values immediately after Save. Define the write boundary that survives a process stop.",
+    "Restart offline, reopen both screens, then reconnect. Deliver the request to the server and drop its reply after the remote change commits.",
+    "Replay from a new worker. Trace which ID is sent, how the server recognizes the edit and when the device clears pending work.",
+    "Account for network use during recovery. Explain how you would group pending edits without making a foreground reader wait for a network round trip."
+  ],
+  "evidence": [
+    "The offline restart reconstructs “Gate B” and a pending operation without network access. Both screens show the same value.",
+    "After receipt loss the device retries the same operation ID. Final state has one applied server operation and no outstanding local operation.",
+    "The trace distinguishes “shown locally”, “recorded remotely” and “acknowledged locally” at every failure point."
+  ],
+  "worked": [
+    "Before leaving the tunnel the local transaction saves note 32 as “Gate B” and records operation 81 as pending. The server still holds “Gate A”. Closing and reopening the app reads the local row and reconstructs pending work.",
+    "On reconnection the worker submits 81. The server applies its change and records the result together. Losing the response leaves 81 pending only on the phone. A repeat carrying 81 discovers the stored result. The client can now clear 81 in local storage."
+  ],
+  "variation": "A tablet edits note 32 to “Gate C” while the phone is offline. Both edits started from server version 6.",
+  "solution": "Carry the base version as well as the operation ID. If the tablet advances the version to 7 first, the phone’s base-6 edit conflicts. Keep its draft, fetch the current version and let the product’s conflict rule decide. A genuinely revised intention gets a new ID. Recognizing duplicates alone cannot merge independent edits."
+}

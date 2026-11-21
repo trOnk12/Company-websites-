@@ -9,6 +9,15 @@
     new Image().src = `https://pachulski.goatcounter.com/count?${q}`;
   };
   count(location.pathname);
+  // Give a keyboard user a scroll target only while the diagram extends beyond its frame.
+  const diagrams = document.querySelectorAll('.rig-sketch, .dev-sketch, .steps-sketch, .panel-sketch');
+  const diagramSizes = new ResizeObserver(entries => {
+    for (const {target} of entries) {
+      if (target.scrollWidth > target.clientWidth) target.tabIndex = 0;
+      else target.removeAttribute('tabindex');
+    }
+  });
+  diagrams.forEach(diagram => diagramSizes.observe(diagram));
   const article = document.querySelector('article[data-recipe]');
   if (!article) return;
   let tickedOnce = false;
@@ -19,15 +28,26 @@
   const load = () => { try { return new Set(JSON.parse(localStorage.getItem(key) || '[]')); } catch { return new Set(); } };
   const save = s => { try { localStorage.setItem(key, JSON.stringify([...s])); } catch {} };
   let ticks = load();
+  const switches = rows.map(row => {
+    const label = row.querySelector('.control');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'control';
+    button.append(...label.childNodes);
+    label.replaceWith(button);
+    row.removeAttribute('tabindex');
+    return button;
+  });
   const show = () => {
-    rows.forEach((r, i) => { r.classList.toggle('ticked', ticks.has(i)); r.setAttribute('aria-pressed', String(ticks.has(i))); });
+    rows.forEach((r, i) => {
+      r.classList.toggle('ticked', ticks.has(i));
+      switches[i].setAttribute('aria-pressed', String(ticks.has(i)));
+    });
     if (counter) counter.textContent = `${ticks.size} of ${rows.length} set`;
   };
   const toggle = i => { ticks.has(i) ? ticks.delete(i) : ticks.add(i); save(ticks); show(); if (!tickedOnce) { tickedOnce = true; count(`tick ${article.dataset.recipe}`, true, 'Ticked a setting'); } if (ticks.size === rows.length) count(`all set ${article.dataset.recipe}`, true, 'Set every control in a recipe'); };
   rows.forEach((r, i) => {
-    r.setAttribute('role', 'button');
     r.addEventListener('click', e => { if (!e.target.closest('a')) toggle(i); });
-    r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(i); } });
   });
   if (tools) {
     tools.hidden = false;

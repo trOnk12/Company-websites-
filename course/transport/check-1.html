@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: Why TCP starts with three messages</p>
 <fieldset class="quiz" data-n="0">
 <legend>The third message is lost and nothing else arrives. What is the server missing?</legend>
-<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-1" data-ok><label for="q-00-open-the-tcp-connection-1-1">Confirmation that the phone received the server’s starting number</label>
-<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-2"><label for="q-00-open-the-tcp-connection-1-2">The server’s own starting number for data</label>
-<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-3"><label for="q-00-open-the-tcp-connection-1-3">The starting number that the phone announced in the first message</label>
+<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-1" data-ok><label for="q-00-open-the-tcp-connection-1-1"><span>Confirmation that the phone received the server’s starting number</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-2"><label for="q-00-open-the-tcp-connection-1-2"><span>The server’s own starting number for data</span></label>
+<input type="radio" name="q-00-open-the-tcp-connection-1" id="q-00-open-the-tcp-connection-1-3"><label for="q-00-open-the-tcp-connection-1-3"><span>The starting number that the phone announced in the first message</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Keep track of what each peer has actually received.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The server chose its own starting number before sending SYN-ACK. <a class="show-me" href="00-open-the-tcp-connection.html">Learn it in puzzle 0 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The server already received that number in SYN. <a class="show-me" href="00-open-the-tcp-connection.html">Learn it in puzzle 0 →</a></p>
@@ -65,9 +65,9 @@
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: Where do the missing bytes go?</p>
 <fieldset class="quiz" data-n="1">
 <legend>The receiver has bytes 101–104 and 109–112. What cumulative acknowledgment can it send?</legend>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-1"><label for="q-01-a-hole-in-the-byte-stream-1-1">109, the first byte of the latest segment</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-2"><label for="q-01-a-hole-in-the-byte-stream-1-2">113, the number after the highest buffered byte</label>
-<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-3" data-ok><label for="q-01-a-hole-in-the-byte-stream-1-3">105, the first missing byte</label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-1"><label for="q-01-a-hole-in-the-byte-stream-1-1"><span>109, the first byte of the latest segment</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-2"><label for="q-01-a-hole-in-the-byte-stream-1-2"><span>113, the number after the highest buffered byte</span></label>
+<input type="radio" name="q-01-a-hole-in-the-byte-stream-1" id="q-01-a-hole-in-the-byte-stream-1-3" data-ok><label for="q-01-a-hole-in-the-byte-stream-1-3"><span>105, the first missing byte</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The value names the missing position rather than the latest arrival. <a class="show-me" href="01-a-hole-in-the-byte-stream.html">Learn it in puzzle 1 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The cumulative value cannot cross a gap. <a class="show-me" href="01-a-hole-in-the-byte-stream.html">Learn it in puzzle 1 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Find the first hole after the contiguous prefix.</p>
@@ -75,9 +75,9 @@
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Who proves the server’s identity?</p>
 <fieldset class="quiz" data-n="2">
 <legend>The peer proves it owns a key for images.example.com. The phone asked for api.example.com. What fails?</legend>
-<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-1"><label for="q-02-who-proves-the-server-name-1-1">The generation of the phone’s initial TCP byte number</label>
-<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-2" data-ok><label for="q-02-who-proves-the-server-name-1-2">The expected service identity check</label>
-<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-3"><label for="q-02-who-proves-the-server-name-1-3">The proof of possession automatically fails</label>
+<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-1"><label for="q-02-who-proves-the-server-name-1-1"><span>The generation of the phone’s initial TCP byte number</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-2" data-ok><label for="q-02-who-proves-the-server-name-1-2"><span>The expected service identity check</span></label>
+<input type="radio" name="q-02-who-proves-the-server-name-1" id="q-02-who-proves-the-server-name-1-3"><label for="q-02-who-proves-the-server-name-1-3"><span>The proof of possession automatically fails</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The TCP setup can succeed regardless of the name. <a class="show-me" href="02-who-proves-the-server-name.html">Learn it in puzzle 2 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Key ownership and the intended name are distinct checks.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Possession of that other service’s key can still be proved. <a class="show-me" href="02-who-proves-the-server-name.html">Learn it in puzzle 2 →</a></p>
@@ -85,9 +85,9 @@
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Where did the extra round trips go?</p>
 <fieldset class="quiz" data-n="3">
 <legend>On this model, the RTT rises to 100 ms. What is the approximate first-byte time over a fresh connection?</legend>
-<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-1"><label for="q-03-count-the-first-https-byte-1-1">200 ms, because encryption includes the request response</label>
-<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-2" data-ok><label for="q-03-count-the-first-https-byte-1-2">300 ms, three round trips</label>
-<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-3"><label for="q-03-count-the-first-https-byte-1-3">100 ms, because only the response carries application data</label>
+<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-1"><label for="q-03-count-the-first-https-byte-1-1"><span>200 ms, because encryption includes the request response</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-2" data-ok><label for="q-03-count-the-first-https-byte-1-2"><span>300 ms, three round trips</span></label>
+<input type="radio" name="q-03-count-the-first-https-byte-1" id="q-03-count-the-first-https-byte-1-3"><label for="q-03-count-the-first-https-byte-1-3"><span>100 ms, because only the response carries application data</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The regular request still adds another trip. <a class="show-me" href="03-count-the-first-https-byte.html">Learn it in puzzle 3 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Count dependencies before calculating time.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The setup exchanges happen before the regular request. <a class="show-me" href="03-count-the-first-https-byte.html">Learn it in puzzle 3 →</a></p>

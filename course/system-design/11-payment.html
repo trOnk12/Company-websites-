@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -62,11 +62,12 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-11">
         <p id="builds-on-11"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-promise.html">Puzzle 0: Can two green maps promise the last space?</a></summary><p>A map may be stale while the reservation contract still admits at most one winner.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -100,6 +101,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>Represent the process with explicit states such as pending, confirmed, expired and refund pending. Save a payment-attempt identity before contacting the provider. Silence leaves the result unknown. A later authoritative notification or status query lets the service reconcile both records. A saga coordinates local steps and explicitly defined compensating actions.</p>
 <p>Expiry and payment success can race. Both try to transition from pending. The winner determines which transitions remain valid. If the space has been released, late payment success creates durable refund work. A refund is another operation that can fail or take time. The driver needs to distinguish an outstanding refund from one completed by the provider.</p>
+<h3>Trace one late payment</h3>
+<p>At minute zero, hold H owns seat 12. At minute two, expiry releases it. At minute three a different driver acquires the seat. The provider then reports a successful charge for H. Keep the new owner's seat. Record the old charge reference and a pending refund as a durable decision. A second success notification for the same charge finds that decision and produces no additional refund work.</p>
+<p>Now lose the refund response. A worker needs a provider-supported way to query the refund or safely repeat the same refund identity. Mark it complete only after obtaining a confirmed outcome. If neither operation is available, keep it unresolved for reconciliation. Announcing a completed refund from the local send alone would give the driver a false financial status.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -109,22 +113,22 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>What does a missing provider reply mean?</legend>
-<input type="radio" name="q-11-payment-1" id="q-11-payment-1-1"><label for="q-11-payment-1-1">The charge was declined</label>
-<input type="radio" name="q-11-payment-1" id="q-11-payment-1-2" data-ok><label for="q-11-payment-1-2">The result is unknown</label>
+<input type="radio" name="q-11-payment-1" id="q-11-payment-1-1"><label for="q-11-payment-1-1"><span>The charge was declined</span></label>
+<input type="radio" name="q-11-payment-1" id="q-11-payment-1-2" data-ok><label for="q-11-payment-1-2"><span>The result is unknown</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The charge may already have completed. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The charge may already have completed.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A charge succeeds after the space was released. What follows here?</legend>
-<input type="radio" name="q-11-payment-2" id="q-11-payment-2-1" data-ok><label for="q-11-payment-2-1">Create refund work</label>
-<input type="radio" name="q-11-payment-2" id="q-11-payment-2-2"><label for="q-11-payment-2-2">Take the space from its new owner</label>
+<input type="radio" name="q-11-payment-2" id="q-11-payment-2-1" data-ok><label for="q-11-payment-2-1"><span>Create refund work</span></label>
+<input type="radio" name="q-11-payment-2" id="q-11-payment-2-2"><label for="q-11-payment-2-2"><span>Take the space from its new owner</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The original hold no longer owns the space.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The original hold no longer owns the space. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Does sending a refund request complete the refund?</legend>
-<input type="radio" name="q-11-payment-3" id="q-11-payment-3-1" data-ok><label for="q-11-payment-3-1">Confirm the provider's result</label>
-<input type="radio" name="q-11-payment-3" id="q-11-payment-3-2"><label for="q-11-payment-3-2">Yes, sending is sufficient</label>
+<input type="radio" name="q-11-payment-3" id="q-11-payment-3-1" data-ok><label for="q-11-payment-3-1"><span>Confirm the provider's result</span></label>
+<input type="radio" name="q-11-payment-3" id="q-11-payment-3-2"><label for="q-11-payment-3-2"><span>Yes, sending is sufficient</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Compensation can also have an uncertain outcome.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Compensation can also have an uncertain outcome. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>

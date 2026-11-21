@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-what-a-language-model-is.html">Puzzle 0: What a language model is</a></summary><p>A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Large ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What a language model is</summary><p>A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Large ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.</p><p><a href="00-what-a-language-model-is.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-a-language-model-is.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -110,26 +110,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Why does a 300-token answer take longer than a 30-token one?</legend>
-<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-1"><label for="q-01-one-token-at-a-time-1-1">The model must read the longer answer back before sending it</label>
-<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-2" data-ok><label for="q-01-one-token-at-a-time-1-2">Each token is one more run of the model, one after another</label>
-<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-3"><label for="q-01-one-token-at-a-time-1-3">A longer answer needs a bigger network response</label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-1"><label for="q-01-one-token-at-a-time-1-1"><span>The model must read the longer answer back before sending it</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-2" data-ok><label for="q-01-one-token-at-a-time-1-2"><span>Each token is one more run of the model, one after another</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-3"><label for="q-01-one-token-at-a-time-1-3"><span>A longer answer needs a bigger network response</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> It doesn't reread for sending; it generates one token per step. <label class="show-me" for="st-tokens-3" data-goto="st-tokens">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One token per step.</p>
 <p class="fb no opt-3"><b>Not quite.</b> A few kilobytes cost little; the time is in generating each token. <label class="show-me" for="st-tokens-3" data-goto="st-tokens">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The same text in Polish costs more tokens than in English. Why?</legend>
-<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-1" data-ok><label for="q-01-one-token-at-a-time-2-1">The text is split into more tokens, since the split depends on the language</label>
-<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-2"><label for="q-01-one-token-at-a-time-2-2">Polish answers are always longer</label>
-<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-3"><label for="q-01-one-token-at-a-time-2-3">The model charges more for languages other than English</label>
+<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-1" data-ok><label for="q-01-one-token-at-a-time-2-1"><span>The text is split into more tokens, since the split depends on the language</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-2"><label for="q-01-one-token-at-a-time-2-2"><span>Polish answers are always longer</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-3"><label for="q-01-one-token-at-a-time-2-3"><span>The model charges more for languages other than English</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Different languages, different splits.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Same meaning, more tokens: the split differs. <label class="show-me" for="st-tokens-1" data-goto="st-tokens">Show me step 1 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> The price is per token; the text just becomes more tokens. <label class="show-me" for="st-tokens-1" data-goto="st-tokens">Show me step 1 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a token and a word?</legend>
-<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-1"><label for="q-01-one-token-at-a-time-3-1">A token is always exactly one word, while a word can be several tokens</label>
-<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-2" data-ok><label for="q-01-one-token-at-a-time-3-2">A token is the model's unit, which can be a word, part of one, or a character</label>
+<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-1"><label for="q-01-one-token-at-a-time-3-1"><span>A token is always exactly one word, while a word can be several tokens</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-2" data-ok><label for="q-01-one-token-at-a-time-3-2"><span>A token is the model's unit, which can be a word, part of one, or a character</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Common words are one token, but tokens can also be parts of words. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The model's unit, not the dictionary's.</p>
 </fieldset>

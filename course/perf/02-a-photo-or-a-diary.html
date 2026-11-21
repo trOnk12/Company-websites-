@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-what-a-trace-is.html">Puzzle 1: What a trace is</a></summary><p>A trace is one continuous recording of timestamped events, detailed enough to rebuild the timeline afterwards: which thread ran on which core, when threads woke, and the spans the app marked. Perfetto records and shows Android traces. Time runs left to right; each thread gets a track; on it, each slice is a named span with a start and an end, and a slice drawn under another happened inside it.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: What a trace is</summary><p>A trace is one continuous recording of timestamped events, detailed enough to rebuild the timeline afterwards: which thread ran on which core, when threads woke, and the spans the app marked. Perfetto records and shows Android traces. Time runs left to right; each thread gets a track; on it, each slice is a named span with a start and an end, and a slice drawn under another happened inside it.</p><p><a href="01-what-a-trace-is.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-threads-take-turns.html">0</a> → <a href="01-what-a-trace-is.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -115,26 +115,26 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A function runs for 50 µs, once, between two snapshots. Which tool can miss it entirely?</legend>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-1"><label for="q-02-a-photo-or-a-diary-1-1">Trace sections, because they can't time anything under 1 ms</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-2"><label for="q-02-a-photo-or-a-diary-1-2">Method tracing, because instrumentation skips very short methods</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-3" data-ok><label for="q-02-a-photo-or-a-diary-1-3">Sampling, since it only sees what's running at each snapshot</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-1"><label for="q-02-a-photo-or-a-diary-1-1"><span>Trace sections, because they can't time anything under 1 ms</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-2"><label for="q-02-a-photo-or-a-diary-1-2"><span>Method tracing, because instrumentation skips very short methods</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-3" data-ok><label for="q-02-a-photo-or-a-diary-1-3"><span>Sampling, since it only sees what's running at each snapshot</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A trace section records whatever span you wrap; the risk of missing it is sampling's. <label class="show-me" for="st-sampling-4" data-goto="st-sampling">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Instrumentation records every method's start and end, however short. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> A snapshot misses what started and ended between two snapshots.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Your parser makes a million tiny calls. Method tracing says it takes 900 ms; sampling says 300 ms. Which do you trust for the time, and why?</legend>
-<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-1"><label for="q-02-a-photo-or-a-diary-2-1">Neither, because the two tools can't measure the same code</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-2"><label for="q-02-a-photo-or-a-diary-2-2">The trace, because sampling only estimates and so always reads too low</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-3" data-ok><label for="q-02-a-photo-or-a-diary-2-3">The sample, since instrumentation adds its own time to every one of those calls</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-1"><label for="q-02-a-photo-or-a-diary-2-1"><span>Neither, because the two tools can't measure the same code</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-2"><label for="q-02-a-photo-or-a-diary-2-2"><span>The trace, because sampling only estimates and so always reads too low</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-3" data-ok><label for="q-02-a-photo-or-a-diary-2-3"><span>The sample, since instrumentation adds its own time to every one of those calls</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They can; they disagree because one of them slowed the code down. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Sampling estimates, but without slowing the code; the trace paid its own overhead a million times. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Instrumentation costs most where calls are many and small.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a sample and a trace section?</legend>
-<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-1" data-ok><label for="q-02-a-photo-or-a-diary-3-1">A sample is a stack snapshot the kernel takes, while a trace section is a span you mark yourself</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-2"><label for="q-02-a-photo-or-a-diary-3-2">A sample is a span you mark yourself, while a trace section is a stack snapshot the kernel takes</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-1" data-ok><label for="q-02-a-photo-or-a-diary-3-1"><span>A sample is a stack snapshot the kernel takes, while a trace section is a span you mark yourself</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-2"><label for="q-02-a-photo-or-a-diary-3-2"><span>A sample is a span you mark yourself, while a trace section is a stack snapshot the kernel takes</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Who decides what's recorded: the kernel's regular snapshots, or you.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
