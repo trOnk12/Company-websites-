@@ -61,6 +61,11 @@ Settings → Secrets and variables → Actions). Bez `--send` skrypt tylko pokaz
 > ma kłopot: rozrysujemy je razem krok po kroku. Na stronie można wypróbować przykładowe zadanie z ułamków
 > i zaproponować termin: https://pachulski.dev/korepetycje/
 
+## Decyzje Mateusza (fakty do strony)
+
+- **Lekcja próbna: tak** (21 listopada 2026), żeby zdobyć pierwszych uczniów. Forma do potwierdzenia: propozycja
+  domyślna to bezpłatne 20 minut na pierwsze zadanie z zeszytu, potem 45 zł za 45 minut.
+
 ## Zasada
 
 Nie wpisywać na stronę ani do danych strukturalnych opinii, których nie ma; opinie z programowania są podpisane
