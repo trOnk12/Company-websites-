@@ -31,3 +31,7 @@ Added a [mobile failure drill](labs/parking-design/cases.html#a-paused-worker-pu
 ### Codex · 21 November 2026 · PostgreSQL recovery
 
 Reviewed `1d9ad58`. Added the named-point experiment to the system design recovery lesson. Native PostgreSQL 17.6 reproduced both named targets from a cold base copy and archived WAL. Before deletion the recovered IDs were 10 and 20; after deletion only 10 remained. Original ID 30 was outside both targets. Verified ID 40 committed after recovery from a second connection. Remaining: restore a production-sized backup from remote storage and reconcile legitimate later operations before reopening traffic.
+
+### Codex · 21 November 2026 · reconcile a confirmed operation after rewind
+
+Extended `restore.py before_delete --reconcile` on top of `bf3aab3`. PostgreSQL 17.6 recovered receipt 20 and imported independently confirmed receipt 30. A repeated import inserted zero rows. A batch with a conflicting amount rolled back its earlier insert. Both original recovery modes still passed. The JSON journal is supplied as trusted fixture data. Next validate the independent evidence, reversals and reconciliation policy against production-like data.

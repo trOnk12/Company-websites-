@@ -93,3 +93,9 @@ Stopping the old primary fences it in this lab. A real deployment requires a mec
 ## Restore a receipt deleted by mistake
 
 With the same local binaries and Python environment as the promotion exercise, run `python3 restore.py before_delete` and `python3 restore.py after_delete`. Predict the results in the [recovery lesson](https://pachulski.dev/course/system-design/13-recovery.html#try-it). Each run restores from a stopped database copy into a second directory using archived WAL. The reported interval covers copying the backup through verification of a new committed write. Operator response, production backup transfer, reconciliation and traffic cutover require separate measurements.
+
+### Reconcile a later confirmed sale
+
+Run `python3 restore.py before_delete --reconcile`. The isolated fixture supplies a verified sales record outside the database being rewound. It confirms receipt 30 and its amount. Before running, predict which IDs and amounts will exist after restoring receipt 20 and replaying sale 30. What if the replay is repeated or another sales record claims receipt 10 with an amount of 999?
+
+The importer checks the stable receipt ID and amount in a transaction. A repeat with the same amount changes zero rows. A reused ID with a different amount rejects the entire batch, even when an earlier operation in that batch inserted a new receipt. The fixture proves both outcomes and checks the final rows from a fresh connection. In production, establish which independent system can prove each operation succeeded. Missing or contradictory evidence needs review before opening traffic. The lab measures only the restore and verification of a new write, before reconciliation.
