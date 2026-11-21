@@ -364,6 +364,34 @@ function deviceBlock(id, block, seed) {
   return DEV.render(id, { set, view, numbers, caption, seed });
 }
 
+// A track's structure, sketched: one bar per section, as long as the section. Lines: "0:00–0:32 :: Intro :: what happens".
+function timelineSketch(block, seed) {
+  const p = pen(`timeline:${seed}`);
+  const secs = t => { const [m, s] = t.split(':').map(Number); return m * 60 + (s || 0); };
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split('::').map(x => x.trim())).map(([range, name, what]) => {
+    const [a, b] = range.split(/[–-]/).map(x => secs(x.trim()));
+    return { a, b, range, name, what: what || '' };
+  });
+  if (!rows.length) return '';
+  const end = Math.max(...rows.map(x => x.b)), W = 640, x0 = 10, w = W - 20, y = 20, h = 46;
+  let s = '';
+  rows.forEach((x, k) => {
+    const xa = x0 + w * x.a / end, xb = x0 + w * x.b / end;
+    s += `<path class="wash${k % 2 ? ' soft' : ''}" d="${p.blob((xa + xb) / 2, y + h / 2, Math.max(8, (xb - xa) / 2), h / 2, 0.06)}"/><path class="sk" d="${p.rect(xa, y, xb - xa, h)}"/>`;
+    if (xb - xa > 46) s += `<text class="sk-hand" x="${((xa + xb) / 2).toFixed(1)}" y="${y + h / 2 + 6}" text-anchor="middle">${L.esc(x.name.length > Math.floor((xb - xa) / 9) ? x.name.slice(0, Math.max(3, Math.floor((xb - xa) / 9) - 1)) + '…' : x.name)}</text>`;
+  });
+  s += `<text class="sk-label" x="${x0}" y="${y + h + 22}">0:00</text><text class="sk-label" x="${x0 + w}" y="${y + h + 22}" text-anchor="end">${Math.floor(end / 60)}:${String(end % 60).padStart(2, '0')}</text>`;
+  const list = rows.map(x => `<li><span class="tl-range">${L.esc(x.range)}</span> <b>${L.esc(x.name)}</b>${x.what ? ` · ${L.inline(x.what, { file: 'music', cards: new Map(), links: new Set() })}` : ''}</li>`).join('');
+  return `<figure class="timeline-sketch"><svg viewBox="0 0 ${W} ${y + h + 30}" role="img" aria-label="The track's sections on a timeline">${s}</svg><ol class="tl-list">${list}</ol></figure>`;
+}
+
+// What the artist used, and where that claim comes from. Lines: "Instrument :: its role in the track :: source URL".
+function gearList(block) {
+  const ctx = { file: 'music', cards: new Map(), links: new Set() };
+  const rows = block.split('\n').map(l => l.trim()).filter(Boolean).map(l => l.split('::').map(x => x.trim()));
+  return `<ul class="gear-list">${rows.map(([g, role, src]) => `<li><b>${L.esc(g)}</b>${role ? ` · ${L.inline(role, ctx)}` : ''}${src ? ` <a class="gear-src" href="${L.esc(src)}" rel="noopener">source</a>` : ' <span class="gear-unverified">source needed</span>'}</li>`).join('')}</ul>`;
+}
+
 // One section: Markdown, with any ```settings fences drawn as cards.
 function section(title, text) {
   const ctx = { file: 'music', cards: new Map(), links: new Set() };
@@ -374,6 +402,8 @@ function section(title, text) {
     .replace(/```check\n([\s\S]*?)```/g, (_, b) => stash(check(b)))
     .replace(/```fm\n([\s\S]*?)```/g, (_, b) => stash(fmToy(b)))
     .replace(/```algo\n([\s\S]*?)```/g, (_, b) => stash(algoSketch(b, title)))
+    .replace(/```timeline\n([\s\S]*?)```/g, (_, b) => stash(timelineSketch(b, title)))
+    .replace(/```gear\n([\s\S]*?)```/g, (_, b) => stash(gearList(b)))
     .replace(/```device (\w+)\n([\s\S]*?)```/g, (_, id, b) => stash(deviceBlock(id, b, title)))
     .replace(/^> (.+)$/gm, (_, q) => stash(`<blockquote class="idea"><p>${L.inline(q, ctx)}</p></blockquote>`));
   const parts = text.split(/```settings\n([\s\S]*?)```/);
@@ -410,7 +440,7 @@ function load() {
   return fs.readdirSync(SRC).filter(f => f.endsWith('.md') && !f.startsWith('_')).map(f => {
     const raw = fs.readFileSync(path.join(SRC, f), 'utf8');
     const { meta, body } = L.parseFrontmatter(raw, f);
-    return { slug: f.replace(/\.md$/, ''), meta, body, lesson: meta.kind === 'lesson' };
+    return { slug: f.replace(/\.md$/, ''), meta, body, lesson: meta.kind === 'lesson' || meta.kind === 'breakdown', breakdown: meta.kind === 'breakdown' };
   }).sort((a, b) => Number(a.meta.order || 99) - Number(b.meta.order || 99));
 }
 
@@ -462,12 +492,12 @@ ${html}
 // A lesson: the same sketchbook page, but it teaches one idea step by step instead of building one sound.
 const MAP = [['LEV', 'how many overtones'], ['RATIO', 'which overtones'], ['A envelope', 'overtones over time'], ['FDBK', 'grit']];
 function renderLesson(r, everything) {
-  const lessons = everything.filter(x => x.lesson);
+  const lessons = everything.filter(x => x.lesson && x.breakdown === r.breakdown);
   const i = lessons.indexOf(r);
   const html = sections(r.body).map(s => section(s.title, s.text)).join('\n');
   const first = everything.find(x => !x.lesson);
   return L.page({
-    title: `${r.meta.title}: an FM synthesis lesson for the Elektron Digitone II – Mateusz Pachulski`,
+    title: r.breakdown ? `${r.meta.title}: how ${r.meta.artist || 'the track'} built it, part by part – Mateusz Pachulski` : `${r.meta.title}: an FM synthesis lesson for the Elektron Digitone II – Mateusz Pachulski`,
     description: r.meta.summary,
     canonical: `${L.SITE}/music/${r.slug}`,
     base: '../', current: 'music', feed: false, footer, script: ['fm-core.js', 'music.js'],
@@ -482,11 +512,11 @@ function renderLesson(r, everything) {
       </aside>
       <div class="recipe-main">
       <header class="jcard">
-        <p class="side">Side B · Lesson ${String(i + 1).padStart(2, '0')}</p>
+        <p class="side">${r.breakdown ? 'Side C · Breakdown' : 'Side B · Lesson'} ${String(i + 1).padStart(2, '0')}</p>
         <h1>${L.esc(r.meta.title)}</h1>
         <p class="mood">${L.esc(r.meta.mood || '')}</p>
         <p class="lede">${L.esc(r.meta.summary)}</p>
-        <dl class="jfields">${[['Level', r.meta.level], ['Time', r.meta.time], ['On', r.meta.device]].filter(([, v]) => v).map(([k, v]) => `<div><dt>${k}</dt><dd>${L.esc(v)}</dd></div>`).join('')}</dl>
+        <dl class="jfields">${(r.breakdown ? [['Artist', r.meta.artist], ['Year', r.meta.year], ['Listen', r.meta.listen ? 'linked below' : '']] : [['Level', r.meta.level], ['Time', r.meta.time], ['On', r.meta.device]]).filter(([, v]) => v).map(([k, v]) => `<div><dt>${k}</dt><dd>${L.esc(v)}</dd></div>`).join('')}</dl>
       </header>
       <div class="tools" hidden><button type="button" class="button" data-compact>Hide the whys</button> <button type="button" class="button" data-untick>Clear my ticks</button> <span class="tick-count small" aria-live="polite"></span></div>
       <nav class="recipe-toc" aria-label="On this page"><ol>${sections(r.body).map(s => `<li><a href="#${s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}">${L.esc(s.title)}</a></li>`).join('')}</ol></nav>
@@ -499,7 +529,7 @@ ${html}
 }
 
 function renderIndex(everything) {
-  const all = everything.filter(x => !x.lesson), lessons = everything.filter(x => x.lesson);
+  const all = everything.filter(x => !x.lesson), lessons = everything.filter(x => x.lesson && !x.breakdown), breakdowns = everything.filter(x => x.breakdown);
   const intro = fs.existsSync(path.join(SRC, '_index.md')) ? L.parseFrontmatter(fs.readFileSync(path.join(SRC, '_index.md'), 'utf8'), '_index.md') : { meta: {}, body: '' };
   // The setup sections fold away: they're reference, read once.
   const html = sections(intro.body).map(s => section(s.title, s.text).replace(/<section id="([^"]+)"[^>]*><h2>([\s\S]*?)<\/h2>/, '<details class="setup" id="$1"><summary>$2</summary>').replace(/<\/section>$/, '</details>')).join('\n');
@@ -527,6 +557,10 @@ ${cards}
       ${lessons.length ? `<h2 id="side-b">Side B: lessons</h2>
       <ul class="shelf lessons">
 ${lessons.map((r, i) => `<li class="cassette lesson-tape c-${(i + 3) % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">B${i + 1}</span><span class="c-title">${L.esc(r.meta.shelf || r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.mood || '')}</span><span class="c-foot">${L.esc(r.meta.device || '')} · ${L.esc(r.meta.time || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n')}
+      </ul>` : ''}
+      ${breakdowns.length ? `<h2 id="side-c">Side C: classics, taken apart</h2>
+      <ul class="shelf lessons">
+${breakdowns.map((r, i) => `<li class="cassette lesson-tape c-${(i + 1) % 6}"><a href="${r.slug}.html">${cassetteSketch(r.slug)}<span class="c-side">C${i + 1}</span><span class="c-title">${L.esc(r.meta.shelf || r.meta.title)}</span><span class="c-mood">${L.esc(r.meta.artist || '')}</span><span class="c-foot">${L.esc(r.meta.year || '')}</span></a><p class="c-note">${L.esc(r.meta.summary)}</p></li>`).join('\n')}
       </ul>` : ''}
       <h2 id="setup">Before your first recipe</h2>
       <p>Wire the rig once and learn how to read a recipe. Open each part when you need it.</p>

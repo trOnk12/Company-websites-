@@ -963,3 +963,12 @@ li[data-state='done'] .puzzle-state { color: #245B37; background: #E3EFE1; }
 .diagram-prediction [role="status"]:empty { display: none; }
 .diagram-prediction [hidden], .stepnav [hidden] { display: none; }
 .puzzle-bridge { margin: 1.25rem 0 .35rem; }
+/* Music, Side C: a track's sections and the gear behind it */
+.timeline-sketch svg { width: 100%; height: auto; display: block; }
+.tl-list { list-style: none; padding: 0; margin: .6rem 0 0; }
+.tl-list li { padding: .35rem 0; border-bottom: 1px dashed var(--rule); }
+.tl-range { font-family: var(--type); font-size: .82rem; color: var(--muted); }
+.gear-list { list-style: none; padding: 0; }
+.gear-list li { padding: .45rem 0; border-bottom: 1px dashed var(--rule); }
+.gear-src { font-family: var(--type); font-size: .8rem; margin-left: .3rem; }
+.gear-unverified { font-family: var(--type); font-size: .78rem; color: var(--red); margin-left: .3rem; }
