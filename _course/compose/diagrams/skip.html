@@ -1,0 +1,21 @@
+<!-- label: Screen runs again; each child call compares its arguments with last time; equal stable arguments skip, a new list instance runs -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sk-t"><title id="sk-t">Screen runs again and calls Header, Counter and Tags; Header gets the same text and is skipped; Counter gets a new number and runs; Tags gets a new list instance built in Screen and runs; once the list is remembered, the same instance comes back and Tags is skipped</title>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="20" y="16" width="600" height="348" rx="10"/><text class="d-b" x="36" y="46">Screen</text><text class="d-a" x="604" y="46" text-anchor="end">runs again</text>
+<rect class="d-paper" x="40" y="70" width="560" height="74" rx="8"/><text class="d-mi" x="56" y="113">Header("Hi")</text>
+<rect class="d-paper" x="40" y="162" width="560" height="74" rx="8"/><text class="d-mi" x="56" y="205">Counter(2)</text>
+<rect class="d-paper" x="40" y="254" width="560" height="74" rx="8"/><text class="d-mi" x="56" y="297">Tags(listOf(…))</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="250" y="88" width="130" height="38" rx="6"/><text class="d-tiny" x="315" y="112" text-anchor="middle">last: "Hi"</text><text class="d-m" x="580" y="113" text-anchor="end">skipped</text><rect class="d-dash" x="44" y="74" width="552" height="66" rx="6"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="250" y="180" width="130" height="38" rx="6"/><text class="d-tiny" x="315" y="204" text-anchor="middle">last: 1</text><text class="d-a" x="580" y="205" text-anchor="end">runs</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="250" y="272" width="130" height="38" rx="6"/><text class="d-tiny" x="315" y="296" text-anchor="middle">last: list A</text><text class="d-mi" x="400" y="297">now: B</text></g>
+<g class="step only-5" data-pulse="5"><text class="d-r" x="580" y="297" text-anchor="end">runs</text><rect class="d-red" x="40" y="254" width="560" height="74" rx="8"/></g>
+<g class="step s6" data-pulse="6"><rect class="d-paper" x="40" y="254" width="560" height="74" rx="8"/><text class="d-mi" x="56" y="297">Tags(tags)</text><rect class="d-hl" x="250" y="272" width="130" height="38" rx="6"/><text class="d-tiny" x="315" y="296" text-anchor="middle">last: list A</text><text class="d-mi" x="400" y="297">now: A</text><text class="d-m" x="580" y="297" text-anchor="end">skipped</text><rect class="d-dash" x="44" y="258" width="552" height="66" rx="6"/></g>
+<g class="step s1" data-move="1:604,62 2:236,107 3:236,199 4:236,291 5:590,272 6:590,272"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p><code>Screen</code> read a state that changed, so it runs again from its start, and calls its three children again.</p></li>
+<li><p><code>Header</code> gets "Hi", and its slot holds "Hi" from last time. Equal, so its body doesn't run: <b>skipping</b>. Its part of the screen stays as it was.</p></li>
+<li><p><code>Counter</code> gets 2; last time it got 1. Int and String are <b>stable</b>, compared with <code>equals</code>: this one differs, so <code>Counter</code> runs.</p></li>
+<li><p><code>Screen</code> builds a new list on every run. A <code>List</code> is <b>unstable</b>: Compose compares it by instance, and this is list B, not A. <i>Predict: does Tags run?</i></p></li>
+<li><p>Yes. A different instance counts as changed, even with the same words inside, so <code>Tags</code> runs on every run of <code>Screen</code>.</p></li>
+<li><p>Keep the list in <code>remember</code>: the same instance comes back, so <code>Tags</code> is skipped. Comparing unstable arguments by instance is <b>strong skipping</b>.</p></li>
+</ol>

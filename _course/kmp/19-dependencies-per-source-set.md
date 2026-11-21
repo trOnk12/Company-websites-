@@ -24,6 +24,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation("io.ktor:ktor-client-core:3.6.1")
+            implementation(project(":core"))
         }
         androidMain.dependencies {
             implementation("io.ktor:ktor-client-okhttp:3.6.1")
@@ -44,7 +45,7 @@ A library added to a source set **flows down** the `dependsOn` links from puzzle
 
 commonMain only accepts a **multiplatform library**: one published for all of commonMain's targets, with one common API that common code can call. Kotlin's coroutines, Ktor's core and SQLDelight are multiplatform libraries. A library built for one platform only goes into that platform's source set. Ktor shows both kinds: the part that actually sends requests is per platform, ktor-client-okhttp for Android (built on OkHttp, a library for the JVM and Android) and ktor-client-darwin for Apple's systems (built on Apple's own networking). Put the OkHttp part in commonMain and the build fails: commonMain must compile for iOS too, and that part has nothing for iOS.
 
-Two more lines you'll meet in the code above. The `kotlin("test")` line in commonTest gives every test source set Kotlin's multiplatform test library. And another multiplatform module of your own goes in the same way, with a project line in commonMain, and every target gets its matching part.
+Two more lines in the code above. The `kotlin("test")` line in commonTest gives every test source set Kotlin's multiplatform test library. And the project(":core") line adds another multiplatform module of your own, the same way: one line in commonMain, and each target's build gets that module's part for its target. How one line finds the right part for each target is puzzle 21.
 
 ## The analogy
 
