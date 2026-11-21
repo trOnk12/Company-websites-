@@ -1,4 +1,5 @@
 <!-- label: One dependency line names the root publication; its .module file lists variants; each compilation gets the variant that matches its target -->
+<!-- question: How does one dependency line resolve to each target's file? type: pipeline (resolution) with the real .module data -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="va-t"><title id="va-t">Your one line names Ktor core's root publication; its .module file lists variants tagged ios_arm64, ios_simulator_arm64, jvm and common, each pointing at its own publication; the iosArm64, simulator and Android compilations each get the matching variant; OkHttp's .module file has no ios_arm64 variant, so the iOS compilation fails</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
 <g class="step s1" data-pulse="1"><rect class="d-paper" x="16" y="20" width="210" height="40" rx="6"/><text class="d-mi" x="30" y="45">ktor-client-core</text>

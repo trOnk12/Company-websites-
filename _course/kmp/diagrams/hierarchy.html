@@ -1,4 +1,5 @@
 <!-- label: Intermediate source sets: iosMain, appleMain and nativeMain between commonMain and the targets -->
+<!-- question: Where does iosMain come from, and what does one target compile? type: layer stack (tree) -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="hi-t"><title id="hi-t">Three platform source sets under commonMain; iOS code written twice moves up into iosMain, shared by both iOS targets; the template adds appleMain and nativeMain above it but no watchosMain; building iosArm64 compiles every source set on its path up to commonMain</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-hl" x="210" y="14" width="180" height="36" rx="6"/><text class="d-a" x="300" y="38" text-anchor="middle">commonMain</text>

@@ -1,4 +1,5 @@
 <!-- label: The kotlin { } block declares targets; each gets a platform source set and compilations -->
+<!-- question: What does each line of the kotlin { } block create? type: pipeline -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="kb-t"><title id="kb-t">A shared module's build file lists three targets in its kotlin block: Android, iosArm64 for iPhones and iosSimulatorArm64 for the simulator on a Mac; each target gets its own source set, and each iOS target gets a main and a test compilation that join commonMain with that source set</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1 hide-4" data-pulse="1"><text class="d-tiny" x="122" y="48" text-anchor="middle">shared/build.gradle.kts</text><rect class="d-paper" x="10" y="60" width="225" height="210" rx="6"/><text class="d-mi" x="30" y="95">kotlin {</text><text class="d-mi" x="46" y="135">android { … }</text><text class="d-mi" x="46" y="175">iosArm64()</text><text class="d-mi" x="30" y="215">iosSimulatorArm64()</text><text class="d-mi" x="30" y="250">}</text></g>

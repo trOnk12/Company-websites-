@@ -1,4 +1,5 @@
 <!-- label: Bookmarks takes a Storage from outside: expect/actual fixes one per target; an interface lets each app start, or a test, hand one in -->
+<!-- question: How does platform code get into Bookmarks: fixed by the compiler or handed in? type: before/after -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="hi2-t"><title id="hi2-t">Bookmarks in commonMain has an empty Storage slot; with expect and actual the compiler fixes one iOS actual into it; with an interface, the Android and iOS app starts each build their own storage, and the iOS start hands DefaultsStorage in; a test hands in FakeStorage instead</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
 <g class="step s1" data-pulse="1"><rect class="d-hl" x="200" y="34" width="240" height="214" rx="10"/><text class="d-tiny" x="320" y="56" text-anchor="middle">commonMain</text>

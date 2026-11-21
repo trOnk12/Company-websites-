@@ -1,4 +1,5 @@
 <!-- label: Each source set has its own dependencies; a library flows down to every source set below -->
+<!-- question: Where does each library line go, and where does it flow? type: layer stack (tree) with data flow -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="de-t"><title id="de-t">Ktor's core library drops into commonMain and flows down to androidMain and iosMain; Ktor's OkHttp part goes into androidMain and its Darwin part into iosMain; the OkHttp part put into commonMain fails, because it has nothing for iOS</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-hl" x="200" y="96" width="200" height="76" rx="8"/><text class="d-a" x="300" y="120" text-anchor="middle">commonMain</text>

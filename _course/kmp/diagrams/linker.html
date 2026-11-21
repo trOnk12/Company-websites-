@@ -1,4 +1,5 @@
 <!-- label: The linker joins object code into one binary, connects calls by symbol, and leaves out code nothing reaches -->
+<!-- question: How do separate pieces of object code become one binary? type: pipeline -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="lk-t"><title id="lk-t">Object code for your code, Ktor, an unused Ktor function and the runtime; your call and Ktor's function share the symbol HttpClient; the linker joins them into one binary and connects the call; the unused function is left out; calls into Apple's code stay open, to be connected on the phone</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
 <g class="step s3" data-pulse="3"><rect class="d-wood" x="404" y="24" width="216" height="300" rx="10"/><text class="d-b" x="512" y="50" text-anchor="middle">shared binary</text><x-machine x="214" y="150" w="130" label="linker"/><x-arrow tone="acc" d="M346,177 L398,177"/></g>

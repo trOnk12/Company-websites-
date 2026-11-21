@@ -1,4 +1,5 @@
 <!-- label: A Kotlin/Native compilation writes a klib: IR, declarations and a manifest for one target; machine code comes later -->
+<!-- question: What file does a Kotlin/Native compilation write, and what is inside? type: pipeline -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="kl-t"><title id="kl-t">commonMain and iosMain go into Kotlin/Native, which writes one klib for iosArm64 holding IR, declarations and a manifest; the iPhone can't run the klib; later a final build turns your klib and Ktor's klib into machine code the iPhone runs</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
 <g class="step s1" data-pulse="1"><x-sheet x="24" y="40" w="56" h="64" lines="3" label="commonMain"/><x-sheet x="24" y="170" w="56" h="64" lines="3" label="iosMain"/>

@@ -1,4 +1,5 @@
 <!-- label: A source set sees up its dependsOn links, never down or sideways, and only the APIs all its targets have -->
+<!-- question: Which source sets can call which, and which APIs may each use? type: layer stack (tree) with allowed/forbidden calls -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="vi-t"><title id="vi-t">The source set tree with dependsOn arrows pointing up; iosMain can call a function in commonMain; commonMain cannot call iosMain; iosMain cannot call androidMain; UIKit is available to iosMain, appleMain and nativeMain, compiled only for iOS here, but not to commonMain or androidMain</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><rect class="d-hl" x="120" y="16" width="170" height="36" rx="6"/><text class="d-a" x="205" y="40" text-anchor="middle">commonMain</text>

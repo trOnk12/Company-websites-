@@ -1,4 +1,5 @@
 <!-- label: One framework per target; lipo can't merge two arm64 builds; an XCFramework keeps them side by side and Xcode picks one -->
+<!-- question: How do device and simulator builds ship as one thing? type: before/after -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="xc-t"><title id="xc-t">Two frameworks, for iosArm64 and iosSimulatorArm64, both hold arm64 code; an iPhone and an Apple-chip Mac are arm64, an Intel Mac x86-64; lipo can put only one arm64 build into a universal framework; an XCFramework holds both side by side; Xcode building for the simulator takes the simulator's framework, and an x86-64 slot is missing</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
 <g class="step s2 hide-3" data-pulse="2"><x-chip x="212" y="40" w="84" label="iPhone"/><text class="d-a" x="254" y="114" text-anchor="middle">arm64</text><x-chip x="322" y="40" w="84" label="new Mac"/><text class="d-a" x="364" y="114" text-anchor="middle">arm64</text><x-chip x="432" y="40" w="84" label="Intel Mac"/><text class="d-a" x="474" y="114" text-anchor="middle">x86-64</text></g>

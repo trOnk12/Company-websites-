@@ -1,6 +1,8 @@
 <!-- label: Where Kotlin/Native build time goes: the link stage, once per binary; release with link-time optimization; debug with a cache; and where size comes from -->
+<!-- question: Where does Kotlin/Native build time go? type: number chart (relative, ×10 from the docs) -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="bt-t"><title id="bt-t">Bars of build time: the compile stage is short, the debug link stage long; an XCFramework links three targets while embedAndSign links one; a release link with link-time optimization is about ten times longer; a debug link with a warm cache is shorter; then a framework whose exported module comes in whole while other code is trimmed</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s1 hide-6"><x-arrow tone="ink" d="M150,320 L600,320"/><text class="d-m" x="150" y="342">time, not to scale</text></g>
 <g class="step s1 hide-6" data-pulse="1"><text class="d-tiny" x="16" y="58">compile</text><rect class="d-ok" x="150" y="40" width="30" height="26" rx="4"/><text class="d-tiny" x="16" y="98">link, debug</text></g>
 <g class="step only-1"><rect class="d-dash" x="150" y="80" width="140" height="26" rx="4"/><text class="d-a" x="220" y="99" text-anchor="middle">?</text></g>
 <g class="step s2 hide-6" data-pulse="2"><rect class="d-band" x="150" y="80" width="140" height="26" rx="4"/><text class="d-tiny" x="220" y="98" text-anchor="middle">LLVM</text></g>

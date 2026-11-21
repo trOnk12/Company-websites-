@@ -1,4 +1,5 @@
 <!-- label: A crash report's backtrace is addresses; the matching dSYM turns them into names and lines; build UUIDs decide which dSYM matches -->
+<!-- question: How does an address in a crash report become a function and a line? type: pipeline -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="ds-t"><title id="ds-t">An iPhone crashes and a crash report lists addresses in the shared framework and the app; the dSYM file turns the first address into Bookmarks.add in Bookmarks.kt line 12; the binary and the dSYM carry the same build UUID; a rebuilt dSYM with another UUID doesn't match</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
 <g class="step s1" data-pulse="1"><x-phone x="24" y="40" w="70" h="130" label="iPhone"/><circle class="d-bad" cx="59" cy="98" r="14"/><path class="d-red" d="M51,90 L67,106 M67,90 L51,106"/><x-arrow tone="ink" d="M98,100 L124,100"/>
