@@ -6,8 +6,8 @@ The published order is in [course.json](course.json). Each puzzle poses one deci
 | --- | --- | --- |
 | State the contract | 00–02 | Distinguish a green map pin from a durable grant. Measure a burst and retrieve a decision after the handler's connection closes. |
 | Protect a single decision | 03–04 | Predict both outcomes of a row lock. Return an earlier grant for the same intention and report a changed request as a conflict. |
-| Read a changing history | 05–06 | Page through tied records while a newer row arrives. Enforce a freshness budget inherited from the source. |
-| Coordinate independent work | 07–10 | Deliver an event twice and count one local effect. Compute a draining backlog, identify a hot owner and explain when a leader can advance its commit position. |
+| Read a changing history | 05–06 | Page through tied records after an insertion or a correction to an unseen row. Compare the same page under three index choices. Enforce a freshness budget inherited from the source. |
+| Coordinate independent work | 07–10 | Move the sender’s commit boundary to lose an event, repair it, then deliver an event twice and count one local effect. Compute a draining backlog, identify a hot owner and explain when a leader can advance its commit position. |
 | Operate and challenge the service | 11–14 | Resolve a late charge, separate queue time from execution, compare restored receipts in both directions and defend a seat-specific constraint. |
 | Serve a busy read path | 15–18 | Route four jobs with uneven costs. Share overlapping reads by key. Admit one recovery probe and handle its missing reply explicitly. Split two callers across real HTTP listeners and verify both replies and storage-call counts. |
 | Independent assessment | [Final project](practicum.json) and [practice chapters](topics.json) | Defend an invariant, support a throughput estimate with units, inject a failure and reconcile every externally confirmed operation. |

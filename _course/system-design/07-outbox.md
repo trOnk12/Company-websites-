@@ -7,7 +7,7 @@ takeaway: Commit the event with the grant, then make repeated deliveries safe fo
 
 ## The problem
 
-The reservation commits, then the process dies before sending a notification. Sending first could instead announce a reservation that later rolls back. Where should the obligation to send live?
+The reservation commits, then the process dies before sending a notification. Sending first could instead announce a reservation that later rolls back. Where should the obligation to send live? Here, an event is the message “grant 301 was created.” A sender publishes that message. A consumer receives it and updates its own data.
 
 ## See it
 
@@ -32,7 +32,37 @@ Grant has version one and a later reversal version two. Applying two and then on
 
 - May a balance consumer skip a missing event that only contains an amount to add?::Not without another recovery rule. The missing amount changes the total.
 
-## Deliver event 41 twice to a real table
+## First puzzle: What survives at the sender?
+
+Put your finger on the last instruction that reached the database. A stopped process loses its next line of code. On restart, a separate worker can see the rows that committed. What evidence would let it discover that grant 301 needs to be announced?
+
+Here are two writes that belong to the sender. Grant 301 reserves the space. Event 41 gives the worker a durable obligation to announce that grant. The two counts show what a fresh worker would find. The first result shows the state before the attempt. Predict the second result before running the code.
+
+```sql run
+CREATE TABLE grant_record (id INTEGER PRIMARY KEY);
+CREATE TABLE outbox (
+  event_id INTEGER PRIMARY KEY,
+  grant_id INTEGER NOT NULL REFERENCES grant_record(id)
+);
+CREATE TEMP VIEW evidence AS
+  SELECT (SELECT COUNT(*) FROM grant_record) AS grants,
+         (SELECT COUNT(*) FROM outbox) AS events_to_send;
+
+SELECT * FROM evidence;
+BEGIN;
+INSERT INTO grant_record VALUES (301);
+INSERT INTO outbox VALUES (41, 301);
+ROLLBACK;
+SELECT * FROM evidence;
+```
+
+1. **Stop before commit.** The rollback models the loss of the uncommitted transaction. You should read (0, 0) twice. No reservation survived and the worker owes no announcement.
+2. **Stop after commit.** Change the rollback line to a commit and rerun. The last result becomes (1, 1). Even if the sender stops here, the worker can recover event 41.
+3. **Reproduce the missing event.** Move the commit just above the line that inserts event 41. Delete the event insertion to model the process stopping immediately after its first commit. Predict the last pair, then run. The worker sees (1, 0). The grant exists, but an outbox reader has nothing to send.
+
+Restore the original SQL when finished. The first decision was where to store the obligation. The next decision belongs to another service. Once the worker has found event 41, what if it sends it twice?
+
+## Second puzzle: Deliver event 41 twice to a real table
 
 Focus on the receiving service. The publisher can deliver the same event again after a crash. This consumer owns both a table of accepted event IDs and a local count. A **trigger** is work the database runs as part of a statement. Here it updates the count only when a new ID is inserted.
 

@@ -63,7 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#deliver-event-41-twice-to-a-real-table">Run SQL</a>
+        <a href="#first-puzzle-what-survives-at-the-sender">Run SQL</a>
         <a href="#go-deeper-what-if-events-arrive-out-of-order">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
@@ -75,7 +75,7 @@
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>The reservation commits, then the process dies before sending a notification. Sending first could instead announce a reservation that later rolls back. Where should the obligation to send live?</p>
+<p>The reservation commits, then the process dies before sending a notification. Sending first could instead announce a reservation that later rolls back. Where should the obligation to send live? Here, an event is the message “grant 301 was created.” A sender publishes that message. A consumer receives it and updates its own data.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -140,8 +140,38 @@
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
-      <section aria-labelledby="deliver-event-41-twice-to-a-real-table">
-        <h2 id="deliver-event-41-twice-to-a-real-table">Deliver event 41 twice to a real table</h2>
+      <section aria-labelledby="first-puzzle-what-survives-at-the-sender">
+        <h2 id="first-puzzle-what-survives-at-the-sender">First puzzle: What survives at the sender?</h2>
+<p>Put your finger on the last instruction that reached the database. A stopped process loses its next line of code. On restart, a separate worker can see the rows that committed. What evidence would let it discover that grant 301 needs to be announced?</p>
+<p>Here are two writes that belong to the sender. Grant 301 reserves the space. Event 41 gives the worker a durable obligation to announce that grant. The two counts show what a fresh worker would find. The first result shows the state before the attempt. Predict the second result before running the code.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE grant_record (id INTEGER PRIMARY KEY);
+CREATE TABLE outbox (
+  event_id INTEGER PRIMARY KEY,
+  grant_id INTEGER NOT NULL REFERENCES grant_record(id)
+);
+CREATE TEMP VIEW evidence AS
+  SELECT (SELECT COUNT(*) FROM grant_record) AS grants,
+         (SELECT COUNT(*) FROM outbox) AS events_to_send;
+
+SELECT * FROM evidence;
+BEGIN;
+INSERT INTO grant_record VALUES (301);
+INSERT INTO outbox VALUES (41, 301);
+ROLLBACK;
+SELECT * FROM evidence;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<ol><li><b>Stop before commit.</b> The rollback models the loss of the uncommitted transaction. You should read (0, 0) twice. No reservation survived and the worker owes no announcement.</li><li><b>Stop after commit.</b> Change the rollback line to a commit and rerun. The last result becomes (1, 1). Even if the sender stops here, the worker can recover event 41.</li><li><b>Reproduce the missing event.</b> Move the commit just above the line that inserts event 41. Delete the event insertion to model the process stopping immediately after its first commit. Predict the last pair, then run. The worker sees (1, 0). The grant exists, but an outbox reader has nothing to send.</li></ol>
+<p>Restore the original SQL when finished. The first decision was where to store the obligation. The next decision belongs to another service. Once the worker has found event 41, what if it sends it twice?</p>
+      </section>
+      <section aria-labelledby="second-puzzle-deliver-event-41-twice-to-a-real-table">
+        <h2 id="second-puzzle-deliver-event-41-twice-to-a-real-table">Second puzzle: Deliver event 41 twice to a real table</h2>
 <p>Focus on the receiving service. The publisher can deliver the same event again after a crash. This consumer owns both a table of accepted event IDs and a local count. A <b>trigger</b> is work the database runs as part of a statement. Here it updates the count only when a new ID is inserted.</p>
 <div class="lesson-sql" data-sql-exercise>
 <pre><code class="language-sql">CREATE TABLE accepted (event_id INTEGER PRIMARY KEY);

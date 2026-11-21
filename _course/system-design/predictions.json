@@ -66,15 +66,20 @@
   },
   "05-history": {
     "step": 3,
-    "question": "The last pair shown was (10:00, 8). A newer row arrives. Which ID follows that pair?",
+    "question": "Keeping the saved cursor (10:00, 8), which session will page two return after the selected change?",
     "options": [
-      "8 again",
-      "7"
+      "Session 7",
+      "No session"
     ],
-    "answer": 1,
-    "hint": "Keep the saved boundary fixed even though the list above it has moved.",
+    "answer": 0,
+    "hint": "A new session sits above the cursor. Which original session still lies below it?",
     "why": "ID 7 comes after the saved time-and-ID pair. Skipping two live rows repeats ID 8.",
-    "bridge": "History can move between reads. How old can the map reading be by the time the driver sees it?"
+    "bridge": "History can move between reads. How old can the map reading be by the time the driver sees it?",
+    "changed": {
+      "answer": 1,
+      "hint": "Session 7 is now newer than the cursor. At 10:00, are any remaining IDs smaller than 8?",
+      "why": "There is no qualifying row. The cursor preserved a position, but moving an unseen row above that position hid it from this traversal."
+    }
   },
   "06-freshness": {
     "step": 2,
