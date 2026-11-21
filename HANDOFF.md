@@ -49,3 +49,5 @@ The follow-up deadline experiment ran all four modes on PostgreSQL 17.6. The sho
 ### Codex · 21 November 2026 · migration retry budget
 
 Compared two bounded retry schedules from main `15d72b8`. PostgreSQL 17.6 returned one of three reads before its deadline when the second read queued behind the retry. It returned two of three when the second read arrived in the pause. Both runs deferred the migration after two lock timeouts and kept the report transaction open. These are controlled arrival schedules. Next measure deadline misses under an independent stream of reads and more than one possible migrator.
+
+The same session added a prevention run to the deadlock exercise. Both concurrent transactions now acquire the two seat locks in ascending order. Across three PostgreSQL 17.6 runs the second transaction waited, both committed without a retry, and the fresh counters reached [2, 2]. The remaining transfer check is to enumerate other shared resources and test their acquisition order.

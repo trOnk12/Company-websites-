@@ -62,6 +62,27 @@ def run(observer, ada, ben):
     print("Whole transaction retried in seat-ID order: [2, 2]")
 
 
+    # Under the same contention, both transactions now acquire seats in the same order.
+    observer.execute("UPDATE seats SET edits = 0")
+    ada.execute("BEGIN")
+    ben.execute("BEGIN")
+    increment(ada, 1)
+
+    def ordered_edit():
+        for seat in (1, 2):
+            increment(ben, seat)
+        ben.execute("COMMIT")
+
+    with ThreadPoolExecutor(max_workers=1) as workers:
+        waiting = workers.submit(ordered_edit)
+        wait_for_block(observer, ben, ada)
+        increment(ada, 2)
+        ada.execute("COMMIT")
+        waiting.result(timeout=15)
+    assert observer.execute("SELECT edits FROM seats ORDER BY id").fetchall() == [(2,), (2,)]
+    print("Two ordered transactions: one waited, both committed; counts [2, 2]")
+
+
 def main():
     schema = sql.Identifier("deadlock_lab_" + uuid4().hex)
     with ExitStack() as stack:
