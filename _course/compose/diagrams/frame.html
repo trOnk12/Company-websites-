@@ -8,7 +8,7 @@
 <g class="step s1" data-move="1:130,110 2:450,40 3:192,214 4:286,76 5:450,270"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg>
 <ol class="caps">
-<li><p>A frame starts with the first <b>phase</b>, composition: the marked composables run (puzzles 2 and 3), and the tree has three nodes. The screen area on the right is still empty.</p></li>
+<li><p>A frame starts with the first <b>phase</b>, composition: the marked composables run (puzzles 8 and 9), and the tree has three nodes. The screen area on the right is still empty.</p></li>
 <li><p>Layout begins at the top. The <code>Column</code> gets <b>constraints</b> from its parent: the smallest and largest size it may take, here at most 340 pixels wide.</p></li>
 <li><p>The <code>Column</code> asks each child to <b>measure</b> itself within those constraints, once each: 200×40 and 340×120. Then it picks its own size. <i>Predict: where does the Card go?</i></p></li>
 <li><p><b>Placement</b>: the <code>Column</code> sets each child's position relative to itself. Text at the top, the Card just below it at y = 40.</p></li>

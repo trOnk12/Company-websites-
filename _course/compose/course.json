@@ -11,10 +11,22 @@
       "title": "Module 1: One screen, two platforms",
       "blurb": "Trace state, placement, native UI and accessibility through the same screen.",
       "puzzles": [
-        "00-state-reads-and-ui.md",
-        "01-read-in-the-right-phase.md",
-        "02-who-hosts-the-native-view.md",
-        "03-pixels-and-voiceover.md"
+        "00-what-composable-really-does.md",
+        "01-the-tree-compose-remembers.md",
+        "02-who-read-that-state.md",
+        "03-what-gets-skipped.md",
+        "04-one-frame.md",
+        "05-four-layers.md"
+      ]
+    },
+    {
+      "title": "Module 2",
+      "blurb": "",
+      "puzzles": [
+        "06-state-reads-and-ui.md",
+        "07-read-in-the-right-phase.md",
+        "08-who-hosts-the-native-view.md",
+        "09-pixels-and-voiceover.md"
       ]
     }
   ],
