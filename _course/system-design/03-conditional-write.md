@@ -39,6 +39,43 @@ Two attendants are on duty. Each may leave if another remains. Two transactions 
 
 - Does one changed row per writer prove that an attendant remains?::No. A per-write count does not prove the cross-row rule. Inspect the combined outcome.
 
+## Try the two meanings of zero rows
+
+Two operators both opened version 7. Ada saves first. Predict the result of Ben's save and the capacity that the driver will read afterward. `RETURNING` asks the database to show each row that this statement actually changed.
+
+```sql run
+CREATE TABLE lot (
+  name TEXT PRIMARY KEY, capacity INTEGER, version INTEGER
+);
+INSERT INTO lot VALUES ('west', 10, 7);
+
+UPDATE lot SET capacity = 12, version = version + 1
+WHERE name = 'west' AND version = 7
+RETURNING capacity, version;
+
+UPDATE lot SET capacity = 8, version = version + 1
+WHERE name = 'west' AND version = 7
+RETURNING capacity, version;
+
+SELECT name, capacity, version FROM lot;
+```
+
+The first update returns capacity 12 at version 8. The second returns no rows. The final read still shows capacity 12 at version 8. Remove only the version condition from Ben’s update. Now both saves report success and Ben silently overwrites Ada. Try a missing lot name too. The same empty result can mean a missing record or a stale version. The service needs more context before telling the client why the save failed.
+
+In the reservation service the condition requires a positive free count and a provisional grant already exists in the same transaction. This is the branch that turns the database result into a reply. The variable named take holds the prepared conditional update. Executing it returns its affected-row count.
+
+```java
+take.setString(1, lot);
+if (take.executeUpdate() == 0) {
+    db.rollback();
+    return new Reply(409, "full");
+}
+db.commit();
+return new Reply(201, lot);
+```
+
+A count of zero does not automatically undo the provisional grant. The explicit rollback does that. The browser example runs statements in a chosen order on SQLite. The PostgreSQL exercise below uses two live connections to measure the wait that can precede the same decision.
+
 ## Try it
 
 Run the browser lab. Start with one space, send both requests and inspect the surviving claims. Repeat with two spaces. Imagine committing the insert separately before decrementing the counter. Which row would survive a crash between the two commits?
@@ -62,3 +99,4 @@ The final two experiments move the rule across rows. Compare the number of atten
 ## Sources
 
 - [PostgreSQL · Transaction Isolation](https://www.postgresql.org/docs/17/transaction-iso.html) — “it will attempt to apply its operation to the updated version of the row”
+- [SQLite · RETURNING](https://www.sqlite.org/lang_returning.html)

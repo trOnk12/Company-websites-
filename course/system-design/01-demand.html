@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -62,6 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#measure-a-burst-that-an-average-hides">Run SQL</a>
         <a href="#go-deeper-what-will-storage-cost-in-bytes">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
@@ -77,23 +79,35 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="How much traffic arrives after a concert?"><input type="radio" name="st-demand" id="st-demand-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-demand" id="st-demand-2" aria-label="Step 2 of 4"><input type="radio" name="st-demand" id="st-demand-3" aria-label="Step 3 of 4"><input type="radio" name="st-demand" id="st-demand-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">How much traffic arrives after a concert?</title><defs><marker id="ah-demand-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-demand-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-demand-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-demand-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">120k drivers</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-demand-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">1.2m reads</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-demand-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">240k at peak</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-demand-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">400 per second</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Use a different denominator for the concert window"><input type="radio" name="st-demand" id="st-demand-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-demand" id="st-demand-2" aria-label="Step 2 of 4"><input type="radio" name="st-demand" id="st-demand-3" aria-label="Step 3 of 4"><input type="radio" name="st-demand" id="st-demand-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 273" role="img" aria-labelledby="d-title">
+<title id="d-title">Use a different denominator for the concert window</title>
+<text class="d-b" x="14" y="29" text-anchor="start">Map reads in one day</text>
+<rect class="d-box" x="20" y="53" width="380" height="39" rx="3"/>
+<g class="step s1">
+  <text class="d-t" x="210" y="79" text-anchor="middle">1,200,000 reads</text>
+</g>
+<g class="step s2">
+  <rect class="d-hl" x="20" y="103" width="76" height="26" rx="2"/>
+  <rect class="d-band" x="96" y="103" width="304" height="26" rx="2"/>
+  <text class="d-t" x="20" y="157" text-anchor="start">1/5 in ten minutes</text>
+</g>
+<g class="step s3">
+  <path class="d-acc" d="M57,130 V137"/>
+  <rect class="d-box" x="20" y="177" width="379" height="38" rx="4"/>
+  <text class="d-t" x="209" y="204" text-anchor="middle">240,000 ÷ 600 s = 400/s</text>
+</g>
+<g class="step s4">
+  <text class="d-a" x="209" y="253" text-anchor="middle">5 minutes → 800/s</text>
+</g>
+<g transform="translate(399 72)" data-move="1:399,72 2:59,116 3:59,186 4:69,245"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>Multiply drivers by ten reads each.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-demand-2">Next →</label></div></li>
-<li><p>The daily total hides the concert rush.</p><div class="stepnav"><label for="st-demand-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-demand-3">Next →</label></div></li>
-<li><p>One fifth of the reads arrive in ten minutes.</p><div class="stepnav"><label for="st-demand-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-demand-4">Next →</label></div></li>
-<li><p>Divide by 600 seconds.</p><div class="stepnav"><label for="st-demand-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-demand-1">↺ Again</label></div></li>
+<li><p>120,000 drivers open the map ten times. That is 1.2 million map reads spread across a day.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-demand-2">Next →</label></div></li>
+<li><p>The shaded fifth of the reads falls into one concert window. The bar represents a share of requests, not a share of the day.</p><div class="stepnav"><label for="st-demand-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-demand-3">Next →</label></div></li>
+<li><p>Divide 240,000 requests by the 600 seconds in that window. The average within the peak is 400 per second.</p><div class="stepnav"><label for="st-demand-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-demand-4">Next →</label></div></li>
+<li><p>Hold the number of concert reads fixed and cut the window in half. The peak rate doubles although the daily total does not change.</p><div class="stepnav"><label for="st-demand-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-demand-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-demand-1" title="Step 1"></label><label for="st-demand-2" title="Step 2"></label><label for="st-demand-3" title="Step 3"></label><label for="st-demand-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/demand.gif" download>Save this diagram as a GIF</a></p>
@@ -114,6 +128,29 @@
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
+      <section aria-labelledby="measure-a-burst-that-an-average-hides">
+        <h2 id="measure-a-burst-that-an-average-hides">Measure a burst that an average hides</h2>
+<p>A service records one timestamp for each arriving request. In this small trace a number is seconds since the experiment began. Divide the number by ten and keep the whole part to assign each request to a ten-second bucket. Which bucket should set the minimum load for the next test?</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE arrival (second INTEGER);
+INSERT INTO arrival VALUES
+  (0), (10), (20), (20), (21), (22), (22), (29);
+
+SELECT (second / 10) * 10 AS bucket_start,
+       COUNT(*) AS arrivals,
+       COUNT(*) / 10.0 AS requests_per_second
+FROM arrival
+GROUP BY bucket_start
+ORDER BY bucket_start;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>Eight requests in thirty seconds average about 0.27 per second. The last bucket alone gets six, or 0.6 per second. Change 29 to 30. The request moves to the next bucket because the interval includes its start and excludes its end. A bucket is a measurement choice. Two spikes on opposite sides of a boundary can hit the same database queue. A load test should replay the arrival times if that ordering matters.</p>
+      </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Shorten the peak to five minutes while keeping its total demand. Predict the arrival rate and work in flight before reading on. At the same mean duration the answers are 800 per second and 120 in flight. Measure arrivals, completions and backlog separately to check whether the duration actually holds.</p>

@@ -1,17 +1,34 @@
-<!-- label: Can you recover the right history after a bad release? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Can you recover the right history after a bad release?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">10:00 backup</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">10:07 deletion</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Restore</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">New write</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: Restore to before deletion and reconcile later receipts -->
+<svg class="design-figure" viewBox="0 0 420 314" role="img" aria-labelledby="d-title">
+<title id="d-title">Restore to before deletion and reconcile later receipts</title>
+<text class="d-b" x="16" y="29" text-anchor="start">Original history</text>
+<path class="d-line" d="M23,90H393"/>
+<path class="d-line" d="M47,85v8"/><text class="d-mi" x="47" y="116" text-anchor="middle">10</text>
+<path class="d-line" d="M150,85v8"/><text class="d-mi" x="150" y="116" text-anchor="middle">20</text>
+<path class="d-line" d="M264,85v8"/><text class="d-mi" x="264" y="116" text-anchor="middle">delete 20</text>
+<path class="d-line" d="M369,85v8"/><text class="d-mi" x="369" y="116" text-anchor="middle">30</text>
+<text class="d-mi" x="18" y="58" text-anchor="start">Receipt IDs</text>
+<g class="step s1">
+  <circle class="d-dot" cx="47" cy="90" r="6"/>
+</g>
+<g class="step s2">
+  <path class="d-red" d="M264,65V96"/>
+  <circle class="d-dot" cx="149" cy="90" r="6"/>
+  <text class="d-t" x="20" y="163" text-anchor="start">Before delete: 10, 20</text>
+</g>
+<g class="step s3">
+  <x-arrow tone="acc" d="M150,118H222V180"/>
+  <rect class="d-hl" x="44" y="187" width="211" height="42" rx="5"/><text class="d-t" x="149.5" y="214" text-anchor="middle">Restored: 10, 20</text>
+</g>
+<g class="step s4">
+  <text class="d-r" x="18" y="266" text-anchor="start">Missing later receipt: 30</text>
+  <text class="d-a" x="18" y="296" text-anchor="start">Fresh write to verify: 40</text>
+</g>
+<g transform="translate(47 90)" data-move="1:47,90 2:265,90 3:151,178 4:367,90"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>The base copy contains the state as of ten.</p></li>
-<li><p>An incorrect deletion occurs seven minutes later.</p></li>
-<li><p>Restore independently and account for intervening operations.</p></li>
-<li><p>Verify historical grants and a fresh write before reopening.</p></li>
+<li><p>The base copy contains receipt 10. Follow the upper line as recorded changes arrive: insert 20, delete 20 and then insert 30.</p></li>
+<li><p>Choose the recovery point immediately before the bad deletion. Predict the two IDs visible at that point.</p></li>
+<li><p>Restore the base and replay to that point in a separate database. IDs 10 and 20 survive. The same process stopped after the deletion would recover only 10.</p></li>
+<li><p>Receipt 30 was valid but later than the chosen point. Verify it independently before replaying it. A new committed write of 40, read through another connection, tests the recovered database.</p></li>
 </ol>

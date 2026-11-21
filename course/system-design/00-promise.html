@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -62,6 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#run-the-contract-against-two-histories">Run SQL</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -72,23 +74,44 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Can two green maps promise the last space?"><input type="radio" name="st-promise" id="st-promise-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-promise" id="st-promise-2" aria-label="Step 2 of 4"><input type="radio" name="st-promise" id="st-promise-3" aria-label="Step 3 of 4"><input type="radio" name="st-promise" id="st-promise-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Can two green maps promise the last space?</title><defs><marker id="ah-promise-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-promise-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-promise-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-promise-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One space</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-promise-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Two map reads</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-promise-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Two requests</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-promise-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">One grant</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Two green maps compete for one durable grant"><input type="radio" name="st-promise" id="st-promise-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-promise" id="st-promise-2" aria-label="Step 2 of 4"><input type="radio" name="st-promise" id="st-promise-3" aria-label="Step 3 of 4"><input type="radio" name="st-promise" id="st-promise-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 265" role="img" aria-labelledby="d-title">
+<title id="d-title">Two green maps compete for one durable grant</title><defs><marker id="ah-promise-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-promise-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-promise-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-promise-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<text class="d-b" x="16" y="28" text-anchor="start">Driver phones</text>
+<rect class="d-box" x="20" y="48" width="156" height="78" rx="12"/>
+<rect class="d-box" x="246" y="48" width="155" height="78" rx="12"/>
+<text class="d-t" x="37" y="78" text-anchor="start">Ada</text>
+<text class="d-t" x="263" y="78" text-anchor="start">Ben</text>
+<g class="step s1">
+  <text class="d-a" x="37" y="109" text-anchor="start">Map: 1 free</text>
+  <text class="d-a" x="262" y="109" text-anchor="start">Map: 1 free</text>
+</g>
+<rect class="d-band" x="108" y="190" width="202" height="59" rx="5"/>
+<g class="step only-1">
+  <text class="d-t" x="209" y="226" text-anchor="middle">Space B12 · free</text>
+</g>
+<g class="step s2">
+  <path class="d-arr-acc" d="M107,126L163,184" marker-end="url(#ah-promise-acc)"/>
+  <path class="d-arr-acc" d="M324,126L258,184" marker-end="url(#ah-promise-acc)"/>
+</g>
+<g class="step only-2">
+  <text class="d-t" x="209" y="226" text-anchor="middle">Two requests</text>
+</g>
+<g class="step s3">
+  <text class="d-a" x="209" y="226" text-anchor="middle">B12: Ada</text>
+</g>
+<g class="step s4">
+  <text class="d-a" x="22" y="169" text-anchor="start">Confirmed</text>
+  <text class="d-r" x="319" y="169" text-anchor="start">Full</text>
+</g>
+<g transform="translate(285 238)" data-move="1:285,238 2:211,166 3:290,218 4:99,178"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The lot has one space.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-promise-2">Next →</label></div></li>
-<li><p>Both phones receive a green map pin.</p><div class="stepnav"><label for="st-promise-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-promise-3">Next →</label></div></li>
-<li><p>Predict the replies when both drivers press Reserve.</p><div class="stepnav"><label for="st-promise-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-promise-4">Next →</label></div></li>
-<li><p>Only one driver may receive a grant.</p><div class="stepnav"><label for="st-promise-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-promise-1">↺ Again</label></div></li>
+<li><p>At the same moment both phones show one available space. The map reading describes the lot; it grants neither driver a space.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-promise-2">Next →</label></div></li>
+<li><p>Both drivers tap Reserve before either map refreshes. Their requests name the same physical space.</p><div class="stepnav"><label for="st-promise-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-promise-3">Next →</label></div></li>
+<li><p>Ada’s request wins in this possible ordering. The ledger records her name against B12. A later map refresh cannot change that grant.</p><div class="stepnav"><label for="st-promise-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-promise-4">Next →</label></div></li>
+<li><p>Ada gets confirmation and Ben gets a full-lot reply. Reverse the arrival order and Ben could win. Which single row must still be unique?</p><div class="stepnav"><label for="st-promise-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-promise-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-promise-1" title="Step 1"></label><label for="st-promise-2" title="Step 2"></label><label for="st-promise-3" title="Step 3"></label><label for="st-promise-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/promise.gif" download>Save this diagram as a GIF</a></p>
@@ -100,6 +123,34 @@
 <h3>Turn the promise into a failing test</h3>
 <p>At 09:00 the map shows one space. At 09:00:05 Ada reserves it. At 09:00:07 Ben still sees the green pin and tries to reserve. A refusal for Ben and a retrievable confirmation for Ada satisfy both promises. A second confirmation breaks the inventory rule immediately, even if the map turns red one millisecond later.</p>
 <p>Try the same reasoning with a concert seat. Two customers may view seat B12 as available. What evidence would prove a violation? Two simultaneously valid tickets for B12 at the same event. A screenshot of the seating chart alone proves nothing about issued tickets.</p>
+      </section>
+      <section aria-labelledby="run-the-contract-against-two-histories">
+        <h2 id="run-the-contract-against-two-histories">Run the contract against two histories</h2>
+<p>A reservation ledger is a list of grants. Each row below names a run, a driver, a space and whether the grant is still active. Both phones saw the same green pin in each run. Can you tell which run broke the promise using only the grants?</p>
+<p><b>SQL</b> is a language for asking a database questions. Press the Run SQL button on the course website. In the offline notes, open the lesson link or run the block in a fresh SQLite database. This script makes a temporary practice database on your device. You can edit it and run it again from the same starting point.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE grant_log (
+  run TEXT, driver TEXT, space TEXT, active INTEGER
+);
+INSERT INTO grant_log VALUES
+  ('morning', 'Ada', 'B12', 1),
+  ('evening', 'Ada', 'B12', 1),
+  ('evening', 'Ben', 'B12', 1);
+
+SELECT run, space, COUNT(*) AS active_grants
+FROM grant_log
+WHERE active = 1
+GROUP BY run, space
+HAVING COUNT(*) &gt; 1;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>Read the query from the middle. <code>FROM</code> chooses the ledger. <code>WHERE</code> keeps active grants. <code>GROUP BY</code> makes a pile for each run and space. <code>HAVING</code> keeps piles with more than one row. You should see one violation: two active grants for B12 in the evening. Getting a row is a failed design test.</p>
+<p>Now change only Ben’s active flag from 1 to 0 because his grant ended. Predict the output, then run it. An empty result means there are no duplicate active grants in this snapshot. To detect overlap earlier in the evening you would need the times of grants and releases. Could this query detect a confirmation that the driver received but the service never recorded? To test that part of the promise, keep the replies independently and look up each confirmed identity after restart.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -130,7 +181,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> The reply could have been lost after the write. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a> — “specify a target level for the reliability of your service”</li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a> — “specify a target level for the reliability of your service”</li><li><a href="https://www.sqlite.org/lang_select.html">SQLite · SELECT and grouping</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A map may be stale while the reservation contract still admits at most one winner.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

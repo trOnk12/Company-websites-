@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -62,6 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#run-both-page-boundaries-on-the-same-records">Run SQL</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -76,23 +78,43 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Where does the next page of history begin?"><input type="radio" name="st-history" id="st-history-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-history" id="st-history-2" aria-label="Step 2 of 4"><input type="radio" name="st-history" id="st-history-3" aria-label="Step 3 of 4"><input type="radio" name="st-history" id="st-history-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Where does the next page of history begin?</title><defs><marker id="ah-history-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-history-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-history-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-history-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One owner</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-history-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Time and number</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-history-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Last pair</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-history-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Next twenty</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="A time tie and an insert move two page boundaries apart"><input type="radio" name="st-history" id="st-history-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-history" id="st-history-2" aria-label="Step 2 of 4"><input type="radio" name="st-history" id="st-history-3" aria-label="Step 3 of 4"><input type="radio" name="st-history" id="st-history-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 260" role="img" aria-labelledby="d-title">
+<title id="d-title">A time tie and an insert move two page boundaries apart</title><defs><marker id="ah-history-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-history-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-history-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-history-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<text class="d-b" x="15" y="28" text-anchor="start">Ada’s history · newest first</text>
+<text class="d-mi" x="18" y="62" text-anchor="start">Ordered rows</text>
+<text class="d-mi" x="253" y="62" text-anchor="start">Page result</text>
+<g class="step upto-2">
+  <rect class="d-box" x="17" y="81" width="55" height="44" rx="5"/><text class="d-t" x="44.5" y="109" text-anchor="middle">9</text>
+  <rect class="d-box" x="78" y="81" width="55" height="44" rx="5"/><text class="d-t" x="105.5" y="109" text-anchor="middle">8</text>
+  <rect class="d-box" x="139" y="81" width="55" height="44" rx="5"/><text class="d-t" x="166.5" y="109" text-anchor="middle">7</text>
+</g>
+<g class="step s2">
+  <text class="d-t" x="246" y="111" text-anchor="start">First: 9, 8</text>
+  <text class="d-a" x="17" y="166" text-anchor="start">Cursor = (10:00, 8)</text>
+</g>
+<g class="step s3">
+  <rect class="d-hl" x="17" y="81" width="48" height="44" rx="5"/><text class="d-t" x="41" y="109" text-anchor="middle">10</text>
+  <rect class="d-box" x="70" y="81" width="48" height="44" rx="5"/><text class="d-t" x="94" y="109" text-anchor="middle">9</text>
+  <rect class="d-box" x="123" y="81" width="48" height="44" rx="5"/><text class="d-t" x="147" y="109" text-anchor="middle">8</text>
+  <rect class="d-box" x="176" y="81" width="48" height="44" rx="5"/><text class="d-t" x="200" y="109" text-anchor="middle">7</text>
+</g>
+<g class="step s3">
+  <text class="d-r" x="246" y="201" text-anchor="start">Offset: 8, 7</text>
+  <path class="d-dash" d="M50,192H194"/>
+</g>
+<g class="step s4">
+  <text class="d-a" x="246" y="241" text-anchor="start">Cursor: 7</text>
+  <path class="d-arr-acc" d="M50,236H200" marker-end="url(#ah-history-acc)"/>
+</g>
+<g transform="translate(43 133)" data-move="1:43,133 2:106,133 3:146,133 4:199,133"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The table contains several drivers.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-history-2">Next →</label></div></li>
-<li><p>Select a total order within one driver&#x27;s history.</p><div class="stepnav"><label for="st-history-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-history-3">Next →</label></div></li>
-<li><p>Save both values from the last displayed row.</p><div class="stepnav"><label for="st-history-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-history-4">Next →</label></div></li>
-<li><p>Continue strictly beyond that pair.</p><div class="stepnav"><label for="st-history-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-history-1">↺ Again</label></div></li>
+<li><p>All three rows started at 10:00. Their distinct IDs break the time tie and determine their order.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-history-2">Next →</label></div></li>
+<li><p>The first page has room for two. Save both the time and the last displayed ID. That pair identifies the boundary after 8.</p><div class="stepnav"><label for="st-history-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-history-3">Next →</label></div></li>
+<li><p>A newer row 10 arrives before the next page. Skipping two rows in the live list returns 8 a second time.</p><div class="stepnav"><label for="st-history-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-history-4">Next →</label></div></li>
+<li><p>The cursor still means “strictly after (10:00, 8)” in descending order. Only 7 qualifies. Using the timestamp alone would skip 7 completely.</p><div class="stepnav"><label for="st-history-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-history-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-history-1" title="Step 1"></label><label for="st-history-2" title="Step 2"></label><label for="st-history-3" title="Step 3"></label><label for="st-history-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/history.gif" download>Save this diagram as a GIF</a></p>
@@ -111,6 +133,37 @@ CREATE INDEX sessions_history ON sessions
 <h3>Walk a cursor by hand</h3>
 <p>Ada owns rows (10:00, 9), (10:00, 8) and (10:00, 7). Ben owns (10:00, 99). With a page size of two, Ada receives 9 and 8. The next request carries (10:00, 8). Insert Ada's new row (10:01, 10) before that request arrives. The next page still contains 7. Starting again from the first page would reveal 10.</p>
 <p>Compare skipping the first two rows instead. The live list now begins 10, 9, 8, 7. Skipping two would return 8 again. Decide whether a product needs a stable position for browsing or a frozen set for an export. For the latter, design how the export records its input snapshot and when that snapshot can expire.</p>
+      </section>
+      <section aria-labelledby="run-both-page-boundaries-on-the-same-records">
+        <h2 id="run-both-page-boundaries-on-the-same-records">Run both page boundaries on the same records</h2>
+<p>Ada has three records with the same timestamp. She has already read IDs 9 and 8. A newer record then arrives. Which second page repeats a record? Which loses one? Run the script. The first result is page one. Compare the three candidate second pages before changing their page size.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE history (owner TEXT, started INTEGER, id INTEGER PRIMARY KEY);
+INSERT INTO history VALUES
+  ('Ada', 100, 9), ('Ada', 100, 8), ('Ada', 100, 7),
+  ('Ben', 100, 99);
+SELECT id AS first_page FROM history WHERE owner = 'Ada'
+ORDER BY started DESC, id DESC LIMIT 2;
+
+INSERT INTO history VALUES ('Ada', 101, 10);
+SELECT id AS offset_page FROM history WHERE owner = 'Ada'
+ORDER BY started DESC, id DESC LIMIT 2 OFFSET 2;
+
+SELECT id AS time_only_page FROM history
+WHERE owner = 'Ada' AND started &lt; 100
+ORDER BY started DESC, id DESC LIMIT 2;
+
+SELECT id AS pair_page FROM history
+WHERE owner = 'Ada' AND (started, id) &lt; (100, 8)
+ORDER BY started DESC, id DESC LIMIT 2;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>The offset page repeats 8. The time-only page skips 7. The pair page returns 7 exactly once. If you change the first page size to one, also take its last pair as the new cursor and use an offset of one for the comparison. An index can make a query faster; it cannot fix a boundary that selects the wrong rows.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -141,7 +194,7 @@ CREATE INDEX sessions_history ON sessions
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/indexes-multicolumn.html">PostgreSQL · Multicolumn Indexes</a> — “the index is most efficient when there are constraints on the leading (leftmost) columns”</li></ul>
-<ul><li><a href="https://www.postgresql.org/docs/17/queries-limit.html">PostgreSQL · LIMIT and OFFSET</a></li></ul></details>
+<ul><li><a href="https://www.postgresql.org/docs/17/queries-limit.html">PostgreSQL · LIMIT and OFFSET</a></li><li><a href="https://www.sqlite.org/rowvalue.html">SQLite · Scrolling window queries</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Put the unique tie-breaker in both the sort order and the cursor.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

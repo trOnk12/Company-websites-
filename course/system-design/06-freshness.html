@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -62,6 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#make-the-cache-prove-the-age-of-its-answer">Run SQL</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -76,23 +78,40 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Why does a confirmed space still look free?"><input type="radio" name="st-freshness" id="st-freshness-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-freshness" id="st-freshness-2" aria-label="Step 2 of 4"><input type="radio" name="st-freshness" id="st-freshness-3" aria-label="Step 3 of 4"><input type="radio" name="st-freshness" id="st-freshness-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Why does a confirmed space still look free?</title><defs><marker id="ah-freshness-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Primary write</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-freshness-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Copy lags</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-freshness-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Old map</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-freshness-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Confirmed view</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Measure the age of a cached observation"><input type="radio" name="st-freshness" id="st-freshness-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-freshness" id="st-freshness-2" aria-label="Step 2 of 4"><input type="radio" name="st-freshness" id="st-freshness-3" aria-label="Step 3 of 4"><input type="radio" name="st-freshness" id="st-freshness-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="d-title">
+<title id="d-title">Measure the age of a cached observation</title><defs><marker id="ah-freshness-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<text class="d-b" x="14" y="30" text-anchor="start">Life of one map reading</text>
+<path class="d-line" d="M30,130H396"/>
+<path class="d-line" d="M32,127v8"/><text class="d-mi" x="32" y="158" text-anchor="middle">92</text>
+<path class="d-line" d="M112,127v8"/><text class="d-mi" x="112" y="158" text-anchor="middle">100</text>
+<path class="d-line" d="M260,127v8"/><text class="d-mi" x="260" y="158" text-anchor="middle">115</text>
+<path class="d-line" d="M333,127v8"/><text class="d-mi" x="333" y="158" text-anchor="middle">122</text>
+<text class="d-mi" x="396" y="180" text-anchor="end">seconds</text>
+<g class="step s1">
+  <text class="d-t" x="15" y="80" text-anchor="start">Source observes 1 free</text>
+</g>
+<g class="step s2">
+  <path class="d-arr-acc" d="M33,99H110" marker-end="url(#ah-freshness-acc)"/>
+  <text class="d-t" x="18" y="213" text-anchor="start">Copied at 100 · age 8 s</text>
+</g>
+<g class="step s3">
+  <path class="d-arr-acc" d="M115,99H259" marker-end="url(#ah-freshness-acc)"/>
+  <text class="d-t" x="18" y="242" text-anchor="start">Served at 115 · age 23 s</text>
+</g>
+<g class="step s4">
+  <path class="d-red" d="M333,65 V130"/>
+  <text class="d-r" x="398" y="57" text-anchor="end">30 s limit</text>
+  <text class="d-r" x="18" y="271" text-anchor="start">After 122 · too old</text>
+</g>
+<g transform="translate(32 130)" data-move="1:32,130 2:112,130 3:260,130 4:333,130"><circle class="d-dot" cx="0" cy="0" r="6"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The primary has accepted the reservation.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-freshness-2">Next →</label></div></li>
-<li><p>The other copy has not applied it yet.</p><div class="stepnav"><label for="st-freshness-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-freshness-3">Next →</label></div></li>
-<li><p>The map may reuse an answer from that delayed copy.</p><div class="stepnav"><label for="st-freshness-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-freshness-4">Next →</label></div></li>
-<li><p>Use the successful write result for the confirmation screen.</p><div class="stepnav"><label for="st-freshness-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-freshness-1">↺ Again</label></div></li>
+<li><p>At second 92 the data source observes one free space. That observation is the origin of the age calculation.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-freshness-2">Next →</label></div></li>
+<li><p>At 100 the cache fetches the reading. Eight seconds of the thirty-second allowance are already gone.</p><div class="stepnav"><label for="st-freshness-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-freshness-3">Next →</label></div></li>
+<li><p>At 115 the cache has held the reading for fifteen seconds. Add the original eight. The driver receives a 23-second-old observation.</p><div class="stepnav"><label for="st-freshness-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-freshness-4">Next →</label></div></li>
+<li><p>At 122 the reading is exactly thirty seconds old. A later refresh of the same observation cannot reset its age. A separate confirmation can use the committed grant.</p><div class="stepnav"><label for="st-freshness-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-freshness-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-freshness-1" title="Step 1"></label><label for="st-freshness-2" title="Step 2"></label><label for="st-freshness-3" title="Step 3"></label><label for="st-freshness-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/freshness.gif" download>Save this diagram as a GIF</a></p>
@@ -104,6 +123,30 @@
 <h3>Spend the freshness budget</h3>
 <p>Assume the response reports the time of a trustworthy source observation and the clocks agree. At second 100, a cache stores a reading from second 92. At second 115 the reader receives a value 23 seconds old. Seven seconds of a 30-second allowance remain. Keeping the entry until second 130 would exceed that allowance by eight seconds.</p>
 <p>What if refreshing it at second 122 returns the very same reading from second 92? Starting another 30-second timer hides the lag. Retain the source observation time. A map could mark availability unknown when the age limit is exceeded. The separate reservation path still checks the current inventory before granting a space.</p>
+      </section>
+      <section aria-labelledby="make-the-cache-prove-the-age-of-its-answer">
+        <h2 id="make-the-cache-prove-the-age-of-its-answer">Make the cache prove the age of its answer</h2>
+<p>A reading has two times: the second the source observed the lot and the second the cache copied that reading. At second 125 both policies below see the same entry. Which one would let the driver see a reading older than the thirty-second promise?</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE map_entry (source_second INTEGER, cached_second INTEGER);
+INSERT INTO map_entry VALUES (92, 122);
+
+WITH clock(now) AS (VALUES (125))
+SELECT now - source_second AS true_age,
+       now - cached_second AS time_in_cache,
+       CASE WHEN now - cached_second &lt;= 30 THEN 'show' ELSE 'unknown' END
+         AS cache_timer,
+       CASE WHEN now - source_second &lt;= 30 THEN 'show' ELSE 'unknown' END
+         AS source_timer
+FROM map_entry, clock;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>The reading is 33 seconds old after only three seconds in this cache. The cache timer shows it. The source timer marks it unknown. Change 125 to 122, then 123 to locate the exact boundary. This contract includes age 30. It assumes the two timestamps use comparable clocks and the source time describes the observation itself. If the source supplies only the time the cache fetched its response, the service lacks evidence to make this age promise.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>

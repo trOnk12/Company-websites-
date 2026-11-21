@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -62,6 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#challenge-a-restore-that-has-the-right-row-count">Run SQL</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -76,23 +78,40 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Can you recover the right history after a bad release?"><input type="radio" name="st-recovery" id="st-recovery-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-recovery" id="st-recovery-2" aria-label="Step 2 of 4"><input type="radio" name="st-recovery" id="st-recovery-3" aria-label="Step 3 of 4"><input type="radio" name="st-recovery" id="st-recovery-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Can you recover the right history after a bad release?</title><defs><marker id="ah-recovery-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-recovery-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-recovery-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-recovery-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">10:00 backup</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-recovery-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">10:07 deletion</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-recovery-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Restore</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-recovery-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">New write</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Restore to before deletion and reconcile later receipts"><input type="radio" name="st-recovery" id="st-recovery-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-recovery" id="st-recovery-2" aria-label="Step 2 of 4"><input type="radio" name="st-recovery" id="st-recovery-3" aria-label="Step 3 of 4"><input type="radio" name="st-recovery" id="st-recovery-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 314" role="img" aria-labelledby="d-title">
+<title id="d-title">Restore to before deletion and reconcile later receipts</title><defs><marker id="ah-recovery-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-recovery-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-recovery-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-recovery-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<text class="d-b" x="16" y="29" text-anchor="start">Original history</text>
+<path class="d-line" d="M23,90H393"/>
+<path class="d-line" d="M47,85v8"/><text class="d-mi" x="47" y="116" text-anchor="middle">10</text>
+<path class="d-line" d="M150,85v8"/><text class="d-mi" x="150" y="116" text-anchor="middle">20</text>
+<path class="d-line" d="M264,85v8"/><text class="d-mi" x="264" y="116" text-anchor="middle">delete 20</text>
+<path class="d-line" d="M369,85v8"/><text class="d-mi" x="369" y="116" text-anchor="middle">30</text>
+<text class="d-mi" x="18" y="58" text-anchor="start">Receipt IDs</text>
+<g class="step s1">
+  <circle class="d-dot" cx="47" cy="90" r="6"/>
+</g>
+<g class="step s2">
+  <path class="d-red" d="M264,65V96"/>
+  <circle class="d-dot" cx="149" cy="90" r="6"/>
+  <text class="d-t" x="20" y="163" text-anchor="start">Before delete: 10, 20</text>
+</g>
+<g class="step s3">
+  <path class="d-arr-acc" d="M150,118H222V180" marker-end="url(#ah-recovery-acc)"/>
+  <rect class="d-hl" x="44" y="187" width="211" height="42" rx="5"/><text class="d-t" x="149.5" y="214" text-anchor="middle">Restored: 10, 20</text>
+</g>
+<g class="step s4">
+  <text class="d-r" x="18" y="266" text-anchor="start">Missing later receipt: 30</text>
+  <text class="d-a" x="18" y="296" text-anchor="start">Fresh write to verify: 40</text>
+</g>
+<g transform="translate(47 90)" data-move="1:47,90 2:265,90 3:151,178 4:367,90"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The base copy contains the state as of ten.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-recovery-2">Next →</label></div></li>
-<li><p>An incorrect deletion occurs seven minutes later.</p><div class="stepnav"><label for="st-recovery-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-recovery-3">Next →</label></div></li>
-<li><p>Restore independently and account for intervening operations.</p><div class="stepnav"><label for="st-recovery-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-recovery-4">Next →</label></div></li>
-<li><p>Verify historical grants and a fresh write before reopening.</p><div class="stepnav"><label for="st-recovery-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-recovery-1">↺ Again</label></div></li>
+<li><p>The base copy contains receipt 10. Follow the upper line as recorded changes arrive: insert 20, delete 20 and then insert 30.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-recovery-2">Next →</label></div></li>
+<li><p>Choose the recovery point immediately before the bad deletion. Predict the two IDs visible at that point.</p><div class="stepnav"><label for="st-recovery-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-recovery-3">Next →</label></div></li>
+<li><p>Restore the base and replay to that point in a separate database. IDs 10 and 20 survive. The same process stopped after the deletion would recover only 10.</p><div class="stepnav"><label for="st-recovery-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-recovery-4">Next →</label></div></li>
+<li><p>Receipt 30 was valid but later than the chosen point. Verify it independently before replaying it. A new committed write of 40, read through another connection, tests the recovered database.</p><div class="stepnav"><label for="st-recovery-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-recovery-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-recovery-1" title="Step 1"></label><label for="st-recovery-2" title="Step 2"></label><label for="st-recovery-3" title="Step 3"></label><label for="st-recovery-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/recovery.gif" download>Save this diagram as a GIF</a></p>
@@ -104,6 +123,29 @@
 <h3>Score a recovery by the clock</h3>
 <p>The deletion occurs at 10:07. A monitor detects it at 10:10, the operator finishes restoring at 10:18, and validation permits traffic again at 10:24. If interruption began at 10:07, recovery took 17 minutes and missed a 15-minute objective. Measuring only the eight minutes spent restoring would hide the miss.</p>
 <p>Suppose the newest consistent state you can actually recover is 10:04. The gap at deletion time is three minutes. That fails a two-minute recovery point objective even if the database restarts instantly. Choose one known reservation from 10:03 and one from 10:06, look them up after restoration, then reconcile any later external charge independently.</p>
+      </section>
+      <section aria-labelledby="challenge-a-restore-that-has-the-right-row-count">
+        <h2 id="challenge-a-restore-that-has-the-right-row-count">Challenge a restore that has the right row count</h2>
+<p>An independent receipt journal lists the two confirmations that should exist at the recovery point. The restored table also has two rows. Is that enough to reopen reservations? Compare identities and amounts in both directions.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE journal (id INTEGER PRIMARY KEY, cents INTEGER);
+CREATE TABLE restored (id INTEGER PRIMARY KEY, cents INTEGER);
+INSERT INTO journal VALUES (10, 500), (20, 900);
+INSERT INTO restored VALUES (10, 500), (30, 900);
+
+SELECT id, cents FROM journal
+EXCEPT SELECT id, cents FROM restored;
+SELECT id, cents FROM restored
+EXCEPT SELECT id, cents FROM journal;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>The first query returns the missing receipt 20. The second returns unexpected receipt 30. Change 30 to 20 and 900 to 800 in the restored table. Counts and identities now agree, but the two comparisons still reveal a disagreement over the amount. Fix the amount too and both differences disappear.</p>
+<p>The comparison assumes the journal is complete for this exact recovery point. A legitimate later receipt belongs to reconciliation against the later timeline. Treating every extra row as disposable can erase a real customer operation.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>

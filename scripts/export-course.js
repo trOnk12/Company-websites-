@@ -52,7 +52,7 @@ function puzzleNote(c, p, blocks) {
         const right = q.opts.find(o => o.ok);
         if (right) lines.push(`${q.q}::${plain(right.text)}. ${q.why}`, '');
       }
-    } else lines.push(`## ${s.title}`, '', s.text, '');
+    } else lines.push(`## ${s.title}`, '', s.text.replace(/^```sql run$/gm, '```sql'), '');
   }
   return lines.join('\n').replace(/\n{3,}/g, '\n\n');
 }

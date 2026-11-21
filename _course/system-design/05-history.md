@@ -37,6 +37,33 @@ Ada owns rows (10:00, 9), (10:00, 8) and (10:00, 7). Ben owns (10:00, 99). With 
 
 Compare skipping the first two rows instead. The live list now begins 10, 9, 8, 7. Skipping two would return 8 again. Decide whether a product needs a stable position for browsing or a frozen set for an export. For the latter, design how the export records its input snapshot and when that snapshot can expire.
 
+## Run both page boundaries on the same records
+
+Ada has three records with the same timestamp. She has already read IDs 9 and 8. A newer record then arrives. Which second page repeats a record? Which loses one? Run the script. The first result is page one. Compare the three candidate second pages before changing their page size.
+
+```sql run
+CREATE TABLE history (owner TEXT, started INTEGER, id INTEGER PRIMARY KEY);
+INSERT INTO history VALUES
+  ('Ada', 100, 9), ('Ada', 100, 8), ('Ada', 100, 7),
+  ('Ben', 100, 99);
+SELECT id AS first_page FROM history WHERE owner = 'Ada'
+ORDER BY started DESC, id DESC LIMIT 2;
+
+INSERT INTO history VALUES ('Ada', 101, 10);
+SELECT id AS offset_page FROM history WHERE owner = 'Ada'
+ORDER BY started DESC, id DESC LIMIT 2 OFFSET 2;
+
+SELECT id AS time_only_page FROM history
+WHERE owner = 'Ada' AND started < 100
+ORDER BY started DESC, id DESC LIMIT 2;
+
+SELECT id AS pair_page FROM history
+WHERE owner = 'Ada' AND (started, id) < (100, 8)
+ORDER BY started DESC, id DESC LIMIT 2;
+```
+
+The offset page repeats 8. The time-only page skips 7. The pair page returns 7 exactly once. If you change the first page size to one, also take its last pair as the new cursor and use an offset of one for the comparison. An index can make a query faster; it cannot fix a boundary that selects the wrong rows.
+
 ## Try it
 
 Create five rows across two owners, including a time tie. Fetch two at a time and insert a newer session between page requests. Trace the next page. On a larger fixture, compare execution plans with and without the matching index. Record rows visited as well as elapsed time.
@@ -52,3 +79,4 @@ Create five rows across two owners, including a time tie. Fetch two at a time an
 - [PostgreSQL · Multicolumn Indexes](https://www.postgresql.org/docs/17/indexes-multicolumn.html) — “the index is most efficient when there are constraints on the leading (leftmost) columns”
 
 - [PostgreSQL · LIMIT and OFFSET](https://www.postgresql.org/docs/17/queries-limit.html)
+- [SQLite · Scrolling window queries](https://www.sqlite.org/rowvalue.html)

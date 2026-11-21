@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -62,6 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#try-the-two-meanings-of-zero-rows">Run SQL</a>
         <a href="#go-deeper-what-if-the-rule-spans-different-rows">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
@@ -77,23 +79,46 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="How does the database choose a winner?"><input type="radio" name="st-conditional-write" id="st-conditional-write-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-2" aria-label="Step 2 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-3" aria-label="Step 3 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">How does the database choose a winner?</title><defs><marker id="ah-conditional-write-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-conditional-write-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-conditional-write-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-conditional-write-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One space</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-conditional-write-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Ada changes one</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-conditional-write-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Ben changes zero</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-conditional-write-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Ben rolls back</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="One inventory row, two attempted grants"><input type="radio" name="st-conditional-write" id="st-conditional-write-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-2" aria-label="Step 2 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-3" aria-label="Step 3 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-4" aria-label="Step 4 of 4"><label class="diagram-choice">Ada’s transaction
+<select data-compare-step="3"><option value="original">Commit the change</option><option value="changed">Roll back the change</option></select></label>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 253" role="img" aria-labelledby="d-title">
+<title id="d-title">One inventory row, two attempted grants</title>
+<text class="d-b" x="12" y="28" text-anchor="start">Same lot · Read Committed</text>
+<path class="d-dash" d="M18,65H402"/>
+<path class="d-dash" d="M18,111H402"/>
+<path class="d-dash" d="M18,158H402"/>
+<path class="d-dash" d="M18,206H402"/>
+<text class="d-mi" x="15" y="56" text-anchor="start">Lot row</text>
+<text class="d-b" x="144" y="56" text-anchor="start">Ada</text>
+<text class="d-b" x="272" y="56" text-anchor="start">Ben</text>
+<g class="step s1">
+  <text class="d-t" x="15" y="95" text-anchor="start">Free: 1</text>
+  <text class="d-t" x="144" y="95" text-anchor="start">Begin</text>
+  <text class="d-t" x="272" y="95" text-anchor="start">Begin</text>
+</g>
+<g class="step s2">
+  <text class="d-t" x="15" y="142" text-anchor="start">Locked</text>
+  <text class="d-a" x="144" y="142" text-anchor="start">Writes 0</text>
+  <text class="d-r" x="272" y="142" text-anchor="start">Waits</text>
+</g>
+<g class="step s3">
+  <text class="d-t" x="15" y="190" text-anchor="start"><tspan class="original-outcome">Free: 0</tspan><tspan class="changed-outcome">Free: 1</tspan></text>
+  <text class="d-t" x="144" y="190" text-anchor="start"><tspan class="original-outcome">Commits</tspan><tspan class="changed-outcome">Rolls back</tspan></text>
+  <text class="d-t" x="272" y="190" text-anchor="start">Rechecks</text>
+</g>
+<g class="step s4">
+  <text class="d-t" x="15" y="237" text-anchor="start"><tspan class="original-outcome">Grant: Ada</tspan><tspan class="changed-outcome">Grant: Ben</tspan></text>
+  <text class="d-a" x="144" y="237" text-anchor="start"><tspan class="original-outcome">Confirmed</tspan><tspan class="changed-outcome">Rolled back</tspan></text>
+  <text class="d-r" x="272" y="237" text-anchor="start"><tspan class="original-outcome">0 changed</tspan><tspan class="changed-outcome">1 changed</tspan></text>
+</g>
+<g transform="translate(397 88)" data-move="1:397,88 2:397,136 3:397,183 4:397,230"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The requests change the same inventory row.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-conditional-write-2">Next →</label></div></li>
-<li><p>Ada decrements the count and commits.</p><div class="stepnav"><label for="st-conditional-write-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-conditional-write-3">Next →</label></div></li>
-<li><p>Does the condition still match for Ben?</p><div class="stepnav"><label for="st-conditional-write-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-conditional-write-4">Next →</label></div></li>
-<li><p>Rolling back also removes Ben&#x27;s pending reservation.</p><div class="stepnav"><label for="st-conditional-write-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-conditional-write-1">↺ Again</label></div></li>
+<li><p>Two transactions try to change the same inventory row. There is one free space. Each has started its own provisional reservation.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-conditional-write-2">Next →</label></div></li>
+<li><p>Ada changes one to zero and holds the row lock. Ben attempts his conditional update. He waits while the outcome of Ada’s transaction is undecided.</p><div class="stepnav"><label for="st-conditional-write-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-conditional-write-3">Next →</label></div></li>
+<li><p><span class="original-outcome">Ada commits zero free spaces. Ben wakes and checks whether the free count is positive.</span><span class="changed-outcome">Ada rolls back. Her decrement disappears. Ben wakes and checks the restored count of one.</span></p><div class="stepnav"><label for="st-conditional-write-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-conditional-write-4">Next →</label></div></li>
+<li><p><span class="original-outcome">Zero rows match. Ben rolls back his provisional grant. Only Ada receives confirmation.</span><span class="changed-outcome">One row matches. Ben takes the space and commits his provisional grant. Only Ben receives confirmation.</span></p><div class="stepnav"><label for="st-conditional-write-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-conditional-write-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-conditional-write-1" title="Step 1"></label><label for="st-conditional-write-2" title="Step 2"></label><label for="st-conditional-write-3" title="Step 3"></label><label for="st-conditional-write-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/conditional-write.gif" download>Save this diagram as a GIF</a></p>
@@ -117,6 +142,42 @@ UPDATE lot SET free = free - 1 WHERE name = ? AND free &gt; 0;</code></pre>
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
+      <section aria-labelledby="try-the-two-meanings-of-zero-rows">
+        <h2 id="try-the-two-meanings-of-zero-rows">Try the two meanings of zero rows</h2>
+<p>Two operators both opened version 7. Ada saves first. Predict the result of Ben's save and the capacity that the driver will read afterward. <code>RETURNING</code> asks the database to show each row that this statement actually changed.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE lot (
+  name TEXT PRIMARY KEY, capacity INTEGER, version INTEGER
+);
+INSERT INTO lot VALUES ('west', 10, 7);
+
+UPDATE lot SET capacity = 12, version = version + 1
+WHERE name = 'west' AND version = 7
+RETURNING capacity, version;
+
+UPDATE lot SET capacity = 8, version = version + 1
+WHERE name = 'west' AND version = 7
+RETURNING capacity, version;
+
+SELECT name, capacity, version FROM lot;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>The first update returns capacity 12 at version 8. The second returns no rows. The final read still shows capacity 12 at version 8. Remove only the version condition from Ben’s update. Now both saves report success and Ben silently overwrites Ada. Try a missing lot name too. The same empty result can mean a missing record or a stale version. The service needs more context before telling the client why the save failed.</p>
+<p>In the reservation service the condition requires a positive free count and a provisional grant already exists in the same transaction. This is the branch that turns the database result into a reply. The variable named take holds the prepared conditional update. Executing it returns its affected-row count.</p>
+<pre><code class="language-java">take.setString(1, lot);
+if (take.executeUpdate() == 0) {
+    db.rollback();
+    return new Reply(409, &quot;full&quot;);
+}
+db.commit();
+return new Reply(201, lot);</code></pre>
+<p>A count of zero does not automatically undo the provisional grant. The explicit rollback does that. The browser example runs statements in a chosen order on SQLite. The PostgreSQL exercise below uses two live connections to measure the wait that can precede the same decision.</p>
+      </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Run the browser lab. Start with one space, send both requests and inspect the surviving claims. Repeat with two spaces. Imagine committing the insert separately before decrementing the counter. Which row would survive a crash between the two commits?</p>
@@ -150,7 +211,7 @@ UPDATE lot SET free = free - 1 WHERE name = ? AND free &gt; 0;</code></pre>
 <p class="fb ok opt-2"><b>Right.</b> Each attempt owns its own transaction.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/transaction-iso.html">PostgreSQL · Transaction Isolation</a> — “it will attempt to apply its operation to the updated version of the row”</li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/transaction-iso.html">PostgreSQL · Transaction Isolation</a> — “it will attempt to apply its operation to the updated version of the row”</li><li><a href="https://www.sqlite.org/lang_returning.html">SQLite · RETURNING</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A zero-row conditional decrement lets the transaction roll back a claim on a full lot.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

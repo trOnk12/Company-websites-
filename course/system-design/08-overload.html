@@ -62,6 +62,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#admit-a-request-only-if-it-can-still-finish">Worked code</a>
         <a href="#go-deeper-how-do-you-admit-a-short-burst">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
@@ -77,23 +78,40 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Why can retries prolong an outage?"><input type="radio" name="st-overload" id="st-overload-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-overload" id="st-overload-2" aria-label="Step 2 of 4"><input type="radio" name="st-overload" id="st-overload-3" aria-label="Step 3 of 4"><input type="radio" name="st-overload" id="st-overload-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Why can retries prolong an outage?</title><defs><marker id="ah-overload-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-overload-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-overload-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-overload-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">120 arrive</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-overload-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">100 finish</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-overload-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">1200 waiting</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-overload-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">60 s to drain</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="A queue grows for a minute and drains for a minute"><input type="radio" name="st-overload" id="st-overload-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-overload" id="st-overload-2" aria-label="Step 2 of 4"><input type="radio" name="st-overload" id="st-overload-3" aria-label="Step 3 of 4"><input type="radio" name="st-overload" id="st-overload-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 270" role="img" aria-labelledby="d-title">
+<title id="d-title">A queue grows for a minute and drains for a minute</title>
+<text class="d-b" x="14" y="26" text-anchor="start">Waiting requests</text>
+<path class="d-line" d="M53,50V200H393"/>
+<text class="d-mi" x="47" y="193" text-anchor="end">0</text>
+<text class="d-mi" x="47" y="68" text-anchor="end">1200</text>
+<path class="d-line" d="M58,196v8"/><text class="d-mi" x="58" y="227" text-anchor="middle">0</text>
+<path class="d-line" d="M217,196v8"/><text class="d-mi" x="217" y="227" text-anchor="middle">60</text>
+<path class="d-line" d="M376,196v8"/><text class="d-mi" x="376" y="227" text-anchor="middle">120</text>
+<text class="d-mi" x="400" y="252" text-anchor="end">seconds</text>
+<g class="step s1">
+  <circle class="d-dot" cx="58" cy="195" r="5"/>
+</g>
+<g class="step s2">
+  <path class="d-acc" d="M58,195 L217,65"/>
+  <text class="d-a" x="66" y="78" text-anchor="start">+20/s</text>
+</g>
+<g class="step s3">
+  <path class="d-acc" d="M217,65 L376,195"/>
+  <text class="d-a" x="312" y="87" text-anchor="start">−20/s</text>
+</g>
+<g class="step s4">
+  <path class="d-dash" d="M217,65H376"/>
+  <text class="d-r" x="373" y="52" text-anchor="end">0/s spare</text>
+</g>
+<g transform="translate(58 195)" data-move="1:58,195 2:217,65 3:376,195 4:376,65"><circle class="d-dot" cx="0" cy="0" r="6"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The peak lasts sixty seconds.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-overload-2">Next →</label></div></li>
-<li><p>Capacity stays at one hundred completions per second.</p><div class="stepnav"><label for="st-overload-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-overload-3">Next →</label></div></li>
-<li><p>Twenty extra arrivals accumulate each second.</p><div class="stepnav"><label for="st-overload-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-overload-4">Next →</label></div></li>
-<li><p>After arrivals drop to eighty, spare capacity clears the queue.</p><div class="stepnav"><label for="st-overload-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-overload-1">↺ Again</label></div></li>
+<li><p>The queue starts empty. Every second, 120 requests arrive and 100 finish. Where will the extra twenty go?</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-overload-2">Next →</label></div></li>
+<li><p>After sixty seconds, 1,200 are still waiting. The slope measures the difference between the arrival and completion rates.</p><div class="stepnav"><label for="st-overload-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-overload-3">Next →</label></div></li>
+<li><p>Traffic falls to eighty per second. Twenty slots per second drain old work; the queue reaches zero at second 120.</p><div class="stepnav"><label for="st-overload-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-overload-4">Next →</label></div></li>
+<li><p>Compare the dashed alternative from the peak: if retries keep arrivals at one hundred per second, all capacity serves incoming work. The 1,200-request backlog persists.</p><div class="stepnav"><label for="st-overload-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-overload-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-overload-1" title="Step 1"></label><label for="st-overload-2" title="Step 2"></label><label for="st-overload-3" title="Step 3"></label><label for="st-overload-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/overload.gif" download>Save this diagram as a GIF</a></p>
@@ -114,6 +132,24 @@
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
+      <section aria-labelledby="admit-a-request-only-if-it-can-still-finish">
+        <h2 id="admit-a-request-only-if-it-can-still-finish">Admit a request only if it can still finish</h2>
+<p>A limit on queue length bounds memory. The caller cares about time. Model one worker that processes ten equally expensive requests per second, one at a time. Four requests arrive together at time zero with 250 milliseconds left. How many can receive a timely result?</p>
+<pre><code class="language-python">def admit(arrivals_ms, service_ms, budget_ms):
+    free_at = 0
+    for arrival in arrivals_ms:
+        start = max(arrival, free_at)
+        finish = start + service_ms
+        if finish &gt; arrival + budget_ms:
+            print(arrival, &quot;refused; worker free at&quot;, free_at)
+        else:
+            free_at = finish
+            print(arrival, &quot;accepted; finishes at&quot;, finish)
+
+admit([0, 0, 0, 0], service_ms=100, budget_ms=250)</code></pre>
+<p>Run this file with Python 3. Only the first two are accepted. The third would finish at 300 milliseconds. A refusal leaves the scheduled work unchanged. Change the last arrival to 100. Its deadline moves to 350, so the worker can finish it at 300. That is admission control: make a decision before adding work.</p>
+<p>The model assumes a known service time. A real dependency can suddenly take longer. Measure actual completion times and refused requests together. A policy can reduce the waiting time of accepted requests merely by rejecting most arrivals.</p>
+      </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Give a request 500 milliseconds. Entry processing takes 60, the first dependency call takes 200, and the retry delay takes 100. Only 140 remain for all remaining work. Would you start a call that usually needs 180? Run the queue model and change only the arrival rate after the peak.</p>

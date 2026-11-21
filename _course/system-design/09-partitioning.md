@@ -32,6 +32,35 @@ Moving the west lot from storage A to B takes time. Copying the current rows alo
 
 - Which test is stronger than comparing row counts after the move?::Keep reserving during migration. Record every confirmed identity and verify each grant and capacity after cutover.
 
+## Add a shard without moving every key
+
+A shard is a storage owner responsible for some keys. The service routes each reservation to the current write owner. At cutover a service instance using an old owner list must refresh it and the former owner must refuse the stale write. Try two routing functions in Python 3. The first reduces a **hash**, a repeatable number derived from the key, to a list position. The second scores each pair of key and owner and chooses the highest score. This second technique is called rendezvous hashing.
+
+```python
+from hashlib import sha256
+
+def score(text):
+    return int.from_bytes(sha256(text.encode()).digest(), "big")
+
+def modulo(key, owners):
+    return owners[score(key) % len(owners)]
+
+def rendezvous(key, owners):
+    return max(owners, key=lambda owner: score(key + ":" + owner))
+
+old = ["north", "south", "west"]
+new = old + ["east"]
+for route in (modulo, rendezvous):
+    moves = [(route(str(k), old), route(str(k), new)) for k in range(1000)]
+    changed = [(before, after) for before, after in moves if before != after]
+    print(route.__name__, len(changed),
+          sum(after != "east" for before, after in changed))
+```
+
+For these keys the output is 769 keys moved under modulo and 222 under rendezvous. Of those moves, 512 and zero respectively went between existing owners. The last column counts moves between two *existing* owners. Predict why it must be zero for rendezvous: adding east changes none of the old scores. If east wins, the key moves there. Otherwise the old winner stays ahead. The calculation scans every candidate and assumes agreed, stable owner names. Membership changes still require a protocol for copying state and switching the write owner.
+
+Now route one thousand requests for the same key. Every request goes to the same winner. Reducing the number of keys you move during expansion solves a different problem from a hot lot receiving most of the traffic.
+
 ## Try it
 
 Give two pools five spaces each. Seven drivers arrive at A and one at B. Without transfers, A grants five and refuses two even though B has spare capacity. Compare that cost with waiting for a shared counter. Propose a test showing that transferring a right does not copy it.
@@ -45,3 +74,4 @@ Give two pools five spaces each. Seven drivers arrive at A and one at B. Without
 ## Sources
 
 - [PostgreSQL · Table Partitioning](https://www.postgresql.org/docs/17/ddl-partitioning.html) — “splitting what is logically one large table into smaller physical pieces”
+- [Thaler and Ravishankar · Using name-based mappings to increase hit rates](https://www.cs.kent.edu/~javed/DL/web/p1-thaler.pdf)

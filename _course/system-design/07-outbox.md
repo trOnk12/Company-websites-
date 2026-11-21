@@ -32,6 +32,36 @@ Grant has version one and a later reversal version two. Applying two and then on
 
 - May a balance consumer skip a missing event that only contains an amount to add?::Not without another recovery rule. The missing amount changes the total.
 
+## Deliver event 41 twice to a real table
+
+Focus on the receiving service. The publisher can deliver the same event again after a crash. This consumer owns both a table of accepted event IDs and a local count. A **trigger** is work the database runs as part of a statement. Here it updates the count only when a new ID is inserted.
+
+```sql run
+CREATE TABLE accepted (event_id INTEGER PRIMARY KEY);
+CREATE TABLE dashboard (confirmed INTEGER NOT NULL);
+INSERT INTO dashboard VALUES (0);
+CREATE TRIGGER count_new_grant AFTER INSERT ON accepted
+BEGIN
+  UPDATE dashboard SET confirmed = confirmed + 1;
+END;
+
+BEGIN;
+INSERT INTO accepted VALUES (41);
+ROLLBACK;
+SELECT confirmed AS after_crash FROM dashboard;
+
+INSERT INTO accepted VALUES (41)
+ON CONFLICT (event_id) DO NOTHING;
+INSERT INTO accepted VALUES (41)
+ON CONFLICT (event_id) DO NOTHING;
+SELECT confirmed, (SELECT COUNT(*) FROM accepted) AS distinct_events
+FROM dashboard;
+```
+
+The rollback removes both writes. The next delivery inserts 41 and increments the count. The last delivery inserts nothing, so the trigger never fires. The results are zero after the rollback and one confirmation for one distinct event after replay. Change only the final 41 to 42 and predict both counts.
+
+The publishing side has a different transaction. It inserts the reservation and a row in its outbox, then commits both. A worker may publish that row more than once. The receiving transaction above protects one database projection. An email sent from outside that database would need its own delivery contract.
+
 ## Try it
 
 [Crash the receipt worker and replay event 41 in the browser lab](https://pachulski.dev/labs/parking-design/#delivery)
@@ -47,3 +77,4 @@ Trace crashes before the reservation commits, after it commits, and after delive
 ## Sources
 
 - [AWS · Transactional outbox](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html) — “The events processing service might send out duplicate messages or events”
+- [SQLite · CREATE TRIGGER](https://www.sqlite.org/lang_createtrigger.html)

@@ -1,17 +1,39 @@
-<!-- label: How do you send an event after a crash? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">How do you send an event after a crash?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Reservation</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Pending event</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Delivery</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Receipt</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: Two deliveries of event 41, one dashboard change -->
+<svg class="design-figure" viewBox="0 0 420 270" role="img" aria-labelledby="d-title">
+<title id="d-title">Two deliveries of event 41, one dashboard change</title>
+<text class="d-b" x="16" y="29" text-anchor="start">Booking database</text>
+<text class="d-b" x="249" y="29" text-anchor="start">Dashboard</text>
+<path class="d-dash" d="M210,17V219"/>
+<rect class="d-band" x="16" y="48" width="165" height="110" rx="5"/>
+<rect class="d-band" x="242" y="48" width="162" height="110" rx="5"/>
+<g class="step only-1">
+  <text class="d-t" x="31" y="90" text-anchor="start">Before commit</text>
+  <text class="d-t" x="258" y="90" text-anchor="start">Count: 0</text>
+</g>
+<g class="step s2">
+  <text class="d-t" x="31" y="86" text-anchor="start">Grant: Ada</text>
+  <text class="d-t" x="31" y="125" text-anchor="start">Event: 41</text>
+</g>
+<g class="step only-2">
+  <text class="d-t" x="258" y="90" text-anchor="start">Count: 0</text>
+</g>
+<g class="step s3">
+  <text class="d-t" x="258" y="87" text-anchor="start">Seen: 41</text>
+  <text class="d-a" x="258" y="127" text-anchor="start">Count: 1</text>
+</g>
+<g class="step s3">
+  <x-arrow tone="acc" d="M52,178 H343"/>
+  <text class="d-mi" x="195" y="202" text-anchor="middle">Delivery 1</text>
+</g>
+<g class="step s4">
+  <x-arrow tone="acc" d="M52,230 H343"/>
+  <text class="d-mi" x="195" y="254" text-anchor="middle">Delivery 2</text>
+</g>
+<g transform="translate(39 141)" data-move="1:39,141 2:155,141 3:337,178 4:337,230"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>A reservation transaction begins.</p></li>
-<li><p>The grant and pending event commit together.</p></li>
-<li><p>The consumer acts. Predict the effect of a lost receipt.</p></li>
-<li><p>The sender may deliver the same identity again.</p></li>
+<li><p>The booking database and the dashboard can fail independently. The dashboard begins at zero.</p></li>
+<li><p>One transaction commits both Ada’s grant and event 41. A crash now leaves a durable obligation to publish.</p></li>
+<li><p>The receiver accepts 41 and commits the count with the processed identity. The sender crashes before it records that delivery succeeded.</p></li>
+<li><p>The replacement sends event 41 again. The existing processed identity suppresses the second increment. Count the arrows, then count the effects.</p></li>
 </ol>

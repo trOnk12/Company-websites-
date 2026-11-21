@@ -32,6 +32,31 @@ Send a small, representative group to a new version and keep a control group. Me
 
 - One group handles only empty lots. Is its write duration representative of hot lots?::No. Contention and the proportion of refusals change the work.
 
+## Find the missing 900 milliseconds
+
+A trace records four timestamps on the same clock. The request begins, a connection becomes available, the query finishes, and the response reaches the measurement boundary. Each request asks for a connection at arrival and starts its query immediately upon acquisition. Both examples finish in 950 milliseconds. Predict which one a faster query could materially improve.
+
+```sql run
+CREATE TABLE trace (
+  request TEXT, arrived INTEGER, acquired INTEGER,
+  query_done INTEGER, replied INTEGER
+);
+INSERT INTO trace VALUES
+  ('A', 0, 920, 932, 950),
+  ('B', 0,   2, 932, 950);
+
+SELECT request,
+       acquired - arrived AS wait_ms,
+       query_done - acquired AS query_ms,
+       replied - query_done AS rest_ms,
+       replied - arrived AS total_ms
+FROM trace ORDER BY request;
+```
+
+Request A spent 920 milliseconds waiting and 12 executing. Holding the other intervals fixed, even an instant query would save at most 12 milliseconds from that trace. Request B spent 930 milliseconds executing. A shared total concealed two different investigations. Change B's acquisition time to 902 while keeping its end time fixed. Which measurement would you now collect first?
+
+These intervals are adjacent and use one clock. A trace containing parallel downstream calls is different. Summing both durations would count their overlap twice. Trace the chain that actually delayed the response.
+
 ## Try it
 
 Sort one hundred latencies: ninety-eight at 40 milliseconds and two at 2,000. The nearest-rank 99th percentile is observation 99, or two seconds. The mean is 79.2 milliseconds. Design an alert for rapid budget consumption and name one observation that would disprove your first diagnosis.

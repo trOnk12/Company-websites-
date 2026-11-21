@@ -50,8 +50,10 @@ test.describe('Course', () => {
   for (const { id, slug } of COURSES.flatMap(c => c.puzzles.map(slug => ({ id: c.id, slug })))) {
     test(`${id}: puzzle "${slug}" steps through its diagram without JavaScript`, async ({ page }) => {
       await page.goto(`/course/${id}/${slug}.html`);
-      // Only the course's own player script, from this site.
-      for (const src of await page.locator('script').evaluateAll(ss => ss.map(s => s.getAttribute('src')))) expect(['../progress-index.js', '../course.js']).toContain(src);
+      const expectedScripts = ['../progress-index.js', '../course.js'];
+      if (await page.locator('[data-sql-exercise]').count()) expectedScripts.push('../../labs/sql/lesson.js');
+      expect(await page.locator('script').evaluateAll(tags => tags.map(tag => tag.getAttribute('src'))))
+        .toEqual(expectedScripts);
       const stepper = page.locator('.stepper');
       await expect(stepper).toHaveCount(1);
       const steps = await stepper.locator('> input').count();

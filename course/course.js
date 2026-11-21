@@ -90,17 +90,24 @@
       if (e.target.closest('label')) { touched = true; setPlaying(false); }
     });
 
+    const choice = fig.querySelector('select[data-compare-step]');
+    if (choice) choice.addEventListener('change', () => {
+      touched = true;
+      setPlaying(false);
+      go(Math.max(current(), Number(choice.dataset.compareStep) - 1));
+    });
+
     // Arrow keys when the diagram has focus, swipes on phones.
     fig.tabIndex = -1;
     fig.addEventListener('keydown', e => {
-      if (e.target.closest('button')) return;
+      if (e.target.closest('button, select')) return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault(); touched = true; setPlaying(false);
         go(current() + (e.key === 'ArrowRight' ? 1 : -1));
       }
     });
     let x0 = null;
-    fig.addEventListener('touchstart', e => { const st = e.target.closest('.stage'); x0 = st && st.scrollWidth > st.clientWidth ? null : e.touches[0].clientX; }, { passive: true }); // a wide diagram on a phone scrolls instead
+    fig.addEventListener('touchstart', e => { const st = e.target.closest('.stage'); x0 = e.target.closest('select') || (st && st.scrollWidth > st.clientWidth) ? null : e.touches[0].clientX; }, { passive: true }); // a wide diagram on a phone scrolls instead
     fig.addEventListener('touchend', e => {
       if (x0 === null) return;
       const dx = e.changedTouches[0].clientX - x0; x0 = null;

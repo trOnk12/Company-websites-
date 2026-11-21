@@ -105,6 +105,7 @@ function diagram(course, name, file) {
   const f = path.join(course.dir, 'diagrams', `${name}.html`);
   if (!fs.existsSync(f)) { fail(file, `unknown diagram ${name}`); return ''; }
   const src = require('./course-shapes').expand(fs.readFileSync(f, 'utf8'), name);
+  const choice = src.match(/<label class="diagram-choice">[\s\S]*?<\/label>/)?.[0] || '';
   const svg = src.match(/<svg[\s\S]*<\/svg>/);
   const caps = [...src.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(m => m[1].trim());
   const label = (src.match(/<!--\s*label:\s*(.*?)\s*-->/) || [])[1] || name;
@@ -114,7 +115,7 @@ function diagram(course, name, file) {
   const radios = caps.map((_, i) => `<input type="radio" name="${id}" id="${id}-${i + 1}"${i === 0 ? ' checked' : ''} aria-label="Step ${i + 1} of ${n}">`).join('');
   const items = caps.map((c, i) => `<li>${c}<div class="stepnav">${i > 0 ? `<label for="${id}-${i}">← Back</label>` : '<span class="spacer"></span>'}<span class="count">Step ${i + 1} of ${n}</span>${i < n - 1 ? `<label class="next" for="${id}-${i + 2}">Next →</label>` : `<label for="${id}-1">↺ Again</label>`}</div></li>`).join('\n');
   const dots = caps.map((_, i) => `<label for="${id}-${i + 1}" title="Step ${i + 1}"></label>`).join('');
-  return `<figure class="stepper" aria-label="${L.esc(label)}">${radios}
+  return `<figure class="stepper" aria-label="${L.esc(label)}">${radios}${choice}
 <div class="stage" tabindex="0" aria-label="Diagram">${svg[0]}</div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
@@ -207,6 +208,18 @@ function buildsOnHere(course, p) {
 
 const sectionId = title => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
+function sqlExercise(block, ctx) {
+  return `<div class="lesson-sql" data-sql-exercise>
+${L.renderBlocks([{ ...block, lang: 'sql' }], ctx)}
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>`;
+}
+
 function renderPuzzle(course, p, terms) {
   const ctx = { file: p.file, cards: new Map(course.puzzles.map(q => [q.slug, q])), links: new Set() };
   const sections = L.parseBody(p.body, ctx);
@@ -216,6 +229,9 @@ function renderPuzzle(course, p, terms) {
   for (const m of p.raw.matchAll(L.TICKET_KEY)) if (!L.NOT_TICKETS.has(m[0].split('-')[0])) fail(p.file, `looks like a ticket key: ${m[0]}`);
   for (const t of terms) if (p.raw.toLowerCase().includes(t.toLowerCase())) fail(p.file, `contains a private term: ${t}`);
 
+  const sqlSection = sections.find(s => s.blocks.some(b => b.type === 'code' && b.lang === 'sql run'));
+  const codeSection = sqlSection || (course.id === 'system-design' && sections.find(s =>
+    s.blocks.some(b => b.type === 'code' && b.lang === 'python')));
   const depth = sections.filter(s => s.title.startsWith('Go deeper: '));
   let questionCount = 0;
   const body = sections.map(s => {
@@ -229,6 +245,7 @@ function renderPuzzle(course, p, terms) {
       }).join('\n')
       : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
       ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
+      : b.type === 'code' && b.lang === 'sql run' ? sqlExercise(b, ctx)
       : L.renderBlocks([b], ctx, { recall: depth.includes(s) && b.type === 'ul' })).join('\n');
     if (depth.includes(s)) {
       return `      <details class="depth-puzzle" id="${sid}">
@@ -259,7 +276,7 @@ ${html}
     title: `${p.meta.title} – ${course.meta.title} – Mateusz Pachulski`,
     description: p.meta.summary,
     canonical: `${L.SITE}/course/${course.id}/${p.slug}`,
-    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js', ...(sqlSection ? ['../../labs/sql/lesson.js'] : [])],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
       <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
     body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}">
@@ -276,7 +293,7 @@ ${html}
       <nav class="lesson-jumps" aria-label="In this puzzle">
         ${titles.includes('See it') ? '<a href="#see-it">Diagram</a>' : ''}
         ${titles.includes('The building block') ? '<a href="#the-building-block">Mechanism</a>' : ''}
-${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}${titles.includes('Try it') ? '        <a href="#try-it">Try it</a>\n' : ''}        <a href="#check-yourself">Check your understanding</a>
+${codeSection ? `        <a href="#${sectionId(codeSection.title)}">${sqlSection ? 'Run SQL' : 'Worked code'}</a>\n` : ''}${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}${titles.includes('Try it') ? '        <a href="#try-it">Try it</a>\n' : ''}        <a href="#check-yourself">Check your understanding</a>
       </nav>
 ${buildsOn(course, p)}
 ${linked}

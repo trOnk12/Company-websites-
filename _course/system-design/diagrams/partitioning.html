@@ -1,17 +1,32 @@
-<!-- label: When does splitting the data help? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">When does splitting the data help?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Ten rights</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Five at A</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Five at B</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">A exhausted</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: Ten local rights split between two regions -->
+<svg class="design-figure" viewBox="0 0 420 246" role="img" aria-labelledby="d-title">
+<title id="d-title">Ten local rights split between two regions</title>
+<text class="d-b" x="16" y="29" text-anchor="start">Rights to grant a space</text>
+<text class="d-b" x="18" y="77" text-anchor="start">West</text>
+<text class="d-b" x="18" y="151" text-anchor="start">East</text>
+<circle class="d-box" cx="141" cy="70" r="15"/><circle class="d-box" cx="192" cy="70" r="15"/><circle class="d-box" cx="243" cy="70" r="15"/><circle class="d-box" cx="294" cy="70" r="15"/><circle class="d-box" cx="345" cy="70" r="15"/>
+<circle class="d-box" cx="141" cy="145" r="15"/><circle class="d-box" cx="192" cy="145" r="15"/><circle class="d-box" cx="243" cy="145" r="15"/><circle class="d-box" cx="294" cy="145" r="15"/><circle class="d-box" cx="345" cy="145" r="15"/>
+<g class="step s2">
+  <path class="d-acc" d="M134,69l5,6 9,-12"/>
+  <path class="d-acc" d="M185,69l5,6 9,-12"/>
+  <path class="d-acc" d="M236,69l5,6 9,-12"/>
+  <path class="d-acc" d="M287,69l5,6 9,-12"/>
+  <path class="d-acc" d="M338,69l5,6 9,-12"/>
+  <text class="d-a" x="18" y="109" text-anchor="start">5 granted</text>
+</g>
+<g class="step s3">
+  <path class="d-acc" d="M134,144l5,6 9,-12"/>
+  <text class="d-a" x="18" y="184" text-anchor="start">1 granted</text>
+</g>
+<g class="step s4">
+  <text class="d-r" x="18" y="227" text-anchor="start">West: 2 refused</text>
+  <text class="d-a" x="215" y="227" text-anchor="start">East: 4 unused</text>
+</g>
+<g transform="translate(141 89)" data-move="1:141,89 2:345,89 3:141,165 4:193,165"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg>
 <ol class="caps">
-<li><p>Ten rights exist in total.</p></li>
-<li><p>A receives five independent rights.</p></li>
-<li><p>B receives the remaining five.</p></li>
-<li><p>A may refuse even while B has spare capacity.</p></li>
+<li><p>Each ring is an independent right to grant one space. Five belong to west and five to east. Count all ten before sending requests.</p></li>
+<li><p>Seven drivers reach west. West can consume five rights without asking east. What happens to drivers six and seven?</p></li>
+<li><p>One driver reaches east and uses one local right. The four empty rings there can still back four new grants.</p></li>
+<li><p>Two west requests are refused despite four spare rights in east. Moving a right would have to remove it from one owner before the other spends it.</p></li>
 </ol>

@@ -1,17 +1,37 @@
-<!-- label: Where does the next page of history begin? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Where does the next page of history begin?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One owner</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Time and number</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Last pair</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Next twenty</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: A time tie and an insert move two page boundaries apart -->
+<svg class="design-figure" viewBox="0 0 420 260" role="img" aria-labelledby="d-title">
+<title id="d-title">A time tie and an insert move two page boundaries apart</title>
+<text class="d-b" x="15" y="28" text-anchor="start">Ada’s history · newest first</text>
+<text class="d-mi" x="18" y="62" text-anchor="start">Ordered rows</text>
+<text class="d-mi" x="253" y="62" text-anchor="start">Page result</text>
+<g class="step upto-2">
+  <rect class="d-box" x="17" y="81" width="55" height="44" rx="5"/><text class="d-t" x="44.5" y="109" text-anchor="middle">9</text>
+  <rect class="d-box" x="78" y="81" width="55" height="44" rx="5"/><text class="d-t" x="105.5" y="109" text-anchor="middle">8</text>
+  <rect class="d-box" x="139" y="81" width="55" height="44" rx="5"/><text class="d-t" x="166.5" y="109" text-anchor="middle">7</text>
+</g>
+<g class="step s2">
+  <text class="d-t" x="246" y="111" text-anchor="start">First: 9, 8</text>
+  <text class="d-a" x="17" y="166" text-anchor="start">Cursor = (10:00, 8)</text>
+</g>
+<g class="step s3">
+  <rect class="d-hl" x="17" y="81" width="48" height="44" rx="5"/><text class="d-t" x="41" y="109" text-anchor="middle">10</text>
+  <rect class="d-box" x="70" y="81" width="48" height="44" rx="5"/><text class="d-t" x="94" y="109" text-anchor="middle">9</text>
+  <rect class="d-box" x="123" y="81" width="48" height="44" rx="5"/><text class="d-t" x="147" y="109" text-anchor="middle">8</text>
+  <rect class="d-box" x="176" y="81" width="48" height="44" rx="5"/><text class="d-t" x="200" y="109" text-anchor="middle">7</text>
+</g>
+<g class="step s3">
+  <text class="d-r" x="246" y="201" text-anchor="start">Offset: 8, 7</text>
+  <path class="d-dash" d="M50,192H194"/>
+</g>
+<g class="step s4">
+  <text class="d-a" x="246" y="241" text-anchor="start">Cursor: 7</text>
+  <x-arrow tone="acc" d="M50,236H200"/>
+</g>
+<g transform="translate(43 133)" data-move="1:43,133 2:106,133 3:146,133 4:199,133"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>The table contains several drivers.</p></li>
-<li><p>Select a total order within one driver&#x27;s history.</p></li>
-<li><p>Save both values from the last displayed row.</p></li>
-<li><p>Continue strictly beyond that pair.</p></li>
+<li><p>All three rows started at 10:00. Their distinct IDs break the time tie and determine their order.</p></li>
+<li><p>The first page has room for two. Save both the time and the last displayed ID. That pair identifies the boundary after 8.</p></li>
+<li><p>A newer row 10 arrives before the next page. Skipping two rows in the live list returns 8 a second time.</p></li>
+<li><p>The cursor still means “strictly after (10:00, 8)” in descending order. Only 7 qualifies. Using the timestamp alone would skip 7 completely.</p></li>
 </ol>

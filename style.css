@@ -923,3 +923,29 @@ li[data-state='done'] .puzzle-state { color: #245B37; background: #E3EFE1; }
 .builds-on-card p { margin: 0 0 .4rem; }
 .builds-on-card ul { margin: 0; padding-left: 1.1rem; }
 .builds-on-card li { margin: .15rem 0; }
+
+.lesson-sql label { display: block; }
+.lesson-sql [hidden] { display: none; }
+.lesson-sql textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-block: .4rem .8rem;
+  padding: .8rem;
+  font: 1rem/1.5 monospace;
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: .35rem;
+}
+.lesson-sql .button { cursor: pointer; }
+.lesson-sql [role="status"]:empty { display: none; }
+
+.stage svg.design-figure { min-width: 0; }
+.stepper:has(.design-figure) .diagram-scroll-hint { display: none; }
+
+.diagram-choice { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .8rem; margin-bottom: .75rem; font-weight: 700; }
+.diagram-choice select { min-height: 2.75rem; max-width: 100%; font: inherit; }
+.stepper .changed-outcome { display: none; }
+.stepper:has(.diagram-choice option[value="changed"]:checked) .original-outcome { display: none; }
+.stepper:has(.diagram-choice option[value="changed"]:checked) .changed-outcome { display: inline; }

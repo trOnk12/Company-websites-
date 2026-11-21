@@ -28,6 +28,25 @@ A, B and C are voting nodes. Ada receives a successful grant after the current l
 
 In a fresh run, isolate C before Ada makes her reservation. Move Ben's read until after Ada receives confirmation from A. If Ben asks C for the latest committed inventory and sees the original free space, that history violates the real-time ordering promise in this one-space example. A map read explicitly allowed to be stale can return the very same value within its age limit. Check the operation's contract before calling either result correct.
 
+## Why two copies can still be insufficient
+
+In Raft a term is a numbered election period. A term can end without a leader being elected. A log entry has a position and the term in which it was created. Consider an elected leader in term 4 with voters A, B and C. Its log positions 1 through 8 match on A and B. Position 8 was written in term 3. May the new leader mark position 8 committed just by counting those copies?
+
+```python
+def can_advance(index, entry_term, leader_term, matched_through):
+    majority = len(matched_through) // 2 + 1
+    copies = sum(position >= index for position in matched_through)
+    return entry_term == leader_term and copies >= majority
+
+print(can_advance(8, 3, 4, [8, 8, 6]))
+print(can_advance(9, 4, 4, [9, 8, 6]))
+print(can_advance(9, 4, 4, [9, 9, 6]))
+```
+
+Each list entry gives the last log position known to match on one voter. Run with Python 3. The lines read False, False, True. In the last case the current-term entry at 9 can advance the commit position. The preceding entries in the leader's log, including 8, become committed with it. Counting replicas of the older entry directly would discard a condition on which Raft's safety argument depends.
+
+Change only the final list to five positions: 9, 9, 8, 8, 6. Two copies at 9 no longer suffice. This function isolates one rule for an established leader with a fixed voting group and a candidate position beyond the current commit position. A deployable protocol also needs leader election, durable logs, matching prefixes and recovery. See sections 5.3 and 5.4.2 of the Raft paper.
+
 ## Try it
 
 [Compare two write acknowledgements across a real PostgreSQL promotion](https://pachulski.dev/labs/parking-design/#failover)

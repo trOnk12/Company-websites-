@@ -32,6 +32,25 @@ At 120,000 accepted sessions per day and 800 bytes of row and index data per ses
 
 - What happens if accepted sessions double at the same retention and size?::One copy grows to about 70.08 billion bytes.
 
+## Measure a burst that an average hides
+
+A service records one timestamp for each arriving request. In this small trace a number is seconds since the experiment began. Divide the number by ten and keep the whole part to assign each request to a ten-second bucket. Which bucket should set the minimum load for the next test?
+
+```sql run
+CREATE TABLE arrival (second INTEGER);
+INSERT INTO arrival VALUES
+  (0), (10), (20), (20), (21), (22), (22), (29);
+
+SELECT (second / 10) * 10 AS bucket_start,
+       COUNT(*) AS arrivals,
+       COUNT(*) / 10.0 AS requests_per_second
+FROM arrival
+GROUP BY bucket_start
+ORDER BY bucket_start;
+```
+
+Eight requests in thirty seconds average about 0.27 per second. The last bucket alone gets six, or 0.6 per second. Change 29 to 30. The request moves to the next bucket because the interval includes its start and excludes its end. A bucket is a measurement choice. Two spikes on opposite sides of a boundary can hit the same database queue. A load test should replay the arrival times if that ordering matters.
+
 ## Try it
 
 Shorten the peak to five minutes while keeping its total demand. Predict the arrival rate and work in flight before reading on. At the same mean duration the answers are 800 per second and 120 in flight. Measure arrivals, completions and backlog separately to check whether the duration actually holds.

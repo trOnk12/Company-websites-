@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -62,6 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#transfer-the-parking-guarantee-to-numbered-seats">Run SQL</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -76,23 +78,34 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Does the design survive a changed assumption?"><input type="radio" name="st-design-review" id="st-design-review-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-design-review" id="st-design-review-2" aria-label="Step 2 of 4"><input type="radio" name="st-design-review" id="st-design-review-3" aria-label="Step 3 of 4"><input type="radio" name="st-design-review" id="st-design-review-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Does the design survive a changed assumption?</title><defs><marker id="ah-design-review-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-design-review-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-design-review-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-design-review-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Assumption</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-design-review-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Design</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-design-review-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Counterexample</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-design-review-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Revised decision</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="A visibility deadline meets measured fan-out capacity"><input type="radio" name="st-design-review" id="st-design-review-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-design-review" id="st-design-review-2" aria-label="Step 2 of 4"><input type="radio" name="st-design-review" id="st-design-review-3" aria-label="Step 3 of 4"><input type="radio" name="st-design-review" id="st-design-review-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="d-title">
+<title id="d-title">A visibility deadline meets measured fan-out capacity</title>
+<text class="d-b" x="18" y="28" text-anchor="start">One post · 2 million followers</text>
+<rect class="d-box" x="20" y="72" width="376" height="39" rx="2"/>
+<text class="d-mi" x="20" y="58" text-anchor="start">Entries delivered</text>
+<g class="step s1">
+  <text class="d-t" x="19" y="149" text-anchor="start">Promise: visible within 10 s</text>
+</g>
+<g class="step s2">
+  <rect class="d-hl" x="20" y="72" width="94" height="39" rx="2"/>
+  <text class="d-a" x="19" y="179" text-anchor="start">At 10 s: 500,000 delivered</text>
+</g>
+<g class="step s3">
+  <path class="d-red" d="M114,116v8H390v-8"/>
+  <text class="d-r" x="239" y="232" text-anchor="middle">1.5 million still waiting</text>
+</g>
+<g class="step s4">
+  <text class="d-b" x="18" y="269" text-anchor="start">Minimum completion time: 40 s</text>
+</g>
+<g transform="translate(21 118)" data-move="1:21,118 2:114,118 3:236,124 4:396,117"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>State a promise a user can observe.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-design-review-2">Next →</label></div></li>
-<li><p>Identify the component responsible for the promise.</p><div class="stepnav"><label for="st-design-review-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-design-review-3">Next →</label></div></li>
-<li><p>Design a test capable of breaking it.</p><div class="stepnav"><label for="st-design-review-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-design-review-4">Next →</label></div></li>
-<li><p>Change one assumption and check your prediction.</p><div class="stepnav"><label for="st-design-review-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-design-review-1">↺ Again</label></div></li>
+<li><p>A reviewer changes one assumption: a single publisher has two million followers. Suppose visibility requires one stored feed entry for each follower.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-design-review-2">Next →</label></div></li>
+<li><p>Even if the measured writer devotes all 50,000 entries per second to this post, ten seconds produces only half a million entries.</p><div class="stepnav"><label for="st-design-review-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-design-review-3">Next →</label></div></li>
+<li><p>At the deadline, three quarters of the followers are still missing their entries. More queue space cannot increase write throughput.</p><div class="stepnav"><label for="st-design-review-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-design-review-4">Next →</label></div></li>
+<li><p>Forty seconds is the best possible completion time at this rate. Try merging this publisher’s recent posts when a reader opens the feed. Now measure the new read cost.</p><div class="stepnav"><label for="st-design-review-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-design-review-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-design-review-1" title="Step 1"></label><label for="st-design-review-2" title="Step 2"></label><label for="st-design-review-3" title="Step 3"></label><label for="st-design-review-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/design-review.gif" download>Save this diagram as a GIF</a></p>
@@ -104,6 +117,34 @@
 <h3>Defend a decision under a changed assumption</h3>
 <p>For a feed with two million followers and a ten-second visibility objective, writing one entry per follower would need 200,000 entries per second for that post alone. Suppose the measured writer sustains 50,000 per second including ordinary work. Even dedicating all of it to this post takes at least 40 seconds. Four times more queue space cannot shorten that lower bound.</p>
 <p>A candidate design merges that author's recent posts when a reader opens the feed. State the new cost: feed reads now perform merge work and must enforce current access rights. Test with the actual distribution of follows per reader and a private post revoked between reads. A reviewer can now challenge both the old throughput ceiling and the new read-latency assumption.</p>
+      </section>
+      <section aria-labelledby="transfer-the-parking-guarantee-to-numbered-seats">
+        <h2 id="transfer-the-parking-guarantee-to-numbered-seats">Transfer the parking guarantee to numbered seats</h2>
+<p>A counter can issue two bookings within capacity while assigning both people B12. In this design an active ticket claims one chair at one event. A partial unique index is a rule the database applies only to rows matching its condition. Here that condition is an active ticket.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE ticket (
+  id INTEGER PRIMARY KEY, event TEXT NOT NULL,
+  seat TEXT NOT NULL, active INTEGER NOT NULL CHECK (active IN (0, 1))
+);
+CREATE UNIQUE INDEX one_live_ticket
+ON ticket(event, seat) WHERE active = 1;
+
+INSERT INTO ticket VALUES (1, 'Friday', 'B12', 1);
+INSERT INTO ticket VALUES (2, 'Friday', 'B12', 1)
+ON CONFLICT (event, seat) WHERE active = 1 DO NOTHING;
+INSERT INTO ticket VALUES (3, 'Saturday', 'B12', 1);
+SELECT id, event, seat FROM ticket WHERE active = 1 ORDER BY id;
+SELECT id, active FROM ticket WHERE event = 'Friday' ORDER BY id;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>The first table shows active tickets 1 and 3. The second lists every Friday ticket, including any that have ended. Friday's second claim loses, while Saturday is an independent event. Now put the following statement just before the second insert and rerun. Predict which Friday ticket is active and how many Friday rows remain in the table.</p>
+<pre><code class="language-sql">UPDATE ticket SET active = 0 WHERE id = 1;</code></pre>
+<p>Friday now has two historical rows and one active ticket, number 2. The database retains the old purchase for audit. Defend this choice to a reviewer who proposes uniqueness on seat alone: the same chair is sellable again on Saturday. Then ask what changes for general admission where the promise is a total capacity and tickets have no seat numbers.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -134,7 +175,7 @@
 <p class="fb no opt-2"><b>Not quite.</b> A diagram expresses a hypothesis that a drill can test. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a></li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a></li><li><a href="https://www.sqlite.org/partialindex.html">SQLite · Unique partial indexes</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Defend the user-visible guarantee with a counterexample, a measurement and a changed assumption.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
