@@ -14,6 +14,17 @@ Everything decided in conversation, so it isn't lost when a session ends. Sprint
 4. **Bluetooth (BLE) is paused.** Its review findings stay in Sprint 12 for later.
 5. Then **UX and UI designer reviews** of the course section, and the redesign. **Content first, UI after.**
 
+## Also agreed (21 November 2026)
+
+- **Tutoring (`korepetycje/`, Polish):** first maths pupils are the goal. Publish only where official APIs or the owner's
+  own tap allow it; anything Mateusz can do from his phone in one tap is welcome (`/korepetycje/udostepnij/`,
+  GitHub Actions "Run workflow"). Plan and steps: `TUTORING.md`.
+- **The blog (learning log, `learning/`):** make it perfect **before the first post**: design, reading flow, sharing
+  preview, and a first article that's verifiably correct.
+- **Hands-free mode:** learning by talking with the site, "like we talk, but better": one tap to start, then voice
+  only: browse, open a lesson, hear it, ask, interrupt, go back. **In English.** Plan: `SPRINTS.md`
+  ("hands-free course navigation"); needs a small server-side session service for the voice provider key.
+
 ## How we teach (non-negotiable)
 
 - Write learner-facing tutorials, exercises, diagrams, quizzes and solutions in English. **Everything in the
