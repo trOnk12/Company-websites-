@@ -161,10 +161,10 @@ return Promise.race([pending.get(lot), deadline]);</code></pre>
         <h2 id="try-it">Try it</h2>
 <p>Does this outcome also occur across real HTTP connections? Save <a href="/labs/read-path/waiters.py">the local experiment</a> as waiters.py and run the command below with Python 3. The script starts temporary HTTP servers on your own computer. Each service instance has its own pending table. They run in the same Python process and share an executor for the storage calls.</p>
 <pre><code class="language-sh">python3 waiters.py</code></pre>
-<p>The script holds the storage response until both driver requests have entered their handlers and the short wait has ended. The following lines are the decision in the handler. The timeout belongs to the caller waiting on the future, the object holding the eventual answer. The storage worker continues running.</p>
+<p>The script holds the storage response until both driver requests have entered their handlers and the short wait has ended. The following lines are the decision in the handler. The timeout belongs to the caller waiting on the future, the object holding the eventual answer. The storage worker continues running. The status is 504 Gateway Timeout because the map service is acting as a gateway: it answers for a storage read it is waiting on.</p>
 <pre><code class="language-python">try:
     return result.result(timeout=0.4 if budget == &quot;short&quot; else 6)
-except TimeoutError:
+except concurrent.futures.TimeoutError:   # the same class as TimeoutError from Python 3.11
     return 504, &quot;caller deadline&quot;</code></pre>
       </section>
       <details class="course-extras" id="compare-your-result"><summary>Compare your result</summary><p>On one instance, the server returns 504 to Ada and 200 to Ben after one overlapping storage read. Across two instances the driver replies stay the same, but storage receives two reads. Both runs also verify a successful fresh lookup after cleanup. The difference comes from the location of the pending table.</p>

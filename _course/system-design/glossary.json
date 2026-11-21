@@ -43,7 +43,7 @@
     },
     "replica": {
       "in": 6,
-      "def": "A separate copy that replays changes to the primary store."
+      "def": "A separate copy that replays the changes it receives from the primary store."
     },
     "SQL": {
       "in": 0,
