@@ -45,7 +45,7 @@ function workbench(course, directory) {
         <form><div class="lab-field"><label for="variant" id="question">Condition</label><select id="variant"></select></div>
           <button type="submit" class="button primary">Run experiment</button></form>
         <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
-      </section>
+      </section>${course === 'jvm' ? '\n' + fs.readFileSync(path.join(__dirname, 'lab-templates/jdbc-incidents.html'), 'utf8') : ''}
       <p class="lab-return"><a id="lesson" href="../../course/${course}/">Return to course</a></p>`,
   };
 }

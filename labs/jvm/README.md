@@ -56,3 +56,5 @@ For a transfer check, predict which request can complete before you release the 
 </details>
 
 [Oracle JDK 21 command reference](https://docs.oracle.com/en/java/javase/21/docs/specs/man/jcmd.html)
+
+Run the [two JDBC incident investigations](https://pachulski.dev/labs/jvm-workbench/#jdbc-incidents) to distinguish a monitor wait, an exhausted JDBC pool and a conflicting database write using captured evidence or a live in-memory database.
