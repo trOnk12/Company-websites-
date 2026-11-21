@@ -102,6 +102,8 @@
 <details><summary>Worked review and failure drill</summary>
 <p>The report holds a lock until its transaction ends. The migration requests a lock that conflicts with both reads. The new read queues behind the migration, even though its own lock would be compatible with the report's lock. The PostgreSQL function <code>pg_blocking_pids</code> reports the immediate dependency. Follow the arrows to find the report.</p>
 <p>Ending the report allows the migration to commit and the read to finish. Canceling the migration lets the same read finish while the report remains open, and the schema stays unchanged. In production, identify the transaction owner and intended release before deciding whether either action is acceptable. A single snapshot shows who was waiting when sampled.</p>
+<p><b>Change one deadline.</b> Run <code>python3 wait_graph.py --timeout lock</code> and <code>python3 wait_graph.py --timeout statement</code>. Both use the same wait chain. Predict the error code and which statement completes. The first limits time spent acquiring a lock and reports <code>55P03</code>. The second sets a shorter statement deadline than its lock deadline and reports <code>57014</code>. The read succeeds in both while the report transaction remains open. In real traces <code>57014</code> also appears after manual cancellation. Inspect the error message and configuration before assigning a cause.</p>
+<p><a href="https://www.postgresql.org/docs/17/runtime-config-client.html">PostgreSQL 17 · Session deadline settings</a></p>
 <p><a href="https://www.postgresql.org/docs/17/functions-info.html">PostgreSQL 17 · Blocking sessions and lock queue order</a></p>
 </details>
 </section>

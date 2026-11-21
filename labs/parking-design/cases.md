@@ -98,6 +98,10 @@ The report holds a lock until its transaction ends. The migration requests a loc
 
 Ending the report allows the migration to commit and the read to finish. Canceling the migration lets the same read finish while the report remains open, and the schema stays unchanged. In production, identify the transaction owner and intended release before deciding whether either action is acceptable. A single snapshot shows who was waiting when sampled.
 
+**Change one deadline.** Run `python3 wait_graph.py --timeout lock` and `python3 wait_graph.py --timeout statement`. Both use the same wait chain. Predict the error code and which statement completes. The first limits time spent acquiring a lock and reports `55P03`. The second sets a shorter statement deadline than its lock deadline and reports `57014`. The read succeeds in both while the report transaction remains open. In real traces `57014` also appears after manual cancellation. Inspect the error message and configuration before assigning a cause.
+
+[PostgreSQL 17 · Session deadline settings](https://www.postgresql.org/docs/17/runtime-config-client.html)
+
 [PostgreSQL 17 · Blocking sessions and lock queue order](https://www.postgresql.org/docs/17/functions-info.html)
 
 </details>
