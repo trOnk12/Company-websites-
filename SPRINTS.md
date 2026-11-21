@@ -165,6 +165,21 @@ To do, in order:
 - [ ] Quizzes everywhere: replace the "What's the difference between X and Y" template where it only tests recall;
   no two-option questions; applied/numeric questions.
 
+## Sprint 14 (planned): every course complete, every piece of content analysed
+
+Mateusz (21 November 2026): "complete the courses completely; analyse every piece of content". The book course
+(DDIA, private) comes after this.
+
+For each course, in this order: KMP and Compose (running), JVM, system design (distributed), mobile system design,
+iOS, Android, performance, LLM, security, transport, backend operations, BLE.
+1. `ROADMAP.md` to expert level (JVM's is written).
+2. Read every puzzle, diagram caption, quiz, practice topic and project against course-clarity passes 1–2f:
+   correctness against primary sources, one idea per puzzle, nothing used before taught, no return trips,
+   edges covered, quizzes that test understanding (no two-option, no recall-only).
+3. Fix in place; write the missing puzzles; strict-learner review of what changed; lint, diagrams, tests, deploy.
+4. A row in the course's `REVIEW.md` with what was found and what changed.
+At most two courses at a time (two agents, one per course folder); the main session integrates and deploys.
+
 ## Sprint 13 (planned): Depth, and KMP first
 
 Owner's priorities (2026-11-18): KMP really deep, then a Compose Multiplatform course, then iOS (KMP needs it);
