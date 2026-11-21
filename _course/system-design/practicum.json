@@ -1,0 +1,24 @@
+{
+  "title": "Defend the last seat under peak load",
+  "brief": "Design the admission and reservation paths for assigned concert seats. The reviewer will interrupt the most awkward transaction and ask which promises still hold.",
+  "prerequisites": "Complete the inventory, retry, overload, payment and recovery lessons. Be able to distinguish a confirmed grant from a map reading.",
+  "setup": "Use a single event with one remaining seat B12. Two customers submit distinct reservation IDs. During the wider peak, 160 attempts arrive per second for 60 seconds. The service can complete 120 per second, queues at most 300 and starts empty.",
+  "steps": [
+    "Write the confirmation, full-seat and timeout contracts from the customer’s perspective. Identify the event-and-seat key, the owner of the durable decision and the request ID used for a replay.",
+    "Trace two contenders. Stop the winning process after its commit and before the reply. Retry the same intention through another process and list every surviving grant.",
+    "Calculate queue length and cumulative drops after 60 seconds. Change recovery arrivals to 70 per second and predict the time needed to empty the queue.",
+    "Release an expired hold, grant the seat to another customer and then deliver the old payment success twice. Draw the durable transitions through reconciliation."
+  ],
+  "evidence": [
+    "Only one customer owns B12. The winner can retrieve the same grant after restart, and the replay consumes no other seat.",
+    "The calculation accounts for all 9,600 arrivals as completions, queued work or drops. It states the service-rate assumptions.",
+    "Two notifications for one old charge produce one refund intention. Verify completion with the payment provider before reporting it to the driver."
+  ],
+  "worked": [
+    "A commits the grant and inventory change together. B loses the conditional transition. A’s first response vanishes, but a lookup under A’s request identity finds the surviving grant. Reading the final free count alone cannot distinguish this history from a double sale.",
+    "Demand exceeds capacity by 40 each second. With the stated one-second queue model, the service completes 7,200, keeps 300 and drops 2,100 by the minute boundary. During recovery 50 spare completions per second clear 300 waiting requests in six seconds.",
+    "After the old hold expires, its later charge cannot confirm the new owner’s seat. Save a refund intention keyed to that charge and track it until the provider confirms its outcome. The database can guarantee one local intention. Repeating an external refund safely depends on the provider’s contract."
+  ],
+  "variation": "The venue now sells unassigned admission and reserves five independent rights at each of two gates. Seven customers reach gate A and one reaches B while the gates cannot communicate.",
+  "solution": "A admits five and refuses or defers two; B admits one. Four rights remain at B. A transfer must remove spendable rights at the source before they can be spent at the destination and preserve identity across retries. The cost during disconnection is lower utilization."
+}

@@ -25,7 +25,7 @@ The parts:
 - The **repository** combines two data sources: the local database and the network API.
 - **Reads:** the UI observes the database, for example as a `Flow`. When the database changes, every screen showing that data updates by itself.
 - **Network results** never go straight to the screen: the repository writes them into the database, and the screens update from there.
-- **Writes:** the user's change goes into the database first, so it shows at once, even offline, and is marked to sync. When there's a connection, the repository sends it to the server; WorkManager can make sure it eventually does.
+- **Writes:** the user's change goes into the database first, so it shows at once, even offline, and is marked to sync. When there's a connection, the repository sends it to the server; WorkManager can schedule attempts subject to constraints; a permanent error still needs a recovery path.
 
 In a tunnel, the screen shows what's in the database, with no spinner. The new note shows on every screen at once, because they all read the same table.
 
@@ -34,6 +34,10 @@ Two devices can still edit the same note offline. Then the server must decide wh
 ## The analogy
 
 A team with one shared whiteboard. Everyone reads the whiteboard, never each other's notes. The runner who goes to head office (the network) copies what they bring back onto the whiteboard, and takes the whiteboard's new items with them on the next trip.
+
+## Try it
+
+[Run the two-phone sync lab](https://pachulski.dev/labs/offline-sync/). Type a different title on each phone. Before you reconnect, predict which queue will still contain a draft. Reverse the order and compare the server version with both local copies.
 
 ## Check yourself
 

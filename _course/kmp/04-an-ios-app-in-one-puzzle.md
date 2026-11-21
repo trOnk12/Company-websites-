@@ -36,6 +36,8 @@ class GreetingViewController: UIViewController {
     override func viewDidLoad() {   // like onCreate
         super.viewDidLoad()
         label.text = "Hello"
+        label.frame = view.bounds
+        label.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(label)
     }
 }

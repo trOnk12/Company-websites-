@@ -16,7 +16,7 @@ Your app has the main thread, the RenderThread, a few background threads and the
 
 ## The building block
 
-A **CPU core** is one part of the processor that executes instructions, one after another. A core runs one thread at a time. A phone's processor has several cores, often eight, so at any moment at most eight threads are really running.
+A **CPU core** is one part of the processor that executes instructions, one after another. In this phone model there are eight available logical CPUs, each running one scheduled thread at a time. Hardware topology and the set available to your process vary by device.
 
 The **scheduler** is the part of the kernel that decides which thread runs on which core, and for how long. Threads that are ready to run, but have no core yet, wait in a **run queue**. When a core frees up, the scheduler gives it the next thread from the queue.
 
@@ -24,7 +24,7 @@ A thread doesn't keep a core until it's done. After a short stretch, or when a m
 
 Some threads aren't ready at all. A thread that needs a lock another thread holds, or a file from the disk, or a message, has nothing to do until that arrives. The kernel takes it off the run queue: it's asleep and uses no core. When the thing arrives, the kernel **wakes** the thread: puts it back on a run queue. Woken isn't running yet: if every core is busy, it waits its turn.
 
-So the time between a function's start and end, as a clock on the wall sees it, is made of three things: running on a core, waiting in the queue for one, and sleeping until something arrives. Only the first is your code being slow. The next puzzles show how a profiler tells them apart.
+So the time between a function's start and end, as a clock on the wall sees it, is made of three things: running on a core, waiting in the queue for one, and sleeping until something arrives. The first measures time executing; all three can affect the user-visible delay. The next puzzles show how a profiler tells them apart.
 
 ## The analogy
 

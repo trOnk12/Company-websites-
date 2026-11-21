@@ -2,7 +2,7 @@
 title: The kernel is in charge
 short: The kernel
 summary: Something has to share the phone between all those processes. That's the core of the phone's own software, and it's the only thing that can reach into every process.
-takeaway: Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.
+takeaway: The kernel schedules threads and manages address spaces and access to protected resources. Ordinary instructions can read and write memory already mapped into the process without asking the kernel on each access.
 ---
 
 ## The problem

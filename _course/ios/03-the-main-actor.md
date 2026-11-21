@@ -2,7 +2,7 @@
 title: The main actor
 short: Swift concurrency
 summary: In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and withContext. Swift has its own version, with one idea Kotlin doesn't have built in.
-takeaway: An async function can give up its thread while it waits, at each await: Swift's suspend. An actor lets only one task at a time touch its data. The main actor protects all UI data, so code marked @MainActor runs on the main thread: Swift's Dispatchers.Main.
+takeaway: An async function may suspend and release its thread. An actor serializes access to its isolated state between suspension points. Main-actor isolation coordinates UI work on the main thread.
 ---
 
 ## The problem
@@ -18,9 +18,9 @@ In puzzle 2, the image went to a background queue and back to the main queue, by
 
 Swift's version of a suspend function is an **async function**. Where it waits, you write **`await`**: at that point the function may give up its thread so other work can run on it, and later it resumes, possibly on a different thread. Like a coroutine, it reads straight down.
 
-A task is one piece of async work running, like a coroutine. Swift adds one block Kotlin doesn't have built into the language: the **actor**. An actor is an object that lets only one task at a time touch its data; other code that wants in has to `await` its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock. One catch: "one at a time" holds between awaits. When code on an actor reaches an `await`, it steps out, another task may come in and change the data, and when the first resumes, things may have moved on. So check your assumptions again after an `await`.
+A task is one piece of async work running, like a coroutine. Swift adds one block Kotlin doesn't have built into the language: the **actor**. An actor is an object that lets only one task at a time touch its data; other code that wants in has to `await` its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock. One catch: "one at a time" holds between awaits. When a call actually suspends at an `await`, another task may come in and change the data, and when the first resumes, things may have moved on. So check your assumptions again after an `await`.
 
-The most important one is the **main actor**. It protects all the data used to show the UI: code marked `@MainActor` always runs on the main thread, taking turns with rendering and touch handling. It's Swift's `Dispatchers.Main`. Note that `await` itself moves nothing: it frees the thread while waiting. Where `loadUser()`'s own work runs depends on which actor it belongs to, so heavy work still needs to be put off the main actor on purpose:
+The most important one is the **main actor**. It protects state and code isolated to that actor: code marked `@MainActor` always runs on the main thread, taking turns with rendering and touch handling. It's Swift's `Dispatchers.Main`. Note that `await` itself moves nothing: it frees the thread while waiting. Where `loadUser()`'s own work runs depends on which actor it belongs to, so heavy work still needs to be put off the main actor on purpose:
 
 ```swift
 @MainActor

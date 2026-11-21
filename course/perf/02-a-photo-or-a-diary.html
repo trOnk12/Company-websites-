@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="2" data-prev="01-what-a-trace-is.html" data-prev-title="What a trace is">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" class="done" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" class="done" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" aria-current="page" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Puzzle 2 · 3 of 10</p>
-      <h1>A photo or a diary</h1>
-      <p class="lede">Android Studio offers to take snapshots of what your app is running, or to record every method. They answer different questions, and one of them changes the timings it measures. Here's what each actually records.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="2">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Performance, under the hood</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 2 · 3 of 10</p>
+        <h1>A photo or a diary</h1>
+        <p class="lede">Android Studio offers to take snapshots of what your app is running, or to record every method. They answer different questions, and one of them changes the timings it measures. Here's what each actually records.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" aria-current="page" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-what-a-trace-is.html">Puzzle 1: What a trace is</a></summary><p>A trace is one continuous recording of timestamped events, detailed enough to rebuild the timeline afterwards: which thread ran on which core, when threads woke, and the spans the app marked. Perfetto records and shows Android traces. Time runs left to right; each thread gets a track; on it, each slice is a named span with a start and an end, and a slice drawn under another happened inside it.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: What a trace is</summary><p>A trace is one continuous recording of timestamped events, detailed enough to rebuild the timeline afterwards: which thread ran on which core, when threads woke, and the spans the app marked. Perfetto records and shows Android traces. Time runs left to right; each thread gets a track; on it, each slice is a named span with a start and an end, and a slice drawn under another happened inside it.</p><p><a href="01-what-a-trace-is.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-threads-take-turns.html">0</a> → <a href="01-what-a-trace-is.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Sampling snapshots the call stack; tracing writes at every call"><input type="radio" name="st-sampling" id="st-sampling-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-sampling" id="st-sampling-2" aria-label="Step 2 of 4"><input type="radio" name="st-sampling" id="st-sampling-3" aria-label="Step 3 of 4"><input type="radio" name="st-sampling" id="st-sampling-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sm-t"><title id="sm-t">A thread's call stack changes over time; the kernel takes a snapshot thousands of times per second of CPU time and counts them; method tracing instead writes a timestamp at every call's start and end, which slows the thread; a trace section marks only one named span</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sm-t"><title id="sm-t">A thread's call stack changes over time; the kernel takes a snapshot thousands of times per second of CPU time and counts them; method tracing instead writes a timestamp at every call's start and end, which slows the thread; a trace section marks only one named span</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><text class="d-b" x="20" y="40">call stack over time</text>
 <rect class="d-band" x="40" y="60" width="560" height="30" rx="4"/><text class="d-tiny" x="320" y="80" text-anchor="middle">onBind()</text>
@@ -78,6 +89,7 @@
 <g class="step s1"><line class="d-line" x1="540" y1="244" x2="540" y2="326"/><line class="d-line" x1="560" y1="244" x2="560" y2="326"/><line class="d-line" x1="580" y1="244" x2="580" y2="326"/><rect class="d-ink" x="520" y="250" width="80" height="70" rx="6"/><text class="d-inv" x="560" y="290" text-anchor="middle">CPU</text></g>
 <g class="step s1" data-move="1:80,300 2:480,300 3:300,300 4:230,300"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>A thread's <b>call stack</b> over time: <code>parseJson()</code> runs for a while, with a tiny call inside it, then <code>draw()</code>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-sampling-2">Next →</label></div></li>
 <li><p><b>Sampling</b>: thousands of times per second of CPU time, the kernel snapshots the stack. Count the snapshots: most land in parsing. The tiny call fell between two and was missed.</p><div class="stepnav"><label for="st-sampling-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-sampling-3">Next →</label></div></li>
@@ -103,36 +115,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A function runs for 50 µs, once, between two snapshots. Which tool can miss it entirely?</legend>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-1"><label for="q-02-a-photo-or-a-diary-1-1">Trace sections, because they can't time anything under 1 ms</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-2"><label for="q-02-a-photo-or-a-diary-1-2">Method tracing, because instrumentation skips very short methods</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-3" data-ok><label for="q-02-a-photo-or-a-diary-1-3">Sampling, since it only sees what's running at each snapshot</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-1"><label for="q-02-a-photo-or-a-diary-1-1"><span>Trace sections, because they can't time anything under 1 ms</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-2"><label for="q-02-a-photo-or-a-diary-1-2"><span>Method tracing, because instrumentation skips very short methods</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-3" data-ok><label for="q-02-a-photo-or-a-diary-1-3"><span>Sampling, since it only sees what's running at each snapshot</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A trace section records whatever span you wrap; the risk of missing it is sampling's. <label class="show-me" for="st-sampling-4" data-goto="st-sampling">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Instrumentation records every method's start and end, however short. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> A snapshot misses what started and ended between two snapshots.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Your parser makes a million tiny calls. Method tracing says it takes 900 ms; sampling says 300 ms. Which do you trust for the time, and why?</legend>
-<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-1"><label for="q-02-a-photo-or-a-diary-2-1">Neither, because the two tools can't measure the same code</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-2"><label for="q-02-a-photo-or-a-diary-2-2">The trace, because sampling only estimates and so always reads too low</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-3" data-ok><label for="q-02-a-photo-or-a-diary-2-3">The sample, since instrumentation adds its own time to every one of those calls</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-1"><label for="q-02-a-photo-or-a-diary-2-1"><span>Neither, because the two tools can't measure the same code</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-2"><label for="q-02-a-photo-or-a-diary-2-2"><span>The trace, because sampling only estimates and so always reads too low</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-2" id="q-02-a-photo-or-a-diary-2-3" data-ok><label for="q-02-a-photo-or-a-diary-2-3"><span>The sample, since instrumentation adds its own time to every one of those calls</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They can; they disagree because one of them slowed the code down. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Sampling estimates, but without slowing the code; the trace paid its own overhead a million times. <label class="show-me" for="st-sampling-3" data-goto="st-sampling">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Instrumentation costs most where calls are many and small.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a sample and a trace section?</legend>
-<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-1" data-ok><label for="q-02-a-photo-or-a-diary-3-1">A sample is a stack snapshot the kernel takes, while a trace section is a span you mark yourself</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-2"><label for="q-02-a-photo-or-a-diary-3-2">A sample is a span you mark yourself, while a trace section is a stack snapshot the kernel takes</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-1" data-ok><label for="q-02-a-photo-or-a-diary-3-1"><span>A sample is a stack snapshot the kernel takes, while a trace section is a span you mark yourself</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-3" id="q-02-a-photo-or-a-diary-3-2"><label for="q-02-a-photo-or-a-diary-3-2"><span>A sample is a span you mark yourself, while a trace section is a stack snapshot the kernel takes</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Who decides what's recorded: the kernel's regular snapshots, or you.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://android.googlesource.com/platform/system/extras/+/main/simpleperf/doc/executable_commands_reference.md">simpleperf: How simpleperf works</a> (&quot;The kernel enables counters while the profiled processes are running. Each time a given number of events happen, the kernel dumps a sample to the mapped buffers.&quot;)</li><li><a href="https://developer.android.com/studio/profile/record-java-kotlin-methods">Android Studio: Record Java/Kotlin methods</a> (&quot;the Android Studio Profiler uses runtime instrumentation to inject timestamps at the entry and exit points of each method call&quot;; &quot;We recommend limiting recordings to five seconds or less to avoid performance overhead from runtime instrumentation&quot;; &quot;The timing information from tracing might deviate from production due to the overhead introduced by the instrumentation itself.&quot;)</li><li><a href="https://developer.android.com/studio/profile/sample-callstack">Android Studio: Sample the callstack</a> (&quot;the callstack usually includes not just the Java/Kotlin code but also the native code required to run the program itself&quot;; &quot;Internally, Android Studio uses simpleperf&quot;)</li><li><a href="https://developer.android.com/topic/performance/tracing/custom-events">Android Developers: Define custom events</a> (&quot;Jetpack provides a tracing API that you can use to label a particular section of code&quot;; &quot;The trace function automatically ends the trace when the lambda completes.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://android.googlesource.com/platform/system/extras/+/main/simpleperf/doc/executable_commands_reference.md">simpleperf: How simpleperf works</a> (&quot;The kernel enables counters while the profiled processes are running. Each time a given number of events happen, the kernel dumps a sample to the mapped buffers.&quot;)</li><li><a href="https://developer.android.com/studio/profile/record-java-kotlin-methods">Android Studio: Record Java/Kotlin methods</a> (&quot;the Android Studio Profiler uses runtime instrumentation to inject timestamps at the entry and exit points of each method call&quot;; &quot;We recommend limiting recordings to five seconds or less to avoid performance overhead from runtime instrumentation&quot;; &quot;The timing information from tracing might deviate from production due to the overhead introduced by the instrumentation itself.&quot;)</li><li><a href="https://developer.android.com/studio/profile/sample-callstack">Android Studio: Sample the callstack</a> (&quot;the callstack usually includes not just the Java/Kotlin code but also the native code required to run the program itself&quot;; &quot;Internally, Android Studio uses simpleperf&quot;)</li><li><a href="https://developer.android.com/topic/performance/tracing/custom-events">Android Developers: Define custom events</a> (&quot;Jetpack provides a tracing API that you can use to label a particular section of code&quot;; &quot;The trace function automatically ends the trace when the lambda completes.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Sampling asks the kernel to snapshot a thread's call stack every so many CPU events; counting the snapshots shows where time goes, cheaply, but short calls can be missed. Method tracing injects a timestamp at every method's start and end: exact counts, but the instrumentation slows the app and skews the timings. Trace sections mark only the spans you choose.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="01-what-a-trace-is.html">← Puzzle 1</a>

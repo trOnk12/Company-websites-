@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: Threads take turns</p>
 <fieldset class="quiz" data-n="0">
 <legend>A phone has eight cores and twenty threads are ready to run. What happens to the other twelve?</legend>
-<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-1"><label for="q-00-threads-take-turns-1-1">They stop until the app calls them again</label>
-<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-2"><label for="q-00-threads-take-turns-1-2">They run at the same time, each a bit slower</label>
-<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-3" data-ok><label for="q-00-threads-take-turns-1-3">They wait in a run queue for a core to free up</label>
+<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-1"><label for="q-00-threads-take-turns-1-1"><span>They stop until the app calls them again</span></label>
+<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-2"><label for="q-00-threads-take-turns-1-2"><span>They run at the same time, each a bit slower</span></label>
+<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-3" data-ok><label for="q-00-threads-take-turns-1-3"><span>They wait in a run queue for a core to free up</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Leaving the queue is for threads waiting for something; ready threads queue. <a class="show-me" href="00-threads-take-turns.html">Learn it in puzzle 0 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> A core runs one thread at a time; the rest wait. <a class="show-me" href="00-threads-take-turns.html">Learn it in puzzle 0 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Ready but no core means waiting in the queue.</p>
@@ -65,9 +65,9 @@
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: What a trace is</p>
 <fieldset class="quiz" data-n="1">
 <legend>CPU usage was 60% during startup. What does a trace add?</legend>
-<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-1" data-ok><label for="q-01-what-a-trace-is-1-1">Which threads did what, and when, event by event</label>
-<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-2"><label for="q-01-what-a-trace-is-1-2">Nothing, since CPU usage already includes every thread</label>
-<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-3"><label for="q-01-what-a-trace-is-1-3">A more precise number, like 60.4% instead of 60%</label>
+<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-1" data-ok><label for="q-01-what-a-trace-is-1-1"><span>Which threads did what, and when, event by event</span></label>
+<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-2"><label for="q-01-what-a-trace-is-1-2"><span>Nothing, since CPU usage already includes every thread</span></label>
+<input type="radio" name="q-01-what-a-trace-is-1" id="q-01-what-a-trace-is-1-3"><label for="q-01-what-a-trace-is-1-3"><span>A more precise number, like 60.4% instead of 60%</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A number says how much; a trace says what and when.</p>
 <p class="fb no opt-2"><b>Not quite.</b> It adds them up; the trace keeps them apart, in time. <a class="show-me" href="01-what-a-trace-is.html">Learn it in puzzle 1 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> A trace isn't a better number; it's the timeline behind it. <a class="show-me" href="01-what-a-trace-is.html">Learn it in puzzle 1 →</a></p>
@@ -75,9 +75,9 @@
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: A photo or a diary</p>
 <fieldset class="quiz" data-n="2">
 <legend>A function runs for 50 µs, once, between two snapshots. Which tool can miss it entirely?</legend>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-1"><label for="q-02-a-photo-or-a-diary-1-1">Trace sections, because they can't time anything under 1 ms</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-2"><label for="q-02-a-photo-or-a-diary-1-2">Method tracing, because instrumentation skips very short methods</label>
-<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-3" data-ok><label for="q-02-a-photo-or-a-diary-1-3">Sampling, since it only sees what's running at each snapshot</label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-1"><label for="q-02-a-photo-or-a-diary-1-1"><span>Trace sections, because they can't time anything under 1 ms</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-2"><label for="q-02-a-photo-or-a-diary-1-2"><span>Method tracing, because instrumentation skips very short methods</span></label>
+<input type="radio" name="q-02-a-photo-or-a-diary-1" id="q-02-a-photo-or-a-diary-1-3" data-ok><label for="q-02-a-photo-or-a-diary-1-3"><span>Sampling, since it only sees what's running at each snapshot</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A trace section records whatever span you wrap; the risk of missing it is sampling's. <a class="show-me" href="02-a-photo-or-a-diary.html">Learn it in puzzle 2 →</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> Instrumentation records every method's start and end, however short. <a class="show-me" href="02-a-photo-or-a-diary.html">Learn it in puzzle 2 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> A snapshot misses what started and ended between two snapshots.</p>
@@ -85,9 +85,9 @@
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Reading the flames</p>
 <fieldset class="quiz" data-n="3">
 <legend>In a flame chart, <code>format()</code> is drawn left of <code>parseJson()</code>. What does that tell you?</legend>
-<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-1" data-ok><label for="q-03-reading-the-flames-1-1">Nothing about order: a flame chart's left-to-right isn't time</label>
-<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-2"><label for="q-03-reading-the-flames-1-2">That <code>format()</code> was called by <code>parseJson()</code></label>
-<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-3"><label for="q-03-reading-the-flames-1-3">That <code>format()</code> ran before <code>parseJson()</code> on the thread</label>
+<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-1" data-ok><label for="q-03-reading-the-flames-1-1"><span>Nothing about order: a flame chart's left-to-right isn't time</span></label>
+<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-2"><label for="q-03-reading-the-flames-1-2"><span>That <code>format()</code> was called by <code>parseJson()</code></span></label>
+<input type="radio" name="q-03-reading-the-flames-1" id="q-03-reading-the-flames-1-3"><label for="q-03-reading-the-flames-1-3"><span>That <code>format()</code> ran before <code>parseJson()</code> on the thread</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Width is time; position isn't.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A caller and its callees are stacked, not side by side. <a class="show-me" href="03-reading-the-flames.html">Learn it in puzzle 3 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's a call chart. In a flame chart the order is by width, not by when. <a class="show-me" href="03-reading-the-flames.html">Learn it in puzzle 3 →</a></p>
@@ -95,9 +95,9 @@
 <section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: Slow isn't always busy</p>
 <fieldset class="quiz" data-n="4">
 <legend>In another trace, a 120 ms main-thread span is 110 ms Sleeping. What will making its code faster save?</legend>
-<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-1"><label for="q-04-slow-is-not-busy-1-1">Most of the 120 ms, since the span is slow code</label>
-<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-2" data-ok><label for="q-04-slow-is-not-busy-1-2">Almost nothing: only 10 ms of it was Running</label>
-<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-3"><label for="q-04-slow-is-not-busy-1-3">All 120 ms, because a faster CPU wakes the thread sooner</label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-1"><label for="q-04-slow-is-not-busy-1-1"><span>Most of the 120 ms, since the span is slow code</span></label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-2" data-ok><label for="q-04-slow-is-not-busy-1-2"><span>Almost nothing: only 10 ms of it was Running</span></label>
+<input type="radio" name="q-04-slow-is-not-busy-1" id="q-04-slow-is-not-busy-1-3"><label for="q-04-slow-is-not-busy-1-3"><span>All 120 ms, because a faster CPU wakes the thread sooner</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Only Running time is code running; Sleeping is waiting for something else. <a class="show-me" href="04-slow-is-not-busy.html">Learn it in puzzle 4 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Faster code shortens only Running.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Sleeping ends when what it waits for arrives, not when the CPU is faster. <a class="show-me" href="04-slow-is-not-busy.html">Learn it in puzzle 4 →</a></p>

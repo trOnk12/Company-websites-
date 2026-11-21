@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="4" data-prev="03-the-filing-cabinet.html" data-prev-title="The filing cabinet">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" class="done" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" class="done" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" class="done" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" class="done" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" aria-current="page" title="Don't ask, get told">4</a></li></ol></nav>
-      <p class="eyebrow">Bluetooth Low Energy, from the radio up · Puzzle 4 · 5 of 5</p>
-      <h1>Don't ask, get told</h1>
-      <p class="lede">In puzzle 3, the phone read the battery level by asking for it. A live heart rate can't work that way: asking again and again wastes radio time, and the standard doesn't even allow reading it. Here's how the strap tells the phone instead, and the one step everyone forgets.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="4">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Bluetooth Low Energy, from the radio up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 4 · 5 of 5</p>
+        <h1>Don't ask, get told</h1>
+        <p class="lede">In puzzle 3, the phone read the battery level by asking for it. A live heart rate can't work that way: asking again and again wastes radio time, and the standard doesn't even allow reading it. Here's how the strap tells the phone instead, and the one step everyone forgets.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" aria-current="page" title="Don't ask, get told">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary><a href="03-the-filing-cabinet.html">Puzzle 3: The filing cabinet</a></summary><p>GATT organizes a device's data like a filing cabinet: services are drawers, characteristics are folders holding one value, each named by a UUID. The GATT server holds them; the GATT client reads and writes them.</p></details></li></ul>
+        <ul><li data-block="3"><details><summary>Puzzle 3: The filing cabinet</summary><p>GATT organizes a device's data like a filing cabinet: services are drawers, characteristics are folders holding one value, each named by a UUID. The GATT server holds them; the GATT client reads and writes them.</p><p><a href="03-the-filing-cabinet.html">Review puzzle 3</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-a-year-on-a-coin-battery.html">0</a> → <a href="01-shouting-into-the-room.html">1</a> → <a href="02-a-timetable-for-two.html">2</a> → <a href="03-the-filing-cabinet.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Notifications: the strap tells the phone, once the CCCD switch is on"><input type="radio" name="st-notify" id="st-notify-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-notify" id="st-notify-2" aria-label="Step 2 of 4"><input type="radio" name="st-notify" id="st-notify-3" aria-label="Step 3 of 4"><input type="radio" name="st-notify" id="st-notify-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="nt-t"><title id="nt-t">Reading again and again costs a request and an answer each time; with notifications the strap sends the value when it changes; notifications start only after the phone writes the CCCD descriptor on the strap; turning them on only on the phone sends nothing</title><defs><marker id="ah-notify-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-notify-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-notify-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-notify-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="nt-t"><title id="nt-t">Reading again and again costs a request and an answer each time; with notifications the strap sends the value when it changes; notifications start only after the phone writes the CCCD descriptor on the strap; turning them on only on the phone sends nothing</title><defs><marker id="ah-notify-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-notify-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-notify-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-notify-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-wood" x="40" y="236" width="80" height="56" rx="12"/><circle class="d-dot" cx="54" cy="250" r="4"/><line class="d-line" x1="106" y1="236" x2="106" y2="222"/><circle class="d-ink" cx="106" cy="220" r="3"/><text class="d-tiny" x="80" y="310" text-anchor="middle">strap</text></g>
 <g class="step s1"><g><rect class="d-wood" x="140" y="200" width="80" height="56" rx="4"/><rect class="d-paper" x="148" y="208" width="64" height="40" rx="3"/><rect class="d-ink" x="168" y="238" width="24" height="4" rx="2"/><text class="d-tiny" x="180" y="192" text-anchor="middle">Heart Rate</text></g></g>
@@ -79,6 +90,7 @@
 <g class="step s4"><rect class="d-paper" x="330" y="200" width="120" height="44" rx="4"/><text class="d-tiny" x="390" y="216" text-anchor="middle">CCCD switch</text><rect class="d-bad" x="362" y="224" width="56" height="14" rx="7"/><circle class="d-paper" cx="370" cy="231" r="6"/></g>
 <g class="step s4" data-pulse="4"><text class="d-r" x="390" y="290" text-anchor="middle">switch never written</text><text class="d-r" x="574" y="70" text-anchor="middle">no data</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Imagine a live value you could only read: the phone would ask at every meeting: a request and an answer each time, even when nothing changed.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-notify-2">Next →</label></div></li>
 <li><p>Instead, the phone flips a switch on the strap: a <b>descriptor</b>, an extra setting attached to the value, called the <b>CCCD</b>. It writes "on".</p><div class="stepnav"><label for="st-notify-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-notify-3">Next →</label></div></li>
@@ -90,7 +102,7 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Yes: that's a <b>notification</b>. The GATT server sends a characteristic's new value by itself at the next connection event, without being asked. The meetings still happen; what's saved is the request and answer packets, and the value arrives as soon as it changes.</p>
+<p>Yes: that's a <b>notification</b>. The GATT server sends a characteristic's new value by itself when the server queues an update and the link can carry it, without a separate read request. The meetings still happen; what's saved is the request and answer packets, and delivery still depends on the sensor, radio schedule and available capacity.</p>
 <p>But the strap doesn't notify everyone by default. A characteristic can carry extra settings called <b>descriptors</b>. Descriptors have UUIDs too, and a client can write them. One of them, the <b>CCCD</b> (Client Characteristic Configuration Descriptor, UUID 2902), holds a switch per client: bit 0 on means &quot;notify me&quot;. The client turns notifications on by writing that descriptor on the device.</p>
 <p>On Android, your app gets a <code>BluetoothGatt</code> object when it connects: Android's handle for that connection's GATT client. After service discovery you find the characteristic by its UUIDs. Then turning notifications on takes two separate steps: <code>setCharacteristicNotification()</code> on the phone, and <code>writeDescriptor()</code> to the strap. A short UUID like 2902 is written in full as Bluetooth's standard base number with those four digits in it, which is the long string in the code.</p>
 <pre><code class="language-kotlin">val characteristic = gatt.getService(HEART_RATE).getCharacteristic(MEASUREMENT)   // HEART_RATE and MEASUREMENT: your UUID constants
@@ -107,46 +119,41 @@ gatt.writeDescriptor(cccd, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)   
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app calls <code>setCharacteristicNotification(characteristic, true)</code> and nothing else. The heart rate changes. What arrives?</legend>
-<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-1"><label for="q-04-dont-ask-get-told-1-1">Only the first change, then the strap waits to be asked</label>
-<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-2"><label for="q-04-dont-ask-get-told-1-2">Every change, right away, as notifications are now on</label>
-<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-3" data-ok><label for="q-04-dont-ask-get-told-1-3">Nothing: the CCCD on the strap was never written</label>
+<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-1"><label for="q-04-dont-ask-get-told-1-1"><span>Only the first change, then the strap waits to be asked</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-2"><label for="q-04-dont-ask-get-told-1-2"><span>Every change, right away, as notifications are now on</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-1" id="q-04-dont-ask-get-told-1-3" data-ok><label for="q-04-dont-ask-get-told-1-3"><span>Nothing: the CCCD on the strap was never written</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> No notifications are sent at all until the CCCD is written. <label class="show-me" for="st-notify-2" data-goto="st-notify">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> That call only prepares your own phone. The strap starts sending only when its CCCD is written. <label class="show-me" for="st-notify-4" data-goto="st-notify">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Two steps: your phone, and the switch on the strap.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why are notifications cheaper than reading again and again?</legend>
-<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-1"><label for="q-04-dont-ask-get-told-2-1">Because notifications travel outside the connection events</label>
-<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-2" data-ok><label for="q-04-dont-ask-get-told-2-2">Because it sends one packet only when the value changes, with no request first</label>
-<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-3"><label for="q-04-dont-ask-get-told-2-3">Because notifications are compressed into fewer bytes</label>
+<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-1"><label for="q-04-dont-ask-get-told-2-1"><span>Because notifications travel outside the connection events</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-2" data-ok><label for="q-04-dont-ask-get-told-2-2"><span>Because it sends one packet only when the value changes, with no request first</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-2" id="q-04-dont-ask-get-told-2-3"><label for="q-04-dont-ask-get-told-2-3"><span>Because notifications are compressed into fewer bytes</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They still travel at connection events; the saving is the request and answer packets, and fresher values. <label class="show-me" for="st-notify-3" data-goto="st-notify">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> No request, and nothing sent when nothing changed.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Same value, same bytes; the saving is not having to ask. <label class="show-me" for="st-notify-1" data-goto="st-notify">Show me step 1 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a characteristic and a descriptor?</legend>
-<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-1"><label for="q-04-dont-ask-get-told-3-1">A descriptor is a second copy of the value, kept as a backup</label>
-<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-2" data-ok><label for="q-04-dont-ask-get-told-3-2">A characteristic holds a value, while a descriptor is a setting attached to it</label>
+<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-1"><label for="q-04-dont-ask-get-told-3-1"><span>A descriptor is a second copy of the value, kept as a backup</span></label>
+<input type="radio" name="q-04-dont-ask-get-told-3" id="q-04-dont-ask-get-told-3-2" data-ok><label for="q-04-dont-ask-get-told-3-2"><span>A characteristic holds a value, while a descriptor is a setting attached to it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> It's not the value: it describes or configures the characteristic. <label class="show-me" for="st-notify-2" data-goto="st-notify">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Value vs a setting about that value.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/host/generic-attribute-profile--gatt-.html">Bluetooth Core Specification 5.4, Vol 3, Part G: GATT</a> (Client Characteristic Configuration: &quot;Bit 0: Notification. The Characteristic Value shall be notified&quot;; the descriptor value is kept per client)</li><li><a href="https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/uuids/descriptors.yaml">Bluetooth SIG assigned numbers: descriptors</a> (<code>0x2902</code>: Client Characteristic Configuration)</li><li><a href="https://developer.android.com/develop/connectivity/bluetooth/ble/transfer-ble-data">Android Developers: Transfer BLE data</a> (the sample calls <code>setCharacteristicNotification()</code> and then writes the descriptor with <code>ENABLE_NOTIFICATION_VALUE</code>)</li><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/HRS_v1.0/out/en/index-en.html">Bluetooth SIG: Heart Rate Service 1.0</a> (characteristic table: &quot;Heart Rate Measurement / M / Notify / None&quot;, no Read property)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/host/generic-attribute-profile--gatt-.html">Bluetooth Core Specification 5.4, Vol 3, Part G: GATT</a> (Client Characteristic Configuration: &quot;Bit 0: Notification. The Characteristic Value shall be notified&quot;; the descriptor value is kept per client)</li><li><a href="https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/uuids/descriptors.yaml">Bluetooth SIG assigned numbers: descriptors</a> (<code>0x2902</code>: Client Characteristic Configuration)</li><li><a href="https://developer.android.com/develop/connectivity/bluetooth/ble/transfer-ble-data">Android Developers: Transfer BLE data</a> (the sample calls <code>setCharacteristicNotification()</code> and then writes the descriptor with <code>ENABLE_NOTIFICATION_VALUE</code>)</li><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/HRS_v1.0/out/en/index-en.html">Bluetooth SIG: Heart Rate Service 1.0</a> (characteristic table: &quot;Heart Rate Measurement / M / Notify / None&quot;, no Read property)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A notification is the server sending a characteristic's value by itself when it changes. It only starts after the client writes the CCCD descriptor on the device. On Android, setCharacteristicNotification() alone isn't enough: you also writeDescriptor() the CCCD.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-the-filing-cabinet.html">← Puzzle 3</a>
         <a class="button" href="./">Back to the overview →</a>
       </nav>
       <section class="finish" aria-labelledby="finish-heading">
-        <h2 id="finish-heading">That's everything published so far</h2>
-        <p>You've reached the last puzzle of <b>Bluetooth Low Energy, from the radio up</b>. Next: Module 2: Making it fast and reliable, about why only 20 bytes per packet (MTU, Data Length Extension, 2M PHY), throughput math, Android's one-operation-at-a-time rule and status 133.</p>
-        <p>New puzzles are announced on <a href="https://www.linkedin.com/in/mateusz-pachulski">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <h2 id="finish-heading">Apply what you learned</h2>
+        <p>Continue with worked examples and practice cases. When you reach the final project, make your own decisions before comparing your evidence with the worked review.</p>
+        <p class="actions"><a class="button primary" href="chapter-size-speed-and-recovery.html">Continue to Size, speed and recovery →</a> <a class="button" href="final-project.html">Start the final project →</a></p>
       </section>
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Don't%20ask%2C%20get%20told&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>

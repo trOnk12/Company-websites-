@@ -347,7 +347,7 @@
   },
   "status code": {
    "in": "02",
-   "def": "The number a response starts with; its first digit is the family: 2xx worked, 3xx elsewhere, 4xx your fault, 5xx the server's.",
+   "def": "The number a response starts with; its first digit is the family: 2xx worked, 3xx elsewhere, 4xx client-side condition, 5xx server error.",
    "aliases": [
     "status codes",
     "2xx",
@@ -395,7 +395,7 @@
   },
   "HTTP method": {
    "in": "02",
-   "def": "What a request asks for: GET reads, POST creates, PUT replaces, DELETE removes.",
+   "def": "What a request asks for: GET reads, POST submits input for processing, PUT creates or replaces, DELETE removes.",
    "aliases": [
     "HTTP methods"
    ]

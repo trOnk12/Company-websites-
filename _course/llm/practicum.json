@@ -1,0 +1,24 @@
+{
+  "title": "Evaluate a source-grounded mobile support assistant",
+  "brief": "A mobile app answers questions about three fictional course policies. Find out whether a wrong answer began in retrieval or in generation before changing the model.",
+  "prerequisites": "Review stateless calls, token budgets, the service proxy, evidence retrieval and separate retrieval and answer checks.",
+  "setup": "Make three local notes: A says refunds take five working days, B says drafts stay on this device, C says downloads expire after seven days. Use the fixed four-query fixture below on paper. No API key is needed.",
+  "steps": [
+    "Write four questions: refund time, cross-device drafts, download lifetime and weekend support. Assign expected source A, B, C and no source respectively.",
+    "Replay a retriever that returns A, C, C and A as its first result. Score source retrieval on the three answerable questions.",
+    "Evaluate these four generated answers independently against the provided evidence: “five working days”, “drafts sync across devices”, “seven days” and “the notes do not specify weekend support”.",
+    "Choose one retrieval fix and one generation check. Describe what you would send through a server-side proxy and what you would measure during streaming."
+  ],
+  "evidence": [
+    "The retrieval denominator excludes the question whose correct response is that the source is absent.",
+    "The answer score distinguishes a supported fact, an unsupported claim and an appropriate refusal to guess.",
+    "The proposed retry experiment holds either the evidence or the generator fixed so an improvement can be attributed."
+  ],
+  "worked": [
+    "Retrieval finds the expected first document for refunds and downloads. That is 2/3 on answerable questions. For drafts it selected C, which says nothing about synchronization. The weekend question needs a separate unsupported-question check.",
+    "Three of four generated responses meet this fixture's answer policy. The draft answer invents synchronization; the weekend response correctly acknowledges missing evidence despite receiving irrelevant A. Inspecting only a 3/4 answer score hides the draft retrieval failure.",
+    "Rerun the draft question with B supplied manually. If the generator still claims synchronization, it also fails to use correct evidence. Keep any paid service key on the proxy, send the question with the required evidence, and record time to first visible text separately from time to the final answer."
+  ],
+  "variation": "The next system retrieves the correct document for all three answerable questions but answers that downloads last fourteen days. Which layer should you inspect first?",
+  "solution": "Capture the exact evidence reaching generation. If C really arrived intact, the wrong duration is a grounding failure despite perfect retrieval on this fixture. Hold C fixed and repeat the answer evaluation, including unsupported questions."
+}

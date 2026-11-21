@@ -12,6 +12,15 @@ that in three passes. Run all three; fix; run again until all pass.
 Sources of truth: the puzzles in `_course/<course>/`, their diagrams in `_course/<course>/diagrams/`,
 and Mateusz's teaching playbook (the `foundation-first-teaching` skill). The rules below come from it.
 
+## Review the learning path
+
+Check the published experience independently of the text:
+
+- From the catalog, can someone choose a topic and begin with one clear action? After completing a puzzle, can they resume at the named next puzzle?
+- At phone width, start from the lesson title. Check that the mechanism, diagram, quiz and optional depth can be reached without scanning the whole lesson. Follow a shared depth link and return to the main example.
+- For each claim ask “what would make that happen?” and follow the chain of prerequisites. Opening an optional explanation should answer that question with the same example. A source link supports the claim, while a depth section explains the mechanism.
+- Solve the main quiz with every optional panel closed. Then try the depth example with one input changed. A reader can pass each check by reasoning from the lesson, and the quiz must not require material from a closed panel.
+
 ## Pass 1 — the lint (mechanical, must be clean)
 
 `npm run lint:course`. Vocabulary rules (from `_course/<course>/glossary.json`):
@@ -98,8 +107,7 @@ For each puzzle, check and write down pass/fail:
   as explaining).
 - **No bare facts**: every limit has its reason (why ~1 MB, why one thread).
 - **Look-alikes separated up front** (proxy vs stub, Binder thread vs main thread, cold vs warm start).
-- **Checks are binary or A/B**, test the *why* not only the *what*, and each wrong option maps to one real
-  misconception with feedback that names it and a pointer to the step that fixes it.
+- **Checks distinguish plausible outcomes.** At least one changes an input or condition and asks for a prediction. Each wrong option maps to a real misconception and links to the step that fixes it.
 - **Ties back** to the previous puzzle in the first lines.
 
 ### The picture prompt (use it verbatim, filling in the world)

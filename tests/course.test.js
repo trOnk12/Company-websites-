@@ -33,7 +33,7 @@ test.describe('Course', () => {
   test('overview starts at the first puzzle and lists every puzzle', async ({ page }) => {
     await page.goto('/course/android/');
     await expect(page.locator('h1')).toHaveCount(1);
-    await expect(page.locator('a.button.primary')).toHaveAttribute('href', `${PUZZLES[0]}.html`);
+    await expect(page.locator('[data-resume="android"]')).toHaveAttribute('href', `${PUZZLES[0]}.html`);
     for (const p of PUZZLES) await expect(page.locator(`.modules a[href="${p}.html"]`)).toHaveCount(1);
   });
 
@@ -68,7 +68,7 @@ test.describe('Course', () => {
       const quizzes = page.locator('fieldset.quiz');
       expect(await quizzes.count()).toBeGreaterThan(0);
       for (const q of await quizzes.all()) expect(await q.locator('input[data-ok]').count()).toBe(1);
-      for (const a of await page.locator('#sources ~ ul a').evaluateAll(as => as.map(a => a.href))) expect(a).toMatch(/^https:\/\//);
+      for (const a of await page.locator('#sources ul a').evaluateAll(as => as.map(a => a.href))) expect(a).toMatch(/^https:\/\//);
     });
   }
 
@@ -101,7 +101,7 @@ test.describe('Course', () => {
     // Progress is remembered: the overview now shows puzzle 0 done and offers to continue.
     await page.goto('/course/android/');
     await expect(page.locator(`.modules li[data-n="0"]`)).toHaveAttribute('data-state', 'done');
-    await expect(page.locator('[data-resume]')).toContainText('Continue: puzzle 1');
+    await expect(page.locator('[data-resume]')).toContainText('Continue: The kernel is in charge');
   });
 
   test('every puzzle after the first shows its building blocks, and they link to earlier puzzles', async ({ page }) => {
@@ -145,8 +145,8 @@ test.describe('Course', () => {
 
   test('opening a puzzle early points back to the one it builds on', async ({ page }) => {
     await page.goto(`/course/android/${PUZZLES[3]}.html`);
-    await expect(page.locator('.gate')).toContainText('builds on the previous one');
-    await expect(page.locator('.gate a')).toHaveAttribute('href', `${PUZZLES[2]}.html`);
+    await expect(page.locator('.gate')).toContainText('Building blocks to review');
+    await expect(page.locator('.gate a')).toHaveAttribute('href', new RegExp(`${PUZZLES[2]}\\.html$`));
   });
 
   test('every course offers an Obsidian vault that is a real zip with a note per puzzle', async ({ page, request }) => {
@@ -182,6 +182,23 @@ test.describe('Course', () => {
     expect(text).toContain('Puzzle 1: A weak spot question?');
     expect(text).toContain('next is puzzle 2');
     await expect(page.locator('.tutor-status')).not.toBeEmpty();
+  });
+
+  test('KMP can resume from the catalog and optional depth has its own reveal', async ({ page }) => {
+    const [first, next] = COURSES.find(c => c.id === 'kmp').puzzles;
+    await page.goto(`/course/kmp/${first}.html#go-deeper-how-does-a-processor-add-two-numbers`);
+    const depth = page.locator('.depth-puzzle').first();
+    await expect(depth).toHaveAttribute('open', '');
+    await expect(depth.locator('.recall p')).toBeHidden();
+    await depth.locator('.recall summary').click();
+    await expect(depth.locator('.recall p')).toContainText('the second gets 5');
+    await expect(depth.getByRole('link', { name: 'Back to the main puzzle' })).toHaveAttribute('href', '#the-building-block');
+
+    await page.evaluate(() => localStorage.setItem('course:kmp:done', JSON.stringify(['one-kotlin-many-machines'])));
+    await page.goto('/course/');
+    const card = page.locator('.course-card[data-progress="kmp"]');
+    await expect(card.locator('progress')).toHaveAttribute('value', '1');
+    await expect(card.getByRole('link', { name: 'Continue learning' })).toHaveAttribute('href', `kmp/${next}.html`);
   });
 
   test('a wrong answer is remembered as a weak spot', async ({ page }) => {
@@ -244,4 +261,12 @@ test.describe('Course', () => {
     await expect(page.locator('.modules li[data-n="0"]')).toHaveAttribute('data-state', 'next');
     expect(JSON.parse(await page.evaluate(() => localStorage.getItem('course:perf:done')))).toEqual(['a-photo-or-a-diary', 'reading-the-flames']);
   });
+});
+
+test('an unfinished visit appears in Your learning before the first pass', async ({ page }) => {
+  await page.goto('/course/compose/03-pixels-and-voiceover.html');
+  await expect(page.locator('.gate-msg')).toContainText('mark this puzzle as passed');
+  await page.goto('/course/me.html');
+  await expect(page.locator('.me-next a[href="compose/03-pixels-and-voiceover.html"]')).toBeVisible();
+  await expect(page.locator('.me-course').filter({ has: page.locator('a[href="compose/"]') })).toContainText('0 passed');
 });

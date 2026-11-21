@@ -16,7 +16,7 @@ You upload one APK (the single file your app is packaged into) to the store, and
 
 ## The building block
 
-Each kind of CPU has its own language: **machine code**. Your APK doesn't contain it. Your Kotlin compiles to **DEX**, compact instructions written for Android, not for any one CPU.
+Each kind of CPU has its own language: **machine code**. An APK can contain native libraries built for particular CPUs. Here we follow a Kotlin-only app without bundled native libraries. Your Kotlin compiles to **DEX**, compact instructions written for Android, not for any one CPU.
 
 On the phone, **ART**, the Android Runtime (the part that runs your code), works inside your app's process and makes the DEX run. The simplest way it does that is **interpreting**: reading one DEX instruction at a time and doing what it says. That always works, but it's slow.
 
@@ -26,7 +26,7 @@ You write your recipes in one common language, so any kitchen can use them. In e
 
 ## Check yourself
 
-- You ship the same APK to two phones with different CPUs. Why does it run on both?::*It contains DEX, and ART on each phone runs it||It contains machine code for every CPU >> Then it would only run on the CPUs it was built for. DEX isn't for any CPU. >> s1||Google rebuilds it for each phone >> Nobody rebuilds it: ART on the phone runs the same DEX. >> s3::DEX isn't tied to a CPU; ART on each phone runs it.
+- You ship this Kotlin-only APK to two compatible Android phones with different CPUs. Why does it run on both?::*It contains DEX, and ART on each phone runs it||It contains machine code for every CPU >> Then it would only run on the CPUs it was built for. DEX isn't for any CPU. >> s1||Google rebuilds it for each phone >> Nobody rebuilds it: ART on the phone runs the same DEX. >> s3::DEX isn't tied to a CPU; ART on each phone runs it.
 - Is there one ART for all the apps on the phone?::*No: each app's process runs its own ART||Yes: one ART runs every app >> ART lives inside each app's process, like a translator in every house. >> s2::Each process has its own ART.
 - What's the difference between DEX and machine code?::*Machine code is for one kind of CPU, while DEX is for any Android phone||They're the same: DEX is machine code for Android phones >> DEX has to be run by ART; machine code runs on the CPU directly. >> s4::DEX needs ART; machine code needs nothing.
 

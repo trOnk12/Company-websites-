@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="3" data-prev="02-queues-not-handlers.html" data-prev-title="Queues, not handlers">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" class="done" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" class="done" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" class="done" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" aria-current="page" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
-      <p class="eyebrow">iOS for Android developers · Puzzle 3 · 4 of 5</p>
-      <h1>The main actor</h1>
-      <p class="lede">In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and withContext. Swift has its own version, with one idea Kotlin doesn't have built in.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ios" data-n="3">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">iOS for Android developers</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 3 · 4 of 5</p>
+        <h1>The main actor</h1>
+        <p class="lede">In puzzle 2, you moved work between queues by hand. Kotlin did the same job with coroutines and withContext. Swift has its own version, with one idea Kotlin doesn't have built in.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-frozen-not-stopped.html" title="Frozen, not stopped">0</a></li><li><a href="01-the-run-loop-is-your-looper.html" title="The run loop is your Looper">1</a></li><li><a href="02-queues-not-handlers.html" title="Queues, not handlers">2</a></li><li><a href="03-the-main-actor.html" aria-current="page" title="The main actor">3</a></li><li><a href="04-counting-not-collecting.html" title="Counting, not collecting">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary><a href="02-queues-not-handlers.html">Puzzle 2: Queues, not handlers</a></summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Queues, not handlers</summary><p>Grand Central Dispatch runs tasks from dispatch queues on a pool of threads it manages. A serial queue runs one task at a time, in order; a concurrent queue can run several at once. The main queue runs on the main thread, so DispatchQueue.main.async is iOS's handler.post.</p><p><a href="02-queues-not-handlers.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-frozen-not-stopped.html">0</a> → <a href="01-the-run-loop-is-your-looper.html">1</a> → <a href="02-queues-not-handlers.html">2</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/04-an-ios-app-in-one-puzzle.html"><b>Swift</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 4: An iOS app in one puzzle</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="await gives the thread back; an actor lets one task in at a time; the main actor is the main thread"><input type="radio" name="st-actor" id="st-actor-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-actor" id="st-actor-2" aria-label="Step 2 of 4"><input type="radio" name="st-actor" id="st-actor-3" aria-label="Step 3 of 4"><input type="radio" name="st-actor" id="st-actor-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ac-t"><title id="ac-t">An async function steps away from the main thread at an await; meanwhile the main thread handles a touch; an actor lets one task in at a time; the main actor is the main thread's office</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ac-t"><title id="ac-t">An async function steps away from the main thread at an await; meanwhile the main thread handles a touch; an actor lets one task in at a time; the main actor is the main thread's office</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><circle class="d-skin" cx="90" cy="190" r="15"/><rect class="d-roof" x="68" y="207" width="44" height="32" rx="12"/><rect class="d-wood" x="34" y="240" width="150" height="12" rx="3"/><text class="d-tiny" x="90" y="274" text-anchor="middle">main thread</text></g>
 <g class="step s1" data-pulse="1" data-move="1:150,150 2:330,60 3:330,60 4:150,150"><rect class="d-paper" x="0" y="0" width="120" height="36" rx="3"/><polyline class="d-line" points="0,0 60,14 120,0"/><text class="d-tiny" x="60" y="30" text-anchor="middle">showProfile()</text></g>
@@ -73,6 +84,7 @@
 <g class="step s3" data-pulse="3"><rect class="d-paper" x="420" y="150" width="180" height="140" rx="8"/><text class="d-b" x="510" y="176" text-anchor="middle">actor</text><g><circle class="d-skin" cx="510" cy="210" r="15"/><rect class="d-roof" x="488" y="227" width="44" height="32" rx="12"/><text class="d-tiny" x="510" y="280" text-anchor="middle">one task</text></g><g><circle class="d-skin" cx="470" cy="320" r="15"/><rect class="d-roof" x="448" y="337" width="44" height="32" rx="12"/></g><g><circle class="d-skin" cx="560" cy="320" r="15"/><rect class="d-roof" x="538" y="337" width="44" height="32" rx="12"/></g></g>
 <g class="step s4" data-pulse="4"><rect class="d-acc" x="30" y="120" width="230" height="170" rx="10"/><text class="d-a" x="145" y="110" text-anchor="middle">main actor</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p><code>showProfile()</code> is an <b>async function</b>, running on the main thread. It needs data from the network.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-actor-2">Next →</label></div></li>
 <li><p>At <code>await</code>, it steps away and gives the main thread back. Meanwhile the main thread handles a touch: no freeze.</p><div class="stepnav"><label for="st-actor-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-actor-3">Next →</label></div></li>
@@ -85,8 +97,8 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Swift's version of a suspend function is an <b>async function</b>. Where it waits, you write <b><code>await</code></b>: at that point the function may give up its thread so other work can run on it, and later it resumes, possibly on a different thread. Like a coroutine, it reads straight down.</p>
-<p>A task is one piece of async work running, like a coroutine. Swift adds one block Kotlin doesn't have built into the language: the <b>actor</b>. An actor is an object that lets only one task at a time touch its data; other code that wants in has to <code>await</code> its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock. One catch: &quot;one at a time&quot; holds between awaits. When code on an actor reaches an <code>await</code>, it steps out, another task may come in and change the data, and when the first resumes, things may have moved on. So check your assumptions again after an <code>await</code>.</p>
-<p>The most important one is the <b>main actor</b>. It protects all the data used to show the UI: code marked <code>@MainActor</code> always runs on the main thread, taking turns with rendering and touch handling. It's Swift's <code>Dispatchers.Main</code>. Note that <code>await</code> itself moves nothing: it frees the thread while waiting. Where <code>loadUser()</code>'s own work runs depends on which actor it belongs to, so heavy work still needs to be put off the main actor on purpose:</p>
+<p>A task is one piece of async work running, like a coroutine. Swift adds one block Kotlin doesn't have built into the language: the <b>actor</b>. An actor is an object that lets only one task at a time touch its data; other code that wants in has to <code>await</code> its turn. That rules out two threads changing the same data at once, by construction rather than by remembering to lock. One catch: &quot;one at a time&quot; holds between awaits. When a call actually suspends at an <code>await</code>, another task may come in and change the data, and when the first resumes, things may have moved on. So check your assumptions again after an <code>await</code>.</p>
+<p>The most important one is the <b>main actor</b>. It protects state and code isolated to that actor: code marked <code>@MainActor</code> always runs on the main thread, taking turns with rendering and touch handling. It's Swift's <code>Dispatchers.Main</code>. Note that <code>await</code> itself moves nothing: it frees the thread while waiting. Where <code>loadUser()</code>'s own work runs depends on which actor it belongs to, so heavy work still needs to be put off the main actor on purpose:</p>
 <pre><code class="language-swift">@MainActor
 func showProfile() async {
     let user = await api.loadUser()   // the main thread is free while this waits
@@ -101,36 +113,32 @@ func showProfile() async {
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Inside a <code>@MainActor</code> function, you <code>await</code> a network call that takes 2 seconds. Does the screen freeze?</legend>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-1" data-ok><label for="q-03-the-main-actor-1-1">No: while it waits, the function gives up the main thread</label>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-2"><label for="q-03-the-main-actor-1-2">Yes, unless the call is moved to a global dispatch queue first</label>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-3"><label for="q-03-the-main-actor-1-3">Yes: it's on the main actor, so the main thread waits too</label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-1" data-ok><label for="q-03-the-main-actor-1-1"><span>No: while it waits, the function gives up the main thread</span></label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-2"><label for="q-03-the-main-actor-1-2"><span>Yes, unless the call is moved to a global dispatch queue first</span></label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-3"><label for="q-03-the-main-actor-1-3"><span>Yes: it's on the main actor, so the main thread waits too</span></label>
 <p class="fb ok opt-1"><b>Right.</b> await gives the thread back while waiting.</p>
 <p class="fb no opt-2"><b>Not quite.</b> For a real network call, no: while it waits, await lets the main thread go. (Heavy work the function does itself is another matter, see the building block.) <label class="show-me" for="st-actor-2" data-goto="st-actor">Show me step 2 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> At an await, the function gives up its thread; the main thread keeps handling touches. <label class="show-me" for="st-actor-2" data-goto="st-actor">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why can't two tasks change an actor's data at the same moment?</legend>
-<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-1"><label for="q-03-the-main-actor-2-1">Because every actor runs on the main thread, one thing at a time</label>
-<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-2" data-ok><label for="q-03-the-main-actor-2-2">Because an actor lets only one task at a time touch its data</label>
+<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-1"><label for="q-03-the-main-actor-2-1"><span>Because every actor runs on the main thread, one thing at a time</span></label>
+<input type="radio" name="q-03-the-main-actor-2" id="q-03-the-main-actor-2-2" data-ok><label for="q-03-the-main-actor-2-2"><span>Because an actor lets only one task at a time touch its data</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Only the main actor is tied to the main thread; others run anywhere, still one task at a time. <label class="show-me" for="st-actor-3" data-goto="st-actor">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One task inside at a time.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between the main actor and the main queue from puzzle 2?</legend>
-<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-1"><label for="q-03-the-main-actor-3-1">The main actor runs on its own thread, next to the main queue</label>
-<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-2" data-ok><label for="q-03-the-main-actor-3-2">Both run on the main thread; the main actor is how async/await code says it</label>
-<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-3"><label for="q-03-the-main-actor-3-3">The main queue is for UI; the main actor is for data only</label>
+<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-1"><label for="q-03-the-main-actor-3-1"><span>The main actor runs on its own thread, next to the main queue</span></label>
+<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-2" data-ok><label for="q-03-the-main-actor-3-2"><span>Both run on the main thread; the main actor is how async/await code says it</span></label>
+<input type="radio" name="q-03-the-main-actor-3" id="q-03-the-main-actor-3-3"><label for="q-03-the-main-actor-3-3"><span>The main queue is for UI; the main actor is for data only</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The main actor runs on the main thread: that's what makes UI work safe. <label class="show-me" for="st-actor-4" data-goto="st-actor">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Two ways of saying &quot;on the main thread&quot;.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The main actor protects UI data, and its code runs on the main thread. <label class="show-me" for="st-actor-4" data-goto="st-actor">Show me step 4 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/">The Swift Programming Language: Concurrency</a> (&quot;An asynchronous function in Swift can give up the thread that it's running on, which lets another asynchronous function run on that thread while the first function is blocked&quot;; &quot;actors allow only one task to access their mutable state at a time&quot;; &quot;the main actor protects all of the data that's used to show the UI. The main actor takes turns rendering the UI, handling UI events, and running code that you write that needs to query or update the UI&quot;)</li></ul>
-      </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An async function can give up its thread while it waits, at each await: Swift's suspend. An actor lets only one task at a time touch its data. The main actor protects all UI data, so code marked @MainActor runs on the main thread: Swift's Dispatchers.Main.</p></div></section>
-      
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/">The Swift Programming Language: Concurrency</a> (&quot;An asynchronous function in Swift can give up the thread that it's running on, which lets another asynchronous function run on that thread while the first function is blocked&quot;; &quot;actors allow only one task to access their mutable state at a time&quot;; &quot;the main actor protects all of the data that's used to show the UI. The main actor takes turns rendering the UI, handling UI events, and running code that you write that needs to query or update the UI&quot;)</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An async function may suspend and release its thread. An actor serializes access to its isolated state between suspension points. Main-actor isolation coordinates UI work on the main thread.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-queues-not-handlers.html">← Puzzle 2</a>

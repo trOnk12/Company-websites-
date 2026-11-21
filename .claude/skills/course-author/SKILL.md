@@ -24,6 +24,15 @@ is live). A book Mateusz owns goes through `/book-to-course` instead (private by
 A Kotlin developer who has built a simple Android app. Knows: the words in `glossary.json → baseline`.
 Knows nothing about operating systems or Android internals. Every other word must be taught.
 
+## Follow the learner's next why
+
+Keep a complete main path and make the underlying mechanism accessible from the point of use. Before outlining a puzzle, finish these sentences: “The learner must already be able to explain …”, “This puzzle lets them predict …”, and “The next why they are likely to ask is …”.
+
+- Carry one concrete example through the explanation, diagram, optional depth and check. Name the actor, its input, what changes, and its output. Say where and when it happens. For code that crosses a boundary, show one actual artifact or call on each side.
+- If the missing piece is needed for the main explanation, teach it first. If it explains a deeper mechanism, use an optional `## Go deeper: <concrete question>` section directly after the point where the question arises. Give it an observable change and a `- Question::Answer` item. The answer stays closed until the learner opens it. Continue the same example, then connect the result back to the main explanation. These sections render as expandable details, with a direct link and a return to the mechanism.
+- Distinguish model from implementation where it matters. A deliberately simplified CPU trace is a model. An actual assembler instruction needs verified operands, architecture and behavior. A limit, platform behavior or ability may depend on the toolchain or OS version.
+- Prefer “what would change if we remove or replace this step?” as the first check. Keep scenarios new, options comparable, and the source of each wrong answer plausible. Main checks use only knowledge introduced on the main path. Optional depth provides its own self-check.
+
 ## 1. Concept map first (before writing any puzzle)
 
 The glossary is also the course's dependency graph: every puzzle's "Builds on" panel and the overview's
@@ -52,7 +61,7 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
    Every limit gets its reason (why 1 MB, why one thread).
 4. **The analogy**: only the course world (house, town hall, post office, clerk, courier). No new worlds.
 5. Optional **In practice** / source code names (they get popovers from `refs.json`).
-6. **Check yourself**: 3 questions, see §4.
+6. **Check yourself**: 3 questions, see §4. Any depth sections go beside the relevant explanation, before this check.
 7. **Sources**: primary sources you actually read this session for every claim.
 
 ## 3. The diagram (`_course/<course>/diagrams/name.html`)
@@ -83,8 +92,7 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
 ## 4. Questions
 
 `Question::*Right||Wrong >> the misconception behind it >> s3||…::Why the right one is right`
-- One **prediction** about a situation the page didn't show, one **why**, one **look-alike** (two
-  terms the learner could confuse). Never a sentence copied from a caption.
+- One **prediction** about a situation the page did not show, one **why**, and one check that **connects two earlier ideas**. Use look-alikes only when a realistic scenario requires telling them apart.
 - Every wrong option is a misconception a real learner holds, named in its feedback, with a pointer
   (`sN` = diagram step, or a section id) to where it's fixed.
 - Only taught words, in the question and in every option.

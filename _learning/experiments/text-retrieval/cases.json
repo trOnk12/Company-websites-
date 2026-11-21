@@ -1,0 +1,26 @@
+{
+  "documents": {
+    "refund": "Refunds for purchases paid by card can take five business days to appear on the original payment method.",
+    "cancellation": "Cancel a monthly subscription in Billing settings. You keep access to your plan through the end of the paid period.",
+    "mfa": "To add a second authentication factor, open Account Security and enroll an authenticator app. Store the recovery codes offline.",
+    "password": "Reset a forgotten password from the sign-in screen. The email reset link expires after twenty minutes.",
+    "export": "Download a copy of your activity history as a CSV file from the Reports page. Choose the start date and end date.",
+    "rename": "Edit the team display name from Workspace Settings. Only a workspace administrator can save the change.",
+    "shipping": "Track a shipment from the Orders page with its carrier tracking number. Delivery can be delayed by weather.",
+    "storage": "To free available storage, open the Projects page and delete exported archives you no longer need. The plan limit is ten gigabytes."
+  },
+  "queries": [
+    {"type": "literal", "query": "How many business days does a card refund take?", "expected": "refund"},
+    {"type": "literal", "query": "Where can I cancel a monthly subscription?", "expected": "cancellation"},
+    {"type": "literal", "query": "Where do I enroll an authenticator app?", "expected": "mfa"},
+    {"type": "literal", "query": "When does the password reset link expire?", "expected": "password"},
+    {"type": "literal", "query": "Download activity history as CSV", "expected": "export"},
+    {"type": "literal", "query": "Change the workspace team display name", "expected": "rename"},
+    {"type": "paraphrase", "query": "I returned the item. When will the money show back up in my bank?", "expected": "refund"},
+    {"type": "paraphrase", "query": "I want to stop paying every month. What do I do?", "expected": "cancellation"},
+    {"type": "paraphrase", "query": "Can I require an extra proof of who I am when I log in?", "expected": "mfa"},
+    {"type": "paraphrase", "query": "I can't remember my credentials. How do I get back into my account?", "expected": "password"},
+    {"type": "paraphrase", "query": "Put the record of what I did into a spreadsheet.", "expected": "export"},
+    {"type": "paraphrase", "query": "Our organization is called something else now. How do I update what people see?", "expected": "rename"}
+  ]
+}

@@ -44,11 +44,11 @@ A library added to a source set **flows down** the `dependsOn` links from puzzle
 
 commonMain only accepts a **multiplatform library**: one published for all of commonMain's targets, with one common API that common code can call. Kotlin's coroutines, Ktor's core and SQLDelight are multiplatform libraries. A library built for one platform only goes into that platform's source set. Ktor shows both kinds: the part that actually sends requests is per platform, ktor-client-okhttp for Android (built on OkHttp, a library for the JVM and Android) and ktor-client-darwin for Apple's systems (built on Apple's own networking). Put the OkHttp part in commonMain and the build fails: commonMain must compile for iOS too, and that part has nothing for iOS.
 
-Two more lines you'll meet. `implementation(kotlin("test"))` in commonTest gives every test source set Kotlin's multiplatform test library. And another multiplatform module of your own goes in the same way, `implementation(project(":network"))` in commonMain, and every target gets its matching part.
+Two more lines you'll meet in the code above. The `kotlin("test")` line in commonTest gives every test source set Kotlin's multiplatform test library. And another multiplatform module of your own goes in the same way, with a project line in commonMain, and every target gets its matching part.
 
 ## The analogy
 
-Supplies for the offices from puzzle 17. A supply ordered for the shared handbook's level reaches every office below it, so it must be something every country can use, like a standard pen. A local supply, like a plug adapter that only fits Japan's sockets, is ordered at the Japan binder's level, and only offices under it receive it. Order the adapter for everyone and the order fails: France can't use it.
+Supplies for the offices from puzzle 17. A supply ordered for the shared handbook's level reaches every office below it, so it must be something every country can use, like a standard pen. A local supply, like a plug adapter that only fits Japan's wall plugs, is ordered at the Japan folder's level, and only offices under it receive it. Order the adapter for everyone and the order fails: France can't use it.
 
 ## Check yourself
 

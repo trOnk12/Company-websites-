@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="10" data-prev="09-whats-inside-the-apk.html" data-prev-title="What's inside the APK">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" class="done" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" class="done" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" class="done" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" class="done" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" class="done" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" aria-current="page" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" title="When the process is gone">22</a></li></ol></nav>
-      <p class="eyebrow">Android from the foundation · Puzzle 10 · 11 of 23</p>
-      <h1>Faster code, now and later</h1>
-      <p class="lede">Reading DEX one instruction at a time is slow. So ART translates busy code into machine code while the app runs, and the phone translates more of it later.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="10">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Android from the foundation</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 10 · 11 of 23</p>
+        <h1>Faster code, now and later</h1>
+        <p class="lede">Reading DEX one instruction at a time is slow. So ART translates busy code into machine code while the app runs, and the phone translates more of it later.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" aria-current="page" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" title="When the process is gone">22</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-the-kernel-is-in-charge.html">Puzzle 1: The kernel is in charge</a></summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p></details></li><li data-block="9"><details><summary><a href="09-whats-inside-the-apk.html">Puzzle 9: What's inside the APK</a></summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: The kernel is in charge</summary><p>The kernel schedules threads and manages address spaces and access to protected resources. Ordinary instructions can read and write memory already mapped into the process without asking the kernel on each access.</p><p><a href="01-the-kernel-is-in-charge.html">Review puzzle 1</a></p></details></li><li data-block="9"><details><summary>Puzzle 9: What's inside the APK</summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p><p><a href="09-whats-inside-the-apk.html">Review puzzle 9</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="09-whats-inside-the-apk.html">9</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Hot code is translated now (JIT) and later (AOT)"><input type="radio" name="st-jit" id="st-jit-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-jit" id="st-jit-2" aria-label="Step 2 of 5"><input type="radio" name="st-jit" id="st-jit-3" aria-label="Step 3 of 5"><input type="radio" name="st-jit" id="st-jit-4" aria-label="Step 4 of 5"><input type="radio" name="st-jit" id="st-jit-5" aria-label="Step 5 of 5">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="jit-t"><title id="jit-t">ART translates hot code right away (JIT) and notes it in a profile; at night dex2oat translates the profiled code ahead of time (AOT); a Baseline Profile ships the notes in the APK</title><defs><marker id="ah-jit-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-jit-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-jit-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-jit-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="jit-t"><title id="jit-t">ART translates hot code right away (JIT) and notes it in a profile; at night dex2oat translates the profiled code ahead of time (AOT); a Baseline Profile ships the notes in the APK</title><defs><marker id="ah-jit-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-jit-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-jit-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-jit-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <g class="step s4 hide-5" data-pulse="4"><rect class="d-dusk" x="0" y="0" width="640" height="300"/><g><path class="d-moon" d="M580,30 a26,26 0 1,0 0,52 a20,20 0 1,1 0,-52 Z"/></g></g>
 <g class="step s1"><rect class="d-soil" x="0" y="300" width="640" height="80"/><ellipse class="d-pebble" cx="210" cy="344" rx="7" ry="4"/><ellipse class="d-pebble" cx="250" cy="368" rx="7" ry="4"/><ellipse class="d-pebble" cx="300" cy="336" rx="7" ry="4"/><ellipse class="d-pebble" cx="380" cy="360" rx="7" ry="4"/><ellipse class="d-pebble" cx="470" cy="340" rx="7" ry="4"/><ellipse class="d-pebble" cx="560" cy="356" rx="7" ry="4"/><ellipse class="d-pebble" cx="610" cy="328" rx="7" ry="4"/><line class="d-grass" x1="0" y1="300" x2="640" y2="300"/><text class="d-b" x="16" y="330">kernel</text></g>
 <g class="step s1 hide-4"><line class="d-ray" x1="606.0" y1="56.0" x2="616.0" y2="56.0"/><line class="d-ray" x1="598.4" y1="74.4" x2="605.5" y2="81.5"/><line class="d-ray" x1="580.0" y1="82.0" x2="580.0" y2="92.0"/><line class="d-ray" x1="561.6" y1="74.4" x2="554.5" y2="81.5"/><line class="d-ray" x1="554.0" y1="56.0" x2="544.0" y2="56.0"/><line class="d-ray" x1="561.6" y1="37.6" x2="554.5" y2="30.5"/><line class="d-ray" x1="580.0" y1="30.0" x2="580.0" y2="20.0"/><line class="d-ray" x1="598.4" y1="37.6" x2="605.5" y2="30.5"/><circle class="d-sun" cx="580" cy="56" r="20"/></g>
@@ -85,6 +96,7 @@
 <g class="step s5" data-move="4:40,200 5:262,214"><rect class="d-ink" x="0" y="0" width="80" height="38" rx="6"/><text class="d-inv" x="40" y="25" text-anchor="middle">fast</text></g>
 <text class="step s5 d-a" x="302" y="282" text-anchor="middle">first launch</text>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Some of your code runs over and over: it's "hot". Interpreting it every time is wasteful.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-jit-2">Next →</label></div></li>
 <li><p>So ART translates hot code into machine code right away, while the app runs: <b>JIT</b>, just-in-time.</p><div class="stepnav"><label for="st-jit-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-jit-3">Next →</label></div></li>
@@ -98,8 +110,8 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>ART watches which code runs often, &quot;hot&quot; code, and translates it to machine code right away, while the app runs: that's <b>JIT</b>, just-in-time. That machine code lives in the process's memory, so it's gone when the process ends. It also writes down which code was hot in a notebook, the <b>profile</b>.</p>
-<p>Later, about once a day while the phone is idle and charging, <code>dex2oat</code>, a program that's part of Android, translates the code in the profile to machine code and keeps it in a file on the phone: that's <b>AOT</b>, ahead-of-time. Next start, that code is fast from the first moment. It doesn't translate everything: that would take a long time and use storage, and most code is rarely used.</p>
-<p>A <b>Baseline Profile</b> is a profile the app's developers write and ship inside the APK, so <code>dex2oat</code> can translate the important code when the app is installed, before its first launch.</p>
+<p>Later, when system maintenance policy permits background compilation, <code>dex2oat</code>, a program that's part of Android, translates the code in the profile to machine code and keeps it in a file on the phone: that's <b>AOT</b>, ahead-of-time. Next start, that code is fast from the first moment. It doesn't translate everything: that would take a long time and use storage, and most code is rarely used.</p>
+<p>A <b>Baseline Profile</b> is a profile the app's developers write and ship inside the APK, so a supported installer and runtime can compile important paths before first use. Check the actual installation and compilation mode when measuring the result.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -109,34 +121,30 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app gets faster a few days after install, without an update. Why?</legend>
-<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-1" data-ok><label for="q-10-faster-code-now-and-later-1-1">ART noted the hot code, and <code>dex2oat</code> later translated it ahead of time</label>
-<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-2"><label for="q-10-faster-code-now-and-later-1-2">The phone's CPU learned the app's code and kept it for next time</label>
-<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-3"><label for="q-10-faster-code-now-and-later-1-3">The JIT saved its machine code into the APK, so it ran fast on the next start</label>
+<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-1" data-ok><label for="q-10-faster-code-now-and-later-1-1"><span>ART noted the hot code, and <code>dex2oat</code> later translated it ahead of time</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-2"><label for="q-10-faster-code-now-and-later-1-2"><span>The phone's CPU learned the app's code and kept it for next time</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-1" id="q-10-faster-code-now-and-later-1-3"><label for="q-10-faster-code-now-and-later-1-3"><span>The JIT saved its machine code into the APK, so it ran fast on the next start</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The profile survives; AOT translation from it is what makes the next starts faster.</p>
 <p class="fb no opt-2"><b>Not quite.</b> CPUs don't learn. The difference is which code is already translated. <label class="show-me" for="st-jit-4" data-goto="st-jit">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> JIT's machine code lives in memory while the app runs and is lost when it stops. The notebook is what's kept. <label class="show-me" for="st-jit-3" data-goto="st-jit">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why not translate all the DEX ahead of time, right at install?</legend>
-<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-1" data-ok><label for="q-10-faster-code-now-and-later-2-1">Because translating all of it costs time and space, so a profile picks</label>
-<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-2"><label for="q-10-faster-code-now-and-later-2-2">Because AOT can only translate code that has run at least once</label>
+<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-1" data-ok><label for="q-10-faster-code-now-and-later-2-1"><span>Because translating all of it costs time and space, so a profile picks</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-2" id="q-10-faster-code-now-and-later-2-2"><label for="q-10-faster-code-now-and-later-2-2"><span>Because AOT can only translate code that has run at least once</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The profile focuses the work on code that's actually used.</p>
 <p class="fb no opt-2"><b>Not quite.</b> AOT translates DEX, but only what's worth it: the hot code from the profile. <label class="show-me" for="st-jit-4" data-goto="st-jit">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between JIT and AOT?</legend>
-<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-1"><label for="q-10-faster-code-now-and-later-3-1">Where: JIT runs on your computer when you build, AOT on the phone</label>
-<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-2" data-ok><label for="q-10-faster-code-now-and-later-3-2">When: JIT translates now, as the app runs, and AOT translates ahead of time, later</label>
+<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-1"><label for="q-10-faster-code-now-and-later-3-1"><span>Where: JIT runs on your computer when you build, AOT on the phone</span></label>
+<input type="radio" name="q-10-faster-code-now-and-later-3" id="q-10-faster-code-now-and-later-3-2" data-ok><label for="q-10-faster-code-now-and-later-3-2"><span>When: JIT translates now, as the app runs, and AOT translates ahead of time, later</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Both happen on the phone. The difference is when. <label class="show-me" for="st-jit-2" data-goto="st-jit">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Same goal, different moment.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://source.android.com/docs/core/runtime/jit-compiler">Android Open Source Project: Implement ART just-in-time compiler</a></li><li><a href="https://source.android.com/docs/core/runtime/configure/art-service">Android Open Source Project: ART Service configuration (background dexopt)</a></li><li><a href="https://developer.android.com/topic/performance/baselineprofiles/overview">Android Developers: Baseline Profiles overview</a></li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://source.android.com/docs/core/runtime/jit-compiler">Android Open Source Project: Implement ART just-in-time compiler</a></li><li><a href="https://source.android.com/docs/core/runtime/configure/art-service">Android Open Source Project: ART Service configuration (background dexopt)</a></li><li><a href="https://developer.android.com/topic/performance/baselineprofiles/overview">Android Developers: Baseline Profiles overview</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>JIT = translate busy code now, while the app runs. AOT = translate it ahead of time, later, from ART's notes. A Baseline Profile sends those notes with the APK.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="09-whats-inside-the-apk.html">← Puzzle 9</a>

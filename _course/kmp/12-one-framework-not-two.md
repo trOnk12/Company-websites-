@@ -26,7 +26,7 @@ binaries.framework { export(project(":network")) }
 
 Exporting has a cost. An exported module comes in with its whole API, even if Swift uses a tiny part of it, and that turns off **dead code elimination** for it: the step that leaves out compiled code nothing uses, to keep the app small. So export only the modules Swift actually calls; the others still go into the framework, but trimmed to the code that's used.
 
-For distribution, the umbrella framework is usually built as an **XCFramework**: one bundle holding the builds for every Apple device and simulator, which the iOS project adds like any other library.
+For distribution, the umbrella framework is usually built as an **XCFramework**: one bundle holding the selected device and simulator builds you distribute, which the iOS project adds like any other library.
 
 ## The analogy
 

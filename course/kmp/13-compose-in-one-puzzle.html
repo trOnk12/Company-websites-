@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="13" data-prev="12-one-framework-not-two.html" data-prev-title="One framework, not two">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" class="done" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" class="done" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" class="done" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" class="done" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" class="done" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" class="done" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" class="done" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" class="done" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" class="done" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" class="done" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" class="done" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" class="done" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" class="done" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" aria-current="page" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
-      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Puzzle 13 · 14 of 16</p>
-      <h1>Compose in one puzzle</h1>
-      <p class="lede">The last module shares the UI itself, with Compose. If you've built screens with Activities and XML, here's the one idea Compose is built on, and the compiler step that makes it work, before we look at what can be shared.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="13">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Kotlin Multiplatform, from the compiler up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 13 · 14 of 20</p>
+        <h1>Compose in one puzzle</h1>
+        <p class="lede">The last module shares the UI itself, with Compose. If you've built screens with Activities and XML, here's the one idea Compose is built on, and the compiler step that makes it work, before we look at what can be shared.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" title="One Kotlin function, two ways to run it">0</a></li><li><a href="01-what-every-target-has.html" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" aria-current="page" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li><li><a href="16-the-kotlin-block.html" title="The kotlin { } block">16</a></li><li><a href="17-source-sets-in-between.html" title="Source sets in between">17</a></li><li><a href="18-who-can-see-what.html" title="Who can see what">18</a></li><li><a href="19-dependencies-per-source-set.html" title="Dependencies per source set">19</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-13">
         <p id="builds-on-13"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-one-kotlin-many-machines.html">Puzzle 0: One Kotlin, many machines</a></summary><p>The Kotlin compiler has one front end that reads your code and one back end per target. For Android it produces bytecode for a virtual machine; for iOS, Kotlin/Native produces native code that runs directly on the CPU.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: One Kotlin function, two ways to run it</summary><p>For Android, Kotlin produces class files, the Android build turns them into DEX, and ART runs the DEX on the phone. For iOS, Kotlin/Native produces machine code during the build. In both cases, the processor ultimately runs machine instructions.</p><p><a href="00-one-kotlin-many-machines.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-one-kotlin-many-machines.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A composable describes the UI; when state changes, it runs again"><input type="radio" name="st-compose" id="st-compose-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-compose" id="st-compose-2" aria-label="Step 2 of 4"><input type="radio" name="st-compose" id="st-compose-3" aria-label="Step 3 of 4"><input type="radio" name="st-compose" id="st-compose-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="cp-t"><title id="cp-t">A composable function Greeting takes a name and describes a text; the screen shows Hello Ana; the name changes to Ben; Compose calls Greeting again and the screen shows Hello Ben; the compiler plugin added the bookkeeping that makes this possible</title><defs><marker id="ah-compose-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-compose-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-compose-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-compose-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="cp-t"><title id="cp-t">A composable function Greeting takes a name and describes a text; the screen shows Hello Ana; the name changes to Ben; Compose calls Greeting again and the screen shows Hello Ben; the compiler plugin added the bookkeeping that makes this possible</title><defs><marker id="ah-compose-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-compose-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-compose-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-compose-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><rect class="d-band" x="40" y="70" width="230" height="90" rx="8"/><text class="d-tiny" x="155" y="96" text-anchor="middle">@Composable Greeting(name)</text><text class="d-a" x="155" y="130" text-anchor="middle">Text("Hello, $name")</text></g>
 <g class="step s1"><rect class="d-paper" x="440" y="60" width="130" height="200" rx="12"/><rect class="d-hl" x="447" y="74" width="116" height="166" rx="4"/><circle class="d-ink" cx="505" cy="250" r="3"/><text class="d-tiny" x="505" y="278" text-anchor="middle">screen</text></g>
@@ -76,6 +87,7 @@
 <g class="step s4" data-pulse="4"><rect class="d-dash" x="30" y="60" width="250" height="110" rx="10"/><text class="d-tiny" x="155" y="190" text-anchor="middle">compiler plugin's bookkeeping</text></g>
 <g class="step s1" data-move="1:155,180 2:155,270 3:505,200 4:155,40"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>A <b>composable</b>: a function that describes the UI for its data. For "Ana", the screen shows "Hello, Ana".</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-compose-2">Next →</label></div></li>
 <li><p>The name changes to "Ben". It's <b>state</b>, kept across calls with <b>remember</b>.</p><div class="stepnav"><label for="st-compose-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-compose-3">Next →</label></div></li>
@@ -92,7 +104,7 @@
 fun Greeting(name: String) {
     Text(&quot;Hello, $name&quot;)
 }</code></pre>
-<p>It returns nothing and creates no view objects you keep. It describes what the screen should look like for this <code>name</code>.</p>
+<p>This Greeting returns Unit and creates no view objects you keep. Other composable functions can return values. It describes what the screen should look like for this <code>name</code>.</p>
 <p>When the data changes, Compose calls the function again with the new value: <b>recomposition</b>. It's smart about it: only the functions whose inputs might have changed run again; the rest are skipped. Data that should trigger it is <b>state</b>, for example <code>var count by remember { mutableStateOf(0) }</code>; <b>remember</b> keeps that value across recompositions, so it isn't reset each time the function runs.</p>
 <p>How can the runtime know which functions showed what? That's the <b>Compose compiler plugin</b>, a part of the Kotlin compiler from puzzle 0. It rewrites every <code>@Composable</code> function, adding hidden bookkeeping so Compose can track what each call showed and skip what didn't change.</p>
       </section>
@@ -104,36 +116,32 @@ fun Greeting(name: String) {
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The <code>name</code> passed to <code>Greeting</code> changes. What makes the text update?</legend>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-1" data-ok><label for="q-13-compose-in-one-puzzle-1-1">Compose calls <code>Greeting</code> again with the new name: recomposition</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-2"><label for="q-13-compose-in-one-puzzle-1-2">The Activity recreates the whole screen</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-3"><label for="q-13-compose-in-one-puzzle-1-3">Your code sets the new text on the Text object</label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-1" data-ok><label for="q-13-compose-in-one-puzzle-1-1"><span>Compose calls <code>Greeting</code> again with the new name: recomposition</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-2"><label for="q-13-compose-in-one-puzzle-1-2"><span>The Activity recreates the whole screen</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-1" id="q-13-compose-in-one-puzzle-1-3"><label for="q-13-compose-in-one-puzzle-1-3"><span>Your code sets the new text on the Text object</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Data changes, functions run again.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Only the affected functions run again; nothing is recreated. <label class="show-me" for="st-compose-3" data-goto="st-compose">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> You keep no Text object to set; you describe, Compose redraws. <label class="show-me" for="st-compose-3" data-goto="st-compose">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does a counter need <code>remember</code>?</legend>
-<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-1"><label for="q-13-compose-in-one-puzzle-2-1">So Compose knows the counter is on screen</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-2" data-ok><label for="q-13-compose-in-one-puzzle-2-2">So its value survives each recomposition instead of resetting</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-3"><label for="q-13-compose-in-one-puzzle-2-3">So the counter is saved when the app is closed</label>
+<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-1"><label for="q-13-compose-in-one-puzzle-2-1"><span>So Compose knows the counter is on screen</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-2" data-ok><label for="q-13-compose-in-one-puzzle-2-2"><span>So its value survives each recomposition instead of resetting</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-2" id="q-13-compose-in-one-puzzle-2-3"><label for="q-13-compose-in-one-puzzle-2-3"><span>So the counter is saved when the app is closed</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> remember is about keeping the value across calls, not visibility. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Kept across calls.</p>
 <p class="fb no opt-3"><b>Not quite.</b> remember lasts across recompositions, not after the app is killed. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a composable and the Compose compiler plugin?</legend>
-<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-1" data-ok><label for="q-13-compose-in-one-puzzle-3-1">A composable describes UI for its data, while the plugin rewrites composables so the runtime can track them</label>
-<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-2"><label for="q-13-compose-in-one-puzzle-3-2">A composable rewrites functions so the runtime can track them, while the plugin describes UI for its data</label>
+<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-1" data-ok><label for="q-13-compose-in-one-puzzle-3-1"><span>A composable describes UI for its data, while the plugin rewrites composables so the runtime can track them</span></label>
+<input type="radio" name="q-13-compose-in-one-puzzle-3" id="q-13-compose-in-one-puzzle-3-2"><label for="q-13-compose-in-one-puzzle-3-2"><span>A composable rewrites functions so the runtime can track them, while the plugin describes UI for its data</span></label>
 <p class="fb ok opt-1"><b>Right.</b> What you write vs what the compiler adds.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.android.com/develop/ui/compose/mental-model">Android Developers: Thinking in Compose</a> (&quot;you can build your user interface by defining a set of composable functions that take in data and emit UI elements&quot;; &quot;This annotation informs the Compose compiler that this function is intended to convert data into UI&quot;; &quot;Recomposition is the process of calling your composable functions again when inputs change. When Compose recomposes based on new inputs, it calls only the functions or lambdas that might have changed, and skips the rest.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/develop/ui/compose/mental-model">Android Developers: Thinking in Compose</a> (&quot;you can build your user interface by defining a set of composable functions that take in data and emit UI elements&quot;; &quot;This annotation informs the Compose compiler that this function is intended to convert data into UI&quot;; &quot;Recomposition is the process of calling your composable functions again when inputs change. When Compose recomposes based on new inputs, it calls only the functions or lambdas that might have changed, and skips the rest.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>In Compose, a screen is a Kotlin function marked @Composable that describes the UI for the current data, instead of creating and updating view objects. When that data, its state, changes, Compose calls the affected functions again: recomposition. remember keeps a value across those calls. A compiler plugin rewrites every @Composable function so the runtime can track what each one showed and redo only what changed.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="12-one-framework-not-two.html">← Puzzle 12</a>

@@ -16,7 +16,7 @@ Puzzle 3 said one request costs one round trip. You measure your first API call 
 
 ## The building block
 
-Before HTTPS can carry a request, two handshakes happen on a new connection:
+For this cold HTTPS-over-TCP example, assume a known address, a full TLS 1.3 handshake and no extra retry:
 
 1. **TCP handshake:** client and server agree to talk. One round trip before any data flows.
 2. **TLS handshake:** the key agreement from the Encryption course. TLS 1.3 needs one more round trip.
@@ -26,7 +26,7 @@ So a first request on a new connection costs about three round trips: 750 ms on 
 
 **Connection reuse** keeps the connection open and sends the next request over it. Both handshakes are skipped: one round trip, as in puzzle 3.
 
-**HTTP/2** goes further. With HTTP/1.1, a connection carries one request at a time. HTTP/2 does **multiplexing**: many requests and responses interleaved on one connection, all in flight at once. That's what makes "send them together" from puzzle 3 cheap.
+**HTTP/2** goes further. HTTP/1.1 requires responses to pipelined requests in request order; many clients send one request at a time on each connection. HTTP/2 does **multiplexing**: many requests and responses interleaved on one connection, all in flight at once. That's what makes "send them together" from puzzle 3 cheap.
 
 In an Android app, OkHttp (under Retrofit) does both for you, with one condition: use one `OkHttpClient` for the whole app. Each client keeps its own **connection pool**, the set of connections it keeps open for reuse; a new client per screen, or per request, starts cold and pays the handshakes again. For per-call settings, use `client.newBuilder()`: the new client shares the original's pool.
 
@@ -41,6 +41,8 @@ Phoning a busy office. The first call, you go through the switchboard and prove 
 - What's the difference between connection reuse and HTTP/2 multiplexing?::*Reuse sends later requests over an open connection, while multiplexing sends many at once over it||Reuse sends many requests at once, while multiplexing keeps a connection open for later >> That's the two swapped. >> the-building-block::One after another vs all at once, both skipping handshakes.
 
 ## Sources
+
+- [RFC 9112 · HTTP/1.1 pipelining](https://www.rfc-editor.org/rfc/rfc9112.html#section-9.3.2)
 
 - [High Performance Browser Networking: Building blocks of TCP](https://hpbn.co/building-blocks-of-tcp/) ("each new connection will have a full roundtrip of latency before any application data can be transferred"; "The delay imposed by the three-way handshake makes new TCP connections expensive to create, and is one of the big reasons why connection reuse is a critical optimization")
 - [RFC 8446, TLS 1.3](https://www.rfc-editor.org/rfc/rfc8446) (the full handshake is the "1-RTT handshake")

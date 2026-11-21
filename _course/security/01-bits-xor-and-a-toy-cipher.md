@@ -29,11 +29,11 @@ Everything your app sends is **bits**: zeros and ones, eight to a byte. A key is
 
 XOR with the same key twice gives you back what you started with. That's a cipher: XOR the data with the key to encrypt, XOR the result with the key again to decrypt.
 
-If the key is truly random, as long as the data, and used only once, that's a **one-time pad**: every possible message is equally likely from the ciphertext, so the listener learns nothing at all.
+If the key is truly random, as long as the data, and used only once, that's a **one-time pad**: observing the ciphertext leaves the listener no better able to distinguish possible equal-length messages than before, so the listener learns nothing at all.
 
 Its weakness is the "once". Use the same key for two messages, and the listener XORs the two ciphertexts: the key cancels out, leaving the two messages XORed together, which is often enough to read both.
 
-Real ciphers keep the XOR and fix the key problem: from one short key they generate a long, fresh stream of key bits, a **keystream**, different for every message. The next puzzle shows a real cipher doing exactly that.
+Stream ciphers and counter-based encryption modes use a related operation: from one short key they generate a long, fresh stream of key bits, a **keystream**, different for every message. The next puzzle shows a real cipher doing exactly that.
 
 ## The analogy
 

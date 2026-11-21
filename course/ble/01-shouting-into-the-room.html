@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="1" data-prev="00-a-year-on-a-coin-battery.html" data-prev-title="Months on a coin battery">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" class="done" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" aria-current="page" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
-      <p class="eyebrow">Bluetooth Low Energy, from the radio up · Puzzle 1 · 2 of 5</p>
-      <h1>Shouting into the room</h1>
-      <p class="lede">In puzzle 0, the strap's radio slept almost all the time. Here's how a device that's nearly always asleep still gets found.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="1">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Bluetooth Low Energy, from the radio up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 1 · 2 of 5</p>
+        <h1>Shouting into the room</h1>
+        <p class="lede">In puzzle 0, the strap's radio slept almost all the time. Here's how a device that's nearly always asleep still gets found.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" aria-current="page" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-a-year-on-a-coin-battery.html">Puzzle 0: Months on a coin battery</a></summary><p>The radio is the hungriest part of a small device. BLE keeps it off almost all the time and wakes it only for short, planned moments. Every rule in this course follows from that.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Months on a coin battery</summary><p>The radio is the hungriest part of a small device. BLE keeps it off almost all the time and wakes it only for short, planned moments. Every rule in this course follows from that.</p><p><a href="00-a-year-on-a-coin-battery.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-a-year-on-a-coin-battery.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A sleeping device advertises on 3 channels; a scanning phone hears it"><input type="radio" name="st-advertising" id="st-advertising-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-advertising" id="st-advertising-2" aria-label="Step 2 of 4"><input type="radio" name="st-advertising" id="st-advertising-3" aria-label="Step 3 of 4"><input type="radio" name="st-advertising" id="st-advertising-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ad-t"><title id="ad-t">The strap wakes and sends a short packet, then sleeps; it repeats every advertising interval with a little random delay; the packet goes out on 3 of 40 channels; the phone listens on one channel at a time and hears it</title><defs><marker id="ah-advertising-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-advertising-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-advertising-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-advertising-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="ad-t"><title id="ad-t">The strap wakes and sends a short packet, then sleeps; it repeats every advertising interval with a little random delay; the packet goes out on 3 of 40 channels; the phone listens on one channel at a time and hears it</title><defs><marker id="ah-advertising-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-advertising-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-advertising-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-advertising-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="340" x2="640" y2="340"/>
 <g class="step s1" data-pulse="1"><rect class="d-wood" x="40" y="70" width="80" height="56" rx="12"/><circle class="d-dot" cx="54" cy="84" r="4"/><line class="d-line" x1="106" y1="70" x2="106" y2="56"/><circle class="d-ink" cx="106" cy="54" r="3"/><text class="d-tiny" x="80" y="144" text-anchor="middle">heart strap</text></g>
 <g class="step only-1"><g><path class="d-wave" d="M138.4,84 A14,14 0 0,1 138.4,112"/><path class="d-wave" d="M145.6,72 A26,26 0 0,1 145.6,124"/><path class="d-wave" d="M152.8,60 A38,38 0 0,1 152.8,136"/></g></g>
@@ -77,10 +88,11 @@
 <g class="step s3"><g><rect class="d-paper" x="198" y="196" width="30" height="22" rx="3"/><polyline class="d-line" points="198,196 213,203 228,196"/></g><g><rect class="d-paper" x="576" y="196" width="30" height="22" rx="3"/><polyline class="d-line" points="576,196 591,203 606,196"/></g></g>
 <g class="step s4" data-pulse="4"><g><rect class="d-paper" x="470" y="40" width="64" height="120" rx="12"/><rect class="d-hl" x="477" y="54" width="50" height="86" rx="4"/><circle class="d-ink" cx="502" cy="150" r="3"/><text class="d-tiny" x="502" y="178" text-anchor="middle">phone, scanning</text></g><rect class="d-acc" x="203" y="240" width="20" height="80" rx="3"/><path class="d-arr-acc" d="M224,236 C260,180 380,140 462,120" marker-end="url(#ah-advertising-acc)"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The strap wakes and sends a <b>packet</b>, one short burst of data: "I'm here". Then it sleeps again. Doing this over and over is <b>advertising</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-advertising-2">Next →</label></div></li>
 <li><p>It repeats at its <b>advertising interval</b>, at least 20 ms apart, plus a random 0 to 10 ms, so two straps don't keep sending at the same moment and garbling each other.</p><div class="stepnav"><label for="st-advertising-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-advertising-3">Next →</label></div></li>
-<li><p>The airwaves are split into 40 <b>channels</b>. Advertising uses only 3, and each advertisement goes out on all 3. <i>Predict: where does the phone listen?</i></p><div class="stepnav"><label for="st-advertising-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-advertising-4">Next →</label></div></li>
+<li><p>The airwaves are split into 40 <b>channels</b>. This legacy strap advertises on all three primary advertising channels. <i>Predict: where does the phone listen?</i></p><div class="stepnav"><label for="st-advertising-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-advertising-4">Next →</label></div></li>
 <li><p>On those 3, one at a time: it's <b>scanning</b>. When a packet lands on the channel it's listening to, the phone hears the strap.</p><div class="stepnav"><label for="st-advertising-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-advertising-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-advertising-1" title="Step 1"></label><label for="st-advertising-2" title="Step 2"></label><label for="st-advertising-3" title="Step 3"></label><label for="st-advertising-4" title="Step 4"></label></div>
@@ -90,8 +102,8 @@
         <h2 id="the-building-block">The building block</h2>
 <p>The strap is loud only for moments. It wakes, sends a <b>packet</b>, one short burst of data, that says &quot;I'm a heart strap, here's my name&quot;, listens for a moment in case someone answers (puzzle 2 uses that), and goes back to sleep. Doing that over and over is <b>advertising</b>.</p>
 <p>The time between two advertisements is the <b>advertising interval</b>: at least 20 ms, and it can be seconds or much longer. Short means found fast; long means a longer battery life. To every interval the radio adds a random delay of 0 to 10 ms. Two packets sent at the same moment on the same channel garble each other: a collision. If two straps happened to start together, the random delays make them drift apart instead of colliding every time.</p>
-<p>BLE splits its airwaves into 40 <b>channels</b>, like stations on a radio dial: a radio sends or listens on one at a time. Advertising uses only 3 of them, and each advertisement is sent on all 3, one after another. Three is few enough that a listener knows where to listen, and more than one, so noise on a single channel (another radio, like Wi-Fi, sending on the same slice) doesn't hide the strap.</p>
-<p>Your phone, meanwhile, is <b>scanning</b>: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. Because the strap repeats every interval on all three, sooner or later one of its packets lands on the channel the phone is listening to, and the phone hears it.</p>
+<p>BLE splits its airwaves into 40 <b>channels</b>, like stations on a radio dial: a radio sends or listens on one at a time. Legacy advertising uses one or more of three primary advertising channels. This strap uses all three in succession. Extended advertising can also use secondary channels. Three is few enough that a listener knows where to listen, and more than one, so noise on a single channel (another radio, like Wi-Fi, sending on the same slice) doesn't hide the strap.</p>
+<p>Your phone, meanwhile, is <b>scanning</b>: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. Because the strap repeats every interval on all three, a packet can land on the channel the phone is listening to, and the phone hears it.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -101,38 +113,34 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>You shorten a strap's advertising interval from 1 s to 100 ms. What changes?</legend>
-<input type="radio" name="q-01-shouting-into-the-room-1" id="q-01-shouting-into-the-room-1-1" data-ok><label for="q-01-shouting-into-the-room-1-1">Phones find it faster, and its battery drains faster</label>
-<input type="radio" name="q-01-shouting-into-the-room-1" id="q-01-shouting-into-the-room-1-2"><label for="q-01-shouting-into-the-room-1-2">Phones find it slower, because it's busier</label>
-<input type="radio" name="q-01-shouting-into-the-room-1" id="q-01-shouting-into-the-room-1-3"><label for="q-01-shouting-into-the-room-1-3">Nothing for the battery: advertising is free</label>
+<input type="radio" name="q-01-shouting-into-the-room-1" id="q-01-shouting-into-the-room-1-1" data-ok><label for="q-01-shouting-into-the-room-1-1"><span>Phones find it faster, and its battery drains faster</span></label>
+<input type="radio" name="q-01-shouting-into-the-room-1" id="q-01-shouting-into-the-room-1-2"><label for="q-01-shouting-into-the-room-1-2"><span>Phones find it slower, because it's busier</span></label>
+<input type="radio" name="q-01-shouting-into-the-room-1" id="q-01-shouting-into-the-room-1-3"><label for="q-01-shouting-into-the-room-1-3"><span>Nothing for the battery: advertising is free</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Advertise often to be found fast; rarely to last long.</p>
 <p class="fb no opt-2"><b>Not quite.</b> More advertisements give the phone more chances to hear one, so finding gets faster. <label class="show-me" for="st-advertising-2" data-goto="st-advertising">Show me step 2 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Every advertisement wakes the radio. Ten times as many means ten times the radio time. <label class="show-me" for="st-advertising-2" data-goto="st-advertising">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Why does each advertisement go out on three channels, not one?</legend>
-<input type="radio" name="q-01-shouting-into-the-room-2" id="q-01-shouting-into-the-room-2-1"><label for="q-01-shouting-into-the-room-2-1">Because the phone has to collect all three copies to read the packet</label>
-<input type="radio" name="q-01-shouting-into-the-room-2" id="q-01-shouting-into-the-room-2-2" data-ok><label for="q-01-shouting-into-the-room-2-2">So noise on one channel doesn't hide the device, while listeners still know where to look</label>
-<input type="radio" name="q-01-shouting-into-the-room-2" id="q-01-shouting-into-the-room-2-3"><label for="q-01-shouting-into-the-room-2-3">To send three times as much data in the same time</label>
-<p class="fb no opt-1"><b>Not quite.</b> Any one copy is enough. The other two are backups against noise. <label class="show-me" for="st-advertising-3" data-goto="st-advertising">Show me step 3 again ↑</label></p>
-<p class="fb ok opt-2"><b>Right.</b> Few enough to find, more than one to survive noise.</p>
-<p class="fb no opt-3"><b>Not quite.</b> It's the same packet three times, on three channels. <label class="show-me" for="st-advertising-3" data-goto="st-advertising">Show me step 3 again ↑</label></p>
+<legend>Why does this legacy strap use three primary advertising channels?</legend>
+<input type="radio" name="q-01-shouting-into-the-room-2" id="q-01-shouting-into-the-room-2-1" data-ok><label for="q-01-shouting-into-the-room-2-1"><span>So noise on one channel doesn't hide the device, while listeners still know where to look</span></label>
+<input type="radio" name="q-01-shouting-into-the-room-2" id="q-01-shouting-into-the-room-2-2"><label for="q-01-shouting-into-the-room-2-2"><span>To send three times as much data in the same time</span></label>
+<input type="radio" name="q-01-shouting-into-the-room-2" id="q-01-shouting-into-the-room-2-3"><label for="q-01-shouting-into-the-room-2-3"><span>Because the phone has to collect all three copies to read the packet</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Few enough to find, more than one to survive noise.</p>
+<p class="fb no opt-2"><b>Not quite.</b> It's the same packet three times, on three channels. <label class="show-me" for="st-advertising-3" data-goto="st-advertising">Show me step 3 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> Any one copy is enough. The other two are backups against noise. <label class="show-me" for="st-advertising-3" data-goto="st-advertising">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between advertising and scanning?</legend>
-<input type="radio" name="q-01-shouting-into-the-room-3" id="q-01-shouting-into-the-room-3-1"><label for="q-01-shouting-into-the-room-3-1">They're two names for the same thing, used by different makers</label>
-<input type="radio" name="q-01-shouting-into-the-room-3" id="q-01-shouting-into-the-room-3-2" data-ok><label for="q-01-shouting-into-the-room-3-2">Advertising is the device saying &quot;I'm here&quot;, while scanning is listening for it</label>
-<input type="radio" name="q-01-shouting-into-the-room-3" id="q-01-shouting-into-the-room-3-3"><label for="q-01-shouting-into-the-room-3-3">Scanning is the phone sending a request to every device nearby</label>
+<input type="radio" name="q-01-shouting-into-the-room-3" id="q-01-shouting-into-the-room-3-1"><label for="q-01-shouting-into-the-room-3-1"><span>They're two names for the same thing, used by different makers</span></label>
+<input type="radio" name="q-01-shouting-into-the-room-3" id="q-01-shouting-into-the-room-3-2" data-ok><label for="q-01-shouting-into-the-room-3-2"><span>Advertising is the device saying &quot;I'm here&quot;, while scanning is listening for it</span></label>
+<input type="radio" name="q-01-shouting-into-the-room-3" id="q-01-shouting-into-the-room-3-3"><label for="q-01-shouting-into-the-room-3-3"><span>Scanning is the phone sending a request to every device nearby</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They're the two sides: one shouts, the other listens. <label class="show-me" for="st-advertising-4" data-goto="st-advertising">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One side shouts, the other listens.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Scanning here is listening, not sending: the phone hears advertisements. <label class="show-me" for="st-advertising-4" data-goto="st-advertising">Show me step 4 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/low-energy-controller/link-layer-specification.html">Bluetooth Core Specification 5.4, Vol 6, Part B: Link Layer</a> (&quot;40 RF channels are defined… divided into 3 RF channels known as the 'primary advertising channels'… and 37 RF channels known as the 'general-purpose channels'&quot;; &quot;The advertising interval (advInterval) shall be an integer multiple of 0.625 ms in the range 20 ms to 10,485.759375 s. The advDelay is a (pseudo-)random value with a range 0 ms to 10 ms&quot;; &quot;When scanning, the Link Layer shall listen on the primary advertising physical channel&quot;)</li></ul>
-      </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A device advertises: it wakes, sends a short packet on each of the 3 advertising channels, and sleeps, over and over at its advertising interval. A phone scans: it listens on those channels until one packet lands while it's listening.</p></div></section>
-      
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/low-energy-controller/link-layer-specification.html">Bluetooth Core Specification 5.4, Vol 6, Part B: Link Layer</a> (&quot;40 RF channels are defined… divided into 3 RF channels known as the 'primary advertising channels'… and 37 RF channels known as the 'general-purpose channels'&quot;; &quot;The advertising interval (advInterval) shall be an integer multiple of 0.625 ms in the range 20 ms to 10,485.759375 s. The advDelay is a (pseudo-)random value with a range 0 ms to 10 ms&quot;; &quot;When scanning, the Link Layer shall listen on the primary advertising physical channel&quot;)</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>This legacy strap advertises on the three primary channels. Repeated advertising gives a scanning phone more opportunities to hear it. The advertising configuration and scan windows determine the actual chances.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-a-year-on-a-coin-battery.html">← Start</a>

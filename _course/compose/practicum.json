@@ -1,0 +1,24 @@
+{
+  "title": "Keep a drifting bookmark card editable and accessible",
+  "brief": "A shared screen has a native iOS search field, a bookmark title and a card that shifts horizontally. Explain which owner changes each value and which UI work each change requires.",
+  "prerequisites": "Complete the state, phase, hosting and semantics puzzles.",
+  "setup": "Start with query “lake”, title “Lake walk” and horizontal offset 0. The card can move without changing its size or content. Paper is enough. An iOS build with VoiceOver can verify the accessibility result.",
+  "steps": [
+    "Draw the outer iOS controller, the hosted Compose region and the embedded text field. Draw arrows for user edits and for programmatic changes.",
+    "Trace a drag from offset 0 to 12 while the query and title stay fixed. Choose the latest phase in which the offset can be read for a placement-only move.",
+    "Trigger Clear in the shared UI while the native field still displays lake. Show how the existing view reaches the empty value.",
+    "Describe how a screen-reader user identifies and activates Clear. State what you would check on a real iOS build."
+  ],
+  "evidence": [
+    "The diagram shows opposite hosting directions for the outer controller and inner native field.",
+    "The drag trace moves the existing card without requiring a new description for the title. Clear updates the existing native field.",
+    "The accessibility check records a meaningful control name, an available action and the observable result after activation."
+  ],
+  "worked": [
+    "The iOS controller hosts the Compose screen, which hosts the native text field. A native edit updates the shared query. In the reverse direction, the update callback compares displayed text with the shared value and applies a change where necessary. Recreating the field on every keystroke can disrupt editing state.",
+    "Reading the offset in the placement callback lets a change from 0 to 12 invalidate placement. The title and query did not change. Clear, in contrast, changes query state; the native field's update path must make its displayed text empty.",
+    "A visible cross alone does not tell a screen-reader user what it does. Expose the action as “Clear search” and verify that activating it clears the query. Test traversal on the device because pixels alone cannot demonstrate focus order."
+  ],
+  "variation": "The card now wraps its title into a narrower column as it moves. Can every update still be handled in placement?",
+  "solution": "No. If the available width changes, measure the content against the new width so wrapping and height can change. Position-only updates can still use placement when their constraints remain the same."
+}

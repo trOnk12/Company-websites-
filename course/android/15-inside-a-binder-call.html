@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="15" data-prev="14-starting-an-app.html" data-prev-title="Starting an app, cold, warm and hot">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" class="done" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" class="done" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" class="done" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" class="done" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" class="done" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" class="done" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" class="done" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" class="done" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" class="done" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" class="done" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" aria-current="page" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" title="When the process is gone">22</a></li></ol></nav>
-      <p class="eyebrow">Android from the foundation · Puzzle 15 · 16 of 23</p>
-      <h1>Inside a Binder call</h1>
-      <p class="lede">In puzzle 5, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes (raw data), marked with the sender's identity, and picked up by a waiting thread.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="15">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Android from the foundation</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 15 · 16 of 23</p>
+        <h1>Inside a Binder call</h1>
+        <p class="lede">In puzzle 5, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes (raw data), marked with the sender's identity, and picked up by a waiting thread.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" aria-current="page" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" title="When the process is gone">22</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-15">
         <p id="builds-on-15"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="8"><details><summary><a href="08-letters-between-apps.html">Puzzle 8: Letters between apps</a></summary><p>An Intent is a letter to the town hall: &quot;open this screen&quot;. system_server checks the sender's permissions, then delivers it, or doesn't.</p></details></li></ul>
+        <ul><li data-block="8"><details><summary>Puzzle 8: Letters between apps</summary><p>An Intent is a letter to the town hall: &quot;open this screen&quot;. system_server checks the sender's permissions, then delivers it, or doesn't.</p><p><a href="08-letters-between-apps.html">Review puzzle 8</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 8 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A Binder call, from your house to the town hall"><input type="radio" name="st-binder" id="st-binder-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-binder" id="st-binder-2" aria-label="Step 2 of 5"><input type="radio" name="st-binder" id="st-binder-3" aria-label="Step 3 of 5"><input type="radio" name="st-binder" id="st-binder-4" aria-label="Step 4 of 5"><input type="radio" name="st-binder" id="st-binder-5" aria-label="Step 5 of 5">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="bd-t"><title id="bd-t">Your app's thread calls the proxy, which packs a Parcel; Binder in the kernel carries it and stamps your UID; a Binder thread in system_server calls the real method; the reply comes back while your thread waits; it works the other way too</title><defs><marker id="ah-binder-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-binder-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-binder-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-binder-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="bd-t"><title id="bd-t">Your app's thread calls the proxy, which packs a Parcel; Binder in the kernel carries it and stamps your UID; a Binder thread in system_server calls the real method; the reply comes back while your thread waits; it works the other way too</title><defs><marker id="ah-binder-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-binder-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-binder-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-binder-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <g class="step s1"><rect class="d-soil" x="0" y="286" width="640" height="94"/><ellipse class="d-pebble" cx="210" cy="338" rx="7" ry="4"/><ellipse class="d-pebble" cx="250" cy="366" rx="7" ry="4"/><ellipse class="d-pebble" cx="300" cy="328" rx="7" ry="4"/><ellipse class="d-pebble" cx="380" cy="357" rx="7" ry="4"/><ellipse class="d-pebble" cx="470" cy="333" rx="7" ry="4"/><ellipse class="d-pebble" cx="560" cy="352" rx="7" ry="4"/><ellipse class="d-pebble" cx="610" cy="319" rx="7" ry="4"/><line class="d-grass" x1="0" y1="286" x2="640" y2="286"/><text class="d-b" x="16" y="316">kernel</text></g>
 <g class="step s1" data-pulse="3"><rect class="d-paper" x="245" y="304" width="150" height="70"/><rect class="d-po" x="237" y="290" width="166" height="16" rx="3"/><rect class="d-ink" x="294" y="318" width="52" height="8" rx="3"/><text class="d-sign" x="320" y="303" text-anchor="middle">Binder</text></g>
 <g class="step s1"><polygon class="d-roof" points="10,80 130,36 250,80"/><rect class="d-paper" x="20" y="80" width="220" height="206"/><text class="d-b" x="34" y="110">your app</text></g>
@@ -83,6 +94,7 @@
 <g class="step s2 hide-5" data-move="1:52,170 2:140,190 3:283,324 4:432,186"><g><rect class="d-paper" x="0" y="0" width="74" height="44" rx="3"/><polyline class="d-line" points="0,0 37,18 74,0"/><text class="d-tiny" x="37" y="38" text-anchor="middle">Parcel</text></g><g class="step s3"><rect class="d-bad" x="46" y="-14" width="40" height="22" rx="3"/><text class="d-rt" x="66" y="3" text-anchor="middle">UID</text></g></g>
 <g class="step s5" data-move="4:432,186 5:140,190"><rect class="d-hl" x="0" y="0" width="74" height="44" rx="3"/><polyline class="d-line" points="0,0 37,18 74,0"/><text class="d-tiny" x="37" y="38" text-anchor="middle">reply</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Your app calls a method that lives in system_server. In your process sits a <b>proxy</b>: an object that looks exactly like the one in system_server.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-binder-2">Next →</label></div></li>
 <li><p>Objects can't leave a process; bytes can. The proxy packs the arguments into a <b>Parcel</b>: a flat envelope of bytes (a byte is the smallest unit of data a program stores). Your thread that called now waits.</p><div class="stepnav"><label for="st-binder-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-binder-3">Next →</label></div></li>
@@ -96,7 +108,8 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>On your side sits a <b>proxy</b>: an object that looks exactly like the object in the other process that does the work. You never write it: Android's own code hands it to your app. Calling it packs the arguments into a <b>Parcel</b>, a flat envelope of bytes. Binder carries the Parcel across, and stamps it with your app's UID.</p>
-<p>Binder itself lives in the kernel. A <b>Binder thread</b> is different: an ordinary thread inside a process, one of a few that wait for Binder to hand them calls. In the receiving process, one of them unpacks the Parcel and calls the real method. Meanwhile the thread in your app that made the call waits (if that's the main thread, the screen waits too); the reply comes back the same way, and only then does the call return.</p>
+<p>Binder itself lives in the kernel. A <b>Binder thread</b> is different: an ordinary thread inside a process, one of a few that wait for Binder to hand them calls. In the receiving process, one of them unpacks the Parcel and calls the real method. For the synchronous remote call shown, the thread in your app that made the call waits (if that's the main thread, the screen waits too); the reply comes back the same way, and only then does the call return.</p>
+<p>A remote one-way call can return before its receiver finishes handling it. The caller must use an explicit result path if it needs confirmation.</p>
 <p>It works both ways: system_server holds proxies for your app's objects too, and its calls arrive on your app's own Binder threads.</p>
 <p>The stamp is how permission checks from puzzle 8 work, and your app can't change it. (For the curious: the receiver reads it with <span class="ref" tabindex="0" aria-describedby="ref-1"><code>Binder.getCallingUid()</code><span class="pop" role="tooltip" id="ref-1"><span class="pop-what">Native: the UID the kernel stamped on the call. The caller can't fake it.</span><span class="pop-code">  338  public static final native int getCallingUid();</span><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/os/Binder.java#L338">Binder.java, line 338 · AOSP frameworks/base ↗</a></span></span>; Binder's own code is in the Linux kernel, under <span class="ref" tabindex="0" aria-describedby="ref-2"><code>drivers/android/binder</code><span class="pop" role="tooltip" id="ref-2"><span class="pop-what">The Binder driver in mainline Linux (now written in Rust) stamps the sender's user ID on every transaction. Android phones run Android's own kernel branches, which may still use the older C driver.</span><span class="pop-code">  392  from_parent,
   393  sender_euid: Kuid::current_euid(),</span><a href="https://github.com/torvalds/linux/blob/7e1392a42ea288d70a266f6553fe06f57f8647ea/drivers/android/binder/transaction.rs#L392">transaction.rs, line 392 · Linux kernel ↗</a></span></span>.)</p>
@@ -109,34 +122,30 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your main thread calls a method on a proxy, and system_server takes 2 seconds to answer. What does the user see?</legend>
-<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-1"><label for="q-15-inside-a-binder-call-1-1">Nothing: Binder calls run in the background, on a Binder thread</label>
-<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-2" data-ok><label for="q-15-inside-a-binder-call-1-2">A frozen screen for 2 seconds</label>
-<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-3"><label for="q-15-inside-a-binder-call-1-3">The call gives up after a moment and returns an empty result</label>
+<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-1"><label for="q-15-inside-a-binder-call-1-1"><span>Nothing: Binder calls run in the background, on a Binder thread</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-2" data-ok><label for="q-15-inside-a-binder-call-1-2"><span>A frozen screen for 2 seconds</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-1" id="q-15-inside-a-binder-call-1-3"><label for="q-15-inside-a-binder-call-1-3"><span>The call gives up after a moment and returns an empty result</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The calling thread waits until the reply comes back. If it's the main thread, nothing else on screen runs. <label class="show-me" for="st-binder-5" data-goto="st-binder">Show me step 5 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> A Binder call waits for its reply, so slow calls don't belong on the main thread.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Binder doesn't give up: your thread waits for the reply. <label class="show-me" for="st-binder-5" data-goto="st-binder">Show me step 5 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Can an app pretend to be another app in a Binder call?</legend>
-<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-1"><label for="q-15-inside-a-binder-call-2-1">Yes, by writing another UID into the Parcel</label>
-<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-2" data-ok><label for="q-15-inside-a-binder-call-2-2">No: Binder stamps the real UID, and the app can't change it</label>
+<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-1"><label for="q-15-inside-a-binder-call-2-1"><span>Yes, by writing another UID into the Parcel</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-2" id="q-15-inside-a-binder-call-2-2" data-ok><label for="q-15-inside-a-binder-call-2-2"><span>No: Binder stamps the real UID, and the app can't change it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The stamp isn't part of your envelope's contents: Binder adds it. <label class="show-me" for="st-binder-3" data-goto="st-binder">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> The UID comes from the kernel, not from your data.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>In system_server, which thread first picks up your call?</legend>
-<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-1"><label for="q-15-inside-a-binder-call-3-1">Its main thread</label>
-<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-2" data-ok><label for="q-15-inside-a-binder-call-3-2">One of its Binder threads</label>
+<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-1"><label for="q-15-inside-a-binder-call-3-1"><span>Its main thread</span></label>
+<input type="radio" name="q-15-inside-a-binder-call-3" id="q-15-inside-a-binder-call-3-2" data-ok><label for="q-15-inside-a-binder-call-3-2"><span>One of its Binder threads</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Incoming calls are picked up by the couriers, Binder threads, not by the main thread. <label class="show-me" for="st-binder-4" data-goto="st-binder">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Each process keeps a few Binder threads waiting for calls.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.android.com/reference/android/os/Binder">Android reference: Binder</a></li><li><a href="https://developer.android.com/reference/android/os/Parcel">Android reference: Parcel</a></li></ul>
-      </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p></div></section>
-      
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/reference/android/os/Binder">Android reference: Binder</a></li><li><a href="https://developer.android.com/reference/android/os/Parcel">Android reference: Parcel</a></li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A synchronous remote Binder call packs values into a Parcel, carries caller identity to the receiver and waits for a reply. One-way remote calls have different completion semantics.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="14-starting-an-app.html">← Puzzle 14</a>

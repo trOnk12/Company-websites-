@@ -32,16 +32,7 @@
       ]
     }
   ],
-  "upcoming": [
-    {
-      "title": "Module 3: Measuring for real",
-      "topics": "Macrobenchmark and why one run proves nothing; baseline profiles and what ART compiles ahead of time; startup traced end to end; reading a Perfetto trace with SQL."
-    },
-    {
-      "title": "Module 4: Memory under pressure",
-      "topics": "Native memory and bitmaps, the low memory killer, trimming memory, and allocation tracking."
-    }
-  ],
+  "upcoming": [],
   "support": {
     "url": "",
     "label": "Buy me a coffee",

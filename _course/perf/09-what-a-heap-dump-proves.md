@@ -2,7 +2,7 @@
 title: What a heap dump proves
 short: Memory that never goes
 summary: Puzzle 8's collector frees everything it can't reach. So how does memory get stuck in a garbage-collected app? Here's what a snapshot of memory records, the two sizes it shows, and the chain that proves memory is stuck.
-takeaway: A heap dump is a snapshot of every object and who refers to whom. Shallow size is one object alone; retained size is everything that would be freed with it. A leak is an object you're done with that's still reachable from a GC root, often a destroyed Activity held by something long-lived. The path from the root shows exactly which reference to cut.
+takeaway: A heap dump is a snapshot of every object and who refers to whom. Shallow size is one object alone; retained size is everything that would be freed with it. A leak is an object you're done with that's still reachable from a GC root, often a destroyed Activity held by something long-lived. The path from the root identifies a candidate retaining path to investigate.
 ---
 
 ## The problem
@@ -18,14 +18,14 @@ After rotating the phone ten times, your app uses 80 MB more than at start. The 
 
 A **heap dump** is a snapshot of every object in your app's heap, with every reference between them. Android Studio lists them by class with two sizes:
 
-- **Shallow size**: the memory one object takes by itself, its own fields. An Activity is a few hundred bytes.
+- **Shallow size**: the memory one object takes by itself, its own fields. Its exact size depends on the class and runtime.
 - **Retained size**: the memory that would be freed if this object were freed: itself, plus everything only it keeps alive. That same Activity can retain megabytes: its views and its Compose state. (Bitmap pixels live in **native memory**, memory outside the heap that the garbage collector doesn't manage, shown separately as Native Size.)
 
 The collector starts from the GC roots (puzzle 7): local variables of running threads, static fields, and the like. Whatever it reaches stays; the rest is freed. So a **leak** in a garbage-collected app is an object you're finished with that's still reachable from a root.
 
 The classic case: on rotation, your Activity is destroyed and a new one created (the Android course, module 4). If a long-lived object, such as a listener registered in a `companion object` or a singleton, still refers to the old Activity, the old Activity stays reachable, and everything it retains stays too. Ten rotations, ten old Activities.
 
-The heap dump proves it. Android Studio's "Show activity/fragment leaks" filter finds destroyed Activities still in memory. For each instance it shows its depth, the shortest number of references from a GC root, and the reference chain. Cut one link in that chain, usually by unregistering the listener when the Activity is destroyed, and the whole retained size is freed.
+The heap dump proves it. Android Studio's "Show activity/fragment leaks" filter finds destroyed Activities still in memory. For each instance it shows its depth, the shortest number of references from a GC root, and the reference chain. Remove the inappropriate ownership edge, for example by unregistering the listener. Another strong path may still retain the instance. Repeat the workload and inspect the next dump to verify release after collection.
 
 ## The analogy
 

@@ -1,6 +1,7 @@
 {
  "baseline": {
   "_about": "Words the learner already knows, from Kotlin, everyday Android work, or the Android course.",
+  "homonyms": ["frame"],
   "words": [
    "app",
    "screen",

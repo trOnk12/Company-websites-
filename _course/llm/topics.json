@@ -1,0 +1,84 @@
+[
+  {
+    "title": "What a call costs and how it fails",
+    "lessons": [
+      {
+        "title": "Budget an answer and inspect why it stopped",
+        "explanation": "An output token limit caps how much the model may generate. It is a ceiling rather than a desired length. A transport success can still carry a result cut off at that limit. Inspect the provider’s stop reason before treating text as complete or handing it to a downstream parser.",
+        "example": "A lesson requests three worked cases but receives only two and half of a third. The stop reason reports max_tokens. Display the completed portion as partial. Shorten the requested unit of work or issue an explicitly budgeted continuation with enough context to avoid duplicating the first two cases.",
+        "exercise": "A response contains valid-looking JSON followed by the maximum-token stop reason. Which checks precede saving it?",
+        "answer": "Check completion, parse it, validate the expected fields and enforce business constraints. Retry within the remaining time and cost budget if the contract requires a complete answer.",
+        "source": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+        "sourceTitle": "Claude documentation · Stop reasons"
+      },
+      {
+        "title": "Price input and generated output separately",
+        "explanation": "A provider can charge different prices per input and output token. Prompt processing and sequential generation have different execution patterns; the actual prices are provider policy, not a universal ratio derivable from token count. Estimate with the selected model’s published rates and verify against recorded usage.",
+        "example": "Use fictional rates of 2 units per million input tokens and 8 per million output tokens. A request with 2,000 input and 500 output tokens costs 0.004 + 0.004 = 0.008 units. Output is one fifth of the tokens and half of the example bill.",
+        "exercise": "You can remove 500 input tokens or 200 output tokens without reducing quality. Which saves more at these rates?",
+        "answer": "The input reduction saves 0.001 units per call. The output reduction saves 0.0016. Multiply by measured traffic and include cache reads and writes when applicable.",
+        "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+        "sourceTitle": "Claude documentation · Pricing"
+      },
+      {
+        "title": "Retry inside a deadline",
+        "explanation": "Rate limits constrain access over time. A submitted call may exceed request or token throughput even when account spending remains available. Treat a rate-limit response as a scheduling signal. Respect the service’s retry delay, add bounded backoff where appropriate and track the overall deadline across attempts.",
+        "example": "The phone has a three-second deadline. The first attempt takes 0.8 s, then the service asks for a five-second delay. Retrying inside this interaction cannot satisfy its deadline. Return a usable fallback and permit an explicit later attempt.",
+        "exercise": "What happens when each of five devices independently retries a failed call three times immediately?",
+        "answer": "They can create up to fifteen extra attempts together. Apply limits at the proxy, avoid synchronized retries, and stop abandoned work when the user leaves. Retrying a text request can also incur another charge.",
+        "source": "https://platform.claude.com/docs/en/api/rate-limits",
+        "sourceTitle": "Claude documentation · Rate limits"
+      },
+      {
+        "title": "Cache a reusable prompt prefix",
+        "explanation": "Prompt caching reuses eligible input computation for a common prefix. Put stable policy and shared evidence before frequently changing messages. Cache lifetime, minimum eligible prefix size and prices depend on the service and model. A cache hit still requires generating an answer to the current request.",
+        "example": "Two students ask different questions about the same long manual. Reuse the unchanged manual prefix and put each student’s question after it. If a timestamp is inserted at the start on every call, much of the later prefix no longer matches. Inspect cache write and read usage rather than inferring hits from response speed.",
+        "exercise": "In fictional units a prefix costs 5 to write and 1 per cache hit, compared with 4 per ordinary read. What is the total for three calls before expiry?",
+        "answer": "One write plus two hits costs 7, versus 12 without caching. Include cache misses and changing traffic when forecasting production cost.",
+        "source": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+        "sourceTitle": "Claude documentation · Prompt caching"
+      },
+      {
+        "title": "Validate the meaning after validating the shape",
+        "explanation": "Structured output constrains the response to a supported schema. Define fields, required properties and allowed alternatives. Parse only after a completed response and separately verify values that depend on your application’s state. A well-formed document can cite a nonexistent lesson.",
+        "example": "The schema requires a text field lesson_id and a list of evidence IDs. The model returns lesson_id L4 with evidence X9. Parsing succeeds. The course contains L4 but the retrieval result contained only X2 and X3, so the application rejects the unsupported citation.",
+        "exercise": "A grading result has score 3 and maximum 2. Both fields are integers. Where should the inconsistency be caught?",
+        "answer": "Validate the relation between values in application code and reject the result before displaying a grade. Keep the schema, input evidence and validation reason with the test fixture.",
+        "source": "https://platform.claude.com/docs/en/build-with-claude/structured-outputs",
+        "sourceTitle": "Claude documentation · Structured outputs"
+      }
+    ]
+  },
+  {
+    "title": "Tools, reusable teaching routines and production behavior",
+    "lessons": [
+      {
+        "title": "Connect a read-only lookup under an explicit permission",
+        "explanation": "A tool definition describes an operation the model may request. The host validates the arguments, checks authorization, executes or declines, then returns a result tied to the request. The model never gets to grant itself permission. Start with a test tool reading only a small approved lesson catalog.",
+        "example": "The user enables lookup for lesson L4. The model requests read_lesson(L4); the host returns its title and evidence. A later request for L7 is outside the session’s allowed lesson IDs and is declined. Log the operation, decision, elapsed time and result category without including private message text.",
+        "exercise": "Where should a test assert that no lookup ran after permission was withdrawn?",
+        "answer": "At the host boundary. Verify zero executions and a logged denial even if a model still proposes the call. A polished assistant reply is insufficient evidence of correct permission enforcement.",
+        "source": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview",
+        "sourceTitle": "Claude documentation · Tool use"
+      },
+      {
+        "title": "Compare a skill with a tool on the same questions",
+        "explanation": "A skill packages reusable instructions and optional supporting resources. A tool is a callable capability exposed by the host. A teaching skill might specify “ask for a prediction, inspect evidence, explain the discrepancy”; it can use the same authorized lookup tool as an ordinary prompt.",
+        "example": "Run ten saved learner questions through two configurations. Give both the same model, allowed source material and tool permissions. Vary only the teaching instructions. Compare evidence IDs, support for factual claims and whether the second example tests transfer.",
+        "exercise": "One configuration is more fluent but invents two citations. Does the teaching routine earn promotion?",
+        "answer": "Score source support separately from style, inspect each missing or invented citation and retest on held-out questions. Reusable instructions cannot create evidence or expand permissions.",
+        "source": "https://agentskills.io/specification",
+        "sourceTitle": "Agent Skills · Format specification"
+      },
+      {
+        "title": "Set a latency budget and a useful fallback",
+        "explanation": "Measure time to first visible text and time to a complete checked response. Define a service objective in terms of the learner’s task. A fast stream can still produce a slow or unusable final answer. Bound retrieval, model generation and validation separately so failure in one stage leaves time for a fallback.",
+        "example": "For a five-second budget, allocate 0.5 s for network and authentication, 0.7 for retrieval, 3.2 for generation and 0.6 for final checks. These are design targets. If evidence lookup is unavailable, display the previously reviewed lesson text with its version instead of presenting an unsupported generated explanation.",
+        "exercise": "Two routes meet the first-token objective. One completes 98 of 100 evidence checks and the other 91. Which measurements determine release?",
+        "answer": "Compare checked completion rate, factual support, latency distribution and cost on the same cases. Define a threshold before evaluating; a failed evidence check should trigger the bounded fallback rather than a confident answer.",
+        "source": "https://sre.google/workbook/implementing-slos/",
+        "sourceTitle": "Google SRE · Implementing SLOs"
+      }
+    ]
+  }
+]

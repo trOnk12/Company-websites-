@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="In iosMain, your Kotlin can call Apple's own code, like the class that knows the device's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.">
+  <meta name="description" content="In iosMain, your Kotlin can call Apple's own code, like the class that knows the operating system's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="How Kotlin calls Apple – Kotlin Multiplatform, from the compiler up – Mateusz Pachulski">
-  <meta property="og:description" content="In iosMain, your Kotlin can call Apple's own code, like the class that knows the device's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.">
+  <meta property="og:description" content="In iosMain, your Kotlin can call Apple's own code, like the class that knows the operating system's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/kmp/02-how-kotlin-calls-apple">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,24 +48,35 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="2" data-prev="01-what-every-target-has.html" data-prev-title="What every target has">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" class="done" title="One Kotlin, many machines">0</a></li><li><a href="01-what-every-target-has.html" class="done" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" aria-current="page" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li></ol></nav>
-      <p class="eyebrow">Kotlin Multiplatform, from the compiler up · Puzzle 2 · 3 of 16</p>
-      <h1>How Kotlin calls Apple</h1>
-      <p class="lede">In iosMain, your Kotlin can call Apple's own code, like the class that knows the device's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="kmp" data-n="2">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Kotlin Multiplatform, from the compiler up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 2 · 3 of 20</p>
+        <h1>How Kotlin calls Apple</h1>
+        <p class="lede">In iosMain, your Kotlin can call Apple's own code, like the class that knows the operating system's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-one-kotlin-many-machines.html" title="One Kotlin function, two ways to run it">0</a></li><li><a href="01-what-every-target-has.html" title="What every target has">1</a></li><li><a href="02-how-kotlin-calls-apple.html" aria-current="page" title="How Kotlin calls Apple">2</a></li><li><a href="03-a-promise-and-its-keepers.html" title="A promise and its keepers">3</a></li><li><a href="04-an-ios-app-in-one-puzzle.html" title="An iOS app in one puzzle">4</a></li><li><a href="05-how-swift-sees-your-kotlin.html" title="How Swift sees your Kotlin">5</a></li><li><a href="06-lost-in-translation.html" title="Lost in translation">6</a></li><li><a href="07-counting-or-tracing.html" title="Counting or tracing">7</a></li><li><a href="08-weak-references-and-closures.html" title="Weak references and closures">8</a></li><li><a href="09-two-ways-to-free-memory.html" title="Two ways to free memory">9</a></li><li><a href="10-the-main-thread-on-ios.html" title="The main thread on iOS">10</a></li><li><a href="11-whose-thread-is-it.html" title="Whose thread is it?">11</a></li><li><a href="12-one-framework-not-two.html" title="One framework, not two">12</a></li><li><a href="13-compose-in-one-puzzle.html" title="Compose in one puzzle">13</a></li><li><a href="14-what-compose-shares.html" title="What Compose actually shares">14</a></li><li><a href="15-one-canvas-on-ios.html" title="One canvas on iOS">15</a></li><li><a href="16-the-kotlin-block.html" title="The kotlin { } block">16</a></li><li><a href="17-source-sets-in-between.html" title="Source sets in between">17</a></li><li><a href="18-who-can-see-what.html" title="Who can see what">18</a></li><li><a href="19-dependencies-per-source-set.html" title="Dependencies per source set">19</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-what-every-target-has.html">Puzzle 1: What every target has</a></summary><p>Code lives in source sets. commonMain is compiled for every target, so it may only use what every target has; androidMain and iosMain are compiled for one platform each and can use that platform's own APIs.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: What every target has</summary><p>Code lives in source sets. commonMain is compiled for every target, so it may only use what every target has; androidMain and iosMain are compiled for one platform each and can use that platform's own APIs.</p><p><a href="01-what-every-target-has.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-one-kotlin-many-machines.html">0</a> → <a href="01-what-every-target-has.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Puzzle 1 said iosMain can use what only iOS has. On iOS, the device's name and system version come from an Apple class called <code>UIDevice</code>. Apple wrote it for its own languages, not for Kotlin. So how can a Kotlin file in iosMain call it?</p>
+<p>Puzzle 1 said iosMain can use what only iOS has. On iOS, the operating system's name and version come from an Apple class called <code>UIDevice</code>. Apple wrote it for its own languages, not for Kotlin. So how can a Kotlin file in iosMain call it?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Platform libraries: Kotlin bindings to Apple's frameworks, only on Apple targets"><input type="radio" name="st-platform" id="st-platform-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-platform" id="st-platform-2" aria-label="Step 2 of 4"><input type="radio" name="st-platform" id="st-platform-3" aria-label="Step 3 of 4"><input type="radio" name="st-platform" id="st-platform-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="pl-t"><title id="pl-t">Apple's UIKit framework holds UIDevice; Kotlin can't read it directly; Kotlin/Native ships a platform library binding to it; iosMain imports the binding and calls UIDevice; commonMain cannot, because Android has no UIKit</title><defs><marker id="ah-platform-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-platform-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-platform-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-platform-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="pl-t"><title id="pl-t">Apple's UIKit framework holds UIDevice; Kotlin can't read it directly; Kotlin/Native ships a platform library binding to it; iosMain imports the binding and calls UIDevice; commonMain cannot, because Android has no UIKit</title><defs><marker id="ah-platform-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-platform-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-platform-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-platform-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><rect class="d-wood" x="440" y="60" width="170" height="120" rx="8"/><text class="d-b" x="525" y="88" text-anchor="middle">UIKit</text><rect class="d-paper" x="465" y="110" width="120" height="40" rx="4"/><text class="d-tiny" x="525" y="135" text-anchor="middle">UIDevice</text><text class="d-tiny" x="525" y="200" text-anchor="middle">Apple's framework</text></g>
 <g class="step s2" data-pulse="2"><rect class="d-hl" x="250" y="90" width="150" height="60" rx="8"/><text class="d-a" x="325" y="118" text-anchor="middle">platform library</text><text class="d-tiny" x="325" y="138" text-anchor="middle">platform.UIKit</text><path class="d-arr-ink" d="M404,120 L436,120" marker-end="url(#ah-platform-ink)"/></g>
@@ -73,6 +84,7 @@
 <g class="step s1" data-move="1:500,240 2:300,240 3:110,240 4:110,240"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 <g class="step s4" data-pulse="4"><rect class="d-band" x="30" y="220" width="170" height="60" rx="8"/><text class="d-a" x="115" y="255" text-anchor="middle">commonMain</text><path class="d-red" d="M210,240 L240,262 M240,240 L210,262"/><text class="d-r" x="380" y="260" text-anchor="middle">no UIKit on Android</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Apple's code lives in <b>frameworks</b>. <b>UIKit</b>, the screen framework, has <code>UIDevice</code>. It isn't Kotlin.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-platform-2">Next →</label></div></li>
 <li><p>Kotlin/Native ships <b>platform libraries</b>: prebuilt Kotlin bindings to Apple's frameworks, under <code>platform.</code>.</p><div class="stepnav"><label for="st-platform-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-platform-3">Next →</label></div></li>
@@ -89,8 +101,8 @@
 <pre><code class="language-kotlin">// iosMain
 import platform.UIKit.UIDevice
 
-fun systemName(): String = UIDevice.currentDevice.systemName</code></pre>
-<p>When you compile, Kotlin/Native sees which ones you used and links Apple's real code in.</p>
+fun systemName(): String = UIDevice.currentDevice.systemName()</code></pre>
+<p>The binding tells Kotlin what the call is named, what it accepts, and what it returns. The implementation belongs to UIKit. When you build, Kotlin/Native records the connection to UIKit so the call can reach Apple's code when the app runs.</p>
 <p>Two consequences:</p>
 <ul><li>These bindings exist only for Apple targets. That's why <code>import platform.UIKit</code> works in iosMain and fails in commonMain (puzzle 1's rule: common code may use only what every target has).</li><li>The names and shapes are Apple's, not Kotlin's: <code>UIDevice.currentDevice</code> reads a little foreign. That's normal.</li></ul>
       </section>
@@ -102,36 +114,32 @@ fun systemName(): String = UIDevice.currentDevice.systemName</code></pre>
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Why does <code>import platform.UIKit.UIDevice</code> fail in commonMain?</legend>
-<input type="radio" name="q-02-how-kotlin-calls-apple-1" id="q-02-how-kotlin-calls-apple-1-1" data-ok><label for="q-02-how-kotlin-calls-apple-1-1">The binding exists only for Apple targets</label>
-<input type="radio" name="q-02-how-kotlin-calls-apple-1" id="q-02-how-kotlin-calls-apple-1-2"><label for="q-02-how-kotlin-calls-apple-1-2">commonMain can't import any library at all</label>
-<input type="radio" name="q-02-how-kotlin-calls-apple-1" id="q-02-how-kotlin-calls-apple-1-3"><label for="q-02-how-kotlin-calls-apple-1-3">UIKit is too large to compile into common code</label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-1" id="q-02-how-kotlin-calls-apple-1-1" data-ok><label for="q-02-how-kotlin-calls-apple-1-1"><span>The binding exists only for Apple targets</span></label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-1" id="q-02-how-kotlin-calls-apple-1-2"><label for="q-02-how-kotlin-calls-apple-1-2"><span>commonMain can't import any library at all</span></label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-1" id="q-02-how-kotlin-calls-apple-1-3"><label for="q-02-how-kotlin-calls-apple-1-3"><span>UIKit is too large to compile into common code</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Apple bindings, Apple targets only.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Common code can use libraries built for every target. <label class="show-me" for="st-platform-4" data-goto="st-platform">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> Size isn't the issue; Android has no UIKit at all. <label class="show-me" for="st-platform-4" data-goto="st-platform">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Who wrote the Kotlin binding for <code>UIDevice</code>?</legend>
-<input type="radio" name="q-02-how-kotlin-calls-apple-2" id="q-02-how-kotlin-calls-apple-2-1"><label for="q-02-how-kotlin-calls-apple-2-1">Apple publishes Kotlin versions of its frameworks</label>
-<input type="radio" name="q-02-how-kotlin-calls-apple-2" id="q-02-how-kotlin-calls-apple-2-2"><label for="q-02-how-kotlin-calls-apple-2-2">You do, by writing a Kotlin wrapper for each Apple class</label>
-<input type="radio" name="q-02-how-kotlin-calls-apple-2" id="q-02-how-kotlin-calls-apple-2-3" data-ok><label for="q-02-how-kotlin-calls-apple-2-3">Kotlin/Native ships it, prebuilt, as part of its platform libraries</label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-2" id="q-02-how-kotlin-calls-apple-2-1"><label for="q-02-how-kotlin-calls-apple-2-1"><span>Apple publishes Kotlin versions of its frameworks</span></label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-2" id="q-02-how-kotlin-calls-apple-2-2"><label for="q-02-how-kotlin-calls-apple-2-2"><span>You do, by writing a Kotlin wrapper for each Apple class</span></label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-2" id="q-02-how-kotlin-calls-apple-2-3" data-ok><label for="q-02-how-kotlin-calls-apple-2-3"><span>Kotlin/Native ships it, prebuilt, as part of its platform libraries</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Apple doesn't; the Kotlin/Native distribution includes them. <label class="show-me" for="st-platform-2" data-goto="st-platform">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> You don't have to; Apple's bindings come prebuilt. <label class="show-me" for="st-platform-2" data-goto="st-platform">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Prebuilt, shipped with Kotlin/Native.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a framework and a platform library?</legend>
-<input type="radio" name="q-02-how-kotlin-calls-apple-3" id="q-02-how-kotlin-calls-apple-3-1"><label for="q-02-how-kotlin-calls-apple-3-1">A framework is Kotlin's binding to Apple code, while a platform library is Apple's own code</label>
-<input type="radio" name="q-02-how-kotlin-calls-apple-3" id="q-02-how-kotlin-calls-apple-3-2" data-ok><label for="q-02-how-kotlin-calls-apple-3-2">A framework is Apple's own code, while a platform library is Kotlin's binding to it</label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-3" id="q-02-how-kotlin-calls-apple-3-1"><label for="q-02-how-kotlin-calls-apple-3-1"><span>A framework is Kotlin's binding to Apple code, while a platform library is Apple's own code</span></label>
+<input type="radio" name="q-02-how-kotlin-calls-apple-3" id="q-02-how-kotlin-calls-apple-3-2" data-ok><label for="q-02-how-kotlin-calls-apple-3-2"><span>A framework is Apple's own code, while a platform library is Kotlin's binding to it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The real code vs Kotlin's way in.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://kotlinlang.org/docs/native-platform-libs.html">Kotlin docs: Platform libraries</a> (&quot;To provide access to native services of operating systems, the Kotlin/Native distribution includes a set of prebuilt libraries specific to each target. These are called platform libraries. The packages from platform libraries are available by default&quot;; &quot;The Kotlin/Native compiler automatically detects which platform libraries are accessed and links the necessary ones&quot;)</li><li><a href="https://kotlinlang.org/docs/multiplatform/multiplatform-discover-project.html">Kotlin docs: The basics of a Multiplatform project</a> (an Apple source set using <code>import platform.Foundation.NSUUID</code>)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kotlinlang.org/docs/native-platform-libs.html">Kotlin docs: Platform libraries</a> (&quot;To provide access to native services of operating systems, the Kotlin/Native distribution includes a set of prebuilt libraries specific to each target. These are called platform libraries. The packages from platform libraries are available by default&quot;; &quot;The Kotlin/Native compiler automatically detects which platform libraries are accessed and links the necessary ones&quot;)</li><li><a href="https://kotlinlang.org/docs/multiplatform/multiplatform-connect-to-apis.html">Kotlin docs: Use platform-specific APIs</a> (the iOS example calls <code>UIDevice.currentDevice.systemName()</code>)</li><li><a href="https://kotlinlang.org/docs/multiplatform/multiplatform-discover-project.html">Kotlin docs: The basics of a Multiplatform project</a> (an Apple source set using <code>import platform.Foundation.NSUUID</code>)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Kotlin/Native ships platform libraries: prebuilt Kotlin bindings for each target's native libraries. On Apple targets they cover Apple's frameworks, such as Foundation and UIKit, so code in iosMain can import platform.UIKit.UIDevice and call it like Kotlin. They exist only on Apple targets, which is why such calls live in iosMain, never in commonMain.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="01-what-every-target-has.html">← Puzzle 1</a>

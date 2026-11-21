@@ -2,7 +2,7 @@
 title: Inside a Binder call
 short: Inside Binder
 summary: In puzzle 5, Binder carried messages between processes. Here's how a method call actually crosses: packed into bytes (raw data), marked with the sender's identity, and picked up by a waiting thread.
-takeaway: proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.
+takeaway: A synchronous remote Binder call packs values into a Parcel, carries caller identity to the receiver and waits for a reply. One-way remote calls have different completion semantics.
 ---
 
 ## The problem
@@ -18,7 +18,9 @@ When your app calls `startActivity()`, the method that sends an Intent, it looks
 
 On your side sits a **proxy**: an object that looks exactly like the object in the other process that does the work. You never write it: Android's own code hands it to your app. Calling it packs the arguments into a **Parcel**, a flat envelope of bytes. Binder carries the Parcel across, and stamps it with your app's UID.
 
-Binder itself lives in the kernel. A **Binder thread** is different: an ordinary thread inside a process, one of a few that wait for Binder to hand them calls. In the receiving process, one of them unpacks the Parcel and calls the real method. Meanwhile the thread in your app that made the call waits (if that's the main thread, the screen waits too); the reply comes back the same way, and only then does the call return.
+Binder itself lives in the kernel. A **Binder thread** is different: an ordinary thread inside a process, one of a few that wait for Binder to hand them calls. In the receiving process, one of them unpacks the Parcel and calls the real method. For the synchronous remote call shown, the thread in your app that made the call waits (if that's the main thread, the screen waits too); the reply comes back the same way, and only then does the call return.
+
+A remote one-way call can return before its receiver finishes handling it. The caller must use an explicit result path if it needs confirmation.
 
 It works both ways: system_server holds proxies for your app's objects too, and its calls arrive on your app's own Binder threads.
 

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="1" data-prev="00-what-a-language-model-is.html" data-prev-title="What a language model is">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" class="done" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" aria-current="page" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
-      <p class="eyebrow">LLMs for mobile engineers, from tokens to your app · Puzzle 1 · 2 of 8</p>
-      <h1>One token at a time</h1>
-      <p class="lede">You send a prompt and get a paragraph back. It looks like the model writes the answer the way you would. It doesn't. Here's the loop that produces every word, and the unit everything is measured and billed in.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="1">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 1 · 2 of 10</p>
+        <h1>One token at a time</h1>
+        <p class="lede">You send a prompt and get a paragraph back. It looks like the model writes the answer the way you would. It doesn't. Here's the loop that produces every word, and the unit everything is measured and billed in.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" aria-current="page" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li><li><a href="08-find-evidence-before-writing.html" title="Find evidence before asking the model">8</a></li><li><a href="09-measure-retrieval-and-answer-separately.html" title="Which step failed the answer?">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-what-a-language-model-is.html">Puzzle 0: What a language model is</a></summary><p>A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Large ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What a language model is</summary><p>A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Hosted ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.</p><p><a href="00-what-a-language-model-is.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-a-language-model-is.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Text becomes tokens; the model adds one token at a time"><input type="radio" name="st-tokens" id="st-tokens-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-tokens" id="st-tokens-2" aria-label="Step 2 of 4"><input type="radio" name="st-tokens" id="st-tokens-3" aria-label="Step 3 of 4"><input type="radio" name="st-tokens" id="st-tokens-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tk-t"><title id="tk-t">The prompt is cut into tokens; the model reads all tokens so far and predicts one next token; that token is appended and the model runs again; each new token is one more step</title><defs><marker id="ah-tokens-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tokens-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tokens-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tokens-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tk-t"><title id="tk-t">The prompt is cut into tokens; the model reads all tokens so far and predicts one next token; that token is appended and the model runs again; each new token is one more step</title><defs><marker id="ah-tokens-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tokens-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tokens-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-tokens-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><rect class="d-band" x="30" y="50" width="70" height="34" rx="6"/><text class="d-tiny" x="65" y="72" text-anchor="middle">Summar</text><rect class="d-band" x="104" y="50" width="44" height="34" rx="6"/><text class="d-tiny" x="126" y="72" text-anchor="middle">ise</text><rect class="d-band" x="152" y="50" width="54" height="34" rx="6"/><text class="d-tiny" x="179" y="72" text-anchor="middle">this</text><rect class="d-band" x="210" y="50" width="70" height="34" rx="6"/><text class="d-tiny" x="245" y="72" text-anchor="middle">review</text></g>
 <g class="step s2" data-pulse="2"><g><rect class="d-wood" x="250" y="160" width="160" height="54" rx="8"/><line class="d-line" x1="275.0" y1="187.0" x2="280.0" y2="187.0"/><line class="d-line" x1="272.9" y1="191.9" x2="276.5" y2="195.5"/><line class="d-line" x1="268.0" y1="194.0" x2="268.0" y2="199.0"/><line class="d-line" x1="263.1" y1="191.9" x2="259.5" y2="195.5"/><line class="d-line" x1="261.0" y1="187.0" x2="256.0" y2="187.0"/><line class="d-line" x1="263.1" y1="182.1" x2="259.5" y2="178.5"/><line class="d-line" x1="268.0" y1="180.0" x2="268.0" y2="175.0"/><line class="d-line" x1="272.9" y1="182.1" x2="276.5" y2="178.5"/><circle class="d-paper" cx="268" cy="187" r="8"/><text class="d-tiny" x="347" y="192" text-anchor="middle">model</text></g></g>
@@ -74,6 +85,7 @@
 <g class="step only-3" data-pulse="3"><text class="d-a" x="320" y="290" text-anchor="middle">appended, then run again</text></g>
 <g class="step s4" data-pulse="4"><rect class="d-hl" x="404" y="50" width="62" height="34" rx="6"/><text class="d-a" x="435" y="72" text-anchor="middle">phone</text><text class="d-a" x="320" y="290" text-anchor="middle">one token per step</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Your prompt is cut into <b>tokens</b>: whole words, pieces of words. "Summarise" might become two, depending on the model.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-tokens-2">Next →</label></div></li>
 <li><p>The model reads every token so far and picks one next token: <b>next-token prediction</b>.</p><div class="stepnav"><label for="st-tokens-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-tokens-3">Next →</label></div></li>
@@ -85,7 +97,7 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A language model doesn't see letters or words. Text is first cut into <b>tokens</b>: common words are one token, rarer words are split into pieces, and emoji or unusual characters can take several. On Anthropic's earlier Claude models, one token was about 3.5 English characters; other languages and other models differ. The API's token counting tells you exactly.</p>
+<p>A language model doesn't see letters or words. Text is first cut into <b>tokens</b>: common words are one token, rarer words are split into pieces, and emoji or unusual characters can take several. On Anthropic's earlier Claude models, one token was about 3.5 English characters; other languages and other models differ. The provider's counting endpoint estimates the input count for a specified model and message structure; read the final token counts from the actual response.</p>
 <p>Then the model does one thing, over and over: <b>next-token prediction</b>. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set (the next puzzle shows where). (The prompt itself is read in one go; only the answer is written step by step. That's why a long answer costs more time than a long question.)</p>
 <p>Three consequences you'll feel in an app:</p>
 <div class="table-wrap"><table><thead><tr><th scope="col"></th><th scope="col">Because</th></tr></thead><tbody><tr><th scope="row">A long answer takes longer than a short one</th><td>each token is one more run of the model</td></tr><tr><th scope="row">Limits and prices are in tokens</th><td>that's the unit the model reads and writes</td></tr><tr><th scope="row">The same text costs different amounts in different languages</th><td>the split into tokens differs</td></tr></tbody></table></div>
@@ -98,36 +110,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Why does a 300-token answer take longer than a 30-token one?</legend>
-<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-1"><label for="q-01-one-token-at-a-time-1-1">The model must read the longer answer back before sending it</label>
-<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-2" data-ok><label for="q-01-one-token-at-a-time-1-2">Each token is one more run of the model, one after another</label>
-<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-3"><label for="q-01-one-token-at-a-time-1-3">A longer answer needs a bigger network response</label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-1"><label for="q-01-one-token-at-a-time-1-1"><span>The model must read the longer answer back before sending it</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-2" data-ok><label for="q-01-one-token-at-a-time-1-2"><span>Each token is one more run of the model, one after another</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-1" id="q-01-one-token-at-a-time-1-3"><label for="q-01-one-token-at-a-time-1-3"><span>A longer answer needs a bigger network response</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> It doesn't reread for sending; it generates one token per step. <label class="show-me" for="st-tokens-3" data-goto="st-tokens">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One token per step.</p>
 <p class="fb no opt-3"><b>Not quite.</b> A few kilobytes cost little; the time is in generating each token. <label class="show-me" for="st-tokens-3" data-goto="st-tokens">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The same text in Polish costs more tokens than in English. Why?</legend>
-<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-1" data-ok><label for="q-01-one-token-at-a-time-2-1">The text is split into more tokens, since the split depends on the language</label>
-<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-2"><label for="q-01-one-token-at-a-time-2-2">Polish answers are always longer</label>
-<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-3"><label for="q-01-one-token-at-a-time-2-3">The model charges more for languages other than English</label>
+<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-1" data-ok><label for="q-01-one-token-at-a-time-2-1"><span>The text is split into more tokens, since the split depends on the language</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-2"><label for="q-01-one-token-at-a-time-2-2"><span>Polish answers are always longer</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-2" id="q-01-one-token-at-a-time-2-3"><label for="q-01-one-token-at-a-time-2-3"><span>The model charges more for languages other than English</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Different languages, different splits.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Same meaning, more tokens: the split differs. <label class="show-me" for="st-tokens-1" data-goto="st-tokens">Show me step 1 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> The price is per token; the text just becomes more tokens. <label class="show-me" for="st-tokens-1" data-goto="st-tokens">Show me step 1 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a token and a word?</legend>
-<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-1"><label for="q-01-one-token-at-a-time-3-1">A token is always exactly one word, while a word can be several tokens</label>
-<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-2" data-ok><label for="q-01-one-token-at-a-time-3-2">A token is the model's unit, which can be a word, part of one, or a character</label>
+<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-1"><label for="q-01-one-token-at-a-time-3-1"><span>A token is always exactly one word, while a word can be several tokens</span></label>
+<input type="radio" name="q-01-one-token-at-a-time-3" id="q-01-one-token-at-a-time-3-2" data-ok><label for="q-01-one-token-at-a-time-3-2"><span>A token is the model's unit, which can be a word, part of one, or a character</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Common words are one token, but tokens can also be parts of words. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> The model's unit, not the dictionary's.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary</a> (&quot;Tokens are the smallest individual units of a language model, and can correspond to words, subwords, characters, or even bytes&quot;; earlier models: &quot;a token represents approximately 3.5 English characters&quot;; &quot;autoregressive language models… are pretrained to predict the next word, given the previous context of text&quot;)</li></ul>
-      </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Limits, latency and price are all counted in tokens, and longer answers take longer because each token is one more step.</p></div></section>
-      
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary</a> (&quot;Tokens are the smallest individual units of a language model, and can correspond to words, subwords, characters, or even bytes&quot;; earlier models: &quot;a token represents approximately 3.5 English characters&quot;; &quot;autoregressive language models… are pretrained to predict the next word, given the previous context of text&quot;)</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Token limits and usage-based prices depend on token counts; latency is measured in time, and longer answers take longer because each token is one more step.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-what-a-language-model-is.html">← Start</a>

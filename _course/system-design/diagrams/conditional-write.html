@@ -1,0 +1,17 @@
+<!-- label: How does the database choose a winner? -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">How does the database choose a winner?</title>
+<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One space</text></g>
+<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
+<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Ada changes one</text></g>
+<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
+<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Ben changes zero</text></g>
+<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
+<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Ben rolls back</text></g>
+<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>The requests change the same inventory row.</p></li>
+<li><p>Ada decrements the count and commits.</p></li>
+<li><p>Does the condition still match for Ben?</p></li>
+<li><p>Rolling back also removes Ben&#x27;s pending reservation.</p></li>
+</ol>

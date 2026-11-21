@@ -1,13 +1,13 @@
 ---
 title: How Kotlin calls Apple
 short: Platform libraries
-summary: In iosMain, your Kotlin can call Apple's own code, like the class that knows the device's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.
+summary: In iosMain, your Kotlin can call Apple's own code, like the class that knows the operating system's name. But Apple's code isn't Kotlin. Here's how Kotlin/Native makes it callable.
 takeaway: Kotlin/Native ships platform libraries: prebuilt Kotlin bindings for each target's native libraries. On Apple targets they cover Apple's frameworks, such as Foundation and UIKit, so code in iosMain can import platform.UIKit.UIDevice and call it like Kotlin. They exist only on Apple targets, which is why such calls live in iosMain, never in commonMain.
 ---
 
 ## The problem
 
-Puzzle 1 said iosMain can use what only iOS has. On iOS, the device's name and system version come from an Apple class called `UIDevice`. Apple wrote it for its own languages, not for Kotlin. So how can a Kotlin file in iosMain call it?
+Puzzle 1 said iosMain can use what only iOS has. On iOS, the operating system's name and version come from an Apple class called `UIDevice`. Apple wrote it for its own languages, not for Kotlin. So how can a Kotlin file in iosMain call it?
 
 ## See it
 
@@ -24,10 +24,10 @@ Kotlin can't read those frameworks directly. So Kotlin/Native ships **platform l
 // iosMain
 import platform.UIKit.UIDevice
 
-fun systemName(): String = UIDevice.currentDevice.systemName
+fun systemName(): String = UIDevice.currentDevice.systemName()
 ```
 
-When you compile, Kotlin/Native sees which ones you used and links Apple's real code in.
+The binding tells Kotlin what the call is named, what it accepts, and what it returns. The implementation belongs to UIKit. When you build, Kotlin/Native records the connection to UIKit so the call can reach Apple's code when the app runs.
 
 Two consequences:
 
@@ -47,4 +47,5 @@ A phrasebook for a country whose language you don't speak. You don't learn the l
 ## Sources
 
 - [Kotlin docs: Platform libraries](https://kotlinlang.org/docs/native-platform-libs.html) ("To provide access to native services of operating systems, the Kotlin/Native distribution includes a set of prebuilt libraries specific to each target. These are called platform libraries. The packages from platform libraries are available by default"; "The Kotlin/Native compiler automatically detects which platform libraries are accessed and links the necessary ones")
+- [Kotlin docs: Use platform-specific APIs](https://kotlinlang.org/docs/multiplatform/multiplatform-connect-to-apis.html) (the iOS example calls `UIDevice.currentDevice.systemName()`)
 - [Kotlin docs: The basics of a Multiplatform project](https://kotlinlang.org/docs/multiplatform/multiplatform-discover-project.html) (an Apple source set using `import platform.Foundation.NSUUID`)

@@ -2,7 +2,7 @@
 title: Frozen, not stopped
 short: App states and suspension
 summary: On Android, an app in the background keeps its process, and its threads can keep running. On iOS, a few seconds after the user leaves, your app stops running any code at all. Here's what that means for your work.
-takeaway: An iOS app moves through app states: not running, inactive, active, background, suspended. Seconds after it goes to the background it's suspended: still in memory, running no code. iOS can end a suspended app without running any of your code, so save your state as you enter the background, not at the end.
+takeaway: A scene can enter the background while another remains active. If the process becomes suspended, its threads do not execute. iOS may terminate it without a final callback, so persist meaningful user changes while you can.
 ---
 
 ## The problem
@@ -16,13 +16,13 @@ On Android, when the user switches away, your Activity is stopped, but your proc
 
 ## The building block
 
-**`UIKit`**, Apple's framework that runs an iOS app's screens, keeps every app in one of a few **app states**: not running, inactive (in front but not taking touches, like during a phone call banner), **active** (in front, taking touches), background, and suspended.
+**`UIKit`**, Apple's framework that runs an iOS app's screens, coordinates **app states**; with scenes, each scene also has its own activation state. For a single-scene example consider: not running, inactive (in front but not taking touches, like during a phone call banner), **active** (in front, taking touches), background, and suspended.
 
 The big difference from Android is the last step. When the user leaves, your app goes to the background and gets a few seconds to finish crucial work: the callback that announces it (`sceneDidEnterBackground`) has five seconds to return. Shortly after, iOS **suspends** the app: its memory stays, but none of its code runs, on any thread. No coroutine, no timer, nothing.
 
 A suspended app can be woken up again when the user comes back, and resumes as if nothing happened. Or, when memory is needed, iOS ends it, and no code of yours runs at that moment. The "about to terminate" callback isn't called for a suspended app, so it can't be your chance to save.
 
-So the iOS rule is: save as you enter the background, and if work truly must finish, say so. For a short task, `beginBackgroundTask` asks iOS for extra time before suspension. For uploads and downloads, a background session hands the transfer to iOS itself, which carries it on in a separate process even while your app is suspended or ended.
+So the iOS rule is: save as you enter the background, and if work truly must finish, say so. For a short task, `beginBackgroundTask` asks iOS for extra time before suspension. For uploads and downloads, a background session hands the transfer to iOS itself, which can continue an eligible transfer while the app is suspended or terminated by iOS. If the user force-quits the app, iOS cancels its background transfers.
 
 ## The analogy
 

@@ -2,7 +2,7 @@
 title: What a language model is
 short: A program that continues text
 summary: Before anything else, the one idea everything stands on. You send a model some text; it continues it. Here's what that program is, where it runs, and how your app reaches it.
-takeaway: A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Large ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.
+takeaway: A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Hosted ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.
 ---
 
 ## The problem
@@ -20,7 +20,7 @@ A **language model** is a program that continues text. Give it "The capital of F
 
 It learned to do that in **training**: it was shown huge amounts of text and, again and again, asked what comes next, and adjusted every time it was wrong. The result is a program that, given any text, can score how likely each possible next word is. Picking likely words, one after another, produces an answer. (The next puzzle shows the exact unit it picks.)
 
-The big ones are called large language models, **LLM**s. They're too big for a phone and run on a provider's servers: Anthropic's models are called Claude, Google's are called Gemini.
+The big ones are called large language models, **LLM**s. Some run on phones. Hosted models run on a provider's servers: Anthropic's models are called Claude, Google's are called Gemini.
 
 Your app reaches one through an **API**: an HTTP request to the provider, with your text in the body and a secret key that identifies your account, and a response with the continuation in it. To your code, it's a slow, expensive, very capable endpoint.
 

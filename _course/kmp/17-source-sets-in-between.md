@@ -45,7 +45,7 @@ The tree also tells you what each compilation from puzzle 16 takes in. To build 
 
 ## The analogy
 
-The company from puzzle 1 groups its offices. There's the shared handbook for everyone, a binder for every office in Asia, and a binder for Japan, where the company has two offices: Tokyo, and the training office at headquarters (the simulator). A rule for Japan goes into the Japan binder once, not into each office's own folder. When an office prints its handbook, it binds in every binder on its line: shared, Asia, Japan, then its own folder.
+The company from puzzle 1 groups its offices. There's the shared handbook for everyone, a folder for every office in Asia, and a folder for Japan, where the company has two offices: Tokyo, and the training office at headquarters (the simulator). A rule for Japan goes into the Japan folder once, not into each office's own folder. When an office prints its handbook, it binds in every folder on its line: shared, Asia, Japan, then its own folder.
 
 ## Check yourself
 

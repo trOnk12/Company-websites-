@@ -1,0 +1,284 @@
+{
+  "tfidf": {
+    "metrics": {
+      "all": {
+        "queries": 12,
+        "hit_at_1": 7,
+        "hit_at_3": 9
+      },
+      "literal": {
+        "queries": 6,
+        "hit_at_1": 6,
+        "hit_at_3": 6
+      },
+      "paraphrase": {
+        "queries": 6,
+        "hit_at_1": 1,
+        "hit_at_3": 3
+      }
+    },
+    "rankings": [
+      {
+        "query": "How many business days does a card refund take?",
+        "type": "literal",
+        "expected": "refund",
+        "top": [
+          "refund",
+          "cancellation",
+          "export"
+        ]
+      },
+      {
+        "query": "Where can I cancel a monthly subscription?",
+        "type": "literal",
+        "expected": "cancellation",
+        "top": [
+          "cancellation",
+          "rename",
+          "shipping"
+        ]
+      },
+      {
+        "query": "Where do I enroll an authenticator app?",
+        "type": "literal",
+        "expected": "mfa",
+        "top": [
+          "mfa",
+          "cancellation",
+          "export"
+        ]
+      },
+      {
+        "query": "When does the password reset link expire?",
+        "type": "literal",
+        "expected": "password",
+        "top": [
+          "password",
+          "rename",
+          "cancellation"
+        ]
+      },
+      {
+        "query": "Download activity history as CSV",
+        "type": "literal",
+        "expected": "export",
+        "top": [
+          "export",
+          "cancellation",
+          "mfa"
+        ]
+      },
+      {
+        "query": "Change the workspace team display name",
+        "type": "literal",
+        "expected": "rename",
+        "top": [
+          "rename",
+          "cancellation",
+          "password"
+        ]
+      },
+      {
+        "query": "I returned the item. When will the money show back up in my bank?",
+        "type": "paraphrase",
+        "expected": "refund",
+        "top": [
+          "cancellation",
+          "password",
+          "rename"
+        ]
+      },
+      {
+        "query": "I want to stop paying every month. What do I do?",
+        "type": "paraphrase",
+        "expected": "cancellation",
+        "top": [
+          "cancellation",
+          "refund",
+          "mfa"
+        ]
+      },
+      {
+        "query": "Can I require an extra proof of who I am when I log in?",
+        "type": "paraphrase",
+        "expected": "mfa",
+        "top": [
+          "cancellation",
+          "mfa",
+          "password"
+        ]
+      },
+      {
+        "query": "I can't remember my credentials. How do I get back into my account?",
+        "type": "paraphrase",
+        "expected": "password",
+        "top": [
+          "mfa",
+          "rename",
+          "shipping"
+        ]
+      },
+      {
+        "query": "Put the record of what I did into a spreadsheet.",
+        "type": "paraphrase",
+        "expected": "export",
+        "top": [
+          "cancellation",
+          "export",
+          "rename"
+        ]
+      },
+      {
+        "query": "Our organization is called something else now. How do I update what people see?",
+        "type": "paraphrase",
+        "expected": "rename",
+        "top": [
+          "storage",
+          "cancellation",
+          "export"
+        ]
+      }
+    ]
+  },
+  "minilm": {
+    "metrics": {
+      "all": {
+        "queries": 12,
+        "hit_at_1": 12,
+        "hit_at_3": 12
+      },
+      "literal": {
+        "queries": 6,
+        "hit_at_1": 6,
+        "hit_at_3": 6
+      },
+      "paraphrase": {
+        "queries": 6,
+        "hit_at_1": 6,
+        "hit_at_3": 6
+      }
+    },
+    "rankings": [
+      {
+        "query": "How many business days does a card refund take?",
+        "type": "literal",
+        "expected": "refund",
+        "top": [
+          "refund",
+          "cancellation",
+          "password"
+        ]
+      },
+      {
+        "query": "Where can I cancel a monthly subscription?",
+        "type": "literal",
+        "expected": "cancellation",
+        "top": [
+          "cancellation",
+          "password",
+          "mfa"
+        ]
+      },
+      {
+        "query": "Where do I enroll an authenticator app?",
+        "type": "literal",
+        "expected": "mfa",
+        "top": [
+          "mfa",
+          "password",
+          "cancellation"
+        ]
+      },
+      {
+        "query": "When does the password reset link expire?",
+        "type": "literal",
+        "expected": "password",
+        "top": [
+          "password",
+          "mfa",
+          "cancellation"
+        ]
+      },
+      {
+        "query": "Download activity history as CSV",
+        "type": "literal",
+        "expected": "export",
+        "top": [
+          "export",
+          "storage",
+          "mfa"
+        ]
+      },
+      {
+        "query": "Change the workspace team display name",
+        "type": "literal",
+        "expected": "rename",
+        "top": [
+          "rename",
+          "cancellation",
+          "export"
+        ]
+      },
+      {
+        "query": "I returned the item. When will the money show back up in my bank?",
+        "type": "paraphrase",
+        "expected": "refund",
+        "top": [
+          "refund",
+          "shipping",
+          "cancellation"
+        ]
+      },
+      {
+        "query": "I want to stop paying every month. What do I do?",
+        "type": "paraphrase",
+        "expected": "cancellation",
+        "top": [
+          "cancellation",
+          "mfa",
+          "refund"
+        ]
+      },
+      {
+        "query": "Can I require an extra proof of who I am when I log in?",
+        "type": "paraphrase",
+        "expected": "mfa",
+        "top": [
+          "mfa",
+          "password",
+          "rename"
+        ]
+      },
+      {
+        "query": "I can't remember my credentials. How do I get back into my account?",
+        "type": "paraphrase",
+        "expected": "password",
+        "top": [
+          "password",
+          "mfa",
+          "cancellation"
+        ]
+      },
+      {
+        "query": "Put the record of what I did into a spreadsheet.",
+        "type": "paraphrase",
+        "expected": "export",
+        "top": [
+          "export",
+          "shipping",
+          "mfa"
+        ]
+      },
+      {
+        "query": "Our organization is called something else now. How do I update what people see?",
+        "type": "paraphrase",
+        "expected": "rename",
+        "top": [
+          "rename",
+          "shipping",
+          "export"
+        ]
+      }
+    ]
+  }
+}

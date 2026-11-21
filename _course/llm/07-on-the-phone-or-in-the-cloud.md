@@ -16,17 +16,17 @@ You want "smart reply" suggestions in a messaging app. Sending every private mes
 
 ## The building block
 
-An **on-device model** runs on the phone itself. On Android, Google's Gemini Nano runs inside **AICore**, a system service that uses the device's hardware and keeps the model updated. Apps reach it through ML Kit's GenAI APIs: ready-made tasks like summarising, proofreading and rewriting, and a Prompt API (beta) for your own prompts.
+An **on-device model** runs on the phone itself. On Android, Google's Gemini Nano runs inside **AICore**, a system service that uses the device's hardware and keeps the model updated. Apps reach it through ML Kit's GenAI APIs: ready-made tasks like summarising, proofreading and rewriting, and a Prompt API for custom prompts on supported configurations.
 
 What you gain:
 
-- No network: it works in a tunnel, and there's no wait for a request to reach a server and the answer to come back.
+- After the supported model is installed, the feature can run in a tunnel, and there's no wait for a request to reach a server and the answer to come back.
 - Privacy: the text never leaves the phone.
 - No per-request bill: there's no API to pay for each call.
 
 What you give up:
 
-- Size: a model that fits on a phone is much smaller than a cloud model, so hard reasoning and long documents are out of reach.
+- Size: a model that fits on a phone is much smaller than a cloud model, so test reasoning quality and supported input length on each supported device.
 - Reach: it runs only on devices that support it, and different devices can run different versions of Gemini Nano. Your feature needs a plan for the rest: a cloud fallback through your backend (puzzle 6), or a simpler feature.
 
 So the decision is per feature. Short, frequent, private tasks the user triggers inside your app, like smart replies or tidying a note, suit the phone. Three limits shape the design: AICore runs the model only while your app is the top foreground app (a foreground service doesn't count); each app has a request **quota**, a cap on how many requests it may make in a period, so a burst gets a BUSY error to retry with backoff, plus a longer battery quota; and the model may need downloading first. So check the feature's status before you offer it, and show it only when it's ready. Long or hard ones, like answering questions over many documents, go to the cloud, behind your backend.

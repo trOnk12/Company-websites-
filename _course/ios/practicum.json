@@ -1,0 +1,24 @@
+{
+  "title": "Reopen a screen while an old result is pending",
+  "brief": "A search screen closes before a queued result arrives. Diagnose a stale update and an unexpected retained view controller as separate failures.",
+  "prerequisites": "Review the main run loop, dispatch queues, MainActor and ARC.",
+  "setup": "Use a timeline with screen A searching lake and screen B searching oak. The store outlives both controllers and keeps a completion closure until it is explicitly removed. No device is required.",
+  "steps": [
+    "Draw which queue performs the slow lookup and which execution context may update the interface. Put presentation, dismissal and completion on the same timeline.",
+    "Follow strong references from A to its store and from the stored closure back to A. Predict what remains when navigation drops its reference to A.",
+    "Remove the retention problem and test the ordering problem separately by allowing two search requests on the same live screen to complete in reverse order.",
+    "Move the app to the background and then to suspended state on the paper timeline. Identify which pending steps can resume once it is active again."
+  ],
+  "evidence": [
+    "The answer separates execution on the main actor from the duration of the slow work.",
+    "The ownership trace identifies an actual retaining edge and describes when that edge is removed or made weak.",
+    "The ordering test rejects an older result even when the screen receiving callbacks is still alive."
+  ],
+  "worked": [
+    "If A owns the store and the store retains a closure that strongly captures A, dismissal alone leaves the reference chain intact. Clearing the completion when its work ends or capturing the owner weakly can break the cycle. A longer-lived store can also keep a dismissed screen alive without needing the screen to own that store.",
+    "A weak capture cannot distinguish two live requests for the same screen. Assign a current query identity, run the lookup away from the UI and, on the main actor, apply the result only if its identity still matches. When oak finishes before lake, the screen keeps oak.",
+    "While suspended the process does not execute the ordinary pending UI callback. It may resume later or be terminated. Reconstruct important state on a new launch if the product requires it to survive termination."
+  ],
+  "variation": "The app now wraps the slow synchronous lookup in a task isolated to the main actor. Does that make scrolling responsive?",
+  "solution": "The slow synchronous work still occupies the main actor while it runs. Put it in an appropriate background execution context and return only the short state update to the main actor."
+}

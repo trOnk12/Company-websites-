@@ -2,7 +2,7 @@
 title: It remembers nothing
 short: Stateless, and the context window
 summary: Your chatbot answers the first question well, then forgets it on the second. Or it remembers everything, and each message gets slower and more expensive. Both come from one fact about the API. Here's what your app must send, every time.
-takeaway: The model API is stateless: it remembers nothing between requests, so the app sends the whole conversation every time. Everything sent, plus the answer, must fit in the context window, the model's working memory for that request. Long chats cost more per message and can degrade, so trim, summarise or drop old turns on purpose.
+takeaway: The Messages API example is stateless: the caller supplies whatever prior context this turn needs. Everything sent, plus the answer, must fit in the context window, the model's working memory for that request. Long chats cost more per message and can degrade, so trim, summarise or drop old turns on purpose.
 ---
 
 ## The problem
@@ -16,9 +16,9 @@ Your first version sends only the user's latest message. The bot answers "What's
 
 ## The building block
 
-The model API is **stateless**: each request starts from nothing. There's no session, no memory kept on the server between your requests, holding your conversation. If the model is to "remember" an earlier message, that message must be in this request.
+The Messages API used here is **stateless**: it does not automatically supply prior turns to a new request. This interface property says nothing about provider logging or data retention. If the model is to "remember" an earlier message, that message must be in this request.
 
-So a chat app keeps the conversation itself, in its ViewModel or database, and sends all of it with every new message: earlier user messages, earlier answers, then the new message.
+So a chat app keeps the conversation itself, in its ViewModel or database, and chooses the relevant turns for each new message: earlier user messages, earlier answers, then the new message.
 
 Everything in one request, plus the answer the model writes, must fit in the **context window**: the model's working memory for that request, measured in tokens. Windows are large now, but three things grow with every message:
 
@@ -34,8 +34,8 @@ A brilliant consultant with no memory at all. Every time you call, you read them
 
 ## Check yourself
 
-- Your app sends only the latest message. Why does the bot forget the device the user just named?::*The API keeps nothing between requests, so the earlier message wasn't sent||The model's context window was full after one message >> One message is tiny; the earlier one wasn't in the request. >> s2||The model forgets on purpose to protect privacy >> It keeps nothing because the API is stateless, not by choice per message. >> s2::Stateless: send what it should know.
-- The chat reaches fifty messages. Why does each reply cost more?::*All earlier messages are sent and paid for again with every new one||The model charges more for later messages in a chat >> The price per token is the same; there are just more tokens per request. >> s3||Answers get longer as the chat goes on >> Possibly, but the cost is mostly the growing input. >> s3::The whole history, every time.
+- Your app sends only the latest message. Why does the bot forget the device the user just named?::*Earlier turns are not automatically included in this request||The model's context window was full after one message >> One message is tiny; the earlier one wasn't in the request. >> s2||The model forgets on purpose to protect privacy >> The app chose which prior information to include. >> s2::Stateless: send what it should know.
+- The app resends its growing full chat history. Why does input usage grow?::*All earlier messages are sent and paid for again with every new one||The model charges more for later messages in a chat >> The price per token is the same; there are just more tokens per request. >> s3||Answers get longer as the chat goes on >> Possibly, but the cost is mostly the growing input. >> s3::A longer input carries more tokens.
 - What's the difference between the context window and the conversation your app stores?::*The context window is what one request holds, while the stored conversation is all of it||The context window is all of the conversation, while the stored one is what one request holds >> That's the two swapped. >> the-building-block::One request's view vs the full record.
 
 ## Sources

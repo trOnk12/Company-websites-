@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" aria-current="page" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
-      <p class="eyebrow">Bluetooth Low Energy, from the radio up · Start here · 1 of 5</p>
-      <h1>Months on a coin battery</h1>
-      <p class="lede">A heart-rate strap runs for months on a battery the size of a coin. Here's the one idea that makes that possible, and that every later puzzle follows from.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="0">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Bluetooth Low Energy, from the radio up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 0 · 1 of 5</p>
+        <h1>Months on a coin battery</h1>
+        <p class="lede">A heart-rate strap runs for months on a battery the size of a coin. Here's the one idea that makes that possible, and that every later puzzle follows from.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" aria-current="page" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
 
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -61,7 +72,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A radio that's always on empties the battery; BLE sleeps and wakes for moments"><input type="radio" name="st-battery" id="st-battery-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-battery" id="st-battery-2" aria-label="Step 2 of 4"><input type="radio" name="st-battery" id="st-battery-3" aria-label="Step 3 of 4"><input type="radio" name="st-battery" id="st-battery-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="bt-t"><title id="bt-t">A strap with a coin battery; with the radio always on the battery empties; with BLE the radio wakes only for short moments and the battery stays full; a phone listens at those moments</title><defs><marker id="ah-battery-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-battery-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-battery-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-battery-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="bt-t"><title id="bt-t">A strap with a coin battery; with the radio always on the battery empties; with BLE the radio wakes only for short moments and the battery stays full; a phone listens at those moments</title><defs><marker id="ah-battery-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-battery-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-battery-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-battery-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="330" x2="640" y2="330"/>
 <g class="step s1" data-pulse="1"><rect class="d-wood" x="60" y="150" width="80" height="56" rx="12"/><circle class="d-dot" cx="74" cy="164" r="4"/><line class="d-line" x1="126" y1="150" x2="126" y2="136"/><circle class="d-ink" cx="126" cy="134" r="3"/><text class="d-tiny" x="100" y="224" text-anchor="middle">heart strap</text></g>
 <g class="step s1 hide-2"><rect class="d-paper" x="74" y="236" width="56" height="24" rx="4"/><rect class="d-ink" x="130" y="244" width="4" height="8"/><rect class="d-ok" x="77" y="239" width="50" height="18" rx="2"/><text class="d-tiny" x="102" y="276" text-anchor="middle">coin battery</text></g>
@@ -72,6 +83,7 @@
 <g class="step s3" data-move="2:235,128 3:335,128 4:435,128"><circle class="d-acc" cx="0" cy="0" r="9"/></g>
 <g class="step s4" data-pulse="4"><g><rect class="d-paper" x="520" y="190" width="60" height="110" rx="12"/><rect class="d-hl" x="527" y="204" width="46" height="76" rx="4"/><circle class="d-ink" cx="550" cy="290" r="3"/><text class="d-tiny" x="550" y="318" text-anchor="middle">phone</text></g><rect class="d-acc" x="426" y="110" width="18" height="36" rx="3"/><path class="d-arr-acc" d="M516,220 C480,200 450,170 440,150" marker-end="url(#ah-battery-acc)"/><text class="d-a" x="470" y="250" text-anchor="middle">hears it only here</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>A heart strap runs on a coin-sized battery. Its <b>radio</b>, the part that sends and listens over the air, is its hungriest part.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-battery-2">Next →</label></div></li>
 <li><p>Keep the radio on all the time, even just listening, and the battery is flat in days. <i>Predict: how can it last for months?</i></p><div class="stepnav"><label for="st-battery-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-battery-3">Next →</label></div></li>
@@ -84,7 +96,7 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>A device's <b>radio</b> is the part that sends and listens over the air. A radio that is on, sending or just listening, uses far more power than the rest of the device asleep. For a small device, it's the hungriest part.</p>
-<p><b>Bluetooth Low Energy</b>, <b>BLE</b> for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep, usually for many times longer than it was awake: up to several seconds. Awake 3 ms out of every second is 0.3% of the time. Your headphones use the original Bluetooth, which keeps the radio busy streaming sound; that's why they need charging every day or two.</p>
+<p><b>Bluetooth Low Energy</b>, <b>BLE</b> for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep, usually for many times longer than it was awake: up to several seconds. Awake 3 ms out of every second is 0.3% of the time. Streaming headphones may use classic Bluetooth or newer low-energy audio. Sending continuous audio is a different workload from transmitting an occasional sensor sample.</p>
 <p>That creates the two problems the next puzzles solve. A device that's asleep almost all the time is hard to find: how does your phone ever hear it? (puzzle 1) And once they've found each other, how do two devices that both sleep meet at the same moment? (puzzle 2)</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -95,34 +107,30 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A strap's battery is nearly empty after two days instead of months. What's the most likely cause?</legend>
-<input type="radio" name="q-00-a-year-on-a-coin-battery-1" id="q-00-a-year-on-a-coin-battery-1-1"><label for="q-00-a-year-on-a-coin-battery-1-1">Its battery is a cheap brand that loses charge</label>
-<input type="radio" name="q-00-a-year-on-a-coin-battery-1" id="q-00-a-year-on-a-coin-battery-1-2"><label for="q-00-a-year-on-a-coin-battery-1-2">Its battery is too small for BLE</label>
-<input type="radio" name="q-00-a-year-on-a-coin-battery-1" id="q-00-a-year-on-a-coin-battery-1-3" data-ok><label for="q-00-a-year-on-a-coin-battery-1-3">Its radio is awake far more often than it needs to be</label>
+<input type="radio" name="q-00-a-year-on-a-coin-battery-1" id="q-00-a-year-on-a-coin-battery-1-1"><label for="q-00-a-year-on-a-coin-battery-1-1"><span>Its battery is a cheap brand that loses charge</span></label>
+<input type="radio" name="q-00-a-year-on-a-coin-battery-1" id="q-00-a-year-on-a-coin-battery-1-2"><label for="q-00-a-year-on-a-coin-battery-1-2"><span>Its battery is too small for BLE</span></label>
+<input type="radio" name="q-00-a-year-on-a-coin-battery-1" id="q-00-a-year-on-a-coin-battery-1-3" data-ok><label for="q-00-a-year-on-a-coin-battery-1-3"><span>Its radio is awake far more often than it needs to be</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Any coin battery would drain like that; what decides it is how long the radio is awake. <label class="show-me" for="st-battery-2" data-goto="st-battery">Show me step 2 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> BLE is built for coin-sized batteries: the size isn't the problem, how long the radio is on is. <label class="show-me" for="st-battery-3" data-goto="st-battery">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Battery life is decided by how much of the time the radio is on.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does BLE save power by sleeping, instead of by sending less data?</legend>
-<input type="radio" name="q-00-a-year-on-a-coin-battery-2" id="q-00-a-year-on-a-coin-battery-2-1" data-ok><label for="q-00-a-year-on-a-coin-battery-2-1">Because a radio that's on costs a lot even just listening</label>
-<input type="radio" name="q-00-a-year-on-a-coin-battery-2" id="q-00-a-year-on-a-coin-battery-2-2"><label for="q-00-a-year-on-a-coin-battery-2-2">Because a sleeping radio sends smaller messages when it wakes</label>
+<input type="radio" name="q-00-a-year-on-a-coin-battery-2" id="q-00-a-year-on-a-coin-battery-2-1" data-ok><label for="q-00-a-year-on-a-coin-battery-2-1"><span>Because a radio that's on costs a lot even just listening</span></label>
+<input type="radio" name="q-00-a-year-on-a-coin-battery-2" id="q-00-a-year-on-a-coin-battery-2-2"><label for="q-00-a-year-on-a-coin-battery-2-2"><span>Because a sleeping radio sends smaller messages when it wakes</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Being on, even just listening, is the cost; sleeping is the saving.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Sleeping doesn't change the messages; it changes how long the radio is on. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between BLE and the Bluetooth in your headphones?</legend>
-<input type="radio" name="q-00-a-year-on-a-coin-battery-3" id="q-00-a-year-on-a-coin-battery-3-1"><label for="q-00-a-year-on-a-coin-battery-3-1">They're the same Bluetooth; BLE is the newer name for it</label>
-<input type="radio" name="q-00-a-year-on-a-coin-battery-3" id="q-00-a-year-on-a-coin-battery-3-2" data-ok><label for="q-00-a-year-on-a-coin-battery-3-2">BLE sleeps almost all the time; headphone Bluetooth streams sound nonstop</label>
+<input type="radio" name="q-00-a-year-on-a-coin-battery-3" id="q-00-a-year-on-a-coin-battery-3-1"><label for="q-00-a-year-on-a-coin-battery-3-1"><span>They're the same Bluetooth; BLE is the newer name for it</span></label>
+<input type="radio" name="q-00-a-year-on-a-coin-battery-3" id="q-00-a-year-on-a-coin-battery-3-2" data-ok><label for="q-00-a-year-on-a-coin-battery-3-2"><span>BLE sleeps almost all the time; headphone Bluetooth streams sound nonstop</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> They share the name and the airwaves, but BLE's whole design is about keeping the radio off. <label class="show-me" for="st-battery-3" data-goto="st-battery">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Same airwaves, different goal: BLE optimizes for battery, not for streaming.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/low-energy-controller/link-layer-specification.html">Bluetooth Core Specification 5.4, Vol 6, Part B: Link Layer</a> (devices meet at planned moments: &quot;A connection event is a point of synchronization between the Central and the Peripheral&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/low-energy-controller/link-layer-specification.html">Bluetooth Core Specification 5.4, Vol 6, Part B: Link Layer</a> (devices meet at planned moments: &quot;A connection event is a point of synchronization between the Central and the Peripheral&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The radio is the hungriest part of a small device. BLE keeps it off almost all the time and wakes it only for short, planned moments. Every rule in this course follows from that.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="./">← Overview</a>

@@ -20,11 +20,11 @@ A multiplatform project keeps its code in **source sets**: folders, each compile
 
 **`commonMain`** is compiled for every target. Its code is the **common code**, and it may only use what every target has: the Kotlin standard library, and libraries built for every target themselves, like Kotlin's own coroutines library. `java.io.File` isn't one of them, because the iPhone has no Java library to provide it.
 
-**`androidMain`** is compiled only for Android, so it can use anything Android and Java offer. **`iosMain`** is compiled only for iOS, so it can use Apple's own APIs, like `UIDevice`. Common code can't see into either: it doesn't know which platform it will end up on.
+**`androidMain`** is compiled only for Android, so it can use the Android APIs and Java library subset available on its supported devices. **`iosMain`** is compiled only for iOS, so it can use Apple's own APIs, like `UIDevice`. Common code can't see into either: it doesn't know which platform it will end up on.
 
 In Gradle, you list the targets in the build file, and each source set is a folder under src, like src/commonMain and src/iosMain.
 
-The rule is what makes sharing safe: if something compiles in `commonMain`, it has something to run on, on every target.
+The rule is what makes sharing safe: common code must type-check against the APIs available to its declared targets. Platform version and runtime permissions can still determine whether a particular call succeeds.
 
 ## The analogy
 

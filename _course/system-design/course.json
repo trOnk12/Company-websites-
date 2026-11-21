@@ -1,0 +1,53 @@
+{
+  "title": "System design from first principles to design review",
+  "intro": "Build a parking reservation service on paper and on the JVM. Estimate a concert peak, race for the last space, lose a payment reply and recover after a bad release. Transfer your reasoning to tickets, feeds and private uploads.",
+  "how": "Start with the promise a reservation makes to a driver. Predict the outcome, step through the diagram and run the browser labs. Finish by defending your design when a reviewer changes the load, the failure or the ownership rule.",
+  "modules": [
+    {
+      "title": "From promises to a write path",
+      "blurb": "Estimate demand and decide who owns the last space.",
+      "puzzles": [
+        "00-promise.md",
+        "01-demand.md",
+        "02-write-boundary.md"
+      ]
+    },
+    {
+      "title": "Data under concurrent use",
+      "blurb": "Protect inventory, handle retries, page history and bound staleness.",
+      "puzzles": [
+        "03-conditional-write.md",
+        "04-retry-identity.md",
+        "05-history.md",
+        "06-freshness.md"
+      ]
+    },
+    {
+      "title": "Distributed work",
+      "blurb": "Deliver events, handle overload, move data and survive a partition.",
+      "puzzles": [
+        "07-outbox.md",
+        "08-overload.md",
+        "09-partitioning.md",
+        "10-consensus.md"
+      ]
+    },
+    {
+      "title": "Operating and defending a design",
+      "blurb": "Reconcile payments, diagnose delays, recover data and defend a design under changed assumptions.",
+      "puzzles": [
+        "11-payment.md",
+        "12-diagnosis.md",
+        "13-recovery.md",
+        "14-design-review.md"
+      ]
+    }
+  ],
+  "relatedCourses": [
+    "backend-ops",
+    "jvm",
+    "sysdesign",
+    "transport",
+    "security"
+  ]
+}

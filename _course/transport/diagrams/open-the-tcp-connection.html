@@ -1,0 +1,20 @@
+<!-- label: A phone and a server exchange starting numbers and acknowledgments -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="tcp-title">
+<title id="tcp-title">TCP setup: the phone sends SYN 100, the server replies with SYN 500 and ACK 101, then the phone acknowledges 501.</title>
+<x-phone x="83" y="20" w="51" h="73" label="Phone"/>
+<x-server x="504" y="12" w="63" h="100" label="Server"/>
+<path class="d-line" stroke-dasharray="5 7" d="M108,120 V335 M535,141 V335"/>
+<x-arrow class="step s2" tone="acc" d="M114,155 H528"/>
+<text x="320" y="145" class="d-b step s2" text-anchor="middle">SYN 100</text>
+<x-arrow class="step s3" tone="acc" d="M529,225 H115"/>
+<text x="320" y="215" class="d-b step s3" text-anchor="middle">SYN 500 · ACK 101</text>
+<x-arrow class="step s4" tone="acc" d="M114,295 H528"/>
+<text x="320" y="285" class="d-b step s4" text-anchor="middle">ACK 501</text>
+<g data-move="1:108,120 2:514,166 3:128,236 4:514,306"><circle class="d-acc" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Both peers choose a starting number for bytes they send. Their numbers are independent.</p></li>
+<li><p>The phone announces 100. The server has heard the phone.</p></li>
+<li><p>The server announces 500 and asks the phone for 101 next. Predict what the phone should acknowledge.</p></li>
+<li><p>The phone acknowledges 501. The server now knows its opening message made the return trip.</p></li>
+</ol>

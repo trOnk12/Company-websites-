@@ -13,7 +13,7 @@
 </svg>
 <ol class="caps">
 <li><p>Linux keeps accounts apart. An account is an identity the kernel uses to decide who owns which files: every file is marked with its owner.</p></li>
-<li><p>At install, every app gets its own account (Linux calls accounts users), with its own number: its user ID, or <b>UID</b>. It's the app's key, and the app's process carries it.</p></li>
-<li><p>The game's key tries the bank's files. The kernel compares the key with the files' owner, and refuses. <i>Predict: does this depend on the bank app running?</i></p></li>
+<li><p>By default, an installed app gets its own account (Linux calls accounts users), with its own number: its user ID, or <b>UID</b>. It's the app's key, and the app's process carries it.</p></li>
+<li><p>The game's key tries the bank's files. The game's identity and the bank's private file access rules cause the kernel to refuse the request. <i>Predict: does this depend on the bank app running?</i></p></li>
 <li><p>No: the kernel checks every time. Each app lives inside walls it can't switch off: its <b>sandbox</b>.</p></li>
 </ol>

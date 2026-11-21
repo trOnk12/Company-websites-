@@ -24,7 +24,8 @@
     },
     {
       "title": "System design: the building blocks",
-      "topics": "Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity."
+      "topics": "Databases, caches, queues, consistency and CAP, idempotency, rate limiting, consensus, and why latency explodes near capacity.",
+      "id": "system-design"
     },
     {
       "title": "How LLMs and AI agents work",
@@ -40,5 +41,60 @@
       "title": "Data structures that earn their keep",
       "topics": "Hash tables, heaps, graph search, B-trees and LSM trees, Bloom filters, CRDTs: what real systems use, and why."
     }
-  ]
+  ],
+  "groups": [
+    {
+      "id": "backend",
+      "title": "Backend and system design",
+      "intro": "Start with a single request and take a bookmark service through deployment. Then inspect the JVM that runs the code. Finish by defending a reservation design when clients retry and servers fail.",
+      "courses": [
+        "backend-ops",
+        "jvm",
+        "system-design"
+      ]
+    },
+    {
+      "id": "mobile",
+      "title": "Android and multiplatform apps",
+      "intro": "Begin with Android processes and threads. Learn how iOS owns a screen, share Kotlin across both platforms, build a shared UI, then diagnose a slow frame.",
+      "courses": [
+        "android",
+        "ios",
+        "kmp",
+        "compose",
+        "perf"
+      ]
+    },
+    {
+      "id": "networks",
+      "title": "Networks and secure connections",
+      "intro": "Follow a mobile request through an unreliable network. Trace packets and connection setup, then examine the keys and certificates that protect the exchange.",
+      "courses": [
+        "sysdesign",
+        "transport",
+        "security"
+      ]
+    },
+    {
+      "id": "device",
+      "title": "Device integrations",
+      "intro": "Choose the feature you want to build: connect an app to a nearby sensor, or add a model that streams responses.",
+      "courses": [
+        "ble",
+        "llm"
+      ]
+    }
+  ],
+  "descriptions": {
+    "android": "Follow processes, threads and Binder to explain frozen screens, lifecycle and process death.",
+    "kmp": "Follow one Kotlin function through the build, then see how Swift calls Kotlin and how Compose draws on iOS.",
+    "ios": "Use your Android experience to understand iOS lifecycle, the run loop, Swift concurrency and ARC.",
+    "perf": "Read traces and heap dumps to work out why a frame, a thread or the garbage collector is slow.",
+    "sysdesign": "Follow a request through DNS, HTTP and TLS, then build up to offline sync and safe retries.",
+    "security": "Build from bits and keys to hashes, signatures, certificates and the TLS handshake.",
+    "ble": "Follow a sensor from its first radio advertisement to a connection and a GATT notification.",
+    "llm": "Trace a model call from tokens to streaming, then compare two ways of finding evidence for a chat assistant.",
+    "compose": "Follow a shared screen through state reads, placement, native iOS interop and VoiceOver.",
+    "transport": "Work through TCP byte numbers, TLS identity checks, HTTPS timing and what packet loss does to HTTP/2 and HTTP/3."
+  }
 }

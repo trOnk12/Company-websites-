@@ -2,7 +2,7 @@
 title: TLS, the blocks together
 short: TLS
 summary: Puzzles 0 to 7 each stopped one thing a machine in the middle could do. The S in HTTPS is those blocks put together in one short conversation before your first request.
-takeaway: A TLS handshake does a key exchange, has the server prove who it is with its certificate and a signature, and turns the shared secret into symmetric keys. Everything after that is encrypted with an AES-style cipher that also detects changes. Reading, changing and pretending are all stopped.
+takeaway: In a full certificate-authenticated TLS 1.3 connection, the client verifies the server and handshake transcript. Traffic keys protect application records for confidentiality and integrity. Endpoints, timing and lengths can still reveal information.
 ---
 
 ## The problem
@@ -16,10 +16,10 @@ Puzzle 0 named three things a machine in the middle can do: read, change, preten
 
 ## The building block
 
-**TLS** is the protocol behind HTTPS: a set of agreed messages and rules. Before any of your data is sent, the app and the server have a short exchange: the **handshake**. In TLS 1.3 (the current version) it takes one round trip, there and back:
+**TLS** is the protocol behind HTTPS: a set of agreed messages and rules. Before any of your data is sent, the app and the server have a short exchange: the **handshake**. For this full certificate-authenticated TLS 1.3 handshake over an established transport, with a supported initial key share and no retry, the server flight returns after one round trip:
 
 1. Your app says hello and sends its public value for a key exchange (puzzle 3).
-2. The server answers with its own public value. Now both sides compute the shared secret, and from it they derive several keys (computed from it by a fixed recipe both sides follow): one set for the rest of the handshake, another for your data. From this point on, everything is encrypted.
+2. The server answers with its own public value. Now both sides compute the shared secret, and from it they derive several keys (computed from it by a fixed recipe both sides follow): one set for the rest of the handshake, another for your data. The subsequent authentication messages are protected. Record lengths, timing and network addresses remain observable.
 3. Still in the handshake, but now encrypted, the server sends its certificate (puzzle 7) and a signature over the whole conversation so far, made with its private key.
 4. Your app checks the certificate against the authorities it trusts, checks the name against the address, and checks the signature. A listener with a copied certificate fails here: it can't make that signature.
 5. Both sides end the handshake with a MAC (puzzle 6) over everything said so far, called Finished. Only now does each know that nobody changed the handshake on the way.

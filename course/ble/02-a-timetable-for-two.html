@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="2" data-prev="01-shouting-into-the-room.html" data-prev-title="Shouting into the room">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" class="done" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" class="done" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" aria-current="page" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
-      <p class="eyebrow">Bluetooth Low Energy, from the radio up · Puzzle 2 · 3 of 5</p>
-      <h1>A timetable for two</h1>
-      <p class="lede">In puzzle 1, the phone found the strap by listening to its advertisements. Now two devices that both sleep need to talk again and again, without missing each other.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="ble" data-n="2">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Bluetooth Low Energy, from the radio up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 2 · 3 of 5</p>
+        <h1>A timetable for two</h1>
+        <p class="lede">In puzzle 1, the phone found the strap by listening to its advertisements. Now two devices that both sleep need to talk again and again, without missing each other.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-year-on-a-coin-battery.html" title="Months on a coin battery">0</a></li><li><a href="01-shouting-into-the-room.html" title="Shouting into the room">1</a></li><li><a href="02-a-timetable-for-two.html" aria-current="page" title="A timetable for two">2</a></li><li><a href="03-the-filing-cabinet.html" title="The filing cabinet">3</a></li><li><a href="04-dont-ask-get-told.html" title="Don't ask, get told">4</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-shouting-into-the-room.html">Puzzle 1: Shouting into the room</a></summary><p>A device advertises: it wakes, sends a short packet on each of the 3 advertising channels, and sleeps, over and over at its advertising interval. A phone scans: it listens on those channels until one packet lands while it's listening.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: Shouting into the room</summary><p>This legacy strap advertises on the three primary channels. Repeated advertising gives a scanning phone more opportunities to hear it. The advertising configuration and scan windows determine the actual chances.</p><p><a href="01-shouting-into-the-room.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-a-year-on-a-coin-battery.html">0</a> → <a href="01-shouting-into-the-room.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Two sleeping devices meet on a timetable: connection events"><input type="radio" name="st-connection" id="st-connection-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-connection" id="st-connection-2" aria-label="Step 2 of 4"><input type="radio" name="st-connection" id="st-connection-3" aria-label="Step 3 of 4"><input type="radio" name="st-connection" id="st-connection-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="cn-t"><title id="cn-t">The phone answers an advertisement with a connect request; they agree a connection interval; both wake at each connection event and sleep in between; each event uses a different channel</title><defs><marker id="ah-connection-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-connection-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-connection-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-connection-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="cn-t"><title id="cn-t">The phone answers an advertisement with a connect request; they agree a connection interval; both wake at each connection event and sleep in between; each event uses a different channel</title><defs><marker id="ah-connection-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-connection-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-connection-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-connection-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="30" y="40" width="64" height="120" rx="12"/><rect class="d-hl" x="37" y="54" width="50" height="86" rx="4"/><circle class="d-ink" cx="62" cy="150" r="3"/><text class="d-tiny" x="62" y="178" text-anchor="middle">phone: central</text></g>
 <g class="step s1"><rect class="d-wood" x="30" y="232" width="72" height="52" rx="12"/><circle class="d-dot" cx="44" cy="246" r="4"/><line class="d-line" x1="88" y1="232" x2="88" y2="218"/><circle class="d-ink" cx="88" cy="216" r="3"/><text class="d-tiny" x="66" y="302" text-anchor="middle">strap: peripheral</text></g>
@@ -76,6 +87,7 @@
 <g class="step s3" data-pulse="3"><circle class="d-hl" cx="174" cy="180" r="12"/><circle class="d-hl" cx="284" cy="180" r="12"/><circle class="d-hl" cx="394" cy="180" r="12"/><circle class="d-hl" cx="504" cy="180" r="12"/><text class="d-a" x="339" y="214" text-anchor="middle">meet, then sleep</text></g>
 <g class="step s4" data-pulse="4"><rect class="d-hl" x="160" y="300" width="28" height="18" rx="3"/><rect class="d-hl" x="270" y="300" width="28" height="18" rx="3"/><rect class="d-hl" x="380" y="300" width="28" height="18" rx="3"/><rect class="d-hl" x="490" y="300" width="28" height="18" rx="3"/><text class="d-tiny" x="174" y="334" text-anchor="middle">channel A</text><text class="d-tiny" x="284" y="334" text-anchor="middle">channel B</text><text class="d-tiny" x="394" y="334" text-anchor="middle">channel C</text><text class="d-tiny" x="504" y="334" text-anchor="middle">channel D</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Right after an advertisement, the phone answers: "connect?". Now they're in a <b>connection</b>. The phone, which asked, is the <b>central</b> and sets the timing; the strap is the <b>peripheral</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-connection-2">Next →</label></div></li>
 <li><p>The central sets a timetable: meet every <b>connection interval</b>, from 7.5 ms up to 4 s. In between, both radios sleep.</p><div class="stepnav"><label for="st-connection-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-connection-3">Next →</label></div></li>
@@ -89,8 +101,8 @@
         <h2 id="the-building-block">The building block</h2>
 <p>The phone answers an advertisement with a request to connect, in the moment the strap listens after advertising (puzzle 1). From then on, the two are in a <b>connection</b>, and each has a role. The side that sent the request becomes the <b>central</b>, which sets the timing: usually the phone, because the phone is the one that goes looking. The side that advertised becomes the <b>peripheral</b>, which follows it: usually the small device.</p>
 <p>In its request, the central sets a timetable: meet every <b>connection interval</b>. The same request also carries the rule for picking each meeting's channel, so both sides know it from the start. The connection interval is a multiple of 1.25 ms, from 7.5 ms up to 4 s. Short means data moves sooner but more radio time; long means slow replies and a longer battery life. The central can change it later.</p>
-<p>Each meeting is a <b>connection event</b>. Both radios wake at the agreed moment, exchange packets, and sleep again until the next one. If neither has anything to say, they swap tiny empty packets, just enough to stay in step. Because both know the timetable, neither has to listen in between.</p>
-<p>Each connection event happens on a different channel, picked from the 37 non-advertising channels by a rule both sides know. If one channel is noisy, only the events that land on it suffer.</p>
+<p>Each meeting is a <b>connection event</b>. In this basic example, both radios wake at the agreed moment, exchange packets, and sleep again until the next one. If neither has anything to say, they swap tiny empty packets, just enough to stay in step. Because both know the timetable, neither has to listen in between.</p>
+<p>A channel-selection rule picks a data channel for each event from the enabled channel map. Consecutive events need not use different channels. A peripheral may skip eligible events under negotiated timing rules. If one channel is noisy, only the events that land on it suffer.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -100,36 +112,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A heart strap's connection interval is 1 s. Your app shows the heart rate. What does the user notice?</legend>
-<input type="radio" name="q-02-a-timetable-for-two-1" id="q-02-a-timetable-for-two-1-1"><label for="q-02-a-timetable-for-two-1-1">Nothing: the strap sends each value the moment it's measured</label>
-<input type="radio" name="q-02-a-timetable-for-two-1" id="q-02-a-timetable-for-two-1-2" data-ok><label for="q-02-a-timetable-for-two-1-2">New values arrive only at the meetings, once a second</label>
-<input type="radio" name="q-02-a-timetable-for-two-1" id="q-02-a-timetable-for-two-1-3"><label for="q-02-a-timetable-for-two-1-3">The connection drops, because 1 s is longer than BLE allows</label>
+<input type="radio" name="q-02-a-timetable-for-two-1" id="q-02-a-timetable-for-two-1-1"><label for="q-02-a-timetable-for-two-1-1"><span>Nothing: the strap sends each value the moment it's measured</span></label>
+<input type="radio" name="q-02-a-timetable-for-two-1" id="q-02-a-timetable-for-two-1-2" data-ok><label for="q-02-a-timetable-for-two-1-2"><span>New values arrive only at the meetings, once a second</span></label>
+<input type="radio" name="q-02-a-timetable-for-two-1" id="q-02-a-timetable-for-two-1-3"><label for="q-02-a-timetable-for-two-1-3"><span>The connection drops, because 1 s is longer than BLE allows</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Packets only travel at connection events; between them both radios sleep. <label class="show-me" for="st-connection-3" data-goto="st-connection">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Data can only move when the two sides meet.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Anything up to 4 s is allowed. It's slow, not broken. <label class="show-me" for="st-connection-2" data-goto="st-connection">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does the phone, not the strap, set the timetable?</legend>
-<input type="radio" name="q-02-a-timetable-for-two-2" id="q-02-a-timetable-for-two-2-1"><label for="q-02-a-timetable-for-two-2-1">Because the strap's battery is smaller, so the phone is put in charge</label>
-<input type="radio" name="q-02-a-timetable-for-two-2" id="q-02-a-timetable-for-two-2-2" data-ok><label for="q-02-a-timetable-for-two-2-2">Because the phone sent the request, so it's the central, which sets the timing</label>
-<input type="radio" name="q-02-a-timetable-for-two-2" id="q-02-a-timetable-for-two-2-3"><label for="q-02-a-timetable-for-two-2-3">Because the strap's radio can't keep time on its own</label>
+<input type="radio" name="q-02-a-timetable-for-two-2" id="q-02-a-timetable-for-two-2-1"><label for="q-02-a-timetable-for-two-2-1"><span>Because the strap's battery is smaller, so the phone is put in charge</span></label>
+<input type="radio" name="q-02-a-timetable-for-two-2" id="q-02-a-timetable-for-two-2-2" data-ok><label for="q-02-a-timetable-for-two-2-2"><span>Because the phone sent the request, so it's the central, which sets the timing</span></label>
+<input type="radio" name="q-02-a-timetable-for-two-2" id="q-02-a-timetable-for-two-2-3"><label for="q-02-a-timetable-for-two-2-3"><span>Because the strap's radio can't keep time on its own</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Battery size isn't what decides it: the roles do. The central sets the timing. <label class="show-me" for="st-connection-1" data-goto="st-connection">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Roles: the central sets the timing, the peripheral follows.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Both radios keep time; the rule is that the central decides. <label class="show-me" for="st-connection-2" data-goto="st-connection">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a connection interval and an advertising interval?</legend>
-<input type="radio" name="q-02-a-timetable-for-two-3" id="q-02-a-timetable-for-two-3-1"><label for="q-02-a-timetable-for-two-3-1">They're the same setting: after connecting, it's renamed</label>
-<input type="radio" name="q-02-a-timetable-for-two-3" id="q-02-a-timetable-for-two-3-2" data-ok><label for="q-02-a-timetable-for-two-3-2">One is how often a device shouts to be found, the other how often two meet</label>
+<input type="radio" name="q-02-a-timetable-for-two-3" id="q-02-a-timetable-for-two-3-1"><label for="q-02-a-timetable-for-two-3-1"><span>They're the same setting: after connecting, it's renamed</span></label>
+<input type="radio" name="q-02-a-timetable-for-two-3" id="q-02-a-timetable-for-two-3-2" data-ok><label for="q-02-a-timetable-for-two-3-2"><span>One is how often a device shouts to be found, the other how often two meet</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> One is for being found by anyone, the other is a timetable for two devices that already found each other. <label class="show-me" for="st-connection-2" data-goto="st-connection">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One finds; the other keeps meeting.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/low-energy-controller/link-layer-specification.html">Bluetooth Core Specification 5.4, Vol 6, Part B: Link Layer</a> (&quot;The connInterval shall be a multiple of 1.25 ms in the range 7.5 ms to 4.0 s. The connInterval is set by the Initiator's Link Layer… and can be changed using the Connection Update procedure&quot;; &quot;A Link Layer in the Central Role is called a Central… The Central controls the timing of a connection event&quot;; channel selection: &quot;the unmapped channel index for the current connection event&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-54/out/en/low-energy-controller/link-layer-specification.html">Bluetooth Core Specification 5.4, Vol 6, Part B: Link Layer</a> (&quot;The connInterval shall be a multiple of 1.25 ms in the range 7.5 ms to 4.0 s. The connInterval is set by the Initiator's Link Layer… and can be changed using the Connection Update procedure&quot;; &quot;A Link Layer in the Central Role is called a Central… The Central controls the timing of a connection event&quot;; channel selection: &quot;the unmapped channel index for the current connection event&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>In a connection, the central (the phone) sets a timetable: meet every connection interval, 7.5 ms to 4 s. At each connection event both wake, exchange packets on a channel picked by a shared rule, and go back to sleep.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="01-shouting-into-the-room.html">← Puzzle 1</a>

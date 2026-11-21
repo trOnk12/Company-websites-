@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="3" data-prev="02-your-first-call.html" data-prev-title="Your first call">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" class="done" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" class="done" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" class="done" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" aria-current="page" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li></ol></nav>
-      <p class="eyebrow">LLMs for mobile engineers, from tokens to your app · Puzzle 3 · 4 of 8</p>
-      <h1>Why answers stream</h1>
-      <p class="lede">Your chat screen shows a spinner for eight seconds, then the whole answer at once. Users think it's broken. The model had the first words after half a second. Here's how to show them, and what changes in your networking code.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="llm" data-n="3">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 3 · 4 of 10</p>
+        <h1>Why answers stream</h1>
+        <p class="lede">Your chat screen shows a spinner for eight seconds, then the whole answer at once. Users think it's broken. The model had the first words after half a second. Here's how to show them, and what changes in your networking code.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-a-language-model-is.html" title="What a language model is">0</a></li><li><a href="01-one-token-at-a-time.html" title="One token at a time">1</a></li><li><a href="02-your-first-call.html" title="Your first call">2</a></li><li><a href="03-why-answers-stream.html" aria-current="page" title="Why answers stream">3</a></li><li><a href="04-it-remembers-nothing.html" title="It remembers nothing">4</a></li><li><a href="05-same-question-different-answers.html" title="Same question, different answers">5</a></li><li><a href="06-your-key-is-not-a-secret.html" title="Your key is not a secret">6</a></li><li><a href="07-on-the-phone-or-in-the-cloud.html" title="On the phone or in the cloud">7</a></li><li><a href="08-find-evidence-before-writing.html" title="Find evidence before asking the model">8</a></li><li><a href="09-measure-retrieval-and-answer-separately.html" title="Which step failed the answer?">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary><a href="01-one-token-at-a-time.html">Puzzle 1: One token at a time</a></summary><p>A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Limits, latency and price are all counted in tokens, and longer answers take longer because each token is one more step.</p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: One token at a time</summary><p>A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Token limits and usage-based prices depend on token counts; latency is measured in time, and longer answers take longer because each token is one more step.</p><p><a href="01-one-token-at-a-time.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-what-a-language-model-is.html">0</a> → <a href="01-one-token-at-a-time.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Without streaming you wait for the end; with it, words appear as they're made"><input type="radio" name="st-stream" id="st-stream-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-stream" id="st-stream-2" aria-label="Step 2 of 4"><input type="radio" name="st-stream" id="st-stream-3" aria-label="Step 3 of 4"><input type="radio" name="st-stream" id="st-stream-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">Without streaming the app shows a spinner until the whole answer arrives after eight seconds; with streaming each token arrives as a small event over one open response, so words appear after half a second; leaving the screen cancels the stream</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">Without streaming the app shows a spinner until the whole answer arrives after eight seconds; with streaming each token arrives as a small event over one open response, so words appear after half a second; leaving the screen cancels the stream</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="30" y="90" width="90" height="150" rx="12"/><rect class="d-hl" x="37" y="104" width="76" height="116" rx="4"/><circle class="d-ink" cx="75" cy="230" r="3"/><text class="d-tiny" x="75" y="258" text-anchor="middle">chat screen</text></g>
 <g class="step s1"><rect class="d-wood" x="460" y="120" width="140" height="54" rx="8"/><line class="d-line" x1="485.0" y1="147.0" x2="490.0" y2="147.0"/><line class="d-line" x1="482.9" y1="151.9" x2="486.5" y2="155.5"/><line class="d-line" x1="478.0" y1="154.0" x2="478.0" y2="159.0"/><line class="d-line" x1="473.1" y1="151.9" x2="469.5" y2="155.5"/><line class="d-line" x1="471.0" y1="147.0" x2="466.0" y2="147.0"/><line class="d-line" x1="473.1" y1="142.1" x2="469.5" y2="138.5"/><line class="d-line" x1="478.0" y1="140.0" x2="478.0" y2="135.0"/><line class="d-line" x1="482.9" y1="142.1" x2="486.5" y2="138.5"/><circle class="d-paper" cx="478" cy="147" r="8"/><text class="d-tiny" x="547" y="152" text-anchor="middle">model</text></g>
@@ -75,6 +86,7 @@
 <g class="step only-3" data-pulse="3"><text class="d-a" x="290" y="250" text-anchor="middle">first words after 0.5 s</text></g>
 <g class="step s4" data-pulse="4"><path class="d-red" d="M280,160 L300,180 M300,160 L280,180"/><text class="d-r" x="290" y="250" text-anchor="middle">user leaves: cancel</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The app as written waits for the whole answer: eight seconds of spinner, then all the text at once.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-stream-2">Next →</label></div></li>
 <li><p>With <b>streaming</b>, one HTTP response stays open, and each new piece arrives as one of the <b>server-sent events</b>.</p><div class="stepnav"><label for="st-stream-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-stream-3">Next →</label></div></li>
@@ -101,36 +113,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Streaming is turned on. What gets faster?</legend>
-<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-1"><label for="q-03-why-answers-stream-1-1">Both, because streaming sends fewer bytes over the network</label>
-<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-2"><label for="q-03-why-answers-stream-1-2">The total time, because the model writes faster while streaming</label>
-<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-3" data-ok><label for="q-03-why-answers-stream-1-3">The time to first token, since words show as soon as they exist</label>
+<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-1"><label for="q-03-why-answers-stream-1-1"><span>Both, because streaming sends fewer bytes over the network</span></label>
+<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-2"><label for="q-03-why-answers-stream-1-2"><span>The total time, because the model writes faster while streaming</span></label>
+<input type="radio" name="q-03-why-answers-stream-1" id="q-03-why-answers-stream-1-3" data-ok><label for="q-03-why-answers-stream-1-3"><span>The time to first token, since words show as soon as they exist</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The bytes are about the same; only when they're shown changes. <label class="show-me" for="st-stream-3" data-goto="st-stream">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> The model writes at the same speed; you just see it sooner. <label class="show-me" for="st-stream-3" data-goto="st-stream">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Sooner, not faster.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The user leaves the chat screen mid-answer. Why cancel the stream?</legend>
-<input type="radio" name="q-03-why-answers-stream-2" id="q-03-why-answers-stream-2-1" data-ok><label for="q-03-why-answers-stream-2-1">Every generated token is still paid for, even if nobody reads it</label>
-<input type="radio" name="q-03-why-answers-stream-2" id="q-03-why-answers-stream-2-2"><label for="q-03-why-answers-stream-2-2">Server-sent events can't run in the background</label>
-<input type="radio" name="q-03-why-answers-stream-2" id="q-03-why-answers-stream-2-3"><label for="q-03-why-answers-stream-2-3">The stream would crash the app once the screen is gone</label>
+<input type="radio" name="q-03-why-answers-stream-2" id="q-03-why-answers-stream-2-1" data-ok><label for="q-03-why-answers-stream-2-1"><span>Every generated token is still paid for, even if nobody reads it</span></label>
+<input type="radio" name="q-03-why-answers-stream-2" id="q-03-why-answers-stream-2-2"><label for="q-03-why-answers-stream-2-2"><span>Server-sent events can't run in the background</span></label>
+<input type="radio" name="q-03-why-answers-stream-2" id="q-03-why-answers-stream-2-3"><label for="q-03-why-answers-stream-2-3"><span>The stream would crash the app once the screen is gone</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Unread tokens are still paid for.</p>
 <p class="fb no opt-2"><b>Not quite.</b> They can; you cancel because the answer is no longer wanted. <label class="show-me" for="st-stream-4" data-goto="st-stream">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> It wouldn't crash if the ViewModel owns it; the waste is the point. <label class="show-me" for="st-stream-4" data-goto="st-stream">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between time to first token and total time?</legend>
-<input type="radio" name="q-03-why-answers-stream-3" id="q-03-why-answers-stream-3-1"><label for="q-03-why-answers-stream-3-1">Time to first token is when the answer ends, while total time is when it starts</label>
-<input type="radio" name="q-03-why-answers-stream-3" id="q-03-why-answers-stream-3-2" data-ok><label for="q-03-why-answers-stream-3-2">Time to first token is when the answer starts, while total time is when it ends</label>
+<input type="radio" name="q-03-why-answers-stream-3" id="q-03-why-answers-stream-3-1"><label for="q-03-why-answers-stream-3-1"><span>Time to first token is when the answer ends, while total time is when it starts</span></label>
+<input type="radio" name="q-03-why-answers-stream-3" id="q-03-why-answers-stream-3-2" data-ok><label for="q-03-why-answers-stream-3-2"><span>Time to first token is when the answer starts, while total time is when it ends</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Start vs end.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://docs.anthropic.com/en/docs/build-with-claude/streaming">Anthropic: Streaming messages</a> (&quot;When creating a Message, you can set \&quot;stream\&quot;: true to incrementally stream the response using server-sent events (SSE).&quot;)</li><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, TTFT</a> (&quot;Time to first token (TTFT) is a performance metric that measures the time it takes for a language model to generate the first token of its output after receiving a prompt. It is an important indicator of the model's responsiveness&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/docs/build-with-claude/streaming">Anthropic: Streaming messages</a> (&quot;When creating a Message, you can set \&quot;stream\&quot;: true to incrementally stream the response using server-sent events (SSE).&quot;)</li><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, TTFT</a> (&quot;Time to first token (TTFT) is a performance metric that measures the time it takes for a language model to generate the first token of its output after receiving a prompt. It is an important indicator of the model's responsiveness&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Because the model writes one token at a time, the API can stream: send each piece as it's generated, over one open HTTP response, as server-sent events. Time to first token, not total time, is what makes an app feel fast. On mobile, the stream is a long-lived request: keep it on a background coroutine, append to UI state as events arrive, and cancel it when the user leaves.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-your-first-call.html">← Puzzle 2</a>

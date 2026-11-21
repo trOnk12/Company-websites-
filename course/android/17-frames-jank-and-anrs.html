@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="17" data-prev="16-the-main-threads-queue.html" data-prev-title="The main thread's queue">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" class="done" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" class="done" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" class="done" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" class="done" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" class="done" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" class="done" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" class="done" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" class="done" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" class="done" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" class="done" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" class="done" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" class="done" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" class="done" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" class="done" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" class="done" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" class="done" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" class="done" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" aria-current="page" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" title="When the process is gone">22</a></li></ol></nav>
-      <p class="eyebrow">Android from the foundation · Puzzle 17 · 18 of 23</p>
-      <h1>Frames, jank and ANRs</h1>
-      <p class="lede">Drawing the screen is just another message in the main thread's queue. So one slow message doesn't only delay a tap: it stops the screen from being drawn.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="android" data-n="17">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Android from the foundation</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 17 · 18 of 23</p>
+        <h1>Frames, jank and ANRs</h1>
+        <p class="lede">Drawing the screen is just another message in the main thread's queue. So one slow message doesn't only delay a tap: it stops the screen from being drawn.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-running-app-is-a-process.html" title="A running app is a process">0</a></li><li><a href="01-the-kernel-is-in-charge.html" title="The kernel is in charge">1</a></li><li><a href="02-threads-are-the-workers.html" title="Threads are the workers">2</a></li><li><a href="03-threads-share-one-house.html" title="Threads share one house">3</a></li><li><a href="04-the-town-hall-decides.html" title="Who decides about your screens">4</a></li><li><a href="05-the-post-office-carries-letters.html" title="The post office carries letters">5</a></li><li><a href="06-you-dont-call-youre-called.html" title="You don't call. You're called.">6</a></li><li><a href="07-each-app-is-its-own-user.html" title="Each app gets its own account">7</a></li><li><a href="08-letters-between-apps.html" title="Letters between apps">8</a></li><li><a href="09-whats-inside-the-apk.html" title="What's inside the APK">9</a></li><li><a href="10-faster-code-now-and-later.html" title="Faster code, now and later">10</a></li><li><a href="11-zygote.html" title="Zygote, the process every app starts from">11</a></li><li><a href="12-sharing-memory.html" title="Sharing memory without sharing mistakes">12</a></li><li><a href="13-when-memory-runs-out.html" title="When memory runs out, who goes">13</a></li><li><a href="14-starting-an-app.html" title="Starting an app, cold, warm and hot">14</a></li><li><a href="15-inside-a-binder-call.html" title="Inside a Binder call">15</a></li><li><a href="16-the-main-threads-queue.html" title="The main thread's queue">16</a></li><li><a href="17-frames-jank-and-anrs.html" aria-current="page" title="Frames, jank and ANRs">17</a></li><li><a href="18-slow-work-and-back.html" title="Slow work off the main thread, and back">18</a></li><li><a href="19-how-big-can-a-binder-call-be.html" title="How big can a Binder call be?">19</a></li><li><a href="20-turn-the-phone-lose-the-screen.html" title="Turn the phone, lose your screen">20</a></li><li><a href="21-the-viewmodel-outlives-the-screen.html" title="The ViewModel outlives the screen">21</a></li><li><a href="22-when-the-process-is-gone.html" title="When the process is gone">22</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-17">
         <p id="builds-on-17"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="14"><details><summary><a href="14-starting-an-app.html">Puzzle 14: Starting an app, cold, warm and hot</a></summary><p>Cold start = fork Zygote, create your Application, then the first Activity. Warm = process alive, Activity created again. Hot = both alive, just brought to the front.</p></details></li></ul>
+        <ul><li data-block="14"><details><summary>Puzzle 14: Starting an app, cold, warm and hot</summary><p>Cold start = fork Zygote, create your Application, then the first Activity. Warm = process alive, Activity created again. Hot = both alive, just brought to the front.</p><p><a href="14-starting-an-app.html">Review puzzle 14</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 12 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="06-you-dont-call-youre-called.html">6</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="09-whats-inside-the-apk.html">9</a> → <a href="11-zygote.html">11</a> → <a href="13-when-memory-runs-out.html">13</a> → <a href="14-starting-an-app.html">14</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Frames every 16 ms, and what a slow message does"><input type="radio" name="st-frames" id="st-frames-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-frames" id="st-frames-2" aria-label="Step 2 of 4"><input type="radio" name="st-frames" id="st-frames-3" aria-label="Step 3 of 4"><input type="radio" name="st-frames" id="st-frames-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="fr-t"><title id="fr-t">A timeline of frames every 16 ms; a slow message blocks the main thread, frames are missed, a touch waits, and after 5 seconds an ANR dialog appears</title><defs><marker id="ah-frames-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frames-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frames-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frames-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="fr-t"><title id="fr-t">A timeline of frames every 16 ms; a slow message blocks the main thread, frames are missed, a touch waits, and after 5 seconds an ANR dialog appears</title><defs><marker id="ah-frames-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frames-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frames-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frames-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <g class="step s1"><rect class="d-soil" x="0" y="300" width="640" height="80"/><ellipse class="d-pebble" cx="210" cy="344" rx="7" ry="4"/><ellipse class="d-pebble" cx="250" cy="368" rx="7" ry="4"/><ellipse class="d-pebble" cx="300" cy="336" rx="7" ry="4"/><ellipse class="d-pebble" cx="380" cy="360" rx="7" ry="4"/><ellipse class="d-pebble" cx="470" cy="340" rx="7" ry="4"/><ellipse class="d-pebble" cx="560" cy="356" rx="7" ry="4"/><ellipse class="d-pebble" cx="610" cy="328" rx="7" ry="4"/><line class="d-grass" x1="0" y1="300" x2="640" y2="300"/><text class="d-b" x="16" y="330">kernel</text></g>
 <g class="step s1"><rect class="d-paper" x="300" y="318" width="130" height="54"/><rect class="d-po" x="292" y="304" width="146" height="16" rx="3"/><rect class="d-ink" x="339" y="332" width="52" height="8" rx="3"/><text class="d-sign" x="365" y="317" text-anchor="middle">Binder</text></g>
 <g class="step s1"><polygon class="d-roof" points="0,80 230,36 460,80"/><rect class="d-paper" x="10" y="80" width="440" height="220"/><text class="d-b" x="24" y="110">your app</text></g>
@@ -84,6 +95,7 @@
 <path class="step s4 d-arr-red" d="M520,150 C520,100 470,60 444,48" marker-end="url(#ah-frames-red)"/>
 <g class="step s4" data-pulse="4"><rect class="d-bad" x="140" y="6" width="300" height="60" rx="8"/><text class="d-r" x="290" y="32" text-anchor="middle">App isn't responding</text><text class="d-mi" x="290" y="56" text-anchor="middle">ANR</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The screen is redrawn 60 times a second; each redraw is a <b>frame</b>, due about every 16 milliseconds (ms). Each frame is a message in the main thread's queue.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-frames-2">Next →</label></div></li>
 <li><p>One message takes too long. The frames behind it can't be drawn in time, and the app stutters: <b>jank</b>.</p><div class="stepnav"><label for="st-frames-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-frames-3">Next →</label></div></li>
@@ -95,9 +107,9 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>The screen is redrawn about 60 times a second. Each redraw is a <b>frame</b>, and each one must be ready within about 16 milliseconds (1000 ms ÷ 60). Drawing a frame is a message in the main thread's queue too.</p>
+<p>Assume a 60 Hz display for this trace. Each redraw is a <b>frame</b>, and each one must be ready within about 16 milliseconds (1000 ms ÷ 60). Drawing a frame is a message in the main thread's queue too.</p>
 <p>If a message takes longer than that, the frames behind it come late, and the app visibly stutters: <b>jank</b>.</p>
-<p>Touches don't travel by Binder. Each screen your app shows is drawn in a <b>window</b>, its rectangle of the display, and for each window system_server opens a direct line into your app, an <b>input channel</b>. It sends each touch down that line, where it lands in the main thread's queue, and waits for your app to answer &quot;done&quot; on that same line, which it does once the main thread has handled the touch. If a touch waits in the queue for 5 seconds with no answer, system_server shows the &quot;App isn't responding&quot; dialog: an <b>ANR</b> (Application Not Responding). That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.</p>
+<p>Touches don't travel by Binder. Each screen your app shows is drawn in a <b>window</b>, its rectangle of the display, and for each window system_server opens a direct line into your app, an <b>input channel</b>. It sends each touch down that line, where it lands in the main thread's queue, and waits for your app to answer &quot;done&quot; on that same line, which it does once the main thread has handled the touch. If the foreground app fails to respond to input within the input-dispatch timeout (typically five seconds), Android can report an <b>ANR</b> (Application Not Responding). Timeout and dialog behavior depend on the device and circumstances. That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -107,34 +119,30 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A button's click code calls <code>Thread.sleep(6000)</code>, and the user taps the screen again right away. What happens?</legend>
-<input type="radio" name="q-17-frames-jank-and-anrs-1" id="q-17-frames-jank-and-anrs-1-1"><label for="q-17-frames-jank-and-anrs-1-1">Another thread handles the tap while the main thread sleeps</label>
-<input type="radio" name="q-17-frames-jank-and-anrs-1" id="q-17-frames-jank-and-anrs-1-2" data-ok><label for="q-17-frames-jank-and-anrs-1-2">The tap waits, and after 5 seconds system_server shows an ANR</label>
-<input type="radio" name="q-17-frames-jank-and-anrs-1" id="q-17-frames-jank-and-anrs-1-3"><label for="q-17-frames-jank-and-anrs-1-3">Android stops the click code after 5 seconds and runs the tap</label>
+<input type="radio" name="q-17-frames-jank-and-anrs-1" id="q-17-frames-jank-and-anrs-1-1"><label for="q-17-frames-jank-and-anrs-1-1"><span>Another thread handles the tap while the main thread sleeps</span></label>
+<input type="radio" name="q-17-frames-jank-and-anrs-1" id="q-17-frames-jank-and-anrs-1-2" data-ok><label for="q-17-frames-jank-and-anrs-1-2"><span>The tap waits, and after 5 seconds system_server shows an ANR</span></label>
+<input type="radio" name="q-17-frames-jank-and-anrs-1" id="q-17-frames-jank-and-anrs-1-3"><label for="q-17-frames-jank-and-anrs-1-3"><span>Android stops the click code after 5 seconds and runs the tap</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Touches are messages for the main thread too, so they wait behind the sleeping click code. <label class="show-me" for="st-frames-3" data-goto="st-frames">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One message at a time: the touch waits behind the sleep, and after 5 seconds comes the ANR.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Nothing is stopped: system_server shows a dialog and the user decides. <label class="show-me" for="st-frames-4" data-goto="st-frames">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A message takes 100 ms (about six frames' worth: 100 ÷ 16), and there are no touches. Is that an ANR?</legend>
-<input type="radio" name="q-17-frames-jank-and-anrs-2" id="q-17-frames-jank-and-anrs-2-1" data-ok><label for="q-17-frames-jank-and-anrs-2-1">No, but about six frames come late: the app stutters (jank)</label>
-<input type="radio" name="q-17-frames-jank-and-anrs-2" id="q-17-frames-jank-and-anrs-2-2"><label for="q-17-frames-jank-and-anrs-2-2">Yes: any message slower than a frame is an ANR</label>
+<input type="radio" name="q-17-frames-jank-and-anrs-2" id="q-17-frames-jank-and-anrs-2-1" data-ok><label for="q-17-frames-jank-and-anrs-2-1"><span>No, but about six frames come late: the app stutters (jank)</span></label>
+<input type="radio" name="q-17-frames-jank-and-anrs-2" id="q-17-frames-jank-and-anrs-2-2"><label for="q-17-frames-jank-and-anrs-2-2"><span>Yes: any message slower than a frame is an ANR</span></label>
 <p class="fb ok opt-1"><b>Right.</b> 100 ms ÷ 16 ms ≈ 6 frames late: jank. A touch waiting 5 s means an ANR.</p>
 <p class="fb no opt-2"><b>Not quite.</b> An ANR is about a touch waiting 5 seconds. 100 ms is jank: late frames. <label class="show-me" for="st-frames-2" data-goto="st-frames">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why should file reading go on another thread?</legend>
-<input type="radio" name="q-17-frames-jank-and-anrs-3" id="q-17-frames-jank-and-anrs-3-1"><label for="q-17-frames-jank-and-anrs-3-1">Because the main thread isn't allowed to read files or the network</label>
-<input type="radio" name="q-17-frames-jank-and-anrs-3" id="q-17-frames-jank-and-anrs-3-2" data-ok><label for="q-17-frames-jank-and-anrs-3-2">Because then the main thread stays free to draw frames and handle touches</label>
+<input type="radio" name="q-17-frames-jank-and-anrs-3" id="q-17-frames-jank-and-anrs-3-1"><label for="q-17-frames-jank-and-anrs-3-1"><span>Because the main thread isn't allowed to read files or the network</span></label>
+<input type="radio" name="q-17-frames-jank-and-anrs-3" id="q-17-frames-jank-and-anrs-3-2" data-ok><label for="q-17-frames-jank-and-anrs-3-2"><span>Because then the main thread stays free to draw frames and handle touches</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> It can; it just mustn't, because frames and touches wait behind it. <label class="show-me" for="st-frames-2" data-goto="st-frames">Show me step 2 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Keep every main-thread message short.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.android.com/topic/performance/vitals/render">Android Developers: Slow rendering (jank)</a></li><li><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputChannel.java#L29">AOSP: InputChannel.java</a> (&quot;An input channel specifies the file descriptors used to send input events to a window in another process&quot;) and <a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputEventReceiver.java#L213">InputEventReceiver.java</a> (<code>finishInputEvent(event, handled)</code>)</li><li><a href="https://developer.android.com/topic/performance/vitals/anr">Android Developers: ANRs</a></li></ul>
-      </section>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A frame is due about every 16 ms. A message that takes longer makes frames late: jank. A touch that waits 5 seconds gets the &quot;App isn't responding&quot; dialog: an ANR.</p></div></section>
-      
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/topic/performance/vitals/render">Android Developers: Slow rendering (jank)</a></li><li><a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputChannel.java#L29">AOSP: InputChannel.java</a> (&quot;An input channel specifies the file descriptors used to send input events to a window in another process&quot;) and <a href="https://github.com/aosp-mirror/platform_frameworks_base/blob/1cdfff555f4a21f71ccc978290e2e212e2f8b168/core/java/android/view/InputEventReceiver.java#L213">InputEventReceiver.java</a> (<code>finishInputEvent(event, handled)</code>)</li><li><a href="https://developer.android.com/topic/performance/vitals/anr">Android Developers: ANRs</a></li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>At 60 Hz the display interval is about 16.7 ms. Missing a presentation deadline can cause visible jank. A prolonged input-dispatch timeout, typically five seconds, can produce an ANR.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="16-the-main-threads-queue.html">← Puzzle 16</a>

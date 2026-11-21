@@ -2,7 +2,7 @@
 title: Two ways to free memory
 short: GC meets ARC
 summary: Your shared Kotlin runs inside an iOS app. Kotlin's objects are freed one way, Swift's another. Here's what happens where they hold on to each other.
-takeaway: Kotlin/Native keeps objects in a shared heap and frees them with a tracing GC, like the JVM. Swift frees with ARC. A Swift object held by Kotlin is only freed at a GC, not the moment it's let go; and a cycle that runs through both sides can leak. Break it with a weak reference on the Swift side.
+takeaway: Cross-language ownership can delay deinitialization beyond the point where Kotlin stops using an object. Strong references spanning Kotlin and Swift can form a cycle. Break an ownership link according to the intended lifetime.
 ---
 
 ## The problem
@@ -21,8 +21,8 @@ Kotlin/Native keeps its objects in a **shared heap**, one pool any thread can us
 Where the two meet, each side follows its own rules:
 
 - A Kotlin object that Swift holds stays alive while Swift holds it: to the GC, Swift's hold counts as a root.
-- A Swift object that Kotlin holds isn't freed the moment Kotlin lets go. It's freed at the next GC, when the collector finds Kotlin no longer reaches it. So Swift's `deinit` can run later than a Swift developer expects.
-- A cycle that runs through both sides, Kotlin to Swift and back, can leak. The GC can't see through Swift's counts, and ARC can't see through Kotlin's references, so neither sees the whole loop, although each would free its own half alone.
+- A Swift object that Kotlin holds isn't freed the moment Kotlin lets go. Releasing the cross-language hold can require a collection and subsequent deinitialization work. Other strong owners can extend the lifetime further. So Swift's `deinit` can run later than a Swift developer expects.
+- A cycle that runs through both sides, Kotlin to Swift and back, can leak. The GC can't see through Swift's counts, and ARC can't see through Kotlin's references, so neither sees the whole loop, and the cross-language ownership remains live.
 
 The fix is puzzle 8's: make one link weak. Usually the Swift side holds the Kotlin object normally and the callback refers back to the Swift object weakly: in Swift, capture it with `[weak self]` in the closure you hand to Kotlin.
 
@@ -32,7 +32,7 @@ Two cities that clean their streets differently: one sends a sweeper round every
 
 ## Check yourself
 
-- Kotlin holds a Swift object, then lets go. When does Swift's `deinit` run?::*At the next GC, when Kotlin's collector sees it's no longer reached||At once, because ARC frees it the moment its count hits zero >> Kotlin's hold is released by the collector, so the Swift object waits for the next GC. >> s3||Never, because Kotlin objects keep Swift objects forever >> It's freed, only later: at the next garbage collection. >> s3::Release follows Kotlin's GC, not the moment of letting go.
+- Kotlin holds a Swift object, then lets go. When does Swift's `deinit` run?::*After the cross-language hold and any other strong references are released||At once, because ARC frees it the moment its count hits zero >> Kotlin's hold is released by the collector, so the Swift object may outlive the Kotlin reference. >> s3||Never, because Kotlin objects keep Swift objects forever >> The hold can be released during collection; there is no fixed deinitialization deadline. >> s3::Release follows Kotlin's GC, not the moment of letting go.
 - Why can a cycle through both Kotlin and Swift leak?::*Because each side keeps the other alive, and neither sees the loop||Because Kotlin's garbage collector never runs while the app is on iOS >> The GC runs on iOS too; it just can't see past Swift's hold, which counts as a root. >> s4||Because ARC has no way to count references that point at Kotlin objects >> ARC counts fine; the trouble is the loop that runs through both. >> s4::Two tools, each seeing half the loop.
 - What's the difference between a tracing GC and ARC?::*A tracing GC frees what it can't reach, while ARC frees at a count of zero||A tracing GC counts each object's references too, only less often than ARC >> Counting is ARC's way; a tracing GC follows references from the roots. >> s1||ARC follows references from the roots, while a tracing GC frees at a count of zero >> That's the two swapped. >> s2::Search in passes vs count as you go.
 

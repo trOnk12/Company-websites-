@@ -1,0 +1,24 @@
+{
+  "title": "Explain a late frame with a trace and a counterexample",
+  "brief": "A scrolling list misses its deadline. The busiest sampled method is image conversion. Decide whether the evidence supports optimizing that method for the specific frame.",
+  "prerequisites": "Review scheduling states, sampling, FrameTimeline, render work and memory retention.",
+  "setup": "Use a synthetic timeline in milliseconds. The frame is due at 16. Main runs from 0–3, sleeps waiting for a worker from 3–13 and runs from 13–16. Render work on the critical path completes at 20. Assume the next display opportunity is at 32. No hardware is required.",
+  "steps": [
+    "Draw expected and actual timing on one axis and identify the deadline miss. Keep CPU running time separate from wall-clock time.",
+    "Calculate the main thread’s running and blocked intervals. Pick one additional trace event that could explain why the worker took ten milliseconds to respond.",
+    "Compare the timeline with a profile that reports many samples in image conversion across a whole minute. Design an experiment that could disprove that method as the cause of this frame.",
+    "Suppose the fix raises allocation rate. Select separate evidence for a short collection pause and for a retained screen after repeated navigation."
+  ],
+  "evidence": [
+    "The explanation records 6 ms running on main, 10 ms waiting, and work finishing 4 ms after the deadline.",
+    "The proposed experiment connects a worker event or wakeup to this frame, and compares repeat runs with the same workload.",
+    "A claim about retained objects includes a path from a live root, separately from any trace of collection activity."
+  ],
+  "worked": [
+    "Main uses 3 + 3 = 6 ms of CPU in the stated intervals. Its elapsed contribution spans 16 ms because the dependency holds it asleep for another 10. Render completion at 20 misses the deadline at 16; under the given display schedule the next opportunity is 32.",
+    "A minute-wide sample count can flag an expensive method, but it does not place that method on this frame's dependency chain. Inspect the worker during 3–13 and the event that wakes main. If the worker was runnable but unscheduled for most of that interval, reducing its method's instruction count alone might make little difference.",
+    "For a pause, align the collection interval with the delayed frame. For retention, repeat the same navigation and inspect the path keeping a dismissed screen reachable. An increase in allocation rate alone demonstrates neither a leak nor the cause of this missed frame."
+  ],
+  "variation": "In another trace main is runnable rather than sleeping from 3–13. Does the original dependency diagnosis still fit?",
+  "solution": "Runnable means main is eligible to execute. Inspect competing runnable threads, core scheduling and available CPU during that interval. A ten-millisecond gap looks similar on a stopwatch, but the thread state calls for a different experiment."
+}

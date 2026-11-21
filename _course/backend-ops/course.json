@@ -1,0 +1,68 @@
+{
+  "title": "Backend engineering from first request to production",
+  "intro": "Learn to design, build, test and operate a bookmark API. Start with a local request, then work through databases, identity, caching, Docker, Kubernetes and a release project.",
+  "how": "Start with one request. In each lesson, predict the result, run the browser experiment and change one condition. The local project then asks you to build the service, run its tests, deploy it and recover its data.",
+  "modules": [
+    {
+      "title": "Build and test your first service",
+      "blurb": "Start with one request, one durable row and a test.",
+      "puzzles": [
+        "00-request.md",
+        "01-retry.md",
+        "02-test.md"
+      ]
+    },
+    {
+      "title": "Release and recover a first version",
+      "blurb": "Follow the same row through a release and a storage incident.",
+      "puzzles": [
+        "03-release.md",
+        "04-incident.md"
+      ]
+    },
+    {
+      "title": "API contracts and relational databases",
+      "blurb": "Validate inputs, model owners, commit related changes and paginate results.",
+      "puzzles": [
+        "05-contract.md",
+        "06-model.md",
+        "07-commit.md",
+        "08-query.md"
+      ]
+    },
+    {
+      "title": "Identity and changes over time",
+      "blurb": "Limit access by owner, expire sessions, refresh caches and migrate data.",
+      "puzzles": [
+        "09-owner.md",
+        "10-session.md",
+        "11-cache.md",
+        "12-migrate.md"
+      ]
+    },
+    {
+      "title": "Docker, Kubernetes and production operations",
+      "blurb": "Package the service, replace a pod, measure performance and deliver your final project.",
+      "puzzles": [
+        "13-image.md",
+        "14-pod.md",
+        "15-signals.md",
+        "16-deliver.md"
+      ]
+    },
+    {
+      "title": "Concurrent edits",
+      "blurb": "A check at save time that detects a change since the client read a record.",
+      "puzzles": [
+        "17-edit-conflict.md"
+      ]
+    }
+  ],
+  "upcoming": [],
+  "relatedCourses": [
+    "transport",
+    "security",
+    "jvm",
+    "system-design"
+  ]
+}

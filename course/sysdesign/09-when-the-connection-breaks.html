@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="9" data-prev="08-the-database-is-the-truth.html" data-prev-title="The database is the truth">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" class="done" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" class="done" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" class="done" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" class="done" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" class="done" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" class="done" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" class="done" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" class="done" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" aria-current="page" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 9 · 10 of 11</p>
-      <h1>When the connection breaks</h1>
-      <p class="lede">Puzzle 0 said TCP resends lost packets. Yet requests still fail after a while, and sometimes you can't tell whether the server did the work. Here's where TCP's promise ends, and the question the app then can't answer.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="9">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Mobile system design, from a packet to an app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 9 · 10 of 11</p>
+        <h1>When the connection breaks</h1>
+        <p class="lede">Puzzle 0 said TCP resends lost packets. Yet requests still fail after a while, and sometimes you can't tell whether the server did the work. Here's where TCP's promise ends, and the question the app then can't answer.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" aria-current="page" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-9">
         <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-what-actually-travels.html">Puzzle 0: What actually travels</a></summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers bytes, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A read timeout: the request may have arrived and only the answer was lost"><input type="radio" name="st-timeout" id="st-timeout-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-timeout" id="st-timeout-2" aria-label="Step 2 of 4"><input type="radio" name="st-timeout" id="st-timeout-3" aria-label="Step 3 of 4"><input type="radio" name="st-timeout" id="st-timeout-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="to-t"><title id="to-t">The phone sends POST orders; in a lift the connection breaks; after ten seconds a read timeout fires; two stories look the same from the phone: the request was lost, or the server created the order and the answer was lost</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="to-t"><title id="to-t">The phone sends POST orders; in a lift the connection breaks; after ten seconds a read timeout fires; two stories look the same from the phone: the request was lost, or the server created the order and the answer was lost</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="20" y="100" width="70" height="120" rx="12"/><rect class="d-hl" x="27" y="114" width="56" height="86" rx="4"/><circle class="d-ink" cx="55" cy="210" r="3"/><text class="d-tiny" x="55" y="238" text-anchor="middle">phone</text></g>
 <g class="step s1"><rect class="d-wood" x="540" y="90" width="80" height="120" rx="6"/><rect class="d-paper" x="550" y="102" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="113" r="4"/><rect class="d-paper" x="550" y="134" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="145" r="4"/><rect class="d-paper" x="550" y="166" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="177" r="4"/><text class="d-tiny" x="580" y="228" text-anchor="middle">server</text></g>
@@ -75,6 +86,7 @@
 <g class="step s4" data-pulse="4"><g><rect class="d-paper" x="440" y="230" width="120" height="60" rx="3"/><line class="d-line" x1="448" y1="244" x2="552" y2="244"/><line class="d-line" x1="448" y1="257" x2="544" y2="257"/><text class="d-tiny" x="500" y="308" text-anchor="middle">order created?</text></g><text class="d-a" x="260" y="300" text-anchor="middle">lost on the way, or answer lost?</text></g>
 <g class="step s1" data-move="1:55,250 2:320,240 3:110,290 4:500,320"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>The phone sends <code>POST /orders</code> over an open connection.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-timeout-2">Next →</label></div></li>
 <li><p>In a lift the connection breaks. TCP can't resend into a connection that's gone.</p><div class="stepnav"><label for="st-timeout-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-timeout-3">Next →</label></div></li>
@@ -88,7 +100,7 @@
         <h2 id="the-building-block">The building block</h2>
 <p>TCP resends lost packets, but only while the connection exists and both ends can still reach each other. On a phone, that ends all the time: a lift, a tunnel, a switch from Wi-Fi to mobile data. Then the packets have nowhere to go, and TCP can't help.</p>
 <p>So the app can't wait forever. OkHttp gives up after a <b>timeout</b>, and there are two kinds you'll meet:</p>
-<ul><li><b>Connect timeout:</b> no connection could be made at all. The request never left: safe to try again.</li><li><b>Read timeout:</b> the connection was made and the request was sent, but no answer arrived in time.</li></ul>
+<ul><li><b>Connect timeout:</b> this attempt failed while establishing a connection. If no HTTP request was sent and no earlier attempt exists, this attempt could not place the order. Keep a stable payment identity across retries anyway.</li><li><b>Read timeout:</b> the connection was made and the request was sent, but no answer arrived in time.</li></ul>
 <p>The read timeout is the dangerous one. It has two possible stories, and from the phone they look identical:</p>
 <ol><li>The request was lost on the way: the server never saw it.</li><li>The server did the work, and the <b>answer</b> was lost on the way back.</li></ol>
 <p>That's the question a timeout can't answer: did it happen? For reading data, it doesn't matter: ask again. For a payment or an order, retrying could do it twice. Puzzle 10 is the fix.</p>
@@ -101,36 +113,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A read timeout fires on <code>POST /orders</code>. What do you know?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-1"><label for="q-09-when-the-connection-breaks-1-1">The order wasn't created, because the server didn't answer</label>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-2" data-ok><label for="q-09-when-the-connection-breaks-1-2">Not whether the order was created: the answer may just have been lost</label>
-<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-3"><label for="q-09-when-the-connection-breaks-1-3">The order was created twice, by TCP's resending</label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-1"><label for="q-09-when-the-connection-breaks-1-1"><span>The order wasn't created, because the server didn't answer</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-2" data-ok><label for="q-09-when-the-connection-breaks-1-2"><span>Not whether the order was created: the answer may just have been lost</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-1" id="q-09-when-the-connection-breaks-1-3"><label for="q-09-when-the-connection-breaks-1-3"><span>The order was created twice, by TCP's resending</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The server may have answered; only the answer went missing. <label class="show-me" for="st-timeout-3" data-goto="st-timeout">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> A read timeout can't say if it happened.</p>
 <p class="fb no opt-3"><b>Not quite.</b> TCP resends packets inside one request; it doesn't send the request twice. <label class="show-me" for="st-timeout-3" data-goto="st-timeout">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>A connect timeout fires. Is it safe to retry a payment request?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-1"><label for="q-09-when-the-connection-breaks-2-1">Only after checking the server's logs</label>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-2"><label for="q-09-when-the-connection-breaks-2-2">No: the server may have charged the card already</label>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-3" data-ok><label for="q-09-when-the-connection-breaks-2-3">Yes: no connection was made, so the request never left the phone</label>
-<p class="fb no opt-1"><b>Not quite.</b> No connection means nothing was sent; there's nothing to check. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
-<p class="fb no opt-2"><b>Not quite.</b> With no connection, the request couldn't reach the server. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
-<p class="fb ok opt-3"><b>Right.</b> No connection, nothing sent.</p>
+<legend>The first and only connection attempt times out before sending HTTP data. Could this attempt have charged the card?</legend>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-1" data-ok><label for="q-09-when-the-connection-breaks-2-1"><span>No: this attempt sent no payment request</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-2"><label for="q-09-when-the-connection-breaks-2-2"><span>Only after checking the server's logs</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-3"><label for="q-09-when-the-connection-breaks-2-3"><span>Yes: even this attempt may already have charged the card</span></label>
+<p class="fb ok opt-1"><b>Right.</b> No connection, nothing sent.</p>
+<p class="fb no opt-2"><b>Not quite.</b> No connection means nothing was sent; there's nothing to check. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> With no connection, the request couldn't reach the server. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a connect timeout and a read timeout?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-1"><label for="q-09-when-the-connection-breaks-3-1">A connect timeout means the answer didn't arrive, while a read timeout means nothing was sent</label>
-<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-2" data-ok><label for="q-09-when-the-connection-breaks-3-2">A connect timeout means nothing was sent, while a read timeout means the answer didn't arrive</label>
+<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-1"><label for="q-09-when-the-connection-breaks-3-1"><span>A connect timeout means the answer didn't arrive, while a read timeout means nothing was sent</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-3" id="q-09-when-the-connection-breaks-3-2" data-ok><label for="q-09-when-the-connection-breaks-3-2"><span>A connect timeout means nothing was sent, while a read timeout means the answer didn't arrive</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Never left vs no answer back.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://github.com/square/okhttp/blob/master/okhttp/src/commonJvmAndroid/kotlin/okhttp3/OkHttpClient.kt">OkHttp: OkHttpClient</a> (&quot;Default connect timeout (in milliseconds). The default is 10 seconds.&quot;; &quot;Default read timeout (in milliseconds). The default is 10 seconds.&quot;)</li><li><a href="https://hpbn.co/building-blocks-of-tcp/">High Performance Browser Networking: Building blocks of TCP</a> (TCP's reliability: &quot;retransmission of lost data, in-order delivery&quot; over a connection)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://github.com/square/okhttp/blob/master/okhttp/src/commonJvmAndroid/kotlin/okhttp3/OkHttpClient.kt">OkHttp: OkHttpClient</a> (&quot;Default connect timeout (in milliseconds). The default is 10 seconds.&quot;; &quot;Default read timeout (in milliseconds). The default is 10 seconds.&quot;)</li><li><a href="https://hpbn.co/building-blocks-of-tcp/">High Performance Browser Networking: Building blocks of TCP</a> (TCP's reliability: &quot;retransmission of lost data, in-order delivery&quot; over a connection)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>TCP is reliable only while the connection lasts; on a phone, connections break in lifts, tunnels and handovers between Wi-Fi and mobile data. OkHttp gives up after timeouts: connect (no connection made) and read (no answer arrived). A read timeout can't tell you whether the server did the work: the request may have arrived and the answer been lost. Puzzle 10 makes that safe to retry.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="08-the-database-is-the-truth.html">← Puzzle 8</a>

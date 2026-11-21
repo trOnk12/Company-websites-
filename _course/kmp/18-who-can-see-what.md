@@ -32,7 +32,7 @@ The second rule follows the targets, not the names, and that leads to a surprise
 
 ## The analogy
 
-The binders from puzzle 17 again. The Japan binder may quote the shared handbook, because every office that gets the Japan binder also gets the shared one. The shared handbook can't quote the Japan binder: an office in France would read a reference to a page it doesn't have. Tokyo's own folder and the Paris office's folder never meet, so neither can quote the other. And a binder may only mention equipment that every office receiving it actually owns.
+The folders from puzzle 17 again. The Japan folder may quote the shared handbook, because every office that gets the Japan folder also gets the shared one. The shared handbook can't quote the Japan folder: an office in France would read a reference to a page it doesn't have. Tokyo's own folder and the Paris office's folder never meet, so neither can quote the other. And a folder may only mention equipment that every office receiving it actually owns.
 
 ## Check yourself
 

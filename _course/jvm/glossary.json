@@ -1,0 +1,69 @@
+{
+  "baseline": {
+    "words": [
+      "Java",
+      "JDK",
+      "Bookmark"
+    ]
+  },
+  "terms": {
+    "reference": {
+      "in": 2,
+      "def": "A value through which code can reach an object."
+    },
+    "stack frame": {
+      "in": 1,
+      "def": "The local variables and operand stack of one method invocation.",
+      "aliases": [
+        "frame"
+      ]
+    },
+    "class file": {
+      "in": 0,
+      "def": "A file describing a compiled type and the instructions for its methods."
+    },
+    "conditional write": {
+      "in": 4,
+      "def": "A change applied only when the current value matches the expected value."
+    },
+    "iload_0": {
+      "in": 1,
+      "kind": "code",
+      "def": "Copy the integer in local slot zero onto the operand stack."
+    },
+    "iconst_1": {
+      "in": 1,
+      "kind": "code",
+      "def": "Push the integer constant one onto the operand stack."
+    },
+    "root": {
+      "in": 3,
+      "aliases": [
+        "roots"
+      ],
+      "def": "A starting point from which the runtime traces live references."
+    },
+    "garbage collector": {
+      "in": 3,
+      "def": "The part of the runtime that automatically reclaims storage for objects the program can no longer reach."
+    }
+  },
+  "from": {
+    "DEX": {
+      "course": "android",
+      "in": 9
+    },
+    "ART": {
+      "course": "android",
+      "in": 9
+    },
+    "JVM": {
+      "course": "kmp",
+      "in": 0
+    },
+    "compiler": {
+      "course": "kmp",
+      "in": 0
+    }
+  }
+}

@@ -59,7 +59,7 @@ function inline(s, ctx) {
     ctx.links.add(slug);
     return `<a href="${slug}.html">${label || esc(target.meta.title)}</a>`;
   });
-  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, (_, t, u) => `<a href="${u}">${t}</a>`);
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, (_, t, u) => `<a href="${u.replace(/^https:\/\/pachulski\.dev(?=\/labs\/)/, '')}">${t}</a>`);
   s = s.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
   return s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${esc(codes[i])}</code>`);
 }
@@ -160,7 +160,7 @@ function checkCard(card, terms) {
 
 const FAVICON = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>`;
 
-function page({ title, description, canonical, body, image = `${SITE}/og-image.png`, imageAlt = 'Mateusz Pachulski – Senior Android &amp; KMP Engineer', base = '../', current = 'learning', feed = true, footer, script }) {
+function page({ title, description, canonical, body, image = `${SITE}/og-image.png`, imageAlt = 'Mateusz Pachulski – Senior Android &amp; KMP Engineer', base = '../', current = 'learning', feed = true, footer, script, styles = [] }) {
   const nav = [['Work', `${base}#work`], ['AI', `${base}#ai`], ['Courses', `${base}course/`], ['Learning', `${base}learning/`], ['Music', `${base}music/`], ['Contact', `${base}#contact`]]
     .map(([n, h]) => `<li><a href="${h}"${n.toLowerCase() === current ? ' aria-current="page"' : ''}>${n}</a></li>`).join('\n          ');
   return `<!DOCTYPE html>
@@ -189,7 +189,7 @@ function page({ title, description, canonical, body, image = `${SITE}/og-image.p
 ${feed ? `  <link rel="alternate" type="application/atom+xml" title="Mateusz Pachulski – Learning" href="${base}learning/feed.xml">\n` : ''}  <link rel="icon" href="${FAVICON}">
   <link rel="preload" as="font" type="font/woff2" href="${base}fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="${base}fonts/literata-600.woff2" crossorigin>
-  <link rel="stylesheet" href="${base}style.css">${script ? [].concat(script).map(src => `\n  <script src="${src}" defer></script>`).join('') : ''}
+  <link rel="stylesheet" href="${base}style.css">${styles.map(href => `\n  <link rel="stylesheet" href="${esc(href)}">`).join('')}${script ? [].concat(script).map(src => `\n  <script src="${src}" defer></script>`).join('') : ''}
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>

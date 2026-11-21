@@ -129,7 +129,12 @@
    "build.gradle.kts",
    "plugins",
    "dependencies",
-   "SDK"
+   "SDK",
+   "TV",
+   "AppKit",
+   "price()",
+   "HTTP",
+   "OkHttp"
   ],
   "homonyms": [
    "ViewModel",
@@ -138,7 +143,10 @@
    "header",
    "actor",
    "actors",
-   "self"
+   "self",
+   "binder",
+   "Binder",
+   "socket"
   ]
  },
  "terms": {
@@ -170,13 +178,28 @@
   },
   "bytecode": {
    "in": "00",
-   "def": "Instructions for a virtual machine, like the JVM, not for a CPU.",
+   "def": "Encoded instructions read by a program such as the JVM or ART.",
    "aliases": []
   },
   "native code": {
    "in": "00",
    "def": "Machine code that runs directly on the CPU, with no virtual machine.",
    "aliases": []
+  },
+  "w0": {
+   "in": "00",
+   "def": "An Arm register in the addition example.",
+   "kind": "code"
+  },
+  "w1": {
+   "in": "00",
+   "def": "A second Arm register in the addition example.",
+   "kind": "code"
+  },
+  "add w1, w0, w1": {
+   "in": "00",
+   "def": "Arm addition with w1 as the destination.",
+   "kind": "code"
   },
   "Kotlin/Native": {
    "in": "00",
@@ -490,7 +513,7 @@
   },
   "XCFramework": {
    "in": "12",
-   "def": "One bundle holding a framework built for every Apple device and simulator.",
+   "def": "One bundle holding framework or library variants for selected Apple platforms and architectures.",
    "aliases": []
   },
   "VoiceOver": {
@@ -602,58 +625,6 @@
     "iosMain.dependencies",
     "androidMain.dependencies",
     "commonTest.dependencies"
-   ]
-  },
-  "IR": {
-   "in": "20",
-   "def": "Intermediate representation: the compiler's own form of checked code, between your source and machine code.",
-   "aliases": [
-    "intermediate representation"
-   ]
-  },
-  "klib": {
-   "in": "20",
-   "def": "Kotlin's library file: a zip of IR plus a description of its declarations, not yet machine code.",
-   "aliases": [
-    "klibs",
-    ".klib"
-   ]
-  },
-  "Gradle module metadata": {
-   "in": "21",
-   "def": "The .module file a library publishes, describing its variants and their attributes so Gradle can pick one.",
-   "aliases": [
-    ".module file"
-   ]
-  },
-  "variant": {
-   "in": "21",
-   "def": "One published build of a library for one use, such as its iosArm64 klib or its JVM .jar.",
-   "aliases": [
-    "variants"
-   ]
-  },
-  "attribute": {
-   "in": "21",
-   "def": "A label on a variant, such as its Kotlin platform, that Gradle matches against what a compilation needs.",
-   "aliases": [
-    "attributes"
-   ]
-  },
-  "dependency injection": {
-   "in": "22",
-   "def": "Handing an object what it needs from outside, for example through its constructor, instead of letting it create that itself.",
-   "aliases": [
-    "injection",
-    "inject",
-    "injected"
-   ]
-  },
-  "protocol": {
-   "in": "22",
-   "def": "Swift's name for an interface; a Kotlin interface reaches Swift as one.",
-   "aliases": [
-    "protocols"
    ]
   },
   "androidLibrary": {

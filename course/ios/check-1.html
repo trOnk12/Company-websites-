@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -55,9 +55,9 @@
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: Frozen, not stopped</p>
 <fieldset class="quiz" data-n="0">
 <legend>Your iOS app starts a 30-second upload in an ordinary session, and the user leaves the app after 5 seconds. You did nothing special. What happens?</legend>
-<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-1"><label for="q-00-frozen-not-stopped-1-1">The upload finishes in the background, like a coroutine on Android</label>
-<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-2" data-ok><label for="q-00-frozen-not-stopped-1-2">The app is suspended seconds later, and the upload stops with it</label>
-<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-3"><label for="q-00-frozen-not-stopped-1-3">The upload continues on a background thread, which isn't suspended</label>
+<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-1"><label for="q-00-frozen-not-stopped-1-1"><span>The upload finishes in the background, like a coroutine on Android</span></label>
+<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-2" data-ok><label for="q-00-frozen-not-stopped-1-2"><span>The app is suspended seconds later, and the upload stops with it</span></label>
+<input type="radio" name="q-00-frozen-not-stopped-1" id="q-00-frozen-not-stopped-1-3"><label for="q-00-frozen-not-stopped-1-3"><span>The upload continues on a background thread, which isn't suspended</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> On iOS, a suspended app runs no code at all; the upload stops with it. <a class="show-me" href="00-frozen-not-stopped.html">Learn it in puzzle 0 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Suspended means no code runs, on any thread.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Suspension stops every thread of the app, not only the main one. <a class="show-me" href="00-frozen-not-stopped.html">Learn it in puzzle 0 →</a></p>
@@ -65,9 +65,9 @@
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: The run loop is your Looper</p>
 <fieldset class="quiz" data-n="1">
 <legend>On iOS, you read a large file on the main thread, and it takes 2 seconds. The user taps meanwhile. What happens?</legend>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-1"><label for="q-01-the-run-loop-is-your-looper-1-1">The tap is handled on another thread, so the screen stays smooth</label>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-2" data-ok><label for="q-01-the-run-loop-is-your-looper-1-2">The tap waits until the run loop gets back to it, and the screen seems frozen</label>
-<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-3"><label for="q-01-the-run-loop-is-your-looper-1-3">The run loop pauses the file read, handles the tap, then resumes</label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-1"><label for="q-01-the-run-loop-is-your-looper-1-1"><span>The tap is handled on another thread, so the screen stays smooth</span></label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-2" data-ok><label for="q-01-the-run-loop-is-your-looper-1-2"><span>The tap waits until the run loop gets back to it, and the screen seems frozen</span></label>
+<input type="radio" name="q-01-the-run-loop-is-your-looper-1" id="q-01-the-run-loop-is-your-looper-1-3"><label for="q-01-the-run-loop-is-your-looper-1-3"><span>The run loop pauses the file read, handles the tap, then resumes</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Touches are the main run loop's job; they wait behind your file read. <a class="show-me" href="01-the-run-loop-is-your-looper.html">Learn it in puzzle 1 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> One loop, one thing at a time.</p>
 <p class="fb no opt-3"><b>Not quite.</b> A run loop runs each piece of work to the end; it can't pause your read halfway. <a class="show-me" href="01-the-run-loop-is-your-looper.html">Learn it in puzzle 1 →</a></p>
@@ -75,9 +75,9 @@
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Queues, not handlers</p>
 <fieldset class="quiz" data-n="2">
 <legend>You add three tasks to a serial queue, one after another. How do they run?</legend>
-<input type="radio" name="q-02-queues-not-handlers-1" id="q-02-queues-not-handlers-1-1" data-ok><label for="q-02-queues-not-handlers-1-1">One at a time, in the order you added them</label>
-<input type="radio" name="q-02-queues-not-handlers-1" id="q-02-queues-not-handlers-1-2"><label for="q-02-queues-not-handlers-1-2">In any order, whichever thread is free first</label>
-<input type="radio" name="q-02-queues-not-handlers-1" id="q-02-queues-not-handlers-1-3"><label for="q-02-queues-not-handlers-1-3">All three at once, each on its own thread</label>
+<input type="radio" name="q-02-queues-not-handlers-1" id="q-02-queues-not-handlers-1-1" data-ok><label for="q-02-queues-not-handlers-1-1"><span>One at a time, in the order you added them</span></label>
+<input type="radio" name="q-02-queues-not-handlers-1" id="q-02-queues-not-handlers-1-2"><label for="q-02-queues-not-handlers-1-2"><span>In any order, whichever thread is free first</span></label>
+<input type="radio" name="q-02-queues-not-handlers-1" id="q-02-queues-not-handlers-1-3"><label for="q-02-queues-not-handlers-1-3"><span>All three at once, each on its own thread</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Serial: one at a time, in order.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A serial queue keeps the order: first in, first out. <a class="show-me" href="02-queues-not-handlers.html">Learn it in puzzle 2 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> That's a concurrent queue; a serial one runs one task at a time. <a class="show-me" href="02-queues-not-handlers.html">Learn it in puzzle 2 →</a></p>
@@ -85,9 +85,9 @@
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: The main actor</p>
 <fieldset class="quiz" data-n="3">
 <legend>Inside a <code>@MainActor</code> function, you <code>await</code> a network call that takes 2 seconds. Does the screen freeze?</legend>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-1" data-ok><label for="q-03-the-main-actor-1-1">No: while it waits, the function gives up the main thread</label>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-2"><label for="q-03-the-main-actor-1-2">Yes, unless the call is moved to a global dispatch queue first</label>
-<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-3"><label for="q-03-the-main-actor-1-3">Yes: it's on the main actor, so the main thread waits too</label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-1" data-ok><label for="q-03-the-main-actor-1-1"><span>No: while it waits, the function gives up the main thread</span></label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-2"><label for="q-03-the-main-actor-1-2"><span>Yes, unless the call is moved to a global dispatch queue first</span></label>
+<input type="radio" name="q-03-the-main-actor-1" id="q-03-the-main-actor-1-3"><label for="q-03-the-main-actor-1-3"><span>Yes: it's on the main actor, so the main thread waits too</span></label>
 <p class="fb ok opt-1"><b>Right.</b> await gives the thread back while waiting.</p>
 <p class="fb no opt-2"><b>Not quite.</b> For a real network call, no: while it waits, await lets the main thread go. (Heavy work the function does itself is another matter, see the building block.) <a class="show-me" href="03-the-main-actor.html">Learn it in puzzle 3 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> At an await, the function gives up its thread; the main thread keeps handling touches. <a class="show-me" href="03-the-main-actor.html">Learn it in puzzle 3 →</a></p>
@@ -95,9 +95,9 @@
 <section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: Counting, not collecting</p>
 <fieldset class="quiz" data-n="4">
 <legend>A screen holds its view model strongly, and the view model holds the screen strongly. The user closes the screen. What happens on iOS?</legend>
-<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-1" data-ok><label for="q-04-counting-not-collecting-1-1">Neither is freed: each still counts one reference, the other</label>
-<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-2"><label for="q-04-counting-not-collecting-1-2">Only the view model is freed, because the screen is closed</label>
-<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-3"><label for="q-04-counting-not-collecting-1-3">Both are freed, like a garbage collector would do</label>
+<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-1" data-ok><label for="q-04-counting-not-collecting-1-1"><span>Neither is freed: each still counts one reference, the other</span></label>
+<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-2"><label for="q-04-counting-not-collecting-1-2"><span>Only the view model is freed, because the screen is closed</span></label>
+<input type="radio" name="q-04-counting-not-collecting-1" id="q-04-counting-not-collecting-1-3"><label for="q-04-counting-not-collecting-1-3"><span>Both are freed, like a garbage collector would do</span></label>
 <p class="fb ok opt-1"><b>Right.</b> A cycle keeps both counts above zero.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Closing the screen doesn't change the counts; both stay at one. <a class="show-me" href="04-counting-not-collecting.html">Learn it in puzzle 4 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> There's no collector to notice: ARC only counts, and each count stays at one. <a class="show-me" href="04-counting-not-collecting.html">Learn it in puzzle 4 →</a></p>

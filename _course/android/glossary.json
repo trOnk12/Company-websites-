@@ -449,7 +449,7 @@
   },
   "importance": {
    "in": "13",
-   "def": "How much the user would notice if a process disappeared; Android ends the least important first.",
+   "def": "A measure of how much the user would notice if a process disappeared; it helps Android choose candidates for reclaim.",
    "aliases": []
   },
   "foreground process": {
@@ -471,7 +471,7 @@
   },
   "low-memory killer": {
    "in": "13",
-   "def": "The part of Android that ends processes, least important first, when free memory runs low.",
+   "def": "The Android daemon that selects eligible processes for termination under memory pressure, taking importance into account.",
    "aliases": [
     "LMK"
    ]

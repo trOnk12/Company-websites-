@@ -2,7 +2,7 @@
 title: A fingerprint for data
 short: Hashes
 summary: In puzzle 0, a machine in the middle could change data on its way, and encryption alone wouldn't notice. Here's the block that makes any change visible.
-takeaway: A hash function turns any data into a short, fixed-size digest, like SHA-256's 256 bits. Change one bit of the data and the digest changes completely, and nobody can make data that matches a given digest. So comparing digests shows whether data was changed.
+takeaway: SHA-256 maps data to a 256-bit digest. Accidental collisions are extremely unlikely, while a deliberately matching input is impractical to find. A trusted expected digest lets the receiver check what arrived.
 ---
 
 ## The problem
@@ -21,8 +21,8 @@ A **hash function** turns any amount of data, a word or a whole video, into a sh
 Three properties make it useful:
 
 - the same data always gives the same digest;
-- change even one bit of the data, and the digest changes beyond recognition;
-- given a digest, nobody can construct data that produces it, and nobody can find two different pieces of data with the same digest. Nobody knows a method; trying data at random would take far longer than the age of the universe.
+- a small input change typically changes many digest bits;
+- for SHA-256, finding a matching input for an arbitrary digest or deliberately finding two inputs with the same digest is computationally infeasible with known practical methods. Collisions must exist because fixed-size digests describe many more possible inputs.
 
 So if you know the digest the data should have, you can check it: hash what arrived, compare. Different digest: something changed it.
 
@@ -36,8 +36,8 @@ A fingerprint. It's tiny compared to the person, the same every time, different 
 
 ## Check yourself
 
-- One bit of a 10 MB file is flipped on the way. What happens to its `SHA-256` digest?::*It changes completely, so a comparison shows the file was changed||It changes by one bit, matching the one bit that changed >> A hash doesn't map bits to bits: one flipped bit changes the whole digest. >> s3||It stays the same, because one bit is too small to matter >> Any change, even one bit, gives a different digest. >> s3::One bit changed, a different digest.
-- Why can't an attacker just make new data that has the expected digest?::*Because nobody knows how to build data for a given digest||Because the digest is encrypted with AES on the way >> The digest's strength is in the hash function itself, not in AES. >> the-building-block::Going from digest back to data is the hard direction.
+- One bit of a 10 MB file is flipped on the way. What happens to its `SHA-256` digest?::*It will almost certainly differ, revealing the change||It changes by one bit, matching the one bit that changed >> A hash doesn't map bits to bits: one flipped bit changes the whole digest. >> s3||It stays the same, because one bit is too small to matter >> Even a one-bit change is overwhelmingly likely to give a different digest. >> s3::One bit changed, a different digest.
+- Why can't an attacker just make new data that has the expected digest?::*Because finding a matching input is infeasible||Because the digest is encrypted with AES on the way >> The digest's strength is in the hash function itself, not in AES. >> the-building-block::Going from digest back to data is the hard direction.
 - What's the difference between a digest and ciphertext?::*A digest can't be turned back, while ciphertext can, with the key||A digest is ciphertext made with a shorter key >> A hash uses no key at all, and there's no way back from a digest. >> s1||Ciphertext is shorter than a digest >> Ciphertext is about as long as the data; a digest is always the same short size. >> s2::A fingerprint vs locked data.
 
 ## Sources

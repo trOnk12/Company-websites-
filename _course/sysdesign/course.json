@@ -27,19 +27,14 @@
       ]
     }
   ],
-  "upcoming": [
-    {
-      "title": "Module 2: Designing a feature end to end",
-      "topics": "A feed with pagination and cursors; images and their cache; sync with conflicts; real-time updates (polling, long polling, WebSockets, push); rolling out safely with flags."
-    },
-    {
-      "title": "Module 3: Seeing it in production",
-      "topics": "Metrics that matter, crash and ANR rates, network error budgets, logs you can search, and why p99 matters more than the average."
-    }
-  ],
+  "upcoming": [],
   "support": {
     "url": "",
     "label": "Buy me a coffee",
     "line": "This course is free for everyone. If it helped you, you can buy me a coffee."
-  }
+  },
+  "relatedCourses": [
+    "transport",
+    "system-design"
+  ]
 }

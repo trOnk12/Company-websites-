@@ -19,7 +19,6 @@ const L = require('./build-learning');
 
 const SRC = path.join(L.ROOT, '_course');
 const CONTACT = 'm.pachulski94@gmail.com'; // the address already shown on the home page
-const LINKEDIN = 'https://www.linkedin.com/in/mateusz-pachulski';
 const OUT = path.join(L.ROOT, 'course');
 const X = require('./export-course');
 const REQUIRED = ['The problem', 'Check yourself', 'Sources'];
@@ -28,6 +27,33 @@ function fail(file, msg) { console.error(`${path.relative(L.ROOT, file)}: ${msg}
 
 const blocksOf = {};
 const blocks = id => blocksOf[id] || (blocksOf[id] = require('./lint-course').blocks(id));
+
+function loadChapters(dir) {
+  const file = path.join(dir, 'topics.json');
+  if (!fs.existsSync(file)) return [];
+  const chapters = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!Array.isArray(chapters)) throw new Error(`${file}: expected a list of chapters`);
+  const slugs = new Set();
+  return chapters.map((chapter, i) => {
+    if (typeof chapter.title !== 'string' || !chapter.title.trim() || !Array.isArray(chapter.lessons) || !chapter.lessons.length) {
+      throw new Error(`${file}: chapter ${i + 1} needs a title and lessons`);
+    }
+    const slug = 'chapter-' + sectionId(chapter.title);
+    if (slugs.has(slug) || slug === 'chapter-') throw new Error(`${file}: invalid or duplicate chapter title ${chapter.title}`);
+    slugs.add(slug);
+    const lessonIds = new Set();
+    for (const lesson of chapter.lessons) {
+      for (const key of ['title', 'explanation', 'example', 'exercise', 'answer', 'source', 'sourceTitle']) {
+        if (typeof lesson[key] !== 'string' || !lesson[key].trim()) throw new Error(`${file}: ${chapter.title} needs a nonempty ${key}`);
+      }
+      lesson.key = slug + ':' + sectionId(lesson.title);
+      if (lessonIds.has(lesson.key) || lesson.key.endsWith(':')) throw new Error(`${file}: invalid or duplicate lesson title ${lesson.title}`);
+      lessonIds.add(lesson.key);
+      if (new URL(lesson.source).protocol !== 'https:') throw new Error(`${file}: expected an HTTPS source for ${lesson.title}`);
+    }
+    return { ...chapter, slug };
+  });
+}
 
 function loadCourse(id) {
   const dir = path.join(SRC, id);
@@ -41,7 +67,8 @@ function loadCourse(id) {
   });
   const gf = path.join(dir, 'glossary.json');
   const glossary = fs.existsSync(gf) ? JSON.parse(fs.readFileSync(gf, 'utf8')) : { terms: {} };
-  return { id, dir, meta, puzzles, glossary };
+  const project = JSON.parse(fs.readFileSync(path.join(dir, 'practicum.json'), 'utf8'));
+  return { id, dir, meta, puzzles, glossary, project, chapters: loadChapters(dir) };
 }
 
 function courses() {
@@ -50,7 +77,7 @@ function courses() {
 }
 
 function courseUrls() {
-  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/me`, `${L.SITE}/course/${c.id}/`, ...c.meta.modules.map((_, k) => `${L.SITE}/course/${c.id}/check-${k + 1}`), ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
+  return courses().flatMap(c => [`${L.SITE}/course/`, `${L.SITE}/course/how-its-made`, `${L.SITE}/course/me`, `${L.SITE}/course/${c.id}/`, `${L.SITE}/course/${c.id}/final-project`, ...c.chapters.map(ch => `${L.SITE}/course/${c.id}/${ch.slug}`), ...c.meta.modules.map((_, k) => `${L.SITE}/course/${c.id}/check-${k + 1}`), ...c.puzzles.map(p => `${L.SITE}/course/${c.id}/${p.slug}`)])
     .filter((u, i, a) => a.indexOf(u) === i);
 }
 
@@ -67,11 +94,6 @@ function linkRefs(course, html) {
     const id = `ref-${++n}`;
     return `<span class="ref" tabindex="0" aria-describedby="${id}"><code>${text}</code><span class="pop" role="tooltip" id="${id}"><span class="pop-what">${L.esc(r.what)}</span><span class="pop-code">${L.esc(r.code)}</span><a href="${r.url}">${L.esc(r.where)} · ${L.esc(r.repo)} ↗</a></span></span>`;
   });
-}
-
-function gifSize(id, name) {
-  const b = fs.readFileSync(path.join(OUT, id, 'gifs', `${name}.gif`));
-  return [b.readUInt16LE(6), b.readUInt16LE(8)];
 }
 
 function gifLink(course, name) {
@@ -93,7 +115,8 @@ function diagram(course, name, file) {
   const items = caps.map((c, i) => `<li>${c}<div class="stepnav">${i > 0 ? `<label for="${id}-${i}">← Back</label>` : '<span class="spacer"></span>'}<span class="count">Step ${i + 1} of ${n}</span>${i < n - 1 ? `<label class="next" for="${id}-${i + 2}">Next →</label>` : `<label for="${id}-1">↺ Again</label>`}</div></li>`).join('\n');
   const dots = caps.map((_, i) => `<label for="${id}-${i + 1}" title="Step ${i + 1}"></label>`).join('');
   return `<figure class="stepper" aria-label="${L.esc(label)}">${radios}
-<div class="stage">${svg[0]}</div>
+<div class="stage" tabindex="0" aria-label="Diagram">${svg[0]}</div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 ${items}
 </ol>
@@ -104,7 +127,7 @@ ${items}
 // "Question::*Right||Wrong >> the mismatch behind it >> s3||…::Why the right one is right"
 // Each wrong option names its own misconception and points back to the diagram step (sN) or section
 // that fixes it. Grades itself with CSS; course.js adds the unlock.
-function quiz(p, items, ctx, diagramName, learnAt) {
+function quiz(p, items, ctx, diagramName, learnAt, offset = 0) {
   const { parseQuestion } = require('./lint-course');
   return items.map((it, qi) => {
     const q = parseQuestion(it);
@@ -114,8 +137,8 @@ function quiz(p, items, ctx, diagramName, learnAt) {
     // Stable shuffle, so the right answer isn't always first but the page doesn't change between builds.
     let h = 0; for (const ch of q.q) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
     const order = q.opts.map((o, i) => ({ o, k: (h + i * 2654435761) >>> 0 })).sort((a, b) => a.k - b.k).map(x => x.o);
-    const name = `q-${p.slug}-${qi + 1}`;
-    const inputs = order.map((o, i) => `<input type="radio" name="${name}" id="${name}-${i + 1}"${o.ok ? ' data-ok' : ''}><label for="${name}-${i + 1}">${L.inline(o.text, ctx)}</label>`).join('\n');
+    const name = `q-${p.slug}-${offset + qi + 1}`;
+    const inputs = order.map((o, i) => `<input type="radio" name="${name}" id="${name}-${i + 1}"${o.ok ? ' data-ok' : ''}><label for="${name}-${i + 1}"><span>${L.inline(o.text, ctx)}</span></label>`).join('\n');
     const pointer = ptr => {
       const step = (ptr || '').match(/^s(\d)$/);
       if (step && diagramName && !learnAt) return `<label class="show-me" for="st-${diagramName}-${step[1]}" data-goto="st-${diagramName}">Show me step ${step[1]} again ↑</label>`;
@@ -174,13 +197,15 @@ function buildsOnHere(course, p) {
   walk(p.n);
   const ordered = [...path].sort((x, y) => x - y);
   const q = n => course.puzzles[n];
-  const items = need.map(n => `<li data-block="${n}"><details><summary><a href="${q(n).slug}.html">Puzzle ${n}: ${L.esc(q(n).meta.title)}</a></summary><p>${L.esc(q(n).meta.takeaway)}</p></details></li>`).join('');
+  const items = need.map(n => `<li data-block="${n}"><details><summary>Puzzle ${n}: ${L.esc(q(n).meta.title)}</summary><p>${L.esc(q(n).meta.takeaway)}</p><p><a href="${q(n).slug}.html">Review puzzle ${n}</a></p></details></li>`).join('');
   return `      <aside class="builds-on" aria-labelledby="builds-on-${p.n}">
         <p id="builds-on-${p.n}"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
         <ul>${items}</ul>
         <p class="small">Starting from zero? The blocks under this puzzle are ${ordered.length} puzzle${ordered.length === 1 ? '' : 's'}: ${ordered.map(n => `<a href="${q(n).slug}.html">${n}</a>`).join(' → ')}. Know them already? Start here.</p>
       </aside>`;
 }
+
+const sectionId = title => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 function renderPuzzle(course, p, terms) {
   const ctx = { file: p.file, cards: new Map(course.puzzles.map(q => [q.slug, q])), links: new Set() };
@@ -191,13 +216,32 @@ function renderPuzzle(course, p, terms) {
   for (const m of p.raw.matchAll(L.TICKET_KEY)) if (!L.NOT_TICKETS.has(m[0].split('-')[0])) fail(p.file, `looks like a ticket key: ${m[0]}`);
   for (const t of terms) if (p.raw.toLowerCase().includes(t.toLowerCase())) fail(p.file, `contains a private term: ${t}`);
 
+  const depth = sections.filter(s => s.title.startsWith('Go deeper: '));
+  let questionCount = 0;
   const body = sections.map(s => {
-    const sid = s.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const sid = sectionId(s.title);
     const html = s.title === 'Check yourself'
-      ? s.blocks.map(b => b.type === 'ul' ? quiz(p, b.items, ctx, diagramOf(p)) : L.renderBlocks([b], ctx)).join('\n')
+      ? s.blocks.map(b => {
+        if (b.type !== 'ul') return L.renderBlocks([b], ctx);
+        const html = quiz(p, b.items, ctx, diagramOf(p), null, questionCount);
+        questionCount += b.items.length;
+        return html;
+      }).join('\n')
       : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
       ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
-      : L.renderBlocks([b], ctx, { recall: s.title === 'Check yourself' })).join('\n');
+      : L.renderBlocks([b], ctx, { recall: depth.includes(s) && b.type === 'ul' })).join('\n');
+    if (depth.includes(s)) {
+      return `      <details class="depth-puzzle" id="${sid}">
+        <summary><span class="depth-label">Go deeper</span>${L.inline(s.title.slice('Go deeper: '.length), ctx)}</summary>
+        <div class="depth-content">
+${html}
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>`;
+    }
+    if (s.title === 'Sources') {
+      return `      <details class="puzzle-sources" id="${sid}"><summary>Sources</summary>${html}</details>`;
+    }
     return `      <section aria-labelledby="${sid}">
         <h2 id="${sid}">${L.inline(s.title, ctx)}</h2>
 ${html}
@@ -207,43 +251,63 @@ ${html}
   const all = course.puzzles;
   const linked = linkRefs(course, body);
   const prev = all[p.n - 1], next = all[p.n + 1];
-  const progress = all.map(q => `<li><a href="${q.slug}.html"${q === p ? ' aria-current="page"' : q.n < p.n ? ' class="done"' : ''} title="${L.esc(q.meta.title)}">${q.n}</a></li>`).join('');
-  const label = p.n === 0 ? `Start here · 1 of ${all.length}` : `Puzzle ${p.n} · ${p.n + 1} of ${all.length}`;
-  const nextUp = (course.meta.upcoming || [])[0];
+  const progress = all.map(q => `<li><a href="${q.slug}.html"${q === p ? ' aria-current="page"' : ''} title="${L.esc(q.meta.title)}">${q.n}</a></li>`).join('');
+  const label = `Puzzle ${p.n} · ${p.n + 1} of ${all.length}`;
+  const firstChapter = course.chapters[0];
   const fix = `mailto:${CONTACT}?subject=${encodeURIComponent(`Course: ${p.meta.title}`)}&body=${encodeURIComponent('Which part, and what was wrong or unclear?\n\n')}`;
   return L.page({
     title: `${p.meta.title} – ${course.meta.title} – Mateusz Pachulski`,
     description: p.meta.summary,
     canonical: `${L.SITE}/course/${course.id}/${p.slug}`,
-    base: '../../', current: 'course', feed: false, script: ['../progress-index.js', '../course.js'],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
       <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
-    body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}" data-prev="${prev ? `${prev.slug}.html` : ''}" data-prev-title="${prev ? L.esc(prev.meta.title) : ''}">
-      <nav aria-label="Puzzles"><ol class="progress">${progress}</ol></nav>
-      <p class="eyebrow">${L.esc(course.meta.title)} · ${label}</p>
-      <h1>${L.esc(p.meta.title)}</h1>
-      <p class="lede">${L.inline(p.meta.summary, ctx)}</p>
+    body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">${L.esc(course.meta.title)}</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">${label}</p>
+        <h1>${L.esc(p.meta.title)}</h1>
+        <p class="lede">${L.inline(p.meta.summary, ctx)}</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress">${progress}</ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        ${titles.includes('See it') ? '<a href="#see-it">Diagram</a>' : ''}
+        ${titles.includes('The building block') ? '<a href="#the-building-block">Mechanism</a>' : ''}
+${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}${titles.includes('Try it') ? '        <a href="#try-it">Try it</a>\n' : ''}        <a href="#check-yourself">Check your understanding</a>
+      </nav>
 ${buildsOn(course, p)}
 ${linked}
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>${L.inline(p.meta.takeaway, ctx)}</p></div></section>
-      ${support(course, 'puzzle')}
-      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
+${support(course, 'puzzle')}      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         ${prev ? `<a class="button" href="${prev.slug}.html">← ${prev.n === 0 ? 'Start' : `Puzzle ${prev.n}`}</a>` : '<a class="button" href="./">← Overview</a>'}
         ${next ? `<a class="button primary" href="${next.slug}.html">Puzzle ${next.n}: ${L.esc(next.meta.short || next.meta.title)} →</a>` : '<a class="button" href="./">Back to the overview →</a>'}
       </nav>
 ${next ? '' : `      <section class="finish" aria-labelledby="finish-heading">
-        <h2 id="finish-heading">That's everything published so far</h2>
-        <p>You've reached the last puzzle of <b>${L.esc(course.meta.title)}</b>.${nextUp ? ` Next: ${L.esc(nextUp.title)}, about ${L.esc(nextUp.topics.charAt(0).toLowerCase() + nextUp.topics.slice(1))}` : ''}</p>
-        <p>New puzzles are announced on <a href="${LINKEDIN}">LinkedIn</a> and in the <a href="../../learning/feed.xml">learning log feed</a>.</p>
-        <p class="actions"><a class="button primary" href="../">All courses →</a></p>
+        <h2 id="finish-heading">Apply what you learned</h2>
+        <p>${firstChapter ? 'Continue with worked examples and practice cases. When you reach the final project, make your own decisions before comparing your evidence with the worked review.' : 'Apply the lessons to an independent case, then compare your evidence with the worked review.'}</p>
+        <p class="actions">${firstChapter ? `<a class="button primary" href="${firstChapter.slug}.html">Continue to ${L.esc(firstChapter.title)} →</a> ` : ''}<a class="button" href="final-project.html">Start the final project →</a></p>
       </section>`}
       <p class="small fix-link">Something wrong or unclear on this page? <a href="${fix}">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>`,
   });
 }
 
-const minutes = c => Math.round(c.puzzles.length * 5 / 10) * 10;
+function practiceItems(c) {
+  const lessons = c.chapters.flatMap(ch => ch.lessons.map((lesson, i) => ({
+    id: lesson.key, title: lesson.title, href: `${ch.slug}.html#lesson-${i + 1}`
+  })));
+  return [...lessons, { id: 'final-project', title: c.project.title, href: 'final-project.html' }];
+}
+
+const courseContents = c => [
+  `${c.puzzles.length} puzzles`,
+  ...(c.chapters.length ? [`${c.chapters.length} practice chapter${c.chapters.length === 1 ? '' : 's'}`] : []),
+  'Final project'
+].join(' · ');
 
 // "Know this already?": one question per puzzle of a module. A right answer marks that puzzle passed;
 // a wrong one points to the puzzle that teaches it. course/<id>/check-<k>.html.
@@ -261,7 +325,7 @@ function renderCheck(c, k) {
     title: `Check: ${m.title} – ${c.meta.title} – Mateusz Pachulski`,
     description: `Already know ${m.title}? Answer one question per puzzle; each right answer marks that puzzle as passed.`,
     canonical: `${L.SITE}/course/${c.id}/check-${k + 1}`,
-    base: '../../', current: 'course', feed: false, script: ['../progress-index.js', '../course.js'],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: `      <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../">pachulski.dev</a></p>`,
     body: `    <article class="module-check course-top wrap narrow" data-course="${c.id}">
       <p class="eyebrow"><a href="./">${L.esc(c.meta.title)}</a> · check</p>
@@ -277,39 +341,46 @@ ${qs}
 // One course's overview: course/<id>/index.html.
 function renderOverview(c) {
   let i = 0;
-  const modules = c.meta.modules.map(m => {
+  const modules = c.meta.modules.map((m, k) => {
     const first = i;
-    const items = m.puzzles.map(() => c.puzzles[i++]).map(p => { const on = blocks(c.id)[p.n] || []; return `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${p.n === 0 ? 'Start here: ' : ''}${L.esc(p.meta.title)}</a> <span class="small">${L.esc(p.meta.summary)}${on.length ? ` <span class="needs">Builds on ${on.join(', ')}.</span>` : ''}</span></li>`; }).join('');
-    return `<li><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.blurb || '')} <a href="check-${c.meta.modules.indexOf(m) + 1}.html">Know this already? Take the check →</a></p><ol start="${first}">${items}</ol></li>`;
+    const items = m.puzzles.map(() => c.puzzles[i++]).map(p =>
+      `<li data-course="${c.id}" data-n="${p.n}"><a href="${p.slug}.html">${L.esc(p.meta.title)}</a> <span class="puzzle-state"></span><span class="small puzzle-summary">${L.esc(p.meta.summary)}</span></li>`).join('');
+    return `<li><details class="course-module"${k === 0 ? ' open' : ''}>
+      <summary><span class="module-title">${L.esc(m.title)}</span><span class="module-count small">${m.puzzles.length} puzzles</span></summary>
+      <div class="module-body"><p>${L.esc(m.blurb || '')}</p><ol start="${first}">${items}</ol>
+      <a class="module-check-link" href="check-${k + 1}.html">Check what you already know</a></div>
+    </details></li>`;
   }).join('\n');
   const soon = (c.meta.upcoming || []).map((m, k) => `<li class="soon"><h3>${L.esc(m.title)} <span class="small">(${k === 0 ? 'next' : 'later'})</span></h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n');
-  const hero = c.meta.hero || 'chain';
-  const gif = fs.existsSync(path.join(OUT, c.id, 'gifs', `${hero}.gif`))
-    ? `<img class="hero-gif" src="gifs/${hero}.gif" width="${gifSize(c.id, hero)[0]}" height="${gifSize(c.id, hero)[1]}" alt="${L.esc(c.meta.heroAlt || 'Animated diagram from the course.')}">` : '';
-  const body = `    <section class="hero" aria-labelledby="course-heading">
+  const related = (c.meta.relatedCourses || []).map(id => {
+    const target = loadCourse(id);
+    return `          <li><a href="../${target.id}/">${L.esc(target.meta.title)}</a></li>`;
+  }).join('\n');
+  const body = `    <section class="hero course-intro" aria-labelledby="course-heading">
       <div class="wrap narrow">
-        <p class="eyebrow"><a href="../">Free courses</a> · ${c.puzzles.length} puzzles so far · about ${minutes(c)} minutes</p>
+        <p class="eyebrow"><a href="../">Free courses</a> · ${courseContents(c)}</p>
         <h1 id="course-heading">${L.esc(c.meta.title)}</h1>
         <p class="lede">${L.esc(c.meta.intro)}</p>
-        <p class="actions"><a class="button primary" href="${c.puzzles[0].slug}.html" data-resume="${c.id}">Start the first puzzle →</a> <a class="button" href="../me.html">Your learning →</a></p>
-        ${gif}
+${c.meta.assumes ? `        <p class="small">Builds on <a href="${L.esc(c.meta.assumes.href)}">${L.esc(c.meta.assumes.title)}</a>.</p>\n` : ''}
+        <p class="actions"><a class="button primary" href="${c.puzzles[0].slug}.html" data-resume="${c.id}">Start learning</a> <a class="button" href="#modules-heading">Browse modules</a></p>
       </div>
     </section>
-    <section class="section" aria-labelledby="how-heading">
+    <section class="section curriculum" aria-labelledby="modules-heading">
       <div class="wrap narrow">
-        <h2 id="how-heading">How it works</h2>
-        <p>${L.esc(c.meta.how)} <a href="../how-its-made.html">How these courses are made, and how they're checked →</a></p>
-        ${support(c, 'overview')}
-      </div>
-    </section>
-    <section class="section" aria-labelledby="modules-heading">
-      <div class="wrap narrow">
-        <h2 id="modules-heading">Modules</h2>
-        <p class="small">Every puzzle opens: start wherever you like. Each one builds on the ones before it; its check tells you you're ready for the next. ✓ marks the ones you've passed (saved only in this browser).</p>
+        <h2 id="modules-heading">Course outline</h2>
         <ul class="modules">
 ${modules}
-${soon}
         </ul>
+        ${c.chapters.length ? `<h3 id="practice-chapters">Practice chapters</h3>
+        <ol>${c.chapters.map(ch => `<li><a href="${ch.slug}.html">${L.esc(ch.title)}</a> <span class="small" data-chapter-status="${ch.slug}"></span></li>`).join('')}</ol>` : ''}
+        <h3>Final project</h3>
+        <p><a href="final-project.html">${L.esc(c.project.title)}</a> · ${L.esc(c.project.brief)} <span class="small" data-project-status></span></p>
+${soon ? `        <details class="course-extras"><summary>Planned modules</summary><ul class="modules">${soon}</ul></details>\n` : ''}${related ? `        <nav aria-label="Related courses"><h3>Continue with</h3><ul>\n${related}\n        </ul></nav>\n` : ''}
+        <details class="course-extras"><summary>How the course works</summary>
+          <p>${L.esc(c.meta.how)}</p>
+          <p>Every puzzle is open from this outline. The check at the end of a puzzle unlocks its next button and saves your progress in this browser.</p>
+          <p><a href="../how-its-made.html">How lessons are written and checked</a> · <a href="../me.html">Your learning</a></p>
+${support(c, 'overview')}        </details>
       </div>
     </section>
     <section class="section take-it" aria-labelledby="take-heading">
@@ -325,7 +396,7 @@ ${soon}
           </div>
           <div>
             <h3>Download for Obsidian</h3>
-            <p class="small">The whole course as an Obsidian vault: a note per puzzle linked to the puzzles it builds on (open the graph view to see the building blocks), a glossary, and every question as a flashcard for the Spaced Repetition plugin.</p>
+            <p class="small">The whole course as an Obsidian vault: a note per puzzle linked to the puzzles it builds on (open the graph view to see the building blocks), practice chapters with worked cases, a final project, a glossary, and puzzle flashcards for the Spaced Repetition plugin.</p>
             <p><a class="button" href="${c.id}-obsidian.zip" download>Download the vault (.zip) ↓</a></p>
           </div>
         </div>
@@ -336,7 +407,7 @@ ${soon}
     title: `${c.meta.title}: a free course – Mateusz Pachulski`,
     description: c.meta.intro,
     canonical: `${L.SITE}/course/${c.id}/`,
-    base: '../../', current: 'course', feed: false, script: ['../progress-index.js', '../course.js'],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page. Your progress is saved only in this browser.</p>
       <p class="small"><a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
     body,
@@ -351,7 +422,7 @@ function renderMethod(file) {
   const html = L.parseBody(body, ctx).map(s => `      <section><h2>${L.inline(s.title, ctx)}</h2>\n${L.renderBlocks(s.blocks, ctx)}</section>`).join('\n');
   return L.page({
     title: `${meta.title} – Mateusz Pachulski`, description: meta.summary, canonical: `${L.SITE}/course/how-its-made`,
-    base: '../', current: 'course', feed: false,
+    base: '../', current: 'courses', feed: false,
     footer: `      <p class="small"><a href="./">All courses</a> · <a href="../learning/">Learning log</a> · <a href="../">pachulski.dev</a></p>`,
     body: `    <article class="course-top wrap narrow">\n      <p class="eyebrow"><a href="./">Free courses</a></p>\n      <h1>${L.esc(meta.title)}</h1>\n      <p class="lede">${L.esc(meta.summary)}</p>\n${html}\n    </article>`,
   });
@@ -369,7 +440,7 @@ function renderMe(cs) {
     title: 'Your learning – Mateusz Pachulski',
     description: 'Your progress across every course, what to learn next, and the questions you slipped on. Saved only in your browser.',
     canonical: `${L.SITE}/course/me`,
-    base: '../', current: 'course', feed: false, script: ['progress-index.js', 'course.js'],
+    base: '../', current: 'courses', feed: false, script: ['progress-index.js', 'course.js'],
     footer: `      <p class="small"><a href="./">All courses</a> · <a href="../">pachulski.dev</a></p>`,
     body: `    <article class="me course-top wrap narrow">
       <p class="eyebrow"><a href="./">Free courses</a> · your learning</p>
@@ -390,47 +461,120 @@ function renderMe(cs) {
 function renderIndex(cs) {
   const cat = fs.existsSync(path.join(SRC, 'catalog.json')) ? JSON.parse(fs.readFileSync(path.join(SRC, 'catalog.json'), 'utf8')) : null;
   const live = new Set(cs.map(c => c.id));
-  const cards = cs.map(c => `<li class="course-card" data-progress="${c.id}" data-total="${c.puzzles.length}">
+  const byId = Object.fromEntries(cs.map(c => [c.id, c]));
+  const groups = cat?.groups || [];
+  const grouped = new Set(groups.flatMap(g => g.courses));
+  const others = cs.filter(c => !grouped.has(c.id)).map(c => c.id);
+  const card = c => `<li class="course-card" data-progress="${c.id}" data-total="${c.puzzles.length}">
           <h3><a href="${c.id}/">${L.esc(c.meta.title)}</a></h3>
-          <p>${L.esc(c.meta.intro)}</p>
-          <p class="small">${c.puzzles.length} puzzles · about ${minutes(c)} minutes · <span class="mine">not started</span></p>
-          <p class="actions"><a class="button primary" href="${c.id}/">Open the course →</a></p>
-        </li>`).join('\n');
+          <p>${L.esc(cat?.descriptions?.[c.id] || c.meta.intro)}</p>
+          <p class="small card-status"><span>${courseContents(c)}</span><span class="mine">Not started</span></p>
+          <progress class="card-progress" value="0" max="${c.puzzles.length}" aria-label="${L.esc(c.meta.title)} progress"></progress>
+          <a class="button" href="${c.id}/${c.puzzles[0].slug}.html" data-puzzles="${c.puzzles.map(p => p.slug).join(' ')}">Start the first puzzle</a>
+        </li>`;
+  const sections = [...groups, ...(others.length ? [{ title: 'More courses', courses: others }] : [])]
+    .map((g, i) => {
+      const anchor = g.id || `group-${i}`;
+      const cards = g.courses.filter(id => byId[id]).map(id => card(byId[id])).join('\n');
+      return cards ? `<section class="catalog-group" id="${anchor}" aria-labelledby="${anchor}-heading">
+        <h2 id="${anchor}-heading">${L.esc(g.title)}</h2>
+        ${g.intro ? `<p>${L.esc(g.intro)}</p>` : ''}
+        <ul class="courses">${cards}</ul>
+      </section>` : '';
+    }).join('\n');
   const soon = cat ? cat.upcoming.filter(m => !live.has(m.id)).map(m => `<li class="soon"><h3>${L.esc(m.title)}</h3><p class="small">${L.esc(m.topics)}</p></li>`).join('\n') : '';
-  const body = `    <section class="hero" aria-labelledby="courses-heading">
-      <div class="wrap narrow">
-        <p class="eyebrow">Free for everyone · no sign-up</p>
-        <h1 id="courses-heading">Courses that build from the foundation</h1>
-        <p class="lede">Each course is a chain of small puzzles. Every puzzle starts with a problem, adds one building block, shows it in a diagram that moves, and ends with a check that tells you you're ready for the next. No term is used before it's explained.</p>
-        <p><a href="how-its-made.html">How these courses are made, and how they're checked →</a></p>
-        <p class="actions"><a class="button primary" href="me.html">Your learning: progress and what to learn next →</a></p>
+  const searchResults = cs.flatMap(c => {
+    const entries = c.puzzles.map(p => ({ title: p.meta.title, href: p.slug + '.html', summary: p.meta.summary }));
+    for (const chapter of c.chapters) {
+      chapter.lessons.forEach((lesson, i) => entries.push({
+        title: lesson.title, href: `${chapter.slug}.html#lesson-${i + 1}`, summary: chapter.title + ' ' + lesson.explanation
+      }));
+    }
+    return entries.map(e => `<li data-summary="${L.esc(e.summary)}"><a href="${c.id}/${e.href}">${L.esc(e.title)}</a> · ${L.esc(c.meta.title)}</li>`);
+  }).join('');
+  const body = `    <section class="catalog-hero" aria-labelledby="courses-heading">
+      <div class="wrap">
+        <p class="eyebrow">Free courses · no sign-up</p>
+        <h1 id="courses-heading">Engineering courses</h1>
+        <p class="lede">New to backend engineering? Begin with one request from a client to a server. Work up to deploying a service and defending a system design.</p>
+        <p class="actions"><a class="button primary" href="backend-ops/${byId['backend-ops'].puzzles[0].slug}.html">Start with your first request</a> <a class="button" href="me.html">Your learning</a></p>
       </div>
     </section>
-    <section class="section" aria-labelledby="live-heading">
-      <div class="wrap narrow">
-        <h2 id="live-heading">Start here</h2>
-        <ul class="courses">
-        ${cards}
-        </ul>
-      </div>
-    </section>
-${soon ? `    <section class="section" aria-labelledby="catalog-heading">
-      <div class="wrap narrow">
-        <h2 id="catalog-heading">${L.esc(cat.title)}</h2>
-        <p>${L.esc(cat.intro)}</p>
-        <ul class="modules">
-${soon}
-        </ul>
-      </div>
-    </section>` : ''}`;
+    <div class="wrap catalog-body" id="browse-courses">
+      <nav class="lesson-jumps" aria-label="Course paths">${groups.map(g => `<a href="#${g.id}">${L.esc(g.title)}</a>`).join(' ')}</nav>
+      <section hidden aria-labelledby="search-heading">
+        <h2 id="search-heading"><label for="puzzle-search">Find a lesson</label></h2>
+        <input type="search" id="puzzle-search" placeholder="Try TLS, Flow or state">
+        <p class="small" role="status"></p>
+        <ul hidden>${searchResults}</ul>
+      </section>
+      ${sections}
+${soon ? `      <details class="course-extras"><summary>${L.esc(cat.title)}</summary><ul class="modules">${soon}</ul></details>\n` : ''}      <p class="catalog-method"><a href="how-its-made.html">How the puzzles are written and checked</a></p>
+    </div>`;
   return L.page({
     title: 'Free courses – Mateusz Pachulski',
-    description: 'Free courses on Android, Bluetooth Low Energy and more: small puzzles from the foundation up, with moving diagrams and a check after each one.',
+    description: 'Learn backend engineering, system design, Android, networking and device integrations through short lessons and practical experiments.',
     canonical: `${L.SITE}/course/`,
-    base: '../', current: 'course', feed: false, script: ['progress-index.js', 'course.js'],
+    base: '../', current: 'courses', feed: false, script: ['progress-index.js', 'course.js'],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against primary sources. Your progress is saved only in this browser.</p>
       <p class="small"><a href="../learning/">Learning log</a> · <a href="../">pachulski.dev</a></p>`,
     body,
+  });
+}
+
+function renderChapter(c, chapter, index) {
+  const ctx = { file: path.join(c.dir, 'topics.json'), cards: new Map(), links: new Set() };
+  const paragraphs = value => value.trim().split(/\n\s*\n/).map(s => `<p>${L.inline(s, ctx)}</p>`).join('\n');
+  const next = c.chapters[index + 1];
+  const nav = chapter.lessons.map((lesson, i) => `<li><a href="#lesson-${i + 1}">${L.esc(lesson.title)}</a> <span class="small" data-practice-nav="${lesson.key}"></span></li>`).join('');
+  const lessons = chapter.lessons.map((lesson, i) => `<section aria-labelledby="lesson-${i + 1}">
+      <h2 id="lesson-${i + 1}" data-practice-heading="${lesson.key}">${L.esc(lesson.title)}</h2>
+      ${paragraphs(lesson.explanation)}
+      <h3>Worked example</h3>${paragraphs(lesson.example)}
+      <h3>Try it</h3>${paragraphs(lesson.exercise)}
+      <details class="recall"><summary>Compare your answer</summary>${paragraphs(lesson.answer)}</details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="${lesson.key}"> I attempted the exercise and compared my answer</label>
+      <p class="small">Source · <a href="${L.esc(lesson.source)}">${L.esc(lesson.sourceTitle)}</a></p>
+    </section>`).join('\n');
+  return L.page({
+    title: `${chapter.title} · ${c.meta.title}`, description: chapter.lessons[0].explanation.split('\n')[0],
+    canonical: `${L.SITE}/course/${c.id}/${chapter.slug}`, base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
+    footer: '<p class="small"><a href="./">Course outline</a> · <a href="../">All courses</a></p>',
+    body: `<article class="puzzle course-top wrap narrow" data-practice-course="${c.id}">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">${L.esc(c.meta.title)}</a></p>
+      <p class="eyebrow">Practice chapter ${index + 1} of ${c.chapters.length}</p><h1>${L.esc(chapter.title)}</h1>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol>${nav}</ol></nav>
+      ${lessons}
+      <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
+        <a class="button primary" href="${next ? next.slug + '.html' : 'final-project.html'}">${next ? L.esc(next.title) : 'Start the final project'} →</a></nav>
+    </article>`
+  });
+}
+
+function renderProject(c) {
+  const p = c.project;
+  const list = items => items.map(item => `<li>${L.esc(item)}</li>`).join('\n');
+  return L.page({
+    title: `${p.title} · Final project · ${c.meta.title}`, description: p.brief,
+    canonical: `${L.SITE}/course/${c.id}/final-project`, base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
+    footer: '<p class="small"><a href="./">Course outline</a> · <a href="../">All courses</a></p>',
+    body: `<article class="wrap narrow section" data-practice-course="${c.id}">
+      <p class="eyebrow"><a href="./">${L.esc(c.meta.title)}</a> · Final project</p>
+      <h1>${L.esc(p.title)}</h1>
+      <p class="lede">${L.esc(p.brief)}</p>
+      <h2>Before you start</h2><p>${L.esc(p.prerequisites)}</p><p>${L.esc(p.setup)}</p>
+      <h2>Run the investigation</h2><ol>${list(p.steps)}</ol>
+      <h2>Evidence to keep</h2><ul>${list(p.evidence)}</ul>
+      <details class="course-extras"><summary>Compare with a worked review</summary>
+        ${p.worked.map(example => `<p>${L.esc(example)}</p>`).join('\n')}
+      </details>
+      <h2>Change one assumption</h2><p>${L.esc(p.variation)}</p>
+      <details class="course-extras"><summary>Check your reasoning</summary><p>${L.esc(p.solution)}</p></details>
+      <label hidden data-practice-control><input type="checkbox" data-practice-item="final-project"> I completed the project and compared my evidence with the worked review</label>
+      <p class="small" role="status" data-practice-status></p>
+      <p class="actions"><a class="button" href="./">Return to course outline</a></p>
+    </article>`
   });
 }
 
@@ -442,6 +586,11 @@ function build() {
   for (const c of cs) out.set(path.join(OUT, c.id, 'index.html'), renderOverview(c));
   for (const c of cs) out.set(path.join(OUT, c.id, `${c.id}-obsidian.zip`), X.zip(X.vault(c, blocks(c.id))));
   for (const c of cs) c.meta.modules.forEach((_, k) => out.set(path.join(OUT, c.id, `check-${k + 1}.html`), renderCheck(c, k)));
+  for (const c of cs) {
+    c.chapters.forEach((ch, i) => out.set(path.join(OUT, c.id, ch.slug + '.html'), renderChapter(c, ch, i)));
+    out.set(path.join(OUT, c.id, 'final-project.html'), renderProject(c));
+  }
+  for (const [file, html] of require('./build-labs').labPages()) out.set(file, html);
   const made = path.join(SRC, 'how-its-made.md');
   if (fs.existsSync(made)) out.set(path.join(OUT, 'how-its-made.html'), renderMethod(made));
   if (cs.length) out.set(path.join(OUT, 'index.html'), renderIndex(cs));
@@ -450,7 +599,7 @@ function build() {
   // survives puzzles being inserted; plus the old orders, to migrate progress saved by number.
   const legacyFile = path.join(L.ROOT, '_course', 'progress-legacy.json');
   const legacy = fs.existsSync(legacyFile) ? JSON.parse(fs.readFileSync(legacyFile, 'utf8')).courses : {};
-  if (cs.length) out.set(path.join(OUT, 'progress-index.js'), `// Generated by scripts/build-course.js.\nwindow.COURSE_INDEX = ${JSON.stringify({ cur: Object.fromEntries(cs.map(c => [c.id, c.puzzles.map(p => p.slug.replace(/^\d+-/, ''))])), legacy })};\n`);
+  if (cs.length) out.set(path.join(OUT, 'progress-index.js'), `// Generated by scripts/build-course.js.\nwindow.COURSE_INDEX = ${JSON.stringify({ cur: Object.fromEntries(cs.map(c => [c.id, c.puzzles.map(p => p.slug.replace(/^\d+-/, ''))])), practice: Object.fromEntries(cs.map(c => [c.id, practiceItems(c)])), legacy })};\n`);
   return out;
 }
 

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookmarks
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: bookmarks
+  template:
+    metadata:
+      labels:
+        app: bookmarks
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: app
+          image: bookmark-lab:local
+          imagePullPolicy: Never
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests: {cpu: 25m, memory: 32Mi}
+            limits: {cpu: 250m, memory: 96Mi}
+          readinessProbe:
+            exec:
+              command: ["python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8080/ready', timeout=2).close()"]
+            timeoutSeconds: 4
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          emptyDir: {}

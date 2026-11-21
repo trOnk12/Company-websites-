@@ -1,0 +1,34 @@
+[
+  {
+    "title": "Trace identity, effects and accessible output",
+    "lessons": [
+      {
+        "title": "Which row owns a remembered edit?",
+        "explanation": "Composition tracks instances of composables. When a repeated call comes from one call site, execution order can distinguish instances. An item that moves can then inherit remembered state tied to a position. A stable, unique key lets Compose associate an instance with the corresponding item across reordering.",
+        "example": "Rows A, B and C are listed. Type a draft into B, then insert X at the front. If state follows position 1 it can appear on A, now at position 1. Keying by a durable item ID allows B's identity to move with its data. Reproduce the insertion and inspect the text and ownership after reordering.",
+        "exercise": "Will stable keys by themselves restore an unsaved draft after the process dies?",
+        "answer": "Keys address composition identity. Choose and test a persistence mechanism separately for the required lifetime. Test reorder, recreation and full process restart independently; success in the first experiment does not establish recovery in the last.",
+        "source": "https://developer.android.com/develop/ui/compose/lifecycle",
+        "sourceTitle": "Android Developers · Lifecycle of composables"
+      },
+      {
+        "title": "Which change restarts the subscription?",
+        "explanation": "An effect connects composition to work with a lifetime. DisposableEffect sets up an external subscription and disposes it when its key changes or it leaves composition. Choose keys that identify the resource. When only a callback changes, an updated-state holder can give a long-lived effect the current callback without re-registering.",
+        "example": "Display account A and subscribe to A's status. Switch to B in the same slot. Key the effect on the account and the subscription owner when either can change. Observe one disposal for A, one registration for B and disposal of B when the screen leaves. Handle late work already queued by A according to its identity.",
+        "exercise": "The parent recomposes five times with a new callback object for the same account. How do you test the desired behavior?",
+        "answer": "Count registrations and dispositions separately from delivered callbacks. If the subscription should survive, verify there is one registration and the latest callback receives the event. Then change the account and confirm that the underlying resource is replaced.",
+        "source": "https://developer.android.com/develop/ui/compose/side-effects",
+        "sourceTitle": "Android Developers · Side effects in Compose"
+      },
+      {
+        "title": "Which user action can the semantics tree express?",
+        "explanation": "Semantics expose meaning, state and actions alongside drawn pixels. A composable tree can merge descendant semantics so that tests and accessibility tools perceive a larger control. Examine the tree your test actually queries and verify the platform accessibility experience separately.",
+        "example": "A row has a title, a status and an independent bookmark toggle. The screenshot looks correct in both states. Inspect the merged tree and confirm that the intended toggle has an action, current state and understandable label. Trigger it through semantics, then inspect whether the reported state changes.",
+        "exercise": "The unmerged tree contains the icon, but a user navigating by accessible controls cannot operate the toggle. Would matching the icon in a test close the issue?",
+        "answer": "That assertion verifies only a node in the queried tree. Revisit merging, action ownership and labels, then exercise the control through the exposed semantics and on the target platform with its accessibility service. Keep a separate visual check for layout.",
+        "source": "https://developer.android.com/develop/ui/compose/testing/semantics",
+        "sourceTitle": "Android Developers · Compose semantics"
+      }
+    ]
+  }
+]

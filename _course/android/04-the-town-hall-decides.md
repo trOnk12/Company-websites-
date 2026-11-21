@@ -16,7 +16,7 @@ In puzzle 2, the main thread drew your app's screen. But many apps are running, 
 
 ## The building block
 
-In Android, each screen of an app is an **Activity**.
+An **Activity** hosts an area of app UI. One Activity can show many screens through navigation. This example follows one Activity per screen.
 
 Android runs one long-lived process of its own, **system_server**. It keeps a register of every Activity of every app, and it decides what happens to each one.
 

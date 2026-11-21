@@ -1,0 +1,25 @@
+{
+  "title": "JVM internals for Kotlin and Android developers",
+  "intro": "Trace a tiny bookmark program from compiled instructions to method frames, shared objects and reachability.",
+  "how": "Start by tracing one tiny program. Use the browser workbench to predict what changes in a frame or on the heap. Then use a local JDK to compare the model with compiled instructions and run the shared-counter exercise.",
+  "modules": [
+    {
+      "title": "From source to a live object",
+      "blurb": "Follow the same counter through four experiments.",
+      "puzzles": [
+        "00-class-file.md",
+        "01-frame.md",
+        "02-reference.md",
+        "03-reachability.md"
+      ]
+    },
+    {
+      "title": "Changing shared state",
+      "blurb": "A change applied only when the current value matches the expected value.",
+      "puzzles": [
+        "04-shared-counter.md"
+      ]
+    }
+  ],
+  "upcoming": []
+}

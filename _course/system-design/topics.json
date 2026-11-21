@@ -1,0 +1,180 @@
+[
+  {
+    "title": "Guarantees under load and partial failure",
+    "lessons": [
+      {
+        "title": "What did the replica actually acknowledge?",
+        "explanation": "A primary records changes in its write-ahead log. A standby receives log records and replays them into its own readable database. Receiving, durably flushing and replaying a record are distinct milestones. With asynchronous replication a primary can acknowledge a write before the standby reaches any of them. Choose the milestone based on the promise you make to the caller and which failures you intend to survive.",
+        "example": "Ada confirms seat B12 at log position 820. A standby has received through 820 but applied only through 818. A read routed there can still show B12 as available. The booking service must arbitrate the next purchase at the authoritative writer. For a read-your-write receipt, route that read to the primary or wait for an eligible replica to apply 820, within a deadline.",
+        "exercise": "The primary stops before the standby receives record 820. The phone has a successful reply. Can the new primary reconstruct the sale from its own data?",
+        "answer": "The promoted standby can lack the acknowledged sale. Returning to a primary for the read fixes ordinary lag only while the original record survives. To promise survival of a specified primary failure, configure the required synchronous acknowledgements and an eligible promotion policy, then rehearse that failure. Decide how the system responds when the required acknowledger is unavailable.",
+        "source": "https://www.postgresql.org/docs/17/warm-standby.html",
+        "sourceTitle": "PostgreSQL · Standby servers"
+      },
+      {
+        "title": "How many failures can a user journey afford?",
+        "explanation": "A service level indicator is an observed ratio or measurement. Define the eligible requests, what counts as good and the time window before choosing a target. For a reservation journey, a correct full-lot response may be good. A timeout can be bad even if the server later commits. Count from a place that can observe the promised outcome.",
+        "example": "Assume one million eligible attempts in 30 days and a 99.9% success target. The budget is 1,000 bad attempts. A release fails 240 of 8,000 attempts. It spent 24% of the monthly budget while handling 0.8% of the monthly traffic. Its 3% error rate is 30 times the permitted 0.1% rate.",
+        "exercise": "The busiest hour improves, but customers on one mobile carrier still time out. Which evidence would justify closing the incident?",
+        "answer": "Split eligible attempts by carrier and client version, inspect sample size, then recompute the same journey indicator before and after the fix. Weight the overall result by actual attempt counts. A healthy server-only ratio cannot establish that the affected phones received timely confirmations.",
+        "source": "https://sre.google/workbook/implementing-slos/",
+        "sourceTitle": "Google SRE · Implementing SLOs"
+      },
+      {
+        "title": "Where should retries spend the request budget?",
+        "explanation": "A timeout limits how long one caller waits. It does not cancel every operation that caller started. A retry can therefore add concurrent work to a dependency that is already slow. Set a deadline for the whole journey, assign one layer responsibility for retries and use stable operation identities for writes with repeatable effects.",
+        "example": "A phone calls a gateway, which calls a service, which calls a database-facing dependency. If all three calling layers make up to three attempts, one user action can trigger 27 attempts at the deepest boundary. With a 500 ms deadline, 220 ms spent on the first call and 100 ms of backoff, at most 180 ms remain for another call and returning the result.",
+        "exercise": "The downstream call usually needs 200 ms. Would jitter make another attempt fit? What happens to an unknown payment outcome?",
+        "answer": "Jitter spreads arrivals across time. It supplies no extra time or capacity. Stop when the remaining deadline cannot support the chosen call budget. Record the unresolved payment identity and reconcile its status through the documented provider contract. Count physical attempts separately from user actions.",
+        "source": "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/",
+        "sourceTitle": "AWS Builders' Library · Timeouts, retries and backoff"
+      }
+    ]
+  },
+  {
+    "title": "Choosing boundaries that hold during overload",
+    "lessons": [
+      {
+        "title": "Does splitting a table distribute its writes across machines?",
+        "explanation": "Declarative partitioning divides one logical table into partitions using a routing rule. Partition pruning can avoid scanning irrelevant partitions when a predicate restricts the partition key. This feature alone does not give every partition its own independently writable database server.",
+        "example": "Bookings are partitioned by month. A report for January can avoid unrelated months when its predicate allows pruning. A single popular event in January still places all its concurrent reservations in the same month. A partitioning scheme good for retention need not spread the hot event.",
+        "exercise": "The business wants to delete whole months quickly and handle one hot concert. What two measurements should determine your next design?",
+        "answer": "Measure pruning and retention maintenance for the time-based layout, then measure lock contention and write throughput for the hot event. If proposing independent shards, identify the routing key and which reservations must still share a transaction. Prove the invariant during a shard move.",
+        "source": "https://www.postgresql.org/docs/17/ddl-partitioning.html",
+        "sourceTitle": "PostgreSQL · Table partitioning"
+      },
+      {
+        "title": "Which requests should an overloaded service admit?",
+        "explanation": "Load shedding refuses some work early so admitted work can still finish. Bounded queues constrain memory and waiting time. A queue that accepts everything can spend most of its capacity finishing requests after callers have already left. Define how callers distinguish an overload response from an unknown committed outcome.",
+        "example": "At 100 completed requests per second, 500 already ahead of a new request imply roughly five seconds of waiting in a simple FIFO model before service. With a one-second client deadline, acceptance alone offers little value. Track rejected requests alongside successful latency so dropping difficult work cannot artificially improve the dashboard.",
+        "exercise": "Would raising the queue limit from 500 to 1,000 improve throughput when the processor is already saturated?",
+        "answer": "Under the stated constant capacity it adds waiting space, not service rate. A short burst may be absorbed if callers can wait and spare capacity follows. Compare useful completions before deadline, rejected work and recovery time under the same arrival trace.",
+        "source": "https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/",
+        "sourceTitle": "AWS Builders’ Library · Load shedding"
+      },
+      {
+        "title": "How can losing a single replica take down its neighbors?",
+        "explanation": "A load balancer redistributes traffic when it removes an unhealthy replica. If the remaining capacity is below demand, the extra load can make previously healthy replicas slow. Retries and failed health checks can amplify the effect. Recovery requires a path back to a sustainable load.",
+        "example": "Three replicas each handle 100 requests per second. At 240 arrivals per second they average 80 each. Losing one sends 120 to each survivor, 20 beyond its assumed capacity even before retries. Steady backlog now grows by 40 requests per second. A restart loop can remove more useful capacity.",
+        "exercise": "One replica comes back. Is 300 requests per second of nominal capacity sufficient to declare recovery?",
+        "answer": "Observe its readiness and actual useful throughput as caches warm. With an existing backlog, sustainable service must exceed arrivals long enough to drain it. Limit retries, protect critical requests and verify client-side latency until the backlog falls.",
+        "source": "https://sre.google/sre-book/addressing-cascading-failures/",
+        "sourceTitle": "Google SRE · Addressing cascading failures"
+      }
+    ]
+  },
+  {
+    "title": "Rebuild a concert seating map from reservation events",
+    "lessons": [
+      {
+        "title": "Commit a reservation fact before announcing it",
+        "explanation": "The booking database owns the right to sell. The seating map is a projection: a derived copy optimized for showing availability. In the same transaction as the booking, write an outbox entry containing the show and seat, the event ID, the next seat version and the change. A relay publishes committed entries. The live outbox is a delivery mechanism; a rebuild also requires a retained history or a consistent source snapshot.",
+        "example": "Show 42 starts with seat B12 free at version 0. One transaction holds it and writes E7, version 1, delta −1 free. A crash before commit leaves neither change. A crash after commit leaves the hold and a recoverable pending publication. The authoritative checkout rejects another hold even while the map still shows B12 as free.",
+        "exercise": "The relay publishes E7, crashes before marking the row sent and later publishes E7 again. What should be counted once and what may legitimately be counted twice?",
+        "answer": "Count one logical event identity and one acquired right. Two delivered messages and two processing attempts are possible. Carry E7 unchanged across publication retries so the consumer can recognize the repetition.",
+        "source": "https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html",
+        "sourceTitle": "AWS · Transactional outbox"
+      },
+      {
+        "title": "Make a repeated delivery harmless at the receiver",
+        "explanation": "A broker position tells a consumer where to resume. An event ID identifies the business fact. If recording a consumed position and updating a separate database are independent writes, crashing between them creates either replay or loss. Commit the projection and its processed-event marker together; advance the broker position only after durable processing or durable handoff.",
+        "example": "Starting at 100 free seats, apply E7 at position 400: write 99 and insert processed(E7) in one local transaction. Stop after it commits but before acknowledging position 400. The broker delivers 400 again; the unique marker prevents a second decrement. Even if the relay appended E7 again at position 401, the same marker still protects the count.",
+        "exercise": "Why is a marker written first in its own transaction unsafe?",
+        "answer": "If the process stops after saving the marker but before subtracting one, replay skips E7 forever and the display says 100. Run both crash schedules and inspect the count, marker and checkpoint. A harmless SQL rollback protects only changes made inside that transaction.",
+        "source": "https://kafka.apache.org/41/design/design/",
+        "sourceTitle": "Apache Kafka · Message delivery semantics"
+      },
+      {
+        "title": "Detect a version gap without blocking unrelated seats",
+        "explanation": "For each seat, give related events one routing key. Kafka preserves append order within a partition, but an upstream relay can append a later business version first. The consumer compares the event version with the last applied seat version. A delta for version n requires the predecessor n−1. Missing versions need repair or durable staging; blindly applying the latest delta loses information.",
+        "example": "B12 emits E7 hold v1 (−1 free), E8 release v2 (+1), E9 hold v3 (−1). Arrival order is v1, v3, v2. After v1 the aggregate is 99. Persist v3 as waiting, apply v2 to reach 100, then apply v3 to return to 99. Maintain B12’s watermark at v1 until v2 is applied. An unrelated seat may still progress if its events are independent.",
+        "exercise": "If you pause the entire partition at the v3 offset and v2 is a later offset in that same partition, how do you escape the wait?",
+        "answer": "Persist v3 as pending before moving past its offset, or fetch the missing authoritative seat state through a repair path. Resume with bounded backlog and age checks. Two different IDs claiming the same seat version indicate a producer conflict requiring investigation.",
+        "source": "https://kafka.apache.org/41/design/design/",
+        "sourceTitle": "Apache Kafka · Partitions and log order"
+      },
+      {
+        "title": "Keep old events readable after a schema change",
+        "explanation": "An Avro reader uses the writer’s schema to resolve fields against the reader’s schema. Adding a field with a reader default can allow a new reader to decode an old event. Field compatibility is only one test: the application must still interpret the old business meaning correctly. Keep schema version distinct from the per-seat business version.",
+        "example": "The new event schema adds bookingChannel with a string default of unknown. Old E7 decodes under the new reader with unknown, while a new event can record kiosk. An old reader can ignore this unused extra field when reading the compatible new record. Replaying E7 must still subtract exactly one free seat. Never silently label a historical sale as mobile simply to fill the new field.",
+        "exercise": "An engineer changes deltaFree to mean “free seats after this change” but leaves its type as integer. Would a schema compatibility test catch the danger?",
+        "answer": "A compatible integer type does not distinguish delta from absolute count. Introduce a new event shape or explicit semantic version and conversion rule. Run mixed-history fixtures against both decoders and compare the resulting per-seat states and totals.",
+        "source": "https://avro.apache.org/docs/1.12.0/specification/",
+        "sourceTitle": "Apache Avro · Schema resolution"
+      },
+      {
+        "title": "Repair the map while bookings continue",
+        "explanation": "Rebuild into a separate projection generation so the active display keeps serving. Record a consistent snapshot and its corresponding stream position for every partition, or replay a complete retained history from its beginning. Apply later changes and validate at a common comparison boundary. Keep the rebuild isolated from real email, payment and refund consumers.",
+        "example": "At the chosen boundary the authoritative seat rows contain 98 free, one held and one sold: 100 seats total. The old map also reports 98 free, but it labels B12 sold and C15 held while the source has the opposite. Count equality hides the error. The rebuilt generation must agree on seat ID, state and version, plus section totals. Catch up to the cutover boundary, switch readers and retain the old generation briefly for rollback.",
+        "exercise": "Your oldest retained message begins at position 900; the only trusted snapshot for that partition covers through 850. Can replay certify the repaired map?",
+        "answer": "Positions 851 through 899 are unaccounted for. Obtain a newer consistent source snapshot with a matching resume position or recover the missing archive. Record what the rebuild can actually verify. A quiet consumer and zero current lag establish catch-up only from the chosen start, not completeness of earlier history.",
+        "source": "https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing",
+        "sourceTitle": "Azure Architecture Center · Event sourcing and projection rebuilds"
+      }
+    ]
+  },
+  {
+    "title": "Follow a record through Apache Kafka",
+    "lessons": [
+      {
+        "title": "Where does a record live?",
+        "explanation": "A producer sends a record to a named topic. A topic is split into partitions, each an ordered log. A broker stores log data. An offset identifies a position within one partition. Reading a record leaves it available for other readers until the retention policy removes it.",
+        "example": "A shipment service writes “packed” at partition 0, offset 18 and “label printed” at partition 1, offset 18. A receipt containing only 18 is ambiguous. A receipt containing the topic, partition and offset identifies which entry to inspect.",
+        "exercise": "A consumer sees offset 51 in partition 0 and offset 47 in partition 1. Which happened first? How would you preserve the order in which a single producer records changes for shipment S?\n\nRun the offset experiment on a disposable local broker. Follow the JVM steps in the [Kafka 4.1 quick start](https://kafka.apache.org/41/getting-started/quickstart/) to start one broker on localhost:9092. Save the [replay script](https://pachulski.dev/labs/kafka-replay/replay.sh), open another terminal in the extracted Kafka directory and run `bash /path/to/replay.sh` using your saved path. The script creates a temporary single-partition topic, writes packed and shipped, reads offsets 0, 1 and 0, and deletes the topic. Predict all three values first.",
+        "answer": "The two offsets cannot answer the timing question. Route the changes for S to one partition using a stable shipment key and partition mapping, with producer idempotence enabled to preserve order across retries. The partition gives an append order. If independent producers can submit stale business changes, include a shipment revision and validate it.\n\nYou should read packed, shipped, packed. The third read visits the first record again. This exercise addresses one partition directly. Group checkpoints are the subject of the next lesson.",
+        "source": "https://kafka.apache.org/41/getting-started/introduction/",
+        "sourceTitle": "Apache Kafka · Events, topics and partitions"
+      },
+      {
+        "title": "Who owns the next offset?",
+        "explanation": "Consumers that share a group divide the work. In a standard consumer group, a partition has one assigned reader at a time. A separate group can read the same log for a different purpose. Each group can checkpoint its next position for each partition so another member can resume.",
+        "example": "Billing and analytics each need every shipment. Give them separate groups. Billing has three members and two partitions. One member has no partition assignment. If an active member leaves, the group can assign its partition to a remaining member.",
+        "exercise": "Partition 0 has records 40, 41 and 42. Billing finishes 40 and 41 and commits 42. Analytics commits 40. Both groups restart before reading again. Which record does each fetch first, assuming all three are retained?",
+        "answer": "Billing resumes at 42 and analytics at 40. Rewinding analytics does not rewind billing. Adding a fourth billing member cannot divide either of the two partitions into smaller assignments.",
+        "source": "https://kafka.apache.org/41/getting-started/introduction/",
+        "sourceTitle": "Apache Kafka · Events, topics and partitions"
+      },
+      {
+        "title": "What survives a crash between SQL and Kafka?",
+        "explanation": "Imagine a consumer that updates a SQL total and then records its next Kafka offset. These writes belong to different systems. A crash between them can make Kafka deliver a record that already changed the total. Moving the checkpoint earlier opens a window where an unapplied change is skipped.",
+        "example": "Shipment event E7 adds 3 to a total of 10. SQL commits 13, then the consumer dies before committing its offset. On retry, a plain increment yields 16. Instead, insert E7 into a table with a unique event ID and increment only when the insert succeeds. In PostgreSQL, use `INSERT ... ON CONFLICT DO NOTHING RETURNING id` and increment only if a row was returned. Perform both steps in one SQL transaction.",
+        "exercise": "Crash once after inserting E7 but before incrementing, then once after SQL commits but before the offset commits. Predict the eventual total in both runs. Why would two separate SQL transactions break the first case?",
+        "answer": "An uncommitted insert rolls back with the increment. Retry can claim E7 and reach 13. After a committed increment the stored ID prevents a second effect and the checkpoint can advance. A separately committed ID could suppress the only increment. Kafka transactions can pair Kafka output with consumed offsets; an external SQL write needs its own cooperation.",
+        "source": "https://kafka.apache.org/41/design/design/",
+        "sourceTitle": "Apache Kafka · Design and delivery semantics"
+      },
+      {
+        "title": "Can a compacted topic rebuild yesterday?",
+        "explanation": "Compaction lets Kafka discard older values for a key while preserving the positions of records it keeps. This serves a reader rebuilding current keyed state. An audit asks a different question: which changes happened, including intermediate ones?",
+        "example": "A price key appears at offsets 20, 24 and 29 with values 12, 15 and 13. After cleaning, a fresh reader might see only offset 29 for that key. It can reconstruct the current price of 13, but cannot infer the peak of 15. Cleaning runs asynchronously, so an earlier scan may still see all three.",
+        "exercise": "An old price cache was offline through a deletion. A record with a null value marks the deletion, but its retention window has elapsed. Is replaying new records into that cache sufficient? Design a recovery check.",
+        "answer": "The cache may keep a stale price after missing the deletion marker. Rebuild into an empty store from a suitable complete source, catch up to a recorded position for every partition and compare keys and values against an authoritative snapshot at a compatible boundary before switching readers.",
+        "source": "https://kafka.apache.org/41/design/design/",
+        "sourceTitle": "Apache Kafka · Design and delivery semantics"
+      }
+    ]
+  },
+  {
+    "title": "Design a search across independent shards",
+    "lessons": [
+      {
+        "title": "When can the coordinator return the true top three?",
+        "explanation": "A shard owns part of a dataset. In scatter/gather, a coordinator sends a query to several shards and combines the replies. For a global ranking, first agree on a single ordering, including a stable tie breaker. Assume each item belongs to exactly one shard and all shards see a fixed dataset for this query.",
+        "example": "West returns scores 98, 89, 85. East returns 97, 92, 80. Merge the two sorted lists and take 98, 97, 92. An item ranked fourth on its own shard already has three items ahead of it globally, so it cannot enter the global top three.",
+        "exercise": "West wants to save bandwidth by returning only two items. Construct a counterexample. Then suppose both shards report a score of 92 at the cutoff. What must the API specify?",
+        "answer": "If West holds 99, 98 and 97 while East tops out at 91, returning two from West loses the true third item. Give all shards and the coordinator the same tie rule, such as lower unique item ID first. Without it two runs can disagree on the last item even on fixed data.",
+        "source": "https://www.oreilly.com/library/view/designing-distributed-systems/9781098156343/ch08.html",
+        "sourceTitle": "Brendan Burns · Designing Distributed Systems, Scatter/Gather"
+      },
+      {
+        "title": "What can the API promise when one shard is late?",
+        "explanation": "Parallel calls overlap, but a complete response still waits for the slowest required shard. An API may offer partial results when its deadline expires. The response then needs to communicate which part of the dataset was searched so a caller can interpret an empty list.",
+        "example": "Search reaches West in 30 ms and East in 70 ms. North is still silent at the 100 ms deadline. For an exploratory map, return the two shards with a partial flag. For a question that requires proof across all regions, report the result as unavailable. Silently returning “none” would turn a timeout into a claim about data.",
+        "exercise": "Assume ten independent shards, each with a 99% chance of meeting the same deadline. Estimate the chance of a complete response. What would invalidate that estimate in production?",
+        "answer": "All ten must finish, so the probability under the assumption is 0.99 raised to 10, about 90.4%. A shared queue, network path or overloaded coordinator makes delays dependent. Measure end-to-end completion and partial-result rates together with per-shard timings under the same workload.",
+        "source": "https://www.oreilly.com/library/view/designing-distributed-systems/9781098156343/ch08.html",
+        "sourceTitle": "Brendan Burns · Designing Distributed Systems, Scatter/Gather"
+      }
+    ]
+  }
+]

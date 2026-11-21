@@ -64,12 +64,32 @@ function vault(c, blocks) {
   let i = 0;
   const modules = c.meta.modules.map(m => [`## ${m.title}`, '', m.blurb || '', '', ...m.puzzles.map(() => c.puzzles[i++]).map(p => `- [[${noteName(p)}]]: ${p.meta.summary}`), ''].join('\n'));
   const soon = (c.meta.upcoming || []).map(m => `- ${m.title} (coming): ${m.topics}`).join('\n');
+  const chapters = c.chapters || [];
+  const chapterLinks = chapters.map((ch, i) => `[[Practice chapter ${i + 1}|${ch.title}]]`);
+  chapters.forEach((ch, i) => {
+    const lessons = ch.lessons.flatMap(lesson => [
+      `## ${lesson.title}`, lesson.explanation, '### Worked example', lesson.example,
+      '### Try it', lesson.exercise, '### Compare your answer', lesson.answer,
+      `[Source · ${lesson.sourceTitle}](${lesson.source})`
+    ]);
+    files.set(`${dir}/Practice chapter ${i + 1}.md`, [
+      `# ${ch.title}`, ...lessons, chapterLinks[i + 1] || '[[Final project]]', '[[Course map]]'
+    ].join('\n\n'));
+  });
   files.set(`${dir}/Course map.md`, [
     '---', `source: ${url(c)}`, `tags: [course/${c.id}]`, '---', '',
     `# ${c.meta.title}`, '', c.meta.intro, '',
     `From [pachulski.dev](${url(c)}), free. Each note builds on the ones it links to: open the graph view to see the building blocks. The "Check yourself" lines are flashcards for the Spaced Repetition plugin.`, '',
-    ...modules, soon ? `## Coming next\n\n${soon}\n` : '', '[[Glossary]]', '',
+    ...modules, ...(chapterLinks.length ? ['## Practice chapters', '', ...chapterLinks.map(l => '- ' + l), ''] : []), '[[Final project]]', '', soon ? `## Coming next\n\n${soon}\n` : '', '[[Glossary]]', '',
   ].join('\n'));
+  const project = c.project;
+  files.set(`${dir}/Final project.md`, [
+    `# ${project.title}`, project.brief, '## Before you start', project.prerequisites, project.setup,
+    '## Run the investigation', project.steps.map((s, i) => `${i + 1}. ${s}`).join('\n'),
+    '## Evidence to keep', project.evidence.map(s => `- ${s}`).join('\n'),
+    '## Worked review', ...project.worked, '## Change one assumption', project.variation,
+    '## Check your reasoning', project.solution, '[[Course map]]'
+  ].join('\n\n'));
   for (const p of c.puzzles) files.set(`${dir}/${noteName(p)}.md`, puzzleNote(c, p, blocks));
   const terms = Object.entries(g.terms).sort((a, b) => Number(a[1].in) - Number(b[1].in) || a[0].localeCompare(b[0]));
   files.set(`${dir}/Glossary.md`, [
@@ -117,6 +137,10 @@ function tutor(c) {
     title: c.meta.title,
     url: url(c),
     puzzles: c.puzzles.map(p => ({ n: p.n, title: p.meta.title, takeaway: p.meta.takeaway, url: url(c, p) })),
+    chapters: (c.chapters || []).map(ch => ({
+      title: ch.title, url: `${url(c)}${ch.slug}.html`, lessons: ch.lessons.map(lesson => lesson.title)
+    })),
+    project: { title: c.project.title, url: `${url(c)}final-project.html` },
     terms: Object.entries(g.terms).map(([t, v]) => ({ t, in: Number(v.in), def: v.def })),
     upcoming: (c.meta.upcoming || []).map(m => `${m.title}: ${m.topics}`),
     assumes: c.meta.assumes ? c.meta.assumes.title : '',

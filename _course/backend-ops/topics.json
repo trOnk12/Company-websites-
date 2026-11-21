@@ -1,0 +1,171 @@
+[
+  {
+    "title": "Reading production evidence",
+    "lessons": [
+      {
+        "title": "Which index matches the question?",
+        "explanation": "A B-tree orders keys lexicographically. In an index on (owner_id, created_at, id), entries for each owner are contiguous. The next two columns order that owner's bookmarks and break timestamp ties. A query can seek to the owner and a cursor boundary, then stop when it has enough rows.",
+        "example": "For owner 7, two bookmarks have the same timestamp and IDs 31 and 32. Order by created_at DESC, id DESC. A page ending at (T,32) must admit (T,31) on the next page. The predicate (created_at,id) < (T,32), combined with owner_id = 7, preserves that boundary. A strict timestamp-only predicate skips ID 31.",
+        "exercise": "Would this index also be your first choice for listing the latest ten bookmarks across every owner?",
+        "answer": "The leading owner key groups entries by owner. A global time-ordered feed has a different access pattern. Compare plans and representative loads for an index beginning with created_at and id. Include the storage and write cost of maintaining another index.",
+        "source": "https://www.postgresql.org/docs/17/indexes-multicolumn.html",
+        "sourceTitle": "PostgreSQL · Multicolumn indexes"
+      },
+      {
+        "title": "What is a query plan counting?",
+        "explanation": "A plan is a tree of operations chosen by the database. Estimates guide that choice. EXPLAIN ANALYZE runs the statement and reports measurements. Inspect the first large divergence in row estimates, and remember that actual rows at a node with multiple loops are reported as a per-loop average.",
+        "example": "A nested loop finds 200 owners and probes bookmarks once per owner. The inner node says actual rows=5 loops=200. It returned about 1,000 rows across its invocations. If the estimate was one row per probe, the work diverged by roughly five times there. A ten-row development table cannot reproduce the distribution of a few very large owners.",
+        "exercise": "Your colleague adds the times of every parent and child node to explain total latency. What would you measure instead?",
+        "answer": "Parent time includes child work, so that sum double-counts it. Record the top-level execution time, inspect the costly subtree, and compare equivalent runs with the same inputs and cache conditions. Use buffers and representative distributions to test the proposed explanation.",
+        "source": "https://www.postgresql.org/docs/17/using-explain.html",
+        "sourceTitle": "PostgreSQL · Using EXPLAIN"
+      },
+      {
+        "title": "Should the platform restart this process?",
+        "explanation": "A startup probe grants a slow-starting container time to initialize before the other probes take over. Readiness controls eligibility to receive service traffic. Persistent liveness failure tells the kubelet to restart the container according to its restart policy. A probe therefore encodes a recovery decision, not just a health label.",
+        "example": "Six pods share a database. For thirty seconds the database refuses connections. Restarting all six application processes cannot restore that dependency and adds startup load. Choose whether these pods can still serve meaningful requests. Test a readiness policy against that contract, and reserve a liveness failure for a condition a restart can plausibly fix.",
+        "exercise": "A pod passes its HTTP readiness probe after a rollback. What evidence would let you declare bookmark writes recovered?",
+        "answer": "Send a representative synthetic write, read it through another eligible instance, and verify its owner and contents. Observe user error rates during the same window. A successful probe establishes only that its specific check passed.",
+        "source": "https://kubernetes.io/docs/concepts/workloads/pods/probes/",
+        "sourceTitle": "Kubernetes · Container probes"
+      }
+    ]
+  },
+  {
+    "title": "Build and roll out a service under resource limits",
+    "lessons": [
+      {
+        "title": "What exactly is inside the image you deploy?",
+        "explanation": "A multi-stage Docker build separates compilation from the runtime filesystem. Each FROM begins a stage. COPY --from transfers named outputs from one stage into another. The final stage still needs every runtime dependency required by the distributed application.",
+        "example": "Compile a JVM service with a JDK in the build stage and copy its application artifact into a runtime stage with a suitable Java runtime. Start the final image against a disposable database, wait for readiness, send a write, restart and read the row. A passing test in the build stage did not exercise that runtime filesystem.",
+        "exercise": "The final image starts but fails only when exporting a report. Which check would expose the packaging mistake?",
+        "answer": "Exercise that path in the final image and inspect the missing dependency, file or permission it reports. Ensure the exact tested image digest is promoted. Rebuilding the same tag between verification and rollout can change what is shipped.",
+        "source": "https://docs.docker.com/build/building/multi-stage/",
+        "sourceTitle": "Docker · Multi-stage builds"
+      },
+      {
+        "title": "Why can a healthy rollout temporarily need more capacity?",
+        "explanation": "A rolling Deployment scales a new ReplicaSet up while scaling the old one down. maxSurge controls extra pods and maxUnavailable controls permitted unavailability during the update. A new pod that has started may still be unready. Scheduling capacity and probe behavior therefore affect rollout progress.",
+        "example": "Start with four ready replicas, maxSurge=1 and maxUnavailable=0. The controller can create one replacement while retaining all four ready old pods. If that new pod cannot be scheduled, the rollout can stall without reducing the existing four ready replicas. Inspect scheduling events and availability separately.",
+        "exercise": "The new pod is scheduled and starts, but its readiness check never succeeds. Would more space in the cluster solve this case?",
+        "answer": "Inspect the readiness failure, its configuration and the dependency it checks. Extra scheduling capacity addressed a different failure. Verify that old and new versions can coexist with the current database schema before resuming or rolling back.",
+        "source": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "sourceTitle": "Kubernetes · Deployments"
+      },
+      {
+        "title": "Why can a pod be pending while a node looks idle?",
+        "explanation": "The scheduler evaluates resource requests when choosing a placement. CPU utilization at one instant is a different measurement. Resource limits constrain a running container: CPU limits can throttle it and exceeding a memory limit under pressure can cause termination.",
+        "example": "A node with 2 allocatable CPU cores already has 1.6 cores requested. A new pod requests 0.6 cores and no other node fits. Even if current CPU use is only 0.3 cores, adding the pod would bring requests to 2.2. Describe this as a scheduling constraint before changing limits.",
+        "exercise": "A pod runs, periodically times out under load and never restarts. What evidence distinguishes CPU throttling from a slow database?",
+        "answer": "Compare throttling metrics and CPU demand with database checkout and query latency over the same interval. Reproduce under a controlled request mix and adjust one limit at a time. Low average CPU across a minute can hide short bursts.",
+        "source": "https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+        "sourceTitle": "Kubernetes · Resource management"
+      }
+    ]
+  },
+  {
+    "title": "Follow one booking through Spring MVC and a database transaction",
+    "lessons": [
+      {
+        "title": "Who handles POST /bookings?",
+        "explanation": "In a synchronous Servlet-based application, the container passes the incoming request through the configured filter chain. A filter may finish the exchange early. If the request reaches Spring MVC, its DispatcherServlet looks up a handler and chooses a handler adapter that knows how to invoke it. A controller accepts HTTP-facing inputs and translates its result into a response. Business decisions can live behind a separate service boundary.",
+        "example": "For a matching POST /bookings route, the selected controller asks BookingService to reserve seat 12. A GET to the same path can reach the application without matching that method. Separately, an authentication filter can decline an unauthenticated request before the controller runs. These outcomes can all occur with a reachable server.",
+        "exercise": "A request returns a refusal and no controller-entry event appears. How do you distinguish a filter decision from the wrong route?",
+        "answer": "Compare the method and route with the deployed mappings and correlate filter and dispatcher observations for that request. The absence of a database query establishes neither explanation by itself.",
+        "source": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-servlet/sequence.html",
+        "sourceTitle": "Spring Framework · DispatcherServlet processing"
+      },
+      {
+        "title": "When does a JSON body become a booking command?",
+        "explanation": "A controller parameter annotated with @RequestBody asks a message converter to read the request body into the declared Java type. With validation configured, @Valid can trigger validation of the resulting object. Decoding asks whether the body can become that type; validation asks whether its fields satisfy declared rules. Availability remains a business decision made against the current database state.",
+        "example": "Suppose the contract requires one nonblank seat name. A malformed body cannot be decoded. A decodable object containing a blank name fails the constraint. A well-formed request for seat A12 can still lose because another customer committed the final booking. Keep these fixture outcomes distinct in integration tests.",
+        "exercise": "Two requests both pass validation for A12. Why does validating availability before entering the service fail to protect the final seat?",
+        "answer": "Another writer can commit between the check and the write. Use a transaction with a database constraint or conditional change that actually arbitrates the race. Retain validation for explaining malformed input early.",
+        "source": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestbody.html",
+        "sourceTitle": "Spring Framework · Request body conversion and validation"
+      },
+      {
+        "title": "Where does the transaction actually begin?",
+        "explanation": "In Spring’s usual proxy mode, a call through a managed service proxy is intercepted. Its transaction manager can start or join a transaction before invoking the target method. Repository calls must participate in that same transaction for their writes to commit together. The proxy finishes the transaction according to the outcome and configured rules before returning normally to its caller.",
+        "example": "A controller calls a proxied book() method with no transaction already active. The method inserts a booking and a pending confirmation event in the same database. If commit fails as the proxied invocation finishes, the controller must not send a successful booking reply. If the database commits but the client disconnects, the record can still exist.",
+        "exercise": "A method on the service calls another @Transactional method on the same instance. Does that local call necessarily start the requested new transaction?",
+        "answer": "No. In the default proxy model, self-invocation does not cross the proxy. It can still run inside an existing outer transaction. Put the intended unit of work at a genuine managed boundary and test its committed database state.",
+        "source": "https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html",
+        "sourceTitle": "Spring Framework · Declarative transaction annotations"
+      },
+      {
+        "title": "What survives each failure boundary?",
+        "explanation": "Under the default declarative rollback rules, an unchecked exception or Error escaping the method causes rollback; a checked exception alone normally does not. Rules can be configured. Catching an exception and returning normally also changes what the interceptor observes, although the transaction or resource may already be marked rollback-only. Exercise the actual configuration. A database transaction cannot roll back an email already accepted elsewhere.",
+        "example": "Run three disposable fixtures. First, fail before commit with an unchecked exception and confirm that neither row remains. Second, let both rows commit and disconnect before the HTTP response; look up the existing booking by a stable request identity. Third, crash a worker after it delivers the confirmation but before it marks its event done; the delivery may be attempted again.",
+        "exercise": "How would you test rollback without an outer test transaction concealing what really committed?",
+        "answer": "Invoke the service through the normal application entry point with controlled failure injection. Once it returns or fails, inspect booking and event from a separate transaction. Verify the checked-exception behavior you configured and test the worker’s redelivery independently.",
+        "source": "https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/rolling-back.html",
+        "sourceTitle": "Spring Framework · Rolling back a declarative transaction"
+      }
+    ]
+  },
+  {
+    "title": "Diagnose a running Docker container",
+    "lessons": [
+      {
+        "title": "Why does localhost work in one container and fail in its neighbor?",
+        "explanation": "A port belongs to a listening process at a network address. With ordinary bridge networking, each container has its own loopback address. On a user-defined Docker bridge, peers can also resolve each other's container names. Publishing a port sets up a host entry point. Two containers on the same bridge can talk directly to a listening service without publishing it.",
+        "example": "On a machine with Docker Engine running Linux containers, create an isolated exercise network with `docker network create course-peer-net`. Start a tiny server with `docker run -d --name course-peer-web --network course-peer-net busybox:1.36 sh -c 'echo READY > /tmp/index.html && exec httpd -f -p 8080 -h /tmp'`. No host port is published. Inside the server, `docker exec course-peer-web wget -qO- http://127.0.0.1:8080` prints READY.",
+        "exercise": "Start a second container with `docker run --rm --network course-peer-net busybox:1.36 wget -qO- http://course-peer-web:8080`. Predict the result. Repeat with 127.0.0.1 in place of course-peer-web. Which machine would have to be listening for that second command to succeed?",
+        "answer": "The name reaches the server and prints READY. Loopback reaches the short-lived client container, where nothing serves port 8080. Publishing the server port would leave the meaning of the client's loopback unchanged. Remove the exercise server with `docker rm -f course-peer-web`, then remove its bridge with `docker network rm course-peer-net`.",
+        "source": "https://docs.docker.com/engine/network/drivers/bridge/",
+        "sourceTitle": "Docker · User-defined bridge networks"
+      },
+      {
+        "title": "Where did the image's welcome page go?",
+        "explanation": "A mount places a second filesystem at a path. Opening a file under that path now searches the mounted directory. Files from the underlying image can still be in the image even when the running process cannot see them. Docker normally copies existing image files into a newly mounted empty volume. The volume-nocopy option suppresses that initialization.",
+        "example": "Read the original page size with `docker run --rm nginx:alpine wc -c /usr/share/nginx/html/index.html`. You should see a positive byte count. Create a fresh exercise volume with `docker volume create course-empty-web`. Use a new name if that volume already exists. Run `docker run --rm --mount type=volume,src=course-empty-web,dst=/usr/share/nginx/html,volume-nocopy nginx:alpine ls -A /usr/share/nginx/html`. The empty listing describes the mounted volume.",
+        "exercise": "Repeat the original byte-count command without the mount. Predict whether the file returns. Then run the listing with a second fresh volume named course-seeded-web and omit volume-nocopy. Explain both results before changing any Dockerfile.",
+        "answer": "The image-only container still finds index.html. The second fresh volume receives the image's files on its first ordinary mount. Rebuilding the image would not fix a deployment mounting an existing volume with the wrong contents. Check the mount destination and the actual contents. Release these exercise volumes with `docker volume rm course-empty-web course-seeded-web`.",
+        "source": "https://docs.docker.com/engine/storage/volumes/",
+        "sourceTitle": "Docker · Mounting a volume over existing data"
+      },
+      {
+        "title": "What can a worker finish during docker stop?",
+        "explanation": "Stopping a container gives its main process a chance to finish. With the default stop signal Docker sends SIGTERM. After the configured timeout it can force termination with SIGKILL. A worker needs a shutdown policy for any job already in progress. Here the job is a two-second cleanup that announces its beginning and end.",
+        "example": "Use a disposable worker. Run `docker run -d --name course-drain busybox:1.36 sh -c 'trap \"echo draining; sleep 2; echo finished; exit 0\" TERM; echo ready; while :; do sleep 1; done'`. Wait until `docker logs course-drain` shows ready. Run `docker stop -t 6 course-drain`, then inspect its logs and exit status with `docker inspect --format '{{.State.ExitCode}}' course-drain`.",
+        "exercise": "After the successful run, use `docker start course-drain`. Wait for a second ready line before repeating with `docker stop -t 1 course-drain`. Which output marks completed cleanup? Can the first line of cleanup prove a job was committed?",
+        "answer": "Six seconds allows this fixture to print finished and exit with zero under ordinary scheduling. One second cannot cover the two-second cleanup. The forced stop usually yields 137 and no second finished line. A production worker should record its durable outcome and acknowledge its job according to that outcome. A log line announcing cleanup establishes only that the handler began. Remove the stopped fixture with `docker rm course-drain`.",
+        "source": "https://docs.docker.com/reference/cli/docker/container/stop/",
+        "sourceTitle": "Docker · Container stop signals and timeout"
+      }
+    ]
+  },
+  {
+    "title": "Build a SQL report that survives awkward data",
+    "lessons": [
+      {
+        "title": "Can a customer with zero paid orders appear in the report?",
+        "explanation": "A join pairs rows by a condition. A left join also keeps each unmatched left row and supplies NULL values for its missing right side. NULL represents an unknown or absent value here. An ON condition controls which rows pair up. A WHERE condition subsequently filters the rows that survived the join.",
+        "example": "In PostgreSQL, run this read-only query. The VALUES lists act as tiny tables so there is nothing to install in the database.\n\n`WITH customers(id) AS (VALUES (1),(2),(3)), orders(id,owner,state) AS (VALUES (10,1,'paid'),(11,1,'open'),(12,2,'open')) SELECT c.id,o.id AS paid_order FROM customers c LEFT JOIN orders o ON o.owner=c.id AND o.state='paid' ORDER BY c.id;`",
+        "exercise": "Write down the three rows. Now move the paid condition from ON to a WHERE clause immediately before ORDER BY. Which customers disappear? Would adding OR o.id IS NULL to that WHERE clause recover both?",
+        "answer": "The original returns (1,10), (2,NULL), (3,NULL). Filtering after joining returns only (1,10). Adding OR o.id IS NULL recovers customer 3. Customer 2 had a matching open order, so the join never produced a NULL-filled row for that customer. Filtering that order afterwards discards the customer's only row.",
+        "source": "https://www.postgresql.org/docs/17/queries-table-expressions.html",
+        "sourceTitle": "PostgreSQL 17 · Joined tables and filtering"
+      },
+      {
+        "title": "Why does a second tag double the reported revenue?",
+        "explanation": "State what one input row represents before summing money. If one order can have several tags, a join produces one row per matching order and tag. SUM adds a value from each such row. DISTINCT on the amount treats equal amounts as the same value even when they came from different orders.",
+        "example": "Run `WITH orders(id,cents) AS (VALUES (10,500),(11,500)), tags(order_id,tag) AS (VALUES (10,'red'),(10,'blue'),(11,'red')) SELECT COUNT(*) AS joined_rows, SUM(o.cents) AS revenue, SUM(DISTINCT o.cents) AS distinct_amounts FROM orders o JOIN tags t ON t.order_id=o.id;` The numbers are 3, 1500 and 500. The contract says to count revenue from each tagged order once. The correct total is 1000 cents.",
+        "exercise": "Keep the same two input tables. Replace the SELECT with a query that counts each tagged order once. Predict what happens if order 12 costs 700 cents and has no tags. Then add a second blue tag on a different order. Which changes should affect revenue?",
+        "answer": "Use `SELECT SUM(o.cents) FROM orders o WHERE EXISTS (SELECT 1 FROM tags t WHERE t.order_id=o.id);` The test asks a yes-or-no question once per order and preserves its single amount. An untagged order contributes nothing. An additional tag on an already tagged order leaves revenue unchanged. Adding the first tag to order 12 raises revenue to 1700. For an empty matching set SUM returns NULL. Use COALESCE around the sum if the contract requires zero.",
+        "source": "https://www.postgresql.org/docs/17/functions-aggregate.html",
+        "sourceTitle": "PostgreSQL 17 · Aggregate functions"
+      },
+      {
+        "title": "Which payment took the balance below zero?",
+        "explanation": "A grouped sum collapses a customer's ledger into one total. A window function can attach a running sum to each original entry. PARTITION BY starts a separate calculation per account. ORDER BY defines the posting sequence inside it. A window frame says which entries in that sequence contribute to the current sum. Use whole cents to represent the fixture's money.",
+        "example": "Here day is an integer day number. For entries on the same day the business contract says the smaller posting ID happened first. Run `WITH ledger(acct,day,id,cents) AS (VALUES ('a',1,10,500),('a',2,20,-700),('a',2,21,300),('b',2,30,50)) SELECT acct,id,SUM(cents) OVER (PARTITION BY acct ORDER BY day,id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS balance FROM ledger ORDER BY acct,day,id;`",
+        "exercise": "Identify the overdrawn posting. Replace the window's ORDER BY day,id and its ROWS frame with just ORDER BY day, keeping the outer display order. Predict the two balances on day 2 for account a. Explain how a report could miss a real overdraft even with all ledger rows present.",
+        "answer": "The explicit posting sequence gives account a balances of 500, -200 and 100 cents. Posting 20 caused the overdraft. Account b starts independently at 50. With just ORDER BY day the default frame includes all peers through the current day. Both day-2 entries for a show 100. The outer sort arranges the display after the balances have been calculated and cannot reconstruct the missing intermediate balance. A unique ID is a useful tie-breaker only if the business agrees that its order represents posting order.",
+        "source": "https://www.postgresql.org/docs/17/tutorial-window.html",
+        "sourceTitle": "PostgreSQL 17 · Window functions and frames"
+      }
+    ]
+  }
+]

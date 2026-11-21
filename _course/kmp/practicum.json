@@ -1,0 +1,24 @@
+{
+  "title": "Design a Swift-facing boundary for shared bookmarks",
+  "brief": "A Kotlin module retrieves bookmark titles. Ship it to an iOS screen whose owner can disappear while a load is in flight. Review the caller contract, ownership and UI execution together.",
+  "prerequisites": "Use the course lessons on source sets, Objective-C export, tracing collection, ARC, coroutine dispatchers and packaging.",
+  "setup": "Use the course’s Objective-C framework export route. Sketch a common store with load and cancel operations and an iOS view controller that retains it. Optionally inspect an exported framework header on a Mac.",
+  "steps": [
+    "Assign domain logic, the platform storage adapter and the iOS view controller to source sets or applications. Name the dependency direction between them.",
+    "Sketch the Swift-visible operation using concrete result types and explicit error or completion behavior. Inspect the generated declaration if using a real build.",
+    "Draw the controller → store → callback → controller ownership chain. Specify the teardown action when the screen leaves.",
+    "Trace a result arriving just after dismissal and name the context for a UI update if the screen is still active. Explain what you package into the app."
+  ],
+  "evidence": [
+    "The Swift caller can identify the concrete result, failure and end of observation without relying on Kotlin-only type information.",
+    "The design has an explicit way to stop work or observation and to prevent an obsolete result from updating a dismissed screen.",
+    "The packaging plan identifies one exported API boundary and distinguishes runtime ownership from application lifecycle."
+  ],
+  "worked": [
+    "Place title selection in common code, platform storage behind an interface and controller lifecycle in the iOS app. The course's export path presents Objective-C-compatible declarations to Swift. Inspect what Swift actually imports before promising a typed stream. A concrete title payload and a small observer or load wrapper can make the boundary explicit.",
+    "If the controller owns a store that retains a closure capturing the controller, dismissal may leave the controller reachable. Use deliberate teardown and an appropriate weak capture. Kotlin tracing and Swift reference counting do not make an application subscription cancel itself.",
+    "Keep slow work off the UI path. Before updating a still-active screen, return to its UI execution context and check the current request identity. Distribute one umbrella framework exposing the intended public modules to this app and verify the Swift consumer builds against that exported surface."
+  ],
+  "variation": "One consumer wants a one-shot load while another wants a continuous list of changes. Can a single completion callback document both lifetimes?",
+  "solution": "Give the one-shot operation one terminal result. Give continuous observation a documented sequence and cancellation handle. The Swift owner can then express how long it subscribes and release its callback at the right boundary."
+}

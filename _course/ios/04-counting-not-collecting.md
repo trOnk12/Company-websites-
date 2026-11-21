@@ -16,7 +16,7 @@ On Android, you rarely think about freeing memory: the **garbage collector**, fr
 
 ## The building block
 
-Swift uses **ARC**, Automatic Reference Counting, for class instances (structs and enums are values, copied rather than shared, so they need no counting). Each object keeps a count of the **strong references** to it: the variables, properties and collections that hold it. Every new one adds one; every one that goes away subtracts one. When the count reaches zero, ARC frees the object right away. No collector running in the background: memory goes back the moment it's no longer used (the counting itself has a small cost on every reference).
+Swift uses **ARC**, Automatic Reference Counting, for class instances (structs and enums are values copied on assignment, but their stored fields may contain references whose lifetimes ARC tracks). Each object keeps a count of the **strong references** to it: the variables, properties and collections that hold it. Every new one adds one; every one that goes away subtracts one. When the count reaches zero, ARC frees the object right away. No collector running in the background: memory goes back the moment it's no longer used (the counting itself has a small cost on every reference).
 
 That has one blind spot. If two objects hold strong references to each other, say a screen holds its view model and the view model holds the screen back, then even after everything else lets go, each still counts one reference: the other one. Neither count reaches zero, so neither is ever freed. That's a **strong reference cycle**, and it's a leak. A garbage collector would see that nothing else can reach them; ARC only counts, so it can't.
 

@@ -16,7 +16,7 @@ In puzzle 3, the phone read the battery level by asking: "read 2A19". Imagine sh
 
 ## The building block
 
-Yes: that's a **notification**. The GATT server sends a characteristic's new value by itself at the next connection event, without being asked. The meetings still happen; what's saved is the request and answer packets, and the value arrives as soon as it changes.
+Yes: that's a **notification**. The GATT server sends a characteristic's new value by itself when the server queues an update and the link can carry it, without a separate read request. The meetings still happen; what's saved is the request and answer packets, and delivery still depends on the sensor, radio schedule and available capacity.
 
 But the strap doesn't notify everyone by default. A characteristic can carry extra settings called **descriptors**. Descriptors have UUIDs too, and a client can write them. One of them, the **CCCD** (Client Characteristic Configuration Descriptor, UUID 2902), holds a switch per client: bit 0 on means "notify me". The client turns notifications on by writing that descriptor on the device.
 

@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="4" data-prev="03-a-secret-agreed-in-public.html" data-prev-title="A secret agreed in public">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" class="done" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" class="done" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" class="done" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" class="done" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" aria-current="page" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
-      <p class="eyebrow">Encryption, from the ground up · Puzzle 4 · 5 of 9</p>
-      <h1>The man in the middle</h1>
-      <p class="lede">Puzzle 3 ended with a gap: a key exchange gives you a secret shared with whoever answered. Here's the attack that fills that gap, step by step, and the one thing that would stop it.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="security" data-n="4">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Encryption, from the ground up</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 4 · 5 of 9</p>
+        <h1>The man in the middle</h1>
+        <p class="lede">Puzzle 3 ended with a gap: a key exchange gives you a secret shared with whoever answered. Here's the attack that fills that gap, step by step, and the one thing that would stop it.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-anyone-on-the-line.html" title="Anyone on the line">0</a></li><li><a href="01-bits-xor-and-a-toy-cipher.html" title="Bits, XOR and a toy cipher">1</a></li><li><a href="02-one-key-for-both.html" title="One key for both">2</a></li><li><a href="03-a-secret-agreed-in-public.html" title="A secret agreed in public">3</a></li><li><a href="04-the-man-in-the-middle.html" aria-current="page" title="The man in the middle">4</a></li><li><a href="05-a-fingerprint-for-data.html" title="A fingerprint for data">5</a></li><li><a href="06-a-hash-with-a-secret.html" title="A hash with a secret">6</a></li><li><a href="07-proof-of-who-you-are.html" title="Proof of who you are">7</a></li><li><a href="08-tls-the-blocks-together.html" title="TLS, the blocks together">8</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary><a href="03-a-secret-agreed-in-public.html">Puzzle 3: A secret agreed in public</a></summary><p>In a key exchange, each side keeps a private value and sends a public value made from it. Each combines its own private value with the other's public value, and both get the same shared secret. The listener sees only the public values and can't compute it. But it doesn't tell you who you agreed with.</p></details></li></ul>
+        <ul><li data-block="3"><details><summary>Puzzle 3: A secret agreed in public</summary><p>In a key exchange, each side keeps a private value and sends a public value made from it. Each combines its own private value with the other's public value, and both get the same shared secret. The listener sees only the public values and can't compute it. But it doesn't tell you who you agreed with.</p><p><a href="03-a-secret-agreed-in-public.html">Review puzzle 3</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-anyone-on-the-line.html">0</a> → <a href="01-bits-xor-and-a-toy-cipher.html">1</a> → <a href="02-one-key-for-both.html">2</a> → <a href="03-a-secret-agreed-in-public.html">3</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../sysdesign/04-what-https-adds.html"><b>HTTPS</b></a> <span class="small">Mobile system design, from a packet to an app, puzzle 4: What HTTPS adds</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="The attacker runs one exchange with each side and relays everything"><input type="radio" name="st-mitm" id="st-mitm-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-mitm" id="st-mitm-2" aria-label="Step 2 of 4"><input type="radio" name="st-mitm" id="st-mitm-3" aria-label="Step 3 of 4"><input type="radio" name="st-mitm" id="st-mitm-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="mi-t"><title id="mi-t">The app sends its public value, the attacker keeps it and sends its own to the server; the server's public value is swapped the same way; the app shares secret one with the attacker and the server shares secret two with the attacker; the attacker decrypts, reads and re-encrypts every message</title>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="mi-t"><title id="mi-t">The app sends its public value, the attacker keeps it and sends its own to the server; the server's public value is swapped the same way; the app shares secret one with the attacker and the server shares secret two with the attacker; the attacker decrypts, reads and re-encrypts every message</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="20" y="100" width="70" height="120" rx="12"/><rect class="d-hl" x="27" y="114" width="56" height="86" rx="4"/><circle class="d-ink" cx="55" cy="210" r="3"/><text class="d-tiny" x="55" y="238" text-anchor="middle">app</text></g>
 <g class="step s1"><circle class="d-skin" cx="320" cy="160" r="15"/><rect class="d-roof" x="298" y="177" width="44" height="32" rx="12"/><text class="d-tiny" x="320" y="230" text-anchor="middle">attacker</text></g>
@@ -76,6 +87,7 @@
 <g class="step s4" data-pulse="4"><text class="d-r" x="320" y="70" text-anchor="middle">decrypt, read, re-encrypt</text></g>
 <g class="step s1" data-move="1:250,94 2:250,244 3:320,295 4:320,120"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Your app sends its public value. The attacker keeps it and sends the server its own, pretending to be you.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-mitm-2">Next →</label></div></li>
 <li><p>The server's public value is swapped the same way, on the way back.</p><div class="stepnav"><label for="st-mitm-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-mitm-3">Next →</label></div></li>
@@ -100,36 +112,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>In a man-in-the-middle attack, who does your app share its secret with?</legend>
-<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-1"><label for="q-04-the-man-in-the-middle-1-1">The server, because the key exchange guarantees it</label>
-<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-2" data-ok><label for="q-04-the-man-in-the-middle-1-2">The attacker, who answered in the server's place</label>
-<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-3"><label for="q-04-the-man-in-the-middle-1-3">Nobody, since the attacker blocks the exchange</label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-1"><label for="q-04-the-man-in-the-middle-1-1"><span>The server, because the key exchange guarantees it</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-2" data-ok><label for="q-04-the-man-in-the-middle-1-2"><span>The attacker, who answered in the server's place</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-1" id="q-04-the-man-in-the-middle-1-3"><label for="q-04-the-man-in-the-middle-1-3"><span>Nobody, since the attacker blocks the exchange</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The exchange only guarantees a secret with whoever answered. <label class="show-me" for="st-mitm-3" data-goto="st-mitm">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> With whoever answered.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The exchange succeeds; it just succeeds with the attacker. <label class="show-me" for="st-mitm-3" data-goto="st-mitm">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why doesn't encryption stop a man in the middle?</legend>
-<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-1"><label for="q-04-the-man-in-the-middle-2-1">The two shared secrets are too short to be safe</label>
-<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-2"><label for="q-04-the-man-in-the-middle-2-2">The attacker breaks AES by trying keys on enough computers</label>
-<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-3" data-ok><label for="q-04-the-man-in-the-middle-2-3">The attacker holds both secrets</label>
+<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-1"><label for="q-04-the-man-in-the-middle-2-1"><span>The two shared secrets are too short to be safe</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-2"><label for="q-04-the-man-in-the-middle-2-2"><span>The attacker breaks AES by trying keys on enough computers</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-2" id="q-04-the-man-in-the-middle-2-3" data-ok><label for="q-04-the-man-in-the-middle-2-3"><span>The attacker holds both secrets</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Length doesn't matter if you share the secret with the wrong party. <label class="show-me" for="st-mitm-4" data-goto="st-mitm">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> It doesn't need to break anything; it has the keys. <label class="show-me" for="st-mitm-4" data-goto="st-mitm">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Encrypted, but to the wrong party.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a listener and a man in the middle?</legend>
-<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-1"><label for="q-04-the-man-in-the-middle-3-1">A listener runs both exchanges and relays, while a man in the middle only reads what passes</label>
-<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-2" data-ok><label for="q-04-the-man-in-the-middle-3-2">A listener only reads what passes, while a man in the middle runs both exchanges and relays</label>
+<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-1"><label for="q-04-the-man-in-the-middle-3-1"><span>A listener runs both exchanges and relays, while a man in the middle only reads what passes</span></label>
+<input type="radio" name="q-04-the-man-in-the-middle-3" id="q-04-the-man-in-the-middle-3-2" data-ok><label for="q-04-the-man-in-the-middle-3-2"><span>A listener only reads what passes, while a man in the middle runs both exchanges and relays</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Watching vs standing in between.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc4949">RFC 4949, Internet Security Glossary</a> (&quot;man-in-the-middle attack: A form of active wiretapping attack in which the attacker intercepts and selectively modifies communicated data to masquerade as one or more of the entities&quot;; with an unauthenticated Diffie-Hellman exchange, the attacker could &quot;establish separate session keys with each of them, and … function as a clandestine proxy server between them&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.rfc-editor.org/rfc/rfc4949">RFC 4949, Internet Security Glossary</a> (&quot;man-in-the-middle attack: A form of active wiretapping attack in which the attacker intercepts and selectively modifies communicated data to masquerade as one or more of the entities&quot;; with an unauthenticated Diffie-Hellman exchange, the attacker could &quot;establish separate session keys with each of them, and … function as a clandestine proxy server between them&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A man in the middle intercepts the key exchange and runs two: one with your app, pretending to be the server, and one with the server, pretending to be your app. Each side ends with a shared secret, but shares it with the attacker, who decrypts, reads or changes everything, and re-encrypts it. Encryption doesn't help. What stops it is proof of who sent the public values: a signature, puzzle 7.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-a-secret-agreed-in-public.html">← Puzzle 3</a>

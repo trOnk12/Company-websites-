@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,11 +48,22 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="0" data-prev="" data-prev-title="">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" aria-current="page" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
-      <p class="eyebrow">Performance, under the hood · Start here · 1 of 10</p>
-      <h1>Threads take turns</h1>
-      <p class="lede">Your app runs dozens of threads, and so does every other app, on a phone that can run only a handful at once. Something has to decide who runs. Here's the kernel's turn-taking, the building block under every profiler chart in this course.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="perf" data-n="0">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Performance, under the hood</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 0 · 1 of 10</p>
+        <h1>Threads take turns</h1>
+        <p class="lede">Your app runs dozens of threads, and so does every other app, on a phone that can run only a handful at once. Something has to decide who runs. Here's the kernel's turn-taking, the building block under every profiler chart in this course.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-threads-take-turns.html" aria-current="page" title="Threads take turns">0</a></li><li><a href="01-what-a-trace-is.html" title="What a trace is">1</a></li><li><a href="02-a-photo-or-a-diary.html" title="A photo or a diary">2</a></li><li><a href="03-reading-the-flames.html" title="Reading the flames">3</a></li><li><a href="04-slow-is-not-busy.html" title="Slow isn't always busy">4</a></li><li><a href="05-who-puts-pixels-on-screen.html" title="Who puts pixels on screen">5</a></li><li><a href="06-the-late-frame.html" title="The late frame">6</a></li><li><a href="07-what-garbage-is.html" title="What garbage is">7</a></li><li><a href="08-what-the-collector-costs.html" title="What the collector costs">8</a></li><li><a href="09-what-a-heap-dump-proves.html" title="What a heap dump proves">9</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
 
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -61,7 +72,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Eight cores' worth of turns, shown with two"><input type="radio" name="st-turns" id="st-turns-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-turns" id="st-turns-2" aria-label="Step 2 of 4"><input type="radio" name="st-turns" id="st-turns-3" aria-label="Step 3 of 4"><input type="radio" name="st-turns" id="st-turns-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tt-t"><title id="tt-t">Two CPU cores each run one thread; three more ready threads wait in a run queue; the scheduler switches a running thread out so the next one gets a turn; a thread waiting for the disk leaves the queue and sleeps; when the data arrives the kernel wakes it and it queues again</title><defs><marker id="ah-turns-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-turns-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-turns-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-turns-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="tt-t"><title id="tt-t">Two CPU cores each run one thread; three more ready threads wait in a run queue; the scheduler switches a running thread out so the next one gets a turn; a thread waiting for the disk leaves the queue and sleeps; when the data arrives the kernel wakes it and it queues again</title><defs><marker id="ah-turns-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-turns-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-turns-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-turns-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1" data-pulse="1"><g><line class="d-line" x1="87.5" y1="44" x2="87.5" y2="112"/><line class="d-line" x1="115" y1="44" x2="115" y2="112"/><line class="d-line" x1="142.5" y1="44" x2="142.5" y2="112"/><rect class="d-ink" x="60" y="50" width="110" height="56" rx="6"/><text class="d-inv" x="115" y="83" text-anchor="middle">core 0</text></g><g><line class="d-line" x1="87.5" y1="164" x2="87.5" y2="232"/><line class="d-line" x1="115" y1="164" x2="115" y2="232"/><line class="d-line" x1="142.5" y1="164" x2="142.5" y2="232"/><rect class="d-ink" x="60" y="170" width="110" height="56" rx="6"/><text class="d-inv" x="115" y="203" text-anchor="middle">core 1</text></g></g>
 <g class="step s1 hide-2"><circle class="d-skin" cx="210" cy="40" r="15"/><rect class="d-hl" x="188" y="57" width="44" height="32" rx="12"/><text class="d-tiny" x="210" y="110" text-anchor="middle">A</text></g>
@@ -77,6 +88,7 @@
 <g class="step s4" data-pulse="4"><g><circle class="d-skin" cx="510" cy="230" r="15"/><rect class="d-hl" x="488" y="247" width="44" height="32" rx="12"/><text class="d-tiny" x="510" y="300" text-anchor="middle">E woken</text></g><text class="d-a" x="440" y="110" text-anchor="middle">woken: back in the queue</text><text class="d-tiny" x="440" y="135" text-anchor="middle">waits for a core</text></g>
 <g class="step s1" data-move="1:115,30 2:240,90 3:530,160 4:510,250"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Two <b>CPU cores</b> (phones have more). Each runs one thread at a time. Threads that are ready but have no core wait in the <b>run queue</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-turns-2">Next →</label></div></li>
 <li><p>A's turn is up: the <b>scheduler</b> takes core 0 away and gives it to B, the next in line. A goes back in the queue. That's <b>preemption</b>.</p><div class="stepnav"><label for="st-turns-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-turns-3">Next →</label></div></li>
@@ -88,11 +100,11 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A <b>CPU core</b> is one part of the processor that executes instructions, one after another. A core runs one thread at a time. A phone's processor has several cores, often eight, so at any moment at most eight threads are really running.</p>
+<p>A <b>CPU core</b> is one part of the processor that executes instructions, one after another. In this phone model there are eight available logical CPUs, each running one scheduled thread at a time. Hardware topology and the set available to your process vary by device.</p>
 <p>The <b>scheduler</b> is the part of the kernel that decides which thread runs on which core, and for how long. Threads that are ready to run, but have no core yet, wait in a <b>run queue</b>. When a core frees up, the scheduler gives it the next thread from the queue.</p>
 <p>A thread doesn't keep a core until it's done. After a short stretch, or when a more urgent thread becomes ready, the scheduler can take the core away and put the thread back in the run queue. That's <b>preemption</b>: the thread didn't stop, it was paused so someone else could have a turn.</p>
 <p>Some threads aren't ready at all. A thread that needs a lock another thread holds, or a file from the disk, or a message, has nothing to do until that arrives. The kernel takes it off the run queue: it's asleep and uses no core. When the thing arrives, the kernel <b>wakes</b> the thread: puts it back on a run queue. Woken isn't running yet: if every core is busy, it waits its turn.</p>
-<p>So the time between a function's start and end, as a clock on the wall sees it, is made of three things: running on a core, waiting in the queue for one, and sleeping until something arrives. Only the first is your code being slow. The next puzzles show how a profiler tells them apart.</p>
+<p>So the time between a function's start and end, as a clock on the wall sees it, is made of three things: running on a core, waiting in the queue for one, and sleeping until something arrives. The first measures time executing; all three can affect the user-visible delay. The next puzzles show how a profiler tells them apart.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -102,36 +114,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>A phone has eight cores and twenty threads are ready to run. What happens to the other twelve?</legend>
-<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-1"><label for="q-00-threads-take-turns-1-1">They stop until the app calls them again</label>
-<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-2"><label for="q-00-threads-take-turns-1-2">They run at the same time, each a bit slower</label>
-<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-3" data-ok><label for="q-00-threads-take-turns-1-3">They wait in a run queue for a core to free up</label>
+<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-1"><label for="q-00-threads-take-turns-1-1"><span>They stop until the app calls them again</span></label>
+<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-2"><label for="q-00-threads-take-turns-1-2"><span>They run at the same time, each a bit slower</span></label>
+<input type="radio" name="q-00-threads-take-turns-1" id="q-00-threads-take-turns-1-3" data-ok><label for="q-00-threads-take-turns-1-3"><span>They wait in a run queue for a core to free up</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Leaving the queue is for threads waiting for something; ready threads queue. <label class="show-me" for="st-turns-3" data-goto="st-turns">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> A core runs one thread at a time; the rest wait. <label class="show-me" for="st-turns-1" data-goto="st-turns">Show me step 1 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Ready but no core means waiting in the queue.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A thread is waiting for a file from the disk. Where is it?</legend>
-<input type="radio" name="q-00-threads-take-turns-2" id="q-00-threads-take-turns-2-1"><label for="q-00-threads-take-turns-2-1">On a core, checking again and again whether the file has arrived</label>
-<input type="radio" name="q-00-threads-take-turns-2" id="q-00-threads-take-turns-2-2"><label for="q-00-threads-take-turns-2-2">In the run queue, first in line for the next core</label>
-<input type="radio" name="q-00-threads-take-turns-2" id="q-00-threads-take-turns-2-3" data-ok><label for="q-00-threads-take-turns-2-3">Off the run queue, asleep, until the kernel wakes it</label>
+<input type="radio" name="q-00-threads-take-turns-2" id="q-00-threads-take-turns-2-1"><label for="q-00-threads-take-turns-2-1"><span>On a core, checking again and again whether the file has arrived</span></label>
+<input type="radio" name="q-00-threads-take-turns-2" id="q-00-threads-take-turns-2-2"><label for="q-00-threads-take-turns-2-2"><span>In the run queue, first in line for the next core</span></label>
+<input type="radio" name="q-00-threads-take-turns-2" id="q-00-threads-take-turns-2-3" data-ok><label for="q-00-threads-take-turns-2-3"><span>Off the run queue, asleep, until the kernel wakes it</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Asleep it uses no core; the kernel wakes it when the data is there. <label class="show-me" for="st-turns-3" data-goto="st-turns">Show me step 3 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> It isn't ready yet; a sleeping thread takes no place in the queue. <label class="show-me" for="st-turns-3" data-goto="st-turns">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Waiting for something means asleep, not queued.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between being woken and running?</legend>
-<input type="radio" name="q-00-threads-take-turns-3" id="q-00-threads-take-turns-3-1" data-ok><label for="q-00-threads-take-turns-3-1">Woken puts the thread back in a run queue, while running means it's on a core</label>
-<input type="radio" name="q-00-threads-take-turns-3" id="q-00-threads-take-turns-3-2"><label for="q-00-threads-take-turns-3-2">Woken means it's on a core, while running puts it back in a run queue</label>
+<input type="radio" name="q-00-threads-take-turns-3" id="q-00-threads-take-turns-3-1" data-ok><label for="q-00-threads-take-turns-3-1"><span>Woken puts the thread back in a run queue, while running means it's on a core</span></label>
+<input type="radio" name="q-00-threads-take-turns-3" id="q-00-threads-take-turns-3-2"><label for="q-00-threads-take-turns-3-2"><span>Woken means it's on a core, while running puts it back in a run queue</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Woken is ready; running is on a core.</p>
 <p class="fb no opt-2"><b>Not quite.</b> That's the two swapped. <label class="show-me" for="st-turns-4" data-goto="st-turns">Show me step 4 again ↑</label></p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://perfetto.dev/docs/data-sources/cpu-scheduling">Perfetto: CPU Scheduling events</a> (&quot;Which threads were scheduled on which CPU core at any point in time, with nanosecond accuracy. The reason why a running thread got descheduled (e.g. pre-emption, blocked on a mutex, blocking syscall or any other wait queue).&quot;; &quot;Thread A suspends on the wait() it will enter the state S(sleeping) and get removed from the CPU run queue. When Thread B notifies the variable, the kernel will transition Thread A into the R(unnable) state. Thread A at that point is eligible to be put back on a run queue. However this might not happen for some time because, for instance: All CPUs might be busy running some other thread&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://perfetto.dev/docs/data-sources/cpu-scheduling">Perfetto: CPU Scheduling events</a> (&quot;Which threads were scheduled on which CPU core at any point in time, with nanosecond accuracy. The reason why a running thread got descheduled (e.g. pre-emption, blocked on a mutex, blocking syscall or any other wait queue).&quot;; &quot;Thread A suspends on the wait() it will enter the state S(sleeping) and get removed from the CPU run queue. When Thread B notifies the variable, the kernel will transition Thread A into the R(unnable) state. Thread A at that point is eligible to be put back on a run queue. However this might not happen for some time because, for instance: All CPUs might be busy running some other thread&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A CPU core runs one thread at a time. The kernel's scheduler decides which ready thread runs on which core, and for how long; ready threads wait in a run queue, and a running thread can be switched out so others get a turn. A thread waiting for something (a lock, the disk, a message) leaves the queue entirely until the kernel wakes it. So a thread's elapsed time is its running time plus its waiting.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="./">← Overview</a>

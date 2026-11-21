@@ -38,7 +38,7 @@
         <ul class="nav-links">
           <li><a href="../../#work">Work</a></li>
           <li><a href="../../#ai">AI</a></li>
-          <li><a href="../../course/">Courses</a></li>
+          <li><a href="../../course/" aria-current="page">Courses</a></li>
           <li><a href="../../learning/">Learning</a></li>
           <li><a href="../../music/">Music</a></li>
           <li><a href="../../#contact">Contact</a></li>
@@ -48,14 +48,25 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="1" data-prev="00-what-actually-travels.html" data-prev-title="What actually travels">
-      <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" class="done" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" aria-current="page" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
-      <p class="eyebrow">Mobile system design, from a packet to an app · Puzzle 1 · 2 of 11</p>
-      <h1>Finding the server</h1>
-      <p class="lede">Puzzle 0 said every packet carries an address. Your code never writes one: it writes a name like api.example.com. Here's how the phone turns that name into a number, and what that costs.</p>
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="sysdesign" data-n="1">
+      <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Mobile system design, from a packet to an app</a></p>
+      <div class="lesson-header">
+        <p class="eyebrow">Puzzle 1 · 2 of 11</p>
+        <h1>Finding the server</h1>
+        <p class="lede">Puzzle 0 said every packet carries an address. Your code never writes one: it writes a name like api.example.com. Here's how the phone turns that name into a number, and what that costs.</p>
+      </div>
+      <details class="lesson-outline">
+        <summary>All puzzles in this course</summary>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-actually-travels.html" title="What actually travels">0</a></li><li><a href="01-finding-the-server.html" aria-current="page" title="Finding the server">1</a></li><li><a href="02-anatomy-of-an-http-call.html" title="Anatomy of an HTTP call">2</a></li><li><a href="03-round-trips-not-bandwidth.html" title="Round trips, not bandwidth">3</a></li><li><a href="04-what-https-adds.html" title="What HTTPS adds">4</a></li><li><a href="05-one-connection-many-requests.html" title="One connection, many requests">5</a></li><li><a href="06-the-radio-is-the-battery.html" title="The radio is the battery">6</a></li><li><a href="07-ask-before-you-download.html" title="Ask before you download">7</a></li><li><a href="08-the-database-is-the-truth.html" title="The database is the truth">8</a></li><li><a href="09-when-the-connection-breaks.html" title="When the connection breaks">9</a></li><li><a href="10-retry-without-charging-twice.html" title="Retry without charging twice">10</a></li></ol></nav>
+      </details>
+      <nav class="lesson-jumps" aria-label="In this puzzle">
+        <a href="#see-it">Diagram</a>
+        <a href="#the-building-block">Mechanism</a>
+        <a href="#check-yourself">Check your understanding</a>
+      </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary><a href="00-what-actually-travels.html">Puzzle 0: What actually travels</a></summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers bytes, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -65,7 +76,7 @@
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="The phone asks DNS for the host's address, then connects; the answer is cached"><input type="radio" name="st-dns" id="st-dns-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-dns" id="st-dns-2" aria-label="Step 2 of 4"><input type="radio" name="st-dns" id="st-dns-3" aria-label="Step 3 of 4"><input type="radio" name="st-dns" id="st-dns-4" aria-label="Step 4 of 4">
-<div class="stage"><svg viewBox="0 0 640 380" role="img" aria-labelledby="dn-t"><title id="dn-t">The app knows only the hostname api.example.com; the phone asks a DNS server which address it has; DNS answers with an IP address; the phone keeps the answer in a cache and connects to that address; the next request skips the lookup</title><defs><marker id="ah-dns-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-dns-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-dns-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-dns-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="dn-t"><title id="dn-t">The app knows only the hostname api.example.com; the phone asks a DNS server which address it has; DNS answers with an IP address; the phone keeps the answer in a cache and connects to that address; the next request skips the lookup</title><defs><marker id="ah-dns-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-dns-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-dns-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-dns-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-paper" x="30" y="90" width="80" height="140" rx="12"/><rect class="d-hl" x="37" y="104" width="66" height="106" rx="4"/><circle class="d-ink" cx="70" cy="220" r="3"/><text class="d-tiny" x="70" y="248" text-anchor="middle">phone</text></g>
 <g class="step s1" data-pulse="1"><text class="d-a" x="20" y="70">api.example.com</text></g>
@@ -74,6 +85,7 @@
 <g class="step only-3" data-pulse="3"><text class="d-a" x="320" y="200" text-anchor="middle">93.184.215.14</text></g>
 <g class="step s4" data-pulse="4"><g><rect class="d-wood" x="530" y="150" width="80" height="120" rx="6"/><rect class="d-paper" x="540" y="162" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="173" r="4"/><rect class="d-paper" x="540" y="194" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="205" r="4"/><rect class="d-paper" x="540" y="226" width="60" height="22" rx="3"/><circle class="d-ok" cx="590" cy="237" r="4"/><text class="d-tiny" x="570" y="288" text-anchor="middle">api server</text></g><rect class="d-hl" x="30" y="260" width="110" height="34" rx="6"/><text class="d-tiny" x="85" y="282" text-anchor="middle">cached address</text><path class="d-arr-acc" d="M144,270 L524,220" marker-end="url(#ah-dns-acc)"/><text class="d-a" x="330" y="230" text-anchor="middle">connect</text></g>
 </svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Your code knows a <b>hostname</b>, api.example.com. Packets need a number.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-dns-2">Next →</label></div></li>
 <li><p>The phone asks <b>DNS</b>, the internet's phone book: which address does this name have?</p><div class="stepnav"><label for="st-dns-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-dns-3">Next →</label></div></li>
@@ -87,9 +99,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>Every machine reachable on the internet has an <b>IP address</b>: a number, like <code>93.184.215.14</code>, that routers read to deliver each packet.</p>
 <p>Numbers are hard to remember and change when a company moves servers, so people and code use a <b>hostname</b> instead: <code>api.example.com</code>.</p>
-<p><b>DNS</b>, the Domain Name System, is the internet's phone book: a worldwide system of servers that answers &quot;which address does this hostname have?&quot;. Before your app's first connection to a host, the phone sends that question and waits for the answer.</p>
+<p><b>DNS</b>, the Domain Name System, is the internet's phone book: a worldwide system of servers that answers &quot;which address does this hostname have?&quot;. Before connecting, the phone needs an address. If there is no usable cached answer, name resolution can add a network wait.</p>
 <p>Two consequences for an app:</p>
-<ul><li>The very first request to a host waits for a DNS answer first: more waiting before anything useful happens.</li><li>The answer is <b>cached</b>: kept for a while by the phone (and by DNS servers on the way), so the next requests skip the lookup.</li></ul>
+<ul><li>A cold lookup adds waiting. Another app, the operating system or a resolver may already have a usable answer.</li><li>The answer is <b>cached</b>: kept for a while by the phone (and by DNS servers on the way), so the next requests skip the lookup.</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -99,36 +111,32 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app's first-ever request to <code>api.example.com</code> is slower than the next ones. Which part of that is DNS?</legend>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-1" data-ok><label for="q-01-finding-the-server-1-1">Looking up the host's IP address before anything can be sent</label>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-2"><label for="q-01-finding-the-server-1-2">Routers learning the new hostname</label>
-<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-3"><label for="q-01-finding-the-server-1-3">Downloading the response data, which is bigger the first time</label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-1" data-ok><label for="q-01-finding-the-server-1-1"><span>Looking up the host's IP address before anything can be sent</span></label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-2"><label for="q-01-finding-the-server-1-2"><span>Routers learning the new hostname</span></label>
+<input type="radio" name="q-01-finding-the-server-1" id="q-01-finding-the-server-1-3"><label for="q-01-finding-the-server-1-3"><span>Downloading the response data, which is bigger the first time</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Name to address, once.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Routers deliver by address; the name is resolved by DNS first. <label class="show-me" for="st-dns-3" data-goto="st-dns">Show me step 3 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> The data is the same size; the extra wait is the lookup before sending. <label class="show-me" for="st-dns-3" data-goto="st-dns">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why are DNS answers cached?</legend>
-<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-1" data-ok><label for="q-01-finding-the-server-2-1">So later requests skip the lookup and its waiting</label>
-<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-2"><label for="q-01-finding-the-server-2-2">So the app can work without an IP address</label>
-<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-3"><label for="q-01-finding-the-server-2-3">Because DNS servers can only answer once per app</label>
+<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-1" data-ok><label for="q-01-finding-the-server-2-1"><span>So later requests skip the lookup and its waiting</span></label>
+<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-2"><label for="q-01-finding-the-server-2-2"><span>So the app can work without an IP address</span></label>
+<input type="radio" name="q-01-finding-the-server-2" id="q-01-finding-the-server-2-3"><label for="q-01-finding-the-server-2-3"><span>Because DNS servers can only answer once per app</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Look up once, reuse.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Packets always need an address; caching only keeps it. <label class="show-me" for="st-dns-4" data-goto="st-dns">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> They answer many times; caching saves the wait. <label class="show-me" for="st-dns-4" data-goto="st-dns">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a hostname and an IP address?</legend>
-<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-1"><label for="q-01-finding-the-server-3-1">A hostname is the number routers deliver to, while an IP address is the name code uses</label>
-<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-2" data-ok><label for="q-01-finding-the-server-3-2">A hostname is the name code uses, while an IP address is the number routers deliver to</label>
+<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-1"><label for="q-01-finding-the-server-3-1"><span>A hostname is the number routers deliver to, while an IP address is the name code uses</span></label>
+<input type="radio" name="q-01-finding-the-server-3" id="q-01-finding-the-server-3-2" data-ok><label for="q-01-finding-the-server-3-2"><span>A hostname is the name code uses, while an IP address is the number routers deliver to</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Name vs number.</p>
 </fieldset>
       </section>
-      <section aria-labelledby="sources">
-        <h2 id="sources">Sources</h2>
-<ul><li><a href="https://developer.mozilla.org/en-US/docs/Glossary/DNS">MDN: DNS</a> (&quot;DNS (Domain Name System) is a hierarchical and decentralized naming system for Internet-connected resources. DNS maintains a list of domain names along with the resources, such as IP addresses, that are associated with them.&quot;)</li></ul>
-      </section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.mozilla.org/en-US/docs/Glossary/DNS">MDN: DNS</a> (&quot;DNS (Domain Name System) is a hierarchical and decentralized naming system for Internet-connected resources. DNS maintains a list of domain names along with the resources, such as IP addresses, that are associated with them.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Every machine on the internet has an IP address, a number that routers use to deliver packets. People and code use hostnames instead, like api.example.com. Before the first connection, the phone asks DNS, the internet's phone book, which address a hostname has. That lookup is one more round trip on a cold start, so the answer is cached for a while.</p></div></section>
-      
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-what-actually-travels.html">← Start</a>

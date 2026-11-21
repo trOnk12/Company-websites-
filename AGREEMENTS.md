@@ -14,6 +14,8 @@ Everything decided in conversation, so it isn't lost when a session ends. Sprint
 
 ## How we teach (non-negotiable)
 
+- Write learner-facing tutorials, exercises, diagrams, quizzes and solutions in English.
+
 - **Foundation first**, like mathematics: no concept is used before it's taught. Each puzzle has one core idea,
   a step-through diagram, an analogy, three checks, and sources with exact quotes that were fetched and verified.
 - **The deeper the better**, through the **depth ladder**: the main path of a course must stand on its own; any

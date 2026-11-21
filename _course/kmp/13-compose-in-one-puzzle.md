@@ -25,7 +25,7 @@ fun Greeting(name: String) {
 }
 ```
 
-It returns nothing and creates no view objects you keep. It describes what the screen should look like for this `name`.
+This Greeting returns Unit and creates no view objects you keep. Other composable functions can return values. It describes what the screen should look like for this `name`.
 
 When the data changes, Compose calls the function again with the new value: **recomposition**. It's smart about it: only the functions whose inputs might have changed run again; the rest are skipped. Data that should trigger it is **state**, for example `var count by remember { mutableStateOf(0) }`; **remember** keeps that value across recompositions, so it isn't reset each time the function runs.
 

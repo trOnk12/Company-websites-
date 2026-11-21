@@ -25,7 +25,7 @@ HTTP has caching built into its responses. OkHttp implements it when you give th
 - Not changed: the server answers **304 Not Modified**, with no body. The app keeps its copy and marks it fresh again. One round trip, a few hundred bytes instead of 200 KB.
 - Changed: a normal `200 OK` with the new feed and a new ETag.
 
-Two notes. Your server sets these headers, so caching is a contract with the backend team; and HTTP caching applies to GET responses. So in a system design answer, "cache it" has two levels: how long it's fresh (no network) and how it's revalidated (a cheap check). The server decides both, per response: a user's profile might be fresh for an hour; a live score, never. Two directives people mix up: `no-cache` means "store it, but always revalidate"; `no-store` means "never store it".
+Two notes. Your server sets these headers, so caching is a contract with the backend team; and this example caches a GET response. So in a system design answer, "cache it" has two levels: how long it's fresh (no network) and how it's revalidated (a cheap check). The server decides both, per response: a user's profile might be fresh for an hour; a live score, never. Two directives people mix up: `no-cache` means "store it, but always revalidate"; `no-store` means "never store it".
 
 ## The analogy
 

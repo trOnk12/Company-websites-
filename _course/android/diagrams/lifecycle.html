@@ -18,7 +18,7 @@
 <x-letter class="step s5" data-move="4:410,236 5:194,236" x="0" y="0" label="destroy"/>
 </svg>
 <ol class="caps">
-<li><p>Each screen of your app is an <b>Activity</b>. Your app shows one now.</p></li>
+<li><p>This app uses an <b>Activity</b> to host a screen. One Activity can also host several navigation destinations.</p></li>
 <li><p>Android runs a process of its own, <b>system_server</b>: the town hall. It keeps the register of every Activity of every app.</p></li>
 <li><p>It moves each Activity along a path of stages, the <b>lifecycle</b>: created (set up), started (visible), resumed. Resumed means in front and ready for taps. <i>Predict: what happens when the user switches to another app?</i></p></li>
 <li><p>system_server sends your app a message each time (puzzle 5 shows how): your Activity moves to paused (no longer in front), then stopped (hidden). Your app doesn't choose this; it's told.</p></li>

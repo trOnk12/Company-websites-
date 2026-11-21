@@ -20,7 +20,7 @@ Start with allocating. With ART's default collector, each thread gets its own **
 
 Collecting is the garbage collector's job (puzzle 7): find the garbage, and free its memory. Since Android 8, ART's default has been **Concurrent Copying** (newer devices may run its successor, Concurrent Mark-Compact, with the same low-pause idea): it copies the objects that are still alive into fresh space while your threads keep running, so live objects end up packed together, with no gaps, without stopping your app. There's one small pause per collection, a moment when the collector stops your threads, and it doesn't grow with the size of the heap: ART's own docs show an average of about 2 ms.
 
-Since Android 10 it also sorts objects by age, young and old. Most objects die young, like that `StringBuilder`, so ART runs a **young GC** that looks only at recently created objects: little work, run often. It switches to a full-heap collection only when young ones stop freeing enough.
+Since Android 10 it also sorts objects by age, young and old. Most objects die young, like that `StringBuilder`, so ART runs a **young GC** that focuses on recently created objects while accounting for references into that region: little work, run often. It switches to a full-heap collection only when young ones stop freeing enough.
 
 So where does it hurt? Not mostly in the pause. **Allocation churn** makes collections frequent, and the collector's threads need CPUs too; your main thread may find them taken (Runnable, puzzle 4). And if your app allocates faster than the collector can free, your thread must wait for it, and that wait can cost a frame.
 

@@ -1,6 +1,6 @@
 // Course diagram player: plays each step-through diagram like a GIF.
 // Progressive enhancement: without this script the steps still work with the Back / Next labels.
-// Self-hosted, no dependencies, no tracking.
+// Self-hosted, no dependencies.
 (() => {
   'use strict';
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -10,9 +10,12 @@
   // Events show how far people get: started, played a diagram, mastered puzzle N.
   const count = (p, event, title) => {
     if (!/(^|\.)pachulski\.dev$/.test(location.hostname)) return; // never count local previews or tests
-    const q = new URLSearchParams({ p, t: title || document.title, r: event ? '' : document.referrer, rnd: String(Math.random()).slice(2, 8) });
+    if (navigator.globalPrivacyControl || navigator.doNotTrack === '1') return;
+    const q = new URLSearchParams({ p, t: title || document.title, rnd: String(Math.random()).slice(2, 8) });
     if (event) q.set('e', 'true');
-    new Image().src = `https://pachulski.goatcounter.com/count?${q}`;
+    const pixel = new Image();
+    pixel.referrerPolicy = 'no-referrer';
+    pixel.src = `https://pachulski.goatcounter.com/count?${q}`;
   };
   count(location.pathname);
 
@@ -141,7 +144,12 @@
   const store = {
     get(course) { const s = slugs(course); return done(course).map(x => s.indexOf(x)).filter(i => i >= 0); },
     add(course, n) { const slug = slugs(course)[n]; if (!slug) return; const d = new Set(done(course)); d.add(slug); write(`course:${course}:done`, [...d]); },
-    clear(course) { try { ['done', 'mastered', 'missed'].forEach(k => localStorage.removeItem(`course:${course}:${k}`)); } catch {} },
+    clear(course) {
+      try {
+        const prefix = `course:${course}:`;
+        for (const key of Object.keys(localStorage)) if (key.startsWith(prefix)) localStorage.removeItem(key);
+      } catch {}
+    },
     // Questions you first answered wrong: your weak spots, for the tutor prompt. Only in this browser.
     missed(course) {
       const s = slugs(course), order = IDX.legacy[course] || s;
@@ -156,10 +164,98 @@
     },
   };
 
+  function unfinishedVisit(course, passed) {
+    const index = slugs(course).indexOf(read(`course:${course}:last`));
+    return passed.has(index) ? -1 : index;
+  }
+
+  // Keys identify exercises by name, independently of chapter and lesson positions.
+  const practiceKey = (course, item) => `course:${course}:practice:${item}`;
+  function practiceState(course, have) {
+    const items = IDX.practice?.[course] || [];
+    const checked = new Set(items.filter(item => read(practiceKey(course, item.id)) === true).map(item => item.id));
+    const lastId = read(`course:${course}:last`);
+    const last = items.find(item => item.id === lastId);
+    const remaining = items.filter(item => !checked.has(item.id));
+    const next = last ? items.slice(items.indexOf(last)).find(item => !checked.has(item.id)) || remaining[0] : remaining[0];
+    const resume = (last || have.size === slugs(course).length) ? next : null;
+    const started = have.size > 0 || checked.size > 0 || !!last || unfinishedVisit(course, have) >= 0;
+    return { items, checked, resume, started, complete: have.size === slugs(course).length && !remaining.length };
+  }
+  function practiceLabel(state) {
+    const exercises = state.items.filter(item => item.id !== 'final-project');
+    const completed = exercises.filter(item => state.checked.has(item.id)).length;
+    const project = state.checked.has('final-project') ? 'project self-checked' : 'project pending';
+    return `${completed}/${exercises.length} exercises self-checked · ${project}`;
+  }
+
+  const practicePage = document.querySelector('[data-practice-course]');
+  if (practicePage) {
+    const course = practicePage.dataset.practiceCourse;
+    const controls = [...practicePage.querySelectorAll('[data-practice-item]')];
+    const headings = [...practicePage.querySelectorAll('[data-practice-heading]')];
+    const lastKey = `course:${course}:last`;
+    const visit = id => write(lastKey, id);
+    function refresh() {
+      controls.forEach(input => { input.checked = read(practiceKey(course, input.dataset.practiceItem)) === true; });
+      for (const label of practicePage.querySelectorAll('[data-practice-nav]')) {
+        label.textContent = read(practiceKey(course, label.dataset.practiceNav)) === true ? ' · Self-checked' : '';
+      }
+      const reviewed = controls.filter(input => input.checked).length;
+      practicePage.querySelector('[data-practice-status]').textContent = headings.length
+        ? `${reviewed} of ${controls.length} exercises self-checked`
+        : reviewed ? 'Project self-checked' : 'Project pending self-check';
+    }
+    refresh();
+    for (const input of controls) {
+      input.closest('label').hidden = false;
+      input.addEventListener('change', () => {
+        write(practiceKey(course, input.dataset.practiceItem), input.checked);
+        visit(input.dataset.practiceItem);
+        refresh();
+      });
+    }
+    const currentHeading = () => headings.find(h => '#' + h.id === location.hash);
+    const saved = headings.find(h => h.dataset.practiceHeading === read(lastKey));
+    if (!headings.length) visit('final-project');
+    else {
+      const first = currentHeading() || saved || headings[0];
+      visit(first.dataset.practiceHeading);
+      if (!location.hash && saved) saved.scrollIntoView();
+      window.addEventListener('hashchange', () => {
+        const heading = currentHeading();
+        if (heading) visit(heading.dataset.practiceHeading);
+      });
+      // Reading by scrolling also sets a bookmark. Avoid moving it during link navigation or a page reload.
+      let scrolling = false;
+      const bookmark = () => {
+        scrolling = false;
+        const heading = headings.filter(h => h.getBoundingClientRect().top <= innerHeight * 0.4).pop();
+        if (heading) visit(heading.dataset.practiceHeading);
+      };
+      practicePage.addEventListener('focusin', e => {
+        const heading = e.target.closest('section')?.querySelector('[data-practice-heading]');
+        if (heading) visit(heading.dataset.practiceHeading);
+      });
+      let userScrolled = false;
+      const startScrolling = () => { userScrolled = true; };
+      window.addEventListener('wheel', startScrolling, { passive: true, once: true });
+      window.addEventListener('touchmove', startScrolling, { passive: true, once: true });
+      window.addEventListener('keydown', e => {
+        if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) startScrolling();
+      });
+      window.addEventListener('scroll', () => {
+        if (userScrolled && !scrolling) { scrolling = true; requestAnimationFrame(bookmark); }
+      }, { passive: true });
+    }
+    window.addEventListener('storage', refresh);
+  }
+
   const puzzle = document.querySelector('article.puzzle[data-course]');
   if (puzzle) {
     const course = puzzle.dataset.course;
     const n = Number(puzzle.dataset.n);
+    if (!store.get(course).includes(n)) write(`course:${course}:last`, slugs(course)[n]);
     const quizzes = [...puzzle.querySelectorAll('fieldset.quiz')];
     const next = puzzle.querySelector('.pager a.primary');
     const msg = puzzle.querySelector('.gate-msg');
@@ -178,7 +274,7 @@
       if (msg) {
         msg.hidden = open;
         const left = quizzes.filter(q => !solved(q)).length;
-        msg.textContent = `Answer ${left === 1 ? 'the last question' : `the ${left} questions`} above correctly to unlock the next puzzle.`;
+        msg.textContent = `Answer ${left === 1 ? 'the last question' : `the ${left} questions`} above correctly to ${next ? 'unlock the next puzzle' : 'mark this puzzle as passed'}.`;
       }
     };
     // A gentle coffee reminder: only right after a puzzle is mastered, at most once a month.
@@ -217,19 +313,27 @@
     });
     update();
 
-    // Opened a puzzle before mastering the one it builds on? Point back to it.
-    if (n > 0 && !store.get(course).includes(n - 1)) {
+    const passed = new Set(store.get(course));
+    const missing = [...puzzle.querySelectorAll('.builds-on li[data-block]')]
+      .filter(li => !passed.has(Number(li.dataset.block)));
+    if (!passed.has(n) && missing.length) {
       const gate = document.createElement('div');
       gate.className = 'gate';
       gate.setAttribute('role', 'note');
-      gate.innerHTML = `<p><b>This puzzle builds on the previous one.</b> You haven't passed the check for “${puzzle.dataset.prevTitle}” yet. Each puzzle uses the one before, so gaps add up.</p>
-<p class="actions"><a class="button primary" href="${puzzle.dataset.prev}">Go to the previous puzzle</a><button type="button" class="button">Continue anyway</button></p>`;
+      const prerequisite = missing[0].querySelector('details a');
+      gate.innerHTML = '<p><b>Building blocks to review</b></p><p class="actions"><a class="button primary"></a><button type="button" class="button">Continue anyway</button></p>';
+      const review = gate.querySelector('a');
+      review.href = prerequisite.href;
+      review.textContent = missing[0].querySelector('summary').textContent;
       gate.querySelector('button').addEventListener('click', () => { gate.remove(); count(`skipped to ${course} ${n}`, true, `Skipped ahead to puzzle ${n}`); });
-      puzzle.querySelector('nav[aria-label="Puzzles"]').after(gate);
+      puzzle.querySelector('.lesson-jumps').after(gate);
     }
 
     // Mark the building blocks you've already passed.
-    for (const li of puzzle.querySelectorAll('.builds-on li[data-block]')) if (store.get(course).includes(Number(li.dataset.block))) li.classList.add('done');
+    for (const li of puzzle.querySelectorAll('.builds-on li[data-block]')) if (passed.has(Number(li.dataset.block))) li.classList.add('done');
+    for (const [i, a] of [...puzzle.querySelectorAll('.progress a')].entries()) {
+      if (passed.has(i)) a.classList.add('done');
+    }
 
     // Mark mastered puzzles in the progress bar.
     const have = store.get(course);
@@ -254,33 +358,96 @@
     qs.forEach(q => q.addEventListener('change', tally));
   }
 
-  // ── Course cards on the catalog: how far you got in each course ──
-  for (const card of document.querySelectorAll('[data-progress]')) {
-    const have = store.get(card.dataset.progress).length;
-    const total = Number(card.dataset.total);
-    const mine = card.querySelector('.mine');
-    if (mine && have) mine.textContent = have >= total ? 'completed ✓' : `${have} of ${total} mastered`;
-    const go = card.querySelector('.button.primary');
-    if (go && have) go.textContent = have >= total ? 'Review the course →' : 'Continue →';
+  // Opening a shared link to an optional section makes that section visible.
+  const openLinkedDetail = () => {
+    const detail = document.getElementById(location.hash.slice(1));
+    if (detail?.matches('details')) detail.open = true;
+  };
+  openLinkedDetail();
+  window.addEventListener('hashchange', openLinkedDetail);
+
+  const search = document.querySelector('#puzzle-search');
+  if (search) {
+    const panel = search.closest('section');
+    const rows = [...panel.querySelectorAll('li')];
+    const status = panel.querySelector('[role="status"]');
+    const list = panel.querySelector('ul');
+    function filterPuzzles() {
+      const terms = search.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+      let count = 0;
+      for (const row of rows) {
+        const words = (row.textContent + ' ' + row.dataset.summary).toLowerCase();
+        row.hidden = !terms.length || !terms.every(term => words.includes(term));
+        if (!row.hidden) count++;
+      }
+      list.hidden = !count;
+      status.textContent = !terms.length ? '' : count ? `${count} matching lesson${count === 1 ? '' : 's'}` : 'No lessons found. Try a shorter term or browse the courses below.';
+    }
+    filterPuzzles();
+    panel.hidden = false;
+    search.addEventListener('input', filterPuzzles);
   }
 
-  // ── Overview: ✓ mastered, → next, 🔒 not yet; "Continue" resumes where you stopped ──
+  // ── Course cards on the catalog: resume an unfinished course ──
+  for (const card of document.querySelectorAll('[data-progress]')) {
+    const course = card.dataset.progress;
+    const have = new Set(store.get(course));
+    const total = Number(card.dataset.total);
+    const bar = card.querySelector('progress');
+    const practice = practiceState(course, have);
+    bar.max = total + practice.items.length;
+    bar.value = have.size + practice.checked.size;
+    const last = unfinishedVisit(course, have);
+    if (!practice.started) continue;
+    card.querySelector('.mine').textContent = `${practice.complete ? 'Complete · ' : ''}${have.size}/${total} puzzles passed · ${practiceLabel(practice)}`;
+    const go = card.querySelector('[data-puzzles]');
+    const puzzles = go.dataset.puzzles.split(' ');
+    const next = last >= 0 ? last : puzzles.findIndex((_, i) => !have.has(i));
+    go.textContent = practice.complete ? 'Review course' : 'Continue learning';
+    if (practice.resume) go.href = `${course}/${practice.resume.href}`;
+    else if (next !== -1) go.href = `${course}/${puzzles[next]}.html`;
+  }
+
+  // ── Overview: show progress and expand the module that contains the next puzzle ──
   const items = [...document.querySelectorAll('.modules li[data-course]')];
   if (items.length) {
     const course = items[0].dataset.course;
-    const have = store.get(course);
-    let next = items.findIndex(li => !have.includes(Number(li.dataset.n)));
-    items.forEach((li, i) => { li.dataset.state = have.includes(Number(li.dataset.n)) ? 'done' : i === next ? 'next' : 'locked'; });
+    const have = new Set(store.get(course));
+    const last = unfinishedVisit(course, have);
+    const next = items.find(li => Number(li.dataset.n) === last && !have.has(last)) || items.find(li => !have.has(Number(li.dataset.n)));
+    items.forEach(li => {
+      const passed = have.has(Number(li.dataset.n));
+      li.dataset.state = passed ? 'done' : li === next ? 'next' : 'upcoming';
+      li.querySelector('.puzzle-state').textContent = passed ? 'Passed' : li === next && have.size ? 'Up next' : '';
+    });
     const resume = document.querySelector(`[data-resume="${course}"]`);
-    if (resume && have.length) {
-      if (next === -1) { resume.textContent = 'Course complete: review from the start →'; next = 0; }
-      else resume.textContent = `Continue: puzzle ${items[next].dataset.n} →`;
-      resume.href = items[next].querySelector('a').getAttribute('href');
-      const count = document.createElement('p');
-      count.className = 'mastery';
-      count.innerHTML = `${have.length} of ${items.length} puzzles mastered · <button type="button" class="linklike">Reset my progress</button>`;
-      count.querySelector('button').addEventListener('click', () => { store.clear(course); location.reload(); });
-      resume.parentElement.after(count);
+    const practice = practiceState(course, have);
+    for (const label of document.querySelectorAll('[data-chapter-status]')) {
+      const exercises = practice.items.filter(item => item.id.startsWith(label.dataset.chapterStatus + ':'));
+      label.textContent = ` · ${exercises.filter(item => practice.checked.has(item.id)).length}/${exercises.length} self-checked`;
+    }
+    const projectStatus = document.querySelector('[data-project-status]');
+    if (projectStatus) projectStatus.textContent = practice.checked.has('final-project') ? 'Self-checked' : 'Pending self-check';
+    if (resume && practice.started) {
+      if (practice.resume) {
+        resume.textContent = `Continue: ${practice.resume.title}`;
+        resume.href = practice.resume.href;
+      } else if (next) {
+        const lesson = next.querySelector('a');
+        resume.textContent = `Continue: ${lesson.textContent}`;
+        resume.href = lesson.getAttribute('href');
+        const module = next.closest('.course-module');
+        if (module) module.open = true;
+      } else {
+        resume.textContent = 'Review from the start';
+      }
+      const progress = document.createElement('p');
+      progress.className = 'mastery';
+      progress.innerHTML = `${have.size} of ${items.length} puzzles passed · ${practiceLabel(practice)} · <button type="button" class="linklike">Reset my progress</button>`;
+      progress.querySelector('button').addEventListener('click', () => {
+        if (window.confirm('Reset your saved progress for this course?')) { store.clear(course); location.reload(); }
+      });
+      resume.parentElement.after(progress);
     }
   }
   // ── Continue with Claude: a tutor prompt built from this course and your progress ──
@@ -294,7 +461,9 @@
       let d;
       try { d = JSON.parse(tutorData.textContent); } catch { return; }
       const have = new Set(store.get(course));
-      const next = d.puzzles.find(p => !have.has(p.n));
+      const last = unfinishedVisit(course, have);
+      const next = d.puzzles.find(p => p.n === last) || d.puzzles.find(p => !have.has(p.n));
+      const practice = practiceState(course, have);
       const known = d.terms.filter(t => have.has(t.in));
       const missed = store.missed(course).filter(m => d.puzzles[m.n]);
       const lines = [
@@ -303,22 +472,27 @@
         'How to teach me:',
         '- Foundation first: one small idea at a time, each standing on one I already have. If I lack a block, teach that block first.',
         '- For each idea: a plain explanation, an everyday analogy, then one quick question. Wait for my answer before going on.',
-        '- Use only the words I know (listed below); define any new word the first time you use it.',
+        '- Define each new term on first use. If I ask why an explanation works, follow that mechanism down one layer and return to the original problem with the same example.',
+        '- Ask me to predict an outcome after changing one condition, then explain the answer from the earlier puzzles.',
         "- Go under the hood: who does the work, on which thread or process, and why it's built that way.",
         "- If you're unsure of a fact, say so and point me to a primary source (official docs, the spec, the source code).",
         '',
         `The course, in order (✓ = I've passed it):`,
         ...d.puzzles.map(p => `${have.has(p.n) ? '✓' : '·'} ${p.n}. ${p.title}: ${p.takeaway}`),
+        ...(d.chapters?.length ? ['', 'Practice chapters with worked examples and exercises:',
+          ...d.chapters.map(ch => `- ${ch.title}: ${ch.lessons.join('; ')} — ${ch.url}`)] : []),
+        ...(d.project ? [`Final project: ${d.project.title} — ${d.project.url}`, `Self-assessed progress: ${practiceLabel(practice)}.`] : []),
         ...(d.upcoming.length ? ['', 'Not written yet (good places to go next):', ...d.upcoming.map(u => `- ${u}`)] : []),
         ...(d.assumes ? ['', `The course assumes I know: ${d.assumes}.`] : []),
         '',
-        known.length ? 'Words I know from it:' : "I haven't passed a puzzle yet, so assume only that I know Kotlin and Android app basics.",
+        known.length ? 'Words I know from it:' : "I haven't passed a puzzle yet. Start from the stated prerequisites and check what I already know.",
         ...known.map(t => `- ${t.t}: ${t.def}`),
         ...(missed.length ? ['', 'Questions I got wrong at first (my weak spots):', ...missed.map(m => `- Puzzle ${m.n}: ${m.q}`)] : []),
         '',
-        next
-          ? `Where I am: next is puzzle ${next.n}, "${next.title}". Start with one question to check I really have the block it builds on${missed.length ? ', or one of my weak spots' : ''}. Then teach me what it covers, your way, and keep going.`
-          : `I've passed every puzzle. ${missed.length ? 'Start by testing my weak spots. Then' : 'Start with one question on the hardest idea. Then'} take me into the topics that aren't written yet, the same way.`,
+        practice.resume
+          ? `Where I am: next practice activity is "${practice.resume.title}". Work through its exercise and ask me to justify my answer.`
+          : next ? `Where I am: next is puzzle ${next.n}, "${next.title}". Start with one question to check I really have the block it builds on${missed.length ? ', or one of my weak spots' : ''}. Then teach me what it covers, your way, and keep going.`
+          : `I've passed every puzzle. ${missed.length ? 'Start by testing my weak spots. Then' : 'Start with one question on the hardest idea. Then'} take me through the published practice material and final project.`,
       ];
       const text = lines.join('\n');
       out.value = text;
@@ -341,15 +515,20 @@
     const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
     const link = (href, text) => { const a = el('a', null, text); a.href = href; return a; };
     const byId = Object.fromEntries(courses.map(c => [c.id, c]));
-    const done = c => c.puzzles.every(p => passed(c.id).has(p.n));
+    const done = c => practiceState(c.id, passed(c.id)).complete;
 
     // Where you are
     const where = document.querySelector('.me-courses');
     for (const c of courses) {
       const have = passed(c.id), li = el('li', 'me-course');
       li.append(link(`${c.id}/`, c.title));
-      const bar = el('progress'); bar.max = c.puzzles.length; bar.value = have.size; bar.setAttribute('aria-label', `${c.title}: ${have.size} of ${c.puzzles.length}`);
-      li.append(bar, el('span', 'small', have.size === 0 ? ' not started' : have.size === c.puzzles.length ? ' complete ✓' : ` ${have.size} of ${c.puzzles.length}`));
+      const practice = practiceState(c.id, have);
+      const bar = el('progress');
+      bar.max = c.puzzles.length + practice.items.length;
+      bar.value = have.size + practice.checked.size;
+      bar.setAttribute('aria-label', `${c.title}: ${bar.value} of ${bar.max} activities`);
+      const progress = practice.started ? `${practice.complete ? 'Complete · ' : ''}${have.size} passed of ${c.puzzles.length} puzzles · ${practiceLabel(practice)}` : 'Not started';
+      li.append(bar, el('span', 'small', progress));
       where.append(li);
     }
 
@@ -358,19 +537,33 @@
     const next = [];
     for (const c of courses) {
       const have = passed(c.id);
-      if (!have.size || have.size === c.puzzles.length) continue;
-      const ready = c.puzzles.find(p => !have.has(p.n) && p.blocks.every(b => have.has(b))) || c.puzzles.find(p => !have.has(p.n));
-      next.push({ c, p: ready, why: ready.blocks.length ? `You have its building blocks: ${ready.blocks.map(b => c.puzzles[b].title).join(', ')}.` : `Next in ${c.title}.` });
+      const last = unfinishedVisit(c.id, have);
+      const practice = practiceState(c.id, have);
+      if (practice.resume) {
+        next.push({ c, p: practice.resume, why: 'Continue the practice work you self-check against the worked answers.' });
+        continue;
+      }
+      const saved = c.puzzles.find(p => p.n === last);
+      if (saved) {
+        next.push({ c, p: saved, why: 'Continue the puzzle you last opened in this course.' });
+        continue;
+      }
+      if (!practice.started || have.size === c.puzzles.length) continue;
+      const ready = c.puzzles.find(p => !have.has(p.n) && p.blocks.every(b => have.has(b)));
+      const p = ready || c.puzzles.find(p => !have.has(p.n));
+      const why = !ready ? 'Start by checking the building blocks listed in this puzzle.'
+        : p.blocks.length ? `You have its building blocks: ${p.blocks.map(b => c.puzzles[b].title).join(', ')}.` : `Next in ${c.title}.`;
+      next.push({ c, p, why });
     }
     for (const c of courses) {
-      if (passed(c.id).size || !c.assumes || !byId[c.assumes] || !done(byId[c.assumes])) continue;
+      if (next.some(item => item.c === c) || passed(c.id).size || !c.assumes || !byId[c.assumes] || !done(byId[c.assumes])) continue;
       next.push({ c, p: c.puzzles[0], why: `It builds on ${byId[c.assumes].title}, which you've finished.` });
     }
     if (!next.length) for (const id of ['android', 'sysdesign', 'security']) if (byId[id] && !passed(id).size) next.push({ c: byId[id], p: byId[id].puzzles[0], why: 'A course that starts from zero.' });
     const ol = document.querySelector('.me-next'); ol.textContent = '';
     for (const { c, p, why } of next.slice(0, 4)) {
       const li = el('li', 'me-suggestion');
-      li.append(link(`${c.id}/${p.slug}.html`, p.title), el('span', 'small me-course-name', ` · ${c.title}`), el('p', 'small', why));
+      li.append(link(`${c.id}/${p.href || p.slug + '.html'}`, p.title), el('span', 'small me-course-name', ` · ${c.title}`), el('p', 'small', why));
       ol.append(li);
     }
 

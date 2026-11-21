@@ -516,7 +516,7 @@ function renderIndex(everything) {
           <p class="eyebrow">Music, my hobby</p>
           <h1 class="marker">${L.esc(intro.meta.title || 'Music')}</h1>
           <p class="lede">${L.esc(intro.meta.summary || '')}</p>
-          <p class="hero-links"><a class="button primary" href="#side-a">Pick a recipe ↓</a> ${lessons.length ? `<a class="button" href="${lessons[0].slug}.html">Learn FM on the Digitone</a>` : ''}</p>
+          <p class="hero-links"><a class="button primary" href="#side-a">Pick a recipe ↓</a> <a class="button" href="#setup">Set up the rig</a> ${lessons.length ? `<a class="button" href="${lessons[0].slug}.html">Learn FM on the Digitone</a>` : ''}</p>
         </div>
         ${rigSketch()}
       </div>

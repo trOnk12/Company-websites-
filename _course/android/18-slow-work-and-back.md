@@ -2,7 +2,7 @@
 title: Slow work off the main thread, and back
 short: Out and back
 summary: Puzzle 17 said slow work must leave the main thread. But only the main thread may touch the screen. Here's the trip every Android app makes: hand the work to another thread, then hand the result back.
-takeaway: Slow work runs on a worker thread, so the main thread stays free for frames and touches. The worker never touches the screen: it posts the result back to the main thread's queue (with a Handler for the main thread, or runOnUiThread), and the main thread shows it. Coroutines make the same trip for you.
+takeaway: Keep slow work away from the UI thread, then dispatch the display update to its owner. A coroutine must use appropriate dispatchers or genuinely suspending operations to achieve that separation.
 ---
 
 ## The problem
@@ -31,9 +31,9 @@ button.setOnClickListener {
 }
 ```
 
-`thread { }` (from Kotlin's standard library) starts a new thread that runs the code in the braces. Inside an Activity, `runOnUiThread { }` is a shortcut for the same post.
+`thread { }` (from Kotlin's standard library) starts a new thread that runs the code in the braces. Inside an Activity, `runOnUiThread { }` posts to the UI thread when called from a worker; when already on the UI thread it runs the action immediately.
 
-That's the whole pattern: out to a worker, back with a post. In real apps you'll write it with Kotlin coroutines, which make exactly this trip for you; underneath, the result still comes back as a message on the main thread.
+That's the whole pattern: out to a worker, back with a post. In real apps you'll write it with Kotlin coroutines, where the dispatcher and suspension points determine where each part runs; underneath, the result still comes back as a message on the main thread.
 
 ## The analogy
 

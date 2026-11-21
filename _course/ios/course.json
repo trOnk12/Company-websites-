@@ -17,16 +17,7 @@
       ]
     }
   ],
-  "upcoming": [
-    {
-      "title": "Module 2: Screens and the system",
-      "topics": "Scenes and windows, SwiftUI's rendering model vs UIKit, background execution and Jetsam, launch time."
-    },
-    {
-      "title": "Module 3: Shipping",
-      "topics": "Xcode builds, signing, frameworks and Swift packages, profiling with Instruments, Swift 6 data-race safety."
-    }
-  ],
+  "upcoming": [],
   "support": {
     "url": "",
     "label": "Buy me a coffee",

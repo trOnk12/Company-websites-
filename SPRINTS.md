@@ -20,6 +20,26 @@ Every puzzle shows its **building blocks** (computed from the glossary, so they 
 shortest path to it from zero. Beginners walk the chain; people who know the basics jump in and check
 only the blocks they're missing.
 
+## Planned: hands-free course navigation and tutoring on a phone
+
+Start with the portal open in the foreground. The learner taps **Start voice session** once and grants microphone access. From there they can browse, choose a lesson, ask a follow-up, interrupt the answer, go back or end the session by voice. Accept Polish and English navigation commands. Keep course text and exercises in English and let the learner choose the spoken explanation language.
+
+**First journey on a phone**
+
+1. “Pokaż wszystkie kursy.” Open the actual catalog, show every published course and say how many there are. Read a few titles at a time. “Czytaj dalej” reads the next group. “Otwórz drugi” selects the second item in the group just spoken.
+2. “Otwórz system design.” If mobile and distributed system design both match, name both and wait for a choice. After navigation succeeds, speak the title of the course now on screen.
+3. “Znajdź lekcję o offsetach Kafki.” Open the matching published section. “Explain that with the shipment example” answers from that section and displays its source link. If the material cannot support the answer, say so and offer the nearest published lesson.
+4. “Zatrzymaj się. Powtórz wolniej. Wróć do kursów.” Interrupt playback immediately, replay the current passage more slowly on request, then return to the catalog. “Zakończ rozmowę” closes the session and releases the microphone.
+
+**Implementation sequence**
+
+- First connect a text-driven command prototype to the existing catalog, lesson identifiers and progress data. Define a small set of validated actions for listing, opening, reading, going back and resuming. The portal executes each action against its own index and reports the resulting screen and heading. The assistant speaks that result. Opening or reading a lesson leaves completion under the learner's control.
+- Then add live, two-way speech in a persistent player. Course navigation must keep the conversation alive across the site's static pages, for example by rendering the selected section within the player and synchronizing browser history. Keep a visible listening/speaking/paused indicator, captions and a touch stop control. Remember the last section locally so an interrupted session can resume.
+- For the first private pilot, evaluate a realtime provider with WebRTC and short-lived browser credentials. Keep the long-lived provider key in a small server-side session service. Restrict session creation to the pilot user, enforce a session duration and usage budget, and disclose that live audio goes to the selected provider before enabling the mic. Send the selected lesson excerpt and action result as needed. Keep raw audio and transcripts out of portal logs. Select the provider after measuring recognition of Polish commands with English technical names, interruption latency and cost per completed journey.
+- Verify on a physical Android phone, first through its speaker, then with a Bluetooth headset. From one initial tap, complete the journey above with no further touch. Check ambiguous titles, an unsupported question, a dropped connection, denied microphone permission and stopping mid-answer. Compare spoken confirmations with actual browser state. Record screen-lock and background behavior separately before promising either mode.
+
+Technical references: [browser microphone access](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) and [one candidate provider's WebRTC session flow](https://platform.openai.com/docs/guides/realtime-webrtc).
+
 ## Sprint 1: Building blocks (done 2026-11-16)
 
 - [x] Compute each puzzle's direct building blocks from the glossary (`blocks()` in `lint-course.js`).
@@ -207,3 +227,52 @@ blocks, mastery checks, test-out), the mobile engineer's angle across platforms 
 block), every fact proved from source code or a spec, and material you can take with you (Obsidian, flashcards, a
 Claude tutor that knows what you've passed). And it improves from real learners: anonymous wrong-answer counts
 show which puzzle is broken.
+
+## Next stage: an AI engineering lab and verified learning log
+
+The public learning log will publish small experiments about new AI tools, chat integrations and repeatable agent workflows. Each article starts from an engineering question, gives the reader the same inputs and a rerun command, reports what actually happened, and names what still needs testing.
+
+1. **Text and evaluation.** The first lab compares TF-IDF and a pinned MiniLM model on the same synthetic help articles. The experiment records exact rankings and feeds two LLM course puzzles on retrieval and evidence. Extend it with exact identifiers, unseen cases, and unanswerable questions before generalizing.
+2. **Chat and tool use.** Connect a chat to a read-only search tool in a disposable support workspace. Compare a chat using search manually, a chat using a typed tool call, and a repeatable skill that makes the full workflow explicit. Give the setups the same corpus and permissions. Record tool calls, evidence, answer support, errors, latency and visible costs. Use fixed expectations for tool call inputs and outputs. Test missing evidence, tool errors, and instructions embedded in retrieved text as inputs to ignore. Gate any write behind explicit user approval.
+3. **Android and KMP.** Build a small shared Kotlin chat feature. Use fake tool and model adapters for deterministic shared tests, then compare streaming and cancellation in the real client. On Linux install an Android SDK and verify the build and JVM tests. Run Android device checks where a device or supported emulator is available. Use a macOS runner with Xcode for Apple-target builds, Simulator checks and iOS-specific behavior. Mark each result with the platform actually tested.
+4. **Publishing threshold.** Keep test data synthetic or public. Pin tool and model versions, save raw outcomes and publish a source or replay wherever permissions permit. For a new tool version, rerun the same cases before updating the claim.
+
+Implementation discussions can refer to the public articles. Credentials, real user data and paid services belong behind explicit access and scope decisions.
+
+## JVM and backend practice — concurrent edits
+
+Added a deterministic Java 21 shared-counter exercise and a Python/SQLite HTTP exercise for two editors. Each course now has a linked lesson, a four-step diagram and three prediction checks. The graduation extension asks learners to defend the same invariant across two service instances.
+
+## Backend system design in English
+
+Published a 15-lesson path through a parking reservation service, with three transfer cases, a Java/JDBC concurrency and restart lab, a queue model, module checkpoints and an offline vault. The design exam requires a capacity estimate, a failure timeline, reproducible evidence and a revised decision after an assumption changes.
+
+### System design · PostgreSQL concurrency lab
+
+Linked the conditional-write puzzle to four executable two-writer experiments. The runner observes an actual lock wait before releasing the first writer, checks both committed tables, reproduces write skew and retries the decision after SQLSTATE 40001. The adjacent-seat exercise transfers the reasoning to a two-row reservation. Verified the four schedules on PostgreSQL 17.6.
+
+### Site review · From course discovery to a running experiment
+
+Reviewed the home page, course catalog, lessons, learning log, music pages and practice tools on narrow and desktop layouts. Main problems were repository links at the point of practice, a missing catalog route for general system design, overflowing long quiz answers and inconsistent navigation between sections. Primary lab actions now open English activities on the site. Native project files remain available for deeper practice. Checked real browser database transactions and four PostgreSQL schedules separately. Tested lab variants, navigation, keyboard controls and narrow-screen layout.
+
+### Independent practice in every published engineering course
+
+The 13 course outlines and their final lessons lead into a course-specific investigation with stated prerequisites, a concrete fixture, evidence to collect, a worked review and a changed assumption. The same projects ship with the offline vaults. All 38 lessons in the Backend, JVM and general System Design path received a separate content review. Planned modules remain identifiable on their course outlines.
+
+### Published topic chapters across all 13 courses
+
+Replaced the previously announced Android, BLE, iOS, LLM, performance, security and mobile system design topics with English teaching material. Added advanced topics to the other six courses. Each lesson contains a worked case, a transfer question, a reasoned solution and a source. Chapters are reachable from course outlines, catalog search, the final puzzle and the offline vault.
+
+### Curriculum and repeat-visit verification
+
+Reviewed all 136 published puzzles, 116 practice topics and 13 projects. Corrected overbroad technical claims, updated stale sources and reproduced the incident lesson's false-green readiness condition against the native service. Added persistent, reversible self-checks for practice and project work, a crash/redelivery exercise, a two-server PostgreSQL promotion fixture and a repeatable release check. Track the remaining assessment gaps in `_course/COVERAGE.md`.
+
+### Deferred learning-method research
+
+After the portal meets its agreed maintenance and multi-session learning goals, review the evidence for delayed recall, corrective feedback and transfer in technical education. Compare an in-portal prompt, one HTML email question and a separate app. Evaluate retention after a delay and the ability to solve a changed case alongside maintenance effort. Email delivery and application development require a later product decision.
+
+### Platform internals, operations and distributed data · 21 November 2026
+
+Added six English practice chapters with worked investigations and independent checks. Android follows an AOSP service through startup, HAL discovery and framework/vendor compatibility, then uses Linux memory, CPU and pressure data. Backend operations adds Docker runtime diagnosis and SQL reporting with adversarial data. System design adds Kafka record ownership, replay and compaction, plus scatter/gather ranking and partial-result contracts inspired by Brendan Burns. The mobile design puzzle now links to a two-client IndexedDB experiment with reversible arrival order, a lost reply and retained drafts.
+
+Remaining assessment work includes running the Android investigations on a target emulator, exercising Kafka group reassignment on a real broker, and implementing explicit conflict resolution across networked clients. See _course/COVERAGE.md for the broader audit.
