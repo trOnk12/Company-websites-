@@ -21,6 +21,14 @@ klasy 4–6, 45 zł za 45 minut. Zmiany na stronie nie mogą psuć wyglądu, kt�
 5. **Numer telefonu** na stronie: wielu rodziców woli zadzwonić lub napisać SMS niż e-mail. Decyzja Mateusza;
    wtedy dodać przycisk „Zadzwoń” obok e-maila.
 
+## Z telefonu jednym dotknięciem
+
+`https://pachulski.dev/korepetycje/udostepnij/` (ukryta przed Google; dodaj do ekranu głównego telefonu):
+wybierz jedną z 3 wersji tekstu i dotknij Facebook (udostępnij w grupie), WhatsApp, Messenger albo OLX;
+tekst z linkiem jest od razu w schowku. Publikujesz Ty, więc to zgodne z regulaminami grup i Facebooka.
+Automat z GitHub Actions też uruchomisz z telefonu: aplikacja GitHub → repozytorium → Actions →
+„Publish tutoring offer” → Run workflow.
+
 ## Automatyczna publikacja (`scripts/publish-tutoring.mjs` + `.github/workflows/publish-tutoring.yml`)
 
 Publikuje tylko tam, gdzie pozwala oficjalne API, i nic nie robi bez Twoich kluczy (sekrety w GitHub:

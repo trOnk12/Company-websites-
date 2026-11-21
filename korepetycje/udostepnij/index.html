@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>Udostępnij ofertę · korepetycje</title>
+<style>
+@font-face{font-family:Atkinson;src:url('/fonts/atkinson-hyperlegible-next-var.woff2')}
+*{box-sizing:border-box}
+body{margin:0;background:#faf7ef;color:#203834;font:18px/1.45 Atkinson,system-ui,sans-serif}
+main{max-width:34rem;margin:auto;padding:20px 16px 40px}
+h1{font:700 1.6rem/1.2 Georgia,serif;margin:.4rem 0 1rem}
+.post{background:#fff;border:1px solid #bac6bb;border-radius:8px;padding:14px;white-space:pre-wrap}
+.tabs{display:flex;gap:8px;margin:0 0 10px}.tabs button{flex:1;padding:10px;border:1px solid #174c80;background:#fff;color:#174c80;border-radius:6px;font:inherit}
+.tabs button[aria-pressed=true]{background:#174c80;color:#fff}
+.go{display:block;width:100%;margin:12px 0 0;padding:16px;border:0;border-radius:8px;background:#174c80;color:#fff;font:700 1.1rem Atkinson,sans-serif;text-align:center;text-decoration:none}
+.go.alt{background:#174d40}.go.ghost{background:#fff;color:#174c80;border:2px solid #174c80}
+.tip{font-size:.92rem;color:#3e635a}#ok{min-height:1.4em;font-weight:700;color:#174d40}
+</style></head><body><main>
+<h1>Udostępnij ofertę</h1>
+<p class="tip">Wybierz tekst, potem jedno dotknięcie. Na Facebooku wybierz „Udostępnij w grupie” i grupę; tekst masz już skopiowany, wystarczy go wkleić.</p>
+<div class="tabs" role="group" aria-label="Wersja tekstu"><button data-i="0" aria-pressed="true">1</button><button data-i="1" aria-pressed="false">2</button><button data-i="2" aria-pressed="false">3</button></div>
+<div class="post" id="post"></div>
+<a class="go" id="fb" href="#">Facebook: udostępnij w grupie</a>
+<a class="go alt" id="wa" href="#">WhatsApp</a>
+<a class="go ghost" id="mess" href="#">Messenger</a>
+<button class="go ghost" id="copy">Kopiuj tekst z linkiem</button>
+<a class="go ghost" href="https://www.olx.pl/adding/">OLX: dodaj ogłoszenie (tekst skopiowany)</a>
+<p id="ok" aria-live="polite"></p>
+<p class="tip">Zasady grup: publikuj tam, gdzie ogłoszenia są dozwolone, najwyżej raz na dwa tygodnie.</p>
+</main>
+<script>
+const URL_ = 'https://pachulski.dev/korepetycje/';
+const POSTS = [
+ 'Dzień dobry! Mam na imię Mateusz, mieszkam w Lginiu koło Wschowy. Prowadzę indywidualne korepetycje z matematyki online dla klas 4–6, 45 zł za 45 minut. Na pierwszą lekcję wystarczy jedno zadanie z zeszytu, z którym dziecko ma kłopot: rozrysujemy je razem krok po kroku.',
+ 'Ułamki, procenty, zadania tekstowe? Uczę matematyki klasy 4–6 online, jeden na jeden, 45 zł za 45 minut. Najpierw rysujemy, potem liczymy. Na stronie można wypróbować przykładowe zadanie z ułamków i zaproponować termin.',
+ 'Szukasz korepetycji z matematyki dla dziecka z klasy 4, 5 lub 6? Prowadzę lekcje online z okolic Wschowy (Lgiń), 45 zł za 45 minut. Proszę napisać, z czym dziecko ma trudność, a zaproponuję termin.'];
+let i = 0;
+const text = () => POSTS[i] + '\n\n' + URL_;
+const ok = m => { document.getElementById('ok').textContent = m; };
+const copy = async () => { try { await navigator.clipboard.writeText(text()); ok('Skopiowano. Wklej w poście.'); } catch { ok('Zaznacz tekst powyżej i skopiuj.'); } };
+const show = () => {
+  document.getElementById('post').textContent = text();
+  document.getElementById('fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(URL_);
+  document.getElementById('wa').href = 'https://wa.me/?text=' + encodeURIComponent(text());
+  document.getElementById('mess').href = 'fb-messenger://share/?link=' + encodeURIComponent(URL_);
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.i === i)));
+};
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => { i = +b.dataset.i; show(); }));
+document.querySelectorAll('#fb,#wa,#mess,a[href*="olx"]').forEach(a => a.addEventListener('click', copy));
+document.getElementById('copy').addEventListener('click', copy);
+show();
+</script></body></html>
