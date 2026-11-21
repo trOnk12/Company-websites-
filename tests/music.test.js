@@ -6,7 +6,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const ALL = fs.readdirSync(path.join(ROOT, '_music')).filter(f => f.endsWith('.md') && !f.startsWith('_'));
-const isLesson = f => /^kind:\s*lesson\s*$/m.test(fs.readFileSync(path.join(ROOT, '_music', f), 'utf8').split(/^---\s*$/m)[1] || '');
+const isLesson = f => /^kind:\s*(lesson|breakdown)\s*$/m.test(fs.readFileSync(path.join(ROOT, '_music', f), 'utf8').split(/^---\s*$/m)[1] || '');
 const RECIPES = ALL.filter(f => !isLesson(f)).map(f => f.replace(/\.md$/, ''));
 const LESSONS = ALL.filter(isLesson).map(f => f.replace(/\.md$/, ''));
 
