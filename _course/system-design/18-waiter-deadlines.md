@@ -37,12 +37,12 @@ Does this outcome also occur across real HTTP connections? Save [the local exper
 python3 waiters.py
 ```
 
-The script holds the storage response until both driver requests have entered their handlers and the short wait has ended. The following lines are the decision in the handler. The timeout belongs to the caller waiting on the future, the object holding the eventual answer. The storage worker continues running.
+The script holds the storage response until both driver requests have entered their handlers and the short wait has ended. The following lines are the decision in the handler. The timeout belongs to the caller waiting on the future, the object holding the eventual answer. The storage worker continues running. The status is 504 Gateway Timeout because the map service is acting as a gateway: it answers for a storage read it is waiting on.
 
 ```python
 try:
     return result.result(timeout=0.4 if budget == "short" else 6)
-except TimeoutError:
+except concurrent.futures.TimeoutError:   # the same class as TimeoutError from Python 3.11
     return 504, "caller deadline"
 ```
 
