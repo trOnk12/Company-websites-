@@ -89,6 +89,42 @@ Frontmatter: `title` (may name the new topic), `short`, `summary` (**only alread
   `class="step s2 hide-4"` = visible in steps 2–3). Show the change instead of labelling it (a pile that grows,
   a clock hand that moves, the clerk holding the letter).
 
+## 3b. The diagram standard (Mateusz, 21 November 2026: "the diagrams sometimes don't bring anything")
+
+A diagram earns its place only if a learner understands the mechanism **faster with it than with the text alone**.
+Metaphor pictures (houses, letters, people) are allowed as a *first* picture of an idea, but they must never stand
+in for the mechanism: by the end of the steps, the real actors, the real calls or data, and the order must be on
+screen. The research behind the rules: Mayer's multimedia-learning principles (coherence, signalling, spatial and
+temporal contiguity, segmenting, pre-training), Sweller's cognitive-load work (split attention, worked examples),
+and Tufte (show comparisons; every mark carries information).
+
+**Pick the type from the question the puzzle asks** (one question per diagram, written in the label comment):
+
+| The question | Diagram type | What must be on it |
+|---|---|---|
+| Who talks to whom, in what order? | **Sequence diagram**: one lifeline per actor (process, thread, server), time going down | real actor names, real call names, the waiting time drawn as a gap |
+| What state is it in, and what moves it? | **State machine** | every state, every transition labelled with its trigger; the trap state marked |
+| Where does this live in memory? | **Box-and-pointer / memory layout**: stack frames, heap objects, references | which frame holds which reference; what becomes unreachable |
+| Where does the time go? | **Timeline / swimlanes** (one lane per thread or device) with a time axis | durations to scale, the deadline line, idle vs busy |
+| How is it built, what sits on what? | **Layer stack** | each layer's job in ≤ 4 words; the one boundary the puzzle is about highlighted |
+| What changes between A and B? | **Small multiples / before-after**, same layout twice | identical framing so only the difference stands out |
+| How does data flow and transform? | **Pipeline**: stages left to right, the data's shape shown between stages | the data itself (bytes, JSON, rows), not just box names |
+| What does the code do? | **Annotated code**: the real lines, one highlighted per step, effect drawn beside it | the line, the value it produces, where that value goes |
+| How much? which is bigger? | **Number chart** (bars, a scale) | real numbers from a source or a run, units, the comparison |
+| Which option, when? | **Decision tree** | the deciding question at each fork; the consequence at each leaf |
+
+**Review rubric** (score 0–2 each; a diagram ships at ≥ 16/20, and no zero on 1–4):
+1. **Answers one question** the puzzle asks, stated before the steps begin.
+2. **Shows the mechanism**: cause → effect is visible (who acts, on what, with what result), not boxes with arrows.
+3. **Right type** for the question (table above).
+4. **Correct and complete**: real names, numbers and order; nothing a learner must look up to read it.
+5. **Essential only** (coherence): every mark is needed; no decoration competing with the point.
+6. **Labels on the thing** (spatial contiguity), not in a legend; ≤ 12 words per step.
+7. **One change per step** (segmenting), and the change is visible, not just written.
+8. **Signals** the one thing to look at in each step (one highlight colour).
+9. **A predict step** before the result, and the result answers it.
+10. **Reads on a phone** at 390 px: no text smaller than ~11 px rendered, nothing overlapping.
+
 ## 4. Questions
 
 `Question::*Right||Wrong >> the misconception behind it >> s3||…::Why the right one is right`
