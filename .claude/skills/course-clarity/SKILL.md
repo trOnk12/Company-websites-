@@ -143,6 +143,18 @@ which other courses they have NOT taken, and ask for: every concept used before 
 every leap, every missing puzzle between two puzzles (title + core idea + position), and overloaded puzzles. Missing
 puzzles get written, not footnoted. Add any slipped word to `_course/jargon.json`.
 
+## Pass 2f: complete enough that nobody comes back (Mateusz, 21 November 2026)
+
+"Complete, so I never have to go back", and every puzzle "crystal clear". Before a module ships, check:
+- **No return trips.** A learner who passed every puzzle can do the module's job without searching elsewhere: every
+  term, step, number, command and failure case the job needs is taught in the course (or linked as a "Go deeper"
+  floor). List what the job needs, tick each item against a puzzle; anything unticked becomes a puzzle.
+- **Crystal clear.** One idea per puzzle; the takeaway says it in two sentences a learner could repeat from memory;
+  the diagram shows that idea and nothing else; every sentence earns its place. If a fresh learner has to re-read a
+  paragraph, rewrite it.
+- **The edges are covered.** What usually goes wrong, the limits ("doesn't work when…"), and the version or platform
+  differences that bite in practice are in the puzzle, not left for later.
+
 ## Pass bar
 
 A puzzle ships only when the lint is clean, its diagram scores at least 8/10 in the picture review, **and** the fresh learner scores it at least 8/10 for
