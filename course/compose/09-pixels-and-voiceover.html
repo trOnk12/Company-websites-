@@ -9,7 +9,7 @@
   <meta property="og:title" content="Can VoiceOver understand the bookmark? – Compose Multiplatform, one screen from state to pixels – Mateusz Pachulski">
   <meta property="og:description" content="A custom bookmark icon looks right. Make its action understandable without seeing the screen.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/compose/03-pixels-and-voiceover">
+  <meta property="og:url" content="https://pachulski.dev/course/compose/09-pixels-and-voiceover">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Can VoiceOver understand the bookmark? – Compose Multiplatform, one screen from state to pixels – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/compose/03-pixels-and-voiceover">
+  <link rel="canonical" href="https://pachulski.dev/course/compose/09-pixels-and-voiceover">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -48,16 +48,16 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="compose" data-n="3">
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="compose" data-n="9">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Compose Multiplatform, one screen from state to pixels</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 3 · 4 of 4</p>
+        <p class="eyebrow">Puzzle 9 · 10 of 10</p>
         <h1>Can VoiceOver understand the bookmark?</h1>
         <p class="lede">A custom bookmark icon looks right. Make its action understandable without seeing the screen.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-state-reads-and-ui.html" title="Who read the bookmark count?">0</a></li><li><a href="01-read-in-the-right-phase.html" title="Which work does a moving card need?">1</a></li><li><a href="02-who-hosts-the-native-view.html" title="Which side hosts the other?">2</a></li><li><a href="03-pixels-and-voiceover.html" aria-current="page" title="Can VoiceOver understand the bookmark?">3</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-composable-really-does.html" title="What @Composable really does">0</a></li><li><a href="01-the-tree-compose-remembers.html" title="The tree Compose remembers">1</a></li><li><a href="02-who-read-that-state.html" title="Who read that state?">2</a></li><li><a href="03-what-gets-skipped.html" title="What gets skipped">3</a></li><li><a href="04-one-frame.html" title="One frame, from tree to pixels">4</a></li><li><a href="05-four-layers.html" title="Four layers, one edge per platform">5</a></li><li><a href="06-state-reads-and-ui.html" title="Who read the bookmark count?">6</a></li><li><a href="07-read-in-the-right-phase.html" title="Which work does a moving card need?">7</a></li><li><a href="08-who-hosts-the-native-view.html" title="Which side hosts the other?">8</a></li><li><a href="09-pixels-and-voiceover.html" aria-current="page" title="Can VoiceOver understand the bookmark?">9</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -65,14 +65,14 @@
         <a href="#go-deeper-design-a-two-platform-check">Go deeper</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
-      <aside class="builds-on" aria-labelledby="builds-on-3">
-        <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary>Puzzle 2: Which side hosts the other?</summary><p>A shared screen can sit inside an iOS view controller. Inside that screen, a native view can be embedded with distinct creation and update steps.</p><p><a href="02-who-hosts-the-native-view.html">Review puzzle 2</a></p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-state-reads-and-ui.html">0</a> → <a href="01-read-in-the-right-phase.html">1</a> → <a href="02-who-hosts-the-native-view.html">2</a>. Know them already? Start here.</p>
-      </aside>
+      <aside class="builds-on" aria-labelledby="builds-on-9">
+        <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="8"><details><summary>Puzzle 8: Which side hosts the other?</summary><p>A shared screen can sit inside an iOS view controller. Inside that screen, a native view can be embedded with distinct creation and update steps.</p><p><a href="08-who-hosts-the-native-view.html">Review puzzle 8</a></p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 6 puzzles: <a href="00-what-composable-really-does.html">0</a> → <a href="01-the-tree-compose-remembers.html">1</a> → <a href="02-who-read-that-state.html">2</a> → <a href="03-what-gets-skipped.html">3</a> → <a href="04-one-frame.html">4</a> → <a href="08-who-hosts-the-native-view.html">8</a>. Know them already? Start here.</p>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>state</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/14-what-compose-shares.html"><b>Compose Multiplatform</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 14: What Compose actually shares</span></li><li><a href="../kmp/14-what-compose-shares.html"><b>VoiceOver</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 14: What Compose actually shares</span></li><li><a href="../kmp/15-one-canvas-on-ios.html"><b>semantics</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 15: One canvas on iOS</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>A custom icon toggles a bookmark and changes from outline to solid. A sighted person can see the difference. What information can a person using VoiceOver get?</p>
+<p>Puzzle 8 placed the shared screen inside an iOS controller and a native field inside the screen. The rest of the screen is still drawn by Compose, as pixels. A custom icon toggles a bookmark and changes from outline to solid. A sighted person can see the difference. What information can a person using VoiceOver get?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -111,31 +111,35 @@
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
+      <section aria-labelledby="the-analogy">
+        <h2 id="the-analogy">The analogy</h2>
+<p>The painted set from puzzle 8's theatre. A sighted audience sees a painted door that's open or closed. A blind audience member hears the play through an audio describer (VoiceOver), who can only say what the script tells them: &quot;door, closed, opens on a tap&quot;. If the script says nothing about the door, the describer says nothing, however well it is painted.</p>
+      </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>The icon is solid after saving, but the action has no label or state. What is the missing signal?</legend>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-1"><label for="q-03-pixels-and-voiceover-1-1"><span>A larger solid icon so the change is easier to see</span></label>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-2" data-ok><label for="q-03-pixels-and-voiceover-1-2"><span>A semantic description of the action and its state</span></label>
-<input type="radio" name="q-03-pixels-and-voiceover-1" id="q-03-pixels-and-voiceover-1-3"><label for="q-03-pixels-and-voiceover-1-3"><span>An extra native navigation bar above the control</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-1" id="q-09-pixels-and-voiceover-1-1"><label for="q-09-pixels-and-voiceover-1-1"><span>A larger solid icon so the change is easier to see</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-1" id="q-09-pixels-and-voiceover-1-2" data-ok><label for="q-09-pixels-and-voiceover-1-2"><span>A semantic description of the action and its state</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-1" id="q-09-pixels-and-voiceover-1-3"><label for="q-09-pixels-and-voiceover-1-3"><span>An extra native navigation bar above the control</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Changing pixels does not expose a saved state to the screen reader. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Provide the meaning of the control along with its pixels.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The navigation bar does not describe an unlabeled bookmark. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>The button already provides the full label. What can duplicate text on the icon cause?</legend>
-<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-1"><label for="q-03-pixels-and-voiceover-2-1"><span>The button automatically loses its saved state</span></label>
-<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-2" data-ok><label for="q-03-pixels-and-voiceover-2-2"><span>The same meaning may be announced more than once</span></label>
-<input type="radio" name="q-03-pixels-and-voiceover-2" id="q-03-pixels-and-voiceover-2-3"><label for="q-03-pixels-and-voiceover-2-3"><span>The native field stops reporting text edits</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-2" id="q-09-pixels-and-voiceover-2-1"><label for="q-09-pixels-and-voiceover-2-1"><span>The button automatically loses its saved state</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-2" id="q-09-pixels-and-voiceover-2-2" data-ok><label for="q-09-pixels-and-voiceover-2-2"><span>The same meaning may be announced more than once</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-2" id="q-09-pixels-and-voiceover-2-3"><label for="q-09-pixels-and-voiceover-2-3"><span>The native field stops reporting text edits</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Duplicating the name does not remove the state. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Describe one logical control coherently.</p>
 <p class="fb no opt-3"><b>Not quite.</b> This concerns focus and labels on the bookmark. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>An automated check finds the icon. Which additional check best verifies the intended interaction?</legend>
-<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-1" data-ok><label for="q-03-pixels-and-voiceover-3-1"><span>Focus and activate the bookmark with VoiceOver on an iPhone</span></label>
-<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-2"><label for="q-03-pixels-and-voiceover-3-2"><span>Check only whether the page loads without crashing</span></label>
-<input type="radio" name="q-03-pixels-and-voiceover-3" id="q-03-pixels-and-voiceover-3-3"><label for="q-03-pixels-and-voiceover-3-3"><span>Check only whether the icon is filled in a screenshot</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-3" id="q-09-pixels-and-voiceover-3-1" data-ok><label for="q-09-pixels-and-voiceover-3-1"><span>Focus and activate the bookmark with VoiceOver on an iPhone</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-3" id="q-09-pixels-and-voiceover-3-2"><label for="q-09-pixels-and-voiceover-3-2"><span>Check only whether the page loads without crashing</span></label>
+<input type="radio" name="q-09-pixels-and-voiceover-3" id="q-09-pixels-and-voiceover-3-3"><label for="q-09-pixels-and-voiceover-3-3"><span>Check only whether the icon is filled in a screenshot</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Check focus, spoken meaning and a changed state.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Successful navigation does not verify the label or toggle. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> A screenshot checks pixels instead of the screen reader interaction. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
@@ -145,7 +149,7 @@
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Compose semantics describe meaning and actions independently from pixels. On iOS the mapping to native accessibility information makes those semantics available to VoiceOver.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="02-who-hosts-the-native-view.html">← Puzzle 2</a>
+        <a class="button" href="08-who-hosts-the-native-view.html">← Puzzle 8</a>
         <a class="button" href="./">Back to the overview →</a>
       </nav>
       <section class="finish" aria-labelledby="finish-heading">
@@ -156,7 +160,7 @@
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Can%20VoiceOver%20understand%20the%20bookmark%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2F03-pixels-and-voiceover" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2F09-pixels-and-voiceover" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

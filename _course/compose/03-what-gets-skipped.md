@@ -22,16 +22,16 @@ Equal how? That depends on the argument's type, and on whether Compose can trust
 
 A **stable** type is one that can't change without Compose seeing it: it never changes once made (Int, String, a data class whose properties are all vals of stable types), or it changes only through snapshot state, which Compose watches (puzzle 2). For a stable argument, Compose calls `equals`: a new `User("Ana")` equal to last time's skips.
 
-An **unstable** type could change without Compose seeing a watched write: a class with a plain var property, or the `List`, `Set` and `Map` interfaces, since the list behind a `List` might be a mutable one. So are classes from a module the Compose compiler didn't process. Before Kotlin 2.0.20, a call with an unstable argument always ran when its parent ran. Since then the compiler's **strong skipping** mode is on by default: an unstable argument is compared by instance, with `===`, and the call is skipped when the very same object comes back.
+An **unstable** type could change without Compose seeing a watched write: a class with a plain var property, or the `List`, `Set` and `Map` interfaces, since the list behind a `List` might be a mutable one. So are classes from a module the Compose compiler didn't compile. Before Kotlin 2.0.20, a call with an unstable argument always ran when its parent ran. Since then the compiler's **strong skipping** mode is on by default: an unstable argument is compared by instance, with `===`, and the call is skipped when the very same object comes back.
 
-That's why where you build a value matters. `Tags(listOf("a", "b"))` inside `Screen` builds a new list on every run of `Screen`: a different instance each time, so `Tags` runs every time, even though the words inside never change. Keep the list in `remember`, in snapshot state or in a ViewModel, and `Tags` gets the same instance and is skipped. For a list computed from another one, give `remember` that list as a key, so it computes again only when the input changes:
+That's why where you build a value matters. Calling `Tags` with `listOf("a", "b")` inside `Screen` builds a new list on every run of `Screen`: a different instance each time, so `Tags` runs every time, even though the words inside never change. Keep the list in `remember`, in snapshot state or in a ViewModel, and `Tags` gets the same instance and is skipped. For a list computed from another one, give `remember` that list as a key, so it computes again only when the input changes:
 
 ```kotlin
 val done = remember(items) { items.filter { it.done } }
 Done(done)
 ```
 
- Under strong skipping the compiler also remembers the lambdas you write inside a composable, such as an `onClick`, so they don't count as new on every run.
+Under strong skipping the compiler also remembers the lambdas you write inside a composable, such as an `onClick`, so they don't count as new on every run.
 
 When the compiler can't prove a type stable, but you know its changes are always visible to Compose, the **`@Stable`** annotation promises it. Compose then compares it with `equals`, which is only worth it if `equals` is cheap: comparing a long list item by item can cost more than running the call.
 
@@ -39,7 +39,7 @@ Skipping and puzzle 2 work together. Skipping decides whether a child runs becau
 
 ## Go deeper: What does a skip look like in the generated code?
 
-- The plugin's own comments show the rewrite: the body runs if an argument changed, else `$composer.skipToGroupEnd()`. What does skipping to the group's end leave in the slot table?::Everything the group recorded last time, untouched: its slots, its child groups and its nodes. The reader jumps past them, so the screen keeps showing what that call produced on its last run.
+- The plugin's own comments show the rewrite: the body runs if an argument changed, else `skipToGroupEnd()`. What does skipping to the group's end leave in the slot table?::Everything the group recorded last time, untouched: its slots, its child groups and its nodes. The reader jumps past them, so the screen keeps showing what that call produced on its last run.
 
 ## The analogy
 

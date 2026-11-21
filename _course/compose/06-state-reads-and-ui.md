@@ -1,13 +1,13 @@
 ---
 title: Who read the bookmark count?
 short: Who read the bookmark count?
-summary: Tap a bookmark. Work out which part of a shared screen has to run again.
-takeaway: A read of observable state gives Compose a dependency to track. When the value changes, Compose can revisit the parts that read it.
+summary: Module 1 took Compose apart. Now a real shared screen. Tap a bookmark, find where the count is read, and move that read so only the header runs again.
+takeaway: The group that runs again is the one where the state read happened, not the one that shows the value. Pass the state object, or a lambda that reads it, down to the composable that needs the value, and a change marks only that composable. That's deferring a read.
 ---
 
 ## The problem
 
-A reading app has a header that shows the number of bookmarks and a card with a static title. Tapping a bookmark changes the count from 2 to 3. How does Compose know which code needs to run again?
+Module 1 ended with the whole stack, from the compiler plugin down to the edge that meets the phone. Now we use it on one shared screen that runs on Android and iOS. A reading app shows a header with the number of bookmarks and a list of saved items below it. Tapping a bookmark changes the count from 2 to 3. Puzzle 2 said Compose marks the groups that read the count. On this screen, which group is that, and how much of the screen runs again?
 
 ## See it
 
@@ -16,30 +16,55 @@ A reading app has a header that shows the number of bookmarks and a card with a 
 
 ## The building block
 
-A **tracked state read** is a dependency that Compose records when your code reads an observable value. Here the header reads the bookmark count inside a composable function, a function that describes UI.
+The obvious version reads the count at the top and hands a number down:
 
 ```kotlin
 @Composable
-fun BookmarkCount(count: State<Int>) {
-    Text("Bookmarks: ${count.value}")
+fun BookmarksScreen(count: State<Int>) {
+    BookmarkHeader(count = count.value)   // the read happens here
+    BookmarkList()
 }
 ```
 
-The button event changes the observable count held elsewhere. Compose schedules **recomposition**, running again the parts of the composition that need to update their UI description. The header reads 3 and describes new text. A sibling with a static title has no dependency on this count. Compose can skip unrelated work when it can reuse the result.
+`count.value` is evaluated while `BookmarksScreen` runs, so the state read is noted against the screen's group. A tap marks the screen, and the whole screen body runs again: the header gets a new number and runs, and the list is skipped only because its arguments are equal (puzzle 3). On a small screen that's cheap. On a big one, or with a value that changes on every frame, it's work you don't need.
 
-That dependency comes from the read. Holding a reference to the state object and reading its value are different operations. If you read the value at the screen's top and hand an integer down, the read happened at the top, even though the header displays it.
+The fix is to move the read to where the value is used. Pass a lambda that reads the count, and call it inside the header:
+
+```kotlin
+@Composable
+fun BookmarksScreen(count: State<Int>) {
+    BookmarkHeader(count = { count.value })   // no read here
+    BookmarkList()
+}
+
+@Composable
+fun BookmarkHeader(count: () -> Int) {
+    Text("Bookmarks: ${count()}")             // the read happens here
+}
+```
+
+Now the screen never reads the count. The lambda runs, and reads it, while `BookmarkHeader` runs, so the read is noted against the header's group. A tap marks only the header, and the screen and the list don't run at all. That's **deferring a read**: moving a state read out of a parent and into the child that needs the value, so less code runs again when it changes. Passing the `State` object itself works the same way, as long as the child is the one that reads `.value`.
+
+The lambda doesn't cost you skipping either. Under strong skipping (puzzle 3), the compiler remembers lambdas written inside a composable, so when the screen runs again for another reason, the header gets the same lambda instance and is skipped.
+
+Deferring is a tool, not a rule. Android's guide lists it under fixing a performance issue you've found: reach for it when a value changes often, or the parent is big.
 
 ## Go deeper: Move one read
 
-- If the header receives a state object and only reads its value inside the header, where is the observable read?::It takes place in the header. Passing the object from the parent does not by itself read the count.
+- If the header receives the state object and reads its value inside the header, where is the state read?::In the header. Passing the object from the parent doesn't read the count; only reading `.value` does, and that happens while the header runs.
+
+## The analogy
+
+The theatre's scoreboard. If the stage manager reads the score and calls the number to one performer, a change of score means the stage manager's whole scene is redone. Hand the performer a window onto the scoreboard instead, and only that performer's line is redone when the score changes.
 
 ## Check yourself
 
-- Only the count changes. Which UI code depends directly on the count?::*The header that read the count||Every sibling on the screen >> A sibling without the read has no direct dependency. >> the-building-block||Only the code handling the tap >> The tap writes the value. The header reads it. >> the-building-block::Locate the observable read.
-- The parent now reads the integer and passes it to the header. Where does Compose observe that read?::*In the parent code||In the header that displays it >> The header receives an integer. The parent read the observable value. >> the-building-block||In the button code that changes it >> Writing the count and observing it are separate. >> the-building-block::The location of the actual read determines the dependency.
-- The count is stored only in an ordinary mutable field. What change would let Compose observe edits?::*Store the value in observable state and read it in the UI||Move the ordinary field into the header and keep writing it >> Moving an ordinary field does not make its reads observable. >> the-building-block||Write the same ordinary field twice on each tap >> Two writes still provide no observable dependency. >> the-building-block::Use an observable value and actually read it.
+- The screen reads `count.value` and passes the number to the header. A tap changes the count. Which group does Compose mark?::*The screen's, because the read happened while the screen ran||Only the header's, because the header shows the number >> Compose follows where the read happened, not where the value is shown. >> s4||Every group in the app, starting from the root >> A write marks only the groups that read the value. >> s3::The read decides which group is marked.
+- Why does passing a lambda that reads `count.value`, instead of `count.value` itself, move the rerun into the header?::*The lambda is called, and reads the count, while the header runs||The lambda copies the count, so the screen no longer holds the state >> The lambda reads the same state; what moves is when and where the read happens. >> the-building-block||Compose never compares lambdas, so it reruns the header on every frame >> Nothing reruns on every frame; a tap marks only the group that read the count. >> s5::Where the read runs is where it's noted.
+- After deferring the read, the screen runs again for another reason, and passes the header the same lambda that reads `count.value`. Does the header run?::*No: strong skipping remembered the lambda, so the same instance comes back||Yes: a lambda is unstable, so it always counts as changed >> Unstable arguments are compared by instance, and the remembered lambda is the same instance. >> the-building-block||Yes: the header read the count, so it runs whenever the screen does >> A read marks the header only when the count changes; here it didn't. >> the-building-block::Remembered lambda, same instance, skipped.
 
 ## Sources
 
-- [Android Developers: Lifecycle of composables](https://developer.android.com/develop/ui/compose/lifecycle)
-- [Android Developers: State and Jetpack Compose](https://developer.android.com/develop/ui/compose/state)
+- [Android Developers: Follow best practices](https://developer.android.com/develop/ui/compose/performance/bestpractices) ("Defer reads as long as possible When a performance issue has been identified, deferring state reads can help."; "if your UI has state that is hoisted high up in the composable tree and you read the state in a child composable, you can wrap the state read in a lambda function. Doing this makes the read occur only when it is actually needed."; "Deferring state reads will ensure that Compose re-runs the minimum possible code on recomposition.")
+- [Android Developers: Strong skipping mode](https://developer.android.com/develop/ui/compose/performance/stability/strongskipping) ("With strong skipping enabled, every lambda inside a composable function will be automatically remembered.")
+- [Android Developers: Jetpack Compose phases](https://developer.android.com/develop/ui/compose/phases) ("When you read the value of a snapshot state during one of the phases listed previously, Compose automatically tracks what it was doing when it read the value.")

@@ -71,12 +71,26 @@
    "Modifier.padding",
    "fillMaxWidth",
    "Tags",
-   "tags",
    "Profile",
    "Profile(name)",
    "Card",
    "title",
-   "BookmarkCount"
+   "BookmarkCount",
+   "User",
+   "Set",
+   "Map",
+   "items",
+   "items.filter",
+   "Cleo",
+   "Ben",
+   "BookmarksScreen",
+   "BookmarkHeader",
+   "BookmarkList",
+   "count()",
+   "position",
+   "position.value",
+   "y",
+   "val y = position.value"
   ],
   "homonyms": [
    "suspend"
@@ -165,8 +179,7 @@
    "in": "02",
    "def": "Code reading a snapshot state's value while Compose runs it; Compose notes which group was running.",
    "aliases": [
-    "state reads",
-    "tracked state read"
+    "state reads"
    ]
   },
   "restart group": {
@@ -284,6 +297,31 @@
    "in": "09",
    "def": "Labels, roles, states and actions exposed to assistive technology.",
    "aliases": []
+  },
+  "skipToGroupEnd()": {
+   "in": "03",
+   "def": "The Composer call a skipped composable makes: jump past its group and keep what it recorded last time.",
+   "kind": "code"
+  },
+  "UiApplier": {
+   "in": "05",
+   "def": "Compose UI's Applier on Android: it inserts, moves and removes LayoutNodes.",
+   "kind": "code"
+  },
+  "deferring a read": {
+   "in": "06",
+   "def": "Moving a state read out of a parent and into the child, or the later phase, that needs the value, so less code runs again when it changes.",
+   "aliases": [
+    "deferred read",
+    "deferring the read",
+    "deferring state reads",
+    "defer the read"
+   ]
+  },
+  "drawBehind": {
+   "in": "07",
+   "def": "A modifier whose lambda runs during drawing, so a state read inside it reruns drawing alone.",
+   "kind": "code"
   }
  },
  "from": {
@@ -399,6 +437,10 @@
   "main thread": {
    "course": "android",
    "in": 2
+  },
+  "ViewModel": {
+   "course": "android",
+   "in": 21
   }
  },
  "avoid": {

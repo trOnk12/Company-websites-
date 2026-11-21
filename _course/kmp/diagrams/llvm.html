@@ -1,0 +1,22 @@
+<!-- label: The link stage reads every klib, translates the whole program to LLVM IR, and LLVM writes instructions for the target's processor -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ll-t"><title id="ll-t">A link task reads your klib, Ktor's and the standard library's; Kotlin/Native's back end translates the whole program's IR into LLVM IR; LLVM optimizes it and its code generator writes Arm instructions for the iPhone's processor; the same LLVM also serves other processors and Apple's Clang compiler</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s1" data-pulse="1"><text class="d-mi" x="16" y="36">linkDebugFrameworkIosArm64</text>
+<rect class="d-wood" x="16" y="56" width="120" height="40" rx="6"/><text class="d-tiny" x="76" y="81" text-anchor="middle">your klib</text>
+<rect class="d-wood" x="16" y="112" width="120" height="40" rx="6"/><text class="d-tiny" x="76" y="137" text-anchor="middle">Ktor</text>
+<rect class="d-wood" x="16" y="168" width="120" height="40" rx="6"/><text class="d-tiny" x="76" y="193" text-anchor="middle">stdlib</text></g>
+<g class="step s2" data-pulse="2"><x-machine x="160" y="104" w="140" label="back end"/><x-arrow tone="ink" d="M138,76 L170,104"/><x-arrow tone="ink" d="M138,132 L156,132"/><x-arrow tone="ink" d="M138,188 L170,160"/>
+<x-arrow tone="acc" d="M302,130 L316,130"/><x-sheet x="320" y="98" w="56" h="64" lines="4" label="LLVM IR"/></g>
+<g class="step s3" data-pulse="3"><x-arrow tone="acc" d="M378,130 L394,130"/><x-machine x="398" y="96" w="130" h="70" label="LLVM"/><text class="d-tiny" x="463" y="190" text-anchor="middle">optimizer</text></g>
+<g class="step s4" data-pulse="4"><x-arrow tone="acc" d="M530,130 L548,110"/><x-sheet x="552" y="56" w="56" h="64" lines="3" label="Arm code"/><x-arrow tone="acc" d="M580,142 L580,196"/><x-chip x="544" y="202" w="72" label="iPhone"/><text class="d-tiny" x="463" y="210" text-anchor="middle">code generator</text></g>
+<g class="step s5" data-pulse="5"><x-arrow tone="ink" d="M463,216 L463,262"/><x-chip x="300" y="282" w="72" label="Mac"/><x-chip x="400" y="282" w="72" label="Linux"/><x-chip x="500" y="282" w="80" label="Windows"/>
+<x-machine x="160" y="244" w="120" label="Clang"/><x-arrow tone="ink" d="M282,262 C340,240 400,200 420,170"/></g>
+<g class="step s1" data-move="1:76,236 2:230,131 3:463,131 4:580,224 5:463,262"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>A link task starts the <b>link stage</b>: once per final binary, it reads every klib, so the compiler sees the whole program at once.</p></li>
+<li><p>Kotlin/Native's back end translates all that IR into <b>LLVM IR</b>: lower level, closer to instructions, but still tied to no processor.</p></li>
+<li><p>It hands that to <b>LLVM</b>, shared compiler parts. Its optimizer rewrites the code to do the same work faster. <i>Predict: what comes out for iosArm64?</i></p></li>
+<li><p>LLVM's code generator writes Arm instructions for the iPhone's processor: the native code from puzzle 0, at last.</p></li>
+<li><p>The same LLVM generates code for other processors too, and Apple's Clang compiler uses it. Kotlin writes none of that itself.</p></li>
+</ol>

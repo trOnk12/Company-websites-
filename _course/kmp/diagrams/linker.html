@@ -1,0 +1,19 @@
+<!-- label: The linker joins object code into one binary, connects calls by symbol, and leaves out code nothing reaches -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="lk-t"><title id="lk-t">Object code for your code, Ktor, an unused Ktor function and the runtime; your call and Ktor's function share the symbol HttpClient; the linker joins them into one binary and connects the call; the unused function is left out; calls into Apple's code stay open, to be connected on the phone</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s1" data-pulse="1" data-move="1:20,40 3:427,64"><rect class="d-paper" x="0" y="0" width="170" height="52" rx="6"/><text class="d-tiny" x="12" y="31">your code</text><g class="step s2"><rect class="d-hl" x="88" y="15" width="76" height="22" rx="4"/><text class="d-tiny" x="126" y="31" text-anchor="middle">HttpClient</text></g></g>
+<g class="step s1" data-move="1:20,112 3:427,128"><rect class="d-paper" x="0" y="0" width="170" height="52" rx="6"/><text class="d-tiny" x="12" y="31">Ktor</text><g class="step s2"><rect class="d-hl" x="88" y="15" width="76" height="22" rx="4"/><text class="d-tiny" x="126" y="31" text-anchor="middle">HttpClient</text></g></g>
+<g class="step s1" data-move="1:20,184 3:427,192 4:226,286"><rect class="d-dash" x="0" y="0" width="170" height="52" rx="6"/><text class="d-tiny" x="12" y="31">Ktor, unused</text></g>
+<g class="step s1" data-move="1:20,256 3:427,256"><rect class="d-band" x="0" y="0" width="170" height="52" rx="6"/><text class="d-tiny" x="12" y="31">runtime</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-wood" x="404" y="24" width="216" height="300" rx="10"/><text class="d-b" x="512" y="50" text-anchor="middle">shared binary</text><x-machine x="214" y="150" w="130" label="linker"/><x-arrow tone="acc" d="M346,177 L398,177"/></g>
+<x-arrow class="step s3" tone="acc" d="M592,116 C606,122 606,134 594,142"/>
+<g class="step s4" data-pulse="4"><circle class="d-bad" cx="410" cy="312" r="13"/><path class="d-red" d="M402,304 L418,320 M418,304 L402,320"/></g>
+<g class="step s5" data-pulse="5"><rect class="d-dash" x="214" y="30" width="150" height="70" rx="6"/><text class="d-tiny" x="289" y="60" text-anchor="middle">Apple's code</text><text class="d-m" x="289" y="84" text-anchor="middle">on the phone</text><x-arrow tone="path" d="M425,150 C380,140 380,90 368,72"/></g>
+</svg>
+<ol class="caps">
+<li><p>LLVM wrote <b>object code</b>: instructions, but not a finished program. Your call into Ktor leaves the address open.</p></li>
+<li><p>The open call names its target by a <b>symbol</b>: the function's name in compiled code. Ktor's object code defines the same symbol.</p></li>
+<li><p>The <b>linker</b> joins everything into one binary and replaces each named call with an address. <i>Predict: what happens to the code nothing calls?</i></p></li>
+<li><p>Nothing reaches it, so it's left out: dead code elimination, possible because this stage sees the whole program.</p></li>
+<li><p>Calls into Apple's code stay named: it's already on the phone, and those calls are connected there when the app starts.</p></li>
+</ol>

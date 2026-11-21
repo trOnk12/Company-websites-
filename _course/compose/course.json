@@ -1,15 +1,15 @@
 {
   "title": "Compose Multiplatform, one screen from state to pixels",
-  "intro": "Follow a shared bookmark screen from state reads to rendering, across the iOS hosting boundary and through a VoiceOver check.",
-  "how": "Follow the mechanism, predict a change and check your answer. Optional depth is available from the same puzzle.",
+  "intro": "What Compose really does underneath your @Composable functions, and how Compose Multiplatform takes that machinery to an iPhone. Then one shared bookmark screen, followed from state reads to pixels, across the iOS hosting boundary and through a VoiceOver check. For Android engineers who write Jetpack Compose and want to ship it to iOS.",
+  "how": "Each puzzle starts with a problem, gives you one building block, shows it in a diagram that plays itself, and ends with three questions. Facts come from Android's and Kotlin's documentation and from Compose's own source code, quoted on every page. Optional depth is available from the same puzzle.",
   "assumes": {
     "title": "Kotlin Multiplatform, from the compiler up",
     "href": "../kmp/"
   },
   "modules": [
     {
-      "title": "Module 1: One screen, two platforms",
-      "blurb": "Trace state, placement, native UI and accessibility through the same screen.",
+      "title": "Module 1: Compose underneath",
+      "blurb": "What the compiler plugin does to a composable, the tree Compose remembers, which code runs again when state changes and what gets skipped, one frame from tree to pixels, and the layers that let Compose leave Android.",
       "puzzles": [
         "00-what-composable-really-does.md",
         "01-the-tree-compose-remembers.md",
@@ -20,8 +20,8 @@
       ]
     },
     {
-      "title": "Module 2",
-      "blurb": "",
+      "title": "Module 2: One screen, two platforms",
+      "blurb": "Trace state reads, placement, native UI and accessibility through the same shared bookmark screen.",
       "puzzles": [
         "06-state-reads-and-ui.md",
         "07-read-in-the-right-phase.md",

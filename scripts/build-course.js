@@ -498,6 +498,7 @@ function renderIndex(cs) {
         <h1 id="courses-heading">Engineering courses</h1>
         <p class="lede">New to backend engineering? Begin with one request from a client to a server. Work up to deploying a service and defending a system design.</p>
         <p class="actions"><a class="button primary" href="backend-ops/${byId['backend-ops'].puzzles[0].slug}.html">Start with your first request</a> <a class="button" href="me.html">Your learning</a></p>
+        <p class="catalog-continue" hidden></p>
       </div>
     </section>
     <div class="wrap catalog-body" id="browse-courses">

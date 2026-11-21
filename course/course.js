@@ -388,6 +388,21 @@
     search.addEventListener('input', filterPuzzles);
   }
 
+  // On the catalog, the course you're in the middle of gets a one-tap "Continue" at the top.
+  const cont = document.querySelector('.catalog-continue');
+  if (cont) {
+    const going = [...document.querySelectorAll('[data-progress]')].map(card => ({ card, have: store.get(card.dataset.progress).length, total: Number(card.dataset.total) })).filter(x => x.have && x.have < x.total);
+    if (going.length) {
+      const { card, have, total } = going[0];
+      const a = card.querySelector('h3 a');
+      const link = document.createElement('a');
+      link.className = 'button primary';
+      link.href = a.getAttribute('href');
+      link.textContent = `Continue: ${a.textContent} (${have} of ${total}) →`;
+      cont.append(link);
+      cont.hidden = false;
+    }
+  }
   // ── Course cards on the catalog: resume an unfinished course ──
   for (const card of document.querySelectorAll('[data-progress]')) {
     const course = card.dataset.progress;

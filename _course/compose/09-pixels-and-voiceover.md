@@ -7,7 +7,7 @@ takeaway: Compose semantics describe meaning and actions independently from pixe
 
 ## The problem
 
-A custom icon toggles a bookmark and changes from outline to solid. A sighted person can see the difference. What information can a person using VoiceOver get?
+Puzzle 8 placed the shared screen inside an iOS controller and a native field inside the screen. The rest of the screen is still drawn by Compose, as pixels. A custom icon toggles a bookmark and changes from outline to solid. A sighted person can see the difference. What information can a person using VoiceOver get?
 
 ## See it
 
@@ -31,6 +31,10 @@ A visual check proves part of the behavior. On an iPhone, verify focus order, sp
 ## Go deeper: Design a two-platform check
 
 - What would a useful check record if the same icon works on iOS and Android?::Record the focused control, distinguish its saved and unsaved states, activate it with the platform screen reader, and verify the result. Keep platform-specific wording separate from the intended meaning.
+
+## The analogy
+
+The painted set from puzzle 8's theatre. A sighted audience sees a painted door that's open or closed. A blind audience member hears the play through an audio describer (VoiceOver), who can only say what the script tells them: "door, closed, opens on a tap". If the script says nothing about the door, the describer says nothing, however well it is painted.
 
 ## Check yourself
 

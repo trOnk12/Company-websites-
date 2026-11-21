@@ -1,0 +1,17 @@
+<!-- label: A static library is copied into the app's executable when Xcode builds it; a dynamic library stays a separate file that the dynamic loader joins at launch -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sd-t"><title id="sd-t">The app's executable and your Kotlin framework are two binaries; static: Xcode copies the Kotlin code into the executable; dynamic: both go into the iPhone as separate files, and the dynamic loader connects them each time the app starts</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<x-phone class="step s4" x="420" y="20" w="200" h="300" label="iPhone"/>
+<g class="step s1" data-pulse="1" data-move="1:24,36 4:445,50"><rect class="d-paper" x="0" y="0" width="150" height="124" rx="6"/><text class="d-tiny" x="75" y="24" text-anchor="middle">app executable</text><path class="d-line" d="M14,40 L110,40 M14,54 L90,54"/></g>
+<g class="step s1 hide-4"><x-machine x="214" y="160" w="140" label="Xcode"/><x-arrow tone="ink" d="M176,98 C196,110 214,140 226,158"/></g>
+<g class="step s1" data-pulse="2" data-move="1:34,240 2:34,104 3:34,240 4:455,206"><rect class="d-wood" x="0" y="0" width="130" height="44" rx="6"/><text class="d-tiny" x="65" y="28" text-anchor="middle">Kotlin</text></g>
+<text class="d-a step only-3" x="110" y="226" text-anchor="middle">?</text>
+<g class="step s5" data-pulse="5"><x-machine x="200" y="250" w="190" label="dynamic loader"/><x-arrow tone="acc" d="M392,276 C450,276 500,250 515,190"/><x-arrow tone="acc" d="M515,190 L520,204"/></g>
+</svg>
+<ol class="caps">
+<li><p>Two binaries: the app's executable, which Xcode builds from Swift, and your Kotlin framework. Swift's calls into Kotlin still need addresses.</p></li>
+<li><p>A <b>static library</b> is joined at build time: Xcode's linker copies your Kotlin into the app's executable. One file reaches the phone.</p></li>
+<li><p><i>Predict: what if your framework holds a dynamic library instead?</i></p></li>
+<li><p>A <b>dynamic library</b> isn't copied in: it ships as its own file inside the app, next to the executable.</p></li>
+<li><p>Each time the app starts, the <b>dynamic loader</b> loads it and connects Swift's calls to its addresses.</p></li>
+</ol>

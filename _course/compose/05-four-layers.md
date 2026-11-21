@@ -20,13 +20,13 @@ Android's docs describe Compose as layers in which "each layer is built upon the
 
 **The runtime** holds the composition, the slot table, snapshot state and the Recomposer: everything from puzzles 0 to 3. When a call leaves a node, the runtime stores it, but never looks inside it. To change the tree of nodes, it goes through an **Applier**: a small object with operations such as insert a node at an index, remove some, move some. The runtime's code says that to build "a tree of a novel type" you write your own Applier. So the runtime works with any tree: LayoutNodes, or something else entirely.
 
-**Compose UI** is the layer that plugs in an Applier for LayoutNodes (on Android, a class called UiApplier) and does everything from puzzle 4: `Modifier`, layout, drawing onto a canvas, and input such as touches.
+**Compose UI** is the layer that plugs in an Applier for LayoutNodes (on Android, a class called `UiApplier`) and does everything from puzzle 4: `Modifier`, layout, drawing onto a canvas, and input such as touches.
 
 **foundation** builds on Compose UI. `Row`, `Column`, `LazyColumn` and gestures such as scrolling live here: building blocks with no look of their own.
 
 **Material** sits on top. It's a **design system**: a set of rules and ready-made components for how an app looks, with colours, type and shapes. `Button` and `MaterialTheme` come from it. You can skip it and build your own design system on foundation; the higher layers are optional.
 
-Each layer only calls the ones below it. That's what made Compose Multiplatform possible: the platform code could be kept at the edge where Compose meets the phone. In Compose Multiplatform's own repository, the runtime and Material hold no code written only for iOS. Most of the iOS code sits in Compose UI, where it meets the phone (the window, the canvas, touches, the keyboard and accessibility), in an iOS source set beside the Android one. foundation adds a few iOS touches too, such as the stretch at the end of a scroll. That edge is the KMP course's platform layer. On Android your build uses Google's libraries, and on iOS JetBrains' builds of the same ones.
+Each layer only calls the ones below it. That's what made Compose Multiplatform possible: the platform code could be kept at the edge where Compose meets the phone. In Compose Multiplatform's own source code, the runtime and Material hold no code written only for iOS. Most of the iOS code sits in Compose UI, where it meets the phone (the window, the canvas, touches, the keyboard and accessibility), in an iOS source set beside the Android one. foundation adds a few iOS touches too, such as the stretch at the end of a scroll. That edge is the KMP course's platform layer. On Android your build uses Google's libraries, and on iOS JetBrains' builds of the same ones.
 
 ## Go deeper: Could Compose drive something that isn't a screen?
 

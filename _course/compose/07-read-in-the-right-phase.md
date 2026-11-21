@@ -1,13 +1,13 @@
 ---
 title: Which work does a moving card need?
 short: Which work does a moving card need?
-summary: Move the shared card as the user scrolls. Predict which parts of a screen update can be reused.
-takeaway: Where a value is read determines which work that value can invalidate. A read only during placement can move a card without changing its UI description.
+summary: Move the shared card as the user scrolls. Defer the read once more, this time to a later phase, and predict which work a frame can reuse.
+takeaway: A state read is noted in the phase that makes it. Read a scroll position at the top of a composable and every change reruns composition, layout and drawing. Read it inside the offset lambda, which runs during placement, and a change only moves the card. A value that only changes paint, read inside a drawing lambda, reruns drawing alone.
 ---
 
 ## The problem
 
-The card slides vertically as you scroll. Its content and size stay the same. Which work needs to run in response to the scrolling value?
+Puzzle 6 deferred a read from a parent into the child that needs the value. Now a card on the same screen slides down as you scroll. Its text and size stay the same; only its position changes, on every frame of the scroll. Running composition for each of those frames is work nobody sees. Can the read move somewhere cheaper than composition?
 
 ## See it
 
@@ -16,34 +16,52 @@ The card slides vertically as you scroll. Its content and size stay the same. Wh
 
 ## The building block
 
-There are three useful **rendering phases**. Composition decides which UI to describe. Layout measures sizes and places each item. Drawing paints the result. A tracked state read records the phase that actually reads the value.
+Puzzle 4 split every frame into three phases: composition, layout (measure, then place) and drawing. Puzzle 2's state reads are noted per phase: Compose records which phase was running when the value was read, and a change reruns that phase onward, not everything.
 
-In this version the observable value is read inside the placement lambda, which is code that runs later when Compose places the card. The position value is already an integer number of pixels:
+The first version reads the position at the top of the composable. The position is an integer number of pixels:
 
 ```kotlin
-Box(
-    modifier = Modifier.offset {
-        IntOffset(x = 0, y = position.value)
-    }
-) {
+val y = position.value                       // read in composition
+Box(modifier = Modifier.offset { IntOffset(x = 0, y = y) }) {
     Text("Saved item")
 }
 ```
 
-Now a change in position can update placement without recomposing this box for that change. Related drawing can still run. If you first evaluate the same value up in composition, you have already created a composition dependency by the time the modifier receives it.
+`position.value` is evaluated while the composable runs, so the read belongs to composition. Every scroll step marks composition, and the frame then measures, places and draws again.
 
-Suppose the position only controls a painted color. If the color is read exclusively while drawing, Compose can redraw it without recomposing or relaying out the UI for that change. Choose the phase by the work your value actually drives.
+The second version reads it inside the lambda that `Modifier.offset { }` takes. Compose calls that lambda during placement, so that's where the read happens:
+
+```kotlin
+Box(modifier = Modifier.offset { IntOffset(x = 0, y = position.value) }) {
+    Text("Saved item")   // read in placement
+}
+```
+
+Now a scroll step reruns placement only. Composition doesn't run, and measuring doesn't either: Android's docs note that measuring and placing have separate restart scopes, so a read during placement doesn't redo the measuring before it. The card keeps its size and moves. It's the same idea as puzzle 6, deferring a read, but to a later phase instead of a smaller group.
+
+The same works one phase further. If a value only changes paint, such as a background colour that follows the scroll, read it inside a drawing lambda:
+
+```kotlin
+Box(modifier = Modifier.drawBehind { drawRect(color.value) })
+```
+
+`drawBehind` runs its lambda while drawing, so a change of colour reruns drawing alone. Choose the phase by the work your value actually drives.
 
 ## Go deeper: Move versus measure
 
-- Why might a card changing its height require more work than a card moving vertically?::A different height can require new measurements and can move neighboring items. Moving an item of the same size can reuse its measurement.
+- Why might a card changing its height need more work than a card moving down?::A different height needs the card measured again, and its parent may then move the items below it. Moving a card of the same size reuses its measured size and only places it again.
+
+## The analogy
+
+The theatre once more. If the stage manager rewrites the script every time a prop must slide a little further across the stage, rehearsals never end. The tape marks on the floor (placement) can move without touching the script, and a change of light colour (drawing) needs neither the script nor the tape.
 
 ## Check yourself
 
-- The position is read only during placement. What can Compose reuse for that change?::*The card description and its measured size||Only the values read while drawing >> The position is read in placement, after measurement. >> the-building-block||Nothing, because scrolling always builds a new tree >> The recorded read does not require composition for this change. >> the-building-block::Moving an already measured card is placement work.
-- Moving the read into a local variable at the top of the composable has what effect?::*The changed value can now invalidate composition||The modifier still reads the observable value during placement >> The modifier receives a value already evaluated in composition. >> the-building-block||The read becomes untracked because it is local >> The location of a variable does not disable observation. >> the-building-block::Follow where evaluation happens.
-- A value affects only paint and is read only during drawing. What follows when it changes?::*Drawing can run without relaying out the screen||Layout has to run first again to get the new color >> The layout has no new information to compute from the color. >> the-building-block||The color cannot change until another value recomposes >> Drawing owns the dependency and can update independently. >> the-building-block::A drawing dependency can invalidate drawing directly.
+- The card now also grows taller as you scroll, and its height follows the same position. Can placement alone handle that change?::*No: a new height needs measuring, and items below may move||Yes: the read is still inside the offset lambda, so only placement runs >> The offset lambda only moves the card; a height change has to be measured. >> go-deeper-move-versus-measure||Yes: drawing can stretch the old card to the new height >> Drawing paints what layout decided; it doesn't choose sizes. >> the-building-block::Size changes need measuring; position changes don't.
+- Why does reading `position.value` inside the offset lambda keep composition from running on scroll?::*The lambda runs during placement, so the read is noted in layout||Compose never tracks reads made inside a lambda >> It does track them, in the phase where the lambda runs. >> the-building-block||The modifier keeps the last position and ignores changes >> The card does move: the change reruns placement. >> s4::The read is noted where it happens.
+- A header's background colour follows the scroll, read inside `drawBehind`. The colour changes. What runs?::*Drawing only: composition and layout are reused||Layout first, then drawing, to fit the new colour >> A colour doesn't change any size or position. >> the-building-block||Composition, because every state change starts there >> A change reruns the phase where the read happened. >> the-building-block::A read during drawing reruns drawing.
 
 ## Sources
 
-- [Android Developers: Jetpack Compose phases](https://developer.android.com/develop/ui/compose/phases)
+- [Android Developers: Jetpack Compose phases](https://developer.android.com/develop/ui/compose/phases) ("When you read the value of a snapshot state during one of the phases listed previously, Compose automatically tracks what it was doing when it read the value."; "Key Point: The measurement step and the placement step have separate restart scopes, meaning that state reads in the placement step don't re-invoke the measurement step before that."; "The value of firstVisibleItemScrollOffset changes every frame during scroll, and by deferring the state read to the layout phase, you can avoid recompositions all along.")
+- [Android Developers: Follow best practices](https://developer.android.com/develop/ui/compose/performance/bestpractices) ("By switching to the lambda version of the modifier, you can make sure the function reads the scroll state in the layout phase."; "To improve this, use a lambda-based modifier—in this case, drawBehind.")

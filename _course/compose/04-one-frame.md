@@ -1,7 +1,7 @@
 ---
 title: One frame, from tree to pixels
 short: Composition, layout, drawing
-summary: Puzzles 0 to 3 ended with an up-to-date tree of UI elements. A tree isn't pixels yet. Here's what Compose does with it in every frame, in three steps, and why a parent measures each child only once.
+summary: Puzzles 0 to 3 ended with an up-to-date tree of UI elements. A tree isn't pixels yet. Here's what Compose does with it in every frame, in three steps, and why a parent sizes each child only once.
 takeaway: Compose makes a frame in three phases, always in this order. Composition runs what's marked and updates the tree of nodes. Layout passes constraints down, measures each child once within them, lets each parent pick its own size, then places each child relative to its parent. Drawing has each node paint itself onto a canvas. Each phase can be skipped when its inputs didn't change.
 ---
 
@@ -34,12 +34,12 @@ All three phases run, in principle, for every frame, but each one is skipped whe
 
 ## The analogy
 
-The theatre once more. The script says which actors are in the scene (composition). Before the curtain, the stage manager tells each group how much of the stage it may use, each actor says how much room they need within that, and the stage manager marks each one's spot on the floor with tape (layout). Then the lights come up and the scene is painted onto the stage (drawing). Nobody asks an actor twice for their size: with dozens of groups inside groups, the rehearsal would never end.
+The theatre once more. The script says who is in the scene (composition). Before the curtain, the stage manager tells each group how much of the stage it may use, each performer says how much room they need within that, and the stage manager marks each one's spot on the floor with tape (layout). Then the lights come up and the scene is painted onto the stage (drawing). Nobody asks a performer twice for their size: with dozens of groups inside groups, the rehearsal would never end.
 
 ## Check yourself
 
 - A `Column` gets at most 300 pixels of width. Its child, a `Text`, needs 400 pixels to fit its words on one line. What happens when the `Text` is measured?::*It takes at most 300 wide and wraps onto more lines, so it gets taller||It takes 400 wide and runs past the right edge of the Column >> A child picks its size within the constraints; it can't choose more than the maximum. >> s2||The Column measures it again with 400, then shrinks it to fit >> Each child is measured once per layout; the constraints come first. >> the-building-block::Within the constraints, so it wraps.
-- Why may a parent measure each of its children only once per layout?::*So the work grows with the number of nodes, not doubling at each level||Because measuring a child draws it on the canvas, and pixels can't be drawn twice >> Measuring picks a size; drawing is a later phase. >> s5||Because a child's size is stored in a slot that can be written once >> Sizes come from the layout phase, not from slots. >> s3::One measure per child keeps layout linear in the tree.
+- Why may a parent measure each of its children only once per layout?::*So the work grows with the number of nodes, not doubling at each level||Measuring a child draws it on the canvas, and pixels can't be drawn twice >> Measuring picks a size; drawing is a later phase. >> s5||A child's size is kept in a slot that can be written only once >> Sizes come from the layout phase, not from slots. >> s3::One measure per child keeps layout linear in the tree.
 - A card's text changes from one short line to a three-line paragraph. Which phases have new work to do?::*Composition, layout and drawing: new text, a new height, new pixels||Only drawing, because text is pixels on the canvas >> The card got taller, so it must be measured again and what's below it moves. >> s3||Only composition, because layout and drawing happened last frame >> Each frame needs layout and drawing again for whatever changed size or looks. >> the-building-block::A size change reaches every phase.
 
 ## Sources

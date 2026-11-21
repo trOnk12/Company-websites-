@@ -7,7 +7,7 @@ takeaway: A shared screen can sit inside an iOS view controller. Inside that scr
 
 ## The problem
 
-Our shared bookmarks screen already runs on Android. On iOS it sits under the app’s existing navigation bar. The search field uses UIKit because it needs a behavior specific to Apple’s text field. Which object hosts which?
+Puzzles 6 and 7 stayed inside the shared screen. Puzzle 5 said the part of Compose that meets the phone is written per platform, and on iOS the whole screen is drawn inside one UIKit view controller (the KMP course, puzzle 15). Now the edges. Our shared bookmarks screen already runs on Android. On iOS it sits under the app’s existing navigation bar. The search field uses UIKit because it needs a behavior specific to Apple’s text field. Which object hosts which?
 
 ## See it
 
@@ -32,6 +32,10 @@ For a field driven by shared state, make both directions explicit: user edit →
 ## Go deeper: A reset while the keyboard is open
 
 - The field writes edits to shared state, but a tap on Clear changes only that state. Which missing edge can leave old text on screen?::The native edit callback handles the other direction. The update callback has to copy the cleared shared value into the existing native field.
+
+## The analogy
+
+Our company's play is a guest in another theatre: the theatre's own stage manager (UIKit) decides where it plays and when. Inside our play, one scene uses a real piece of the host theatre's machinery, a working lift (the native field). We built the set around it, but the lift has its own controls: we tell it where to go (update), and it tells us when someone rode it (the edit callback).
 
 ## Check yourself
 
