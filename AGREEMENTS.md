@@ -25,6 +25,12 @@ Everything decided in conversation, so it isn't lost when a session ends. Sprint
   only: browse, open a lesson, hear it, ask, interrupt, go back. **In English.** Plan: `SPRINTS.md`
   ("hands-free course navigation"); needs a small server-side session service for the voice provider key.
 
+## Courses lead to expert (21 November 2026)
+
+Mateusz: "mega complete, leading to expert". Every course gets a `ROADMAP.md` from its first puzzle to expert level
+(shipping and maintaining it in production), and modules are written in that order. A course isn't "done" until
+its roadmap is written and strict-reviewed. Order: KMP, Compose Multiplatform, iOS, then the rest.
+
 ## How we teach (non-negotiable)
 
 - Write learner-facing tutorials, exercises, diagrams, quizzes and solutions in English. **Everything in the
