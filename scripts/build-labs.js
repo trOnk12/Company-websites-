@@ -45,7 +45,7 @@ function workbench(course, directory) {
         <form><div class="lab-field"><label for="variant" id="question">Condition</label><select id="variant"></select></div>
           <button type="submit" class="button primary">Run experiment</button></form>
         <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
-      </section>
+      </section>${course === 'jvm' ? '\n' + fs.readFileSync(path.join(__dirname, 'lab-templates/jdbc-incidents.html'), 'utf8') : ''}
       <p class="lab-return"><a id="lesson" href="../../course/${course}/">Return to course</a></p>`,
   };
 }
@@ -68,7 +68,7 @@ function casesPage() {
   });
   return {
     file: 'parking-design/cases.html', course: 'system-design', title: heading.replace(/^# /, ''), intro,
-    parent: ['Reservation lab', './'],
+    parent: ['Reservation lab', './'], scripts: ['fencing.js'],
     body: cards.join('\n') + '\n<p class="lab-return"><a href="../../course/system-design/14-design-review.html#try-it">Return to the design review lesson</a></p>',
   };
 }

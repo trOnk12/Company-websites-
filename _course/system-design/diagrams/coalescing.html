@@ -1,0 +1,17 @@
+<!-- label: Map lookups for three overlapping callers -->
+<svg class="design-figure" viewBox="0 0 420 255" role="img" aria-labelledby="d-title">
+<title id="d-title">Two west callers await one pending west result</title>
+<text class="d-b" x="12" y="28">Callers</text><text class="d-b" x="142" y="28">Pending</text><text class="d-b" x="310" y="28">Storage</text>
+<path class="d-dash" d="M124 38V213 M291 38V213"/>
+<g class="step s1"><text class="d-t" x="13" y="74">West 1</text><x-arrow tone="acc" d="M83 68H140"/><rect class="d-hl" x="143" y="51" width="97" height="39" rx="4"/><text class="d-t" x="160" y="77">west</text><x-arrow tone="acc" d="M240 71H300"/><text class="d-t" x="314" y="78">Read 1</text></g>
+<g class="step s2"><text class="d-t" x="13" y="128">West 2</text><x-arrow tone="acc" d="M82 122H111L141 84"/></g>
+<g class="step s3"><text class="d-t" x="13" y="183">East</text><x-arrow tone="acc" d="M82 177H140"/><rect class="d-band" x="143" y="158" width="97" height="39" rx="4"/><text class="d-t" x="160" y="183">east</text><x-arrow tone="acc" d="M240 177H300"/><text class="d-t" x="314" y="184">Read 2</text></g>
+<g class="step s4"><text class="d-a" x="12" y="236">3 callers · 2 reads</text></g>
+<g transform="translate(146 97)" data-move="1:146,97 2:113,115 3:148,202 4:310,202"><circle class="d-dot" r="4"/></g>
+</svg>
+<ol class="caps">
+<li><p>The first west caller creates a pending entry and starts one storage read.</p></li>
+<li><p>The second west caller arrives before the result. Follow its arrow to the existing west entry. No second arrow goes to storage.</p></li>
+<li><p>East needs different data. It creates a separate entry and starts another storage read.</p></li>
+<li><p>Three callers receive results from two underlying reads. On completion each pending entry is removed. If west fails, both west callers share that failure.</p></li>
+</ol>

@@ -51,17 +51,18 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="9">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 9 · 10 of 15</p>
+        <p class="eyebrow">Puzzle 9 · 10 of 19</p>
         <h1>When does splitting the data help?</h1>
         <p class="lede">Choose a key by following the reads and writes.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" aria-current="page" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" aria-current="page" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#add-a-shard-without-moving-every-key">Worked code</a>
         <a href="#go-deeper-how-do-you-move-a-lot-while-it-is-accepting-reservations">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
@@ -77,23 +78,40 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="When does splitting the data help?"><input type="radio" name="st-partitioning" id="st-partitioning-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-2" aria-label="Step 2 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-3" aria-label="Step 3 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">When does splitting the data help?</title><defs><marker id="ah-partitioning-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-partitioning-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-partitioning-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-partitioning-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Ten rights</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-partitioning-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Five at A</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-partitioning-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Five at B</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-partitioning-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">A exhausted</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Ten local rights split between two regions"><input type="radio" name="st-partitioning" id="st-partitioning-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-2" aria-label="Step 2 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-3" aria-label="Step 3 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 246" role="img" aria-labelledby="d-title">
+<title id="d-title">Ten local rights split between two regions</title>
+<text class="d-b" x="16" y="29" text-anchor="start">Rights to grant a space</text>
+<text class="d-b" x="18" y="77" text-anchor="start">West</text>
+<text class="d-b" x="18" y="151" text-anchor="start">East</text>
+<circle class="d-box" cx="141" cy="70" r="15"/><circle class="d-box" cx="192" cy="70" r="15"/><circle class="d-box" cx="243" cy="70" r="15"/><circle class="d-box" cx="294" cy="70" r="15"/><circle class="d-box" cx="345" cy="70" r="15"/>
+<circle class="d-box" cx="141" cy="145" r="15"/><circle class="d-box" cx="192" cy="145" r="15"/><circle class="d-box" cx="243" cy="145" r="15"/><circle class="d-box" cx="294" cy="145" r="15"/><circle class="d-box" cx="345" cy="145" r="15"/>
+<g class="step s2">
+  <path class="d-acc" d="M134,69l5,6 9,-12"/>
+  <path class="d-acc" d="M185,69l5,6 9,-12"/>
+  <path class="d-acc" d="M236,69l5,6 9,-12"/>
+  <path class="d-acc" d="M287,69l5,6 9,-12"/>
+  <path class="d-acc" d="M338,69l5,6 9,-12"/>
+  <text class="d-a" x="18" y="109" text-anchor="start">5 granted</text>
+</g>
+<g class="step s3">
+  <path class="d-acc" d="M134,144l5,6 9,-12"/>
+  <text class="d-a" x="18" y="184" text-anchor="start">1 granted</text>
+</g>
+<g class="step s4">
+  <text class="d-r" x="18" y="227" text-anchor="start">West: 2 refused</text>
+  <text class="d-a" x="215" y="227" text-anchor="start">East: 4 unused</text>
+</g>
+<g transform="translate(141 89)" data-move="1:141,89 2:345,89 3:141,165 4:193,165"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>Ten rights exist in total.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-partitioning-2">Next →</label></div></li>
-<li><p>A receives five independent rights.</p><div class="stepnav"><label for="st-partitioning-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-partitioning-3">Next →</label></div></li>
-<li><p>B receives the remaining five.</p><div class="stepnav"><label for="st-partitioning-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-partitioning-4">Next →</label></div></li>
-<li><p>A may refuse even while B has spare capacity.</p><div class="stepnav"><label for="st-partitioning-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-partitioning-1">↺ Again</label></div></li>
+<li><p>Each ring is an independent right to grant one space. Five belong to west and five to east. Count all ten before sending requests.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-partitioning-2">Next →</label></div></li>
+<li><p>Seven drivers reach west. West can consume five rights without asking east. What happens to drivers six and seven?</p><fieldset class="diagram-prediction" data-hint="A right can be available somewhere without being spendable by this owner." data-reason="West must refuse or acquire a right through a safe transfer. It cannot spend east's right independently.">
+<legend>West has spent its five local rights. Can it grant a sixth space using an unused east right without a transfer?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button">Yes</button><button type="button" class="button" data-answer>No</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-partitioning-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-partitioning-3">Next →</label></div></li>
+<li><p>One driver reaches east and uses one local right. The four empty rings there can still back four new grants.</p><div class="stepnav"><label for="st-partitioning-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-partitioning-4">Next →</label></div></li>
+<li><p>Two west requests are refused despite four spare rights in east. Moving a right would have to remove it from one owner before the other spends it.</p><div class="stepnav"><label for="st-partitioning-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-partitioning-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-partitioning-1" title="Step 1"></label><label for="st-partitioning-2" title="Step 2"></label><label for="st-partitioning-3" title="Step 3"></label><label for="st-partitioning-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/partitioning.gif" download>Save this diagram as a GIF</a></p>
@@ -114,6 +132,30 @@
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
+      <section aria-labelledby="add-a-shard-without-moving-every-key">
+        <h2 id="add-a-shard-without-moving-every-key">Add a shard without moving every key</h2>
+<p>A shard is a storage owner responsible for some keys. The service routes each reservation to the current write owner. At cutover a service instance using an old owner list must refresh it and the former owner must refuse the stale write. Try two routing functions in Python 3. The first reduces a <b>hash</b>, a repeatable number derived from the key, to a list position. The second scores each pair of key and owner and chooses the highest score. This second technique is called rendezvous hashing.</p>
+<pre><code class="language-python">from hashlib import sha256
+
+def score(text):
+    return int.from_bytes(sha256(text.encode()).digest(), &quot;big&quot;)
+
+def modulo(key, owners):
+    return owners[score(key) % len(owners)]
+
+def rendezvous(key, owners):
+    return max(owners, key=lambda owner: score(key + &quot;:&quot; + owner))
+
+old = [&quot;north&quot;, &quot;south&quot;, &quot;west&quot;]
+new = old + [&quot;east&quot;]
+for route in (modulo, rendezvous):
+    moves = [(route(str(k), old), route(str(k), new)) for k in range(1000)]
+    changed = [(before, after) for before, after in moves if before != after]
+    print(route.__name__, len(changed),
+          sum(after != &quot;east&quot; for before, after in changed))</code></pre>
+<p>For these keys the output is 769 keys moved under modulo and 222 under rendezvous. Of those moves, 512 and zero respectively went between existing owners. The last column counts moves between two <em>existing</em> owners. Predict why it must be zero for rendezvous: adding east changes none of the old scores. If east wins, the key moves there. Otherwise the old winner stays ahead. The calculation scans every candidate and assumes agreed, stable owner names. Membership changes still require a protocol for copying state and switching the write owner.</p>
+<p>Now route one thousand requests for the same key. Every request goes to the same winner. Reducing the number of keys you move during expansion solves a different problem from a hot lot receiving most of the traffic.</p>
+      </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Give two pools five spaces each. Seven drivers arrive at A and one at B. Without transfers, A grants five and refuses two even though B has spare capacity. Compare that cost with waiting for a shared counter. Propose a test showing that transferring a right does not copy it.</p>
@@ -142,9 +184,10 @@
 <p class="fb ok opt-2"><b>Right.</b> Copying rights would allow double allocation.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/ddl-partitioning.html">PostgreSQL · Table Partitioning</a> — “splitting what is logically one large table into smaller physical pieces”</li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/ddl-partitioning.html">PostgreSQL · Table Partitioning</a> — “splitting what is logically one large table into smaller physical pieces”</li><li><a href="https://www.cs.kent.edu/~javed/DL/web/p1-thaler.pdf">Thaler and Ravishankar · Using name-based mappings to increase hit rates</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Choose the partition key for the operations that must stay together and test the hottest key.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
+      <p class="puzzle-bridge">Local rights work without a remote vote. What if the design instead needs one shared decision during a split?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="08-overload.html">← Puzzle 8</a>
         <a class="button primary" href="10-consensus.html">Puzzle 10: Who can confirm a write when regions cannot talk? →</a>

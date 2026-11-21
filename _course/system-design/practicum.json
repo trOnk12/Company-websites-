@@ -7,7 +7,8 @@
     "Write the confirmation, full-seat and timeout contracts from the customer’s perspective. Identify the event-and-seat key, the owner of the durable decision and the request ID used for a replay.",
     "Trace two contenders. Stop the winning process after its commit and before the reply. Retry the same intention through another process and list every surviving grant.",
     "Calculate queue length and cumulative drops after 60 seconds. Change recovery arrivals to 70 per second and predict the time needed to empty the queue.",
-    "Release an expired hold, grant the seat to another customer and then deliver the old payment success twice. Draw the durable transitions through reconciliation."
+    "Release an expired hold, grant the seat to another customer and then deliver the old payment success twice. Draw the durable transitions through reconciliation.",
+    "Storage returns two qualifying failures at 5 and 10 ms. Your breaker waits 100 ms and allows one probe. Label the caller at 50, the probe at 110 and its competing caller at 111. Contrast a confirmed recovery at 115 with a missing probe reply. Specify the probe deadline and the state change when it expires. If two drivers share a map read, give them different wait budgets and state who can still receive the result after the first timeout."
   ],
   "evidence": [
     "Only one customer owns B12. The winner can retrieve the same grant after restart, and the replay consumes no other seat.",
@@ -17,7 +18,8 @@
   "worked": [
     "A commits the grant and inventory change together. B loses the conditional transition. A’s first response vanishes, but a lookup under A’s request identity finds the surviving grant. Reading the final free count alone cannot distinguish this history from a double sale.",
     "Demand exceeds capacity by 40 each second. With the stated one-second queue model, the service completes 7,200, keeps 300 and drops 2,100 by the minute boundary. During recovery 50 spare completions per second clear 300 waiting requests in six seconds.",
-    "After the old hold expires, its later charge cannot confirm the new owner’s seat. Save a refund intention keyed to that charge and track it until the provider confirms its outcome. The database can guarantee one local intention. Repeating an external refund safely depends on the provider’s contract."
+    "After the old hold expires, its later charge cannot confirm the new owner’s seat. Save a refund intention keyed to that charge and track it until the provider confirms its outcome. The database can guarantee one local intention. Repeating an external refund safely depends on the provider’s contract.",
+    "With the example policy the caller at 50 gets a local refusal. At 110 one probe goes through, and the call at 111 is refused. A success at 115 closes the breaker. If a probe instead has a 20 ms deadline from admission, record its timeout at 130, reopen, and wait until 230 for the next probe. A late response from the expired trial must not change that newer state."
   ],
   "variation": "The venue now sells unassigned admission and reserves five independent rights at each of two gates. Seven customers reach gate A and one reaches B while the gates cannot communicate.",
   "solution": "A admits five and refuses or defers two; B admits one. Four rights remain at B. A transfer must remove spendable rights at the source before they can be spent at the destination and preserve identity across retries. The cost during disconnection is lower utilization."

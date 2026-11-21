@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,17 +52,18 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="12">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 12 · 13 of 15</p>
+        <p class="eyebrow">Puzzle 12 · 13 of 19</p>
         <h1>Is the database slow, or is the request waiting to reach it?</h1>
         <p class="lede">Connect a user-facing objective to a concrete trace.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" aria-current="page" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" aria-current="page" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#find-the-missing-900-milliseconds">Run SQL</a>
         <a href="#go-deeper-how-do-you-compare-two-releases">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
@@ -77,23 +79,39 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Is the database slow, or is the request waiting to reach it?"><input type="radio" name="st-diagnosis" id="st-diagnosis-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-diagnosis" id="st-diagnosis-2" aria-label="Step 2 of 4"><input type="radio" name="st-diagnosis" id="st-diagnosis-3" aria-label="Step 3 of 4"><input type="radio" name="st-diagnosis" id="st-diagnosis-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Is the database slow, or is the request waiting to reach it?</title><defs><marker id="ah-diagnosis-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-diagnosis-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-diagnosis-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-diagnosis-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Request</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-diagnosis-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">920 ms waiting</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-diagnosis-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">12 ms query</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-diagnosis-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Response</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Attribute the latency of one measured database call"><input type="radio" name="st-diagnosis" id="st-diagnosis-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-diagnosis" id="st-diagnosis-2" aria-label="Step 2 of 4"><input type="radio" name="st-diagnosis" id="st-diagnosis-3" aria-label="Step 3 of 4"><input type="radio" name="st-diagnosis" id="st-diagnosis-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 291" role="img" aria-labelledby="d-title">
+<title id="d-title">Attribute the latency of one measured database call</title>
+<text class="d-b" x="14" y="29" text-anchor="start">Time in one database call</text>
+<path class="d-line" d="M20,143H400"/>
+<path class="d-line" d="M24,140v8"/><text class="d-mi" x="24" y="171" text-anchor="middle">0</text>
+<path class="d-line" d="M390,140v8"/><text class="d-mi" x="390" y="171" text-anchor="middle">932 ms</text>
+<g class="step s1">
+  <text class="d-t" x="16" y="88" text-anchor="start">Asked for connection</text>
+</g>
+<g class="step s2">
+  <rect class="d-hl" x="24" y="105" width="361" height="25" rx="1"/>
+  <text class="d-a" x="16" y="208" text-anchor="start">Waiting for connection: 920 ms</text>
+</g>
+<g class="step s3">
+  <rect class="d-bad" x="385" y="105" width="5" height="25" rx="0"/>
+  <path class="d-red" d="M388,104V72H344"/>
+  <text class="d-r" x="335" y="78" text-anchor="end">Query</text>
+  <text class="d-t" x="16" y="239" text-anchor="start">Executing query: 12 ms</text>
+</g>
+<g class="step s4">
+  <text class="d-r" x="16" y="272" text-anchor="start">Zero query time still leaves 920 ms.</text>
+</g>
+<g transform="translate(24 145)" data-move="1:24,145 2:385,145 3:390,145 4:385,131"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The request enters the service.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-diagnosis-2">Next →</label></div></li>
-<li><p>Most of this trace is spent waiting for a connection.</p><div class="stepnav"><label for="st-diagnosis-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-diagnosis-3">Next →</label></div></li>
-<li><p>The database executes the query in twelve milliseconds.</p><div class="stepnav"><label for="st-diagnosis-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-diagnosis-4">Next →</label></div></li>
-<li><p>Which measurement could explain the long wait?</p><div class="stepnav"><label for="st-diagnosis-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-diagnosis-1">↺ Again</label></div></li>
+<li><p>Start the clock when the service asks for a database connection. The query cannot run until a connection becomes available.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-diagnosis-2">Next →</label></div></li>
+<li><p>The blue segment ends after 920 milliseconds. During this entire interval the query has not started.</p><fieldset class="diagram-prediction" data-hint="Keep the earlier wait fixed. Which interval does faster query execution remove?" data-reason="Only the 12 ms execution interval disappears. The wait still needs a separate diagnosis.">
+<legend>The request waited 920 ms for a connection and spent 12 ms in its query. What could a free query save on this trace?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button" data-answer>At most 12 ms</button><button type="button" class="button">About 920 ms</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-diagnosis-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-diagnosis-3">Next →</label></div></li>
+<li><p>The query itself takes twelve milliseconds. Its tiny red slice is drawn to the same scale as the waiting time.</p><div class="stepnav"><label for="st-diagnosis-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-diagnosis-4">Next →</label></div></li>
+<li><p>Even a free query would save only twelve milliseconds here. Measure which requests hold connections and for how long before deciding whether query tuning will help.</p><div class="stepnav"><label for="st-diagnosis-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-diagnosis-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-diagnosis-1" title="Step 1"></label><label for="st-diagnosis-2" title="Step 2"></label><label for="st-diagnosis-3" title="Step 3"></label><label for="st-diagnosis-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/diagnosis.gif" download>Save this diagram as a GIF</a></p>
@@ -114,6 +132,34 @@
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
+      <section aria-labelledby="find-the-missing-900-milliseconds">
+        <h2 id="find-the-missing-900-milliseconds">Find the missing 900 milliseconds</h2>
+<p>A trace records four timestamps on the same clock. The request begins, a connection becomes available, the query finishes, and the response reaches the measurement boundary. Each request asks for a connection at arrival and starts its query immediately upon acquisition. Both examples finish in 950 milliseconds. Predict which one a faster query could materially improve.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE trace (
+  request TEXT, arrived INTEGER, acquired INTEGER,
+  query_done INTEGER, replied INTEGER
+);
+INSERT INTO trace VALUES
+  ('A', 0, 920, 932, 950),
+  ('B', 0,   2, 932, 950);
+
+SELECT request,
+       acquired - arrived AS wait_ms,
+       query_done - acquired AS query_ms,
+       replied - query_done AS rest_ms,
+       replied - arrived AS total_ms
+FROM trace ORDER BY request;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>Request A spent 920 milliseconds waiting and 12 executing. Holding the other intervals fixed, even an instant query would save at most 12 milliseconds from that trace. Request B spent 930 milliseconds executing. A shared total concealed two different investigations. Change B's acquisition time to 902 while keeping its end time fixed. Which measurement would you now collect first?</p>
+<p>These intervals are adjacent and use one clock. A trace containing parallel downstream calls is different. Summing both durations would count their overlap twice. Trace the chain that actually delayed the response.</p>
+      </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Sort one hundred latencies: ninety-eight at 40 milliseconds and two at 2,000. The nearest-rank 99th percentile is observation 99, or two seconds. The mean is 79.2 milliseconds. Design an alert for rapid budget consumption and name one observation that would disprove your first diagnosis.</p>
@@ -146,6 +192,7 @@
 <ul><li><a href="https://sre.google/workbook/alerting-on-slos/">Google SRE · Alerting on SLOs</a></li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Separate time spent waiting for a connection from time spent executing a query.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
+      <p class="puzzle-bridge">A trace helps diagnose delay. How would you verify the right data survived a restore?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="11-payment.html">← Puzzle 11</a>
         <a class="button primary" href="13-recovery.html">Puzzle 13: Can you recover the right history after a bad release? →</a>

@@ -32,6 +32,29 @@ Imagine twenty permits in a bucket. Each accepted call consumes one. Five permit
 
 - An empty bucket sees two full seconds of silence. How many requests can pass immediately?::Ten under these assumptions.
 
+## Admit a request only if it can still finish
+
+A limit on queue length bounds memory. The caller cares about time. Model one worker that processes ten equally expensive requests per second, one at a time. Four requests arrive together at time zero with 250 milliseconds left. How many can receive a timely result?
+
+```python
+def admit(arrivals_ms, service_ms, budget_ms):
+    free_at = 0
+    for arrival in arrivals_ms:
+        start = max(arrival, free_at)
+        finish = start + service_ms
+        if finish > arrival + budget_ms:
+            print(arrival, "refused; worker free at", free_at)
+        else:
+            free_at = finish
+            print(arrival, "accepted; finishes at", finish)
+
+admit([0, 0, 0, 0], service_ms=100, budget_ms=250)
+```
+
+Run this file with Python 3. Only the first two are accepted. The third would finish at 300 milliseconds. A refusal leaves the scheduled work unchanged. Change the last arrival to 100. Its deadline moves to 350, so the worker can finish it at 300. That is admission control: make a decision before adding work.
+
+The model assumes a known service time. A real dependency can suddenly take longer. Measure actual completion times and refused requests together. A policy can reduce the waiting time of accepted requests merely by rejecting most arrivals.
+
 ## Try it
 
 Give a request 500 milliseconds. Entry processing takes 60, the first dependency call takes 200, and the retry delay takes 100. Only 140 remain for all remaining work. Would you start a call that usually needs 180? Run the queue model and change only the arrival rate after the peak.

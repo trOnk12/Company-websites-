@@ -60,6 +60,32 @@
           <button type="submit" class="button primary">Run experiment</button></form>
         <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
       </section>
+<section class="lab-card" id="jdbc-incidents" aria-labelledby="jdbc-title">
+  <h2 id="jdbc-title">Incident 1 · A report stops responding</h2>
+  <p>A request needs a JDBC connection to run a report. The pool lends connections up to a configured maximum. Both incidents below start with one connection borrowed out of one. Both reports eventually return 18. Before revealing the answer, decide which report could finish sooner if you added a second connection.</p>
+  <h3>Evidence captured on JDK 21</h3>
+  <ul><li><strong>A.</strong> The request is TIMED_WAITING. Its stack includes <code>Thread.sleep</code>, then <code>JdbcConnectionPool.getConnection</code>, then <code>JdbcIncident.readTotal</code>.</li>
+  <li><strong>B.</strong> The request is BLOCKED entering a synchronized region. The dump identifies the main thread as the monitor owner. The waiting thread has yet to enter <code>readTotal</code>.</li></ul>
+  <details><summary>Compare your diagnosis</summary><p>Only A can use the second connection immediately. Its worker is already trying to borrow one. In B the worker must acquire a Java monitor before it can even ask the pool. At capacity two, B still waits while only one connection is borrowed. In both runs releasing the owner ultimately returns the pool to zero borrowed connections. The full-pool gauge alone gave the same reading for two different causes.</p></details>
+</section>
+<section class="lab-card" aria-labelledby="row-title">
+  <h2 id="row-title">Incident 2 · The request already has a connection</h2>
+  <p>Two connections see a committed seat at revision 1. The first transaction changes it to revision 2 and stays open. The second can still read revision 1 and update a different seat. Its attempt to change this same seat times out. Where is the wait now?</p>
+  <p>The second caller retries <code>UPDATE seat SET revision=3 WHERE id=1 AND revision=1</code> after the first caller finishes. Predict the affected-row count and final revision if the first caller commits. Predict both again if it rolls back.</p>
+  <details><summary>Check both transaction endings</summary><p>The second caller has already borrowed a connection and executed other SQL. Its same-row write conflicts inside the database. After commit the stored revision is 2, the predicate matches zero rows and the caller must reconcile its stale edit. After rollback revision 1 is visible again, the retry changes one row and revision becomes 3. The initial lock timeout was an exception. The later zero-row result was a successfully executed conditional update.</p></details>
+</section>
+<section class="lab-card" aria-labelledby="run-jdbc">
+  <h2 id="run-jdbc">Reproduce both incidents locally</h2>
+  <p>Save <a href="../jvm/JdbcIncident.java" download>JdbcIncident.java</a>, <a href="../jvm/RowWait.java" download>RowWait.java</a> and the <a href="https://repo.maven.apache.org/maven2/com/h2database/h2/2.3.232/h2-2.3.232.jar">H2 2.3.232 JAR</a> in one directory. From that directory use JDK 21 to run the commands below. Each run creates a fresh in-memory database. The evidence above lets you work both cases on a phone.</p>
+  <pre><code>java -cp h2-2.3.232.jar JdbcIncident.java A 1
+java -cp h2-2.3.232.jar JdbcIncident.java B 1
+java -cp h2-2.3.232.jar JdbcIncident.java A 2
+java -cp h2-2.3.232.jar JdbcIncident.java B 2
+java -cp h2-2.3.232.jar RowWait.java commit
+java -cp h2-2.3.232.jar RowWait.java rollback</code></pre>
+  <p>Keep the request stack, the before-release pool counters, and the two retry results. Thread frames and database timeout codes are specific to this fixture. For a production incident, collect the corresponding connection, request and database evidence from the actual driver and database.</p>
+</section>
+
       <p class="lab-return"><a id="lesson" href="../../course/jvm/">Return to course</a></p>
     </article>
   </main>

@@ -1,17 +1,28 @@
-<!-- label: Does the design survive a changed assumption? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Does the design survive a changed assumption?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Assumption</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Design</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Counterexample</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Revised decision</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: A visibility deadline meets measured fan-out capacity -->
+<svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="d-title">
+<title id="d-title">A visibility deadline meets measured fan-out capacity</title>
+<text class="d-b" x="18" y="28" text-anchor="start">One post · 2 million followers</text>
+<rect class="d-box" x="20" y="72" width="376" height="39" rx="2"/>
+<text class="d-mi" x="20" y="58" text-anchor="start">Entries delivered</text>
+<g class="step s1">
+  <text class="d-t" x="19" y="149" text-anchor="start">Promise: visible within 10 s</text>
+</g>
+<g class="step s2">
+  <rect class="d-hl" x="20" y="72" width="94" height="39" rx="2"/>
+  <text class="d-a" x="19" y="179" text-anchor="start">At 10 s: 500,000 delivered</text>
+</g>
+<g class="step s3">
+  <path class="d-red" d="M114,116v8H390v-8"/>
+  <text class="d-r" x="239" y="232" text-anchor="middle">1.5 million still waiting</text>
+</g>
+<g class="step s4">
+  <text class="d-b" x="18" y="269" text-anchor="start">Minimum completion time: 40 s</text>
+</g>
+<g transform="translate(21 118)" data-move="1:21,118 2:114,118 3:236,124 4:396,117"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>State a promise a user can observe.</p></li>
-<li><p>Identify the component responsible for the promise.</p></li>
-<li><p>Design a test capable of breaking it.</p></li>
-<li><p>Change one assumption and check your prediction.</p></li>
+<li><p>A reviewer changes one assumption: a single publisher has two million followers. Suppose visibility requires one stored feed entry for each follower.</p></li>
+<li><p>Even if the measured writer devotes all 50,000 entries per second to this post, ten seconds produces only half a million entries.</p></li>
+<li><p>At the deadline, three quarters of the followers are still missing their entries. More queue space cannot increase write throughput.</p></li>
+<li><p>Forty seconds is the best possible completion time at this rate. Try merging this publisher’s recent posts when a reader opens the feed. Now measure the new read cost.</p></li>
 </ol>

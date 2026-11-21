@@ -1,17 +1,29 @@
-<!-- label: How much traffic arrives after a concert? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">How much traffic arrives after a concert?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">120k drivers</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">1.2m reads</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">240k at peak</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">400 per second</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: Use a different denominator for the concert window -->
+<svg class="design-figure" viewBox="0 0 420 273" role="img" aria-labelledby="d-title">
+<title id="d-title">Use a different denominator for the concert window</title>
+<text class="d-b" x="14" y="29" text-anchor="start">Map reads in one day</text>
+<rect class="d-box" x="20" y="53" width="380" height="39" rx="3"/>
+<g class="step s1">
+  <text class="d-t" x="210" y="79" text-anchor="middle">1,200,000 reads</text>
+</g>
+<g class="step s2">
+  <rect class="d-hl" x="20" y="103" width="76" height="26" rx="2"/>
+  <rect class="d-band" x="96" y="103" width="304" height="26" rx="2"/>
+  <text class="d-t" x="20" y="157" text-anchor="start">1/5 in ten minutes</text>
+</g>
+<g class="step s3">
+  <path class="d-acc" d="M57,130 V137"/>
+  <rect class="d-box" x="20" y="177" width="379" height="38" rx="4"/>
+  <text class="d-t" x="209" y="204" text-anchor="middle">240,000 ÷ 600 s = 400/s</text>
+</g>
+<g class="step s4">
+  <text class="d-a" x="209" y="253" text-anchor="middle">5 minutes → 800/s</text>
+</g>
+<g transform="translate(399 72)" data-move="1:399,72 2:59,116 3:59,186 4:69,245"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg>
 <ol class="caps">
-<li><p>Multiply drivers by ten reads each.</p></li>
-<li><p>The daily total hides the concert rush.</p></li>
-<li><p>One fifth of the reads arrive in ten minutes.</p></li>
-<li><p>Divide by 600 seconds.</p></li>
+<li><p>120,000 drivers open the map ten times. That is 1.2 million map reads spread across a day.</p></li>
+<li><p>The shaded fifth of the reads falls into one concert window. The bar represents a share of requests, not a share of the day.</p></li>
+<li><p>Divide 240,000 requests by the 600 seconds in that window. The average within the peak is 400 per second.</p></li>
+<li><p>Hold the number of concert reads fixed and cut the window in half. The peak rate doubles although the daily total does not change.</p></li>
 </ol>

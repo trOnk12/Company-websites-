@@ -1,0 +1,240 @@
+{
+  "00-promise": {
+    "step": 2,
+    "question": "Both drivers have tapped Reserve. Which observation would prove the service broke its promise?",
+    "options": [
+      "Two active grants for B12",
+      "Two requests for B12"
+    ],
+    "answer": 0,
+    "hint": "A tap asks for a space. Which observation would show that both drivers actually own it?",
+    "why": "Two active grants for the same space prove a double booking. Two requests tell us only that there were two contenders.",
+    "bridge": "Two phones can ask for the same space. How many such requests could arrive in the busiest ten minutes?"
+  },
+  "01-demand": {
+    "step": 2,
+    "question": "One fifth of 1.2 million reads arrive in ten minutes. What is the average arrival rate within that window?",
+    "options": [
+      "14 reads/s",
+      "400 reads/s"
+    ],
+    "answer": 1,
+    "hint": "First count the 240,000 reads in the burst. How many seconds are in the burst itself?",
+    "why": "240,000 divided by 600 gives 400 reads per second. Dividing by a day would hide the burst.",
+    "bridge": "Suppose the peak needs two service instances. Which one is allowed to grant the last space?"
+  },
+  "02-write-boundary": {
+    "step": 3,
+    "question": "Handler A has stopped after commit. Where can B discover the outcome?",
+    "options": [
+      "The shared store",
+      "A fresh process counter"
+    ],
+    "answer": 0,
+    "hint": "B starts with its own memory. Follow grant 17 to the component that recorded it.",
+    "why": "B can retrieve grant 17 from the shared store even though the first reply was lost.",
+    "bridge": "Sharing one database gives both handlers a place to write. What keeps both from claiming the last space?"
+  },
+  "03-conditional-write": {
+    "step": 2,
+    "question": "When Ada's selected decision takes effect, how many inventory rows can Ben's update change?",
+    "options": [
+      "Zero rows",
+      "One row"
+    ],
+    "answer": 0,
+    "hint": "The selected decision is commit. Start from one space and keep Ada’s decrement before testing for a positive count.",
+    "why": "Ada commits a free count of zero. Ben rechecks the row, finds no free space and changes zero rows.",
+    "bridge": "One grant survives. What should the phone send if the winning confirmation never arrives?",
+    "changed": {
+      "answer": 1,
+      "hint": "The selected decision is rollback. Undo Ada’s decrement first. What number does Ben test now?",
+      "why": "Ada rolls back. The free count returns to one. Ben’s condition matches and his update changes one row."
+    }
+  },
+  "04-retry-identity": {
+    "step": 3,
+    "question": "The phone lost the reply for intention 17. Which number should it send now?",
+    "options": [
+      "Another 17",
+      "A fresh 18"
+    ],
+    "answer": 0,
+    "hint": "A new number looks like a second deliberate tap. Which number can find grant 301?",
+    "why": "Reusing 17 lets the service return its stored result without granting a second space.",
+    "bridge": "The driver can retrieve one receipt. How can the app page through many receipts while new ones arrive?"
+  },
+  "05-history": {
+    "step": 3,
+    "question": "Keeping the saved cursor (10:00, 8), which session will page two return after the selected change?",
+    "options": [
+      "Session 7",
+      "No session"
+    ],
+    "answer": 0,
+    "hint": "A new session sits above the cursor. Which original session still lies below it?",
+    "why": "ID 7 comes after the saved time-and-ID pair. Skipping two live rows repeats ID 8.",
+    "bridge": "History can move between reads. How old can the map reading be by the time the driver sees it?",
+    "changed": {
+      "answer": 1,
+      "hint": "Session 7 is now newer than the cursor. At 10:00, are any remaining IDs smaller than 8?",
+      "why": "There is no qualifying row. The cursor preserved a position, but moving an unseen row above that position hid it from this traversal."
+    }
+  },
+  "06-freshness": {
+    "step": 2,
+    "question": "The source observed the lot at 92. At 115, how old is the answer?",
+    "options": [
+      "15 seconds",
+      "23 seconds"
+    ],
+    "answer": 1,
+    "hint": "The cache received it at 100, but the underlying observation was already eight seconds old.",
+    "why": "The source observation is 23 seconds old. Seven seconds of the allowance remain.",
+    "bridge": "A map can lag a booking. How does the system remember to announce the booking if its process dies?"
+  },
+  "07-outbox": {
+    "step": 3,
+    "question": "The first delivery of event 41 already changed the dashboard. What should a second delivery do?",
+    "options": [
+      "Leave the count at one",
+      "Increase it to two"
+    ],
+    "answer": 0,
+    "hint": "Look at the identity remembered beside the count. What new fact does a repeated 41 carry?",
+    "why": "The repeated delivery adds no new grant. Record identity and effect in the same transaction.",
+    "bridge": "A retry can be safe for the data. What happens when retries still consume scarce processing capacity?"
+  },
+  "08-overload": {
+    "step": 2,
+    "question": "After the burst, 80 new requests arrive each second and 100 can finish. How quickly can old work drain?",
+    "options": [
+      "100 requests/s",
+      "20 requests/s"
+    ],
+    "answer": 1,
+    "hint": "Some of the 100 completions are already needed for the 80 new arrivals.",
+    "why": "Only 20 completions per second are spare, so 1,200 queued requests need 60 seconds.",
+    "bridge": "If one owner stays busy, can splitting data across more owners actually divide its work?"
+  },
+  "09-partitioning": {
+    "step": 2,
+    "question": "West has spent its five local rights. Can it grant a sixth space using an unused east right without a transfer?",
+    "options": [
+      "Yes",
+      "No"
+    ],
+    "answer": 1,
+    "hint": "A right can be available somewhere without being spendable by this owner.",
+    "why": "West must refuse or acquire a right through a safe transfer. It cannot spend east's right independently.",
+    "bridge": "Local rights work without a remote vote. What if the design instead needs one shared decision during a split?"
+  },
+  "10-consensus": {
+    "step": 2,
+    "question": "A and B have committed grant 17. Now A is isolated. Can A confirm another shared grant alone?",
+    "options": [
+      "Yes, as the former leader",
+      "No, it lacks a majority"
+    ],
+    "answer": 1,
+    "hint": "Being the last known leader does not give A another vote.",
+    "why": "A cannot commit a new shared grant alone. The pair may elect an eligible leader.",
+    "bridge": "A booking is one decision. What changes when a separate payment provider controls the charge?"
+  },
+  "11-payment": {
+    "step": 3,
+    "question": "Ada's hold expired and someone else owns the seat. Which durable record should the late charge create?",
+    "options": [
+      "A refund obligation",
+      "A new claim on the seat"
+    ],
+    "answer": 0,
+    "hint": "The charge proves that money moved. Does it restore the expired right to the seat?",
+    "why": "Record refund work against this charge and preserve the current holder's seat.",
+    "bridge": "The charge can be correct and still be late. Where did the request spend its time?"
+  },
+  "12-diagnosis": {
+    "step": 2,
+    "question": "The request waited 920 ms for a connection and spent 12 ms in its query. What could a free query save on this trace?",
+    "options": [
+      "At most 12 ms",
+      "About 920 ms"
+    ],
+    "answer": 0,
+    "hint": "Keep the earlier wait fixed. Which interval does faster query execution remove?",
+    "why": "Only the 12 ms execution interval disappears. The wait still needs a separate diagnosis.",
+    "bridge": "A trace helps diagnose delay. How would you verify the right data survived a restore?"
+  },
+  "13-recovery": {
+    "step": 2,
+    "question": "A backup contains 10; then 20 is inserted, deleted, and 30 inserted. Which IDs exist immediately before the deletion?",
+    "options": [
+      "10 and 30",
+      "10 and 20"
+    ],
+    "answer": 1,
+    "hint": "Stop replay at the target point. Which later writes have not happened yet?",
+    "why": "10 and 20 exist at that point. Receipt 30 needs separate reconciliation with the later history.",
+    "bridge": "You can test a restore. How do you challenge a design when a reviewer changes the workload itself?"
+  },
+  "14-design-review": {
+    "step": 2,
+    "question": "One post needs two million feed entries. At 50,000 entries/s, can more queue space meet a 10-second visibility target?",
+    "options": [
+      "Yes, by buffering the rest",
+      "No, the writes take at least 40 s"
+    ],
+    "answer": 1,
+    "hint": "A queued entry is not yet visible. Count how many entries the writer can finish in ten seconds.",
+    "why": "At most 500,000 entries finish in ten seconds. The design must change the work or its capacity.",
+    "bridge": "Now hold total capacity fixed. Can changing only the assignment of individual reads cut a driver's wait?"
+  },
+  "15-routing": {
+    "step": 2,
+    "question": "At time 10, worker A still has its first job and B has just finished. Which can start read three immediately?",
+    "options": [
+      "A",
+      "B"
+    ],
+    "answer": 1,
+    "hint": "Look for the bar that ends at time 10. Its worker has become available.",
+    "why": "B can start immediately. Change the policy to see whether the dispatcher actually sends the read there.",
+    "bridge": "Choosing a worker can reduce waiting. What if two reads on that worker ask storage the very same question?"
+  },
+  "16-coalescing": {
+    "step": 2,
+    "question": "Two west requests already share a pending lookup. Can the arriving east caller reuse that result?",
+    "options": [
+      "Yes, because all three overlap",
+      "No, because it needs another lot"
+    ],
+    "answer": 1,
+    "hint": "The key identifies the answer the caller is allowed to receive. Which lot is the pending result for?",
+    "why": "East starts its own lookup. This burst has three callers and two storage reads.",
+    "bridge": "Sharing a request also shares its failure. How can callers give a failing dependency time to recover?"
+  },
+  "17-circuit-breaker": {
+    "step": 3,
+    "question": "A recovery probe entered at 110 and is still unanswered at 111. Should a second caller reach storage?",
+    "options": [
+      "No, the probe slot is taken",
+      "Yes, the cooldown has ended"
+    ],
+    "answer": 0,
+    "hint": "The quiet interval has ended, but how many simultaneous trial calls does this policy permit?",
+    "why": "The single probe is in flight. Its reply decides whether subsequent calls pass.",
+    "bridge": "A missed deadline can release a caller. What if a second driver still needs the underlying read?"
+  },
+  "18-waiter-deadlines": {
+    "step": 2,
+    "question": "Ada's wait has expired. Ben's deadline has not. Storage now returns the west map. Which reply can Ben still receive?",
+    "options": [
+      "A successful map reading",
+      "Only the same timeout as Ada"
+    ],
+    "answer": 0,
+    "hint": "Look at the line that ended at the cross. Is it Ben's wait, Ada's wait, or the underlying read?",
+    "why": "Ben can still receive the reading because his own wait and the shared work were both still active.",
+    "bridge": "In the final project, decide which caller may stop waiting, which operation continues and what evidence the next attempt must consult."
+  }
+}

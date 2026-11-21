@@ -1,17 +1,33 @@
-<!-- label: What if a successful reply disappears? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">What if a successful reply disappears?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One intention</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Durable grant</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Lost reply</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Same grant</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: One intention, two requests, one stored receipt -->
+<svg class="design-figure" viewBox="0 0 420 268" role="img" aria-labelledby="d-title">
+<title id="d-title">One intention, two requests, one stored receipt</title>
+<text class="d-b" x="25" y="29" text-anchor="start">Phone</text>
+<text class="d-b" x="274" y="29" text-anchor="start">Service</text>
+<path class="d-dash" d="M59,43V253"/>
+<path class="d-dash" d="M354,43V253"/>
+<g class="step s1">
+  <x-arrow tone="acc" d="M65,78H348"/>
+  <text class="d-t" x="204" y="64" text-anchor="middle">Reserve · 17</text>
+</g>
+<g class="step s2">
+  <rect class="d-hl" x="287" y="93" width="123" height="35" rx="5"/><text class="d-t" x="348.5" y="116.5" text-anchor="middle">Grant 301</text>
+</g>
+<g class="step s3">
+  <path class="d-red" d="M350,145H174"/>
+  <path class="d-red" d="M166,137l16,16m0,-16 -16,16"/>
+  <text class="d-r" x="81" y="151" text-anchor="start">Lost reply</text>
+</g>
+<g class="step s4">
+  <x-arrow tone="acc" d="M65,188H348"/>
+  <text class="d-mi" x="204" y="178" text-anchor="middle">Retry · 17</text>
+  <x-arrow tone="acc" d="M348,230H65"/>
+  <text class="d-a" x="205" y="221" text-anchor="middle">Grant 301</text>
+</g>
+<g transform="translate(69 78)" data-move="1:69,78 2:352,78 3:175,145 4:70,230"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>Ada presses Reserve once.</p></li>
-<li><p>The database commits her grant.</p></li>
-<li><p>The phone times out. Predict the next request identity.</p></li>
-<li><p>The repeated intention resolves to the stored grant.</p></li>
+<li><p>Ada taps once. Her phone saves intention 17 before sending the first request. Follow the number as it crosses the network.</p></li>
+<li><p>The service commits grant 301 and the receipt connecting Ada’s intention 17 to that grant.</p></li>
+<li><p>The reply is lost. Which part of this picture can Ada’s phone actually observe? It knows its intention but does not yet know the grant number.</p></li>
+<li><p>The phone retries intention 17 with the same lot. The service finds the receipt and returns 301 again. A new intention number would describe another possible booking.</p></li>
 </ol>

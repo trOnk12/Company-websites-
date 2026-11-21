@@ -40,3 +40,21 @@ For gate 4, use a full JDK. Run `jcmd -l` locally, identify the lab application'
 Assess each gate separately. **Reproduced** means a reviewer can rerun the evidence from a clean checkout. **Explained** means you can predict a changed outcome before running one variation and account for the result afterwards. Record both alongside the commit and exact commands. Keep production ownership, mentoring and cross-team decisions as separate evidence from professional work.
 
 For a worked first service, run the [JVM parking lab](../parking-design/README.md). Its HTTP test races two clients, checks retry behavior, restarts the Java process and reads the committed row. The [system design course](https://pachulski.dev/course/system-design/) connects the implementation to capacity, consistency, overload and recovery.
+
+## Same slow request, two different causes
+
+Run `java SlowRequest.java lock` in an interactive terminal with JDK 21. The request stays open. In a second terminal under the same OS account, run `jcmd PID Thread.print -l` with the printed PID. Find the thread named **request**. Record its state, the frame that explains the wait, the owner thread's stack, and the number of available slots. Press Enter in the first terminal and verify that exactly one request completes. Repeat with `java SlowRequest.java pool`.
+
+Before looking below, predict which change would help each run: shortening a synchronized operation or returning a borrowed resource. Which single observation would be too weak to decide?
+
+<details><summary>Compare the evidence</summary>
+
+In the lock run, the request is BLOCKED entering a synchronized region. Match its monitor identifier to the monitor held by the owner. The pool still has one slot. Releasing the owner lets the request enter. In the pool run, the request is WAITING inside ArrayBlockingQueue.take and the pool has zero available slots. The queue stands in for a one-connection pool. Releasing the owner returns its slot and unblocks the request. Both owners wait on a latch so you can take an unhurried snapshot. Inspecting only the owner's WAITING label cannot distinguish the incidents.
+
+For a transfer check, predict which request can complete before you release the owner when two slots exist. Run `java SlowRequest.java pool 2` and `java SlowRequest.java lock 2`. Compare the request stacks or completion messages. On a Unix HotSpot JVM you can also request a thread dump in the first terminal’s output by sending `kill -QUIT PID` from the second terminal.
+
+</details>
+
+[Oracle JDK 21 command reference](https://docs.oracle.com/en/java/javase/21/docs/specs/man/jcmd.html)
+
+Run the [two JDBC incident investigations](https://pachulski.dev/labs/jvm-workbench/#jdbc-incidents) to distinguish a monitor wait, an exhausted JDBC pool and a conflicting database write using captured evidence or a live in-memory database.

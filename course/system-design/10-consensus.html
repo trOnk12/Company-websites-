@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,17 +52,18 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="10">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 10 · 11 of 15</p>
+        <p class="eyebrow">Puzzle 10 · 11 of 19</p>
         <h1>Who can confirm a write when regions cannot talk?</h1>
         <p class="lede">Understand majority agreement and the cost of losing contact.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" aria-current="page" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" aria-current="page" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#first-decide-who-can-get-a-vote">Run SQL</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -76,35 +78,102 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Who can confirm a write when regions cannot talk?"><input type="radio" name="st-consensus" id="st-consensus-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-consensus" id="st-consensus-2" aria-label="Step 2 of 4"><input type="radio" name="st-consensus" id="st-consensus-3" aria-label="Step 3 of 4"><input type="radio" name="st-consensus" id="st-consensus-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Who can confirm a write when regions cannot talk?</title><defs><marker id="ah-consensus-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-consensus-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-consensus-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-consensus-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Three nodes</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-consensus-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Split 2 and 1</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-consensus-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Majority of 2</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-consensus-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Commit</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="A two-to-one split after the first grant"><input type="radio" name="st-consensus" id="st-consensus-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-consensus" id="st-consensus-2" aria-label="Step 2 of 4"><input type="radio" name="st-consensus" id="st-consensus-3" aria-label="Step 3 of 4"><input type="radio" name="st-consensus" id="st-consensus-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 276" role="img" aria-labelledby="d-title">
+<title id="d-title">A two-to-one split after the first grant</title>
+<text class="d-b" x="15" y="28" text-anchor="start">Three voting nodes</text>
+<path class="d-line" d="M78,108L212,176 344,108"/>
+<g class="step upto-2">
+  <path class="d-line" d="M91,100H324"/>
+</g>
+<circle class="d-box" cx="70" cy="96" r="30"/>
+<circle class="d-box" cx="212" cy="177" r="30"/>
+<circle class="d-box" cx="350" cy="96" r="30"/>
+<text class="d-b" x="70" y="104" text-anchor="middle">A</text>
+<text class="d-b" x="212" y="185" text-anchor="middle">B</text>
+<text class="d-b" x="350" y="104" text-anchor="middle">C</text>
+<g class="step only-1">
+  <text class="d-a" x="70" y="153" text-anchor="middle">Leader</text>
+</g>
+<g class="step s2">
+  <text class="d-mi" x="70" y="58" text-anchor="middle">Grant 17</text>
+  <text class="d-mi" x="212" y="228" text-anchor="middle">Grant 17</text>
+</g>
+<g class="step s3">
+  <path class="d-red" d="M131,53 L131,178"/>
+  <path class="d-red" d="M122,119l18,14m-18,0 18,-14"/>
+</g>
+<g class="step only-3">
+  <text class="d-r" x="78" y="246" text-anchor="middle">A alone: 1 vote</text>
+</g>
+<g class="step s4">
+  <text class="d-a" x="270" y="261" text-anchor="middle">B + C: 2 votes</text>
+  <text class="d-r" x="71" y="246" text-anchor="middle">1 vote</text>
+</g>
+<g transform="translate(69 42)" data-move="1:69,42 2:211,243 3:70,195 4:277,147"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The nodes share a decision log.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-consensus-2">Next →</label></div></li>
-<li><p>A communication failure separates one node from the pair.</p><div class="stepnav"><label for="st-consensus-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-consensus-3">Next →</label></div></li>
-<li><p>Predict which side can elect and support a leader.</p><div class="stepnav"><label for="st-consensus-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-consensus-4">Next →</label></div></li>
-<li><p>The leader must satisfy the protocol&#x27;s commit rules.</p><div class="stepnav"><label for="st-consensus-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-consensus-1">↺ Again</label></div></li>
+<li><p>A leads a cluster of three voting nodes. For this example, all start with identical committed history.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-consensus-2">Next →</label></div></li>
+<li><p>A replicates its current-term entry for grant 17 to B. A and B form a majority, so the leader commits it and replies to Ada.</p><fieldset class="diagram-prediction" data-hint="Being the last known leader does not give A another vote." data-reason="A cannot commit a new shared grant alone. The pair may elect an eligible leader.">
+<legend>A and B have committed grant 17. Now A is isolated. Can A confirm another shared grant alone?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button">Yes, as the former leader</button><button type="button" class="button" data-answer>No, it lacks a majority</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-consensus-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-consensus-3">Next →</label></div></li>
+<li><p>A becomes isolated. It can still receive a client request but cannot replicate a new entry to a majority. Ben cannot get a new confirmation there.</p><div class="stepnav"><label for="st-consensus-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-consensus-4">Next →</label></div></li>
+<li><p>B has the newer log and can win an election with C. The pair can commit new current-term entries. A can neither elect itself nor commit alone.</p><div class="stepnav"><label for="st-consensus-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-consensus-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-consensus-1" title="Step 1"></label><label for="st-consensus-2" title="Step 2"></label><label for="st-consensus-3" title="Step 3"></label><label for="st-consensus-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/consensus.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>In a replicated log, a leader proposes entries for an agreed order. A majority of three is two. Any two majorities intersect. Raft combines this property with election rules, numbered leadership terms and rules for committing entries. Counting two arbitrary replies does not implement consensus. A leader also needs evidence that its decisions belong to the correct history.</p>
+<p>A log is a list of decisions with numbered positions. Replicating it means storing copies on several nodes. A leader proposes the next entry. A term is a numbered election period. An entry keeps the term in which its leader created it, even after a new election starts. A majority of three is two. Any two majorities intersect. Raft combines this property with election rules, numbered leadership terms and rules for committing entries. Counting two arbitrary replies does not implement consensus. A leader also needs evidence that its decisions belong to the correct history.</p>
 <p>In a two-plus-one split, the pair can continue committing under a valid leader. The solitary node cannot independently confirm a new grant in that protocol. It can refuse or serve a read whose contract permits stale data. Continuing one global order costs write availability on the isolated side. An ordinary asynchronous database copy does not become a consensus protocol by adding another replica.</p>
 <p>The CAP theorem describes a choice during a network partition. An isolated node cannot always complete every valid operation successfully while maintaining the behavior of one current copy. Here the desired consistency is linearizability: completed operations fit one order that respects real-time precedence. Choose a contract per operation. Map reads and last-space writes can have different contracts.</p>
 <h3>Reason from the driver's timeline</h3>
 <p>A, B and C are voting nodes. Ada receives a successful grant after the current leader A commits it with B. A becomes isolated. B and C can elect a valid new leader under Raft's election rules. A may still think it leads, but it cannot commit another shared grant on its own. A driver reaching only A might therefore time out even though another driver can use B.</p>
 <p>In a fresh run, isolate C before Ada makes her reservation. Move Ben's read until after Ada receives confirmation from A. If Ben asks C for the latest committed inventory and sees the original free space, that history violates the real-time ordering promise in this one-space example. A map read explicitly allowed to be stale can return the very same value within its age limit. Check the operation's contract before calling either result correct.</p>
+      </section>
+      <section aria-labelledby="first-decide-who-can-get-a-vote">
+        <h2 id="first-decide-who-can-get-a-vote">First decide who can get a vote</h2>
+<p>A is unreachable. C wants to lead in election term 4 and can vote for itself. It still needs B. B’s last stored entry is from term 3 at position 8. C’s last entry is from term 2 at position 9. C has more entries. Should B vote for C?</p>
+<p>Raft compares the terms of the two last entries first. Only if they match does it compare positions. The election term on the request and the term on the candidate’s last stored entry are two different numbers. Starting election 4 does not turn C’s term-2 entry into a term-4 entry.</p>
+<p>Run B’s decision on three possible histories for C. Each row is an independent case. B has not voted in term 4, the request is for that term, and both nodes are voters. Predict the first row, then ask what changes between the second and third.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">WITH voter(last_term, last_position) AS (VALUES (3, 8)),
+candidate(example, last_term, last_position) AS (
+  VALUES ('1. Longer, older term', 2, 9),
+         ('2. Same term, shorter', 3, 7),
+         ('3. Same term, tied', 3, 8)
+)
+SELECT example, candidate.last_term, candidate.last_position,
+       CASE WHEN (candidate.last_term, candidate.last_position)
+                  &gt;= (voter.last_term, voter.last_position)
+            THEN 'grant vote' ELSE 'deny vote' END AS b_decides
+FROM candidate CROSS JOIN voter
+ORDER BY example;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>B denies the first request because term 2 is older than term 3. In the second row the terms tie but position 7 is behind 8. In the third row both numbers tie, so B can grant its vote. To test which number wins, change only the first candidate’s position from 9 to 90. B still denies it. Now restore 9 and change its last term from 2 to 3. B grants the vote. The order of this comparison is the same pair comparison you used for the history cursor in puzzle 05.</p>
+<p>This code isolates the log comparison in Raft section 5.4.1. In the real protocol a voter also checks the request term and whether it has already voted. A vote helps elect a leader. The next puzzle within this lesson asks what an elected leader may tell a driver about one entry.</p>
+      </section>
+      <section aria-labelledby="then-decide-what-the-leader-can-commit">
+        <h2 id="then-decide-what-the-leader-can-commit">Then decide what the leader can commit</h2>
+<p>A term can end without a leader being elected. Consider an elected leader in term 4 with voters A, B and C. Its log positions 1 through 8 match on A and B. Position 8 was written in term 3. May the new leader mark position 8 committed just by counting those copies?</p>
+<pre><code class="language-python">def can_advance(index, entry_term, leader_term, matched_through):
+    majority = len(matched_through) // 2 + 1
+    copies = sum(position &gt;= index for position in matched_through)
+    return entry_term == leader_term and copies &gt;= majority
+
+print(can_advance(8, 3, 4, [8, 8, 6]))
+print(can_advance(9, 4, 4, [9, 8, 6]))
+print(can_advance(9, 4, 4, [9, 9, 6]))</code></pre>
+<p>Each list entry gives the last log position known to match on one voter. Run with Python 3. The lines read False, False, True. In the last case the current-term entry at 9 can advance the commit position. The preceding entries in the leader's log, including 8, become committed with it. Counting replicas of the older entry directly would discard a condition on which Raft's safety argument depends.</p>
+<p>Change only the final list to five positions: 9, 9, 8, 8, 6. Two copies at 9 no longer suffice. This function isolates one rule for an established leader with a fixed voting group and a candidate position beyond the current commit position. A deployable protocol also needs leader election, durable logs, matching prefixes and recovery. See sections 5.3 and 5.4.2 of the Raft paper.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -138,6 +207,7 @@
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://raft.github.io/raft.pdf">Ongaro and Ousterhout · Raft</a> — “A candidate must contact a majority of the cluster in order to be elected”</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>During a split, the minority cannot safely keep accepting globally ordered grants on its own.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
+      <p class="puzzle-bridge">A booking is one decision. What changes when a separate payment provider controls the charge?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="09-partitioning.html">← Puzzle 9</a>
         <a class="button primary" href="11-payment.html">Puzzle 11: What if the space expires before payment is confirmed? →</a>

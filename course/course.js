@@ -36,6 +36,9 @@
     }
   };
 
+  const read = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch { return null; } };
+  const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+
   for (const fig of document.querySelectorAll('.stepper')) {
     const radios = [...fig.querySelectorAll(':scope > input[type=radio]')];
     const caps = [...fig.querySelectorAll('.caps > li')];
@@ -43,12 +46,28 @@
 
     let timer = null;
     let playing = false;
-    let touched = false; // the reader took control: stop autoplaying
+    const prediction = fig.querySelector('.diagram-prediction');
+    const choice = fig.querySelector('select[data-compare-step]');
+    const course = fig.closest('[data-course]')?.dataset.course;
+    const key = prediction && course ? 'course:' + course + ':diagram:' + radios[0].name : null;
+    const question = prediction?.querySelector('legend').textContent;
+    const saved = key && read(key);
+    const alternateActive = () => choice?.value === 'changed' && prediction?.hasAttribute('data-changed-reason');
+    let answered = Boolean(saved && saved.question === question && saved.answered === true);
+    if (saved && saved.question === question) {
+      if (Number.isInteger(saved.step) && radios[saved.step]) radios[saved.step].checked = true;
+      if (choice && Array.from(choice.options).some(o => o.value === saved.choice)) choice.value = saved.choice;
+    }
+    let touched = Boolean(prediction); // Prediction diagrams begin under the learner's control.
 
     const current = () => Math.max(0, radios.findIndex(r => r.checked));
+    const remember = () => {
+      if (key && !playing) write(key, { question, step: current(), answered, choice: choice?.value });
+    };
     const go = i => {
       const n = (i + radios.length) % radios.length;
       radios[n].checked = true;
+      remember();
       actors(fig, n + 1, true);
       fig.style.setProperty('--dwell', `${dwell(n)}ms`);
       fig.classList.remove('tick'); void fig.offsetWidth; fig.classList.add('tick'); // restart the progress bar
@@ -67,6 +86,10 @@
       clearTimeout(timer);
       if (!playing) return;
       const i = current();
+      if (prediction && caps[i].contains(prediction) && !answered) {
+        setPlaying(false);
+        return;
+      }
       const last = i === radios.length - 1;
       timer = setTimeout(() => { go(i + 1); schedule(); }, dwell(i) + (last ? 1500 : 0));
     };
@@ -80,8 +103,46 @@
     };
     btn.addEventListener('click', () => { touched = true; setPlaying(!playing); if (playing) count(`play ${location.pathname}`, true, 'Played a diagram'); });
 
+    let refreshPrediction;
+    if (prediction) {
+      const controls = prediction.querySelector('[data-prediction-controls]');
+      const feedback = prediction.querySelector('[role="status"]');
+      const reveal = prediction.closest('li').querySelector('.stepnav .next');
+      controls.hidden = false;
+      reveal.hidden = true;
+      const show = document.createElement('button');
+      show.type = 'button';
+      show.className = 'button';
+      show.textContent = 'Reveal next step';
+      refreshPrediction = () => {
+        show.hidden = !answered;
+        const reason = alternateActive() ? prediction.dataset.changedReason : prediction.dataset.reason;
+        feedback.textContent = answered ? reason : '';
+      };
+      refreshPrediction();
+      reveal.after(show);
+      show.addEventListener('click', () => {
+        go(current() + 1);
+        const caption = caps[current()];
+        caption.tabIndex = -1;
+        caption.focus({ preventScroll: true });
+      });
+      controls.addEventListener('click', event => {
+        const button = event.target.closest('button');
+        if (!button) return;
+        setPlaying(false);
+        answered = button.hasAttribute(alternateActive() ? 'data-changed-answer' : 'data-answer');
+        refreshPrediction();
+        if (!answered) feedback.textContent = alternateActive() ? prediction.dataset.changedHint : prediction.dataset.hint;
+        remember();
+      });
+    }
+
     actors(fig, current() + 1, false);
-    for (const r of radios) r.addEventListener('change', () => actors(fig, current() + 1, true));
+    for (const r of radios) r.addEventListener('change', () => {
+      actors(fig, current() + 1, true);
+      remember();
+    });
     // Any manual step change takes over from autoplay.
     for (const r of radios) r.addEventListener('change', () => {
       if (playing && fig.dataset.auto !== '1') { touched = true; setPlaying(false); }
@@ -90,17 +151,31 @@
       if (e.target.closest('label')) { touched = true; setPlaying(false); }
     });
 
+    if (choice) choice.addEventListener('change', () => {
+      touched = true;
+      setPlaying(false);
+      const target = Math.max(current(), Number(choice.dataset.compareStep) - 1);
+      const checkpoint = caps.indexOf(prediction?.closest('li'));
+      if (prediction?.hasAttribute('data-changed-reason')) {
+        answered = false;
+        refreshPrediction();
+        go(checkpoint);
+        return;
+      }
+      go(!answered && current() <= checkpoint ? Math.min(target, checkpoint) : target);
+    });
+
     // Arrow keys when the diagram has focus, swipes on phones.
     fig.tabIndex = -1;
     fig.addEventListener('keydown', e => {
-      if (e.target.closest('button')) return;
+      if (e.target.closest('button, select')) return;
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault(); touched = true; setPlaying(false);
         go(current() + (e.key === 'ArrowRight' ? 1 : -1));
       }
     });
     let x0 = null;
-    fig.addEventListener('touchstart', e => { const st = e.target.closest('.stage'); x0 = st && st.scrollWidth > st.clientWidth ? null : e.touches[0].clientX; }, { passive: true }); // a wide diagram on a phone scrolls instead
+    fig.addEventListener('touchstart', e => { const st = e.target.closest('.stage'); x0 = e.target.closest('select') || (st && st.scrollWidth > st.clientWidth) ? null : e.touches[0].clientX; }, { passive: true }); // a wide diagram on a phone scrolls instead
     fig.addEventListener('touchend', e => {
       if (x0 === null) return;
       const dx = e.changedTouches[0].clientX - x0; x0 = null;
@@ -131,8 +206,6 @@
   // through the course's old order when it has since been renumbered.
   const IDX = window.COURSE_INDEX || { cur: {}, legacy: {} };
   const slugs = c => IDX.cur[c] || [];
-  const read = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch { return null; } };
-  const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
   const done = c => {
     const have = read(`course:${c}:done`);
     if (Array.isArray(have)) return have;

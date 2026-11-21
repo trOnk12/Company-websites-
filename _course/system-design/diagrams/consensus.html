@@ -1,17 +1,40 @@
-<!-- label: Who can confirm a write when regions cannot talk? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Who can confirm a write when regions cannot talk?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Three nodes</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Split 2 and 1</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Majority of 2</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Commit</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: A two-to-one split after the first grant -->
+<svg class="design-figure" viewBox="0 0 420 276" role="img" aria-labelledby="d-title">
+<title id="d-title">A two-to-one split after the first grant</title>
+<text class="d-b" x="15" y="28" text-anchor="start">Three voting nodes</text>
+<path class="d-line" d="M78,108L212,176 344,108"/>
+<g class="step upto-2">
+  <path class="d-line" d="M91,100H324"/>
+</g>
+<circle class="d-box" cx="70" cy="96" r="30"/>
+<circle class="d-box" cx="212" cy="177" r="30"/>
+<circle class="d-box" cx="350" cy="96" r="30"/>
+<text class="d-b" x="70" y="104" text-anchor="middle">A</text>
+<text class="d-b" x="212" y="185" text-anchor="middle">B</text>
+<text class="d-b" x="350" y="104" text-anchor="middle">C</text>
+<g class="step only-1">
+  <text class="d-a" x="70" y="153" text-anchor="middle">Leader</text>
+</g>
+<g class="step s2">
+  <text class="d-mi" x="70" y="58" text-anchor="middle">Grant 17</text>
+  <text class="d-mi" x="212" y="228" text-anchor="middle">Grant 17</text>
+</g>
+<g class="step s3">
+  <path class="d-red" d="M131,53 L131,178"/>
+  <path class="d-red" d="M122,119l18,14m-18,0 18,-14"/>
+</g>
+<g class="step only-3">
+  <text class="d-r" x="78" y="246" text-anchor="middle">A alone: 1 vote</text>
+</g>
+<g class="step s4">
+  <text class="d-a" x="270" y="261" text-anchor="middle">B + C: 2 votes</text>
+  <text class="d-r" x="71" y="246" text-anchor="middle">1 vote</text>
+</g>
+<g transform="translate(69 42)" data-move="1:69,42 2:211,243 3:70,195 4:277,147"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>The nodes share a decision log.</p></li>
-<li><p>A communication failure separates one node from the pair.</p></li>
-<li><p>Predict which side can elect and support a leader.</p></li>
-<li><p>The leader must satisfy the protocol&#x27;s commit rules.</p></li>
+<li><p>A leads a cluster of three voting nodes. For this example, all start with identical committed history.</p></li>
+<li><p>A replicates its current-term entry for grant 17 to B. A and B form a majority, so the leader commits it and replies to Ada.</p></li>
+<li><p>A becomes isolated. It can still receive a client request but cannot replicate a new entry to a majority. Ben cannot get a new confirmation there.</p></li>
+<li><p>B has the newer log and can win an election with C. The pair can commit new current-term entries. A can neither elect itself nor commit alone.</p></li>
 </ol>

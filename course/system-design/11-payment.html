@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -51,17 +52,18 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="11">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 11 · 12 of 15</p>
+        <p class="eyebrow">Puzzle 11 · 12 of 19</p>
         <h1>What if the space expires before payment is confirmed?</h1>
         <p class="lede">Make uncertain outcomes and compensation explicit.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" aria-current="page" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" aria-current="page" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
+        <a href="#replay-a-late-charge-after-the-seat-changes-hands">Run SQL</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -76,23 +78,38 @@
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="What if the space expires before payment is confirmed?"><input type="radio" name="st-payment" id="st-payment-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-payment" id="st-payment-2" aria-label="Step 2 of 4"><input type="radio" name="st-payment" id="st-payment-3" aria-label="Step 3 of 4"><input type="radio" name="st-payment" id="st-payment-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">What if the space expires before payment is confirmed?</title><defs><marker id="ah-payment-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-payment-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-payment-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-payment-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Pending</text></g>
-<path class="step s2 d-arr-acc" d="M279,90 H339" marker-end="url(#ah-payment-acc)"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Expired</text></g>
-<path class="step s3 d-arr-acc" d="M475,146 V210" marker-end="url(#ah-payment-acc)"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Late charge</text></g>
-<path class="step s4 d-arr-acc" d="M341,267 H288" marker-end="url(#ah-payment-acc)"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Refund pending</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="An expired hold and a separate refund obligation"><input type="radio" name="st-payment" id="st-payment-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-payment" id="st-payment-2" aria-label="Step 2 of 4"><input type="radio" name="st-payment" id="st-payment-3" aria-label="Step 3 of 4"><input type="radio" name="st-payment" id="st-payment-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 265" role="img" aria-labelledby="d-title">
+<title id="d-title">An expired hold and a separate refund obligation</title><defs><marker id="ah-payment-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-payment-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-payment-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-payment-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<text class="d-b" x="15" y="28" text-anchor="start">Lot record</text>
+<text class="d-b" x="228" y="28" text-anchor="start">Payment record</text>
+<path class="d-dash" d="M205,44V241"/>
+<g class="step s1">
+  <rect class="d-box" x="16" y="51" width="167" height="40" rx="5"/><text class="d-t" x="99.5" y="77" text-anchor="middle">Hold H</text>
+  <rect class="d-box" x="225" y="51" width="177" height="40" rx="5"/><text class="d-t" x="313.5" y="77" text-anchor="middle">Pending</text>
+</g>
+<g class="step s2">
+  <path class="d-arr-acc" d="M95,94V119" marker-end="url(#ah-payment-acc)"/>
+  <rect class="d-bad" x="16" y="126" width="167" height="40" rx="5"/><text class="d-t" x="99.5" y="152" text-anchor="middle">Seat released</text>
+</g>
+<g class="step s3">
+  <path class="d-arr-acc" d="M313,94V119" marker-end="url(#ah-payment-acc)"/>
+  <rect class="d-hl" x="225" y="126" width="177" height="40" rx="5"/><text class="d-t" x="313.5" y="152" text-anchor="middle">Charge paid</text>
+</g>
+<g class="step s4">
+  <path class="d-arr-acc" d="M313,169V188" marker-end="url(#ah-payment-acc)"/>
+  <rect class="d-bad" x="221" y="195" width="184" height="41" rx="5"/><text class="d-t" x="313" y="221.5" text-anchor="middle">Refund pending</text>
+</g>
+<g transform="translate(100 100)" data-move="1:100,100 2:97,176 3:316,176 4:314,248"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>A hold awaits payment.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-payment-2">Next →</label></div></li>
-<li><p>The hold expires and releases inventory.</p><div class="stepnav"><label for="st-payment-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-payment-3">Next →</label></div></li>
-<li><p>The provider reports a successful charge after expiry.</p><div class="stepnav"><label for="st-payment-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-payment-4">Next →</label></div></li>
-<li><p>Track compensation until its outcome is known.</p><div class="stepnav"><label for="st-payment-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-payment-1">↺ Again</label></div></li>
+<li><p>Hold H is active. The service has a payment-attempt identity. The provider’s outcome has not yet been confirmed.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-payment-2">Next →</label></div></li>
+<li><p>The hold expires and the lot releases the seat. Another driver can now acquire it. This does not tell us whether the original charge succeeded.</p><div class="stepnav"><label for="st-payment-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-payment-3">Next →</label></div></li>
+<li><p>A delayed provider message confirms the charge. The original hold has already expired, so the old customer cannot be assigned the same seat.</p><fieldset class="diagram-prediction" data-hint="The charge proves that money moved. Does it restore the expired right to the seat?" data-reason="Record refund work against this charge and preserve the current holder's seat.">
+<legend>Ada's hold expired and someone else owns the seat. Which durable record should the late charge create?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button" data-answer>A refund obligation</button><button type="button" class="button">A new claim on the seat</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-payment-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-payment-4">Next →</label></div></li>
+<li><p>Record a refund obligation for this charge. If the refund reply disappears, it stays pending until an authoritative check or a repeat of the same refund confirms it.</p><div class="stepnav"><label for="st-payment-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-payment-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-payment-1" title="Step 1"></label><label for="st-payment-2" title="Step 2"></label><label for="st-payment-3" title="Step 3"></label><label for="st-payment-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/payment.gif" download>Save this diagram as a GIF</a></p>
@@ -102,8 +119,44 @@
 <p>Represent the process with explicit states such as pending, confirmed, expired and refund pending. Save a payment-attempt identity before contacting the provider. Silence leaves the result unknown. A later authoritative notification or status query lets the service reconcile both records. A saga coordinates local steps and explicitly defined compensating actions.</p>
 <p>Expiry and payment success can race. Both try to transition from pending. The winner determines which transitions remain valid. If the space has been released, late payment success creates durable refund work. A refund is another operation that can fail or take time. The driver needs to distinguish an outstanding refund from one completed by the provider.</p>
 <h3>Trace one late payment</h3>
-<p>At minute zero, hold H owns seat 12. At minute two, expiry releases it. At minute three a different driver acquires the seat. The provider then reports a successful charge for H. Keep the new owner's seat. Record the old charge reference and a pending refund as a durable decision. A second success notification for the same charge finds that decision and produces no additional refund work.</p>
+<p>At minute zero, hold H owns seat 12. At minute five, expiry releases it. At minute six a different driver acquires the seat. The provider then reports a successful charge for H. Keep the new owner's seat. Record the old charge reference and a pending refund as a durable decision. A second success notification for the same charge finds that decision and produces no additional refund work.</p>
 <p>Now lose the refund response. A worker needs a provider-supported way to query the refund or safely repeat the same refund identity. Mark it complete only after obtaining a confirmed outcome. If neither operation is available, keep it unresolved for reconciliation. Announcing a completed refund from the local send alone would give the driver a false financial status.</p>
+      </section>
+      <section aria-labelledby="replay-a-late-charge-after-the-seat-changes-hands">
+        <h2 id="replay-a-late-charge-after-the-seat-changes-hands">Replay a late charge after the seat changes hands</h2>
+<p>A hold belongs to one driver. Once it expires, another hold can own the seat. The following database already contains Ada's expired hold and Ben's live hold. A verified provider message says charge 91 succeeded for Ada. Where should that message be allowed to write?</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE hold (id TEXT PRIMARY KEY, seat TEXT, state TEXT);
+CREATE TABLE refund_work (charge INTEGER PRIMARY KEY, hold_id TEXT);
+INSERT INTO hold VALUES
+  ('Ada-1', 'B12', 'expired'), ('Ben-2', 'B12', 'confirmed');
+
+BEGIN;
+UPDATE hold SET state = 'confirmed'
+WHERE id = 'Ada-1' AND state = 'pending';
+INSERT INTO refund_work
+SELECT 91, id FROM hold WHERE id = 'Ada-1' AND state = 'expired'
+ON CONFLICT (charge) DO NOTHING;
+COMMIT;
+
+-- Another delivery of the same success for the expired hold.
+INSERT INTO refund_work
+SELECT 91, id FROM hold WHERE id = 'Ada-1' AND state = 'expired'
+ON CONFLICT (charge) DO NOTHING;
+
+SELECT id, seat, state FROM hold ORDER BY id;
+SELECT charge, hold_id FROM refund_work;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>Both hold states stay the same and exactly one refund job names charge 91. A worker must still reconcile that refund with the provider. The database row records an obligation, not money arriving on a card.</p>
+<p>Change the fixture to the earlier instant: replace the entire two-row insert with the statement below.</p>
+<pre><code class="language-sql">INSERT INTO hold VALUES ('Ada-1', 'B12', 'pending');</code></pre>
+<p>The same handler should confirm Ada and create no refund work. In production, the expiry path also releases inventory atomically, and a separate constraint must enforce a single live holder for each seat. This excerpt isolates how the payment handler treats an already-decided hold.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
@@ -136,6 +189,7 @@
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/saga">Azure Architecture Center · Saga</a> — “coordinating a sequence of local transactions across multiple services”</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A missing payment reply leaves an unknown outcome that needs reconciliation.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
+      <p class="puzzle-bridge">The charge can be correct and still be late. Where did the request spend its time?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="10-consensus.html">← Puzzle 10</a>
         <a class="button primary" href="12-diagnosis.html">Puzzle 12: Is the database slow, or is the request waiting to reach it? →</a>

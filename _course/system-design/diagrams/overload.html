@@ -1,17 +1,34 @@
-<!-- label: Why can retries prolong an outage? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Why can retries prolong an outage?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">120 arrive</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">100 finish</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">1200 waiting</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">60 s to drain</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: A queue grows for a minute and drains for a minute -->
+<svg class="design-figure" viewBox="0 0 420 270" role="img" aria-labelledby="d-title">
+<title id="d-title">A queue grows for a minute and drains for a minute</title>
+<text class="d-b" x="14" y="26" text-anchor="start">Waiting requests</text>
+<path class="d-line" d="M53,50V200H393"/>
+<text class="d-mi" x="47" y="193" text-anchor="end">0</text>
+<text class="d-mi" x="47" y="68" text-anchor="end">1200</text>
+<path class="d-line" d="M58,196v8"/><text class="d-mi" x="58" y="227" text-anchor="middle">0</text>
+<path class="d-line" d="M217,196v8"/><text class="d-mi" x="217" y="227" text-anchor="middle">60</text>
+<path class="d-line" d="M376,196v8"/><text class="d-mi" x="376" y="227" text-anchor="middle">120</text>
+<text class="d-mi" x="400" y="252" text-anchor="end">seconds</text>
+<g class="step s1">
+  <circle class="d-dot" cx="58" cy="195" r="5"/>
+</g>
+<g class="step s2">
+  <path class="d-acc" d="M58,195 L217,65"/>
+  <text class="d-a" x="66" y="78" text-anchor="start">+20/s</text>
+</g>
+<g class="step s3">
+  <path class="d-acc" d="M217,65 L376,195"/>
+  <text class="d-a" x="312" y="87" text-anchor="start">−20/s</text>
+</g>
+<g class="step s4">
+  <path class="d-dash" d="M217,65H376"/>
+  <text class="d-r" x="373" y="52" text-anchor="end">0/s spare</text>
+</g>
+<g transform="translate(58 195)" data-move="1:58,195 2:217,65 3:376,195 4:376,65"><circle class="d-dot" cx="0" cy="0" r="6"/></g>
 </svg>
 <ol class="caps">
-<li><p>The peak lasts sixty seconds.</p></li>
-<li><p>Capacity stays at one hundred completions per second.</p></li>
-<li><p>Twenty extra arrivals accumulate each second.</p></li>
-<li><p>After arrivals drop to eighty, spare capacity clears the queue.</p></li>
+<li><p>The queue starts empty. Every second, 120 requests arrive and 100 finish. Where will the extra twenty go?</p></li>
+<li><p>After sixty seconds, 1,200 are still waiting. The slope measures the difference between the arrival and completion rates.</p></li>
+<li><p>Traffic falls to eighty per second. Twenty slots per second drain old work; the queue reaches zero at second 120.</p></li>
+<li><p>Compare the dashed alternative from the peak: if retries keep arrivals at one hundred per second, all capacity serves incoming work. The 1,200-request backlog persists.</p></li>
 </ol>

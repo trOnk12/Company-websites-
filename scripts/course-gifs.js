@@ -60,7 +60,7 @@ function serve() {
     fs.mkdirSync(outDir, { recursive: true });
     for (const f of fs.readdirSync(path.join(courseDir, c)).filter(f => /^\d\d-.*\.html$/.test(f)).sort()) {
       await page.goto(`${base}/course/${c}/${f}`);
-      await page.addStyleTag({ content: '.stepnav,.dots,.player,.gif-link{display:none!important} .stepper{border:0;margin:0} .caps p{font-size:17px}' });
+      await page.addStyleTag({ content: '.stepnav,.dots,.player,.gif-link,[data-prediction-controls]{display:none!important} .stepper{border:0;margin:0} .caps p{font-size:17px}' });
       for (const fig of await page.locator('.stepper').all()) {
         const name = (await fig.locator('input[type=radio]').first().getAttribute('name')).replace(/^st-/, '');
         const n = await fig.locator('input[type=radio]').count();

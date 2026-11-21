@@ -1,17 +1,34 @@
-<!-- label: Why does a confirmed space still look free? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Why does a confirmed space still look free?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">Primary write</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Copy lags</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Old map</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Confirmed view</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: Measure the age of a cached observation -->
+<svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="d-title">
+<title id="d-title">Measure the age of a cached observation</title>
+<text class="d-b" x="14" y="30" text-anchor="start">Life of one map reading</text>
+<path class="d-line" d="M30,130H396"/>
+<path class="d-line" d="M32,127v8"/><text class="d-mi" x="32" y="158" text-anchor="middle">92</text>
+<path class="d-line" d="M112,127v8"/><text class="d-mi" x="112" y="158" text-anchor="middle">100</text>
+<path class="d-line" d="M260,127v8"/><text class="d-mi" x="260" y="158" text-anchor="middle">115</text>
+<path class="d-line" d="M333,127v8"/><text class="d-mi" x="333" y="158" text-anchor="middle">122</text>
+<text class="d-mi" x="396" y="180" text-anchor="end">seconds</text>
+<g class="step s1">
+  <text class="d-t" x="15" y="80" text-anchor="start">Source observes 1 free</text>
+</g>
+<g class="step s2">
+  <x-arrow tone="acc" d="M33,99H110"/>
+  <text class="d-t" x="18" y="213" text-anchor="start">Copied at 100 · age 8 s</text>
+</g>
+<g class="step s3">
+  <x-arrow tone="acc" d="M115,99H259"/>
+  <text class="d-t" x="18" y="242" text-anchor="start">Served at 115 · age 23 s</text>
+</g>
+<g class="step s4">
+  <path class="d-red" d="M333,65 V130"/>
+  <text class="d-r" x="398" y="57" text-anchor="end">30 s limit</text>
+  <text class="d-r" x="18" y="271" text-anchor="start">After 122 · too old</text>
+</g>
+<g transform="translate(32 130)" data-move="1:32,130 2:112,130 3:260,130 4:333,130"><circle class="d-dot" cx="0" cy="0" r="6"/></g>
 </svg>
 <ol class="caps">
-<li><p>The primary has accepted the reservation.</p></li>
-<li><p>The other copy has not applied it yet.</p></li>
-<li><p>The map may reuse an answer from that delayed copy.</p></li>
-<li><p>Use the successful write result for the confirmation screen.</p></li>
+<li><p>At second 92 the data source observes one free space. That observation is the origin of the age calculation.</p></li>
+<li><p>At 100 the cache fetches the reading. Eight seconds of the thirty-second allowance are already gone.</p></li>
+<li><p>At 115 the cache has held the reading for fifteen seconds. Add the original eight. The driver receives a 23-second-old observation.</p></li>
+<li><p>At 122 the reading is exactly thirty seconds old. A later refresh of the same observation cannot reset its age. A separate confirmation can use the committed grant.</p></li>
 </ol>

@@ -1,17 +1,38 @@
-<!-- label: Can two green maps promise the last space? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Can two green maps promise the last space?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One space</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Two map reads</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Two requests</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">One grant</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: Two green maps compete for one durable grant -->
+<svg class="design-figure" viewBox="0 0 420 265" role="img" aria-labelledby="d-title">
+<title id="d-title">Two green maps compete for one durable grant</title>
+<text class="d-b" x="16" y="28" text-anchor="start">Driver phones</text>
+<rect class="d-box" x="20" y="48" width="156" height="78" rx="12"/>
+<rect class="d-box" x="246" y="48" width="155" height="78" rx="12"/>
+<text class="d-t" x="37" y="78" text-anchor="start">Ada</text>
+<text class="d-t" x="263" y="78" text-anchor="start">Ben</text>
+<g class="step s1">
+  <text class="d-a" x="37" y="109" text-anchor="start">Map: 1 free</text>
+  <text class="d-a" x="262" y="109" text-anchor="start">Map: 1 free</text>
+</g>
+<rect class="d-band" x="108" y="190" width="202" height="59" rx="5"/>
+<g class="step only-1">
+  <text class="d-t" x="209" y="226" text-anchor="middle">Space B12 · free</text>
+</g>
+<g class="step s2">
+  <x-arrow tone="acc" d="M107,126L163,184"/>
+  <x-arrow tone="acc" d="M324,126L258,184"/>
+</g>
+<g class="step only-2">
+  <text class="d-t" x="209" y="226" text-anchor="middle">Two requests</text>
+</g>
+<g class="step s3">
+  <text class="d-a" x="209" y="226" text-anchor="middle">B12: Ada</text>
+</g>
+<g class="step s4">
+  <text class="d-a" x="22" y="169" text-anchor="start">Confirmed</text>
+  <text class="d-r" x="319" y="169" text-anchor="start">Full</text>
+</g>
+<g transform="translate(285 238)" data-move="1:285,238 2:211,166 3:290,218 4:99,178"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg>
 <ol class="caps">
-<li><p>The lot has one space.</p></li>
-<li><p>Both phones receive a green map pin.</p></li>
-<li><p>Predict the replies when both drivers press Reserve.</p></li>
-<li><p>Only one driver may receive a grant.</p></li>
+<li><p>At the same moment both phones show one available space. The map reading describes the lot; it grants neither driver a space.</p></li>
+<li><p>Both drivers tap Reserve before either map refreshes. Their requests name the same physical space.</p></li>
+<li><p>Ada’s request wins in this possible ordering. The ledger records her name against B12. A later map refresh cannot change that grant.</p></li>
+<li><p>Ada gets confirmation and Ben gets a full-lot reply. Reverse the arrival order and Ben could win. Which single row must still be unique?</p></li>
 </ol>

@@ -1,17 +1,41 @@
-<!-- label: How does the database choose a winner? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">How does the database choose a winner?</title>
-<g class="step s1"><rect class="d-paper" x="26" y="42" width="250" height="94" rx="11"/><text class="d-b" x="151" y="97" text-anchor="middle">One space</text></g>
-<x-arrow class="step s2" tone="acc" d="M279,90 H339"/>
-<g class="step s2"><rect class="d-paper" x="349" y="42" width="250" height="94" rx="11"/><text class="d-b" x="474" y="97" text-anchor="middle">Ada changes one</text></g>
-<x-arrow class="step s3" tone="acc" d="M475,146 V210"/>
-<g class="step s3"><rect class="d-paper" x="349" y="220" width="250" height="94" rx="11"/><text class="d-b" x="474" y="275" text-anchor="middle">Ben changes zero</text></g>
-<x-arrow class="step s4" tone="acc" d="M341,267 H288"/>
-<g class="step s4"><rect class="d-hl" x="26" y="220" width="250" height="94" rx="11"/><text class="d-b" x="151" y="275" text-anchor="middle">Ben rolls back</text></g>
-<g data-move="1:150,153 2:475,153 3:475,332 4:150,332"><circle class="d-acc" r="7"/></g>
+<!-- label: One inventory row, two attempted grants -->
+<label class="diagram-choice">Ada’s transaction
+<select data-compare-step="3"><option value="original">Commit the change</option><option value="changed">Roll back the change</option></select></label>
+<svg class="design-figure" viewBox="0 0 420 253" role="img" aria-labelledby="d-title">
+<title id="d-title">One inventory row, two attempted grants</title>
+<text class="d-b" x="12" y="28" text-anchor="start">Same lot · Read Committed</text>
+<path class="d-dash" d="M18,65H402"/>
+<path class="d-dash" d="M18,111H402"/>
+<path class="d-dash" d="M18,158H402"/>
+<path class="d-dash" d="M18,206H402"/>
+<text class="d-mi" x="15" y="56" text-anchor="start">Lot row</text>
+<text class="d-b" x="144" y="56" text-anchor="start">Ada</text>
+<text class="d-b" x="272" y="56" text-anchor="start">Ben</text>
+<g class="step s1">
+  <text class="d-t" x="15" y="95" text-anchor="start">Free: 1</text>
+  <text class="d-t" x="144" y="95" text-anchor="start">Begin</text>
+  <text class="d-t" x="272" y="95" text-anchor="start">Begin</text>
+</g>
+<g class="step s2">
+  <text class="d-t" x="15" y="142" text-anchor="start">Locked</text>
+  <text class="d-a" x="144" y="142" text-anchor="start">Writes 0</text>
+  <text class="d-r" x="272" y="142" text-anchor="start">Waits</text>
+</g>
+<g class="step s3">
+  <text class="d-t" x="15" y="190" text-anchor="start"><tspan class="original-outcome">Free: 0</tspan><tspan class="changed-outcome">Free: 1</tspan></text>
+  <text class="d-t" x="144" y="190" text-anchor="start"><tspan class="original-outcome">Commits</tspan><tspan class="changed-outcome">Rolls back</tspan></text>
+  <text class="d-t" x="272" y="190" text-anchor="start">Rechecks</text>
+</g>
+<g class="step s4">
+  <text class="d-t" x="15" y="237" text-anchor="start"><tspan class="original-outcome">Grant: Ada</tspan><tspan class="changed-outcome">Grant: Ben</tspan></text>
+  <text class="d-a" x="144" y="237" text-anchor="start"><tspan class="original-outcome">Confirmed</tspan><tspan class="changed-outcome">Rolled back</tspan></text>
+  <text class="d-r" x="272" y="237" text-anchor="start"><tspan class="original-outcome">0 changed</tspan><tspan class="changed-outcome">1 changed</tspan></text>
+</g>
+<g transform="translate(397 88)" data-move="1:397,88 2:397,136 3:397,183 4:397,230"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>The requests change the same inventory row.</p></li>
-<li><p>Ada decrements the count and commits.</p></li>
-<li><p>Does the condition still match for Ben?</p></li>
-<li><p>Rolling back also removes Ben&#x27;s pending reservation.</p></li>
+<li><p>Two transactions try to change the same inventory row. There is one free space. Each has started its own provisional reservation.</p></li>
+<li><p>Ada changes one to zero and holds the row lock. Ben attempts his conditional update. He waits while the outcome of Ada’s transaction is undecided.</p></li>
+<li><p><span class="original-outcome">Ada commits zero free spaces. Ben wakes and checks whether the free count is positive.</span><span class="changed-outcome">Ada rolls back. Her decrement disappears. Ben wakes and checks the restored count of one.</span></p></li>
+<li><p><span class="original-outcome">Zero rows match. Ben rolls back his provisional grant. Only Ada receives confirmation.</span><span class="changed-outcome">One row matches. Ben takes the space and commits his provisional grant. Only Ben receives confirmation.</span></p></li>
 </ol>

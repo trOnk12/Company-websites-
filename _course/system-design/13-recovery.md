@@ -26,7 +26,40 @@ The deletion occurs at 10:07. A monitor detects it at 10:10, the operator finish
 
 Suppose the newest consistent state you can actually recover is 10:04. The gap at deletion time is three minutes. That fails a two-minute recovery point objective even if the database restarts instantly. Choose one known reservation from 10:03 and one from 10:06, look them up after restoration, then reconcile any later external charge independently.
 
+## Challenge a restore that has the right row count
+
+An independent receipt journal lists the two confirmations that should exist at the recovery point. The restored table also has two rows. Is that enough to reopen reservations? Compare identities and amounts in both directions.
+
+```sql run
+CREATE TABLE journal (id INTEGER PRIMARY KEY, cents INTEGER);
+CREATE TABLE restored (id INTEGER PRIMARY KEY, cents INTEGER);
+INSERT INTO journal VALUES (10, 500), (20, 900);
+INSERT INTO restored VALUES (10, 500), (30, 900);
+
+SELECT id, cents FROM journal
+EXCEPT SELECT id, cents FROM restored;
+SELECT id, cents FROM restored
+EXCEPT SELECT id, cents FROM journal;
+```
+
+The first query returns the missing receipt 20. The second returns unexpected receipt 30. Change 30 to 20 and 900 to 800 in the restored table. Counts and identities now agree, but the two comparisons still reveal a disagreement over the amount. Fix the amount too and both differences disappear.
+
+The comparison assumes the journal is complete for this exact recovery point. A legitimate later receipt belongs to reconciliation against the later timeline. Treating every extra row as disposable can erase a real customer operation.
+
 ## Try it
+
+A receipt database starts with ID 10. The service commits ID 20, marks a recovery point, accidentally deletes 20, marks a second point, then commits ID 30. Before running the experiment, write down the exact IDs you expect at each point. Which valid receipt could you lose even if you restore perfectly?
+
+On Linux or macOS, use Python 3 with psycopg 3 and the PostgreSQL 17 server tools on your command path. Save [the experiment](https://pachulski.dev/labs/postgres-isolation/restore.py) and [its helper](https://pachulski.dev/labs/postgres-isolation/failover.py) in one folder. From that folder run both commands as an ordinary user.
+
+```sh
+python3 restore.py before_delete
+python3 restore.py after_delete
+```
+
+Each command creates disposable local clusters, takes a clean base copy, archives subsequent writes and restores to the named point in a separate directory.
+
+Before deletion the restored IDs are 10 and 20. After deletion only 10 survives. The original database contains 10 and 30 at shutdown. Receipt 30 is a valid later commit after both named points. Before reopening service, decide how to reconcile it with an independent receipt record. The lab also writes ID 40 on the recovered timeline and checks it from a fresh connection. Compare its measured time with the full incident timeline below.
 
 Record detection, decision, restore, validation and reopening times. A fifteen-minute interruption budget covers that entire path. For a schema change, first add a compatible field, switch writers and readers, and remove the old field after the compatibility window. Run the old application against the upgraded schema before relying on rollback.
 

@@ -66,3 +66,19 @@ test('queue backlog, drops and the design review are available on site', async (
   await page.getByRole('link', { name: 'Reservation lab', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Run both requests' })).toBeVisible();
 });
+
+test('the parking display fences the previous writer in either arrival order', async ({ page }) => {
+  await page.goto('/labs/parking-design/cases.html#a-paused-worker-publishes-an-old-parking-count');
+  const drill = page.locator('#a-paused-worker-publishes-an-old-parking-count');
+  for (const first of ['A', 'B']) {
+    await drill.getByLabel('First write after handoff').selectOption(first);
+    for (const rule of ['ordinary', 'guarded']) {
+      await drill.getByLabel('Write rule').selectOption(rule);
+      await drill.getByRole('button', { name: 'Replay the handoff' }).click();
+      const trace = drill.locator('output');
+      const expected = rule === 'ordinary' && first === 'B' ? 'open' : 'full';
+      await expect(trace).toHaveText(new RegExp('display = ' + expected + '$'));
+      await expect(trace).toContainText(rule === 'guarded' ? 'A (generation 1): 0 rows changed' : 'A (generation 1): 1 row changed');
+    }
+  }
+});

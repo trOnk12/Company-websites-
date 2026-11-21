@@ -26,6 +26,34 @@ For a feed with two million followers and a ten-second visibility objective, wri
 
 A candidate design merges that author's recent posts when a reader opens the feed. State the new cost: feed reads now perform merge work and must enforce current access rights. Test with the actual distribution of follows per reader and a private post revoked between reads. A reviewer can now challenge both the old throughput ceiling and the new read-latency assumption.
 
+## Transfer the parking guarantee to numbered seats
+
+A counter can issue two bookings within capacity while assigning both people B12. In this design an active ticket claims one chair at one event. A partial unique index is a rule the database applies only to rows matching its condition. Here that condition is an active ticket.
+
+```sql run
+CREATE TABLE ticket (
+  id INTEGER PRIMARY KEY, event TEXT NOT NULL,
+  seat TEXT NOT NULL, active INTEGER NOT NULL CHECK (active IN (0, 1))
+);
+CREATE UNIQUE INDEX one_live_ticket
+ON ticket(event, seat) WHERE active = 1;
+
+INSERT INTO ticket VALUES (1, 'Friday', 'B12', 1);
+INSERT INTO ticket VALUES (2, 'Friday', 'B12', 1)
+ON CONFLICT (event, seat) WHERE active = 1 DO NOTHING;
+INSERT INTO ticket VALUES (3, 'Saturday', 'B12', 1);
+SELECT id, event, seat FROM ticket WHERE active = 1 ORDER BY id;
+SELECT id, active FROM ticket WHERE event = 'Friday' ORDER BY id;
+```
+
+The first table shows active tickets 1 and 3. The second lists every Friday ticket, including any that have ended. Friday's second claim loses, while Saturday is an independent event. Now put the following statement just before the second insert and rerun. Predict which Friday ticket is active and how many Friday rows remain in the table.
+
+```sql
+UPDATE ticket SET active = 0 WHERE id = 1;
+```
+
+Friday now has two historical rows and one active ticket, number 2. The database retains the old purchase for audit. Defend this choice to a reviewer who proposes uniqueness on seat alone: the same chair is sellable again on Saturday. Then ask what changes for general admission where the promise is a total capacity and tickets have no seat numbers.
+
 ## Try it
 
 Submit a contract, an estimate with units, a diagram, a failure timeline, a repeatable test and a decision record. Have a reviewer change one assumption: a publisher now has a million followers, or one region loses contact. Predict the result before testing. Explain what measurement would make you change your own decision.
@@ -41,3 +69,4 @@ Submit a contract, an estimate with units, a diagram, a failure timeline, a repe
 ## Sources
 
 - [Google SRE · Implementing SLOs](https://sre.google/workbook/implementing-slos/)
+- [SQLite · Unique partial indexes](https://www.sqlite.org/partialindex.html)

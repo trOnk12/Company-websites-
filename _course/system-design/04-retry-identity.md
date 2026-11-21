@@ -35,6 +35,31 @@ Ada taps once, the phone sends request 17 and the app closes before it receives 
 
 Decide what a second deliberate tap means. If Ada wants a second space, it needs a new intention. If the service forgets completed identities after a day, a phone retrying a two-day-old request needs an explicit recovery rule. One option is to stop automatic retries after the supported window and look up the original reservation before offering a new purchase.
 
+## Store the first answer and challenge the replay
+
+Suppose one driver can reserve different lots. A request number is unique only within that driver's account. Together the owner and the request number identify one intention. Run the SQL and predict what the last lookup returns when the incoming request says east.
+
+```sql run
+CREATE TABLE receipt (
+  owner TEXT NOT NULL, intent TEXT NOT NULL, lot TEXT NOT NULL, grant_id INTEGER NOT NULL,
+  PRIMARY KEY (owner, intent)
+);
+INSERT INTO receipt VALUES ('Ada', '17', 'west', 301);
+
+INSERT INTO receipt VALUES ('Ada', '17', 'east', 302)
+ON CONFLICT (owner, intent) DO NOTHING
+RETURNING grant_id;
+
+SELECT grant_id, lot,
+       CASE WHEN lot = 'east' THEN 'replay'
+            ELSE 'conflicting request' END AS decision
+FROM receipt WHERE owner = 'Ada' AND intent = '17';
+```
+
+The second insert returns no row. That alone cannot tell the handler how to reply. Reading the saved row gives grant 301 for west, so the changed lot is a conflict. Change east to west in both places to model a genuine retry. The handler can return 301 even though the attempted insert proposed 302.
+
+The table isolates the identity check. In a service, derive the owner from the signed-in account and include every field that changes the operation's meaning in the comparison. Commit the receipt and the real inventory change together. Otherwise a receipt can outlive a failed reservation.
+
 ## Try it
 
 Compare a disconnect immediately before commit with one immediately after. Then compare retry identity with an edit version. One asks whether this intention was already carried out. The other asks whether the record is still the version the editor saw.
@@ -50,3 +75,4 @@ Compare a disconnect immediately before commit with one immediately after. Then 
 ## Sources
 
 - [AWS · Making retries safe](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/) — “the service first checks to see if it has seen this identifier before”
+- [SQLite · UPSERT](https://www.sqlite.org/lang_upsert.html)

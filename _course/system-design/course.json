@@ -1,7 +1,7 @@
 {
   "title": "System design from first principles to design review",
-  "intro": "Build a parking reservation service on paper and on the JVM. Estimate a concert peak, race for the last space, lose a payment reply and recover after a bad release. Transfer your reasoning to tickets, feeds and private uploads.",
-  "how": "Start with the promise a reservation makes to a driver. Predict the outcome, step through the diagram and run the browser labs. Finish by defending your design when a reviewer changes the load, the failure or the ownership rule.",
+  "intro": "Design a parking service that can refuse the last space, survive a lost reply and recover its booking history. Trace each decision in a diagram, then inspect the rows or timings that would prove it wrong.",
+  "how": "Start with the two-driver reservation. Use Run SQL to change the data in your browser, Worked code for Python 3, or Run code to compare JavaScript scenarios. The transaction lesson lets you switch between commit and rollback. Finish by defending a design for a different workload.",
   "modules": [
     {
       "title": "From promises to a write path",
@@ -40,6 +40,16 @@
         "12-diagnosis.md",
         "13-recovery.md",
         "14-design-review.md"
+      ]
+    },
+    {
+      "title": "Operate a busy read path",
+      "blurb": "Route uneven work, share simultaneous cache misses and test a recovering dependency.",
+      "puzzles": [
+        "15-routing.md",
+        "16-coalescing.md",
+        "17-circuit-breaker.md",
+        "18-waiter-deadlines.md"
       ]
     }
   ],

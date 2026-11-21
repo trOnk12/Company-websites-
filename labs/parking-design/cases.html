@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions.">
+  <meta name="description" content="Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions. After the three reviews, try the shorter parking-display failure drill.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Three system design reviews – System design – Mateusz Pachulski">
-  <meta property="og:description" content="Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions.">
+  <meta property="og:description" content="Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions. After the three reviews, try the shorter parking-display failure drill.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/labs/parking-design/cases.html">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -18,7 +18,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Three system design reviews – System design – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/labs/parking-design/cases.html">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
@@ -26,6 +26,7 @@
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
   <link rel="stylesheet" href="../lab.css">
+  <script src="fencing.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -49,7 +50,7 @@
   <main id="main">
     <article class="lab wrap narrow" data-lab-course="system-design">
       <nav class="lesson-context" aria-label="Breadcrumb"><a href="../../course/">Courses</a><span aria-hidden="true">/</span><a href="../../course/system-design/">System design</a><span aria-hidden="true">/</span><a href="./">Reservation lab</a></nav>
-      <header class="lab-intro"><h1>Three system design reviews</h1><p class="lede">Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions.</p></header>
+      <header class="lab-intro"><h1>Three system design reviews</h1><p class="lede">Spend 35 minutes on each prompt before opening its worked review. Use the first five minutes to identify which missing assumptions would change your design. Specify the user contract, estimate scale, trace a write and a read, then choose a failure to reproduce. Use the final five minutes to defend an alternative. All numbers are exercise assumptions. After the three reviews, try the shorter parking-display failure drill.</p></header>
       <section class="lab-card" id="1-assigned-concert-seats"><h2>1. Assigned concert seats</h2>
 <p>There are 30,000 seats, 90,000 people in the waiting room and a peak of 6,000 reservation attempts per second. A hold lasts two minutes. A payment can arrive after three. What happens if a driver switches devices or the hold expires before payment is known?</p>
 <details><summary>Worked review and failure drill</summary>
@@ -74,6 +75,47 @@
 <p><b>Drill.</b> Fail after bytes arrive but before the metadata row is updated. Then fail after the ready state commits but before the phone receives a reply. Repeat completion and count ready receipts. Run cleanup of abandoned uploads after a grace period and race it against completion. Explain how ownership of the cleanup decision prevents deletion of a finished receipt.</p>
 </details>
 </section>
+<section class="lab-card" id="a-paused-worker-publishes-an-old-parking-count"><h2>A paused worker publishes an old parking count</h2>
+<p>Two workers update one parking display. Worker A observes an open space, prepares “open” and pauses. The coordinator hands the job to B. B now observes a full lot. Both workers can still reach the database. Predict the final message for each arrival order, first with ordinary writes and then with a generation check.</p>
+<p>Choose a write rule and arrival order below, then replay the handoff to inspect each write. To run the same experiment against real SQL, download <a href="/labs/parking-design/fencing.py">the Python fixture</a> and run <code>python3 fencing.py</code> locally. It uses two independent SQLite connections and creates four disposable databases. Each grant advances an integer on the display row. The handoff is explicit so you can repeat the same schedule without waiting for a real lease to expire.</p>
+<details><summary>Worked review and failure drill</summary>
+<p>If B publishes “full” and delayed A publishes “open” last, two ordinary updates succeed and the display lies. If A arrives first, the eventual “full” hides a brief stale write. Checking only the final message misses that error.</p>
+<p>The grant records generation 2 before either publish. Each guarded update checks its generation inside the same SQL statement that writes the message. A's generation 1 changes zero rows in either order. B's generation 2 changes one row. Predict the result if A checks the generation in a separate query, pauses, and later sends an unconditional update. B can take ownership between those operations.</p>
+<p><b>Transfer check.</b> If B repeats a valid increment twice, does its generation suppress the duplicate? Both increments can pass the same ownership test. A non-repeatable effect needs its own operation identity and deduplication. This fixture keeps the granting authority and the protected write in one database. For a separate external display service, specify where it will persist and enforce ownership before promising the same guarantee.</p>
+<p><a href="https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html">Further reading on fencing tokens</a></p>
+</details>
+</section>
+<section class="lab-card" id="two-edits-wait-on-each-other"><h2>Two edits wait on each other</h2>
+<p>Ada edits seat 1 and holds the transaction open. Ben attempts to edit the same seat. Now change the schedule: Ada edits seat 1 while Ben edits seat 2. Before either commits, each tries to edit the other's seat. Draw who waits for whom in each schedule. In which case can releasing one transaction resolve the wait without aborting another?</p>
+<p>Use the PostgreSQL 17 setup in the <a href="https://github.com/trOnk12/Company-websites-/blob/main/labs/postgres-isolation/README.md#deadlock-or-a-one-way-wait">isolation lab instructions</a>. Save <a href="/labs/postgres-isolation/deadlocks.py">deadlocks.py</a> next to <a href="/labs/postgres-isolation/races.py">races.py</a> and run <code>python3 deadlocks.py</code>.</p>
+<details><summary>Worked review and failure drill</summary>
+<p>A one-way wait can end when Ada commits or rolls back. In the experiment Ben's configured lock timeout expires first, yielding SQLSTATE <code>55P03</code>. In the second schedule the waits form a cycle. PostgreSQL aborts one transaction with <code>40P01</code>, and the other commits. Which transaction is chosen is outside the application contract.</p>
+<p>Each seat starts with zero edits. Immediately after the cycle resolves, both counts are one. The aborted transaction's first increment was rolled back. Retrying only its second statement would leave one count short. The fixture retries both edits and verifies counts of two. When every caller acquires these seat locks in ascending ID order, neither can hold seat 2 while waiting for seat 1. The final run proves this with a fresh counter: Ben waits while Ada acquires seat 2 and commits, then Ben commits both edits. Compare the two schedules: both finish with counts of two, while only one required a retry. Other shared resources still need their own ordering analysis.</p>
+<p><a href="https://www.postgresql.org/docs/17/explicit-locking.html#LOCKING-DEADLOCKS">PostgreSQL 17 · Explicit locking and deadlocks</a></p>
+</details>
+</section>
+<section class="lab-card" id="a-waiting-migration-blocks-fresh-reads"><h2>A waiting migration blocks fresh reads</h2>
+<p>A report finished its SQL query and left its transaction open. A schema migration started next. A customer read came last. The database returned this snapshot:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Session</th><th scope="col">State</th><th scope="col">Wait category</th><th scope="col">Blocking sessions</th></tr></thead><tbody><tr><th scope="row">report</th><td>idle in transaction</td><td>Client</td><td>none</td></tr><tr><th scope="row">migration</th><td>active</td><td>Lock</td><td>report</td></tr><tr><th scope="row">request</th><td>active</td><td>Lock</td><td>migration</td></tr></tbody></table></div>
+<p>Draw arrows from each waiter to its blocker. Which session started the chain? Predict what the customer sees if you end the report transaction, then predict the outcome if you cancel only the migration.</p>
+<p>For a local run, use Python with psycopg and PostgreSQL 17 server tools, as in the recovery drill. Save <a href="/labs/postgres-isolation/wait_graph.py">wait_graph.py</a>, <a href="/labs/postgres-isolation/failover.py">failover.py</a> and <a href="/labs/postgres-isolation/races.py">races.py</a> together. Run <code>python3 wait_graph.py</code> and <code>python3 wait_graph.py --cancel-migration</code>. Both runs create a private disposable database.</p>
+<details><summary>Worked review and failure drill</summary>
+<p>The report holds a lock until its transaction ends. The migration requests a lock that conflicts with both reads. The new read queues behind the migration, even though its own lock would be compatible with the report's lock. The PostgreSQL function <code>pg_blocking_pids</code> reports the immediate dependency. Follow the arrows to find the report.</p>
+<p>Ending the report allows the migration to commit and the read to finish. Canceling the migration lets the same read finish while the report remains open, and the schema stays unchanged. In production, identify the transaction owner and intended release before deciding whether either action is acceptable. A single snapshot shows who was waiting when sampled.</p>
+<p><b>Change one deadline.</b> Run <code>python3 wait_graph.py --timeout lock</code> and <code>python3 wait_graph.py --timeout statement</code>. Both use the same wait chain. Predict the error code and which statement completes. The first limits time spent acquiring a lock and reports <code>55P03</code>. The second sets a shorter statement deadline than its lock deadline and reports <code>57014</code>. The read succeeds in both while the report transaction remains open. In real traces <code>57014</code> also appears after manual cancellation. Inspect the error message and configuration before assigning a cause.</p>
+<p><a href="https://www.postgresql.org/docs/17/runtime-config-client.html">PostgreSQL 17 · Session deadline settings</a></p>
+<p><a href="https://www.postgresql.org/docs/17/functions-info.html">PostgreSQL 17 · Blocking sessions and lock queue order</a></p>
+</details>
+</section>
+<section class="lab-card" id="does-retrying-a-migration-keep-reads-queued-"><h2>Does retrying a migration keep reads queued?</h2>
+<p>The report transaction stays open. The migration gets two tries, each with a two-second lock deadline. Three customer reads have 200 ms to finish: one queues behind the first attempt, one arrives near the retry boundary, and one arrives after the retry budget is spent.</p>
+<p>Predict how many reads meet their deadline if the second read arrives after the migration rejoins the lock queue. Predict again if the second read arrives in a pause before the retry. Does either policy complete the schema change?</p>
+<p>Use the same three files as in the previous exercise. Run <code>python3 wait_graph.py --retry immediate</code> and <code>python3 wait_graph.py --retry pause</code>.</p>
+<details><summary>Worked review and failure drill</summary>
+<p>In the immediate schedule only the last read succeeds. In the pause schedule the second and last reads succeed. The report's lock remains held throughout, so both migration attempts time out in both schedules. The retry budget prevents a third attempt from creating another queue. The test places each read deliberately. The totals illustrate these schedules and cannot estimate how often production traffic will happen to arrive during a pause.</p>
+<p><b>Transfer check.</b> If the report ends during the pause, explain why the next attempt can acquire the lock. Then describe how to choose a retry budget for deployment. Record customer deadline misses, deferral time and whether the schema actually changed. Test with concurrent traffic and several independent migrators before relying on a fixed delay.</p>
+</details>
+</section>
 <section class="lab-card" id="review-rubric"><h2>Review rubric</h2>
 <div class="table-wrap"><table><thead><tr><th scope="col">Review question</th><th scope="col">Evidence</th></tr></thead><tbody><tr><th scope="row">What does the user see on success, refusal and silence?</th><td>Three client outcomes and one observable guarantee.</td></tr><tr><th scope="row">Which assumption drives most of the cost?</th><td>An estimate with units and a recalculation after a tenfold change.</td></tr><tr><th scope="row">What happens at the worst crash point?</th><td>A timeline naming the last durable write and recovery action.</td></tr><tr><th scope="row">Who may change or see the record?</th><td>Two identities, one successful request and a denied cross-owner request.</td></tr><tr><th scope="row">How would you discover a production failure?</th><td>A user-facing measurement, threshold and resulting action.</td></tr><tr><th scope="row">When would you change the design?</th><td>An explicit assumption change and a measurable cost of the current choice.</td></tr></tbody></table></div>
 <p>Score each row separately: explained, reproduced, defended under changed assumptions. Repeat any weak row on a different case.</p>
@@ -81,7 +123,7 @@
 <p class="lab-return"><a href="../../course/system-design/14-design-review.html#try-it">Return to the design review lesson</a></p>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Flabs%2Fparking-design%2Fcases.html" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Flabs%2Fparking-design%2Fcases.html" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

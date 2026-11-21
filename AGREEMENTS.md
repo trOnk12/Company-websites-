@@ -3,6 +3,8 @@
 Everything decided in conversation, so it isn't lost when a session ends. Sprint history and to-do lists live in
 `SPRINTS.md`; how to write a puzzle lives in `.claude/skills/course-author` and `course-clarity`.
 
+Read [HANDOFF.md](HANDOFF.md) for the latest Claude/Codex exchange and leave the next session a dated reply.
+
 ## Priorities (2026-11-18, in order)
 
 1. **Kotlin Multiplatform, really deep.** Close every gap an Android engineer needs to ship KMP to iOS. New

@@ -1,0 +1,20 @@
+<!-- label: Quiet interval and a single recovery probe -->
+<label class="diagram-choice">Probe result
+<select data-compare-step="4"><option value="original">Succeeds</option><option value="changed">Fails</option></select></label>
+<svg class="design-figure" viewBox="0 0 420 232" role="img" aria-labelledby="d-title">
+<title id="d-title">Do callers reach storage during and after the recovery probe?</title>
+<text class="d-b" x="14" y="29">Breaker decisions and replies</text>
+<path class="d-line" d="M27 140H397"/>
+<g class="step s1"><circle class="d-reddot" cx="40" cy="140" r="5"/><circle class="d-reddot" cx="64" cy="140" r="5"/><text class="d-t" x="13" y="73">2 failures</text></g>
+<g class="step s2"><rect class="d-band" x="65" y="103" width="212" height="30"/><text class="d-mi" x="77" y="124">Open · 100 ms quiet</text><text class="d-mi" x="66" y="167" text-anchor="middle">10</text></g>
+<g class="step s3"><path class="d-acc" d="M278 99V150"/><text class="d-t" x="253" y="75">One probe</text><text class="d-mi" x="275" y="167">110</text></g>
+<g class="step s4"><text class="d-mi" x="396" y="167" text-anchor="end">115 ms</text>
+<text class="d-a original-outcome" x="16" y="212">Success · calls resume</text><text class="d-r changed-outcome" x="16" y="212">Failure · quiet until 215</text></g>
+<g transform="translate(40 145)" data-move="1:40,145 2:66,145 3:278,145 4:392,145"><circle class="d-dot" r="4"/></g>
+</svg>
+<ol class="caps">
+<li><p>The first two responses indicate a dependency failure. The second arrives at time 10.</p></li>
+<li><p>The open interval starts at time 10. A caller at 50 is refused locally. Storage sees no call from that caller.</p></li>
+<li><p>At 110 one request takes the policy’s single trial slot. A second caller arrives at 111, before the probe replies. Predict its outcome. The axis shows event order; the spacing is schematic.</p></li>
+<li><p><span class="original-outcome">The probe succeeds at 115. The next caller at 116 reaches storage.</span><span class="changed-outcome">The probe fails at 115. The next caller at 116 is refused. The next probe is eligible at 215.</span></p></li>
+</ol>
