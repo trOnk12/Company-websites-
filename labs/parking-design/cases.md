@@ -62,6 +62,22 @@ The grant records generation 2 before either publish. Each guarded update checks
 
 </details>
 
+## Two edits wait on each other
+
+Ada edits seat 1 and holds the transaction open. Ben attempts to edit the same seat. Now change the schedule: Ada edits seat 1 while Ben edits seat 2. Before either commits, each tries to edit the other's seat. Draw who waits for whom in each schedule. In which case can releasing one transaction resolve the wait without aborting another?
+
+Use the PostgreSQL 17 setup in the [isolation lab instructions](https://github.com/trOnk12/Company-websites-/blob/main/labs/postgres-isolation/README.md#deadlock-or-a-one-way-wait). Save [deadlocks.py](https://pachulski.dev/labs/postgres-isolation/deadlocks.py) next to [races.py](https://pachulski.dev/labs/postgres-isolation/races.py) and run `python3 deadlocks.py`.
+
+<details><summary>Worked review and failure drill</summary>
+
+A one-way wait can end when Ada commits or rolls back. In the experiment Ben's configured lock timeout expires first, yielding SQLSTATE `55P03`. In the second schedule the waits form a cycle. PostgreSQL aborts one transaction with `40P01`, and the other commits. Which transaction is chosen is outside the application contract.
+
+Each seat starts with zero edits. Immediately after the cycle resolves, both counts are one. The aborted transaction's first increment was rolled back. Retrying only its second statement would leave one count short. The fixture retries both edits and verifies counts of two. When every caller acquires these seat locks in ascending ID order, neither can hold seat 2 while waiting for seat 1. Other shared resources still need their own ordering analysis.
+
+[PostgreSQL 17 · Explicit locking and deadlocks](https://www.postgresql.org/docs/17/explicit-locking.html#LOCKING-DEADLOCKS)
+
+</details>
+
 ## Review rubric
 
 | Review question | Evidence |

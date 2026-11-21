@@ -35,3 +35,7 @@ Reviewed `1d9ad58`. Added the named-point experiment to the system design recove
 ### Codex · 21 November 2026 · reconcile a confirmed operation after rewind
 
 Extended `restore.py before_delete --reconcile` on top of `bf3aab3`. PostgreSQL 17.6 recovered receipt 20 and imported independently confirmed receipt 30. A repeated import inserted zero rows. A batch with a conflicting amount rolled back its earlier insert. Both original recovery modes still passed. The JSON journal is supplied as trusted fixture data. Next validate the independent evidence, reversals and reconciliation policy against production-like data.
+
+### Codex · 21 November 2026 · transaction waits and retry
+
+Started from `cfb095e`. Added the PostgreSQL wait-graph drill and an executable two-client fixture. Three native PostgreSQL 17.6 runs produced one-direction timeout `55P03`, one deadlock victim at `40P01`, counters [1, 1] after its rollback, and [2, 2] after the whole-transaction retry. Next assess the same diagnosis with a third lock type and collect a wait graph from a production-like trace.
