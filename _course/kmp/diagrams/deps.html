@@ -1,0 +1,21 @@
+<!-- label: Each source set has its own dependencies; a library flows down to every source set below -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="de-t"><title id="de-t">Ktor's core library drops into commonMain and flows down to androidMain and iosMain; Ktor's OkHttp part goes into androidMain and its Darwin part into iosMain; the OkHttp part put into commonMain fails, because it has nothing for iOS</title>
+<line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
+<g class="step s1"><rect class="d-hl" x="200" y="96" width="200" height="76" rx="8"/><text class="d-a" x="300" y="120" text-anchor="middle">commonMain</text>
+<rect class="d-band" x="20" y="230" width="200" height="110" rx="8"/><text class="d-tiny" x="120" y="254" text-anchor="middle">androidMain</text>
+<rect class="d-band" x="420" y="230" width="200" height="110" rx="8"/><text class="d-b" x="520" y="255" text-anchor="middle">iosMain</text>
+<x-arrow tone="ink" d="M120,228 C120,200 200,190 236,176"/><x-arrow tone="ink" d="M520,228 C520,200 400,190 364,176"/></g>
+<g class="step s1" data-pulse="1" data-move="1:220,30 2:220,132"><rect class="d-ok" x="0" y="0" width="160" height="26" rx="4"/><text class="d-tiny" x="80" y="18" text-anchor="middle">ktor-client-core</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-dash" x="40" y="264" width="160" height="26" rx="4"/><text class="d-tiny" x="120" y="282" text-anchor="middle">ktor-client-core</text><rect class="d-dash" x="440" y="264" width="160" height="26" rx="4"/><text class="d-tiny" x="520" y="282" text-anchor="middle">ktor-client-core</text></g>
+<g class="step s3" data-pulse="3" data-move="3:20,30 4:40,300"><rect class="d-band" x="0" y="0" width="160" height="26" rx="4"/><text class="d-tiny" x="80" y="18" text-anchor="middle">ktor-client-okhttp</text></g>
+<g class="step s3" data-pulse="3" data-move="3:460,30 4:440,300"><rect class="d-band" x="0" y="0" width="160" height="26" rx="4"/><text class="d-tiny" x="80" y="18" text-anchor="middle">ktor-client-darwin</text></g>
+<g class="step s5" data-pulse="5" data-move="4:40,300 5:220,58"><rect class="d-bad" x="0" y="0" width="160" height="26" rx="4"/><text class="d-rt" x="80" y="18" text-anchor="middle">ktor-client-okhttp</text></g>
+<g class="step only-5"><x-arrow tone="red" d="M384,70 C470,80 520,150 520,226"/><circle class="d-bad" cx="490" cy="124" r="13"/><path class="d-red" d="M482,116 L498,132 M498,116 L482,132"/><text class="d-rt" x="560" y="130" text-anchor="middle">no iOS build</text></g>
+</svg>
+<ol class="caps">
+<li><p>Each source set has its own dependencies. Ktor's core is a <b>multiplatform library</b>, published for every target with one common API, so it can go into commonMain.</p></li>
+<li><p>Added once, it flows down every link: androidMain and iosMain can use it too, without a line of their own.</p></li>
+<li><p>Ktor also has parts built for one platform: one sends requests with OkHttp on Android, one with Apple's own networking. <i>Predict: where does each go?</i></p></li>
+<li><p>Each into its own platform's source set. A library added there flows down too, but never up or sideways.</p></li>
+<li><p>The OkHttp part in commonMain instead? The build fails: commonMain must compile for iOS too, and that part has no iOS build.</p></li>
+</ol>

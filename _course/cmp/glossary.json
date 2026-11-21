@@ -76,7 +76,9 @@
    "KMP",
    "MovieRow",
    "movie",
-   "movie.id"
+   "movie.id",
+   ".value",
+   "var count by remember"
   ],
   "homonyms": [
    "suspend"
@@ -94,6 +96,11 @@
   "$changed": {
    "in": "00",
    "def": "A hidden Int the caller fills with what it already knows about each argument, such as \"same as last time\".",
+   "kind": "code"
+  },
+  "startRestartGroup": {
+   "in": "00",
+   "def": "The Composer call the plugin puts at the start of a composable's body: it opens the call's group.",
    "kind": "code"
   },
   "group": {
@@ -167,7 +174,7 @@
   },
   "Recomposer": {
    "in": "02",
-   "def": "The runtime's scheduler: it waits for the next frame, then runs every marked restart group again.",
+   "def": "The part of the runtime that decides when marked groups run: it waits for the next frame, then runs every marked restart group again.",
    "kind": "code"
   },
   "skipping": {

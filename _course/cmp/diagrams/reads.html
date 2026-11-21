@@ -1,12 +1,15 @@
 <!-- label: A state read is noted; a write marks only the readers; the Recomposer runs them at the next frame -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="rd-t"><title id="rd-t">Screen holds Header and Counter; count is snapshot state; Counter reads count; a tap writes count = 1 and only Counter is marked; Counter runs again from its start while Screen and Header do not; the Recomposer does it at the next frame, once for several writes</title>
 <g class="step s1" data-pulse="1"><rect class="d-band" x="20" y="20" width="400" height="300" rx="8"/><text class="d-tiny" x="34" y="42">Screen</text><rect class="d-paper" x="40" y="56" width="360" height="60" rx="6"/><text class="d-tiny" x="54" y="92">Header</text><rect class="d-paper" x="40" y="136" width="360" height="164" rx="6"/><text class="d-tiny" x="54" y="162">Counter</text><rect class="d-band" x="60" y="180" width="150" height="48" rx="6"/><rect class="d-band" x="230" y="180" width="150" height="48" rx="6"/><text class="d-tiny" x="305" y="210" text-anchor="middle">Button</text><rect class="d-hl" x="470" y="150" width="150" height="48" rx="24"/></g>
-<g class="step s1 hide-3"><text class="d-tiny" x="135" y="210" text-anchor="middle">Text: 0</text><text class="d-a" x="545" y="180" text-anchor="middle">count = 0</text></g>
+<g class="step s1 hide-4"><text class="d-tiny" x="135" y="210" text-anchor="middle">Text: 0</text></g>
+<g class="step s1 hide-3"><text class="d-a" x="545" y="180" text-anchor="middle">count = 0</text></g>
 <g class="step s2" data-pulse="2"><path class="d-dash" d="M466,174 C440,168 430,160 404,158"/><text class="d-m" x="545" y="232" text-anchor="middle">read by Counter</text></g>
-<g class="step s3" data-pulse="3"><text class="d-a" x="545" y="180" text-anchor="middle">count = 1</text><x-arrow tone="acc" d="M305,232 C330,290 520,280 540,204"/><rect class="d-red" x="36" y="132" width="368" height="172" rx="8"/></g>
+<g class="step s3" data-pulse="3"><text class="d-a" x="545" y="180" text-anchor="middle">count = 1</text><x-arrow tone="acc" d="M384,206 C420,214 440,206 464,194"/></g>
+<rect class="d-red step only-3" x="36" y="132" width="368" height="172" rx="8"/>
+<rect class="d-acc step s4 hide-5" x="36" y="132" width="368" height="172" rx="8"/>
 <g class="step s4" data-pulse="4"><text class="d-tiny" x="135" y="210" text-anchor="middle">Text: 1</text><text class="d-m" x="390" y="92" text-anchor="end">not run</text><text class="d-m" x="406" y="42" text-anchor="end">not run</text></g>
 <g class="step s5" data-pulse="5"><x-machine x="440" y="262" w="180" label="Recomposer"/><text class="d-a" x="320" y="358" text-anchor="middle">3 writes, 1 frame, 1 run</text></g>
-<g class="step s1" data-move="1:545,128 2:430,148 3:470,262 4:120,162 5:430,340"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+<g class="step s1" data-move="1:545,128 2:430,148 3:425,236 4:120,162 5:430,340"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg>
 <ol class="caps">
 <li><p><code>count</code> is <b>snapshot state</b>, made by <code>mutableStateOf</code>: a value holder whose every read and every write Compose watches. The screen shows 0.</p></li>
