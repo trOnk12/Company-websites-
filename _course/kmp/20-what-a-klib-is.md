@@ -7,7 +7,7 @@ takeaway: Every Kotlin/Native compilation writes a klib, a zip file for one targ
 
 ## The problem
 
-In puzzle 19, you added `ktor-client-core` to commonMain, and iosMain could call it. In puzzle 16, each target was built by its own compilation. So when iosArm64's main compilation runs, some file from Ktor must be on disk for it to read, and your own module must write a file for whatever uses it next.
+In puzzle 19, you added Ktor's core library to commonMain, and iosMain could call it. In puzzle 16, each target was built by its own compilation. So when iosArm64's main compilation runs, some file from Ktor must be on disk for it to read, and your own module must write a file for whatever uses it next.
 
 Puzzle 0 said Kotlin/Native produces native code during the build. But Ktor's file was published months before your app existed. It can't know which other code your app will contain, so how could it already be your app's machine code? What is in that file?
 
@@ -53,7 +53,7 @@ Your own shared module works the same way. Each of its Kotlin/Native compilation
 
 ## Go deeper: What does IR look like?
 
-The real IR is a tree of objects inside the compiler. As a simplified model, puzzle 0's `fun add(a: Int, b: Int) = a + b` might be stored as:
+The real IR is a tree of objects inside the compiler. As a simplified model, puzzle 0's add function might be stored as:
 
 ```text
 function add(a: Int, b: Int): Int
@@ -63,9 +63,9 @@ function add(a: Int, b: Int): Int
         └── argument: b
 ```
 
-Every name is resolved: `+` has become a call to one exact function, `Int.plus`, with its types known. Nothing in it says "Arm" or "register": that only appears when the later step picks a processor.
+Every name is resolved: the plus sign has become a call to one exact function, Int.plus, with its types known. Nothing in it says "Arm" or "register": that only appears when the later step picks a processor.
 
-- In the model, change the function to `fun add(a: Long, b: Long) = a + b`. What changes in the tree?::The call becomes Long.plus and the types become Long. The tree's shape stays the same, and it still names no processor.
+- In the model, change both parameters of add from Int to Long. What changes in the tree?::The call becomes Long.plus and the types become Long. The tree's shape stays the same, and it still names no processor.
 
 ## The analogy
 

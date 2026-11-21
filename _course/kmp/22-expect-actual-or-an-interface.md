@@ -7,7 +7,7 @@ takeaway: expect/actual gives exactly one implementation per target, merged by t
 
 ## The problem
 
-Puzzle 3 kept a promise: common code declared `expect fun platformName(): String`, and each platform's source set kept it with an `actual`. It also said that for bigger platform services, an interface handed in from outside does the same job and is easier to test.
+Puzzle 3 kept a promise: common code declared expect fun platformName(), and each platform's source set kept it with an `actual`. It also said that for bigger platform services, an interface handed in from outside does the same job and is easier to test.
 
 Now a real case. Your shared `Bookmarks` class must save a user's bookmarks. On Android, the app keeps small values in SharedPreferences. On iOS, Apple's own key-value store is called NSUserDefaults. Bookmarks lives in commonMain, so by puzzle 18 it can't call either. And your test for `Bookmarks` must run without either store. Do you write `expect`, or an interface? And if an interface, who creates the right implementation, and when?
 
@@ -49,13 +49,19 @@ class FakeStorage : Storage {
 }
 ```
 
-`Bookmarks` never creates its storage: it's handed one. That pattern is **dependency injection**: an object receives what it depends on from outside, instead of creating it itself. Here the outside is each app's start, which Kotlin's docs call the entry point. The Android app builds `Bookmarks(PrefsStorage(this))` in its `Application`'s `onCreate()`; the iOS app's start, in Swift, builds `Bookmarks(storage: DefaultsStorage())`. And a test builds `Bookmarks(FakeStorage())`.
+`Bookmarks` never creates its storage: it's handed one. That pattern is **dependency injection**: an object receives what it depends on from outside, instead of creating it itself. Here the outside is each app's start, which Kotlin's docs call the entry point. The Android app builds it in its `Application`'s `onCreate()`, the iOS app at its start, in Swift, and a test in commonTest:
+
+```kotlin
+Bookmarks(PrefsStorage(this))              // Android: Application.onCreate()
+// Bookmarks(storage: DefaultsStorage())   // iOS: the app's start, in Swift
+Bookmarks(FakeStorage())                   // a test
+```
 
 A **fake** is a small, working implementation of an interface written for tests: it keeps data in memory, so a test can check what `Bookmarks` saved without a phone, a file or a store.
 
-Could `expect class Storage` do the same? It can give each target its implementation, but the compiler merges each `expect` with exactly one `actual` per target. A test compiled for iOS gets the iOS actual, so there's no place for a fake, and no way to have two storages on one platform. Kotlin's docs also mark expected classes as Beta: the compiler warns when you use them.
+Could an expect class Storage do the same? It can give each target its implementation, but the compiler merges each `expect` with exactly one `actual` per target. A test compiled for iOS gets the iOS actual, so there's no place for a fake, and no way to have two storages on one platform. Kotlin's docs also mark expected classes as Beta: the compiler warns when you use them.
 
-As an app grows, writing every constructor call by hand at the start gets long. A **dependency injection framework** builds the objects and hands each one what it needs, from a list of rules you write. Koin is one that works in common code. Only the rule for the platform part differs per target, so that rule is the one place where `expect`/`actual` remains:
+As an app grows, writing every constructor call by hand at the start gets long. A **dependency injection framework** builds the objects and hands each one what it needs, from a list of rules you write. Koin is one that works in common code. Only the rule for the platform part differs per target, so that rule is the one place where expect and actual remain:
 
 ```kotlin
 // commonMain
@@ -71,10 +77,10 @@ How to choose:
 
 | You need | Use |
 |---|---|
-| A small platform fact, like a name or a new ID | `expect fun` / `expect val` |
-| An existing platform type under a common name | `expect class` with `actual typealias` |
+| A small platform fact, like a name or a new ID | expect fun or expect val |
+| An existing platform type under a common name | expect class with actual typealias |
 | A service: storage, network, sensors | an interface, handed in |
-| Many services, already using a framework | that framework, with `expect`/`actual` only for its platform rules |
+| Many services, already using a framework | that framework, with expect and actual only for its platform rules |
 
 ## The analogy
 
@@ -82,9 +88,9 @@ The shared handbook from puzzle 3 again. "Call the local tax office" is a blank 
 
 ## Check yourself
 
-- Your iOS app needs two storages on iOS: NSUserDefaults for settings and an encrypted store for tokens. Storage is an `expect class` with one `actual` in iosMain. What's the problem?::*The compiler merges one actual per target, so iOS can't have two||There is none, since an actual can be written once in iosMain and once in appleMain >> The compiler accepts exactly one actual per target; a second one for the same target is an error. >> the-building-block||The actual can't use Apple's APIs, so neither store works >> An actual in iosMain can use Apple's APIs; the limit is one actual per target. >> s2::expect/actual: exactly one implementation per target.
+- Your iOS app needs two storages on iOS: NSUserDefaults for settings and an encrypted store for passwords. Storage is an expect class with one `actual` in iosMain. What's the problem?::*The compiler merges one actual per target, so iOS can't have two||There is none, since an actual can be written once in iosMain and once in appleMain >> The compiler accepts exactly one actual per target; a second one for the same target is an error. >> the-building-block||The actual can't use Apple's APIs, so neither store works >> An actual in iosMain can use Apple's APIs; the limit is one actual per target. >> s2::expect/actual: exactly one implementation per target.
 - Why does the test for Bookmarks run without SharedPreferences or NSUserDefaults?::*It hands Bookmarks a FakeStorage that keeps values in memory||The test source set runs only on Android, where SharedPreferences is always there >> commonTest is compiled for every target; the test passes a fake instead of a platform store. >> s5||Kotlin skips platform calls when it runs tests >> Nothing is skipped: Bookmarks calls whatever storage it was handed, here the fake. >> s6::A fake is handed in, like any implementation.
-- Your project already uses Koin, and you need the platform's name in common code. Kotlin's docs recommend one way. Which?::*Bind it in Koin's platform module, like every other dependency||Add an `expect fun` next to Koin, because small facts always use expect >> expect suits a small fact in a project without a framework; with one, the docs recommend not mixing two ways. >> the-building-block||Read Build.VERSION.SDK_INT directly from commonMain >> commonMain can't call Android's APIs (puzzle 18). >> s1::One way of handing things in, not two.
+- Your project already uses Koin, and you need the platform's name in common code. Kotlin's docs recommend one way. Which?::*Bind it in Koin's platform module, like every other dependency||Add an expect fun next to Koin, because small facts always use expect >> expect suits a small fact in a project without a framework; with one, the docs recommend not mixing two ways. >> the-building-block||Read `Build.VERSION.SDK_INT` directly from commonMain >> commonMain can't call Android's APIs (puzzle 18). >> s1::One way of handing things in, not two.
 
 ## Sources
 

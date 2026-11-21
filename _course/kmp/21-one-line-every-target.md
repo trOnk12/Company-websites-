@@ -24,16 +24,16 @@ That name has no target in it. How does the iosArm64 compilation end up with the
 
 ## The building block
 
-When a multiplatform library is published, the multiplatform plugin creates one **publication** per target: a separately named package of files in the repository, such as Maven Central. Ktor's core has, among others:
+When a multiplatform library is published, the multiplatform plugin creates one **publication** per target: a separately named package of files on the library server, such as Maven Central. Ktor's core has, among others:
 
 | Publication | What it holds |
 |---|---|
-| `ktor-client-core-iosarm64` | the iosArm64 klib from puzzle 20 |
-| `ktor-client-core-iossimulatorarm64` | the iosSimulatorArm64 klib |
-| `ktor-client-core-jvm` | class files in a jar, the JVM output from puzzle 0 |
-| `ktor-client-core` | the root publication: no target of its own |
+| ktor-client-core-iosarm64 | the iosArm64 klib from puzzle 20 |
+| ktor-client-core-iossimulatorarm64 | the iosSimulatorArm64 klib |
+| ktor-client-core-jvm | class files in a jar, the JVM output from puzzle 0 |
+| ktor-client-core | the root publication: no target of its own |
 
-Your line names the root, the one without a target. The root publication holds a small file, `ktor-client-core-3.6.1.module`, written in **Gradle module metadata**: a format, published next to a library, that tells Gradle what the library offers. Its main part is a list of **variants**. A variant is one version of the library, built for one kind of consumer and tagged with attributes: labels such as which platform and which native target it's for. Here is one entry from the real file, shortened:
+Your line names the root, the one without a target. The root publication holds a small file, ktor-client-core-3.6.1.module, written in **Gradle module metadata**: a format, published next to a library, that tells Gradle what the library offers. Its main part is a list of **variants**. A variant is one version of the library, built for one kind of consumer and tagged with attributes: labels such as which platform and which native target it's for. Here is one entry from the real file, shortened:
 
 ```json
 {
@@ -52,12 +52,12 @@ So the root doesn't contain the klibs. It points at them: "the variant for ios_a
 
 Now follow your one line through puzzle 16's compilations. Each compilation asks Gradle for the library, and says what it is: "I'm native, ios_arm64". Gradle reads the .module file and picks the variant whose attributes match:
 
-- iosArm64's compilation gets the `ios_arm64` variant: Ktor's iosArm64 klib.
-- iosSimulatorArm64's compilation gets the `ios_simulator_arm64` variant: the other klib.
+- iosArm64's compilation gets the ios_arm64 variant: Ktor's iosArm64 klib.
+- iosSimulatorArm64's compilation gets the ios_simulator_arm64 variant: the other klib.
 - The Android build gets the jvm variant. Ktor's core publishes no Android-only variant, and Android builds can read JVM class files, as puzzle 0 showed.
-- While Kotlin checks commonMain's own code, it gets a variant marked `common`: the declarations every target shares, so common code can only call what every target has.
+- While Kotlin checks commonMain's own code, it gets a variant marked common: the declarations every target shares, so common code can only call what every target has.
 
-Now the OkHttp failure from puzzle 19 is exact. `ktor-client-okhttp`'s .module file lists only a common and a jvm variant. When the iosArm64 compilation asks for a variant matching `ios_arm64`, there's none, so Gradle stops the build with an error that no variant matches. It never silently gives iOS nothing.
+Now the OkHttp failure from puzzle 19 is exact. The OkHttp part's .module file lists only a common and a jvm variant. When the iosArm64 compilation asks for a variant matching ios_arm64, there's none, so Gradle stops the build with an error that no variant matches. It never silently gives iOS nothing.
 
 One more consequence. If a library forgets to publish one target, only the compilation for that target fails: the list in its .module file is the library's real promise, not its name.
 

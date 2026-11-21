@@ -1,0 +1,16 @@
+<!-- label: Compose in four layers: runtime, Compose UI through an Applier, foundation, Material; only Compose UI's edge differs per platform -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="st-t"><title id="st-t">Four layers stacked: the runtime at the bottom keeps the composition and plugs into Compose UI through an Applier; Compose UI holds LayoutNode, Modifier, layout and drawing; foundation adds Row, Column and LazyColumn; Material adds Button and a theme; only Compose UI's outer edge differs between Android and iOS</title>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="40" y="292" width="420" height="60" rx="8"/><text class="d-b" x="60" y="328">runtime</text><text class="d-m" x="440" y="328" text-anchor="end">groups · slots · Recomposer</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="200" y="264" width="100" height="36" rx="6"/><text class="d-tiny" x="250" y="288" text-anchor="middle">Applier</text><rect class="d-band" x="40" y="204" width="420" height="60" rx="8"/><text class="d-b" x="60" y="240">Compose UI</text><text class="d-m" x="440" y="240" text-anchor="end">LayoutNode · Modifier</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-band" x="40" y="132" width="420" height="60" rx="8"/><text class="d-b" x="60" y="168">foundation</text><text class="d-m" x="440" y="168" text-anchor="end">Row · Column · LazyColumn</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-band" x="40" y="60" width="420" height="60" rx="8"/><text class="d-b" x="60" y="96">material3</text><text class="d-m" x="440" y="96" text-anchor="end">Button · MaterialTheme</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-red" x="468" y="204" width="160" height="60" rx="8"/><text class="d-r" x="548" y="230" text-anchor="middle">Android | iOS</text><text class="d-tiny" x="548" y="252" text-anchor="middle">canvas · input</text><text class="d-a" x="250" y="36" text-anchor="middle">shared</text></g>
+<g class="step s1" data-move="1:30,322 2:250,282 3:30,162 4:30,90 5:545,190"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>At the bottom, the Compose runtime: the composition, its slots and the Recomposer from puzzles 0 to 2. It knows nothing about pixels.</p></li>
+<li><p>The runtime changes a tree only through an <b>Applier</b>: insert, move, remove a node. <b>Compose UI</b> plugs one in for its LayoutNodes, and does layout and drawing.</p></li>
+<li><p><b>foundation</b> builds on Compose UI: <code>Row</code>, <code>Column</code>, <code>LazyColumn</code>, gestures. Building blocks with no look of their own.</p></li>
+<li><p>Material sits on top: a <b>design system</b>, ready-made components with colours, type and shapes. <i>Predict: which layer had to change for iOS?</i></p></li>
+<li><p>Only Compose UI's outer edge, where it meets the phone: the window, the canvas, touches and text input. Every layer above and below is shared.</p></li>
+</ol>

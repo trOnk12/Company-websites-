@@ -41,12 +41,15 @@
     },
     {
       "title": "Module 4: The build",
-      "blurb": "What the kotlin { } block declares, the tree of source sets between commonMain and each target, who can see what, and where each library goes.",
+      "blurb": "What the kotlin { } block declares, the tree of source sets between commonMain and each target, who can see what, where each library goes, what a klib holds, how one dependency line finds every target's file, and how platform code is handed in.",
       "puzzles": [
         "16-the-kotlin-block.md",
         "17-source-sets-in-between.md",
         "18-who-can-see-what.md",
-        "19-dependencies-per-source-set.md"
+        "19-dependencies-per-source-set.md",
+        "20-what-a-klib-is.md",
+        "21-one-line-every-target.md",
+        "22-expect-actual-or-an-interface.md"
       ]
     }
   ],

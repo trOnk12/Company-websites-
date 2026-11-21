@@ -134,7 +134,8 @@
    "AppKit",
    "price()",
    "HTTP",
-   "OkHttp"
+   "OkHttp",
+   "SharedPreferences"
   ],
   "homonyms": [
    "ViewModel",
@@ -631,6 +632,109 @@
    "in": "16",
    "def": "The older name of the Android target block, before version 8.12 of Android's plugin.",
    "kind": "code"
+  },
+  "iosX64": {
+   "in": "16",
+   "def": "The iOS target for the simulator on a Mac with an Intel chip.",
+   "kind": "code"
+  },
+  "klib": {
+   "in": "20",
+   "def": "A Kotlin/Native library file: a zip, for one target, holding the code as IR, a description of its declarations and a manifest.",
+   "aliases": [
+    "klibs"
+   ]
+  },
+  "IR": {
+   "in": "20",
+   "def": "Intermediate representation: the compiler's own checked form of the code, after the front end and before any machine code.",
+   "aliases": [
+    "intermediate representation"
+   ]
+  },
+  "HttpClient": {
+   "in": "20",
+   "def": "Ktor's HTTP client class.",
+   "kind": "code"
+  },
+  "publication": {
+   "in": "21",
+   "def": "A separately named package of a library's files in a repository; a multiplatform library has one per target plus a root.",
+   "aliases": [
+    "publications",
+    "root publication"
+   ]
+  },
+  "Gradle module metadata": {
+   "in": "21",
+   "def": "A file format published next to a library (the .module file) that lists the library's variants for Gradle.",
+   "aliases": []
+  },
+  "variant": {
+   "in": "21",
+   "def": "One version of a library, built for one kind of consumer and tagged with attributes such as its target.",
+   "aliases": [
+    "variants"
+   ]
+  },
+  "dependency injection": {
+   "in": "22",
+   "def": "Handing an object what it depends on from outside, instead of letting it create it.",
+   "aliases": [
+    "DI"
+   ]
+  },
+  "dependency injection framework": {
+   "in": "22",
+   "def": "A library, such as Koin, that builds objects and hands each one what it needs, from rules you write.",
+   "aliases": [
+    "DI framework"
+   ]
+  },
+  "Bookmarks": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "Storage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "FakeStorage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "DefaultsStorage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "PrefsStorage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "Koin": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "platformModule": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "ios_arm64": {
+   "in": "20",
+   "def": "How Kotlin/Native writes the iosArm64 target's name inside a klib and in published metadata.",
+   "kind": "code"
+  },
+  "ios_simulator_arm64": {
+   "in": "21",
+   "def": "How Kotlin/Native writes the iosSimulatorArm64 target's name in published metadata.",
+   "kind": "code"
   }
  },
  "avoid": {
@@ -699,6 +803,17 @@
    "in": 7,
    "aliases": [
     "references"
+   ]
+  },
+  "Application": {
+   "course": "android",
+   "in": 14
+  },
+  "onCreate()": {
+   "course": "android",
+   "in": 6,
+   "aliases": [
+    "onCreate"
    ]
   }
  }
