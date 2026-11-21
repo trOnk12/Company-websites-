@@ -49,9 +49,13 @@ test.describe('Course', () => {
 
   for (const { id, slug } of COURSES.flatMap(c => c.puzzles.map(slug => ({ id: c.id, slug })))) {
     test(`${id}: puzzle "${slug}" steps through its diagram without JavaScript`, async ({ page }) => {
+      // Leave browser automation running while withholding all site JavaScript.
+      await page.route('**/*.js', route => route.abort());
       await page.goto(`/course/${id}/${slug}.html`);
+      await expect(page.locator('html')).not.toHaveClass(/\bjs\b/);
       const expectedScripts = ['../progress-index.js', '../course.js'];
       if (await page.locator('[data-sql-exercise]').count()) expectedScripts.push('../../labs/sql/lesson.js');
+      if (await page.locator('[data-read-path]').count()) expectedScripts.push('../../labs/read-path/experiments.js', '../../labs/read-path/lesson.js');
       expect(await page.locator('script').evaluateAll(tags => tags.map(tag => tag.getAttribute('src'))))
         .toEqual(expectedScripts);
       const stepper = page.locator('.stepper');

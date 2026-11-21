@@ -949,3 +949,17 @@ li[data-state='done'] .puzzle-state { color: #245B37; background: #E3EFE1; }
 .stepper .changed-outcome { display: none; }
 .stepper:has(.diagram-choice option[value="changed"]:checked) .original-outcome { display: none; }
 .stepper:has(.diagram-choice option[value="changed"]:checked) .changed-outcome { display: inline; }
+
+.read-path-example [data-controls][hidden] { display: none; }
+.read-path-example .actions { align-items: center; }
+.read-path-example select { max-width: 100%; min-height: 2.75rem; font: inherit; }
+.read-path-example button { cursor: pointer; }
+.read-path-example [role="status"]:empty { display: none; }
+
+.diagram-prediction { margin: .9rem 0 .2rem; padding: .55rem .8rem; min-width: 0; border: 1px solid var(--rule); border-radius: .35rem; text-align: left; }
+.diagram-prediction legend { padding: 0 .25rem; font-weight: 700; }
+.diagram-prediction .actions { margin-block: .35rem; }
+.diagram-prediction button { cursor: pointer; font: inherit; }
+.diagram-prediction [role="status"]:empty { display: none; }
+.diagram-prediction [hidden], .stepnav [hidden] { display: none; }
+.puzzle-bridge { margin: 1.25rem 0 .35rem; }

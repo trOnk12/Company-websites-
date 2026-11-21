@@ -1,0 +1,24 @@
+<!-- label: Two workers on the same millisecond scale -->
+<label class="diagram-choice">Route the third read
+<select data-compare-step="3"><option value="original">Take turns</option><option value="changed">Fewest outstanding</option></select></label>
+<svg class="design-figure" viewBox="0 0 420 252" role="img" aria-labelledby="d-title">
+<title id="d-title">Where a ten-millisecond read waits behind a hundred-millisecond job</title>
+<text class="d-b" x="12" y="28">Worker time in milliseconds</text>
+<path class="d-dash" d="M62 60H387 M62 120H387"/>
+<text class="d-b" x="14" y="87">A</text><text class="d-b" x="14" y="146">B</text>
+<path class="d-line" d="M62 167H386"/>
+<text class="d-mi" x="62" y="190" text-anchor="middle">0</text><text class="d-mi" x="91" y="190" text-anchor="middle">10</text><text class="d-mi" x="352" y="190" text-anchor="middle">100</text>
+<g class="step s1"><rect class="d-band" x="62" y="65" width="290" height="32"/><text class="d-t" x="71" y="88">Read 1</text></g>
+<g class="step s2"><rect class="d-band" x="62" y="125" width="29" height="32"/><text class="d-t" x="71" y="148">2</text></g>
+<g class="step s3"><path class="d-red" d="M91 52V162"/><text class="d-mi" x="96" y="50">Third read arrives</text></g>
+<g class="step s4">
+<g class="original-outcome"><rect class="d-hl" x="352" y="65" width="29" height="32"/><text class="d-t" x="360" y="88">3</text><text class="d-r" x="18" y="227">Wait: 90 ms</text></g>
+<g class="changed-outcome"><rect class="d-hl" x="91" y="125" width="29" height="32"/><text class="d-t" x="100" y="148">3</text><text class="d-a" x="18" y="227">Wait: 0 ms</text></g></g>
+<g data-move="1:62,99 2:62,158 3:91,164 4:91,164" transform="translate(62 99)"><circle class="d-dot" r="4"/></g>
+</svg>
+<ol class="caps">
+<li><p>Worker A starts a 100-millisecond read at time zero. Its bar occupies most of the axis.</p></li>
+<li><p>Worker B starts the second read at the same time and finishes at 10. Each worker has received one request.</p></li>
+<li><p>The third read arrives at the red line. Locate the empty worker before choosing where to send it.</p></li>
+<li><p><span class="original-outcome">Taking turns sends read three to A. Its bar can start only after read one finishes.</span><span class="changed-outcome">Counting unfinished work sends read three to B. Its bar begins as soon as it arrives.</span></p></li>
+</ol>

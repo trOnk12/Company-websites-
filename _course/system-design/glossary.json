@@ -78,6 +78,18 @@
     "hash": {
       "in": 9,
       "def": "A repeatable value computed from a key and used here to route it to a storage owner."
+    },
+    "round robin": {
+      "in": 15,
+      "def": "Sending successive requests to the next eligible worker in a repeating order."
+    },
+    "request coalescing": {
+      "in": 16,
+      "def": "Letting callers for the same key share one pending operation."
+    },
+    "circuit breaker": {
+      "in": 17,
+      "def": "A policy that uses earlier call outcomes to decide when to refuse calls and when to probe for recovery."
     }
   },
   "from": {

@@ -48,6 +48,8 @@ GROUP BY run, space
 HAVING COUNT(*) > 1;
 ```
 
+Start with one row: evening, Ben, B12, 1. Read across it as a sentence: “In the evening run, Ben holds an active grant for B12.” The table stores many such rows. The number 1 means active and 0 means ended.
+
 Read the query from the middle. `FROM` chooses the ledger. `WHERE` keeps active grants. `GROUP BY` makes a pile for each run and space. `HAVING` keeps piles with more than one row. You should see one violation: two active grants for B12 in the evening. Getting a row is a failed design test.
 
 Now change only Ben’s active flag from 1 to 0 because his grant ended. Predict the output, then run it. An empty result means there are no duplicate active grants in this snapshot. To detect overlap earlier in the evening you would need the times of grants and releases. Could this query detect a confirmation that the driver received but the service never recorded? To test that part of the promise, keep the replies independently and look up each confirmed identity after restart.

@@ -37,6 +37,9 @@ test('changing the transaction outcome changes the lock diagram and its explanat
   await page.goto('/course/system-design/03-conditional-write.html');
   const figure = page.locator('.stepper').first();
   await figure.getByRole('combobox', { name: 'Ada’s transaction' }).selectOption('changed');
+  await expect(figure.locator('.diagram-prediction')).toBeVisible();
+  await figure.getByRole('button', { name: 'Waits for the decision' }).click();
+  await figure.getByRole('button', { name: 'Reveal next step' }).click();
   await expect(figure.getByText('Ada rolls back.', { exact: false }).first()).toBeVisible();
   await figure.locator('.dots label').last().click();
   await expect(figure.getByText('Grant: Ben', { exact: true })).toBeVisible();

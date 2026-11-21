@@ -1107,6 +1107,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/system-design/check-5</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/system-design/00-promise</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -1178,6 +1183,21 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/system-design/14-design-review</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/system-design/15-routing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/system-design/16-coalescing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/system-design/17-circuit-breaker</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

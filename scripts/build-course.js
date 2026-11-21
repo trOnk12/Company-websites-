@@ -59,11 +59,15 @@ function loadCourse(id) {
   const dir = path.join(SRC, id);
   const meta = JSON.parse(fs.readFileSync(path.join(dir, 'course.json'), 'utf8'));
   const files = meta.modules.flatMap(m => m.puzzles);
+  const predictionFile = path.join(dir, 'predictions.json');
+  const predictions = fs.existsSync(predictionFile) ? JSON.parse(fs.readFileSync(predictionFile, 'utf8')) : null;
   const puzzles = files.map((f, i) => {
     const file = path.join(dir, f);
     const raw = fs.readFileSync(file, 'utf8');
     const { meta: fm, body } = L.parseFrontmatter(raw, f);
-    return { id, n: i, slug: f.replace(/\.md$/, ''), file, raw, meta: fm, body };
+    const slug = f.replace(/\.md$/, '');
+    if (predictions && !predictions[slug]) throw new Error(`${file}: missing diagram prediction`);
+    return { id, n: i, slug, file, raw, meta: fm, body, prediction: predictions?.[slug] };
   });
   const gf = path.join(dir, 'glossary.json');
   const glossary = fs.existsSync(gf) ? JSON.parse(fs.readFileSync(gf, 'utf8')) : { terms: {} };
@@ -101,7 +105,15 @@ function gifLink(course, name) {
     ? `<p class="gif-link"><a href="gifs/${name}.gif" download>Save this diagram as a GIF</a></p>` : '';
 }
 
-function diagram(course, name, file) {
+function diagramPrediction(prediction) {
+  const options = prediction.options.map((option, index) =>
+    `<button type="button" class="button"${index === prediction.answer ? ' data-answer' : ''}>${L.esc(option)}</button>`).join('');
+  return `<fieldset class="diagram-prediction" data-hint="${L.esc(prediction.hint)}" data-reason="${L.esc(prediction.why)}">
+<legend>${L.esc(prediction.question)}</legend>
+<div class="actions" data-prediction-controls hidden>${options}</div><p class="small" role="status"></p></fieldset>`;
+}
+
+function diagram(course, name, file, prediction) {
   const f = path.join(course.dir, 'diagrams', `${name}.html`);
   if (!fs.existsSync(f)) { fail(file, `unknown diagram ${name}`); return ''; }
   const src = require('./course-shapes').expand(fs.readFileSync(f, 'utf8'), name);
@@ -112,8 +124,14 @@ function diagram(course, name, file) {
   if (!svg || !caps.length || caps.length > 8) { fail(f, 'needs one <svg> and 1–8 <li> captions'); return ''; }
   const id = `st-${name}`;
   const n = caps.length;
+  if (prediction && (!Number.isInteger(prediction.step) || prediction.step < 1 || prediction.step >= n ||
+      !Array.isArray(prediction.options) || prediction.options.length !== 2 || ![0, 1].includes(prediction.answer) ||
+      ![prediction.question, prediction.why, prediction.hint, prediction.bridge, ...prediction.options]
+        .every(value => typeof value === 'string' && value.trim()))) {
+    throw new Error(`${file}: incomplete diagram prediction`);
+  }
   const radios = caps.map((_, i) => `<input type="radio" name="${id}" id="${id}-${i + 1}"${i === 0 ? ' checked' : ''} aria-label="Step ${i + 1} of ${n}">`).join('');
-  const items = caps.map((c, i) => `<li>${c}<div class="stepnav">${i > 0 ? `<label for="${id}-${i}">← Back</label>` : '<span class="spacer"></span>'}<span class="count">Step ${i + 1} of ${n}</span>${i < n - 1 ? `<label class="next" for="${id}-${i + 2}">Next →</label>` : `<label for="${id}-1">↺ Again</label>`}</div></li>`).join('\n');
+  const items = caps.map((c, i) => `<li>${c}${prediction?.step === i + 1 ? diagramPrediction(prediction) : ''}<div class="stepnav">${i > 0 ? `<label for="${id}-${i}">← Back</label>` : '<span class="spacer"></span>'}<span class="count">Step ${i + 1} of ${n}</span>${i < n - 1 ? `<label class="next" for="${id}-${i + 2}">Next →</label>` : `<label for="${id}-1">↺ Again</label>`}</div></li>`).join('\n');
   const dots = caps.map((_, i) => `<label for="${id}-${i + 1}" title="Step ${i + 1}"></label>`).join('');
   return `<figure class="stepper" aria-label="${L.esc(label)}">${radios}${choice}
 <div class="stage" tabindex="0" aria-label="Diagram">${svg[0]}</div>
@@ -230,7 +248,8 @@ function renderPuzzle(course, p, terms) {
   for (const t of terms) if (p.raw.toLowerCase().includes(t.toLowerCase())) fail(p.file, `contains a private term: ${t}`);
 
   const sqlSection = sections.find(s => s.blocks.some(b => b.type === 'code' && b.lang === 'sql run'));
-  const codeSection = sqlSection || (course.id === 'system-design' && sections.find(s =>
+  const modelSection = sections.find(s => s.blocks.some(b => b.type === 'code' && b.lang.startsWith('read-path ')));
+  const codeSection = modelSection || sqlSection || (course.id === 'system-design' && sections.find(s =>
     s.blocks.some(b => b.type === 'code' && b.lang === 'python')));
   const depth = sections.filter(s => s.title.startsWith('Go deeper: '));
   let questionCount = 0;
@@ -244,7 +263,8 @@ function renderPuzzle(course, p, terms) {
         return html;
       }).join('\n')
       : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
-      ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
+      ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file, p.prediction) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
+      : b.type === 'code' && b.lang.startsWith('read-path ') ? require('./read-path-example').render(b.lang.slice(10))
       : b.type === 'code' && b.lang === 'sql run' ? sqlExercise(b, ctx)
       : L.renderBlocks([b], ctx, { recall: depth.includes(s) && b.type === 'ul' })).join('\n');
     if (depth.includes(s)) {
@@ -255,6 +275,9 @@ ${html}
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>`;
+    }
+    if (s.title === 'Compare your result') {
+      return `      <details class="course-extras" id="${sid}"><summary>Compare your result</summary>${html}</details>`;
     }
     if (s.title === 'Sources') {
       return `      <details class="puzzle-sources" id="${sid}"><summary>Sources</summary>${html}</details>`;
@@ -276,7 +299,8 @@ ${html}
     title: `${p.meta.title} – ${course.meta.title} – Mateusz Pachulski`,
     description: p.meta.summary,
     canonical: `${L.SITE}/course/${course.id}/${p.slug}`,
-    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js', ...(sqlSection ? ['../../labs/sql/lesson.js'] : [])],
+    base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js', ...(sqlSection ? ['../../labs/sql/lesson.js'] : []),
+      ...(modelSection ? ['../../labs/read-path/experiments.js', '../../labs/read-path/lesson.js'] : [])],
     footer: `      <p class="small">Written with AI from my own learning sessions, and checked against the sources on each page.</p>
       <p class="small"><a href="./">Course overview</a> · <a href="../">All courses</a> · <a href="../../learning/">Learning log</a> · <a href="../../">pachulski.dev</a></p>`,
     body: `    <article class="puzzle course-top wrap narrow" data-support="${L.esc((course.meta.support || {}).url || '')}" data-course="${course.id}" data-n="${p.n}">
@@ -293,13 +317,13 @@ ${html}
       <nav class="lesson-jumps" aria-label="In this puzzle">
         ${titles.includes('See it') ? '<a href="#see-it">Diagram</a>' : ''}
         ${titles.includes('The building block') ? '<a href="#the-building-block">Mechanism</a>' : ''}
-${codeSection ? `        <a href="#${sectionId(codeSection.title)}">${sqlSection ? 'Run SQL' : 'Worked code'}</a>\n` : ''}${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}${titles.includes('Try it') ? '        <a href="#try-it">Try it</a>\n' : ''}        <a href="#check-yourself">Check your understanding</a>
+${codeSection ? `        <a href="#${sectionId(codeSection.title)}">${modelSection ? 'Run code' : sqlSection ? 'Run SQL' : 'Worked code'}</a>\n` : ''}${depth.length ? `        <a href="#${sectionId(depth[0].title)}">Go deeper</a>\n` : ''}${titles.includes('Try it') ? '        <a href="#try-it">Try it</a>\n' : ''}        <a href="#check-yourself">Check your understanding</a>
       </nav>
 ${buildsOn(course, p)}
 ${linked}
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>${L.inline(p.meta.takeaway, ctx)}</p></div></section>
 ${support(course, 'puzzle')}      <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
-      <nav class="pager" aria-label="Previous and next puzzle">
+${p.prediction ? `      <p class="puzzle-bridge">${L.esc(p.prediction.bridge)}</p>\n` : ''}      <nav class="pager" aria-label="Previous and next puzzle">
         ${prev ? `<a class="button" href="${prev.slug}.html">← ${prev.n === 0 ? 'Start' : `Puzzle ${prev.n}`}</a>` : '<a class="button" href="./">← Overview</a>'}
         ${next ? `<a class="button primary" href="${next.slug}.html">Puzzle ${next.n}: ${L.esc(next.meta.short || next.meta.title)} →</a>` : '<a class="button" href="./">Back to the overview →</a>'}
       </nav>

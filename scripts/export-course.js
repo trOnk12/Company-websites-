@@ -44,6 +44,8 @@ function puzzleNote(c, p, blocks) {
   else if (p.n > 0 && c.meta.assumes) lines.push(`**Builds on:** what you know from [${c.meta.assumes.title}](${L.SITE}/${c.meta.assumes.href.replace(/^(\.\.\/)+/, '')})`, '');
   for (const s of sections(p.body)) {
     if (s.title === 'See it') {
+      if (p.prediction) lines.push('## Predict the next step', '', p.prediction.question, '',
+        ...p.prediction.options.map(option => '- ' + option), '');
       if (diagram) lines.push('## See it', '', `![${p.meta.title}](${L.SITE}/course/${c.id}/gifs/${diagram}.gif)`, '', `Step through it: ${url(c, p)}`, '');
     } else if (s.title === 'Check yourself') {
       lines.push('## Check yourself', '', `#flashcards/${c.id}`, '');
@@ -52,8 +54,10 @@ function puzzleNote(c, p, blocks) {
         const right = q.opts.find(o => o.ok);
         if (right) lines.push(`${q.q}::${plain(right.text)}. ${q.why}`, '');
       }
-    } else lines.push(`## ${s.title}`, '', s.text.replace(/^```sql run$/gm, '```sql'), '');
+    } else lines.push(`## ${s.title}`, '', s.text.replace(/^```sql run$/gm, '```sql')
+      .replace(/^```read-path ([a-z-]+)\n```$/gm, (_, key) => require('./read-path-example').note(key)), '');
   }
+  if (p.prediction) lines.push('## Check your prediction', '', p.prediction.why, '', p.prediction.bridge, '');
   return lines.join('\n').replace(/\n{3,}/g, '\n\n');
 }
 

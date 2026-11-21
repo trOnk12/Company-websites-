@@ -1,7 +1,7 @@
 {
   "title": "System design from first principles to design review",
   "intro": "Design a parking service that can refuse the last space, survive a lost reply and recover its booking history. Trace each decision in a diagram, then inspect the rows or timings that would prove it wrong.",
-  "how": "Start with the two-driver reservation. Use Run SQL to change the data in your browser, or Worked code for a Python 3 experiment. The transaction lesson lets you switch between commit and rollback. Finish by defending your design for a different workload.",
+  "how": "Start with the two-driver reservation. Use Run SQL to change the data in your browser, Worked code for Python 3, or Run code to compare JavaScript scenarios. The transaction lesson lets you switch between commit and rollback. Finish by defending a design for a different workload.",
   "modules": [
     {
       "title": "From promises to a write path",
@@ -40,6 +40,15 @@
         "12-diagnosis.md",
         "13-recovery.md",
         "14-design-review.md"
+      ]
+    },
+    {
+      "title": "Operate a busy read path",
+      "blurb": "Route uneven work, share simultaneous cache misses and test a recovering dependency.",
+      "puzzles": [
+        "15-routing.md",
+        "16-coalescing.md",
+        "17-circuit-breaker.md"
       ]
     }
   ],

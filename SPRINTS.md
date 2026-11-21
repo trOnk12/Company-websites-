@@ -276,3 +276,7 @@ After the portal meets its agreed maintenance and multi-session learning goals, 
 Added six English practice chapters with worked investigations and independent checks. Android follows an AOSP service through startup, HAL discovery and framework/vendor compatibility, then uses Linux memory, CPU and pressure data. Backend operations adds Docker runtime diagnosis and SQL reporting with adversarial data. System design adds Kafka record ownership, replay and compaction, plus scatter/gather ranking and partial-result contracts inspired by Brendan Burns. The mobile design puzzle now links to a two-client IndexedDB experiment with reversible arrival order, a lost reply and retained drafts.
 
 Remaining assessment work includes running the Android investigations on a target emulator, exercising Kafka group reassignment on a real broker, and implementing explicit conflict resolution across networked clients. See _course/COVERAGE.md for the broader audit.
+
+## Distributed system design · read-path puzzles
+
+The core path now has 18 puzzles. Each diagram asks for a prediction before the decisive step and gives a reason to continue to the next problem. In puzzles 15–17 the learner runs the displayed routing, shared-read and circuit-breaker implementations with controlled inputs. The final project asks for a probe policy with a missing reply. The [roadmap](_course/system-design/ROADMAP.md) distinguishes those exercises from production qualification.
