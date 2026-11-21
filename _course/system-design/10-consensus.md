@@ -16,7 +16,7 @@ Each replica can have a different view while messages are delayed. Three nodes m
 
 ## The building block
 
-In a replicated log, a leader proposes entries for an agreed order. A majority of three is two. Any two majorities intersect. Raft combines this property with election rules, numbered leadership terms and rules for committing entries. Counting two arbitrary replies does not implement consensus. A leader also needs evidence that its decisions belong to the correct history.
+A log is a list of decisions with numbered positions. Replicating it means storing copies on several nodes. A leader proposes the next entry. A term is a numbered election period. An entry keeps the term in which its leader created it, even after a new election starts. A majority of three is two. Any two majorities intersect. Raft combines this property with election rules, numbered leadership terms and rules for committing entries. Counting two arbitrary replies does not implement consensus. A leader also needs evidence that its decisions belong to the correct history.
 
 In a two-plus-one split, the pair can continue committing under a valid leader. The solitary node cannot independently confirm a new grant in that protocol. It can refuse or serve a read whose contract permits stale data. Continuing one global order costs write availability on the isolated side. An ordinary asynchronous database copy does not become a consensus protocol by adding another replica.
 
@@ -28,9 +28,36 @@ A, B and C are voting nodes. Ada receives a successful grant after the current l
 
 In a fresh run, isolate C before Ada makes her reservation. Move Ben's read until after Ada receives confirmation from A. If Ben asks C for the latest committed inventory and sees the original free space, that history violates the real-time ordering promise in this one-space example. A map read explicitly allowed to be stale can return the very same value within its age limit. Check the operation's contract before calling either result correct.
 
-## Why two copies can still be insufficient
+## First decide who can get a vote
 
-In Raft a term is a numbered election period. A term can end without a leader being elected. A log entry has a position and the term in which it was created. Consider an elected leader in term 4 with voters A, B and C. Its log positions 1 through 8 match on A and B. Position 8 was written in term 3. May the new leader mark position 8 committed just by counting those copies?
+A is unreachable. C wants to lead in election term 4 and can vote for itself. It still needs B. B’s last stored entry is from term 3 at position 8. C’s last entry is from term 2 at position 9. C has more entries. Should B vote for C?
+
+Raft compares the terms of the two last entries first. Only if they match does it compare positions. The election term on the request and the term on the candidate’s last stored entry are two different numbers. Starting election 4 does not turn C’s term-2 entry into a term-4 entry.
+
+Run B’s decision on three possible histories for C. Each row is an independent case. B has not voted in term 4, the request is for that term, and both nodes are voters. Predict the first row, then ask what changes between the second and third.
+
+```sql run
+WITH voter(last_term, last_position) AS (VALUES (3, 8)),
+candidate(example, last_term, last_position) AS (
+  VALUES ('1. Longer, older term', 2, 9),
+         ('2. Same term, shorter', 3, 7),
+         ('3. Same term, tied', 3, 8)
+)
+SELECT example, candidate.last_term, candidate.last_position,
+       CASE WHEN (candidate.last_term, candidate.last_position)
+                  >= (voter.last_term, voter.last_position)
+            THEN 'grant vote' ELSE 'deny vote' END AS b_decides
+FROM candidate CROSS JOIN voter
+ORDER BY example;
+```
+
+B denies the first request because term 2 is older than term 3. In the second row the terms tie but position 7 is behind 8. In the third row both numbers tie, so B can grant its vote. To test which number wins, change only the first candidate’s position from 9 to 90. B still denies it. Now restore 9 and change its last term from 2 to 3. B grants the vote. The order of this comparison is the same pair comparison you used for the history cursor in puzzle 05.
+
+This code isolates the log comparison in Raft section 5.4.1. In the real protocol a voter also checks the request term and whether it has already voted. A vote helps elect a leader. The next puzzle within this lesson asks what an elected leader may tell a driver about one entry.
+
+## Then decide what the leader can commit
+
+A term can end without a leader being elected. Consider an elected leader in term 4 with voters A, B and C. Its log positions 1 through 8 match on A and B. Position 8 was written in term 3. May the new leader mark position 8 committed just by counting those copies?
 
 ```python
 def can_advance(index, entry_term, leader_term, matched_through):

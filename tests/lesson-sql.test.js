@@ -125,3 +125,21 @@ test('moving an unseen session above the cursor changes the prediction and the S
   await expect(exercise.getByRole('table').nth(1).getByRole('cell')).toHaveText(['8']);
   await expect(exercise.getByRole('table').nth(3)).toHaveAccessibleName('Result 4 · 0 rows');
 });
+
+test('an older Raft log still loses the vote after adding more old entries', async ({ page }) => {
+  await page.goto('/course/system-design/10-consensus.html');
+  const exercise = page.locator('[data-sql-exercise]');
+  const run = exercise.getByRole('button', { name: 'Run SQL' });
+  const votes = exercise.locator('tbody tr td:last-child');
+  await run.click();
+  await expect(votes).toHaveText(['deny vote', 'deny vote', 'grant vote']);
+  await exercise.getByRole('button', { name: 'Edit SQL' }).click();
+  const editor = exercise.getByRole('textbox', { name: 'SQL to run' });
+  const original = await editor.inputValue();
+  await editor.fill(original.replace('2, 9)', '2, 90)'));
+  await run.click();
+  await expect(votes.first()).toHaveText('deny vote');
+  await editor.fill(original.replace('2, 9)', '3, 9)'));
+  await run.click();
+  await expect(votes.first()).toHaveText('grant vote');
+});
