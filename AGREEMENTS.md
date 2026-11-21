@@ -7,7 +7,9 @@ Everything decided in conversation, so it isn't lost when a session ends. Sprint
 
 1. **Kotlin Multiplatform, really deep.** Close every gap an Android engineer needs to ship KMP to iOS. New
    modules are appended after the existing ones (no renumbering). Plan: `SPRINTS.md` → Sprint 13.
-2. **Compose Multiplatform**: a new course `_course/cmp/` that assumes the KMP course. Plan: Sprint 13.
+2. **Compose Multiplatform**: deepen the existing course `_course/compose/` (it assumes the KMP course). Early drafts of
+   a foundations module (what a composable really does, the tree Compose remembers, who read that state) are on
+   the branch `backup/kmp-cmp-drafts`, to fold in after its first puzzle. Plan: Sprint 13.
 3. iOS for Android developers (KMP needs it): five building blocks from the review, in Sprint 12/13.
 4. **Bluetooth (BLE) is paused.** Its review findings stay in Sprint 12 for later.
 5. Then **UX and UI designer reviews** of the course section, and the redesign. **Content first, UI after.**
@@ -45,6 +47,9 @@ Everything decided in conversation, so it isn't lost when a session ends. Sprint
   ≈ marks starting points, and a separate manual review before publishing.
 
 ## Working rules
+
+- **Two assistants work on this repo** (Claude and ChatGPT). Start every session with `git fetch` and merge
+  `main` first; never force-push; keep each change in its own commit so the other can follow.
 
 - Work in sprints: plan → build → review → fix → ship → log (`SPRINTS.md`, each course's `REVIEW.md`).
 - Deploy = push to the session branch and to `main` (Mateusz authorised merging without waiting).
