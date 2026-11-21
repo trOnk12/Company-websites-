@@ -20,6 +20,26 @@ Every puzzle shows its **building blocks** (computed from the glossary, so they 
 shortest path to it from zero. Beginners walk the chain; people who know the basics jump in and check
 only the blocks they're missing.
 
+## Planned: hands-free course navigation and tutoring on a phone
+
+Start with the portal open in the foreground. The learner taps **Start voice session** once and grants microphone access. From there they can browse, choose a lesson, ask a follow-up, interrupt the answer, go back or end the session by voice. Accept Polish and English navigation commands. Keep course text and exercises in English and let the learner choose the spoken explanation language.
+
+**First journey on a phone**
+
+1. “Pokaż wszystkie kursy.” Open the actual catalog, show every published course and say how many there are. Read a few titles at a time. “Czytaj dalej” reads the next group. “Otwórz drugi” selects the second item in the group just spoken.
+2. “Otwórz system design.” If mobile and distributed system design both match, name both and wait for a choice. After navigation succeeds, speak the title of the course now on screen.
+3. “Znajdź lekcję o offsetach Kafki.” Open the matching published section. “Explain that with the shipment example” answers from that section and displays its source link. If the material cannot support the answer, say so and offer the nearest published lesson.
+4. “Zatrzymaj się. Powtórz wolniej. Wróć do kursów.” Interrupt playback immediately, replay the current passage more slowly on request, then return to the catalog. “Zakończ rozmowę” closes the session and releases the microphone.
+
+**Implementation sequence**
+
+- First connect a text-driven command prototype to the existing catalog, lesson identifiers and progress data. Define a small set of validated actions for listing, opening, reading, going back and resuming. The portal executes each action against its own index and reports the resulting screen and heading. The assistant speaks that result. Opening or reading a lesson leaves completion under the learner's control.
+- Then add live, two-way speech in a persistent player. Course navigation must keep the conversation alive across the site's static pages, for example by rendering the selected section within the player and synchronizing browser history. Keep a visible listening/speaking/paused indicator, captions and a touch stop control. Remember the last section locally so an interrupted session can resume.
+- For the first private pilot, evaluate a realtime provider with WebRTC and short-lived browser credentials. Keep the long-lived provider key in a small server-side session service. Restrict session creation to the pilot user, enforce a session duration and usage budget, and disclose that live audio goes to the selected provider before enabling the mic. Send the selected lesson excerpt and action result as needed. Keep raw audio and transcripts out of portal logs. Select the provider after measuring recognition of Polish commands with English technical names, interruption latency and cost per completed journey.
+- Verify on a physical Android phone, first through its speaker, then with a Bluetooth headset. From one initial tap, complete the journey above with no further touch. Check ambiguous titles, an unsupported question, a dropped connection, denied microphone permission and stopping mid-answer. Compare spoken confirmations with actual browser state. Record screen-lock and background behavior separately before promising either mode.
+
+Technical references: [browser microphone access](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia) and [one candidate provider's WebRTC session flow](https://platform.openai.com/docs/guides/realtime-webrtc).
+
 ## Sprint 1: Building blocks (done 2026-11-16)
 
 - [x] Compute each puzzle's direct building blocks from the glossary (`blocks()` in `lint-course.js`).
