@@ -16,14 +16,14 @@ Your app sends an analytics event the moment something happens, about every 20 s
 
 ## The building block
 
-The phone's cellular radio has power levels, its **radio state**. Idle, it sips power and only listens now and then. Active (the radio's own state, not puzzle 5's TCP connection, which can stay open while the radio idles), it draws a lot: on LTE, today's 4G mobile network, roughly a hundred times more, according to High Performance Browser Networking.
+The phone's cellular radio has power levels, its **radio state**. Idle, it sips power and only listens now and then. Active (the radio's own state, not puzzle 5's TCP connection, which can stay open while the radio idles), it draws a lot: on the LTE configuration in that example, roughly a hundred times more, according to High Performance Browser Networking.
 
 Two things make every send expensive:
 
 - **Waking up takes time**, a wake-up delay. Moving from idle to connected costs control messages with the tower before your data can go: that's latency on top of puzzle 3's round trip.
-- **It doesn't fall asleep right away.** After the last packet, the radio stays at high power for a **tail time**, in case more data comes, then steps down. Android's documentation gives an example for a typical device on 3G, the older mobile network: at least 18 seconds of drawing energy per transfer. On LTE the timers are set by the network and are shorter, but the effect is the same.
+- **It doesn't fall asleep right away.** After the last packet, the radio stays at high power for a **tail time**, in case more data comes, then steps down. Android's documentation gives an example for a typical device on 3G, the older mobile network: at least 18 seconds of drawing energy per transfer. The timers depend on the device and network; measure your own workload.
 
-So a 300-byte ping pays almost the same fixed cost, one wake-up and one tail, as a far bigger download. Send a ping about every 20 seconds, and the radio never gets to sleep.
+So a 300-byte ping pays almost the same fixed cost, one wake-up and one tail, as a far bigger download. When the interval is shorter than the high-power tail in your measured network, the next ping arrives before the radio has stepped down.
 
 The fix is **batching**: queue small work and send it together, so the radio wakes once. Analytics go in a batch every few minutes, or ride along with a request the user is already waiting for. On Android, WorkManager can defer background sync to when the device is on Wi-Fi or charging.
 
@@ -33,7 +33,7 @@ A car with a slow-starting engine that also idles for a while after every errand
 
 ## Check yourself
 
-- Your app sends a 300-byte event every 20 seconds. Why does it drain the battery?::*Each send wakes the radio, and its tail time never lets it sleep||The 300 bytes every 20 seconds add up to a lot of data >> It's a few hundred kilobytes an hour; the cost is the wake-ups and tails. >> s3||Analytics requests are encrypted, and encryption is costly >> The radio, not the encryption, is the expensive part. >> s3::Size barely matters; wake-ups do.
+- Your app sends a 300-byte event before each high-power tail ends. Why does it drain the battery?::*Each send wakes the radio, and its tail time never lets it sleep||The 300 bytes every 20 seconds add up to a lot of data >> That schedule adds little application data; the cost is the wake-ups and tails. >> s3||Analytics requests are encrypted, and encryption is costly >> The radio, not the encryption, is the expensive part. >> s3::Size barely matters; wake-ups do.
 - Which change saves the most battery for that analytics?::*Queue the events and send them in one batch every few minutes||Compress each event before sending it >> Smaller bursts still wake the radio just as often. >> s4||Send each event over a new connection to avoid queuing >> More connections, more wake-ups and handshakes. >> s4::Fewer bursts, not smaller ones.
 - What's the difference between the wake-up delay and tail time?::*The wake-up delay comes before the send, while tail time is the radio staying on after it||The wake-up delay is the radio staying on after the send, while tail time comes before it >> That's the two swapped. >> the-building-block::Before the send vs after it.
 

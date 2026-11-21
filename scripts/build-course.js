@@ -41,10 +41,14 @@ function loadChapters(dir) {
     const slug = 'chapter-' + sectionId(chapter.title);
     if (slugs.has(slug) || slug === 'chapter-') throw new Error(`${file}: invalid or duplicate chapter title ${chapter.title}`);
     slugs.add(slug);
+    const lessonIds = new Set();
     for (const lesson of chapter.lessons) {
       for (const key of ['title', 'explanation', 'example', 'exercise', 'answer', 'source', 'sourceTitle']) {
         if (typeof lesson[key] !== 'string' || !lesson[key].trim()) throw new Error(`${file}: ${chapter.title} needs a nonempty ${key}`);
       }
+      lesson.key = slug + ':' + sectionId(lesson.title);
+      if (lessonIds.has(lesson.key) || lesson.key.endsWith(':')) throw new Error(`${file}: invalid or duplicate lesson title ${lesson.title}`);
+      lessonIds.add(lesson.key);
       if (new URL(lesson.source).protocol !== 'https:') throw new Error(`${file}: expected an HTTPS source for ${lesson.title}`);
     }
     return { ...chapter, slug };
@@ -292,6 +296,13 @@ ${next ? '' : `      <section class="finish" aria-labelledby="finish-heading">
   });
 }
 
+function practiceItems(c) {
+  const lessons = c.chapters.flatMap(ch => ch.lessons.map((lesson, i) => ({
+    id: lesson.key, title: lesson.title, href: `${ch.slug}.html#lesson-${i + 1}`
+  })));
+  return [...lessons, { id: 'final-project', title: c.project.title, href: 'final-project.html' }];
+}
+
 const courseContents = c => [
   `${c.puzzles.length} puzzles`,
   ...(c.chapters.length ? [`${c.chapters.length} practice chapter${c.chapters.length === 1 ? '' : 's'}`] : []),
@@ -361,9 +372,9 @@ ${c.meta.assumes ? `        <p class="small">Builds on <a href="${L.esc(c.meta.a
 ${modules}
         </ul>
         ${c.chapters.length ? `<h3 id="practice-chapters">Practice chapters</h3>
-        <ol>${c.chapters.map(ch => `<li><a href="${ch.slug}.html">${L.esc(ch.title)}</a></li>`).join('')}</ol>` : ''}
+        <ol>${c.chapters.map(ch => `<li><a href="${ch.slug}.html">${L.esc(ch.title)}</a> <span class="small" data-chapter-status="${ch.slug}"></span></li>`).join('')}</ol>` : ''}
         <h3>Final project</h3>
-        <p><a href="final-project.html">${L.esc(c.project.title)}</a> · ${L.esc(c.project.brief)}</p>
+        <p><a href="final-project.html">${L.esc(c.project.title)}</a> · ${L.esc(c.project.brief)} <span class="small" data-project-status></span></p>
 ${soon ? `        <details class="course-extras"><summary>Planned modules</summary><ul class="modules">${soon}</ul></details>\n` : ''}${related ? `        <nav aria-label="Related courses"><h3>Continue with</h3><ul>\n${related}\n        </ul></nav>\n` : ''}
         <details class="course-extras"><summary>How the course works</summary>
           <p>${L.esc(c.meta.how)}</p>
@@ -515,22 +526,24 @@ function renderChapter(c, chapter, index) {
   const ctx = { file: path.join(c.dir, 'topics.json'), cards: new Map(), links: new Set() };
   const paragraphs = value => value.trim().split(/\n\s*\n/).map(s => `<p>${L.inline(s, ctx)}</p>`).join('\n');
   const next = c.chapters[index + 1];
-  const nav = chapter.lessons.map((lesson, i) => `<li><a href="#lesson-${i + 1}">${L.esc(lesson.title)}</a></li>`).join('');
+  const nav = chapter.lessons.map((lesson, i) => `<li><a href="#lesson-${i + 1}">${L.esc(lesson.title)}</a> <span class="small" data-practice-nav="${lesson.key}"></span></li>`).join('');
   const lessons = chapter.lessons.map((lesson, i) => `<section aria-labelledby="lesson-${i + 1}">
-      <h2 id="lesson-${i + 1}">${L.esc(lesson.title)}</h2>
+      <h2 id="lesson-${i + 1}" data-practice-heading="${lesson.key}">${L.esc(lesson.title)}</h2>
       ${paragraphs(lesson.explanation)}
       <h3>Worked example</h3>${paragraphs(lesson.example)}
       <h3>Try it</h3>${paragraphs(lesson.exercise)}
       <details class="recall"><summary>Compare your answer</summary>${paragraphs(lesson.answer)}</details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="${lesson.key}"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="${L.esc(lesson.source)}">${L.esc(lesson.sourceTitle)}</a></p>
     </section>`).join('\n');
   return L.page({
     title: `${chapter.title} · ${c.meta.title}`, description: chapter.lessons[0].explanation.split('\n')[0],
-    canonical: `${L.SITE}/course/${c.id}/${chapter.slug}`, base: '../../', current: 'courses', feed: false,
+    canonical: `${L.SITE}/course/${c.id}/${chapter.slug}`, base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: '<p class="small"><a href="./">Course outline</a> · <a href="../">All courses</a></p>',
-    body: `<article class="puzzle course-top wrap narrow">
+    body: `<article class="puzzle course-top wrap narrow" data-practice-course="${c.id}">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">${L.esc(c.meta.title)}</a></p>
       <p class="eyebrow">Practice chapter ${index + 1} of ${c.chapters.length}</p><h1>${L.esc(chapter.title)}</h1>
+      <p class="small" role="status" data-practice-status></p>
       <nav aria-label="In this chapter"><ol>${nav}</ol></nav>
       ${lessons}
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
@@ -544,9 +557,9 @@ function renderProject(c) {
   const list = items => items.map(item => `<li>${L.esc(item)}</li>`).join('\n');
   return L.page({
     title: `${p.title} · Final project · ${c.meta.title}`, description: p.brief,
-    canonical: `${L.SITE}/course/${c.id}/final-project`, base: '../../', current: 'courses', feed: false,
+    canonical: `${L.SITE}/course/${c.id}/final-project`, base: '../../', current: 'courses', feed: false, script: ['../progress-index.js', '../course.js'],
     footer: '<p class="small"><a href="./">Course outline</a> · <a href="../">All courses</a></p>',
-    body: `<article class="wrap narrow section">
+    body: `<article class="wrap narrow section" data-practice-course="${c.id}">
       <p class="eyebrow"><a href="./">${L.esc(c.meta.title)}</a> · Final project</p>
       <h1>${L.esc(p.title)}</h1>
       <p class="lede">${L.esc(p.brief)}</p>
@@ -558,6 +571,8 @@ function renderProject(c) {
       </details>
       <h2>Change one assumption</h2><p>${L.esc(p.variation)}</p>
       <details class="course-extras"><summary>Check your reasoning</summary><p>${L.esc(p.solution)}</p></details>
+      <label hidden data-practice-control><input type="checkbox" data-practice-item="final-project"> I completed the project and compared my evidence with the worked review</label>
+      <p class="small" role="status" data-practice-status></p>
       <p class="actions"><a class="button" href="./">Return to course outline</a></p>
     </article>`
   });
@@ -584,7 +599,7 @@ function build() {
   // survives puzzles being inserted; plus the old orders, to migrate progress saved by number.
   const legacyFile = path.join(L.ROOT, '_course', 'progress-legacy.json');
   const legacy = fs.existsSync(legacyFile) ? JSON.parse(fs.readFileSync(legacyFile, 'utf8')).courses : {};
-  if (cs.length) out.set(path.join(OUT, 'progress-index.js'), `// Generated by scripts/build-course.js.\nwindow.COURSE_INDEX = ${JSON.stringify({ cur: Object.fromEntries(cs.map(c => [c.id, c.puzzles.map(p => p.slug.replace(/^\d+-/, ''))])), legacy })};\n`);
+  if (cs.length) out.set(path.join(OUT, 'progress-index.js'), `// Generated by scripts/build-course.js.\nwindow.COURSE_INDEX = ${JSON.stringify({ cur: Object.fromEntries(cs.map(c => [c.id, c.puzzles.map(p => p.slug.replace(/^\d+-/, ''))])), practice: Object.fromEntries(cs.map(c => [c.id, practiceItems(c)])), legacy })};\n`);
   return out;
 }
 

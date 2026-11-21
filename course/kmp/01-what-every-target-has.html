@@ -101,9 +101,9 @@
         <h2 id="the-building-block">The building block</h2>
 <p>A multiplatform project keeps its code in <b>source sets</b>: folders, each compiled for a chosen set of targets.</p>
 <p><b><code>commonMain</code></b> is compiled for every target. Its code is the <b>common code</b>, and it may only use what every target has: the Kotlin standard library, and libraries built for every target themselves, like Kotlin's own coroutines library. <code>java.io.File</code> isn't one of them, because the iPhone has no Java library to provide it.</p>
-<p><b><code>androidMain</code></b> is compiled only for Android, so it can use anything Android and Java offer. <b><code>iosMain</code></b> is compiled only for iOS, so it can use Apple's own APIs, like <code>UIDevice</code>. Common code can't see into either: it doesn't know which platform it will end up on.</p>
+<p><b><code>androidMain</code></b> is compiled only for Android, so it can use the Android APIs and Java library subset available on its supported devices. <b><code>iosMain</code></b> is compiled only for iOS, so it can use Apple's own APIs, like <code>UIDevice</code>. Common code can't see into either: it doesn't know which platform it will end up on.</p>
 <p>In Gradle, you list the targets in the build file, and each source set is a folder under src, like src/commonMain and src/iosMain.</p>
-<p>The rule is what makes sharing safe: if something compiles in <code>commonMain</code>, it has something to run on, on every target.</p>
+<p>The rule is what makes sharing safe: common code must type-check against the APIs available to its declared targets. Platform version and runtime permissions can still determine whether a particular call succeeds.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

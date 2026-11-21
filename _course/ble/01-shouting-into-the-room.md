@@ -2,7 +2,7 @@
 title: Shouting into the room
 short: Advertising and scanning
 summary: In puzzle 0, the strap's radio slept almost all the time. Here's how a device that's nearly always asleep still gets found.
-takeaway: A device advertises: it wakes, sends a short packet on each of the 3 advertising channels, and sleeps, over and over at its advertising interval. A phone scans: it listens on those channels until one packet lands while it's listening.
+takeaway: This legacy strap advertises on the three primary channels. Repeated advertising gives a scanning phone more opportunities to hear it. The advertising configuration and scan windows determine the actual chances.
 ---
 
 ## The problem
@@ -20,9 +20,9 @@ The strap is loud only for moments. It wakes, sends a **packet**, one short burs
 
 The time between two advertisements is the **advertising interval**: at least 20 ms, and it can be seconds or much longer. Short means found fast; long means a longer battery life. To every interval the radio adds a random delay of 0 to 10 ms. Two packets sent at the same moment on the same channel garble each other: a collision. If two straps happened to start together, the random delays make them drift apart instead of colliding every time.
 
-BLE splits its airwaves into 40 **channels**, like stations on a radio dial: a radio sends or listens on one at a time. Advertising uses only 3 of them, and each advertisement is sent on all 3, one after another. Three is few enough that a listener knows where to listen, and more than one, so noise on a single channel (another radio, like Wi-Fi, sending on the same slice) doesn't hide the strap.
+BLE splits its airwaves into 40 **channels**, like stations on a radio dial: a radio sends or listens on one at a time. Legacy advertising uses one or more of three primary advertising channels. This strap uses all three in succession. Extended advertising can also use secondary channels. Three is few enough that a listener knows where to listen, and more than one, so noise on a single channel (another radio, like Wi-Fi, sending on the same slice) doesn't hide the strap.
 
-Your phone, meanwhile, is **scanning**: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. Because the strap repeats every interval on all three, sooner or later one of its packets lands on the channel the phone is listening to, and the phone hears it.
+Your phone, meanwhile, is **scanning**: listening on the advertising channels. It can't hear all three at once, so it listens on one for a while, then the next. Because the strap repeats every interval on all three, a packet can land on the channel the phone is listening to, and the phone hears it.
 
 ## The analogy
 
@@ -31,7 +31,7 @@ The lighthouse from puzzle 0 flashes its lamp in three directions, one after ano
 ## Check yourself
 
 - You shorten a strap's advertising interval from 1 s to 100 ms. What changes?::*Phones find it faster, and its battery drains faster||Nothing for the battery: advertising is free >> Every advertisement wakes the radio. Ten times as many means ten times the radio time. >> s2||Phones find it slower, because it's busier >> More advertisements give the phone more chances to hear one, so finding gets faster. >> s2::Advertise often to be found fast; rarely to last long.
-- Why does each advertisement go out on three channels, not one?::*So noise on one channel doesn't hide the device, while listeners still know where to look||Because the phone has to collect all three copies to read the packet >> Any one copy is enough. The other two are backups against noise. >> s3||To send three times as much data in the same time >> It's the same packet three times, on three channels. >> s3::Few enough to find, more than one to survive noise.
+- Why does this legacy strap use three primary advertising channels?::*So noise on one channel doesn't hide the device, while listeners still know where to look||Because the phone has to collect all three copies to read the packet >> Any one copy is enough. The other two are backups against noise. >> s3||To send three times as much data in the same time >> It's the same packet three times, on three channels. >> s3::Few enough to find, more than one to survive noise.
 - What's the difference between advertising and scanning?::*Advertising is the device saying "I'm here", while scanning is listening for it||They're two names for the same thing, used by different makers >> They're the two sides: one shouts, the other listens. >> s4||Scanning is the phone sending a request to every device nearby >> Scanning here is listening, not sending: the phone hears advertisements. >> s4::One side shouts, the other listens.
 
 ## Sources

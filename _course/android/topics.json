@@ -208,8 +208,8 @@
         "example": "A GET method requests notes/17. The server returns HTTP 200 with malformed JSON. The transport received a successful HTTP response, yet the converter can fail before the repository gets a Note. Record the status and the conversion failure separately.",
         "exercise": "If the network times out after a reservation write, would automatically repeating every failed Retrofit call be safe?",
         "answer": "Recover the operation using a stable request identity and a defined server contract. A timeout does not establish whether the server committed the first attempt.",
-        "source": "https://square.github.io/retrofit/",
-        "sourceTitle": "Square · Retrofit"
+        "source": "https://github.com/lysine-dev/retrofit",
+        "sourceTitle": "Retrofit · Official project"
       },
       {
         "title": "Follow one logical call through OkHttp",
@@ -217,8 +217,8 @@
         "example": "Two small requests target the same HTTPS origin. The first establishes a connection; the second may use that still-healthy connection. A server close or incompatible route can force a new connection. Measure connection events rather than assuming that an identical URL proves reuse.",
         "exercise": "A chart counts two network exchanges for one app request after a redirect. Does that prove the user tapped twice?",
         "answer": "No. Record the logical call identity and its individual exchanges. Compare original destination, redirect response and final destination before interpreting the count.",
-        "source": "https://square.github.io/okhttp/",
-        "sourceTitle": "Square · OkHttp"
+        "source": "https://github.com/lysine-dev/okhttp",
+        "sourceTitle": "OkHttp · Official project"
       },
       {
         "title": "Observe a Room query over SQLite",

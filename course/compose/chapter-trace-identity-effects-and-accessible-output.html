@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Trace identity, effects and accessible output · Compose Multiplatform, one screen from state to pixels</title>
   <link rel="canonical" href="https://pachulski.dev/course/compose/chapter-trace-identity-effects-and-accessible-output">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,39 +48,43 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="compose">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Compose Multiplatform, one screen from state to pixels</a></p>
       <p class="eyebrow">Practice chapter 1 of 1</p><h1>Trace identity, effects and accessible output</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Which row owns a remembered edit?</a></li><li><a href="#lesson-2">Which change restarts the subscription?</a></li><li><a href="#lesson-3">Which user action can the semantics tree express?</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Which row owns a remembered edit?</a> <span class="small" data-practice-nav="chapter-trace-identity-effects-and-accessible-output:which-row-owns-a-remembered-edit"></span></li><li><a href="#lesson-2">Which change restarts the subscription?</a> <span class="small" data-practice-nav="chapter-trace-identity-effects-and-accessible-output:which-change-restarts-the-subscription"></span></li><li><a href="#lesson-3">Which user action can the semantics tree express?</a> <span class="small" data-practice-nav="chapter-trace-identity-effects-and-accessible-output:which-user-action-can-the-semantics-tree-express"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Which row owns a remembered edit?</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-trace-identity-effects-and-accessible-output:which-row-owns-a-remembered-edit">Which row owns a remembered edit?</h2>
       <p>Composition tracks instances of composables. When a repeated call comes from one call site, execution order can distinguish instances. An item that moves can then inherit remembered state tied to a position. A stable, unique key lets Compose associate an instance with the corresponding item across reordering.</p>
       <h3>Worked example</h3><p>Rows A, B and C are listed. Type a draft into B, then insert X at the front. If state follows position 1 it can appear on A, now at position 1. Keying by a durable item ID allows B's identity to move with its data. Reproduce the insertion and inspect the text and ownership after reordering.</p>
       <h3>Try it</h3><p>Will stable keys by themselves restore an unsaved draft after the process dies?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Keys address composition identity. Choose and test a persistence mechanism separately for the required lifetime. Test reorder, recreation and full process restart independently; success in the first experiment does not establish recovery in the last.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-trace-identity-effects-and-accessible-output:which-row-owns-a-remembered-edit"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/develop/ui/compose/lifecycle">Android Developers · Lifecycle of composables</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Which change restarts the subscription?</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-trace-identity-effects-and-accessible-output:which-change-restarts-the-subscription">Which change restarts the subscription?</h2>
       <p>An effect connects composition to work with a lifetime. DisposableEffect sets up an external subscription and disposes it when its key changes or it leaves composition. Choose keys that identify the resource. When only a callback changes, an updated-state holder can give a long-lived effect the current callback without re-registering.</p>
       <h3>Worked example</h3><p>Display account A and subscribe to A's status. Switch to B in the same slot. Key the effect on the account and the subscription owner when either can change. Observe one disposal for A, one registration for B and disposal of B when the screen leaves. Handle late work already queued by A according to its identity.</p>
       <h3>Try it</h3><p>The parent recomposes five times with a new callback object for the same account. How do you test the desired behavior?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Count registrations and dispositions separately from delivered callbacks. If the subscription should survive, verify there is one registration and the latest callback receives the event. Then change the account and confirm that the underlying resource is replaced.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-trace-identity-effects-and-accessible-output:which-change-restarts-the-subscription"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/develop/ui/compose/side-effects">Android Developers · Side effects in Compose</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Which user action can the semantics tree express?</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-trace-identity-effects-and-accessible-output:which-user-action-can-the-semantics-tree-express">Which user action can the semantics tree express?</h2>
       <p>Semantics expose meaning, state and actions alongside drawn pixels. A composable tree can merge descendant semantics so that tests and accessibility tools perceive a larger control. Examine the tree your test actually queries and verify the platform accessibility experience separately.</p>
       <h3>Worked example</h3><p>A row has a title, a status and an independent bookmark toggle. The screenshot looks correct in both states. Inspect the merged tree and confirm that the intended toggle has an action, current state and understandable label. Trigger it through semantics, then inspect whether the reported state changes.</p>
       <h3>Try it</h3><p>The unmerged tree contains the icon, but a user navigating by accessible controls cannot operate the toggle. Would matching the icon in a test close the issue?</p>
       <details class="recall"><summary>Compare your answer</summary><p>That assertion verifies only a node in the queried tree. Revisit merging, action ownership and labels, then exercise the control through the exposed semantics and on the target platform with its accessibility service. Keep a separate visual check for layout.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-trace-identity-effects-and-accessible-output:which-user-action-can-the-semantics-tree-express"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/develop/ui/compose/testing/semantics">Android Developers · Compose semantics</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="final-project.html">Start the final project →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2Fchapter-trace-identity-effects-and-accessible-output" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2Fchapter-trace-identity-effects-and-accessible-output" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

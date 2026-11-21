@@ -100,9 +100,9 @@
 <p><b>XOR</b> (exclusive or) combines two bits: the result is 0 if they're equal, 1 if they differ. Do it bit by bit to two strings:</p>
 <div class="table-wrap"><table><thead><tr><th scope="col"></th><th scope="col"></th></tr></thead><tbody><tr><th scope="row">data</th><td><code>0101</code></td></tr><tr><th scope="row">key</th><td><code>0011</code></td></tr><tr><th scope="row">data XOR key</th><td>0110</td></tr><tr><th scope="row">… XOR key again</th><td><code>0101</code>, the data</td></tr></tbody></table></div>
 <p>XOR with the same key twice gives you back what you started with. That's a cipher: XOR the data with the key to encrypt, XOR the result with the key again to decrypt.</p>
-<p>If the key is truly random, as long as the data, and used only once, that's a <b>one-time pad</b>: every possible message is equally likely from the ciphertext, so the listener learns nothing at all.</p>
+<p>If the key is truly random, as long as the data, and used only once, that's a <b>one-time pad</b>: observing the ciphertext leaves the listener no better able to distinguish possible equal-length messages than before, so the listener learns nothing at all.</p>
 <p>Its weakness is the &quot;once&quot;. Use the same key for two messages, and the listener XORs the two ciphertexts: the key cancels out, leaving the two messages XORed together, which is often enough to read both.</p>
-<p>Real ciphers keep the XOR and fix the key problem: from one short key they generate a long, fresh stream of key bits, a <b>keystream</b>, different for every message. The next puzzle shows a real cipher doing exactly that.</p>
+<p>Stream ciphers and counter-based encryption modes use a related operation: from one short key they generate a long, fresh stream of key bits, a <b>keystream</b>, different for every message. The next puzzle shows a real cipher doing exactly that.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

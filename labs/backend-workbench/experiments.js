@@ -45,13 +45,18 @@ const experiments = [
       return [`Version: v2\nMounted: ${selected}\nGET /bookmarks → [${volumes[selected]}]`, 'A healthy new process can serve the wrong dataset. Verify release identity and a previously committed row after replacement.'];
     }),
   makeExperiment('04-incident', 'Diagnose a readiness failure',
-    'An accidental migration renamed the bookmarks table. The process responds, but its database query fails.',
-    'Choose a recovery action.', ['Restart the same image', 'Roll back only the image', 'Restore the expected table name'], choice => {
-      const tables = new Set(['parked']);
-      if (choice === 2) { tables.delete('parked'); tables.add('bookmarks'); }
-      const ready = tables.has('bookmarks');
-      return [`GET /live → 200\nGET /ready → ${ready ? 200 : 503}\nPUT river → ${ready ? '201' : 'fails: missing table'}`,
-        'The probe depends on the database layout. Replacing a process reuses the same stored schema. Check a real write after recovery.'];
+    'The bookmarks table contained river. Someone renamed it to parked while the service was running. Each run starts immediately after that rename.',
+    'Choose the next operator action.', ['Leave the process running', 'Restart the same image', 'Restore the original table name before restarting'], choice => {
+      const tables = new Map([['parked', ['river']]]);
+      if (choice === 1) tables.set('bookmarks', []); // The native service creates a missing table at startup.
+      if (choice === 2) {
+        tables.set('bookmarks', tables.get('parked'));
+        tables.delete('parked');
+      }
+      const visible = tables.get('bookmarks');
+      if (visible) visible.push('hill');
+      return [`GET /live → 200\nGET /ready → ${visible ? 200 : 503}\nPUT hill → ${visible ? 201 : 503}\nGET /bookmarks → ${visible ? JSON.stringify([...visible].sort()) : 503}`,
+        'The native lab initializes a missing table when it starts. A restart can turn readiness green while river stays in parked. Check both the earlier row and a new write before declaring recovery.'];
     }),
   makeExperiment('05-contract', 'Validate an API contract',
     'The fixture accepts a JSON object with a nonblank text name of at most 60 characters. It permits unknown fields.',

@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Explain one run from class file to shared counter · Final project · JVM internals for Kotlin and Android developers</title>
   <link rel="canonical" href="https://pachulski.dev/course/jvm/final-project">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,7 +48,7 @@
   </header>
 
   <main id="main">
-<article class="wrap narrow section">
+<article class="wrap narrow section" data-practice-course="jvm">
       <p class="eyebrow"><a href="./">JVM internals for Kotlin and Android developers</a> · Final project</p>
       <h1>Explain one run from class file to shared counter</h1>
       <p class="lede">Trace a small program before running it. Defend which values belong to method frames, which objects remain reachable and which concurrent schedules lose an increment.</p>
@@ -65,10 +67,12 @@
       </details>
       <h2>Change one assumption</h2><p>Change edit so that it rebinds inside to Counter(99) before writing inside.value = 8. Which printed lines change?</p>
       <details class="course-extras"><summary>Check your reasoning</summary><p>The write now changes C2. Neither caller reference was redirected, so C1 stays at 7. The three lines become “7 8”, “7 7” and “7”. Reassigning the local argument never modified first or second.</p></details>
+      <label hidden data-practice-control><input type="checkbox" data-practice-item="final-project"> I completed the project and compared my evidence with the worked review</label>
+      <p class="small" role="status" data-practice-status></p>
       <p class="actions"><a class="button" href="./">Return to course outline</a></p>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fjvm%2Ffinal-project" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fjvm%2Ffinal-project" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

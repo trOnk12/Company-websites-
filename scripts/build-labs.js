@@ -77,7 +77,7 @@ function labPages() {
     file: 'parking-design/index.html', course: 'system-design', title: 'Reservation lab',
     intro: 'One parking space. Two phones. Ada and Ben have different request IDs. Choose who sends first, then inspect what committed.',
     scripts: ['lab.js'],
-    body: `<nav class="lesson-jumps" aria-label="Experiments"><a href="#race">Last space</a><a href="#retry">Lost reply</a><a href="#isolation">Isolation</a><a href="#queue">Overload</a><a href="cases.html">Design review</a></nav>
+    body: `<nav class="lesson-jumps" aria-label="Experiments"><a href="#race">Last space</a><a href="#retry">Lost reply</a><a href="#isolation">Isolation</a><a href="#queue">Overload</a><a href="#delivery">Event delivery</a><a href="cases.html">Design review</a></nav>
       ${fs.readFileSync(path.join(__dirname, 'lab-templates/reservation.html'), 'utf8')}`,
   };
   const pages = [reservation, casesPage(), workbench('backend-ops', 'backend-workbench'), workbench('jvm', 'jvm-workbench')];

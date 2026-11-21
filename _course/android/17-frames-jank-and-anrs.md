@@ -2,7 +2,7 @@
 title: Frames, jank and ANRs
 short: Frames and ANRs
 summary: Drawing the screen is just another message in the main thread's queue. So one slow message doesn't only delay a tap: it stops the screen from being drawn.
-takeaway: A frame is due about every 16 ms. A message that takes longer makes frames late: jank. A touch that waits 5 seconds gets the "App isn't responding" dialog: an ANR.
+takeaway: At 60 Hz the display interval is about 16.7 ms. Missing a presentation deadline can cause visible jank. A prolonged input-dispatch timeout, typically five seconds, can produce an ANR.
 ---
 
 ## The problem
@@ -16,11 +16,11 @@ In puzzle 16, the main thread ran messages one at a time. Now suppose one messag
 
 ## The building block
 
-The screen is redrawn about 60 times a second. Each redraw is a **frame**, and each one must be ready within about 16 milliseconds (1000 ms ÷ 60). Drawing a frame is a message in the main thread's queue too.
+Assume a 60 Hz display for this trace. Each redraw is a **frame**, and each one must be ready within about 16 milliseconds (1000 ms ÷ 60). Drawing a frame is a message in the main thread's queue too.
 
 If a message takes longer than that, the frames behind it come late, and the app visibly stutters: **jank**.
 
-Touches don't travel by Binder. Each screen your app shows is drawn in a **window**, its rectangle of the display, and for each window system_server opens a direct line into your app, an **input channel**. It sends each touch down that line, where it lands in the main thread's queue, and waits for your app to answer "done" on that same line, which it does once the main thread has handled the touch. If a touch waits in the queue for 5 seconds with no answer, system_server shows the "App isn't responding" dialog: an **ANR** (Application Not Responding). That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.
+Touches don't travel by Binder. Each screen your app shows is drawn in a **window**, its rectangle of the display, and for each window system_server opens a direct line into your app, an **input channel**. It sends each touch down that line, where it lands in the main thread's queue, and waits for your app to answer "done" on that same line, which it does once the main thread has handled the touch. If the foreground app fails to respond to input within the input-dispatch timeout (typically five seconds), Android can report an **ANR** (Application Not Responding). Timeout and dialog behavior depend on the device and circumstances. That's why slow work (files, network, big calculations) belongs on another thread, never on the main thread.
 
 ## The analogy
 

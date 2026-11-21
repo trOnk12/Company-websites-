@@ -97,7 +97,7 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>For iOS, Kotlin/Native packs your shared code into a <b>framework</b>: Apple's format for a library. A framework holds two things: the compiled code, and a description of what's inside, so other code knows what it can call.</p>
-<p>That description is a <b>header</b>: a file that lists every class, function and type, without their code. Kotlin writes it in <b>Objective-C</b>, the older language of Apple's platforms, because Swift can call Objective-C directly. Swift has no direct line to Kotlin; it goes through that Objective-C description.</p>
+<p>That description is a <b>header</b>: a file that lists every class, function and type, without their code. Kotlin writes it in <b>Objective-C</b>, the older language of Apple's platforms, because Swift can call Objective-C directly. This lesson uses Objective-C framework export. Kotlin also offers a separate Swift export path with its own supported features.</p>
 <p>A Gradle task builds the framework (it takes its name from your shared module, often called shared), and the iOS app's project in Xcode, Apple's counterpart of Android Studio, links it in. So the iOS team imports the framework, and in Swift your <code>LoginRules</code> class looks like any other Objective-C class: Swift reads the header and calls the native code behind it.</p>
 <p>That middle step has a price. Objective-C is older and simpler than both Kotlin and Swift, so some things don't survive the trip. The next puzzle shows which.</p>
       </section>
@@ -108,20 +108,20 @@
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>The iOS team opens your framework in Xcode. What do they read to learn your API?</legend>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-1"><label for="q-05-how-swift-sees-your-kotlin-1-1"><span>A Swift file Kotlin/Native generated for each class</span></label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-2"><label for="q-05-how-swift-sees-your-kotlin-1-2"><span>Your Kotlin files, which Xcode can open directly</span></label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-3" data-ok><label for="q-05-how-swift-sees-your-kotlin-1-3"><span>The Objective-C header Kotlin/Native wrote for it</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Kotlin describes your code in Objective-C, not Swift; Swift reads that. <label class="show-me" for="st-swift-3" data-goto="st-swift">Show me step 3 again ↑</label></p>
-<p class="fb no opt-2"><b>Not quite.</b> The framework holds native code and an Objective-C description; Swift never reads Kotlin. <label class="show-me" for="st-swift-3" data-goto="st-swift">Show me step 3 again ↑</label></p>
-<p class="fb ok opt-3"><b>Right.</b> Swift learns your API from the Objective-C header.</p>
+<legend>The iOS team opens this Objective-C-exported framework in Xcode. What do they read to learn your API?</legend>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-1"><label for="q-05-how-swift-sees-your-kotlin-1-1"><span>Your Kotlin files, which Xcode can open directly</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-2" data-ok><label for="q-05-how-swift-sees-your-kotlin-1-2"><span>The Objective-C header Kotlin/Native wrote for it</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-1" id="q-05-how-swift-sees-your-kotlin-1-3"><label for="q-05-how-swift-sees-your-kotlin-1-3"><span>A Swift file Kotlin/Native generated for each class</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The framework holds native code and an Objective-C description; Swift never reads Kotlin. <label class="show-me" for="st-swift-3" data-goto="st-swift">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Swift learns your API from the Objective-C header.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Kotlin describes your code in Objective-C, not Swift; Swift reads that. <label class="show-me" for="st-swift-3" data-goto="st-swift">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Why does Kotlin describe your code in Objective-C, not in Swift?</legend>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-1" data-ok><label for="q-05-how-swift-sees-your-kotlin-2-1"><span>Because Swift can call Objective-C directly, so it's the bridge both sides understand</span></label>
-<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-2"><label for="q-05-how-swift-sees-your-kotlin-2-2"><span>Because Swift can't run native code unless Objective-C starts it</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Objective-C is the language Swift already knows how to call.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Swift runs native code fine; it needs a description it can read, and Objective-C is one. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>Why does this export path describe your code in Objective-C?</legend>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-1"><label for="q-05-how-swift-sees-your-kotlin-2-1"><span>Because Swift can't run native code unless Objective-C starts it</span></label>
+<input type="radio" name="q-05-how-swift-sees-your-kotlin-2" id="q-05-how-swift-sees-your-kotlin-2-2" data-ok><label for="q-05-how-swift-sees-your-kotlin-2-2"><span>Because Swift can call Objective-C directly, so it's the bridge both sides understand</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Swift runs native code fine; it needs a description it can read, and Objective-C is one. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Objective-C is the language Swift already knows how to call.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a framework and a header?</legend>
@@ -134,7 +134,7 @@
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://kotlinlang.org/docs/native-objc-interop.html">Kotlin docs: Interoperability with Swift/Objective-C</a> (&quot;Kotlin/Native provides indirect interoperability with Swift through Objective-C. This document covers how you can use Kotlin declarations in Swift/Objective-C code&quot;)</li><li><a href="https://kotlinlang.org/docs/multiplatform/multiplatform-discover-project.html">Kotlin docs: The basics of Kotlin Multiplatform project structure</a> (&quot;When it's built into an iOS framework, common Kotlin is treated as Kotlin/Native&quot;)</li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Kotlin/Native packs your shared code into a framework, Apple's format for a library. Its description is an Objective-C header, because Swift can call Objective-C directly; Swift reads that header and calls your Kotlin as if it were Objective-C.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>In the Objective-C framework export path, Swift imports the Objective-C declarations and calls the Kotlin/Native implementation. Swift export is a separate integration option.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="04-an-ios-app-in-one-puzzle.html">← Puzzle 4</a>

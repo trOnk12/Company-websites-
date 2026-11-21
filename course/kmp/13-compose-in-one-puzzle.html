@@ -104,7 +104,7 @@
 fun Greeting(name: String) {
     Text(&quot;Hello, $name&quot;)
 }</code></pre>
-<p>It returns nothing and creates no view objects you keep. It describes what the screen should look like for this <code>name</code>.</p>
+<p>This Greeting returns Unit and creates no view objects you keep. Other composable functions can return values. It describes what the screen should look like for this <code>name</code>.</p>
 <p>When the data changes, Compose calls the function again with the new value: <b>recomposition</b>. It's smart about it: only the functions whose inputs might have changed run again; the rest are skipped. Data that should trigger it is <b>state</b>, for example <code>var count by remember { mutableStateOf(0) }</code>; <b>remember</b> keeps that value across recompositions, so it isn't reset each time the function runs.</p>
 <p>How can the runtime know which functions showed what? That's the <b>Compose compiler plugin</b>, a part of the Kotlin compiler from puzzle 0. It rewrites every <code>@Composable</code> function, adding hidden bookkeeping so Compose can track what each call showed and skip what didn't change.</p>
       </section>

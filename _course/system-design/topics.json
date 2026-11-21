@@ -62,5 +62,55 @@
         "sourceTitle": "Google SRE · Addressing cascading failures"
       }
     ]
+  },
+  {
+    "title": "Rebuild a concert seating map from reservation events",
+    "lessons": [
+      {
+        "title": "Commit a reservation fact before announcing it",
+        "explanation": "The booking database owns the right to sell. The seating map is a projection: a derived copy optimized for showing availability. In the same transaction as the booking, write an outbox entry containing the show and seat, the event ID, the next seat version and the change. A relay publishes committed entries. The live outbox is a delivery mechanism; a rebuild also requires a retained history or a consistent source snapshot.",
+        "example": "Show 42 starts with seat B12 free at version 0. One transaction holds it and writes E7, version 1, delta −1 free. A crash before commit leaves neither change. A crash after commit leaves the hold and a recoverable pending publication. The authoritative checkout rejects another hold even while the map still shows B12 as free.",
+        "exercise": "The relay publishes E7, crashes before marking the row sent and later publishes E7 again. What should be counted once and what may legitimately be counted twice?",
+        "answer": "Count one logical event identity and one acquired right. Two delivered messages and two processing attempts are possible. Carry E7 unchanged across publication retries so the consumer can recognize the repetition.",
+        "source": "https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html",
+        "sourceTitle": "AWS · Transactional outbox"
+      },
+      {
+        "title": "Make a repeated delivery harmless at the receiver",
+        "explanation": "A broker position tells a consumer where to resume. An event ID identifies the business fact. If recording a consumed position and updating a separate database are independent writes, crashing between them creates either replay or loss. Commit the projection and its processed-event marker together; advance the broker position only after durable processing or durable handoff.",
+        "example": "Starting at 100 free seats, apply E7 at position 400: write 99 and insert processed(E7) in one local transaction. Stop after it commits but before acknowledging position 400. The broker delivers 400 again; the unique marker prevents a second decrement. Even if the relay appended E7 again at position 401, the same marker still protects the count.",
+        "exercise": "Why is a marker written first in its own transaction unsafe?",
+        "answer": "If the process stops after saving the marker but before subtracting one, replay skips E7 forever and the display says 100. Run both crash schedules and inspect the count, marker and checkpoint. A harmless SQL rollback protects only changes made inside that transaction.",
+        "source": "https://kafka.apache.org/41/design/design/",
+        "sourceTitle": "Apache Kafka · Message delivery semantics"
+      },
+      {
+        "title": "Detect a version gap without blocking unrelated seats",
+        "explanation": "For each seat, give related events one routing key. Kafka preserves append order within a partition, but an upstream relay can append a later business version first. The consumer compares the event version with the last applied seat version. A delta for version n requires the predecessor n−1. Missing versions need repair or durable staging; blindly applying the latest delta loses information.",
+        "example": "B12 emits E7 hold v1 (−1 free), E8 release v2 (+1), E9 hold v3 (−1). Arrival order is v1, v3, v2. After v1 the aggregate is 99. Persist v3 as waiting, apply v2 to reach 100, then apply v3 to return to 99. Maintain B12’s watermark at v1 until v2 is applied. An unrelated seat may still progress if its events are independent.",
+        "exercise": "If you pause the entire partition at the v3 offset and v2 is a later offset in that same partition, how do you escape the wait?",
+        "answer": "Persist v3 as pending before moving past its offset, or fetch the missing authoritative seat state through a repair path. Resume with bounded backlog and age checks. Two different IDs claiming the same seat version indicate a producer conflict requiring investigation.",
+        "source": "https://kafka.apache.org/41/design/design/",
+        "sourceTitle": "Apache Kafka · Partitions and log order"
+      },
+      {
+        "title": "Keep old events readable after a schema change",
+        "explanation": "An Avro reader uses the writer’s schema to resolve fields against the reader’s schema. Adding a field with a reader default can allow a new reader to decode an old event. Field compatibility is only one test: the application must still interpret the old business meaning correctly. Keep schema version distinct from the per-seat business version.",
+        "example": "The new event schema adds bookingChannel with a string default of unknown. Old E7 decodes under the new reader with unknown, while a new event can record kiosk. An old reader can ignore this unused extra field when reading the compatible new record. Replaying E7 must still subtract exactly one free seat. Never silently label a historical sale as mobile simply to fill the new field.",
+        "exercise": "An engineer changes deltaFree to mean “free seats after this change” but leaves its type as integer. Would a schema compatibility test catch the danger?",
+        "answer": "A compatible integer type does not distinguish delta from absolute count. Introduce a new event shape or explicit semantic version and conversion rule. Run mixed-history fixtures against both decoders and compare the resulting per-seat states and totals.",
+        "source": "https://avro.apache.org/docs/1.12.0/specification/",
+        "sourceTitle": "Apache Avro · Schema resolution"
+      },
+      {
+        "title": "Repair the map while bookings continue",
+        "explanation": "Rebuild into a separate projection generation so the active display keeps serving. Record a consistent snapshot and its corresponding stream position for every partition, or replay a complete retained history from its beginning. Apply later changes and validate at a common comparison boundary. Keep the rebuild isolated from real email, payment and refund consumers.",
+        "example": "At the chosen boundary the authoritative seat rows contain 98 free, one held and one sold: 100 seats total. The old map also reports 98 free, but it labels B12 sold and C15 held while the source has the opposite. Count equality hides the error. The rebuilt generation must agree on seat ID, state and version, plus section totals. Catch up to the cutover boundary, switch readers and retain the old generation briefly for rollback.",
+        "exercise": "Your oldest retained message begins at position 900; the only trusted snapshot for that partition covers through 850. Can replay certify the repaired map?",
+        "answer": "Positions 851 through 899 are unaccounted for. Obtain a newer consistent source snapshot with a matching resume position or recover the missing archive. Record what the rebuild can actually verify. A quiet consumer and zero current lag establish catch-up only from the chosen start, not completeness of earlier history.",
+        "source": "https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing",
+        "sourceTitle": "Azure Architecture Center · Event sourcing and projection rebuilds"
+      }
+    ]
   }
 ]

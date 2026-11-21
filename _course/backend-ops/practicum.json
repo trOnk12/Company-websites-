@@ -11,7 +11,7 @@
   ],
   "evidence": [
     "The stale edit leaves Lake at version 8. The deliberate merged edit succeeds at version 8 and results in Lake and Forest at version 9.",
-    "The migration plan demonstrates how every still-active writer advances or respects the version before the service promises stale-overwrite protection.",
+    "The migration plan demonstrates how every still-active writer checks the expected version and advances it on each accepted change before the service promises stale-overwrite protection.",
     "The release gate distinguishes an expected conflict from an unexpected write failure or an accepted stale write."
   ],
   "worked": [

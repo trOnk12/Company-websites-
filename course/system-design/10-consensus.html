@@ -67,8 +67,8 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary>Puzzle 6: Why does a confirmed space still look free?</summary><p>A cache can extend the staleness it inherited from its source.</p><p><a href="06-freshness.html">Review puzzle 6</a></p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="06-freshness.html">6</a>. Know them already? Start here.</p>
+        <ul><li data-block="3"><details><summary>Puzzle 3: How does the database choose a winner?</summary><p>A zero-row conditional decrement lets the transaction roll back a claim on a full lot.</p><p><a href="03-conditional-write.html">Review puzzle 3</a></p></details></li><li data-block="6"><details><summary>Puzzle 6: Why does a confirmed space still look free?</summary><p>A cache can extend the staleness it inherited from its source.</p><p><a href="06-freshness.html">Review puzzle 6</a></p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-promise.html">0</a> → <a href="03-conditional-write.html">3</a> → <a href="06-freshness.html">6</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -108,6 +108,7 @@
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/parking-design/#failover">Compare two write acknowledgements across a real PostgreSQL promotion</a></p>
 <p>Trace what a driver sees on each side. Compare refusal with the preallocated local rights from the previous lesson. Repeat with five nodes: three mutually reachable survivors can form a majority. After reconnection, inspect the entire history of confirmations, not only the final counter.</p>
       </section>
       <section aria-labelledby="check-yourself">

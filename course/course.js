@@ -144,7 +144,12 @@
   const store = {
     get(course) { const s = slugs(course); return done(course).map(x => s.indexOf(x)).filter(i => i >= 0); },
     add(course, n) { const slug = slugs(course)[n]; if (!slug) return; const d = new Set(done(course)); d.add(slug); write(`course:${course}:done`, [...d]); },
-    clear(course) { try { ['done', 'mastered', 'missed', 'last'].forEach(k => localStorage.removeItem(`course:${course}:${k}`)); } catch {} },
+    clear(course) {
+      try {
+        const prefix = `course:${course}:`;
+        for (const key of Object.keys(localStorage)) if (key.startsWith(prefix)) localStorage.removeItem(key);
+      } catch {}
+    },
     // Questions you first answered wrong: your weak spots, for the tutor prompt. Only in this browser.
     missed(course) {
       const s = slugs(course), order = IDX.legacy[course] || s;
@@ -162,6 +167,88 @@
   function unfinishedVisit(course, passed) {
     const index = slugs(course).indexOf(read(`course:${course}:last`));
     return passed.has(index) ? -1 : index;
+  }
+
+  // Keys identify exercises by name, independently of chapter and lesson positions.
+  const practiceKey = (course, item) => `course:${course}:practice:${item}`;
+  function practiceState(course, have) {
+    const items = IDX.practice?.[course] || [];
+    const checked = new Set(items.filter(item => read(practiceKey(course, item.id)) === true).map(item => item.id));
+    const lastId = read(`course:${course}:last`);
+    const last = items.find(item => item.id === lastId);
+    const remaining = items.filter(item => !checked.has(item.id));
+    const next = last ? items.slice(items.indexOf(last)).find(item => !checked.has(item.id)) || remaining[0] : remaining[0];
+    const resume = (last || have.size === slugs(course).length) ? next : null;
+    const started = have.size > 0 || checked.size > 0 || !!last || unfinishedVisit(course, have) >= 0;
+    return { items, checked, resume, started, complete: have.size === slugs(course).length && !remaining.length };
+  }
+  function practiceLabel(state) {
+    const exercises = state.items.filter(item => item.id !== 'final-project');
+    const completed = exercises.filter(item => state.checked.has(item.id)).length;
+    const project = state.checked.has('final-project') ? 'project self-checked' : 'project pending';
+    return `${completed}/${exercises.length} exercises self-checked · ${project}`;
+  }
+
+  const practicePage = document.querySelector('[data-practice-course]');
+  if (practicePage) {
+    const course = practicePage.dataset.practiceCourse;
+    const controls = [...practicePage.querySelectorAll('[data-practice-item]')];
+    const headings = [...practicePage.querySelectorAll('[data-practice-heading]')];
+    const lastKey = `course:${course}:last`;
+    const visit = id => write(lastKey, id);
+    function refresh() {
+      controls.forEach(input => { input.checked = read(practiceKey(course, input.dataset.practiceItem)) === true; });
+      for (const label of practicePage.querySelectorAll('[data-practice-nav]')) {
+        label.textContent = read(practiceKey(course, label.dataset.practiceNav)) === true ? ' · Self-checked' : '';
+      }
+      const reviewed = controls.filter(input => input.checked).length;
+      practicePage.querySelector('[data-practice-status]').textContent = headings.length
+        ? `${reviewed} of ${controls.length} exercises self-checked`
+        : reviewed ? 'Project self-checked' : 'Project pending self-check';
+    }
+    refresh();
+    for (const input of controls) {
+      input.closest('label').hidden = false;
+      input.addEventListener('change', () => {
+        write(practiceKey(course, input.dataset.practiceItem), input.checked);
+        visit(input.dataset.practiceItem);
+        refresh();
+      });
+    }
+    const currentHeading = () => headings.find(h => '#' + h.id === location.hash);
+    const saved = headings.find(h => h.dataset.practiceHeading === read(lastKey));
+    if (!headings.length) visit('final-project');
+    else {
+      const first = currentHeading() || saved || headings[0];
+      visit(first.dataset.practiceHeading);
+      if (!location.hash && saved) saved.scrollIntoView();
+      window.addEventListener('hashchange', () => {
+        const heading = currentHeading();
+        if (heading) visit(heading.dataset.practiceHeading);
+      });
+      // Reading by scrolling also sets a bookmark. Avoid moving it during link navigation or a page reload.
+      let scrolling = false;
+      const bookmark = () => {
+        scrolling = false;
+        const heading = headings.filter(h => h.getBoundingClientRect().top <= innerHeight * 0.4).pop();
+        if (heading) visit(heading.dataset.practiceHeading);
+      };
+      practicePage.addEventListener('focusin', e => {
+        const heading = e.target.closest('section')?.querySelector('[data-practice-heading]');
+        if (heading) visit(heading.dataset.practiceHeading);
+      });
+      let userScrolled = false;
+      const startScrolling = () => { userScrolled = true; };
+      window.addEventListener('wheel', startScrolling, { passive: true, once: true });
+      window.addEventListener('touchmove', startScrolling, { passive: true, once: true });
+      window.addEventListener('keydown', e => {
+        if (['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)) startScrolling();
+      });
+      window.addEventListener('scroll', () => {
+        if (userScrolled && !scrolling) { scrolling = true; requestAnimationFrame(bookmark); }
+      }, { passive: true });
+    }
+    window.addEventListener('storage', refresh);
   }
 
   const puzzle = document.querySelector('article.puzzle[data-course]');
@@ -307,15 +394,18 @@
     const have = new Set(store.get(course));
     const total = Number(card.dataset.total);
     const bar = card.querySelector('progress');
-    bar.value = have.size;
+    const practice = practiceState(course, have);
+    bar.max = total + practice.items.length;
+    bar.value = have.size + practice.checked.size;
     const last = unfinishedVisit(course, have);
-    if (!have.size && last < 0) continue;
-    card.querySelector('.mine').textContent = have.size === total ? 'Completed' : `${have.size} of ${total} passed`;
+    if (!practice.started) continue;
+    card.querySelector('.mine').textContent = `${practice.complete ? 'Complete · ' : ''}${have.size}/${total} puzzles passed · ${practiceLabel(practice)}`;
     const go = card.querySelector('[data-puzzles]');
     const puzzles = go.dataset.puzzles.split(' ');
     const next = last >= 0 ? last : puzzles.findIndex((_, i) => !have.has(i));
-    go.textContent = next === -1 ? 'Review course' : 'Continue learning';
-    if (next !== -1) go.href = `${course}/${puzzles[next]}.html`;
+    go.textContent = practice.complete ? 'Review course' : 'Continue learning';
+    if (practice.resume) go.href = `${course}/${practice.resume.href}`;
+    else if (next !== -1) go.href = `${course}/${puzzles[next]}.html`;
   }
 
   // ── Overview: show progress and expand the module that contains the next puzzle ──
@@ -331,8 +421,18 @@
       li.querySelector('.puzzle-state').textContent = passed ? 'Passed' : li === next && have.size ? 'Up next' : '';
     });
     const resume = document.querySelector(`[data-resume="${course}"]`);
-    if (resume && (have.size || last >= 0)) {
-      if (next) {
+    const practice = practiceState(course, have);
+    for (const label of document.querySelectorAll('[data-chapter-status]')) {
+      const exercises = practice.items.filter(item => item.id.startsWith(label.dataset.chapterStatus + ':'));
+      label.textContent = ` · ${exercises.filter(item => practice.checked.has(item.id)).length}/${exercises.length} self-checked`;
+    }
+    const projectStatus = document.querySelector('[data-project-status]');
+    if (projectStatus) projectStatus.textContent = practice.checked.has('final-project') ? 'Self-checked' : 'Pending self-check';
+    if (resume && practice.started) {
+      if (practice.resume) {
+        resume.textContent = `Continue: ${practice.resume.title}`;
+        resume.href = practice.resume.href;
+      } else if (next) {
         const lesson = next.querySelector('a');
         resume.textContent = `Continue: ${lesson.textContent}`;
         resume.href = lesson.getAttribute('href');
@@ -343,7 +443,7 @@
       }
       const progress = document.createElement('p');
       progress.className = 'mastery';
-      progress.innerHTML = `${have.size} of ${items.length} puzzles passed · <button type="button" class="linklike">Reset my progress</button>`;
+      progress.innerHTML = `${have.size} of ${items.length} puzzles passed · ${practiceLabel(practice)} · <button type="button" class="linklike">Reset my progress</button>`;
       progress.querySelector('button').addEventListener('click', () => {
         if (window.confirm('Reset your saved progress for this course?')) { store.clear(course); location.reload(); }
       });
@@ -363,6 +463,7 @@
       const have = new Set(store.get(course));
       const last = unfinishedVisit(course, have);
       const next = d.puzzles.find(p => p.n === last) || d.puzzles.find(p => !have.has(p.n));
+      const practice = practiceState(course, have);
       const known = d.terms.filter(t => have.has(t.in));
       const missed = store.missed(course).filter(m => d.puzzles[m.n]);
       const lines = [
@@ -380,7 +481,7 @@
         ...d.puzzles.map(p => `${have.has(p.n) ? '✓' : '·'} ${p.n}. ${p.title}: ${p.takeaway}`),
         ...(d.chapters?.length ? ['', 'Practice chapters with worked examples and exercises:',
           ...d.chapters.map(ch => `- ${ch.title}: ${ch.lessons.join('; ')} — ${ch.url}`)] : []),
-        ...(d.project ? [`Final project: ${d.project.title} — ${d.project.url}`] : []),
+        ...(d.project ? [`Final project: ${d.project.title} — ${d.project.url}`, `Self-assessed progress: ${practiceLabel(practice)}.`] : []),
         ...(d.upcoming.length ? ['', 'Not written yet (good places to go next):', ...d.upcoming.map(u => `- ${u}`)] : []),
         ...(d.assumes ? ['', `The course assumes I know: ${d.assumes}.`] : []),
         '',
@@ -388,8 +489,9 @@
         ...known.map(t => `- ${t.t}: ${t.def}`),
         ...(missed.length ? ['', 'Questions I got wrong at first (my weak spots):', ...missed.map(m => `- Puzzle ${m.n}: ${m.q}`)] : []),
         '',
-        next
-          ? `Where I am: next is puzzle ${next.n}, "${next.title}". Start with one question to check I really have the block it builds on${missed.length ? ', or one of my weak spots' : ''}. Then teach me what it covers, your way, and keep going.`
+        practice.resume
+          ? `Where I am: next practice activity is "${practice.resume.title}". Work through its exercise and ask me to justify my answer.`
+          : next ? `Where I am: next is puzzle ${next.n}, "${next.title}". Start with one question to check I really have the block it builds on${missed.length ? ', or one of my weak spots' : ''}. Then teach me what it covers, your way, and keep going.`
           : `I've passed every puzzle. ${missed.length ? 'Start by testing my weak spots. Then' : 'Start with one question on the hardest idea. Then'} take me through the published practice material and final project.`,
       ];
       const text = lines.join('\n');
@@ -413,15 +515,20 @@
     const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
     const link = (href, text) => { const a = el('a', null, text); a.href = href; return a; };
     const byId = Object.fromEntries(courses.map(c => [c.id, c]));
-    const done = c => c.puzzles.every(p => passed(c.id).has(p.n));
+    const done = c => practiceState(c.id, passed(c.id)).complete;
 
     // Where you are
     const where = document.querySelector('.me-courses');
     for (const c of courses) {
       const have = passed(c.id), li = el('li', 'me-course');
       li.append(link(`${c.id}/`, c.title));
-      const bar = el('progress'); bar.max = c.puzzles.length; bar.value = have.size; bar.setAttribute('aria-label', `${c.title}: ${have.size} of ${c.puzzles.length}`);
-      li.append(bar, el('span', 'small', have.size === 0 ? (unfinishedVisit(c.id, have) >= 0 ? ' started · 0 passed' : ' not started') : have.size === c.puzzles.length ? ' complete ✓' : ` ${have.size} of ${c.puzzles.length}`));
+      const practice = practiceState(c.id, have);
+      const bar = el('progress');
+      bar.max = c.puzzles.length + practice.items.length;
+      bar.value = have.size + practice.checked.size;
+      bar.setAttribute('aria-label', `${c.title}: ${bar.value} of ${bar.max} activities`);
+      const progress = practice.started ? `${practice.complete ? 'Complete · ' : ''}${have.size} passed of ${c.puzzles.length} puzzles · ${practiceLabel(practice)}` : 'Not started';
+      li.append(bar, el('span', 'small', progress));
       where.append(li);
     }
 
@@ -431,12 +538,17 @@
     for (const c of courses) {
       const have = passed(c.id);
       const last = unfinishedVisit(c.id, have);
+      const practice = practiceState(c.id, have);
+      if (practice.resume) {
+        next.push({ c, p: practice.resume, why: 'Continue the practice work you self-check against the worked answers.' });
+        continue;
+      }
       const saved = c.puzzles.find(p => p.n === last);
       if (saved) {
         next.push({ c, p: saved, why: 'Continue the puzzle you last opened in this course.' });
         continue;
       }
-      if (!have.size || have.size === c.puzzles.length) continue;
+      if (!practice.started || have.size === c.puzzles.length) continue;
       const ready = c.puzzles.find(p => !have.has(p.n) && p.blocks.every(b => have.has(b)));
       const p = ready || c.puzzles.find(p => !have.has(p.n));
       const why = !ready ? 'Start by checking the building blocks listed in this puzzle.'
@@ -451,7 +563,7 @@
     const ol = document.querySelector('.me-next'); ol.textContent = '';
     for (const { c, p, why } of next.slice(0, 4)) {
       const li = el('li', 'me-suggestion');
-      li.append(link(`${c.id}/${p.slug}.html`, p.title), el('span', 'small me-course-name', ` · ${c.title}`), el('p', 'small', why));
+      li.append(link(`${c.id}/${p.href || p.slug + '.html'}`, p.title), el('span', 'small me-course-name', ` · ${c.title}`), el('p', 'small', why));
       ol.append(li);
     }
 

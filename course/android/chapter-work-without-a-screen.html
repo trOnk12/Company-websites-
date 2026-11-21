@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Work without a screen · Android from the foundation</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/chapter-work-without-a-screen">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,71 +48,79 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="android">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Android from the foundation</a></p>
       <p class="eyebrow">Practice chapter 2 of 5</p><h1>Work without a screen</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Choose a service by its execution contract</a></li><li><a href="#lesson-2">Finish a broadcast before its execution window closes</a></li><li><a href="#lesson-3">Give another component a bounded PendingIntent</a></li><li><a href="#lesson-4">Persist before process priority changes</a></li><li><a href="#lesson-5">Separate device idle from app usage restrictions</a></li><li><a href="#lesson-6">Schedule around Doze maintenance windows</a></li><li><a href="#lesson-7">Resume persistent work without repeating its effect</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Choose a service by its execution contract</a> <span class="small" data-practice-nav="chapter-work-without-a-screen:choose-a-service-by-its-execution-contract"></span></li><li><a href="#lesson-2">Finish a broadcast before its execution window closes</a> <span class="small" data-practice-nav="chapter-work-without-a-screen:finish-a-broadcast-before-its-execution-window-closes"></span></li><li><a href="#lesson-3">Give another component a bounded PendingIntent</a> <span class="small" data-practice-nav="chapter-work-without-a-screen:give-another-component-a-bounded-pendingintent"></span></li><li><a href="#lesson-4">Persist before process priority changes</a> <span class="small" data-practice-nav="chapter-work-without-a-screen:persist-before-process-priority-changes"></span></li><li><a href="#lesson-5">Separate device idle from app usage restrictions</a> <span class="small" data-practice-nav="chapter-work-without-a-screen:separate-device-idle-from-app-usage-restrictions"></span></li><li><a href="#lesson-6">Schedule around Doze maintenance windows</a> <span class="small" data-practice-nav="chapter-work-without-a-screen:schedule-around-doze-maintenance-windows"></span></li><li><a href="#lesson-7">Resume persistent work without repeating its effect</a> <span class="small" data-practice-nav="chapter-work-without-a-screen:resume-persistent-work-without-repeating-its-effect"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Choose a service by its execution contract</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-work-without-a-screen:choose-a-service-by-its-execution-contract">Choose a service by its execution contract</h2>
       <p>A Service is an Android component with a lifecycle. By default its callbacks run on the app’s main thread. A started service receives commands; a bound service exposes an interface to clients. A foreground service represents ongoing user-visible work and is subject to launch and type restrictions.</p>
       <h3>Worked example</h3><p>A playback service receives a play command. Its notification makes playback visible; decoding must still run on appropriate execution resources. An expensive synchronous decode in onStartCommand delays other main-thread callbacks.</p>
       <h3>Try it</h3><p>Which component would you choose for an eventual upload that may resume tomorrow?</p>
       <details class="recall"><summary>Compare your answer</summary><p>A persistent scheduler such as WorkManager suits deferrable work. A foreground playback service meets a different user-visible requirement.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-work-without-a-screen:choose-a-service-by-its-execution-contract"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/develop/background-work/services">Android · Services overview</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Finish a broadcast before its execution window closes</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-work-without-a-screen:finish-a-broadcast-before-its-execution-window-closes">Finish a broadcast before its execution window closes</h2>
       <p>A broadcast delivers a short-lived event to a receiver. Once onReceive returns, an app with no other active component may lose its execution priority. An unmanaged thread started from the callback therefore has no durable lifetime guarantee.</p>
       <h3>Worked example</h3><p>A receiver learns that a local export needs indexing. It records or enqueues uniquely identifiable work and returns. The worker reads the stored input later. goAsync provides only a bounded extension for finishing a broadcast.</p>
       <h3>Try it</h3><p>The same hint arrives twice. What should the indexing worker read?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Use a durable export identity or current index version and make repeat execution converge to the same result. A broadcast count is a poor substitute for the actual work record.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-work-without-a-screen:finish-a-broadcast-before-its-execution-window-closes"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/develop/background-work/background-tasks/broadcasts">Android · Broadcasts overview</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Give another component a bounded PendingIntent</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-work-without-a-screen:give-another-component-a-bounded-pendingintent">Give another component a bounded PendingIntent</h2>
       <p>A PendingIntent is a system-maintained token for a specified operation under its creator’s identity. Construct it with an explicit destination and use immutability when the recipient has no need to fill in fields. Equality for matching tokens does not use Intent extras alone.</p>
       <h3>Worked example</h3><p>Two notification actions open note 17 and note 29. If both use the same request code and equal matching Intent fields, different extras alone can select the same token. Give the actions distinct request codes or distinct data URIs.</p>
       <h3>Try it</h3><p>Notification 17 opens note 29 after the second notification arrives. What do you inspect first?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Compare the operation type, creator, request code, matching Intent fields and update flags. Verify the target checks current authorization when opened.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-work-without-a-screen:give-another-component-a-bounded-pendingintent"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/reference/android/app/PendingIntent">Android · PendingIntent</a></p>
     </section>
 <section aria-labelledby="lesson-4">
-      <h2 id="lesson-4">Persist before process priority changes</h2>
+      <h2 id="lesson-4" data-practice-heading="chapter-work-without-a-screen:persist-before-process-priority-changes">Persist before process priority changes</h2>
       <p>Android ranks processes partly by their most important active component. A process hosting the visible interaction is typically more important than a cached process. Memory pressure can reclaim cached processes without delivering a final callback in which to save data.</p>
       <h3>Worked example</h3><p>A user saves a draft and backgrounds the app. If the only copy lives in a singleton, reclaiming the cached process removes it. Commit the draft when the edit is accepted; rebuild the screen from an ID after process recreation.</p>
       <h3>Try it</h3><p>Does restoring a navigation screen prove that cached bytes or an unfinished thread survived?</p>
       <details class="recall"><summary>Compare your answer</summary><p>No. Read the persisted draft and a durable work record. Test with process recreation separately from ordinary rotation.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-work-without-a-screen:persist-before-process-priority-changes"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/guide/components/activities/process-lifecycle">Android · Processes and app lifecycle</a></p>
     </section>
 <section aria-labelledby="lesson-5">
-      <h2 id="lesson-5">Separate device idle from app usage restrictions</h2>
+      <h2 id="lesson-5" data-practice-heading="chapter-work-without-a-screen:separate-device-idle-from-app-usage-restrictions">Separate device idle from app usage restrictions</h2>
       <p>Doze changes the device’s treatment of background network and scheduled work during idle periods. App Standby Buckets classify an individual app by usage and affect its resource opportunities. A delayed job can reflect either policy as well as its own constraints.</p>
       <h3>Worked example</h3><p>An unused news app requests a refresh while an unplugged phone rests with its screen off. Its job can wait even though the stored job record is correct. Inspect device idle state, the app’s bucket, job constraints and actual execution times.</p>
       <h3>Try it</h3><p>Can a periodically requested refresh promise that data is exactly fifteen minutes old at every screen open?</p>
       <details class="recall"><summary>Compare your answer</summary><p>No. Persist the last successful fetch time, display its age, and define what opening the screen should do if the refresh is overdue.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-work-without-a-screen:separate-device-idle-from-app-usage-restrictions"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/topic/performance/appstandby">Android · App Standby Buckets</a></p>
     </section>
 <section aria-labelledby="lesson-6">
-      <h2 id="lesson-6">Schedule around Doze maintenance windows</h2>
+      <h2 id="lesson-6" data-practice-heading="chapter-work-without-a-screen:schedule-around-doze-maintenance-windows">Schedule around Doze maintenance windows</h2>
       <p>During device idle, Android defers categories of background CPU and network work. Maintenance windows temporarily allow deferred work. A pending operation can be correctly recorded on disk while its first opportunity to contact the server is still in the future.</p>
       <h3>Worked example</h3><p>At 23:00 a device enters idle with a deferred notes upload. The service receives nothing at 23:05. When an allowed window opens, the worker can attempt the upload if its own constraints are also satisfied. Inspect both scheduling and network outcomes before diagnosing a lost edit.</p>
       <h3>Try it</h3><p>A user opens the app before the worker has run. What should their notes screen show?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Render the local saved edit and its pending state. A background scheduling delay should not erase a draft or falsely mark it synchronized.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-work-without-a-screen:schedule-around-doze-maintenance-windows"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/training/monitoring-device-state/doze-standby">Android · Optimize for Doze and App Standby</a></p>
     </section>
 <section aria-labelledby="lesson-7">
-      <h2 id="lesson-7">Resume persistent work without repeating its effect</h2>
+      <h2 id="lesson-7" data-practice-heading="chapter-work-without-a-screen:resume-persistent-work-without-repeating-its-effect">Resume persistent work without repeating its effect</h2>
       <p>WorkManager persists a request and waits for its constraints. The worker may be stopped or run again. A stable work name can coordinate local scheduling; the remote write still needs an identity or a repeat-safe operation.</p>
       <h3>Worked example</h3><p>Persist upload 81. The worker sends it, the server accepts it and the phone stops before recording success. On a later run, the worker resends upload 81. A server that records that identity can return the original result.</p>
       <h3>Try it</h3><p>Would a brand-new server-side upload ID on every worker attempt be safe?</p>
       <details class="recall"><summary>Compare your answer</summary><p>It could create duplicates. Keep the operation identity with the input, retry transient failure with backoff and mark completion after recovering the outcome.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-work-without-a-screen:resume-persistent-work-without-repeating-its-effect"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/develop/background-work/background-tasks/persistent">Android · Task scheduling</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-threads-coroutines-and-flow.html">Threads, coroutines and Flow →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-work-without-a-screen" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-work-without-a-screen" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

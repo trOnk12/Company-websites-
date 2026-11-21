@@ -24,7 +24,7 @@ It is, with a **key exchange**. The idea, in the form called Diffie–Hellman, w
 
 With small numbers, so you can check it by hand (real ones are hundreds of digits long): both sides agree in public on a modulus p = 23 and a base g = 5. Your app picks private 6 and sends 5⁶ mod 23 = 8. The server picks private 15 and sends 5¹⁵ mod 23 = 19. Your app computes 19⁶ mod 23 = 2; the server computes 8¹⁵ mod 23 = 2. Same secret, 2, and it never travelled. ("mod 23" means the remainder after dividing by 23.)
 
-The listener has both public values, but neither private one, and with only public values there's no known way to compute the shared secret. So both sides now share a secret nobody else has, and the keys for AES from puzzle 2 are derived from it: computed from it in a fixed way both sides follow (puzzle 8). Once the connection ends, both private values are thrown away, so every connection gets fresh ones.
+The listener has both public values, but neither private one, and with well-chosen real parameters there is no known practical way for a passive observer to recover the shared secret; the tiny teaching example is easy to enumerate. So both sides now share a secret nobody else has, and the keys for AES from puzzle 2 are derived from it: computed from it in a fixed way both sides follow (puzzle 8). This example assumes a fresh ephemeral key exchange. A resumed secure connection may use previously established key material under separate protocol rules.
 
 Mixing paint gives the feel of it. Both start from the same yellow, agreed in public. Each mixes a secret color into it and sends the mix. Each then adds its own secret color to the other's mix. Both end with the same brown; the listener, holding only the two mixes, can't un-mix them.
 

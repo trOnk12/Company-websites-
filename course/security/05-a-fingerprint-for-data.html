@@ -100,7 +100,7 @@
         <h2 id="the-building-block">The building block</h2>
 <p>A <b>hash function</b> turns any amount of data, a word or a whole video, into a short number of fixed size: its <b>digest</b>, a fingerprint of the data. The standard one, <b><code>SHA-256</code></b>, always produces 256 bits.</p>
 <p>Three properties make it useful:</p>
-<ul><li>the same data always gives the same digest;</li><li>change even one bit of the data, and the digest changes beyond recognition;</li><li>given a digest, nobody can construct data that produces it, and nobody can find two different pieces of data with the same digest. Nobody knows a method; trying data at random would take far longer than the age of the universe.</li></ul>
+<ul><li>the same data always gives the same digest;</li><li>a small input change typically changes many digest bits;</li><li>for SHA-256, finding a matching input for an arbitrary digest or deliberately finding two inputs with the same digest is computationally infeasible with known practical methods. Collisions must exist because fixed-size digests describe many more possible inputs.</li></ul>
 <p>So if you know the digest the data should have, you can check it: hash what arrived, compare. Different digest: something changed it.</p>
 <p>There's a catch. If the attacker can change the data, it can also change a digest sent next to it: it hashes its own version and sends that digest instead. A digest helps only if the attacker can't make a matching one.</p>
 <p>Two ways close that gap. If both sides already share a secret key, they can mix it into the fingerprint, so only they can make one: that's the next puzzle. Before there's a shared key, puzzle 7 makes a mark that only the real sender can produce.</p>
@@ -114,16 +114,16 @@
 <fieldset class="quiz">
 <legend>One bit of a 10 MB file is flipped on the way. What happens to its <code>SHA-256</code> digest?</legend>
 <input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-1"><label for="q-05-a-fingerprint-for-data-1-1"><span>It changes by one bit, matching the one bit that changed</span></label>
-<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-2" data-ok><label for="q-05-a-fingerprint-for-data-1-2"><span>It changes completely, so a comparison shows the file was changed</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-2" data-ok><label for="q-05-a-fingerprint-for-data-1-2"><span>It will almost certainly differ, revealing the change</span></label>
 <input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-3"><label for="q-05-a-fingerprint-for-data-1-3"><span>It stays the same, because one bit is too small to matter</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A hash doesn't map bits to bits: one flipped bit changes the whole digest. <label class="show-me" for="st-hash-3" data-goto="st-hash">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> One bit changed, a different digest.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Any change, even one bit, gives a different digest. <label class="show-me" for="st-hash-3" data-goto="st-hash">Show me step 3 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> Even a one-bit change is overwhelmingly likely to give a different digest. <label class="show-me" for="st-hash-3" data-goto="st-hash">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why can't an attacker just make new data that has the expected digest?</legend>
 <input type="radio" name="q-05-a-fingerprint-for-data-2" id="q-05-a-fingerprint-for-data-2-1"><label for="q-05-a-fingerprint-for-data-2-1"><span>Because the digest is encrypted with AES on the way</span></label>
-<input type="radio" name="q-05-a-fingerprint-for-data-2" id="q-05-a-fingerprint-for-data-2-2" data-ok><label for="q-05-a-fingerprint-for-data-2-2"><span>Because nobody knows how to build data for a given digest</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-2" id="q-05-a-fingerprint-for-data-2-2" data-ok><label for="q-05-a-fingerprint-for-data-2-2"><span>Because finding a matching input is infeasible</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The digest's strength is in the hash function itself, not in AES. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Going from digest back to data is the hard direction.</p>
 </fieldset>
@@ -138,7 +138,7 @@
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.180-4.pdf">NIST FIPS 180-4: Secure Hash Standard</a> (&quot;the result is an output called a message digest… it is computationally infeasible 1) to find a message that corresponds to a given message digest, or 2) to find two different messages that produce the same message digest. Any change to a message will, with a very high probability, result in a different message digest.&quot;)</li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A hash function turns any data into a short, fixed-size digest, like SHA-256's 256 bits. Change one bit of the data and the digest changes completely, and nobody can make data that matches a given digest. So comparing digests shows whether data was changed.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>SHA-256 maps data to a 256-bit digest. Accidental collisions are extremely unlikely, while a deliberately matching input is impractical to find. A trusted expected digest lets the receiver check what arrived.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="04-the-man-in-the-middle.html">← Puzzle 4</a>

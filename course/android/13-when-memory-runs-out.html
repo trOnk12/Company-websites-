@@ -97,8 +97,8 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Android sorts every app process by <b>importance</b>: how much the user would notice if it disappeared. At the top is the <b>foreground</b> process, the app the user is using right now. Below it are processes the user can still see or hear, like music playing. At the bottom are <b>cached</b> processes: apps the user left, kept in memory only so they open faster next time.</p>
-<p>When free memory runs low, Android's <b>low-memory killer</b> ends processes to get memory back. It always starts with the least important: cached apps go first, the app on screen last. It doesn't ask your app; the kernel ends the process, and everything in its memory is gone at once.</p>
-<p>That's why &quot;my app is in the background&quot; never means &quot;my app is still running&quot;. Leaving an app makes it cached, and a cached process can disappear at any moment. Two later puzzles build on this: starting an app again from nothing (puzzle 14), and how a screen gets its state back after its process was ended (puzzle 22).</p>
+<p>When free memory runs low, Android's <b>low-memory killer</b> ends processes to get memory back. Less important processes are generally preferred candidates. Which process is reclaimed also depends on memory pressure and device policy. It doesn't ask your app; the kernel ends the process, and everything in its memory is gone at once.</p>
+<p>That's why &quot;my app is in the background&quot; never means &quot;my app is still running&quot;. Leaving an app can make it cached once higher-priority work ends, and a cached process can disappear at any moment. Two later puzzles build on this: starting an app again from nothing (puzzle 14), and how a screen gets its state back after its process was ended (puzzle 22).</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

@@ -2,7 +2,7 @@
 title: Threads share one house
 short: Shared memory
 summary: All the threads in a process see the same memory. That's what makes them useful together, and it's also how two of them can quietly break the same value. Here's the trap, and Android's way around it for the screen.
-takeaway: Threads in one process share its memory: a value one thread changes, every other thread sees. If two threads change the same value at the same moment, their steps can interleave and an update is lost. The fix is a lock (one thread at a time) or one owner (only one thread ever touches it). Android picked one owner for the screen: the main thread.
+takeaway: Threads share an address space. To publish changes reliably, coordinate access using a common lock, an atomic operation or messages to one owner. Two unsynchronized increments can lose an update even if neither thread crashes.
 ---
 
 ## The problem
@@ -16,11 +16,11 @@ In puzzle 2, a download thread and the main thread worked in the same process. T
 
 ## The building block
 
-A process has one block of memory (puzzle 0), and every thread inside it can read and write all of it. A value one thread writes, the others can read a moment later. That's how threads cooperate: one prepares data, another uses it.
+A process has one block of memory (puzzle 0), and every thread inside it can read and write all of it. Sharing memory makes communication possible. Without a lock, an atomic operation or another synchronization rule, another thread has no guarantee about when it observes a write. That's how threads cooperate: one prepares data, another uses it.
 
-The danger is changing the same value at the same moment. Even `count = count + 1` is three steps for the CPU: read the value, add one, write it back. If two threads both read 5, both add one and both write 6, one update is lost: the count should be 7. This is a **race condition**: the result depends on the exact order the kernel happened to run their steps in, so it works most of the time and breaks once in a while.
+The danger is changing the same value at the same moment. Even `count = count + 1` can be understood as three logical steps: read the value, add one, write it back. If two threads both read 5, both add one and both write 6, one update is lost: the count should be 7. This is a **race condition**: the result depends on the exact order the kernel happened to run their steps in, so it works most of the time and breaks once in a while.
 
-There are two ways out. A **lock** lets only one thread at a time into a piece of code: the second one waits until the first is done. Or give the value **one owner**: only one thread ever touches it, and the others ask it to.
+Two common solutions follow. A **lock** lets only one thread at a time into a piece of code: the second one waits until the first is done. Or give the value **one owner**: only one thread ever touches it, and the others ask it to.
 
 Code that stays correct when several threads use it at once is **thread-safe**. Android's screen code isn't, so it uses the second way. Buttons, text and everything drawn belong to the main thread, and no other thread may change them. Puzzle 16 shows how other threads ask the main thread to do it for them.
 

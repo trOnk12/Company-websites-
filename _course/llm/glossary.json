@@ -232,7 +232,7 @@
   },
   "LLM": {
    "in": "00",
-   "def": "A large language model, too big for a phone, run on a provider's servers.",
+   "def": "A large language model. Some models run on a device; others are hosted by a provider.",
    "aliases": [
     "LLMs"
    ]

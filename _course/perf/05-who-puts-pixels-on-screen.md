@@ -2,7 +2,7 @@
 title: Who puts pixels on screen
 short: GPU, buffers, SurfaceFlinger
 summary: Your app never touches the display. It fills a block of memory with pixels and hands it to someone else, who combines it with every other window on screen. Here's that hand-off, the path every frame takes.
-takeaway: The display redraws at a fixed rate and sends vsync before each refresh. Your app's RenderThread gives drawing commands to the GPU, which fills a buffer with the frame's pixels. The finished buffer is queued for SurfaceFlinger, which composites the latest buffer of every visible window into what the display shows. A frame counts only once its buffer is ready when SurfaceFlinger needs it.
+takeaway: For each interval in this example the display has a known refresh rate and sends vsync before each refresh. Your app's RenderThread gives drawing commands to the GPU, which fills a buffer with the frame's pixels. The finished buffer is queued for SurfaceFlinger, which composites the latest buffer of every visible window into what the display shows. A frame counts only once its buffer is ready when SurfaceFlinger needs it.
 ---
 
 ## The problem
@@ -16,11 +16,11 @@ On your screen right now are the status bar, your app, maybe a keyboard, and the
 
 ## The building block
 
-The display redraws its picture at a fixed rate, 60 or 120 times a second. Just before each refresh it sends **vsync**, a signal that says "a new picture is about to be shown". Everything below happens in rhythm with it.
+At a stable 60 Hz or 120 Hz the display refreshes 60 or 120 times per second; some devices vary that rate. Just before each refresh it sends **vsync**, a signal that says "a new picture is about to be shown". Everything below happens in rhythm with it.
 
 In the Android course you saw a frame's work: the main thread measures, lays out and records what to draw, and the RenderThread takes it from there. The RenderThread sends those drawing commands to the **GPU**, the graphics processor: a separate part of the chip built to fill millions of pixels at once. Android's docs put it plainly: drawing on a view's canvas uses the GPU.
 
-The GPU writes the pixels into a **buffer**, a block of memory that holds one picture. Your app doesn't own the display, so it queues the finished buffer and moves on to the next frame with a fresh one.
+The GPU writes the pixels into a **buffer**, a block of memory that holds one picture. Your app doesn't own the display, so it queues the buffer with synchronization information so unfinished GPU work can be waited on, then moves on to the next frame with a fresh one.
 
 On the other side of that queue is **SurfaceFlinger**, a system service. Between display refreshes, it takes the latest buffer from every visible window (your app, the status bar, the keyboard) and **composites** them: combines them into the one picture the display shows. It only accepts buffers between refreshes, so the screen never changes halfway through drawing.
 

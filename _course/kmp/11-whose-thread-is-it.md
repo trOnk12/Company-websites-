@@ -16,9 +16,9 @@ In puzzle 6, a `suspend` function crossed into Swift as a function with a comple
 
 ## The building block
 
-On iOS, `Dispatchers.Main` is backed by the main queue from puzzle 10, the line of tasks the main thread's run loop works through. So a coroutine that resumes on `Dispatchers.Main` runs on the main thread, exactly where screen work belongs, just as on Android. `Dispatchers.Default` and `Dispatchers.IO` run on Kotlin's own pools of worker threads.
+On iOS, `Dispatchers.Main` is backed by the main queue from puzzle 10, the line of tasks the main thread's run loop works through. So a coroutine that resumes on `Dispatchers.Main` runs on the main thread, exactly where screen work belongs, just as on Android. `Dispatchers.Default` and `Dispatchers.IO` are intended for CPU and blocking work respectively. Do not depend on a particular worker thread or assume a call always switches threads.
 
-The surprise is **cancellation**. On Android, cancelling a **scope**, the `CoroutineScope` that owns a group of coroutines, stops all of them. From Swift, a Kotlin `suspend` function arrives as a function with a completion handler, and that bridge has no way to pass a cancellation through. So when the Swift task that's waiting is cancelled, say the user leaves the screen, the Kotlin coroutine keeps going: the network call runs to the end, and the Swift side still waits for it, for a screen that's already gone.
+The surprise is **cancellation**. On Android, cancelling the job of a **scope**, the `CoroutineScope` that owns a group of coroutines, signals cancellation to its children. Running code must cooperate before it stops. From Swift, a Kotlin `suspend` function arrives as a function with a completion handler, and that bridge has no way to pass a cancellation through. So when the Swift task that's waiting is cancelled, say the user leaves the screen, the Kotlin coroutine keeps going: the network call runs to the end, and the Swift side still waits for it, for a screen that's already gone.
 
 Two ways out. Libraries such as SKIE, a Kotlin-to-Swift bridge from Touchlab, generate real Swift async functions that do pass cancellation through. Or your shared code owns the scope itself: a shared class creates its `CoroutineScope`, and exposes a `close()` that the Swift side calls when the screen goes away, which cancels everything in it.
 

@@ -252,6 +252,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/backend-ops/chapter-follow-one-booking-through-spring-mvc-and-a-database-transaction</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/backend-ops/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -533,6 +538,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/jvm/chapter-loading-code-and-diagnosing-runtime-limits</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/chapter-diagnose-a-slow-java-service-from-a-thread-dump-to-a-recording</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -1008,6 +1018,11 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/system-design/chapter-choosing-boundaries-that-hold-during-overload</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/system-design/chapter-rebuild-a-concert-seating-map-from-reservation-events</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

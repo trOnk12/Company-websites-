@@ -30,7 +30,7 @@ So for small requests, the time is roughly:
 
 At 30 ms per round trip on Wi-Fi, four in a row is 120 ms. At 250 ms on a busy mobile network, it's a full second, and doubling the bandwidth doesn't change it, because you weren't waiting for bandwidth. Sending the user, settings and avatar URL requests together, then the avatar, takes two round trips: 500 ms. (In Kotlin, start them with `async` and wait with `awaitAll`; over one connection this needs a newer HTTP version, puzzle 5.)
 
-That's why the first question of any mobile system design is: how many round trips does this screen need, and can they happen at the same time, or not at all? One endpoint that returns the whole screen, or requests that don't depend on each other, beats any amount of compression.
+That's why the first question of any mobile system design is: how many round trips does this screen need, and can they happen at the same time, or not at all? One endpoint that returns the whole screen, or requests that don't depend on each other, can shorten this latency-dominated example.
 
 ## The analogy
 
@@ -39,7 +39,7 @@ Asking a friend in another city four questions by post, one letter at a time, wa
 ## Check yourself
 
 - Your screen's four requests each wait for the one before, on a 250 ms mobile network. Bandwidth doubles. Roughly how long does loading take now?::*About the same, about one second, since the wait is four round trips||Half as long, because twice the bandwidth moves data twice as fast >> For a few kilobytes the data takes almost no time; the trips do. >> s3||A quarter as long, because the four requests now share the bandwidth >> Sharing bandwidth doesn't shorten a trip. >> s3::Small requests wait for round trips.
-- Which change makes that screen faster on every network?::*Sending the three independent requests together, then the avatar||Compressing the responses so each one is smaller >> Smaller data saves little when the wait is the trip, not the data. >> s4||Moving from Wi-Fi to a 5G network with more bandwidth >> More bandwidth doesn't remove round trips; fewer trips do. >> s4::Fewer trips in a row, faster everywhere.
+- Which change reduces sequential waits in this example?::*Sending the three independent requests together, then the avatar||Compressing the responses so each one is smaller >> Smaller data saves little when the wait is the trip, not the data. >> s4||Moving from Wi-Fi to a 5G network with more bandwidth >> More bandwidth doesn't remove round trips; fewer trips do. >> s4::Fewer trips on this critical path.
 - What's the difference between latency and bandwidth?::*Latency is how long a packet takes to arrive, while bandwidth is how much data fits per second||Latency is how much data fits per second, while bandwidth is how long a packet takes to arrive >> That's the two swapped. >> the-building-block::Time of the trip vs size of the pipe.
 
 ## Sources

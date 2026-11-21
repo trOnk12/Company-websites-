@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Loading code and diagnosing runtime limits · JVM internals for Kotlin and Android developers</title>
   <link rel="canonical" href="https://pachulski.dev/course/jvm/chapter-loading-code-and-diagnosing-runtime-limits">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,39 +48,43 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="jvm">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">JVM internals for Kotlin and Android developers</a></p>
-      <p class="eyebrow">Practice chapter 2 of 2</p><h1>Loading code and diagnosing runtime limits</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">When are two classes with the same name different types?</a></li><li><a href="#lesson-2">What can a rising heap graph prove?</a></li><li><a href="#lesson-3">Which bottleneck do virtual threads remove?</a></li></ol></nav>
+      <p class="eyebrow">Practice chapter 2 of 3</p><h1>Loading code and diagnosing runtime limits</h1>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">When are two classes with the same name different types?</a> <span class="small" data-practice-nav="chapter-loading-code-and-diagnosing-runtime-limits:when-are-two-classes-with-the-same-name-different-types"></span></li><li><a href="#lesson-2">What can a rising heap graph prove?</a> <span class="small" data-practice-nav="chapter-loading-code-and-diagnosing-runtime-limits:what-can-a-rising-heap-graph-prove"></span></li><li><a href="#lesson-3">Which bottleneck do virtual threads remove?</a> <span class="small" data-practice-nav="chapter-loading-code-and-diagnosing-runtime-limits:which-bottleneck-do-virtual-threads-remove"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">When are two classes with the same name different types?</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-loading-code-and-diagnosing-runtime-limits:when-are-two-classes-with-the-same-name-different-types">When are two classes with the same name different types?</h2>
       <p>A class file describes a type by binary name. In a running JVM, class identity also includes its defining class loader. Loading obtains a class definition, linking checks it and prepares it for use, and initialization executes the required class initialization code. An operation that loads a class does not necessarily initialize it.</p>
       <h3>Worked example</h3><p>A host application and a plugin each define their own copy of api.Event. The plugin can print the same class name the host expects and still fail the host cast. Log the defining loader of the interface expected by the host and the defining loader of the interface implemented by the plugin.</p>
       <h3>Try it</h3><p>Both plugins have their own private implementation classes. How can the host accept both through a common interface?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Arrange for both to resolve the shared API through the same defining loader, while retaining private implementations in the plugin loaders. Prove assignability across the actual plugin boundary. Identical source code or class-file checksums alone do not establish runtime identity.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-loading-code-and-diagnosing-runtime-limits:when-are-two-classes-with-the-same-name-different-types"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-5.html">Java Virtual Machine Specification · Loading, linking and initialization</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">What can a rising heap graph prove?</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-loading-code-and-diagnosing-runtime-limits:what-can-a-rising-heap-graph-prove">What can a rising heap graph prove?</h2>
       <p>G1 manages the Java heap as regions and collects selected regions, evacuating live objects when appropriate. Allocating rapidly and retaining a growing set of objects cause different problems. Compare comparable workload phases, collection events and the post-collection live-data trend before diagnosing a leak.</p>
       <h3>Worked example</h3><p>During three similar ten-minute intervals, use grows to 700 MiB and falls to 210, 212 and 211 MiB after comparable collections. The peaks alone are weak evidence of unbounded retention. If comparable low points instead rise from 210 to 340 to 475 MiB, inspect reference paths, cache policy and the workload that produced the objects.</p>
       <h3>Try it</h3><p>The JVM process grows while the measured Java heap remains roughly flat. Would raising the heap limit be your first experiment?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Measure other contributors such as direct buffers, thread stacks and native allocations. Record process memory, heap and collection logs together. Increasing the maximum heap without evidence can leave less headroom for other memory within the container.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-loading-code-and-diagnosing-runtime-limits:what-can-a-rising-heap-graph-prove"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html">Java 21 · Garbage-first collection</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Which bottleneck do virtual threads remove?</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-loading-code-and-diagnosing-runtime-limits:which-bottleneck-do-virtual-threads-remove">Which bottleneck do virtual threads remove?</h2>
       <p>Virtual threads allow a large number of tasks to wait without requiring one permanently occupied platform thread per task. A database connection, CPU core and remote-service quota remain finite resources. Give each constrained dependency an explicit admission policy.</p>
       <h3>Worked example</h3><p>Five hundred concurrent requests use virtual threads, but only ten database connections exist. If each checkout occupies a connection for 50 ms, the idealized ceiling of that pool is about 200 operations per second. This estimate assumes continuous use, one checkout per operation and no other limit. Adding virtual threads cannot multiply the ten connections.</p>
       <h3>Try it</h3><p>How would you test whether the connection pool or the CPU sets the observed limit?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Sweep concurrency while recording throughput, checkout wait, connection hold time, CPU use and tail latency. Change one resource limit per run. A rising checkout wait with ten busy connections is direct evidence to investigate database demand before increasing concurrency.</p></details>
-      <p class="small">Source · <a href="https://openjdk.org/jeps/444">OpenJDK · JEP 444 Virtual Threads</a></p>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-loading-code-and-diagnosing-runtime-limits:which-bottleneck-do-virtual-threads-remove"> I attempted the exercise and compared my answer</label>
+      <p class="small">Source · <a href="https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html">JDK 21 · Virtual threads</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
-        <a class="button primary" href="final-project.html">Start the final project →</a></nav>
+        <a class="button primary" href="chapter-diagnose-a-slow-java-service-from-a-thread-dump-to-a-recording.html">Diagnose a slow Java service from a thread dump to a recording →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fjvm%2Fchapter-loading-code-and-diagnosing-runtime-limits" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fjvm%2Fchapter-loading-code-and-diagnosing-runtime-limits" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

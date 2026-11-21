@@ -30,6 +30,8 @@ In a fresh run, isolate C before Ada makes her reservation. Move Ben's read unti
 
 ## Try it
 
+[Compare two write acknowledgements across a real PostgreSQL promotion](https://pachulski.dev/labs/parking-design/#failover)
+
 Trace what a driver sees on each side. Compare refusal with the preallocated local rights from the previous lesson. Repeat with five nodes: three mutually reachable survivors can form a majority. After reconnection, inspect the entire history of confirmations, not only the final counter.
 
 ## Check yourself

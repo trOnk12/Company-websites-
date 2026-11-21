@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Reading production evidence · Backend engineering from first request to production</title>
   <link rel="canonical" href="https://pachulski.dev/course/backend-ops/chapter-reading-production-evidence">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,39 +48,43 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="backend-ops">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Backend engineering from first request to production</a></p>
-      <p class="eyebrow">Practice chapter 1 of 2</p><h1>Reading production evidence</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Which index matches the question?</a></li><li><a href="#lesson-2">What is a query plan counting?</a></li><li><a href="#lesson-3">Should the platform restart this process?</a></li></ol></nav>
+      <p class="eyebrow">Practice chapter 1 of 3</p><h1>Reading production evidence</h1>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Which index matches the question?</a> <span class="small" data-practice-nav="chapter-reading-production-evidence:which-index-matches-the-question"></span></li><li><a href="#lesson-2">What is a query plan counting?</a> <span class="small" data-practice-nav="chapter-reading-production-evidence:what-is-a-query-plan-counting"></span></li><li><a href="#lesson-3">Should the platform restart this process?</a> <span class="small" data-practice-nav="chapter-reading-production-evidence:should-the-platform-restart-this-process"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Which index matches the question?</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-reading-production-evidence:which-index-matches-the-question">Which index matches the question?</h2>
       <p>A B-tree orders keys lexicographically. In an index on (owner_id, created_at, id), entries for each owner are contiguous. The next two columns order that owner's bookmarks and break timestamp ties. A query can seek to the owner and a cursor boundary, then stop when it has enough rows.</p>
       <h3>Worked example</h3><p>For owner 7, two bookmarks have the same timestamp and IDs 31 and 32. Order by created_at DESC, id DESC. A page ending at (T,32) must admit (T,31) on the next page. The predicate (created_at,id) &lt; (T,32), combined with owner_id = 7, preserves that boundary. A strict timestamp-only predicate skips ID 31.</p>
       <h3>Try it</h3><p>Would this index also be your first choice for listing the latest ten bookmarks across every owner?</p>
       <details class="recall"><summary>Compare your answer</summary><p>The leading owner key groups entries by owner. A global time-ordered feed has a different access pattern. Compare plans and representative loads for an index beginning with created_at and id. Include the storage and write cost of maintaining another index.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-reading-production-evidence:which-index-matches-the-question"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://www.postgresql.org/docs/17/indexes-multicolumn.html">PostgreSQL · Multicolumn indexes</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">What is a query plan counting?</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-reading-production-evidence:what-is-a-query-plan-counting">What is a query plan counting?</h2>
       <p>A plan is a tree of operations chosen by the database. Estimates guide that choice. EXPLAIN ANALYZE runs the statement and reports measurements. Inspect the first large divergence in row estimates, and remember that actual rows at a node with multiple loops are reported as a per-loop average.</p>
       <h3>Worked example</h3><p>A nested loop finds 200 owners and probes bookmarks once per owner. The inner node says actual rows=5 loops=200. It returned about 1,000 rows across its invocations. If the estimate was one row per probe, the work diverged by roughly five times there. A ten-row development table cannot reproduce the distribution of a few very large owners.</p>
       <h3>Try it</h3><p>Your colleague adds the times of every parent and child node to explain total latency. What would you measure instead?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Parent time includes child work, so that sum double-counts it. Record the top-level execution time, inspect the costly subtree, and compare equivalent runs with the same inputs and cache conditions. Use buffers and representative distributions to test the proposed explanation.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-reading-production-evidence:what-is-a-query-plan-counting"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://www.postgresql.org/docs/17/using-explain.html">PostgreSQL · Using EXPLAIN</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Should the platform restart this process?</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-reading-production-evidence:should-the-platform-restart-this-process">Should the platform restart this process?</h2>
       <p>A startup probe grants a slow-starting container time to initialize before the other probes take over. Readiness controls eligibility to receive service traffic. Persistent liveness failure tells the kubelet to restart the container according to its restart policy. A probe therefore encodes a recovery decision, not just a health label.</p>
       <h3>Worked example</h3><p>Six pods share a database. For thirty seconds the database refuses connections. Restarting all six application processes cannot restore that dependency and adds startup load. Choose whether these pods can still serve meaningful requests. Test a readiness policy against that contract, and reserve a liveness failure for a condition a restart can plausibly fix.</p>
       <h3>Try it</h3><p>A pod passes its HTTP readiness probe after a rollback. What evidence would let you declare bookmark writes recovered?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Send a representative synthetic write, read it through another eligible instance, and verify its owner and contents. Observe user error rates during the same window. A successful probe establishes only that its specific check passed.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-reading-production-evidence:should-the-platform-restart-this-process"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://kubernetes.io/docs/concepts/workloads/pods/probes/">Kubernetes · Container probes</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-build-and-roll-out-a-service-under-resource-limits.html">Build and roll out a service under resource limits →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fbackend-ops%2Fchapter-reading-production-evidence" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fbackend-ops%2Fchapter-reading-production-evidence" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

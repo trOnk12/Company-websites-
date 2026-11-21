@@ -22,7 +22,7 @@ Puzzle 0 said TLS "encrypts the stream" and moved on. On the café's Wi-Fi, ever
 2. Integrity: a changed byte is detected, and the data is rejected.
 3. Authentication: you're talking to the server you named, not an impostor. The server proves it with a **certificate**: a document, signed by an authority your phone already trusts, that says "this key belongs to api.example.com".
 
-To set this up, client and server run a **handshake** when the connection opens: they agree on keys and the server shows its certificate. In TLS 1.3, the current version, that takes one round trip, on top of TCP's own.
+To set this up, client and server run a **handshake** when the connection opens: they agree on keys and the server shows its certificate. In the full TLS 1.3 handshake shown here, without an extra server request to redo the initial key offer, that costs one round trip on top of TCP.
 
 You don't write any of it: OkHttp and Android do it for you. What you need to know is that it happens once per new connection, and that it costs a round trip, which is why the next puzzle cares so much about reusing connections. (How the keys are agreed in public, and how a certificate can be trusted, is the Encryption course.)
 

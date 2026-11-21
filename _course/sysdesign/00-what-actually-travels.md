@@ -2,7 +2,7 @@
 title: What actually travels
 short: Packets, IP, TCP
 summary: Your app calls an API and gets JSON back, as if the two were joined by a pipe. Underneath, there's no pipe: only small chunks of data that can get lost. Here's the stack of layers that turns them into a request and a response.
-takeaway: Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.
+takeaway: Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers bytes, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.
 ---
 
 ## The problem
@@ -16,18 +16,18 @@ In your code, a request is one call, and a user object comes back. But the phone
 
 ## The building block
 
-Nothing travels as one piece. Data is cut into **packets**: small chunks, each up to about a kilobyte and a half, each with an address on it.
+Data travels in **packets**. A small message can fit in one; a large stream spans many. About 1,500 bytes is a common link limit, not a universal packet size.
 
 **IP**, the Internet Protocol, is the postal service: it addresses each packet and passes it from router to router toward the server. It does its best, nothing more. A packet can be lost, delayed, or overtaken by the one sent after it.
 
-**TCP**, the Transmission Control Protocol, builds something reliable on top. The sender numbers every packet; the receiver sends back acknowledgements, "got up to number 12"; anything not acknowledged in time is sent again; the receiver puts packets back in order. Your code sees one clean stream of bytes. To keep that bookkeeping, both sides must first agree to talk: a TCP **connection**, set up with a short exchange before any data flows.
+**TCP**, the Transmission Control Protocol, builds something reliable on top. The sender numbers positions in the byte stream. Each segment carries the position of its first byte. An acknowledgement gives the next byte expected; the sender can retransmit missing data, and the receiver delivers bytes in order. Your code sees one clean stream of bytes. To keep that bookkeeping, both sides must first agree to talk: a TCP **connection**, set up with a short exchange before any data flows.
 
-On top of TCP, two more layers:
+This diagram follows the stack that uses TCP; other web transports exist. On top of TCP, two more layers:
 
 | Layer | Its job |
 |---|---|
 | HTTP | the request and the response (puzzle 2) |
-| TLS | encrypts the stream, so routers on the way can't read or change it (puzzle 4) |
+| TLS | encrypts the stream, so intermediaries cannot read the content or alter it undetected (puzzle 4) |
 | TCP | reliable, ordered delivery, over a connection |
 | IP | addresses and routes each packet, best effort |
 
@@ -39,10 +39,12 @@ Sending a book by post, one page per envelope. The post office (IP) delivers mos
 
 ## Check yourself
 
-- A packet of your request is lost between two routers. Who notices and fixes it?::*TCP: the missing packet isn't acknowledged, so it's sent again||IP: it reroutes the packet around the broken router >> IP only does its best; recovering lost packets is TCP's job. >> s3||Your app: OkHttp sees the gap and asks for the packet >> Your code sees a clean stream; TCP handles losses underneath. >> s3::Numbering, acknowledging, resending: TCP.
-- Why must a TCP connection be set up before the first request?::*Both sides must agree to talk and start numbering packets||IP needs the server's location confirmed first >> IP delivers every packet anyway; the setup is TCP's bookkeeping. >> s4||TLS refuses to send data without one >> TLS runs on top of TCP, but the setup is TCP's own need. >> s4::Reliability needs shared bookkeeping.
+- A packet of your request is lost between two routers. Who notices and fixes it?::*TCP: the missing bytes are retransmitted||IP: it reroutes the packet around the broken router >> IP only does its best; recovering lost packets is TCP's job. >> s3||Your app: OkHttp sees the gap and asks for the packet >> Your code sees a clean stream; TCP handles losses underneath. >> s3::Numbering, acknowledging, resending: TCP.
+- Why must a TCP connection be set up before the first request?::*To agree on initial byte sequence numbers||IP needs the server's location confirmed first >> IP delivers every packet anyway; the setup is TCP's bookkeeping. >> s4||TLS refuses to send data without one >> TLS runs on top of TCP, but the setup is TCP's own need. >> s4::Reliability needs shared bookkeeping.
 - What's the difference between IP and TCP?::*IP delivers single packets as best it can, while TCP makes them a reliable, ordered stream||IP makes packets a reliable, ordered stream, while TCP delivers single packets as best it can >> That's the two swapped. >> the-building-block::Best effort vs reliable.
 
 ## Sources
+
+- [RFC 9293 · Sequence numbers](https://www.rfc-editor.org/rfc/rfc9293.html#section-3.4)
 
 - [High Performance Browser Networking: Building blocks of TCP](https://hpbn.co/building-blocks-of-tcp/) ("The IP, or Internet Protocol, is what provides the host-to-host routing and addressing, and TCP, or Transmission Control Protocol, is what provides the abstraction of a reliable network running over an unreliable channel"; TCP hides "retransmission of lost data, in-order delivery, congestion control and avoidance, data integrity")

@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>What a call costs and how it fails · LLMs for mobile engineers, from tokens to your app</title>
   <link rel="canonical" href="https://pachulski.dev/course/llm/chapter-what-a-call-costs-and-how-it-fails">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,55 +48,61 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="llm">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
       <p class="eyebrow">Practice chapter 1 of 2</p><h1>What a call costs and how it fails</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Budget an answer and inspect why it stopped</a></li><li><a href="#lesson-2">Price input and generated output separately</a></li><li><a href="#lesson-3">Retry inside a deadline</a></li><li><a href="#lesson-4">Cache a reusable prompt prefix</a></li><li><a href="#lesson-5">Validate the meaning after validating the shape</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Budget an answer and inspect why it stopped</a> <span class="small" data-practice-nav="chapter-what-a-call-costs-and-how-it-fails:budget-an-answer-and-inspect-why-it-stopped"></span></li><li><a href="#lesson-2">Price input and generated output separately</a> <span class="small" data-practice-nav="chapter-what-a-call-costs-and-how-it-fails:price-input-and-generated-output-separately"></span></li><li><a href="#lesson-3">Retry inside a deadline</a> <span class="small" data-practice-nav="chapter-what-a-call-costs-and-how-it-fails:retry-inside-a-deadline"></span></li><li><a href="#lesson-4">Cache a reusable prompt prefix</a> <span class="small" data-practice-nav="chapter-what-a-call-costs-and-how-it-fails:cache-a-reusable-prompt-prefix"></span></li><li><a href="#lesson-5">Validate the meaning after validating the shape</a> <span class="small" data-practice-nav="chapter-what-a-call-costs-and-how-it-fails:validate-the-meaning-after-validating-the-shape"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Budget an answer and inspect why it stopped</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-what-a-call-costs-and-how-it-fails:budget-an-answer-and-inspect-why-it-stopped">Budget an answer and inspect why it stopped</h2>
       <p>An output token limit caps how much the model may generate. It is a ceiling rather than a desired length. A transport success can still carry a result cut off at that limit. Inspect the provider’s stop reason before treating text as complete or handing it to a downstream parser.</p>
       <h3>Worked example</h3><p>A lesson requests three worked cases but receives only two and half of a third. The stop reason reports max_tokens. Display the completed portion as partial. Shorten the requested unit of work or issue an explicitly budgeted continuation with enough context to avoid duplicating the first two cases.</p>
       <h3>Try it</h3><p>A response contains valid-looking JSON followed by the maximum-token stop reason. Which checks precede saving it?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Check completion, parse it, validate the expected fields and enforce business constraints. Retry within the remaining time and cost budget if the contract requires a complete answer.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-what-a-call-costs-and-how-it-fails:budget-an-answer-and-inspect-why-it-stopped"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons">Claude documentation · Stop reasons</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Price input and generated output separately</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-what-a-call-costs-and-how-it-fails:price-input-and-generated-output-separately">Price input and generated output separately</h2>
       <p>A provider can charge different prices per input and output token. Prompt processing and sequential generation have different execution patterns; the actual prices are provider policy, not a universal ratio derivable from token count. Estimate with the selected model’s published rates and verify against recorded usage.</p>
       <h3>Worked example</h3><p>Use fictional rates of 2 units per million input tokens and 8 per million output tokens. A request with 2,000 input and 500 output tokens costs 0.004 + 0.004 = 0.008 units. Output is one fifth of the tokens and half of the example bill.</p>
       <h3>Try it</h3><p>You can remove 500 input tokens or 200 output tokens without reducing quality. Which saves more at these rates?</p>
       <details class="recall"><summary>Compare your answer</summary><p>The input reduction saves 0.001 units per call. The output reduction saves 0.0016. Multiply by measured traffic and include cache reads and writes when applicable.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-what-a-call-costs-and-how-it-fails:price-input-and-generated-output-separately"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://platform.claude.com/docs/en/about-claude/pricing">Claude documentation · Pricing</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Retry inside a deadline</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-what-a-call-costs-and-how-it-fails:retry-inside-a-deadline">Retry inside a deadline</h2>
       <p>Rate limits constrain access over time. A submitted call may exceed request or token throughput even when account spending remains available. Treat a rate-limit response as a scheduling signal. Respect the service’s retry delay, add bounded backoff where appropriate and track the overall deadline across attempts.</p>
       <h3>Worked example</h3><p>The phone has a three-second deadline. The first attempt takes 0.8 s, then the service asks for a five-second delay. Retrying inside this interaction cannot satisfy its deadline. Return a usable fallback and permit an explicit later attempt.</p>
       <h3>Try it</h3><p>What happens when each of five devices independently retries a failed call three times immediately?</p>
       <details class="recall"><summary>Compare your answer</summary><p>They can create up to fifteen extra attempts together. Apply limits at the proxy, avoid synchronized retries, and stop abandoned work when the user leaves. Retrying a text request can also incur another charge.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-what-a-call-costs-and-how-it-fails:retry-inside-a-deadline"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://platform.claude.com/docs/en/api/rate-limits">Claude documentation · Rate limits</a></p>
     </section>
 <section aria-labelledby="lesson-4">
-      <h2 id="lesson-4">Cache a reusable prompt prefix</h2>
+      <h2 id="lesson-4" data-practice-heading="chapter-what-a-call-costs-and-how-it-fails:cache-a-reusable-prompt-prefix">Cache a reusable prompt prefix</h2>
       <p>Prompt caching reuses eligible input computation for a common prefix. Put stable policy and shared evidence before frequently changing messages. Cache lifetime, minimum eligible prefix size and prices depend on the service and model. A cache hit still requires generating an answer to the current request.</p>
       <h3>Worked example</h3><p>Two students ask different questions about the same long manual. Reuse the unchanged manual prefix and put each student’s question after it. If a timestamp is inserted at the start on every call, much of the later prefix no longer matches. Inspect cache write and read usage rather than inferring hits from response speed.</p>
       <h3>Try it</h3><p>In fictional units a prefix costs 5 to write and 1 per cache hit, compared with 4 per ordinary read. What is the total for three calls before expiry?</p>
       <details class="recall"><summary>Compare your answer</summary><p>One write plus two hits costs 7, versus 12 without caching. Include cache misses and changing traffic when forecasting production cost.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-what-a-call-costs-and-how-it-fails:cache-a-reusable-prompt-prefix"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching">Claude documentation · Prompt caching</a></p>
     </section>
 <section aria-labelledby="lesson-5">
-      <h2 id="lesson-5">Validate the meaning after validating the shape</h2>
+      <h2 id="lesson-5" data-practice-heading="chapter-what-a-call-costs-and-how-it-fails:validate-the-meaning-after-validating-the-shape">Validate the meaning after validating the shape</h2>
       <p>Structured output constrains the response to a supported schema. Define fields, required properties and allowed alternatives. Parse only after a completed response and separately verify values that depend on your application’s state. A well-formed document can cite a nonexistent lesson.</p>
       <h3>Worked example</h3><p>The schema requires a text field lesson_id and a list of evidence IDs. The model returns lesson_id L4 with evidence X9. Parsing succeeds. The course contains L4 but the retrieval result contained only X2 and X3, so the application rejects the unsupported citation.</p>
       <h3>Try it</h3><p>A grading result has score 3 and maximum 2. Both fields are integers. Where should the inconsistency be caught?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Validate the relation between values in application code and reject the result before displaying a grade. Keep the schema, input evidence and validation reason with the test fixture.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-what-a-call-costs-and-how-it-fails:validate-the-meaning-after-validating-the-shape"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs">Claude documentation · Structured outputs</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-tools-reusable-teaching-routines-and-production-behavior.html">Tools, reusable teaching routines and production behavior →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fllm%2Fchapter-what-a-call-costs-and-how-it-fails" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fllm%2Fchapter-what-a-call-costs-and-how-it-fails" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

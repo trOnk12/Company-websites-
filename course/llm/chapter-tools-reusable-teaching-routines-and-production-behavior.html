@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Tools, reusable teaching routines and production behavior · LLMs for mobile engineers, from tokens to your app</title>
   <link rel="canonical" href="https://pachulski.dev/course/llm/chapter-tools-reusable-teaching-routines-and-production-behavior">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,39 +48,43 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="llm">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">LLMs for mobile engineers, from tokens to your app</a></p>
       <p class="eyebrow">Practice chapter 2 of 2</p><h1>Tools, reusable teaching routines and production behavior</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Connect a read-only lookup under an explicit permission</a></li><li><a href="#lesson-2">Compare a skill with a tool on the same questions</a></li><li><a href="#lesson-3">Set a latency budget and a useful fallback</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Connect a read-only lookup under an explicit permission</a> <span class="small" data-practice-nav="chapter-tools-reusable-teaching-routines-and-production-behavior:connect-a-read-only-lookup-under-an-explicit-permission"></span></li><li><a href="#lesson-2">Compare a skill with a tool on the same questions</a> <span class="small" data-practice-nav="chapter-tools-reusable-teaching-routines-and-production-behavior:compare-a-skill-with-a-tool-on-the-same-questions"></span></li><li><a href="#lesson-3">Set a latency budget and a useful fallback</a> <span class="small" data-practice-nav="chapter-tools-reusable-teaching-routines-and-production-behavior:set-a-latency-budget-and-a-useful-fallback"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Connect a read-only lookup under an explicit permission</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-tools-reusable-teaching-routines-and-production-behavior:connect-a-read-only-lookup-under-an-explicit-permission">Connect a read-only lookup under an explicit permission</h2>
       <p>A tool definition describes an operation the model may request. The host validates the arguments, checks authorization, executes or declines, then returns a result tied to the request. The model never gets to grant itself permission. Start with a test tool reading only a small approved lesson catalog.</p>
       <h3>Worked example</h3><p>The user enables lookup for lesson L4. The model requests read_lesson(L4); the host returns its title and evidence. A later request for L7 is outside the session’s allowed lesson IDs and is declined. Log the operation, decision, elapsed time and result category without including private message text.</p>
       <h3>Try it</h3><p>Where should a test assert that no lookup ran after permission was withdrawn?</p>
       <details class="recall"><summary>Compare your answer</summary><p>At the host boundary. Verify zero executions and a logged denial even if a model still proposes the call. A polished assistant reply is insufficient evidence of correct permission enforcement.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-tools-reusable-teaching-routines-and-production-behavior:connect-a-read-only-lookup-under-an-explicit-permission"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview">Claude documentation · Tool use</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Compare a skill with a tool on the same questions</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-tools-reusable-teaching-routines-and-production-behavior:compare-a-skill-with-a-tool-on-the-same-questions">Compare a skill with a tool on the same questions</h2>
       <p>A skill packages reusable instructions and optional supporting resources. A tool is a callable capability exposed by the host. A teaching skill might specify “ask for a prediction, inspect evidence, explain the discrepancy”; it can use the same authorized lookup tool as an ordinary prompt.</p>
       <h3>Worked example</h3><p>Run ten saved learner questions through two configurations. Give both the same model, allowed source material and tool permissions. Vary only the teaching instructions. Compare evidence IDs, support for factual claims and whether the second example tests transfer.</p>
       <h3>Try it</h3><p>One configuration is more fluent but invents two citations. Does the teaching routine earn promotion?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Score source support separately from style, inspect each missing or invented citation and retest on held-out questions. Reusable instructions cannot create evidence or expand permissions.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-tools-reusable-teaching-routines-and-production-behavior:compare-a-skill-with-a-tool-on-the-same-questions"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://agentskills.io/specification">Agent Skills · Format specification</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Set a latency budget and a useful fallback</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-tools-reusable-teaching-routines-and-production-behavior:set-a-latency-budget-and-a-useful-fallback">Set a latency budget and a useful fallback</h2>
       <p>Measure time to first visible text and time to a complete checked response. Define a service objective in terms of the learner’s task. A fast stream can still produce a slow or unusable final answer. Bound retrieval, model generation and validation separately so failure in one stage leaves time for a fallback.</p>
       <h3>Worked example</h3><p>For a five-second budget, allocate 0.5 s for network and authentication, 0.7 for retrieval, 3.2 for generation and 0.6 for final checks. These are design targets. If evidence lookup is unavailable, display the previously reviewed lesson text with its version instead of presenting an unsupported generated explanation.</p>
       <h3>Try it</h3><p>Two routes meet the first-token objective. One completes 98 of 100 evidence checks and the other 91. Which measurements determine release?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Compare checked completion rate, factual support, latency distribution and cost on the same cases. Define a threshold before evaluating; a failed evidence check should trigger the bounded fallback rather than a confident answer.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-tools-reusable-teaching-routines-and-production-behavior:set-a-latency-budget-and-a-useful-fallback"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="final-project.html">Start the final project →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fllm%2Fchapter-tools-reusable-teaching-routines-and-production-behavior" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fllm%2Fchapter-tools-reusable-teaching-routines-and-production-behavior" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

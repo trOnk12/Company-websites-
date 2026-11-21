@@ -95,11 +95,11 @@
 <section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: It remembers nothing</p>
 <fieldset class="quiz" data-n="4">
 <legend>Your app sends only the latest message. Why does the bot forget the device the user just named?</legend>
-<input type="radio" name="q-04-it-remembers-nothing-1" id="q-04-it-remembers-nothing-1-1" data-ok><label for="q-04-it-remembers-nothing-1-1"><span>The API keeps nothing between requests, so the earlier message wasn't sent</span></label>
+<input type="radio" name="q-04-it-remembers-nothing-1" id="q-04-it-remembers-nothing-1-1" data-ok><label for="q-04-it-remembers-nothing-1-1"><span>Earlier turns are not automatically included in this request</span></label>
 <input type="radio" name="q-04-it-remembers-nothing-1" id="q-04-it-remembers-nothing-1-2"><label for="q-04-it-remembers-nothing-1-2"><span>The model forgets on purpose to protect privacy</span></label>
 <input type="radio" name="q-04-it-remembers-nothing-1" id="q-04-it-remembers-nothing-1-3"><label for="q-04-it-remembers-nothing-1-3"><span>The model's context window was full after one message</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Stateless: send what it should know.</p>
-<p class="fb no opt-2"><b>Not quite.</b> It keeps nothing because the API is stateless, not by choice per message. <a class="show-me" href="04-it-remembers-nothing.html">Learn it in puzzle 4 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The app chose which prior information to include. <a class="show-me" href="04-it-remembers-nothing.html">Learn it in puzzle 4 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> One message is tiny; the earlier one wasn't in the request. <a class="show-me" href="04-it-remembers-nothing.html">Learn it in puzzle 4 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: Same question, different answers</p>

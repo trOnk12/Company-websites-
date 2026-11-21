@@ -1,12 +1,11 @@
 'use strict';
 const byId = id => document.getElementById(id);
 
-function openDatabase(name) {
+function openDatabase(name, stores = ['inventory', 'claims']) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(name, 1);
     request.onupgradeneeded = () => {
-      request.result.createObjectStore('inventory');
-      request.result.createObjectStore('claims');
+      for (const store of stores) request.result.createObjectStore(store);
     };
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
@@ -132,4 +131,79 @@ byId('traffic').onsubmit = event => {
     results.push((phase === 'peak' ? 'After peak' : 'After recovery') + ': ' + waiting + ' waiting, ' + dropped + ' dropped in total.');
   }
   byId('queue-output').textContent = results.join('\n');
+};
+
+async function consumeEvent(db, eventId, protocol, cut) {
+  const split = protocol === 'first';
+  const initial = db.transaction(split ? 'processed' : ['processed', 'receipts'], 'readwrite');
+  const committed = finished(initial);
+  const processed = initial.objectStore('processed');
+  const existing = processed.getKey(eventId);
+  let skipped = false;
+  function appendReceipt(tx) {
+    tx.objectStore('receipts').add({eventId}, crypto.randomUUID());
+  }
+  existing.onsuccess = () => {
+    skipped = protocol !== 'none' && existing.result !== undefined;
+    if (skipped) return;
+    if (protocol !== 'none') processed.put(true, eventId);
+    if (cut === 'mid' && !split) { initial.abort(); return; }
+    if (!split) appendReceipt(initial);
+  };
+  try { await committed; }
+  catch (error) {
+    if (cut === 'mid' && !initial.error) return 'Interrupted before commit; in-flight writes rolled back.';
+    throw error;
+  }
+  if (skipped) return 'Existing processed ID suppressed the replay.';
+  if (cut === 'mid') return 'Interrupted after the processed ID committed alone.';
+  if (split) {
+    const effect = db.transaction('receipts', 'readwrite');
+    appendReceipt(effect);
+    await finished(effect);
+  }
+  return cut === 'ack' ? 'Receipt committed; acknowledgement was lost.' : 'Receipt committed.';
+}
+
+byId('dispatch').onsubmit = async event => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const fields = new FormData(form);
+  const button = form.querySelector('button');
+  button.disabled = true;
+  const name = 'event-course-' + crypto.randomUUID();
+  let db;
+  try {
+    const stores = ['grants', 'outbox', 'processed', 'receipts'];
+    db = await openDatabase(name, stores);
+    const grant = db.transaction(['grants','outbox'], 'readwrite');
+    grant.objectStore('grants').put('Ada', 'B12');
+    grant.objectStore('outbox').put({seat: 'B12'}, 41);
+    await finished(grant);
+    const first = await consumeEvent(db, 41, fields.get('protocol'), fields.get('cut'));
+    db.close();
+    db = await openDatabase(name, stores);
+    const pending = db.transaction('outbox');
+    const events = pending.objectStore('outbox').getAllKeys();
+    await finished(pending);
+    const log = [first];
+    for (const id of events.result) {
+      log.push('Replay: ' + await consumeEvent(db, id, fields.get('protocol'), null));
+      const ack = db.transaction('outbox', 'readwrite');
+      ack.objectStore('outbox').delete(id);
+      await finished(ack);
+    }
+    const read = db.transaction(stores);
+    const counts = stores.map(store => read.objectStore(store).count());
+    await finished(read);
+    const [grants, queued, processed, receipts] = counts.map(request => request.result);
+    log.push('Grants: ' + grants + ' · Pending: ' + queued + ' · Processed IDs: ' + processed + ' · Receipts: ' + receipts);
+    byId('delivery-output').textContent = log.join('\n');
+  } catch (error) {
+    byId('delivery-output').textContent = 'The browser database could not run: ' + error.message;
+  } finally {
+    if (db) db.close();
+    if (window.indexedDB) indexedDB.deleteDatabase(name);
+    button.disabled = false;
+  }
 };

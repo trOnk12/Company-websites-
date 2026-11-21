@@ -75,12 +75,12 @@
 <section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: Two ways to free memory</p>
 <fieldset class="quiz" data-n="9">
 <legend>Kotlin holds a Swift object, then lets go. When does Swift's <code>deinit</code> run?</legend>
-<input type="radio" name="q-09-two-ways-to-free-memory-1" id="q-09-two-ways-to-free-memory-1-1" data-ok><label for="q-09-two-ways-to-free-memory-1-1"><span>At the next GC, when Kotlin's collector sees it's no longer reached</span></label>
+<input type="radio" name="q-09-two-ways-to-free-memory-1" id="q-09-two-ways-to-free-memory-1-1" data-ok><label for="q-09-two-ways-to-free-memory-1-1"><span>After the cross-language hold and any other strong references are released</span></label>
 <input type="radio" name="q-09-two-ways-to-free-memory-1" id="q-09-two-ways-to-free-memory-1-2"><label for="q-09-two-ways-to-free-memory-1-2"><span>Never, because Kotlin objects keep Swift objects forever</span></label>
 <input type="radio" name="q-09-two-ways-to-free-memory-1" id="q-09-two-ways-to-free-memory-1-3"><label for="q-09-two-ways-to-free-memory-1-3"><span>At once, because ARC frees it the moment its count hits zero</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Release follows Kotlin's GC, not the moment of letting go.</p>
-<p class="fb no opt-2"><b>Not quite.</b> It's freed, only later: at the next garbage collection. <a class="show-me" href="09-two-ways-to-free-memory.html">Learn it in puzzle 9 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Kotlin's hold is released by the collector, so the Swift object waits for the next GC. <a class="show-me" href="09-two-ways-to-free-memory.html">Learn it in puzzle 9 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The hold can be released during collection; there is no fixed deinitialization deadline. <a class="show-me" href="09-two-ways-to-free-memory.html">Learn it in puzzle 9 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Kotlin's hold is released by the collector, so the Swift object may outlive the Kotlin reference. <a class="show-me" href="09-two-ways-to-free-memory.html">Learn it in puzzle 9 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 10"><p class="eyebrow">Puzzle 10: The main thread on iOS</p>
 <fieldset class="quiz" data-n="10">

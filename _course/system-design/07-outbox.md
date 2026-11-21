@@ -18,7 +18,7 @@ The reservation commits, then the process dies before sending a notification. Se
 
 Store an **event**, a record saying that something happened, such as a space being granted, in the same transaction as the reservation. This is the **transactional outbox pattern**. Another process reads committed events and delivers them. After a restart, the service can distinguish pending work from a reservation that never happened.
 
-A sender can deliver an event and crash before marking it complete. It will deliver again. A consumer can store the event identity and its own database effect in one transaction. That protects the database effect from repetition. An email provider forms another boundary. A local transaction alone cannot guarantee exactly one message in the driver's inbox.
+A sender can deliver an event and crash before marking it complete. After recovery it can deliver again. A consumer can store the event identity and its own database effect in one transaction. That protects the database effect from repetition. An email provider forms another boundary. A local transaction alone cannot guarantee exactly one message in the driver's inbox.
 
 ### Follow event 41 through a crash
 
@@ -33,6 +33,8 @@ Grant has version one and a later reversal version two. Applying two and then on
 - May a balance consumer skip a missing event that only contains an amount to add?::Not without another recovery rule. The missing amount changes the total.
 
 ## Try it
+
+[Crash the receipt worker and replay event 41 in the browser lab](https://pachulski.dev/labs/parking-design/#delivery)
 
 Trace crashes before the reservation commits, after it commits, and after delivery but before acknowledgement. For each, count durable grants, pending events and possible deliveries. Give a permanently invalid event a bounded retry policy, an inspection queue and a way to replay it after repair.
 

@@ -62,5 +62,46 @@
         "sourceTitle": "Kubernetes · Resource management"
       }
     ]
+  },
+  {
+    "title": "Follow one booking through Spring MVC and a database transaction",
+    "lessons": [
+      {
+        "title": "Who handles POST /bookings?",
+        "explanation": "In a synchronous Servlet-based application, the container passes the incoming request through the configured filter chain. A filter may finish the exchange early. If the request reaches Spring MVC, its DispatcherServlet looks up a handler and chooses a handler adapter that knows how to invoke it. A controller accepts HTTP-facing inputs and translates its result into a response. Business decisions can live behind a separate service boundary.",
+        "example": "For a matching POST /bookings route, the selected controller asks BookingService to reserve seat 12. A GET to the same path can reach the application without matching that method. Separately, an authentication filter can decline an unauthenticated request before the controller runs. These outcomes can all occur with a reachable server.",
+        "exercise": "A request returns a refusal and no controller-entry event appears. How do you distinguish a filter decision from the wrong route?",
+        "answer": "Compare the method and route with the deployed mappings and correlate filter and dispatcher observations for that request. The absence of a database query establishes neither explanation by itself.",
+        "source": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-servlet/sequence.html",
+        "sourceTitle": "Spring Framework · DispatcherServlet processing"
+      },
+      {
+        "title": "When does a JSON body become a booking command?",
+        "explanation": "A controller parameter annotated with @RequestBody asks a message converter to read the request body into the declared Java type. With validation configured, @Valid can trigger validation of the resulting object. Decoding asks whether the body can become that type; validation asks whether its fields satisfy declared rules. Availability remains a business decision made against the current database state.",
+        "example": "Suppose the contract requires one nonblank seat name. A malformed body cannot be decoded. A decodable object containing a blank name fails the constraint. A well-formed request for seat A12 can still lose because another customer committed the final booking. Keep these fixture outcomes distinct in integration tests.",
+        "exercise": "Two requests both pass validation for A12. Why does validating availability before entering the service fail to protect the final seat?",
+        "answer": "Another writer can commit between the check and the write. Use a transaction with a database constraint or conditional change that actually arbitrates the race. Retain validation for explaining malformed input early.",
+        "source": "https://docs.spring.io/spring-framework/reference/web/webmvc/mvc-controller/ann-methods/requestbody.html",
+        "sourceTitle": "Spring Framework · Request body conversion and validation"
+      },
+      {
+        "title": "Where does the transaction actually begin?",
+        "explanation": "In Spring’s usual proxy mode, a call through a managed service proxy is intercepted. Its transaction manager can start or join a transaction before invoking the target method. Repository calls must participate in that same transaction for their writes to commit together. The proxy finishes the transaction according to the outcome and configured rules before returning normally to its caller.",
+        "example": "A controller calls a proxied book() method with no transaction already active. The method inserts a booking and a pending confirmation event in the same database. If commit fails as the proxied invocation finishes, the controller must not send a successful booking reply. If the database commits but the client disconnects, the record can still exist.",
+        "exercise": "A method on the service calls another @Transactional method on the same instance. Does that local call necessarily start the requested new transaction?",
+        "answer": "No. In the default proxy model, self-invocation does not cross the proxy. It can still run inside an existing outer transaction. Put the intended unit of work at a genuine managed boundary and test its committed database state.",
+        "source": "https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/annotations.html",
+        "sourceTitle": "Spring Framework · Declarative transaction annotations"
+      },
+      {
+        "title": "What survives each failure boundary?",
+        "explanation": "Under the default declarative rollback rules, an unchecked exception or Error escaping the method causes rollback; a checked exception alone normally does not. Rules can be configured. Catching an exception and returning normally also changes what the interceptor observes, although the transaction or resource may already be marked rollback-only. Exercise the actual configuration. A database transaction cannot roll back an email already accepted elsewhere.",
+        "example": "Run three disposable fixtures. First, fail before commit with an unchecked exception and confirm that neither row remains. Second, let both rows commit and disconnect before the HTTP response; look up the existing booking by a stable request identity. Third, crash a worker after it delivers the confirmation but before it marks its event done; the delivery may be attempted again.",
+        "exercise": "How would you test rollback without an outer test transaction concealing what really committed?",
+        "answer": "Invoke the service through the normal application entry point with controlled failure injection. Once it returns or fails, inspect booking and event from a separate transaction. Verify the checked-exception behavior you configured and test the worker’s redelivery independently.",
+        "source": "https://docs.spring.io/spring-framework/reference/data-access/transaction/declarative/rolling-back.html",
+        "sourceTitle": "Spring Framework · Rolling back a declarative transaction"
+      }
+    ]
   }
 ]

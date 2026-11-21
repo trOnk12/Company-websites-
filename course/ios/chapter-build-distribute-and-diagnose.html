@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Build, distribute and diagnose · iOS for Android developers</title>
   <link rel="canonical" href="https://pachulski.dev/course/ios/chapter-build-distribute-and-diagnose">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,55 +48,61 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="ios">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">iOS for Android developers</a></p>
       <p class="eyebrow">Practice chapter 3 of 3</p><h1>Build, distribute and diagnose</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Trace a target through the build graph</a></li><li><a href="#lesson-2">Explain why a signed archive may fail distribution</a></li><li><a href="#lesson-3">Separate dependency delivery from its linked product</a></li><li><a href="#lesson-4">Distinguish CPU samples from elapsed time in Instruments</a></li><li><a href="#lesson-5">Make the owner of mutable state explicit in Swift 6</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Trace a target through the build graph</a> <span class="small" data-practice-nav="chapter-build-distribute-and-diagnose:trace-a-target-through-the-build-graph"></span></li><li><a href="#lesson-2">Explain why a signed archive may fail distribution</a> <span class="small" data-practice-nav="chapter-build-distribute-and-diagnose:explain-why-a-signed-archive-may-fail-distribution"></span></li><li><a href="#lesson-3">Separate dependency delivery from its linked product</a> <span class="small" data-practice-nav="chapter-build-distribute-and-diagnose:separate-dependency-delivery-from-its-linked-product"></span></li><li><a href="#lesson-4">Distinguish CPU samples from elapsed time in Instruments</a> <span class="small" data-practice-nav="chapter-build-distribute-and-diagnose:distinguish-cpu-samples-from-elapsed-time-in-instruments"></span></li><li><a href="#lesson-5">Make the owner of mutable state explicit in Swift 6</a> <span class="small" data-practice-nav="chapter-build-distribute-and-diagnose:make-the-owner-of-mutable-state-explicit-in-swift-6"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Trace a target through the build graph</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-build-distribute-and-diagnose:trace-a-target-through-the-build-graph">Trace a target through the build graph</h2>
       <p>An Xcode target describes a product and its build settings, source files and dependencies. A scheme selects targets and configurations for actions such as running or archiving. Compiling source produces inputs for linking; copying resources and signing affect the final bundle.</p>
       <h3>Worked example</h3><p>A Debug simulator run succeeds, but a Release archive misses a JSON file. Check target membership, copy-resource phases and configuration-dependent settings in the actual archive. Successfully compiling a reference to a resource name says nothing about whether the resource was bundled.</p>
       <h3>Try it</h3><p>Changing a library rebuilds unexpectedly many targets. What evidence do you inspect?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Inspect the build report, dependency graph, changed interfaces and script inputs or outputs. Compare incremental builds with the same configuration before reorganizing modules.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-build-distribute-and-diagnose:trace-a-target-through-the-build-graph"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.apple.com/documentation/xcode/build-system">Apple · Build system</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Explain why a signed archive may fail distribution</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-build-distribute-and-diagnose:explain-why-a-signed-archive-may-fail-distribution">Explain why a signed archive may fail distribution</h2>
       <p>Code signing binds code to a signing identity; provisioning for a distribution route governs which app identity and capabilities are allowed. Development, testing and distribution use different conditions. Inspect the archive and its entitlements when the failing path differs from a simulator run.</p>
       <h3>Worked example</h3><p>A push-enabled app runs in Simulator but its distribution archive fails entitlement validation. Compare the app identifier and capabilities configured for the target with the entitlements authorized for the signing route. Build a fresh archive and validate it again.</p>
       <h3>Try it</h3><p>Would changing Swift source fix a mismatch between an enabled entitlement and the selected provisioning profile?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Correct the capability and signing configuration and validate the resulting signed artifact. A source change that happens to trigger a rebuild does not establish the cause.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-build-distribute-and-diagnose:explain-why-a-signed-archive-may-fail-distribution"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases">Apple · Distributing your app for beta testing and releases</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Separate dependency delivery from its linked product</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-build-distribute-and-diagnose:separate-dependency-delivery-from-its-linked-product">Separate dependency delivery from its linked product</h2>
       <p>A Swift package describes products, targets and dependencies. Xcode resolves package versions and builds the chosen product. A framework bundles a module and related resources or code. A package can expose a library or deliver a binary framework, so packaging and dependency resolution answer different questions.</p>
       <h3>Worked example</h3><p>An app adds a package and selects its Core library product for the app target. The project may resolve the package even if the target never links that product. Start with the failing target's product linkage when an import fails only in an extension.</p>
       <h3>Try it</h3><p>A clean machine uses a different dependency revision. What input would you compare first?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Compare package constraints and the resolved versions used by the two builds. Then verify the target, platform and destination support the same product.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-build-distribute-and-diagnose:separate-dependency-delivery-from-its-linked-product"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app">Apple · Adding package dependencies to your app</a></p>
     </section>
 <section aria-labelledby="lesson-4">
-      <h2 id="lesson-4">Distinguish CPU samples from elapsed time in Instruments</h2>
+      <h2 id="lesson-4" data-practice-heading="chapter-build-distribute-and-diagnose:distinguish-cpu-samples-from-elapsed-time-in-instruments">Distinguish CPU samples from elapsed time in Instruments</h2>
       <p>Time Profiler samples executing stacks. More samples in a function can indicate CPU cost, while a long wall-clock interval may include time waiting. Use an interval around one reproducible interaction and compare allocations or other instruments when CPU alone cannot explain the delay.</p>
       <h3>Worked example</h3><p>Opening a gallery takes 700 ms. The main thread has 60 ms of decode samples but spends a long interval waiting for a storage read. A faster decoder can address the measured CPU portion; trace the separate wait before estimating the overall saving.</p>
       <h3>Try it</h3><p>One profile includes initial import of thumbnails and the next uses a warm cache. Can you attribute the whole improvement to the code change?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Repeat comparable cold and warm cases separately. Keep device, dataset, build and measurement boundary consistent, then inspect the remaining wait or hot stack.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-build-distribute-and-diagnose:distinguish-cpu-samples-from-elapsed-time-in-instruments"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.apple.com/documentation/xcode/improving-your-app-s-performance">Apple · Improving your app’s performance</a></p>
     </section>
 <section aria-labelledby="lesson-5">
-      <h2 id="lesson-5">Make the owner of mutable state explicit in Swift 6</h2>
+      <h2 id="lesson-5" data-practice-heading="chapter-build-distribute-and-diagnose:make-the-owner-of-mutable-state-explicit-in-swift-6">Make the owner of mutable state explicit in Swift 6</h2>
       <p>Swift's data-race safety checks use isolation and transfer rules to limit unsafe simultaneous access. An actor serializes access to its isolated state. Sendable describes values suitable for crossing concurrency domains under the applicable rules. Suspension allows other work to enter an actor between two segments.</p>
       <h3>Worked example</h3><p>An Inventory actor checks stock == 1, awaits an external confirmation, then decrements. Another task can enter during the await and observe the same stock. Reserve the right inside one synchronous actor-isolated step and define how failure releases it.</p>
       <h3>Try it</h3><p>If the compiler accepts the program, can two customers still receive an invalid business outcome?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Yes. Type-checked isolation addresses data races. An invariant spanning a suspension or an external system still needs a state-transition design and failure tests.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-build-distribute-and-diagnose:make-the-owner-of-mutable-state-explicit-in-swift-6"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/dataracesafety/">Swift · Data race safety</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="final-project.html">Start the final project →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fios%2Fchapter-build-distribute-and-diagnose" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fios%2Fchapter-build-distribute-and-diagnose" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

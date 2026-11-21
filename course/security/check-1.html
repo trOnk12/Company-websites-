@@ -106,11 +106,11 @@
 <fieldset class="quiz" data-n="5">
 <legend>One bit of a 10 MB file is flipped on the way. What happens to its <code>SHA-256</code> digest?</legend>
 <input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-1"><label for="q-05-a-fingerprint-for-data-1-1"><span>It changes by one bit, matching the one bit that changed</span></label>
-<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-2" data-ok><label for="q-05-a-fingerprint-for-data-1-2"><span>It changes completely, so a comparison shows the file was changed</span></label>
+<input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-2" data-ok><label for="q-05-a-fingerprint-for-data-1-2"><span>It will almost certainly differ, revealing the change</span></label>
 <input type="radio" name="q-05-a-fingerprint-for-data-1" id="q-05-a-fingerprint-for-data-1-3"><label for="q-05-a-fingerprint-for-data-1-3"><span>It stays the same, because one bit is too small to matter</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> A hash doesn't map bits to bits: one flipped bit changes the whole digest. <a class="show-me" href="05-a-fingerprint-for-data.html">Learn it in puzzle 5 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> One bit changed, a different digest.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Any change, even one bit, gives a different digest. <a class="show-me" href="05-a-fingerprint-for-data.html">Learn it in puzzle 5 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Even a one-bit change is overwhelmingly likely to give a different digest. <a class="show-me" href="05-a-fingerprint-for-data.html">Learn it in puzzle 5 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: A hash with a secret</p>
 <fieldset class="quiz" data-n="6">

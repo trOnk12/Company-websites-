@@ -2,7 +2,7 @@
 title: Your key is not a secret
 short: Keys and the proxy backend
 summary: The quickest way to ship an AI feature is to put the provider's key in the app and call the model directly. A week later the bill is ten times your users' usage. Here's why a key inside an APK isn't hidden, and the small backend that fixes it.
-takeaway: Anything in your APK can be extracted, so an API key in the app belongs to anyone who downloads it, and they can spend your money. Call the model through a proxy backend: the app authenticates the user to your server, and the server adds the key, applies per-user limits and calls the model. The key never leaves the server.
+takeaway: Anything in your APK can be extracted, so an API key in the app belongs to anyone who downloads it, and they can spend your money. Call the model through a proxy backend: the app authenticates the user to your server, and the server adds the key, applies per-user limits and calls the model. Only the backend sends the credential to the provider. The mobile app never receives it.
 ---
 
 ## The problem
@@ -24,7 +24,7 @@ So the key lives on a server you control, a **proxy backend**:
 2. Your server checks who it is, applies limits per user ("20 requests a day on the free plan"), and builds the request: your system prompt, the user's message.
 3. Your server adds the API key and calls the model, streaming the answer back to the app (puzzle 3).
 
-The key never leaves the server. If one user abuses the feature, you block that user, not your whole account. And your instructions to the model and the model choice can change without an app release. Google offers a managed version of this pattern for Gemini: Firebase AI Logic, with App Check to make sure calls come from your real app.
+Only the backend sends the credential to the provider. The mobile app never receives it. If one user abuses the feature, you block that user, not your whole account. And your instructions to the model and the model choice can change without an app release. Google offers a managed version of this pattern for Gemini: Firebase AI Logic, with App Check to help verify app or device authenticity; user authorization and usage limits remain separate.
 
 ## The analogy
 

@@ -132,7 +132,7 @@
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/guide/platform">Android Developers: Platform architecture (Linux kernel)</a></li><li><a href="https://developer.android.com/guide/components/processes-and-threads">Android Developers: Processes and threads overview</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The kernel schedules threads and manages address spaces and access to protected resources. Ordinary instructions can read and write memory already mapped into the process without asking the kernel on each access.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-a-running-app-is-a-process.html">← Start</a>

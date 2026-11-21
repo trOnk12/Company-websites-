@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test": "playwright test",
+    "verify": "npm run lint:course && npm run check:course && npm run check:learning && node scripts/build-music.js --check && python3 scripts/check-site.py && npm test",
     "build:learning": "node scripts/build-learning.js",
     "check:learning": "node scripts/build-learning.js --check",
     "build:course": "node scripts/build-course.js",

@@ -2,7 +2,7 @@
 title: When the process is gone
 short: Process death and saved state
 summary: In puzzle 21, the ViewModel survived turning the phone, but it still lives in your process. Here's what's left when the process itself is ended, and where it waits.
-takeaway: Before your Activity is stopped, your app sends a small Bundle, its saved state, to system_server by Binder. If the process is ended in the background, a new process gets it back. Back throws it away. Keep it small: it crosses the ~1 MB Binder buffer.
+takeaway: For a retained task, framework-saved UI state can help reconstruct a screen after process death. Keep the Bundle small. Finishing the Activity or removing the task changes that restoration contract.
 ---
 
 ## The problem
@@ -18,7 +18,7 @@ In puzzle 21, the ViewModel survived turning the phone, because it waited in you
 
 When Android ends your process in the background to free memory, that's **process death**. Nothing inside the process survives it.
 
-So, before it can happen, your app sends a little of its state somewhere that outlives the process: system_server. Each time your Activity is stopped (the user left it), your app packs what it chose to save into a **`Bundle`**, a small map of simple values like text and numbers, and Binder carries it to system_server. That copy is the screen's **saved state**. When the user comes back to a process that's gone, a new process starts (a cold start, puzzle 14), and system_server hands the Bundle back to the new Activity.
+So, before it can happen, your app sends a little of its state somewhere that outlives the process: system_server. When the framework saves an Activity for possible later restoration, your app packs what it chose to save into a **`Bundle`**, a small map of simple values like text and numbers, and Binder carries it to system_server. That copy is the screen's **saved state**. When the user comes back to a process that's gone, a new process starts (a cold start, puzzle 14), and system_server hands the Bundle back to the new Activity.
 
 Saved state crosses Binder twice, through the receiver's buffer of about 1 MB (puzzle 19), and it's kept in system_server's memory. So keep it small: what the user typed, an ID, a scroll position. Big data, like the downloaded list, goes in a file on the phone and is read again by its ID.
 
@@ -36,7 +36,7 @@ Saved state survives turning the phone too: the old Activity is stopped before i
 
 Saved state is for coming back. If the user closes the screen for good with Back, there's nothing to come back to, so system_server throws it away. (On an app's first screen, Android 12 and later only move the app to the background on Back, so there the state stays.)
 
-| Kept in | Survives turning the phone | Survives process death | Survives Back |
+| Kept in | Survives turning the phone | Survives process death | Survives finishing the Activity |
 |---|---|---|---|
 | a field of the Activity | no | no | no |
 | a ViewModel | yes | no | no |

@@ -58,8 +58,49 @@
         "example": "Five hundred concurrent requests use virtual threads, but only ten database connections exist. If each checkout occupies a connection for 50 ms, the idealized ceiling of that pool is about 200 operations per second. This estimate assumes continuous use, one checkout per operation and no other limit. Adding virtual threads cannot multiply the ten connections.",
         "exercise": "How would you test whether the connection pool or the CPU sets the observed limit?",
         "answer": "Sweep concurrency while recording throughput, checkout wait, connection hold time, CPU use and tail latency. Change one resource limit per run. A rising checkout wait with ten busy connections is direct evidence to investigate database demand before increasing concurrency.",
-        "source": "https://openjdk.org/jeps/444",
-        "sourceTitle": "OpenJDK · JEP 444 Virtual Threads"
+        "source": "https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html",
+        "sourceTitle": "JDK 21 · Virtual threads"
+      }
+    ]
+  },
+  {
+    "title": "Diagnose a slow Java service from a thread dump to a recording",
+    "lessons": [
+      {
+        "title": "What question can a thread dump answer?",
+        "explanation": "A thread dump is a snapshot of thread states and call stacks. A stack records active method calls; it does not report how long a thread spent in each one. Java’s RUNNABLE state can include waiting for operating-system resources, while BLOCKED specifically means waiting to enter a Java monitor. WAITING and TIMED_WAITING have other causes. Relate each state to its stack and the expected workload.",
+        "example": "In a disposable JDK 21 service using platform threads, identify the process with jcmd -l, then collect jcmd <pid> Thread.print -l at three recorded times. In the example, twelve request threads show the same monitor acquisition in all three snapshots and a separate thread repeatedly appears as its owner. This makes the critical section a candidate for investigation.",
+        "exercise": "Ten workers are WAITING inside the executor’s task queue on an idle server. What would justify calling that a problem?",
+        "answer": "Show pending work that should have been served, delayed requests or inability to dispatch to these workers. An idle worker waiting for a task can be healthy. Repeated snapshots demonstrate repeated observations, not continuous blockage between them.",
+        "source": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/jcmd.html",
+        "sourceTitle": "JDK 21 · jcmd diagnostic commands"
+      },
+      {
+        "title": "How do you test a lock-contention hypothesis?",
+        "explanation": "State a timeline that could explain the symptom, then predict an observation that would contradict it. Monitor contention means threads compete for a monitor. Waiting for a database connection, a future or a network reply can produce similar response times through different mechanisms. Measure the wait and its owner before changing pool sizes.",
+        "example": "A booking method holds a synchronized monitor while waiting 80 ms for a dependency. With ten concurrent requests, a single serialized section of that length could sustain at most about 12.5 completions/s if it is always occupied. The calculation is an upper bound for this model. Compare stacks and lock events with response distributions before and after shortening the section.",
+        "exercise": "If the next snapshot shows callers parked inside a connection pool rather than BLOCKED on the service monitor, what changes?",
+        "answer": "Inspect active connections, acquisition wait and downstream query durations. More application threads may only create more waiters. Keep the load and data fixture fixed when comparing interventions.",
+        "source": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Thread.State.html",
+        "sourceTitle": "Java SE 21 · Thread.State"
+      },
+      {
+        "title": "What can GC evidence say about a slow request?",
+        "explanation": "Garbage collection reclaims objects that are no longer reachable. Some collector phases pause application threads and others run concurrently. Measure pause intervals, allocation rate and occupied heap after comparable collections separately. A collection spanning part of a request does not mean its entire duration was a stop-the-world pause.",
+        "example": "In one recorded window a request takes 240 ms and overlaps two measured stop-the-world pauses of 8 ms and 12 ms. Their combined direct overlap is at most 20 ms. Check whether either is only partly inside the request. Increased concurrent GC work could still compete for CPU, but that requires separate evidence.",
+        "exercise": "After warm-up, the post-collection heap rises during five comparable workload cycles. Can this alone identify a leaking class?",
+        "answer": "No. Compare retained object populations and reference paths in a controlled workload; caches, active sessions or legitimate load growth may retain data. Preserve the distinction between a growth symptom and evidence explaining which owner keeps an object reachable.",
+        "source": "https://docs.oracle.com/en/java/javase/21/gctuning/garbage-first-g1-garbage-collector1.html",
+        "sourceTitle": "JDK 21 · G1 concurrent and stop-the-world phases"
+      },
+      {
+        "title": "Use Flight Recorder to discriminate between explanations",
+        "explanation": "Java Flight Recorder (JFR) records timestamped runtime events according to a configuration. A recording can include monitor contention, GC pauses and execution samples. Thresholds and enabled event types control what is visible. Confirm the event names, units and settings for your JDK. Use a short representative run before drawing conclusions.",
+        "example": "In a local JDK 21 lab run jcmd <pid> JFR.start name=booking settings=profile duration=60s filename=booking.jfr. Reproduce the slowdown inside that minute. After the recording finishes, run jfr summary booking.jfr, then jfr print --events jdk.JavaMonitorEnter,jdk.GCPhasePause booking.jfr. Compare event intervals with your request timestamps. A count alone cannot place a pause on the critical path.",
+        "exercise": "The recording shows no long monitor-enter events. What should you check before ruling out a lock-related delay?",
+        "answer": "Verify that the correct JVM and time window were recorded and the event was enabled at a suitable threshold. Other mechanisms, such as explicit locks, may surface as thread parking. Compare thread dumps and downstream timings, then change one suspected bottleneck and repeat.",
+        "source": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/jfr.html",
+        "sourceTitle": "JDK 21 · Inspecting Flight Recorder recordings"
       }
     ]
   }

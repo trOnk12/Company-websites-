@@ -55,7 +55,7 @@
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: What actually travels</p>
 <fieldset class="quiz" data-n="0">
 <legend>A packet of your request is lost between two routers. Who notices and fixes it?</legend>
-<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-1" data-ok><label for="q-00-what-actually-travels-1-1"><span>TCP: the missing packet isn't acknowledged, so it's sent again</span></label>
+<input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-1" data-ok><label for="q-00-what-actually-travels-1-1"><span>TCP: the missing bytes are retransmitted</span></label>
 <input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-2"><label for="q-00-what-actually-travels-1-2"><span>Your app: OkHttp sees the gap and asks for the packet</span></label>
 <input type="radio" name="q-00-what-actually-travels-1" id="q-00-what-actually-travels-1-3"><label for="q-00-what-actually-travels-1-3"><span>IP: it reroutes the packet around the broken router</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Numbering, acknowledging, resending: TCP.</p>
@@ -75,12 +75,12 @@
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Anatomy of an HTTP call</p>
 <fieldset class="quiz" data-n="2">
 <legend>Your app gets a 404 from <code>GET /users/42</code>. Should it retry the same request?</legend>
-<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-1" data-ok><label for="q-02-anatomy-of-an-http-call-1-1"><span>No: a 4xx means the request itself was wrong</span></label>
+<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-1" data-ok><label for="q-02-anatomy-of-an-http-call-1-1"><span>Usually no: show the missing record for this lookup</span></label>
 <input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-2"><label for="q-02-anatomy-of-an-http-call-1-2"><span>Yes, but sending it as a POST instead of a GET this time</span></label>
 <input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-3"><label for="q-02-anatomy-of-an-http-call-1-3"><span>Yes, since almost any network error might pass if you try again</span></label>
-<p class="fb ok opt-1"><b>Right.</b> 4xx won't fix itself.</p>
+<p class="fb ok opt-1"><b>Right.</b> Handle the specific status and operation.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Changing the method changes the meaning; it doesn't fix a missing user. <a class="show-me" href="02-anatomy-of-an-http-call.html">Learn it in puzzle 2 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Only server failures (5xx) might pass; a 4xx is about your request. <a class="show-me" href="02-anatomy-of-an-http-call.html">Learn it in puzzle 2 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> An ordinary missing-record lookup has no reason for an immediate retry. <a class="show-me" href="02-anatomy-of-an-http-call.html">Learn it in puzzle 2 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Round trips, not bandwidth</p>
 <fieldset class="quiz" data-n="3">
@@ -114,13 +114,13 @@
 </fieldset></section>
 <section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: The radio is the battery</p>
 <fieldset class="quiz" data-n="6">
-<legend>Your app sends a 300-byte event every 20 seconds. Why does it drain the battery?</legend>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-1" data-ok><label for="q-06-the-radio-is-the-battery-1-1"><span>Each send wakes the radio, and its tail time never lets it sleep</span></label>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-2"><label for="q-06-the-radio-is-the-battery-1-2"><span>Analytics requests are encrypted, and encryption is costly</span></label>
-<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-3"><label for="q-06-the-radio-is-the-battery-1-3"><span>The 300 bytes every 20 seconds add up to a lot of data</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Size barely matters; wake-ups do.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The radio, not the encryption, is the expensive part. <a class="show-me" href="06-the-radio-is-the-battery.html">Learn it in puzzle 6 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> It's a few hundred kilobytes an hour; the cost is the wake-ups and tails. <a class="show-me" href="06-the-radio-is-the-battery.html">Learn it in puzzle 6 →</a></p>
+<legend>Your app sends a 300-byte event before each high-power tail ends. Why does it drain the battery?</legend>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-1"><label for="q-06-the-radio-is-the-battery-1-1"><span>The 300 bytes every 20 seconds add up to a lot of data</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-2" data-ok><label for="q-06-the-radio-is-the-battery-1-2"><span>Each send wakes the radio, and its tail time never lets it sleep</span></label>
+<input type="radio" name="q-06-the-radio-is-the-battery-1" id="q-06-the-radio-is-the-battery-1-3"><label for="q-06-the-radio-is-the-battery-1-3"><span>Analytics requests are encrypted, and encryption is costly</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> That schedule adds little application data; the cost is the wake-ups and tails. <a class="show-me" href="06-the-radio-is-the-battery.html">Learn it in puzzle 6 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Size barely matters; wake-ups do.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The radio, not the encryption, is the expensive part. <a class="show-me" href="06-the-radio-is-the-battery.html">Learn it in puzzle 6 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Ask before you download</p>
 <fieldset class="quiz" data-n="7">

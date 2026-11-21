@@ -62,15 +62,25 @@ Stop the running lab container when finished. This exercise uses the same databa
 
 ## Incident drill
 
-Use a separate fresh directory with the local server and its disposable database. In another terminal in that same directory, temporarily rename the table:
+Use a separate fresh directory with the local server and its disposable database. In another terminal in that same directory, save river, then temporarily rename the table:
 
 ```sh
+curl -i -X PUT http://127.0.0.1:8080/bookmarks/river
 python3 -c "import sqlite3; c=sqlite3.connect('bookmarks.db'); c.execute('ALTER TABLE bookmarks RENAME TO parked'); c.commit()"
 curl -i http://127.0.0.1:8080/live
 curl -i http://127.0.0.1:8080/ready
 python3 -c "import sqlite3; c=sqlite3.connect('bookmarks.db'); c.execute('ALTER TABLE parked RENAME TO bookmarks'); c.commit()"
 curl -i http://127.0.0.1:8080/ready
 ```
+
+After restoring the table, write hill and verify that a list returns both names.
+
+```sh
+curl -i -X PUT http://127.0.0.1:8080/bookmarks/hill
+curl -i http://127.0.0.1:8080/bookmarks
+```
+
+Repeat the drill on a fresh disposable copy and change only the recovery action: restart the process immediately after the rename. Startup creates an empty bookmarks table, so readiness can return 200 while river is still in parked. Inspect both tables and the client-visible list. Use a fresh copy for each variation.
 
 Record the first failing signal, one hypothesis, the recovery action and the result of a real write. Turn the build and probe commands into a pipeline in your own portfolio repository. Keep the test log and demonstrate that a deliberately failing test stops the build. For the operations portfolio, include the incident timeline, before/after probes, image versions and proof the row survived rollback.
 

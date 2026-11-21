@@ -100,11 +100,11 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A <b>CPU core</b> is one part of the processor that executes instructions, one after another. A core runs one thread at a time. A phone's processor has several cores, often eight, so at any moment at most eight threads are really running.</p>
+<p>A <b>CPU core</b> is one part of the processor that executes instructions, one after another. In this phone model there are eight available logical CPUs, each running one scheduled thread at a time. Hardware topology and the set available to your process vary by device.</p>
 <p>The <b>scheduler</b> is the part of the kernel that decides which thread runs on which core, and for how long. Threads that are ready to run, but have no core yet, wait in a <b>run queue</b>. When a core frees up, the scheduler gives it the next thread from the queue.</p>
 <p>A thread doesn't keep a core until it's done. After a short stretch, or when a more urgent thread becomes ready, the scheduler can take the core away and put the thread back in the run queue. That's <b>preemption</b>: the thread didn't stop, it was paused so someone else could have a turn.</p>
 <p>Some threads aren't ready at all. A thread that needs a lock another thread holds, or a file from the disk, or a message, has nothing to do until that arrives. The kernel takes it off the run queue: it's asleep and uses no core. When the thing arrives, the kernel <b>wakes</b> the thread: puts it back on a run queue. Woken isn't running yet: if every core is busy, it waits its turn.</p>
-<p>So the time between a function's start and end, as a clock on the wall sees it, is made of three things: running on a core, waiting in the queue for one, and sleeping until something arrives. Only the first is your code being slow. The next puzzles show how a profiler tells them apart.</p>
+<p>So the time between a function's start and end, as a clock on the wall sees it, is made of three things: running on a core, waiting in the queue for one, and sleeping until something arrives. The first measures time executing; all three can affect the user-visible delay. The next puzzles show how a profiler tells them apart.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

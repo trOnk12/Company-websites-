@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Libraries under the hood · Android from the foundation</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/chapter-libraries-under-the-hood">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,63 +48,70 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="android">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Android from the foundation</a></p>
       <p class="eyebrow">Practice chapter 5 of 5</p><h1>Libraries under the hood</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Build a dependency graph with explicit lifetimes</a></li><li><a href="#lesson-2">Read a Koin definition as a construction rule</a></li><li><a href="#lesson-3">Trace Retrofit down to OkHttp</a></li><li><a href="#lesson-4">Follow one logical call through OkHttp</a></li><li><a href="#lesson-5">Observe a Room query over SQLite</a></li><li><a href="#lesson-6">Measure release code after R8 optimization</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Build a dependency graph with explicit lifetimes</a> <span class="small" data-practice-nav="chapter-libraries-under-the-hood:build-a-dependency-graph-with-explicit-lifetimes"></span></li><li><a href="#lesson-2">Read a Koin definition as a construction rule</a> <span class="small" data-practice-nav="chapter-libraries-under-the-hood:read-a-koin-definition-as-a-construction-rule"></span></li><li><a href="#lesson-3">Trace Retrofit down to OkHttp</a> <span class="small" data-practice-nav="chapter-libraries-under-the-hood:trace-retrofit-down-to-okhttp"></span></li><li><a href="#lesson-4">Follow one logical call through OkHttp</a> <span class="small" data-practice-nav="chapter-libraries-under-the-hood:follow-one-logical-call-through-okhttp"></span></li><li><a href="#lesson-5">Observe a Room query over SQLite</a> <span class="small" data-practice-nav="chapter-libraries-under-the-hood:observe-a-room-query-over-sqlite"></span></li><li><a href="#lesson-6">Measure release code after R8 optimization</a> <span class="small" data-practice-nav="chapter-libraries-under-the-hood:measure-release-code-after-r8-optimization"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Build a dependency graph with explicit lifetimes</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-libraries-under-the-hood:build-a-dependency-graph-with-explicit-lifetimes">Build a dependency graph with explicit lifetimes</h2>
       <p>Constructor injection exposes the objects a class needs. Dagger constructs a graph using generated code; Hilt supplies Android-aware components and scopes on top of Dagger. The scope determines which consumers reuse an instance within that component.</p>
       <h3>Worked example</h3><p>A repository needs a database and a network client. Keep those dependencies in a process-level graph when their lifetimes require it. Create an editor presenter per screen so it can release screen state on destruction.</p>
       <h3>Try it</h3><p>Can a singleton repository safely retain an Activity supplied by a screen component?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Its longer lifetime would retain a short-lived screen. Pass the needed data or an appropriate process-scoped dependency and leave screen-specific behavior with its owner.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-libraries-under-the-hood:build-a-dependency-graph-with-explicit-lifetimes"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/training/dependency-injection/hilt-android">Android · Dependency injection with Hilt</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Read a Koin definition as a construction rule</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-libraries-under-the-hood:read-a-koin-definition-as-a-construction-rule">Read a Koin definition as a construction rule</h2>
       <p>Koin resolves definitions from a running container. A single definition reuses an instance within its container lifetime; a factory constructs a fresh value per resolution. A scope can tie an object to a shorter-lived context. Validate that required bindings exist for the production composition.</p>
       <h3>Worked example</h3><p>Two requests for a single database receive the same defined instance. Two requests for a factory editor receive distinct editors. Storing a factory-created editor in a singleton can still extend its actual lifetime.</p>
       <h3>Try it</h3><p>A unit test needs an in-memory repository while the app uses disk. Where should the choice live?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Bind the implementation at composition or test setup. Keep the consumer’s constructor dependent on the repository contract so its behavior can be exercised independently.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-libraries-under-the-hood:read-a-koin-definition-as-a-construction-rule"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://insert-koin.io/docs/reference/koin-core/definitions/">Koin · Definitions</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Trace Retrofit down to OkHttp</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-libraries-under-the-hood:trace-retrofit-down-to-okhttp">Trace Retrofit down to OkHttp</h2>
       <p>Retrofit maps a declared service method and annotations to an HTTP request and uses converters for supported body types. With an OkHttp-backed client, connection selection, network exchange and interceptors belong to the HTTP layer. Parsing application data and deciding how the UI handles failure are separate boundaries.</p>
       <h3>Worked example</h3><p>A GET method requests notes/17. The server returns HTTP 200 with malformed JSON. The transport received a successful HTTP response, yet the converter can fail before the repository gets a Note. Record the status and the conversion failure separately.</p>
       <h3>Try it</h3><p>If the network times out after a reservation write, would automatically repeating every failed Retrofit call be safe?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Recover the operation using a stable request identity and a defined server contract. A timeout does not establish whether the server committed the first attempt.</p></details>
-      <p class="small">Source · <a href="https://square.github.io/retrofit/">Square · Retrofit</a></p>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-libraries-under-the-hood:trace-retrofit-down-to-okhttp"> I attempted the exercise and compared my answer</label>
+      <p class="small">Source · <a href="https://github.com/lysine-dev/retrofit">Retrofit · Official project</a></p>
     </section>
 <section aria-labelledby="lesson-4">
-      <h2 id="lesson-4">Follow one logical call through OkHttp</h2>
+      <h2 id="lesson-4" data-practice-heading="chapter-libraries-under-the-hood:follow-one-logical-call-through-okhttp">Follow one logical call through OkHttp</h2>
       <p>An OkHttp client owns resources such as a connection pool. Reusing a client allows compatible connections to be reused rather than paying setup for each request. A call can include multiple exchanges, for example when following a redirect. Closing a response body releases its resources.</p>
       <h3>Worked example</h3><p>Two small requests target the same HTTPS origin. The first establishes a connection; the second may use that still-healthy connection. A server close or incompatible route can force a new connection. Measure connection events rather than assuming that an identical URL proves reuse.</p>
       <h3>Try it</h3><p>A chart counts two network exchanges for one app request after a redirect. Does that prove the user tapped twice?</p>
       <details class="recall"><summary>Compare your answer</summary><p>No. Record the logical call identity and its individual exchanges. Compare original destination, redirect response and final destination before interpreting the count.</p></details>
-      <p class="small">Source · <a href="https://square.github.io/okhttp/">Square · OkHttp</a></p>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-libraries-under-the-hood:follow-one-logical-call-through-okhttp"> I attempted the exercise and compared my answer</label>
+      <p class="small">Source · <a href="https://github.com/lysine-dev/okhttp">OkHttp · Official project</a></p>
     </section>
 <section aria-labelledby="lesson-5">
-      <h2 id="lesson-5">Observe a Room query over SQLite</h2>
+      <h2 id="lesson-5" data-practice-heading="chapter-libraries-under-the-hood:observe-a-room-query-over-sqlite">Observe a Room query over SQLite</h2>
       <p>Room validates supported annotated SQL and generates DAO plumbing. SQLite still executes the transaction. An observable query can rerun when a table it depends on is invalidated. Schema design, indexes and transaction boundaries still determine work and consistency.</p>
       <h3>Worked example</h3><p>A DAO updates a note title and inserts its pending sync row. Put both statements inside one transaction. A process stop after commit leaves both; a failure before commit leaves neither. The UI observes the resulting local note table.</p>
       <h3>Try it</h3><p>The note is visible after restart but no sync work exists. Which boundary should you inspect?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Look for separate commits or an independently enqueued in-memory action. Persisting the pending intention with the note makes reconstruction possible.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-libraries-under-the-hood:observe-a-room-query-over-sqlite"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/training/data-storage/room">Android · Save data using Room</a></p>
     </section>
 <section aria-labelledby="lesson-6">
-      <h2 id="lesson-6">Measure release code after R8 optimization</h2>
+      <h2 id="lesson-6" data-practice-heading="chapter-libraries-under-the-hood:measure-release-code-after-r8-optimization">Measure release code after R8 optimization</h2>
       <p>R8 can shrink unreachable code, optimize bytecode and rename classes or members. Code reached indirectly by reflection may require narrow keep rules. Startup also depends on actual initialization work and compilation, so reducing package size alone cannot establish a faster first frame.</p>
       <h3>Worked example</h3><p>A release build fails to construct a class looked up by name although debug works. Reproduce with the optimized variant, identify the reflective entry point and apply the smallest rule or library-supported declaration that preserves the required contract.</p>
       <h3>Try it</h3><p>After the fix, how would you test the claim that startup improved?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Benchmark equivalent release variants on the same device and startup mode. Compare first-display measurements and a trace, while holding compilation state and initial data constant.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-libraries-under-the-hood:measure-release-code-after-r8-optimization"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/topic/performance/app-optimization/enable-app-optimization">Android · Enable app optimization with R8</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="final-project.html">Start the final project →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-libraries-under-the-hood" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-libraries-under-the-hood" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

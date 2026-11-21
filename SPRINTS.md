@@ -242,3 +242,11 @@ The 13 course outlines and their final lessons lead into a course-specific inves
 ### Published topic chapters across all 13 courses
 
 Replaced the previously announced Android, BLE, iOS, LLM, performance, security and mobile system design topics with English teaching material. Added advanced topics to the other six courses. Each lesson contains a worked case, a transfer question, a reasoned solution and a source. Chapters are reachable from course outlines, catalog search, the final puzzle and the offline vault.
+
+### Curriculum and repeat-visit verification
+
+Reviewed all 136 published puzzles, 116 practice topics and 13 projects. Corrected overbroad technical claims, updated stale sources and reproduced the incident lesson's false-green readiness condition against the native service. Added persistent, reversible self-checks for practice and project work, a crash/redelivery exercise, a two-server PostgreSQL promotion fixture and a repeatable release check. Track the remaining assessment gaps in `_course/COVERAGE.md`.
+
+### Deferred learning-method research
+
+After the portal meets its agreed maintenance and multi-session learning goals, review the evidence for delayed recall, corrective feedback and transfer in technical education. Compare an in-portal prompt, one HTML email question and a separate app. Evaluate retention after a delay and the ability to solve a changed case alongside maintenance effort. Email delivery and application development require a later product decision.

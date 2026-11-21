@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Design a Swift-facing boundary for shared bookmarks · Final project · Kotlin Multiplatform, from the compiler up</title>
   <link rel="canonical" href="https://pachulski.dev/course/kmp/final-project">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,7 +48,7 @@
   </header>
 
   <main id="main">
-<article class="wrap narrow section">
+<article class="wrap narrow section" data-practice-course="kmp">
       <p class="eyebrow"><a href="./">Kotlin Multiplatform, from the compiler up</a> · Final project</p>
       <h1>Design a Swift-facing boundary for shared bookmarks</h1>
       <p class="lede">A Kotlin module retrieves bookmark titles. Ship it to an iOS screen whose owner can disappear while a load is in flight. Review the caller contract, ownership and UI execution together.</p>
@@ -65,10 +67,12 @@
       </details>
       <h2>Change one assumption</h2><p>One consumer wants a one-shot load while another wants a continuous list of changes. Can a single completion callback document both lifetimes?</p>
       <details class="course-extras"><summary>Check your reasoning</summary><p>Give the one-shot operation one terminal result. Give continuous observation a documented sequence and cancellation handle. The Swift owner can then express how long it subscribes and release its callback at the right boundary.</p></details>
+      <label hidden data-practice-control><input type="checkbox" data-practice-item="final-project"> I completed the project and compared my evidence with the worked review</label>
+      <p class="small" role="status" data-practice-status></p>
       <p class="actions"><a class="button" href="./">Return to course outline</a></p>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fkmp%2Ffinal-project" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fkmp%2Ffinal-project" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

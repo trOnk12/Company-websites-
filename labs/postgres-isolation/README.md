@@ -71,3 +71,21 @@ One design updates the two requested seat rows inside one transaction with a pre
 ## Reference
 
 [PostgreSQL 17 transaction isolation, including concurrent updates and serialization failures](https://www.postgresql.org/docs/17/transaction-iso.html)
+
+## Which acknowledged grant survives promotion?
+
+Use PostgreSQL 17 server tools (`initdb`, `postgres` and `pg_ctl` on PATH) and the Python environment above on a Unix-like machine. Run as an ordinary user. This fixture initializes its own two local database directories and discards them on exit. It does not use LAB_DSN or connect to an existing database.
+
+```sh
+python failover.py
+```
+
+1. Start from an identical, cleanly stopped physical copy. Configure the copy to stream from the primary and wait until the primary reports a synchronous streaming standby.
+2. Insert grant 41 with synchronous_commit=remote_apply. The client receives success. A separate connection reads 41 on the standby.
+3. Stop the standby. For grant 42, explicitly switch to local commit acknowledgement. The client receives success again. Record the two successful IDs.
+4. Stop the primary immediately, keep it stopped and promote the standby. Read the actual IDs from the new writer. Only 41 survives on it. The evidence demonstrates an acknowledged write missing from the promoted history. It does not establish that every copy of 42 was physically destroyed.
+5. Explain what the client could have inferred from the two replies alone. For an application promise that a confirmation survives one primary loss, name the required acknowledger, which node may be promoted and how the system behaves when that node is unavailable.
+
+Stopping the old primary fences it in this lab. A real deployment requires a mechanism to prevent an isolated former primary from serving writes. This fixture tests two configured PostgreSQL acknowledgement policies. It does not implement leader election or simulate an entire region outage.
+
+[PostgreSQL 17 · Synchronous replication](https://www.postgresql.org/docs/17/warm-standby.html#SYNCHRONOUS-REPLICATION)

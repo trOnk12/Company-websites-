@@ -30,7 +30,7 @@ Some slices come from Android: it marks spans like frames, and the kernel's reco
 
 ## The analogy
 
-A trace is a flight recorder for the phone: it writes down every event with the time, so after landing you can replay the flight. Perfetto is the replay screen: one lane per crew member (track), each task as a labelled block (slice).
+A trace is a flight recorder for the phone: it writes down selected events with their times, so after landing you can replay the flight. Perfetto is the replay screen: one lane per crew member (track), each task as a labelled block (slice).
 
 ## Check yourself
 

@@ -2,7 +2,7 @@
 title: Each app gets its own account
 short: Each app, its own account
 summary: The kernel keeps processes apart while they run. Android also keeps each app's files apart, by giving every app its own identity.
-takeaway: Every app gets its own UID, its key. The kernel checks that key on every file, so one app can never open another's private files: the sandbox.
+takeaway: An ordinary installed app receives its own UID. File access rules, process isolation and additional mandatory access controls protect app-private data.
 ---
 
 ## The problem
@@ -16,7 +16,7 @@ In puzzle 0, two running apps couldn't touch each other's memory. But apps also 
 
 ## The building block
 
-Linux was built for computers shared by many people, so it keeps accounts apart. A Linux account isn't necessarily a person: it's an identity the kernel uses to decide who owns which files. Android reuses that: at install time, every app gets its own account, with its own user ID, or **UID**. The UID stays the same for as long as the app is installed. Files the app creates belong to its UID. And for every process, the kernel keeps a record of which UID it runs as: when that process opens a file, the kernel compares the file's UID with the process's UID. Match: the door opens. No match: refused.
+Linux was built for computers shared by many people, so it keeps accounts apart. A Linux account isn't necessarily a person: it's an identity the kernel uses to decide who owns which files. Android reuses that: by default, an installed app gets its own account, with its own user ID, or **UID**. The UID stays the same for as long as the app is installed. Files the app creates belong to its UID. And for every process, the kernel keeps a record of which UID it runs as: when that process opens a file, the kernel checks the process credentials, file access rules and additional access policy. An ordinary app cannot open another app’s private files just by learning their names.
 
 The kernel checks the UID on every file and every process. The result is the **sandbox**: walls around each app's files and memory that no app can switch off, because the kernel enforces them.
 

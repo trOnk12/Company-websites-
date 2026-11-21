@@ -87,7 +87,7 @@
 <ol class="caps">
 <li><p>In <b>training</b>, a program reads huge amounts of text, learning what tends to come next. The result is a <b>language model</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-model-2">Next →</label></div></li>
 <li><p>Give it any text and it continues it: "The capital of France is" becomes "Paris".</p><div class="stepnav"><label for="st-model-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-model-3">Next →</label></div></li>
-<li><p>Large ones, <b>LLMs</b>, are too big for a phone: they run on a provider's servers. <i>Predict: how does your app use one?</i></p><div class="stepnav"><label for="st-model-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-model-4">Next →</label></div></li>
+<li><p>Large ones, <b>LLMs</b>, can run on a provider's servers. <i>Predict: how does your app use one?</i></p><div class="stepnav"><label for="st-model-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-model-4">Next →</label></div></li>
 <li><p>Through an <b>API</b>: an HTTP request with your text and a secret key, and a response with the continuation.</p><div class="stepnav"><label for="st-model-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-model-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-model-1" title="Step 1"></label><label for="st-model-2" title="Step 2"></label><label for="st-model-3" title="Step 3"></label><label for="st-model-4" title="Step 4"></label></div>
@@ -97,7 +97,7 @@
         <h2 id="the-building-block">The building block</h2>
 <p>A <b>language model</b> is a program that continues text. Give it &quot;The capital of France is&quot; and it continues with &quot;Paris&quot;. Give it a review and &quot;Summary:&quot; and it continues with a summary.</p>
 <p>It learned to do that in <b>training</b>: it was shown huge amounts of text and, again and again, asked what comes next, and adjusted every time it was wrong. The result is a program that, given any text, can score how likely each possible next word is. Picking likely words, one after another, produces an answer. (The next puzzle shows the exact unit it picks.)</p>
-<p>The big ones are called large language models, <b>LLM</b>s. They're too big for a phone and run on a provider's servers: Anthropic's models are called Claude, Google's are called Gemini.</p>
+<p>The big ones are called large language models, <b>LLM</b>s. Some run on phones. Hosted models run on a provider's servers: Anthropic's models are called Claude, Google's are called Gemini.</p>
 <p>Your app reaches one through an <b>API</b>: an HTTP request to the provider, with your text in the body and a secret key that identifies your account, and a response with the continuation in it. To your code, it's a slow, expensive, very capable endpoint.</p>
       </section>
       <section aria-labelledby="the-analogy">
@@ -133,7 +133,7 @@
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.anthropic.com/en/docs/about-claude/glossary">Anthropic: Glossary, LLM</a> (&quot;Large language models (LLMs) are AI language models with many parameters that are capable of performing a variety of surprisingly useful tasks. These models are trained on vast amounts of text data and can generate human-like text, answer questions, summarize information, and more&quot;; models are &quot;pretrained to predict the next word, given the previous context of text&quot;)</li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Large ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A language model is a program trained on huge amounts of text until, given any text, it can score which words are likely to come next, and so continue it: answer a question, summarise a review. Hosted ones run on a provider's servers (Anthropic's Claude, Google's Gemini), and your app reaches them through an API: an HTTP request with your text, and a response with the continuation.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="./">← Overview</a>

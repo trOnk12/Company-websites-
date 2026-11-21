@@ -1,5 +1,5 @@
 <!-- label: HTTP inside TLS inside TCP, carried by IP packets that can get lost -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="ly-t"><title id="ly-t">A request is wrapped by TLS and carried by TCP as numbered packets; IP routes each packet through routers and one gets lost; the receiver's acknowledgement shows the gap and TCP sends the lost packet again; the server gets the request in order</title>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ly-t"><title id="ly-t">A request is wrapped by TLS and carried by TCP as numbered byte ranges carried in packets; IP routes each packet through routers and one gets lost; the receiver's acknowledgement shows the gap and TCP sends the lost packet again; the server gets the request in order</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <x-phone class="step s1" x="20" y="100" label="app"/>
 <x-server class="step s1" x="540" y="80" label="server"/>
@@ -12,7 +12,7 @@
 </svg>
 <ol class="caps">
 <li><p>Your request is HTTP, encrypted by <b>TLS</b> (it scrambles the data), carried by <b>TCP</b>: layers inside layers.</p></li>
-<li><p>TCP cuts it into numbered <b>packets</b>. <b>IP</b> passes each one from router to router: best effort, no promises.</p></li>
+<li><p>TCP carries numbered byte ranges inside <b>packets</b>. <b>IP</b> passes each one from router to router: best effort, no promises.</p></li>
 <li><p>Packet 2 is lost on the way. <i>Predict: who notices, and what happens?</i></p></li>
-<li><p>TCP: packet 2 was never acknowledged, so it's sent again. The server gets everything, in order.</p></li>
+<li><p>TCP retransmits the missing byte range. The server gets everything, in order.</p></li>
 </ol>

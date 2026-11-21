@@ -22,7 +22,7 @@ That 1 MB is shared by every call in progress into that process, from every app.
 
 A call that doesn't fit fails with `TransactionTooLargeException` (a transaction is one Binder call). The fix is never a bigger Parcel: save the data somewhere both sides can reach, like a file, and send its name, or a number that identifies it. Inside your own app this just works: all its screens run as the same UID, so the sandbox lets every one of them read the file. (Letting another app read your file needs system_server to grant it access: a later puzzle.)
 
-Splitting the data into many smaller calls doesn't help either: they all go through the same shared 1 MB, and the receiver would have to glue the pieces back together.
+Sequential smaller calls may fit as earlier transactions release buffer space. They add ordering, assembly and failure handling. For a photo, passing a file reference avoids copying the image through Binder.
 
 ## The analogy
 
@@ -32,7 +32,7 @@ The town hall's mailbox has one fixed size, shared by everyone's letters. A parc
 
 - You put a 3 MB photo into an Intent and start an Activity. What happens?::*It fails with `TransactionTooLargeException`||It works: the Intent object is handed over as it is >> Objects can't leave a process: the Intent is packed into a Parcel and must fit the receiver's Binder buffer. >> s3||It works, just more slowly >> The buffer has a fixed size of about 1 MB. A Parcel that doesn't fit fails; it doesn't wait. >> s3::Every Intent crosses Binder, through a buffer of about 1 MB.
 - Your app's call into system_server carries 400,000 bytes (0.4 MB). It works most of the time but fails now and then. Why?::*The 1 MB is shared by every call in progress, so when others are waiting there's less room||0.4 MB is over the limit for one call, so it fails at random >> The limit is about 1 MB, more than 0.4 MB. It's the sharing that hurts. >> s2||The kernel shrinks the buffer when the phone is busy, then grows it back >> The buffer's size is fixed when the process first uses Binder; it never changes. >> the-building-block::A shared, fixed-size buffer: other calls take room too.
-- How do you show a big photo on another screen of your own app?::*Save it to a file and send the file's name||Pack it into a bigger Parcel >> The Parcel isn't the limit; the receiver's buffer is, and it's fixed. >> s4||Send it in many small Intents, one after another >> They all cross the same shared 1 MB, and the receiver has to glue them back together. Send where the photo is, not the photo. >> the-building-block::Send a small reference; let the other side read the data itself.
+- How do you show a big photo on another screen of your own app?::*Save it to a file and send the file's name||Pack it into a bigger Parcel >> The Parcel isn't the limit; the receiver's buffer is, and it's fixed. >> s4||Send it in many small Intents, one after another >> Sequential chunks can fit, but the receiver must assemble them and handle partial transfers. Send where the photo is, not the photo. >> the-building-block::Send a small reference; let the other side read the data itself.
 
 ## Sources
 

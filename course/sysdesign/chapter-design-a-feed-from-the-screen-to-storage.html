@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Design a feed from the screen to storage · Mobile system design, from a packet to an app</title>
   <link rel="canonical" href="https://pachulski.dev/course/sysdesign/chapter-design-a-feed-from-the-screen-to-storage">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,55 +48,61 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="sysdesign">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Mobile system design, from a packet to an app</a></p>
       <p class="eyebrow">Practice chapter 1 of 2</p><h1>Design a feed from the screen to storage</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Continue from a cursor without losing tied rows</a></li><li><a href="#lesson-2">Cache the representation you actually display</a></li><li><a href="#lesson-3">Reconcile an offline edit against the version it changed</a></li><li><a href="#lesson-4">Choose an update channel by the freshness promise</a></li><li><a href="#lesson-5">Roll out an implementation independently of installation</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Continue from a cursor without losing tied rows</a> <span class="small" data-practice-nav="chapter-design-a-feed-from-the-screen-to-storage:continue-from-a-cursor-without-losing-tied-rows"></span></li><li><a href="#lesson-2">Cache the representation you actually display</a> <span class="small" data-practice-nav="chapter-design-a-feed-from-the-screen-to-storage:cache-the-representation-you-actually-display"></span></li><li><a href="#lesson-3">Reconcile an offline edit against the version it changed</a> <span class="small" data-practice-nav="chapter-design-a-feed-from-the-screen-to-storage:reconcile-an-offline-edit-against-the-version-it-changed"></span></li><li><a href="#lesson-4">Choose an update channel by the freshness promise</a> <span class="small" data-practice-nav="chapter-design-a-feed-from-the-screen-to-storage:choose-an-update-channel-by-the-freshness-promise"></span></li><li><a href="#lesson-5">Roll out an implementation independently of installation</a> <span class="small" data-practice-nav="chapter-design-a-feed-from-the-screen-to-storage:roll-out-an-implementation-independently-of-installation"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Continue from a cursor without losing tied rows</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-design-a-feed-from-the-screen-to-storage:continue-from-a-cursor-without-losing-tied-rows">Continue from a cursor without losing tied rows</h2>
       <p>Choose one stable total order, such as descending publication time followed by descending unique post ID. A cursor records the boundary of the last result using the same keys. In an offline-capable client, write returned rows and the next-page key together. Let the screen observe local storage so it has one consistent view of appended pages.</p>
       <h3>Worked example</h3><p>The server has (time 10, id 9), (10, 8) and (9, 7). A one-row page ends at (10, 9). Filtering only for times below 10 skips ID 8. Seeking below the full pair returns (10, 8). A repeated page can be merged by stable post ID.</p>
       <h3>Try it</h3><p>A post can change its ranking score while the reader pages. Does a tie-breaker alone prevent all gaps?</p>
       <details class="recall"><summary>Compare your answer</summary><p>No. A tie-breaker solves equal-key ordering. A changing rank moves a post across the boundary. Freeze a ranking version, accept defined movement or refresh the list. Specify which behavior the reader can rely on.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-design-a-feed-from-the-screen-to-storage:continue-from-a-cursor-without-losing-tied-rows"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/topic/libraries/architecture/paging/v3-network-db">Android Developers · Paging with network and database</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Cache the representation you actually display</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-design-a-feed-from-the-screen-to-storage:cache-the-representation-you-actually-display">Cache the representation you actually display</h2>
       <p>An image cache key identifies a specific representation. Include identity, version and requested transformation when they affect bytes or pixels. Encoded file size and decoded memory occupy different budgets. Honor HTTP cache directives and validators when reusing server responses, and keep private images scoped to an authorized user.</p>
       <h3>Worked example</h3><p>A 2,000 × 1,500 image decoded into four bytes per pixel takes about 12 MB before overhead. A 200 × 150 thumbnail needs about 120 kB with the same format. A compressed download of 250 kB is not the correct number to use for the full-size memory cache.</p>
       <h3>Try it</h3><p>The avatar URL stays constant across profile edits. How can the next screen show the new image without unconditionally downloading every old avatar?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Use a versioned representation identity or a freshness policy with a validator. When stale, validate the cached response and replace it if changed. Invalidate transformed thumbnails associated with the obsolete version.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-design-a-feed-from-the-screen-to-storage:cache-the-representation-you-actually-display"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://www.rfc-editor.org/rfc/rfc9111.html">RFC 9111 · HTTP caching</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Reconcile an offline edit against the version it changed</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-design-a-feed-from-the-screen-to-storage:reconcile-an-offline-edit-against-the-version-it-changed">Reconcile an offline edit against the version it changed</h2>
       <p>An offline-first client persists the user’s intended change and a pending synchronization record locally. Attach a stable operation identity for retries and the base record version for conflict detection. An acknowledged write and a stale edit require different recovery paths. Define per-field or whole-record merge semantics before automating reconciliation.</p>
       <h3>Worked example</h3><p>Two phones read bookmark v4. Ada changes its title while offline; Ben changes its title online, producing v5. When Ada reconnects, a conditional save against v4 fails. Preserve her draft, fetch v5 and present both titles. If they changed independent fields and the product permits merging, the client can build and submit a fresh conditional update.</p>
       <h3>Try it</h3><p>The connection closes after Ada’s write is accepted and before its reply arrives. Is that the same as a confirmed conflict?</p>
       <details class="recall"><summary>Compare your answer</summary><p>No. Recover the operation’s outcome by identity before deciding to overwrite or prompt for a merge. A version mismatch on replay alone does not establish who made the previous change.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-design-a-feed-from-the-screen-to-storage:reconcile-an-offline-edit-against-the-version-it-changed"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/topic/architecture/data-layer/offline-first">Android Developers · Offline-first data layer</a></p>
     </section>
 <section aria-labelledby="lesson-4">
-      <h2 id="lesson-4">Choose an update channel by the freshness promise</h2>
+      <h2 id="lesson-4" data-practice-heading="chapter-design-a-feed-from-the-screen-to-storage:choose-an-update-channel-by-the-freshness-promise">Choose an update channel by the freshness promise</h2>
       <p>Periodic polling asks on a schedule even when nothing changed. Long polling holds a request until an event or timeout and then opens another. A WebSocket maintains a bidirectional channel for foreground exchanges. Platform push can wake or notify the client under platform delivery policies. Each approach needs reconnection and a way to find changes missed during a gap.</p>
       <h3>Worked example</h3><p>At an idealized 30-second poll interval, 6,000 continuously active clients generate about 200 polls/s before retries. A long poll can reduce empty responses but consumes open connections. A foreground collaborative screen may justify a socket; a background feed can treat a push as a hint to fetch a durable change list.</p>
       <h3>Try it</h3><p>A phone has applied event 51, sleeps, then receives a hint for event 58. Which data should it request?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Request the durable changes after 51, apply them in order or according to the chosen merge rule, and persist the new cursor with the local update. If the server no longer retains the gap, perform a snapshot resync.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-design-a-feed-from-the-screen-to-storage:choose-an-update-channel-by-the-freshness-promise"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://www.rfc-editor.org/rfc/rfc6202.html">RFC 6202 · Long polling and streaming</a></p>
     </section>
 <section aria-labelledby="lesson-5">
-      <h2 id="lesson-5">Roll out an implementation independently of installation</h2>
+      <h2 id="lesson-5" data-practice-heading="chapter-design-a-feed-from-the-screen-to-storage:roll-out-an-implementation-independently-of-installation">Roll out an implementation independently of installation</h2>
       <p>A feature flag lets compatible clients select between code paths. Define a default, a stable cohort assignment and a measurable condition for expanding or stopping. Keep both paths compatible with any stored data they may encounter. Disabling a flag cannot reverse an irreversible data conversion.</p>
       <h3>Worked example</h3><p>Release a new feed loader disabled. Enable it for a stable 5% cohort; compare load success, latency and stale-list reports with a control group on the same client version. Persist a safe default when configuration is unavailable. Test switching the flag off after the new loader has cached a page.</p>
       <h3>Try it</h3><p>Why can a repeatedly randomized five-percent choice per request make a mobile rollout harder to diagnose?</p>
       <details class="recall"><summary>Compare your answer</summary><p>One person can move between implementations within one session and carry state between them. Use stable assignment for the experiment, label measurements by exposure and preserve a compatible fallback.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-design-a-feed-from-the-screen-to-storage:roll-out-an-implementation-independently-of-installation"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://firebase.google.com/docs/remote-config/rollouts">Firebase · Remote Config rollouts</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-measure-what-happened-on-real-devices.html">Measure what happened on real devices →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2Fchapter-design-a-feed-from-the-screen-to-storage" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsysdesign%2Fchapter-design-a-feed-from-the-screen-to-storage" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

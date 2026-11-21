@@ -18,7 +18,7 @@ In puzzle 4, system_server decided to move your Activity to "resumed". But syste
 
 Only the kernel can reach into every process (puzzle 1). So the kernel carries the message.
 
-The kernel is made of parts that each do one job; such a part is called a **driver**. The driver that carries messages between processes is called **Binder**. Every message between your app and system_server travels through Binder, in both directions.
+The kernel is made of parts that each do one job; such a part is called a **driver**. The driver that carries messages between processes is called **Binder**. The lifecycle instructions in this example travel through Binder. Android also has other channels, including the input path in puzzle 17.
 
 ## The analogy
 

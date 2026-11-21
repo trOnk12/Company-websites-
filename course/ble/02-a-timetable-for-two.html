@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary>Puzzle 1: Shouting into the room</summary><p>A device advertises: it wakes, sends a short packet on each of the 3 advertising channels, and sleeps, over and over at its advertising interval. A phone scans: it listens on those channels until one packet lands while it's listening.</p><p><a href="01-shouting-into-the-room.html">Review puzzle 1</a></p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: Shouting into the room</summary><p>This legacy strap advertises on the three primary channels. Repeated advertising gives a scanning phone more opportunities to hear it. The advertising configuration and scan windows determine the actual chances.</p><p><a href="01-shouting-into-the-room.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-a-year-on-a-coin-battery.html">0</a> → <a href="01-shouting-into-the-room.html">1</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -101,8 +101,8 @@
         <h2 id="the-building-block">The building block</h2>
 <p>The phone answers an advertisement with a request to connect, in the moment the strap listens after advertising (puzzle 1). From then on, the two are in a <b>connection</b>, and each has a role. The side that sent the request becomes the <b>central</b>, which sets the timing: usually the phone, because the phone is the one that goes looking. The side that advertised becomes the <b>peripheral</b>, which follows it: usually the small device.</p>
 <p>In its request, the central sets a timetable: meet every <b>connection interval</b>. The same request also carries the rule for picking each meeting's channel, so both sides know it from the start. The connection interval is a multiple of 1.25 ms, from 7.5 ms up to 4 s. Short means data moves sooner but more radio time; long means slow replies and a longer battery life. The central can change it later.</p>
-<p>Each meeting is a <b>connection event</b>. Both radios wake at the agreed moment, exchange packets, and sleep again until the next one. If neither has anything to say, they swap tiny empty packets, just enough to stay in step. Because both know the timetable, neither has to listen in between.</p>
-<p>Each connection event happens on a different channel, picked from the 37 non-advertising channels by a rule both sides know. If one channel is noisy, only the events that land on it suffer.</p>
+<p>Each meeting is a <b>connection event</b>. In this basic example, both radios wake at the agreed moment, exchange packets, and sleep again until the next one. If neither has anything to say, they swap tiny empty packets, just enough to stay in step. Because both know the timetable, neither has to listen in between.</p>
+<p>A channel-selection rule picks a data channel for each event from the enabled channel map. Consecutive events need not use different channels. A peripheral may skip eligible events under negotiated timing rules. If one channel is noisy, only the events that land on it suffer.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

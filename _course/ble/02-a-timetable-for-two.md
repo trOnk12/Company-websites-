@@ -20,9 +20,9 @@ The phone answers an advertisement with a request to connect, in the moment the 
 
 In its request, the central sets a timetable: meet every **connection interval**. The same request also carries the rule for picking each meeting's channel, so both sides know it from the start. The connection interval is a multiple of 1.25 ms, from 7.5 ms up to 4 s. Short means data moves sooner but more radio time; long means slow replies and a longer battery life. The central can change it later.
 
-Each meeting is a **connection event**. Both radios wake at the agreed moment, exchange packets, and sleep again until the next one. If neither has anything to say, they swap tiny empty packets, just enough to stay in step. Because both know the timetable, neither has to listen in between.
+Each meeting is a **connection event**. In this basic example, both radios wake at the agreed moment, exchange packets, and sleep again until the next one. If neither has anything to say, they swap tiny empty packets, just enough to stay in step. Because both know the timetable, neither has to listen in between.
 
-Each connection event happens on a different channel, picked from the 37 non-advertising channels by a rule both sides know. If one channel is noisy, only the events that land on it suffer.
+A channel-selection rule picks a data channel for each event from the enabled channel map. Consecutive events need not use different channels. A peripheral may skip eligible events under negotiated timing rules. If one channel is noisy, only the events that land on it suffer.
 
 ## The analogy
 

@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-19">
         <p id="builds-on-19"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="15"><details><summary>Puzzle 15: Inside a Binder call</summary><p>proxy → Parcel → Binder stamps your UID → a Binder thread → the real method, and back. Meanwhile the thread that called waits.</p><p><a href="15-inside-a-binder-call.html">Review puzzle 15</a></p></details></li></ul>
+        <ul><li data-block="15"><details><summary>Puzzle 15: Inside a Binder call</summary><p>A synchronous remote Binder call packs values into a Parcel, carries caller identity to the receiver and waits for a reply. One-way remote calls have different completion semantics.</p><p><a href="15-inside-a-binder-call.html">Review puzzle 15</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 9 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="02-threads-are-the-workers.html">2</a> → <a href="03-threads-share-one-house.html">3</a> → <a href="04-the-town-hall-decides.html">4</a> → <a href="05-the-post-office-carries-letters.html">5</a> → <a href="07-each-app-is-its-own-user.html">7</a> → <a href="08-letters-between-apps.html">8</a> → <a href="15-inside-a-binder-call.html">15</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -108,7 +108,7 @@
 <p>Calls into a process wait in its <b>Binder buffer</b>: an area of that process's memory, set up by the kernel when the process first uses Binder. Its size is fixed then, so it can't grow later: about 1 MB.</p>
 <p>That 1 MB is shared by every call in progress into that process, from every app. So a call can fail even when it's well under 1 MB, if many other calls are waiting at the same moment.</p>
 <p>A call that doesn't fit fails with <code>TransactionTooLargeException</code> (a transaction is one Binder call). The fix is never a bigger Parcel: save the data somewhere both sides can reach, like a file, and send its name, or a number that identifies it. Inside your own app this just works: all its screens run as the same UID, so the sandbox lets every one of them read the file. (Letting another app read your file needs system_server to grant it access: a later puzzle.)</p>
-<p>Splitting the data into many smaller calls doesn't help either: they all go through the same shared 1 MB, and the receiver would have to glue the pieces back together.</p>
+<p>Sequential smaller calls may fit as earlier transactions release buffer space. They add ordering, assembly and failure handling. For a photo, passing a file reference avoids copying the image through Binder.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -139,7 +139,7 @@
 <input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-1"><label for="q-19-how-big-can-a-binder-call-be-3-1"><span>Send it in many small Intents, one after another</span></label>
 <input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-2"><label for="q-19-how-big-can-a-binder-call-be-3-2"><span>Pack it into a bigger Parcel</span></label>
 <input type="radio" name="q-19-how-big-can-a-binder-call-be-3" id="q-19-how-big-can-a-binder-call-be-3-3" data-ok><label for="q-19-how-big-can-a-binder-call-be-3-3"><span>Save it to a file and send the file's name</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> They all cross the same shared 1 MB, and the receiver has to glue them back together. Send where the photo is, not the photo. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb no opt-1"><b>Not quite.</b> Sequential chunks can fit, but the receiver must assemble them and handle partial transfers. Send where the photo is, not the photo. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb no opt-2"><b>Not quite.</b> The Parcel isn't the limit; the receiver's buffer is, and it's fixed. <label class="show-me" for="st-buffer-4" data-goto="st-buffer">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> Send a small reference; let the other side read the data itself.</p>
 </fieldset>

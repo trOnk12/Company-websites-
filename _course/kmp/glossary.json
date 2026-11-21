@@ -488,7 +488,7 @@
   },
   "XCFramework": {
    "in": "12",
-   "def": "One bundle holding a framework built for every Apple device and simulator.",
+   "def": "One bundle holding framework or library variants for selected Apple platforms and architectures.",
    "aliases": []
   },
   "VoiceOver": {

@@ -18,9 +18,9 @@ In puzzle 9, ART ran your DEX by interpreting it, which is slow. But some of you
 
 ART watches which code runs often, "hot" code, and translates it to machine code right away, while the app runs: that's **JIT**, just-in-time. That machine code lives in the process's memory, so it's gone when the process ends. It also writes down which code was hot in a notebook, the **profile**.
 
-Later, about once a day while the phone is idle and charging, `dex2oat`, a program that's part of Android, translates the code in the profile to machine code and keeps it in a file on the phone: that's **AOT**, ahead-of-time. Next start, that code is fast from the first moment. It doesn't translate everything: that would take a long time and use storage, and most code is rarely used.
+Later, when system maintenance policy permits background compilation, `dex2oat`, a program that's part of Android, translates the code in the profile to machine code and keeps it in a file on the phone: that's **AOT**, ahead-of-time. Next start, that code is fast from the first moment. It doesn't translate everything: that would take a long time and use storage, and most code is rarely used.
 
-A **Baseline Profile** is a profile the app's developers write and ship inside the APK, so `dex2oat` can translate the important code when the app is installed, before its first launch.
+A **Baseline Profile** is a profile the app's developers write and ship inside the APK, so a supported installer and runtime can compile important paths before first use. Check the actual installation and compilation mode when measuring the result.
 
 ## The analogy
 

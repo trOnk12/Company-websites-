@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers bytes, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -103,7 +103,7 @@
 <p>So for small requests, the time is roughly:</p>
 <div class="table-wrap"><table><thead><tr><th scope="col"></th><th scope="col">Time</th></tr></thead><tbody><tr><th scope="row">One request</th><td>1 round trip</td></tr><tr><th scope="row">Four requests, each waiting for the one before</th><td>4 round trips</td></tr><tr><th scope="row">The three independent ones together, then the avatar</th><td>2 round trips</td></tr></tbody></table></div>
 <p>At 30 ms per round trip on Wi-Fi, four in a row is 120 ms. At 250 ms on a busy mobile network, it's a full second, and doubling the bandwidth doesn't change it, because you weren't waiting for bandwidth. Sending the user, settings and avatar URL requests together, then the avatar, takes two round trips: 500 ms. (In Kotlin, start them with <code>async</code> and wait with <code>awaitAll</code>; over one connection this needs a newer HTTP version, puzzle 5.)</p>
-<p>That's why the first question of any mobile system design is: how many round trips does this screen need, and can they happen at the same time, or not at all? One endpoint that returns the whole screen, or requests that don't depend on each other, beats any amount of compression.</p>
+<p>That's why the first question of any mobile system design is: how many round trips does this screen need, and can they happen at the same time, or not at all? One endpoint that returns the whole screen, or requests that don't depend on each other, can shorten this latency-dominated example.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -121,13 +121,13 @@
 <p class="fb ok opt-3"><b>Right.</b> Small requests wait for round trips.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Which change makes that screen faster on every network?</legend>
-<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-1" data-ok><label for="q-03-round-trips-not-bandwidth-2-1"><span>Sending the three independent requests together, then the avatar</span></label>
-<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-2"><label for="q-03-round-trips-not-bandwidth-2-2"><span>Moving from Wi-Fi to a 5G network with more bandwidth</span></label>
-<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-3"><label for="q-03-round-trips-not-bandwidth-2-3"><span>Compressing the responses so each one is smaller</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Fewer trips in a row, faster everywhere.</p>
-<p class="fb no opt-2"><b>Not quite.</b> More bandwidth doesn't remove round trips; fewer trips do. <label class="show-me" for="st-rtt-4" data-goto="st-rtt">Show me step 4 again ↑</label></p>
-<p class="fb no opt-3"><b>Not quite.</b> Smaller data saves little when the wait is the trip, not the data. <label class="show-me" for="st-rtt-4" data-goto="st-rtt">Show me step 4 again ↑</label></p>
+<legend>Which change reduces sequential waits in this example?</legend>
+<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-1"><label for="q-03-round-trips-not-bandwidth-2-1"><span>Compressing the responses so each one is smaller</span></label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-2" data-ok><label for="q-03-round-trips-not-bandwidth-2-2"><span>Sending the three independent requests together, then the avatar</span></label>
+<input type="radio" name="q-03-round-trips-not-bandwidth-2" id="q-03-round-trips-not-bandwidth-2-3"><label for="q-03-round-trips-not-bandwidth-2-3"><span>Moving from Wi-Fi to a 5G network with more bandwidth</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Smaller data saves little when the wait is the trip, not the data. <label class="show-me" for="st-rtt-4" data-goto="st-rtt">Show me step 4 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Fewer trips on this critical path.</p>
+<p class="fb no opt-3"><b>Not quite.</b> More bandwidth doesn't remove round trips; fewer trips do. <label class="show-me" for="st-rtt-4" data-goto="st-rtt">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between latency and bandwidth?</legend>

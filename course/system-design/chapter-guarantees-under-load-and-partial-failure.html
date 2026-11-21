@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Guarantees under load and partial failure · System design from first principles to design review</title>
   <link rel="canonical" href="https://pachulski.dev/course/system-design/chapter-guarantees-under-load-and-partial-failure">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,39 +48,43 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="system-design">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
-      <p class="eyebrow">Practice chapter 1 of 2</p><h1>Guarantees under load and partial failure</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">What did the replica actually acknowledge?</a></li><li><a href="#lesson-2">How many failures can a user journey afford?</a></li><li><a href="#lesson-3">Where should retries spend the request budget?</a></li></ol></nav>
+      <p class="eyebrow">Practice chapter 1 of 3</p><h1>Guarantees under load and partial failure</h1>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">What did the replica actually acknowledge?</a> <span class="small" data-practice-nav="chapter-guarantees-under-load-and-partial-failure:what-did-the-replica-actually-acknowledge"></span></li><li><a href="#lesson-2">How many failures can a user journey afford?</a> <span class="small" data-practice-nav="chapter-guarantees-under-load-and-partial-failure:how-many-failures-can-a-user-journey-afford"></span></li><li><a href="#lesson-3">Where should retries spend the request budget?</a> <span class="small" data-practice-nav="chapter-guarantees-under-load-and-partial-failure:where-should-retries-spend-the-request-budget"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">What did the replica actually acknowledge?</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-guarantees-under-load-and-partial-failure:what-did-the-replica-actually-acknowledge">What did the replica actually acknowledge?</h2>
       <p>A primary records changes in its write-ahead log. A standby receives log records and replays them into its own readable database. Receiving, durably flushing and replaying a record are distinct milestones. With asynchronous replication a primary can acknowledge a write before the standby reaches any of them. Choose the milestone based on the promise you make to the caller and which failures you intend to survive.</p>
       <h3>Worked example</h3><p>Ada confirms seat B12 at log position 820. A standby has received through 820 but applied only through 818. A read routed there can still show B12 as available. The booking service must arbitrate the next purchase at the authoritative writer. For a read-your-write receipt, route that read to the primary or wait for an eligible replica to apply 820, within a deadline.</p>
       <h3>Try it</h3><p>The primary stops before the standby receives record 820. The phone has a successful reply. Can the new primary reconstruct the sale from its own data?</p>
       <details class="recall"><summary>Compare your answer</summary><p>The promoted standby can lack the acknowledged sale. Returning to a primary for the read fixes ordinary lag only while the original record survives. To promise survival of a specified primary failure, configure the required synchronous acknowledgements and an eligible promotion policy, then rehearse that failure. Decide how the system responds when the required acknowledger is unavailable.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-guarantees-under-load-and-partial-failure:what-did-the-replica-actually-acknowledge"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://www.postgresql.org/docs/17/warm-standby.html">PostgreSQL · Standby servers</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">How many failures can a user journey afford?</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-guarantees-under-load-and-partial-failure:how-many-failures-can-a-user-journey-afford">How many failures can a user journey afford?</h2>
       <p>A service level indicator is an observed ratio or measurement. Define the eligible requests, what counts as good and the time window before choosing a target. For a reservation journey, a correct full-lot response may be good. A timeout can be bad even if the server later commits. Count from a place that can observe the promised outcome.</p>
       <h3>Worked example</h3><p>Assume one million eligible attempts in 30 days and a 99.9% success target. The budget is 1,000 bad attempts. A release fails 240 of 8,000 attempts. It spent 24% of the monthly budget while handling 0.8% of the monthly traffic. Its 3% error rate is 30 times the permitted 0.1% rate.</p>
       <h3>Try it</h3><p>The busiest hour improves, but customers on one mobile carrier still time out. Which evidence would justify closing the incident?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Split eligible attempts by carrier and client version, inspect sample size, then recompute the same journey indicator before and after the fix. Weight the overall result by actual attempt counts. A healthy server-only ratio cannot establish that the affected phones received timely confirmations.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-guarantees-under-load-and-partial-failure:how-many-failures-can-a-user-journey-afford"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://sre.google/workbook/implementing-slos/">Google SRE · Implementing SLOs</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Where should retries spend the request budget?</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-guarantees-under-load-and-partial-failure:where-should-retries-spend-the-request-budget">Where should retries spend the request budget?</h2>
       <p>A timeout limits how long one caller waits. It does not cancel every operation that caller started. A retry can therefore add concurrent work to a dependency that is already slow. Set a deadline for the whole journey, assign one layer responsibility for retries and use stable operation identities for writes with repeatable effects.</p>
       <h3>Worked example</h3><p>A phone calls a gateway, which calls a service, which calls a database-facing dependency. If all three calling layers make up to three attempts, one user action can trigger 27 attempts at the deepest boundary. With a 500 ms deadline, 220 ms spent on the first call and 100 ms of backoff, at most 180 ms remain for another call and returning the result.</p>
       <h3>Try it</h3><p>The downstream call usually needs 200 ms. Would jitter make another attempt fit? What happens to an unknown payment outcome?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Jitter spreads arrivals across time. It supplies no extra time or capacity. Stop when the remaining deadline cannot support the chosen call budget. Record the unresolved payment identity and reconcile its status through the documented provider contract. Count physical attempts separately from user actions.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-guarantees-under-load-and-partial-failure:where-should-retries-spend-the-request-budget"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/">AWS Builders' Library · Timeouts, retries and backoff</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-choosing-boundaries-that-hold-during-overload.html">Choosing boundaries that hold during overload →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsystem-design%2Fchapter-guarantees-under-load-and-partial-failure" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsystem-design%2Fchapter-guarantees-under-load-and-partial-failure" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

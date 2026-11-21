@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-9">
         <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers them, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: What actually travels</summary><p>Data crosses the internet in packets. IP addresses each packet and routes it, but can lose, delay or reorder it. TCP turns those packets into a reliable, ordered stream: it numbers bytes, waits for acknowledgements and resends what's lost, and needs a connection set up first. TLS encrypts that stream, and HTTP is the language of requests and responses on top.</p><p><a href="00-what-actually-travels.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-what-actually-travels.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -100,7 +100,7 @@
         <h2 id="the-building-block">The building block</h2>
 <p>TCP resends lost packets, but only while the connection exists and both ends can still reach each other. On a phone, that ends all the time: a lift, a tunnel, a switch from Wi-Fi to mobile data. Then the packets have nowhere to go, and TCP can't help.</p>
 <p>So the app can't wait forever. OkHttp gives up after a <b>timeout</b>, and there are two kinds you'll meet:</p>
-<ul><li><b>Connect timeout:</b> no connection could be made at all. The request never left: safe to try again.</li><li><b>Read timeout:</b> the connection was made and the request was sent, but no answer arrived in time.</li></ul>
+<ul><li><b>Connect timeout:</b> this attempt failed while establishing a connection. If no HTTP request was sent and no earlier attempt exists, this attempt could not place the order. Keep a stable payment identity across retries anyway.</li><li><b>Read timeout:</b> the connection was made and the request was sent, but no answer arrived in time.</li></ul>
 <p>The read timeout is the dangerous one. It has two possible stories, and from the phone they look identical:</p>
 <ol><li>The request was lost on the way: the server never saw it.</li><li>The server did the work, and the <b>answer</b> was lost on the way back.</li></ol>
 <p>That's the question a timeout can't answer: did it happen? For reading data, it doesn't matter: ask again. For a payment or an order, retrying could do it twice. Puzzle 10 is the fix.</p>
@@ -121,13 +121,13 @@
 <p class="fb no opt-3"><b>Not quite.</b> TCP resends packets inside one request; it doesn't send the request twice. <label class="show-me" for="st-timeout-3" data-goto="st-timeout">Show me step 3 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>A connect timeout fires. Is it safe to retry a payment request?</legend>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-1"><label for="q-09-when-the-connection-breaks-2-1"><span>Only after checking the server's logs</span></label>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-2"><label for="q-09-when-the-connection-breaks-2-2"><span>No: the server may have charged the card already</span></label>
-<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-3" data-ok><label for="q-09-when-the-connection-breaks-2-3"><span>Yes: no connection was made, so the request never left the phone</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> No connection means nothing was sent; there's nothing to check. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
-<p class="fb no opt-2"><b>Not quite.</b> With no connection, the request couldn't reach the server. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
-<p class="fb ok opt-3"><b>Right.</b> No connection, nothing sent.</p>
+<legend>The first and only connection attempt times out before sending HTTP data. Could this attempt have charged the card?</legend>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-1" data-ok><label for="q-09-when-the-connection-breaks-2-1"><span>No: this attempt sent no payment request</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-2"><label for="q-09-when-the-connection-breaks-2-2"><span>Only after checking the server's logs</span></label>
+<input type="radio" name="q-09-when-the-connection-breaks-2" id="q-09-when-the-connection-breaks-2-3"><label for="q-09-when-the-connection-breaks-2-3"><span>Yes: even this attempt may already have charged the card</span></label>
+<p class="fb ok opt-1"><b>Right.</b> No connection, nothing sent.</p>
+<p class="fb no opt-2"><b>Not quite.</b> No connection means nothing was sent; there's nothing to check. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> With no connection, the request couldn't reach the server. <label class="show-me" for="st-timeout-2" data-goto="st-timeout">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between a connect timeout and a read timeout?</legend>

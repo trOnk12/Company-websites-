@@ -66,7 +66,7 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-10">
         <p id="builds-on-10"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary>Puzzle 1: The kernel is in charge</summary><p>Processes never deal with the CPU or memory directly. They ask the kernel, which shares them out and keeps every process in its place.</p><p><a href="01-the-kernel-is-in-charge.html">Review puzzle 1</a></p></details></li><li data-block="9"><details><summary>Puzzle 9: What's inside the APK</summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p><p><a href="09-whats-inside-the-apk.html">Review puzzle 9</a></p></details></li></ul>
+        <ul><li data-block="1"><details><summary>Puzzle 1: The kernel is in charge</summary><p>The kernel schedules threads and manages address spaces and access to protected resources. Ordinary instructions can read and write memory already mapped into the process without asking the kernel on each access.</p><p><a href="01-the-kernel-is-in-charge.html">Review puzzle 1</a></p></details></li><li data-block="9"><details><summary>Puzzle 9: What's inside the APK</summary><p>Your Kotlin compiles to DEX, which no CPU runs directly. ART, inside your app's process, runs it: at first by reading it one instruction at a time.</p><p><a href="09-whats-inside-the-apk.html">Review puzzle 9</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-a-running-app-is-a-process.html">0</a> → <a href="01-the-kernel-is-in-charge.html">1</a> → <a href="09-whats-inside-the-apk.html">9</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
@@ -110,8 +110,8 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>ART watches which code runs often, &quot;hot&quot; code, and translates it to machine code right away, while the app runs: that's <b>JIT</b>, just-in-time. That machine code lives in the process's memory, so it's gone when the process ends. It also writes down which code was hot in a notebook, the <b>profile</b>.</p>
-<p>Later, about once a day while the phone is idle and charging, <code>dex2oat</code>, a program that's part of Android, translates the code in the profile to machine code and keeps it in a file on the phone: that's <b>AOT</b>, ahead-of-time. Next start, that code is fast from the first moment. It doesn't translate everything: that would take a long time and use storage, and most code is rarely used.</p>
-<p>A <b>Baseline Profile</b> is a profile the app's developers write and ship inside the APK, so <code>dex2oat</code> can translate the important code when the app is installed, before its first launch.</p>
+<p>Later, when system maintenance policy permits background compilation, <code>dex2oat</code>, a program that's part of Android, translates the code in the profile to machine code and keeps it in a file on the phone: that's <b>AOT</b>, ahead-of-time. Next start, that code is fast from the first moment. It doesn't translate everything: that would take a long time and use storage, and most code is rarely used.</p>
+<p>A <b>Baseline Profile</b> is a profile the app's developers write and ship inside the APK, so a supported installer and runtime can compile important paths before first use. Check the actual installation and compilation mode when measuring the result.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

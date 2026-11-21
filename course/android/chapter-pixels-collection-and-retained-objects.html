@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Pixels, collection and retained objects · Android from the foundation</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/chapter-pixels-collection-and-retained-objects">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,39 +48,43 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="android">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Android from the foundation</a></p>
       <p class="eyebrow">Practice chapter 4 of 5</p><h1>Pixels, collection and retained objects</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Spend one display interval</a></li><li><a href="#lesson-2">Read state in the phase that needs it</a></li><li><a href="#lesson-3">Separate garbage from a leak</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Spend one display interval</a> <span class="small" data-practice-nav="chapter-pixels-collection-and-retained-objects:spend-one-display-interval"></span></li><li><a href="#lesson-2">Read state in the phase that needs it</a> <span class="small" data-practice-nav="chapter-pixels-collection-and-retained-objects:read-state-in-the-phase-that-needs-it"></span></li><li><a href="#lesson-3">Separate garbage from a leak</a> <span class="small" data-practice-nav="chapter-pixels-collection-and-retained-objects:separate-garbage-from-a-leak"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Spend one display interval</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-pixels-collection-and-retained-objects:spend-one-display-interval">Spend one display interval</h2>
       <p>A frame callback coordinates work with display timing. UI work records or updates drawing commands, rendering work is submitted and the GPU processes it before display composition. CPU and GPU work can overlap across frames, so adding all thread durations does not by itself predict presentation.</p>
       <h3>Worked example</h3><p>At 120 Hz the interval is about 8.33 ms. A 12 ms main-thread layout beginning at the frame opportunity already exceeds one interval even if GPU work is cheap. Inspect the trace to locate the missed deadline.</p>
       <h3>Try it</h3><p>If profiling shows 3 ms of GPU activity for that frame, would lowering shader cost alone fix the 12 ms layout?</p>
       <details class="recall"><summary>Compare your answer</summary><p>It would leave the identified main-thread cost. Inspect layout and scheduling first, then compare actual presentation deadlines after the change.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-pixels-collection-and-retained-objects:spend-one-display-interval"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/topic/performance/vitals/render">Android · Slow rendering</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Read state in the phase that needs it</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-pixels-collection-and-retained-objects:read-state-in-the-phase-that-needs-it">Read state in the phase that needs it</h2>
       <p>Compose tracks state reads in composition, layout and drawing. A changed value can restart work from the phase that consumed it. Composition describes nodes, layout measures and places them, and drawing produces pixels.</p>
       <h3>Worked example</h3><p>A background color read inside a draw lambda can invalidate drawing without needing to measure text again. A new text string consumed during composition may change its size and require layout. Inspect where the state value is actually read.</p>
       <h3>Try it</h3><p>A drag changes only placement. What experiment would distinguish composition work from placement work?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Compare reading position while constructing the modifier with reading it inside a placement lambda. Keep the gesture constant and inspect recomposition counts plus frame timing.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-pixels-collection-and-retained-objects:read-state-in-the-phase-that-needs-it"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/develop/ui/compose/phases">Android · Jetpack Compose phases</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Separate garbage from a leak</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-pixels-collection-and-retained-objects:separate-garbage-from-a-leak">Separate garbage from a leak</h2>
       <p>The managed collector can reclaim objects that no longer have a path from a root. Short-lived allocations can still raise collection frequency. A leaked Activity is reachable even though the product no longer needs it, so repeated collections cannot solve that retention.</p>
       <h3>Worked example</h3><p>Repeated screen rotations create five old editor instances. A heap dump shows a singleton listener registry pointing to all five. Remove registrations on disposal, repeat the rotations and compare the retaining paths and instance counts.</p>
       <h3>Try it</h3><p>What if old editors disappear but allocation rate remains high during drawing?</p>
       <details class="recall"><summary>Compare your answer</summary><p>That suggests churn on the drawing path, a different mechanism. Record allocations during the same gesture to find objects recreated per frame.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-pixels-collection-and-retained-objects:separate-garbage-from-a-leak"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/studio/profile/memory-profiler">Android Studio · Capture a heap dump</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-libraries-under-the-hood.html">Libraries under the hood →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-pixels-collection-and-retained-objects" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-pixels-collection-and-retained-objects" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

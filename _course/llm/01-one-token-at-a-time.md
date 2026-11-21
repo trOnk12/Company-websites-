@@ -2,7 +2,7 @@
 title: One token at a time
 short: Tokens and prediction
 summary: You send a prompt and get a paragraph back. It looks like the model writes the answer the way you would. It doesn't. Here's the loop that produces every word, and the unit everything is measured and billed in.
-takeaway: A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Limits, latency and price are all counted in tokens, and longer answers take longer because each token is one more step.
+takeaway: A language model reads and writes tokens: words, pieces of words, characters. It produces an answer by next-token prediction: given all the text so far, pick one next token, append it, and run again, until it stops. Token limits and usage-based prices depend on token counts; latency is measured in time, and longer answers take longer because each token is one more step.
 ---
 
 ## The problem
@@ -16,7 +16,7 @@ Your app sends "Summarise this review" with a 300-word review, and gets a 60-wor
 
 ## The building block
 
-A language model doesn't see letters or words. Text is first cut into **tokens**: common words are one token, rarer words are split into pieces, and emoji or unusual characters can take several. On Anthropic's earlier Claude models, one token was about 3.5 English characters; other languages and other models differ. The API's token counting tells you exactly.
+A language model doesn't see letters or words. Text is first cut into **tokens**: common words are one token, rarer words are split into pieces, and emoji or unusual characters can take several. On Anthropic's earlier Claude models, one token was about 3.5 English characters; other languages and other models differ. The provider's counting endpoint estimates the input count for a specified model and message structure; read the final token counts from the actual response.
 
 Then the model does one thing, over and over: **next-token prediction**. Given all the tokens so far, the prompt plus whatever it has written, it picks the next token. That token is appended, and the model runs again on the slightly longer text. It stops when it picks an end-of-answer token, or hits the maximum length you set (the next puzzle shows where). (The prompt itself is read in one go; only the answer is written step by step. That's why a long answer costs more time than a long question.)
 

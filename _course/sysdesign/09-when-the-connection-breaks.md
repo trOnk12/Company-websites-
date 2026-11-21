@@ -20,7 +20,7 @@ TCP resends lost packets, but only while the connection exists and both ends can
 
 So the app can't wait forever. OkHttp gives up after a **timeout**, and there are two kinds you'll meet:
 
-- **Connect timeout:** no connection could be made at all. The request never left: safe to try again.
+- **Connect timeout:** this attempt failed while establishing a connection. If no HTTP request was sent and no earlier attempt exists, this attempt could not place the order. Keep a stable payment identity across retries anyway.
 - **Read timeout:** the connection was made and the request was sent, but no answer arrived in time.
 
 The read timeout is the dangerous one. It has two possible stories, and from the phone they look identical:
@@ -37,7 +37,7 @@ Posting a cheque and hearing nothing back. Maybe the post lost your letter; mayb
 ## Check yourself
 
 - A read timeout fires on `POST /orders`. What do you know?::*Not whether the order was created: the answer may just have been lost||The order wasn't created, because the server didn't answer >> The server may have answered; only the answer went missing. >> s3||The order was created twice, by TCP's resending >> TCP resends packets inside one request; it doesn't send the request twice. >> s3::A read timeout can't say if it happened.
-- A connect timeout fires. Is it safe to retry a payment request?::*Yes: no connection was made, so the request never left the phone||No: the server may have charged the card already >> With no connection, the request couldn't reach the server. >> s2||Only after checking the server's logs >> No connection means nothing was sent; there's nothing to check. >> s2::No connection, nothing sent.
+- The first and only connection attempt times out before sending HTTP data. Could this attempt have charged the card?::*No: this attempt sent no payment request||Yes: even this attempt may already have charged the card >> With no connection, the request couldn't reach the server. >> s2||Only after checking the server's logs >> No connection means nothing was sent; there's nothing to check. >> s2::No connection, nothing sent.
 - What's the difference between a connect timeout and a read timeout?::*A connect timeout means nothing was sent, while a read timeout means the answer didn't arrive||A connect timeout means the answer didn't arrive, while a read timeout means nothing was sent >> That's the two swapped. >> the-building-block::Never left vs no answer back.
 
 ## Sources

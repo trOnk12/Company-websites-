@@ -18,7 +18,7 @@ Your Bluetooth headphones need charging every day or two. A heart-rate strap, a 
 
 A device's **radio** is the part that sends and listens over the air. A radio that is on, sending or just listening, uses far more power than the rest of the device asleep. For a small device, it's the hungriest part.
 
-**Bluetooth Low Energy**, **BLE** for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep, usually for many times longer than it was awake: up to several seconds. Awake 3 ms out of every second is 0.3% of the time. Your headphones use the original Bluetooth, which keeps the radio busy streaming sound; that's why they need charging every day or two.
+**Bluetooth Low Energy**, **BLE** for short, is the kind of Bluetooth built for tiny batteries. Its trick is simple to say: keep the radio off almost all the time. The device sleeps, wakes for a few milliseconds to send or listen, and goes back to sleep, usually for many times longer than it was awake: up to several seconds. Awake 3 ms out of every second is 0.3% of the time. Streaming headphones may use classic Bluetooth or newer low-energy audio. Sending continuous audio is a different workload from transmitting an occasional sensor sample.
 
 That creates the two problems the next puzzles solve. A device that's asleep almost all the time is hard to find: how does your phone ever hear it? (puzzle 1) And once they've found each other, how do two devices that both sleep meet at the same moment? (puzzle 2)
 

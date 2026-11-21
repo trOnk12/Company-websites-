@@ -101,7 +101,7 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>Store an <b>event</b>, a record saying that something happened, such as a space being granted, in the same transaction as the reservation. This is the <b>transactional outbox pattern</b>. Another process reads committed events and delivers them. After a restart, the service can distinguish pending work from a reservation that never happened.</p>
-<p>A sender can deliver an event and crash before marking it complete. It will deliver again. A consumer can store the event identity and its own database effect in one transaction. That protects the database effect from repetition. An email provider forms another boundary. A local transaction alone cannot guarantee exactly one message in the driver's inbox.</p>
+<p>A sender can deliver an event and crash before marking it complete. After recovery it can deliver again. A consumer can store the event identity and its own database effect in one transaction. That protects the database effect from repetition. An email provider forms another boundary. A local transaction alone cannot guarantee exactly one message in the driver's inbox.</p>
 <h3>Follow event 41 through a crash</h3>
 <p>Ada's committed reservation and event 41 appear together. A worker publishes 41 and stops before recording the delivery. A replacement publishes 41 again. On the receiving side, insert 41 into a table of processed identities and update the local reservation view in one transaction. The first delivery commits both changes. A duplicate detects the existing identity and leaves the view alone.</p>
 <p>Reverse the receiving order and commit the processed marker on its own first. A crash before the view update now loses the effect permanently: every retry finds a completed marker. To test the repaired version, stop the worker at each boundary, run the worker again, and count both distinct processed IDs and visible reservations.</p>
@@ -116,6 +116,7 @@
       </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p><a href="/labs/parking-design/#delivery">Crash the receipt worker and replay event 41 in the browser lab</a></p>
 <p>Trace crashes before the reservation commits, after it commits, and after delivery but before acknowledgement. For each, count durable grants, pending events and possible deliveries. Give a permanently invalid event a bounded retry policy, an inspection queue and a way to replay it after repair.</p>
       </section>
       <section aria-labelledby="check-yourself">

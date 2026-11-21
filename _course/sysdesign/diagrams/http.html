@@ -4,8 +4,8 @@
 <x-phone class="step s1" x="20" y="100" w="70" h="120" label="app"/>
 <x-server class="step s1" x="540" y="90" w="80" h="120" label="server"/>
 <g class="step s1" data-pulse="1"><rect class="d-band" x="120" y="40" width="200" height="110" rx="8"/><text class="d-a" x="220" y="66" text-anchor="middle">GET /users/42</text><text class="d-mi" x="220" y="94" text-anchor="middle">Authorization: …</text><text class="d-tiny" x="220" y="128" text-anchor="middle">no body</text><x-arrow tone="ink" d="M324,95 L534,120"/></g>
-<g class="step s2" data-pulse="2"><rect class="d-hl" x="300" y="190" width="220" height="110" rx="8"/><text class="d-a" x="410" y="216" text-anchor="middle">200 OK</text><text class="d-mi" x="410" y="244" text-anchor="middle">Content-Type: json</text><text class="d-mi" x="410" y="272" text-anchor="middle">{ "name": "Anna" }</text><x-arrow tone="acc" d="M296,240 L96,200"/></g>
-<g class="step s3" data-pulse="3"><text class="d-a" x="20" y="325">2xx worked · 3xx elsewhere</text><text class="d-r" x="20" y="345">4xx your fault · 5xx theirs</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="300" y="190" width="220" height="110" rx="8"/><text class="d-a" x="410" y="216" text-anchor="middle">200 OK</text><text class="d-mi" x="410" y="244" text-anchor="middle">application/json</text><text class="d-mi" x="410" y="272" text-anchor="middle">{ "name": "Anna" }</text><x-arrow tone="acc" d="M296,240 L96,200"/></g>
+<g class="step s3" data-pulse="3"><text class="d-a" x="20" y="325">2xx worked · 3xx elsewhere</text><text class="d-r" x="20" y="345">4xx client · 5xx server</text></g>
 <g class="step s4" data-pulse="4"><text class="d-r" x="410" y="180" text-anchor="middle">404: don't just retry</text></g>
 <g class="step s1" data-move="1:220,170 2:540,250 3:280,320 4:540,175"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg>
@@ -13,5 +13,5 @@
 <li><p>A request: an <b>HTTP method</b> (GET), a <b>path</b>, <b>headers</b> about the message, and here no <b>body</b>.</p></li>
 <li><p>The response: a <b>status code</b>, its own headers, and the JSON body.</p></li>
 <li><p>Status codes come in families by first digit. <i>Predict: a 404, should you retry?</i></p></li>
-<li><p>No: a 4xx says your request was wrong, so the same request will fail again. A 5xx might pass later.</p></li>
+<li><p>For this missing user, show the missing record. A 429, by contrast, can call for a delayed retry.</p></li>
 </ol>

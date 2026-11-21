@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Release a bookmark editor without losing either draft · Final project · Backend engineering from first request to production</title>
   <link rel="canonical" href="https://pachulski.dev/course/backend-ops/final-project">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,7 +48,7 @@
   </header>
 
   <main id="main">
-<article class="wrap narrow section">
+<article class="wrap narrow section" data-practice-course="backend-ops">
       <p class="eyebrow"><a href="./">Backend engineering from first request to production</a> · Final project</p>
       <h1>Release a bookmark editor without losing either draft</h1>
       <p class="lede">Produce a release packet for an editor shared by two clients. Demonstrate a version conflict, verify committed state, then decide whether the release can be rolled back.</p>
@@ -56,7 +58,7 @@
 <li>Propose a two-release schema migration for an existing service that is adding the version field. Test how an older writer affects stale-write protection while both versions are serving traffic.</li>
 <li>Define a release check using one real read and write and a separate conflicting update. Decide which failures should stop promotion.</li></ol>
       <h2>Evidence to keep</h2><ul><li>The stale edit leaves Lake at version 8. The deliberate merged edit succeeds at version 8 and results in Lake and Forest at version 9.</li>
-<li>The migration plan demonstrates how every still-active writer advances or respects the version before the service promises stale-overwrite protection.</li>
+<li>The migration plan demonstrates how every still-active writer checks the expected version and advances it on each accepted change before the service promises stale-overwrite protection.</li>
 <li>The release gate distinguishes an expected conflict from an unexpected write failure or an accepted stale write.</li></ul>
       <details class="course-extras"><summary>Compare with a worked review</summary>
         <p>The two reads return River with tag &quot;7&quot;. A supplies that tag and receives 204. B sends the same tag after A and receives 412. A fresh read returns Lake with tag &quot;8&quot;. B can now submit Lake and Forest with &quot;8&quot;, yielding the merged value at version 9. Automatically resending Forest against &quot;8&quot; would silently discard A’s edit.</p>
@@ -64,10 +66,12 @@
       </details>
       <h2>Change one assumption</h2><p>Two updates of the same title arrive with different operation IDs, and the second still holds the old version.</p>
       <details class="course-extras"><summary>Check your reasoning</summary><p>The version check rejects the stale precondition even if the requested text equals the stored text. Define any intentional no-op behavior in the contract. An operation ID can recover an earlier attempt’s outcome; it cannot establish that an independent editor saw the current version.</p></details>
+      <label hidden data-practice-control><input type="checkbox" data-practice-item="final-project"> I completed the project and compared my evidence with the worked review</label>
+      <p class="small" role="status" data-practice-status></p>
       <p class="actions"><a class="button" href="./">Return to course outline</a></p>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fbackend-ops%2Ffinal-project" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fbackend-ops%2Ffinal-project" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

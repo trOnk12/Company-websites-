@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Threads, coroutines and Flow · Android from the foundation</title>
   <link rel="canonical" href="https://pachulski.dev/course/android/chapter-threads-coroutines-and-flow">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,39 +48,43 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="android">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Android from the foundation</a></p>
       <p class="eyebrow">Practice chapter 3 of 5</p><h1>Threads, coroutines and Flow</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Trace suspension and dispatch separately</a></li><li><a href="#lesson-2">Make cancellation observable</a></li><li><a href="#lesson-3">Decide who starts the producer</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Trace suspension and dispatch separately</a> <span class="small" data-practice-nav="chapter-threads-coroutines-and-flow:trace-suspension-and-dispatch-separately"></span></li><li><a href="#lesson-2">Make cancellation observable</a> <span class="small" data-practice-nav="chapter-threads-coroutines-and-flow:make-cancellation-observable"></span></li><li><a href="#lesson-3">Decide who starts the producer</a> <span class="small" data-practice-nav="chapter-threads-coroutines-and-flow:decide-who-starts-the-producer"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Trace suspension and dispatch separately</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-threads-coroutines-and-flow:trace-suspension-and-dispatch-separately">Trace suspension and dispatch separately</h2>
       <p>A coroutine can suspend by retaining the state needed to continue later. Its thread is then available for other work. A dispatcher chooses where runnable continuations execute. Declaring a function suspend provides no automatic background thread for blocking code.</p>
       <h3>Worked example</h3><p>On Main, delay(100) suspends without holding the main thread for 100 ms. Thread.sleep(100) blocks that thread. Use withContext(Dispatchers.IO) around a blocking file operation and return the result to the caller’s context.</p>
       <h3>Try it</h3><p>A function marked suspend directly parses a large JSON string on Main. Why can scrolling still pause?</p>
       <details class="recall"><summary>Compare your answer</summary><p>The CPU work runs on the current dispatcher until it suspends or changes context. Move substantial CPU work to an appropriate dispatcher and measure the cost.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-threads-coroutines-and-flow:trace-suspension-and-dispatch-separately"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://kotlinlang.org/docs/coroutine-context-and-dispatchers.html">Kotlin · Coroutine context and dispatchers</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Make cancellation observable</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-threads-coroutines-and-flow:make-cancellation-observable">Make cancellation observable</h2>
       <p>A coroutine Job expresses a lifetime. Cancelling its owner signals children, but arbitrary running code must reach a cancellation check or a cancellable suspension point. Resource cleanup belongs in a finally block or another construct that runs on exit.</p>
       <h3>Worked example</h3><p>A query changes from ca to cat. Cancel work for ca. A suspending delay observes cancellation promptly; a long CPU loop can check ensureActive between chunks. Also prevent an older result from overwriting the currently requested query.</p>
       <h3>Try it</h3><p>Why can catching every exception and returning a fallback cause a stale result?</p>
       <details class="recall"><summary>Compare your answer</summary><p>The catch may swallow CancellationException and turn cancelled work into successful output. Propagate cancellation and handle the actual recoverable errors separately.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-threads-coroutines-and-flow:make-cancellation-observable"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://kotlinlang.org/docs/cancellation-and-timeouts.html">Kotlin · Cancellation and timeouts</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Decide who starts the producer</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-threads-coroutines-and-flow:decide-who-starts-the-producer">Decide who starts the producer</h2>
       <p>A cold flow begins its producer for each collection. A shared hot stream has a producer whose lifetime is controlled separately. StateFlow carries the latest state and can conflate successive equal values or let slow collectors skip intermediate states.</p>
       <h3>Worked example</h3><p>Two screens collect flow { emit(loadNotes()) }. The load can run twice. Sharing it with stateIn in a suitable owner scope can give both collectors the same latest list; the chosen sharing policy controls when upstream runs.</p>
       <h3>Try it</h3><p>A payment history must retain every confirmed payment. Is a StateFlow of the latest payment enough?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Store every payment in a durable collection and expose the latest view of that collection as state. A latest-value stream alone cannot replay every historical transition.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-threads-coroutines-and-flow:decide-who-starts-the-producer"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.android.com/kotlin/flow/stateflow-and-sharedflow">Android · StateFlow and SharedFlow</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-pixels-collection-and-retained-objects.html">Pixels, collection and retained objects →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-threads-coroutines-and-flow" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fandroid%2Fchapter-threads-coroutines-and-flow" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

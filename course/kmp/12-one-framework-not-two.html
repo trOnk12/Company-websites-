@@ -103,7 +103,7 @@
 <p>So you ship one <b>umbrella framework</b>: a single framework, with one runtime, that brings in every Kotlin module Swift needs. In Gradle you list which modules it exports to Swift:</p>
 <pre><code class="language-kotlin">binaries.framework { export(project(&quot;:network&quot;)) }</code></pre>
 <p>Exporting has a cost. An exported module comes in with its whole API, even if Swift uses a tiny part of it, and that turns off <b>dead code elimination</b> for it: the step that leaves out compiled code nothing uses, to keep the app small. So export only the modules Swift actually calls; the others still go into the framework, but trimmed to the code that's used.</p>
-<p>For distribution, the umbrella framework is usually built as an <b>XCFramework</b>: one bundle holding the builds for every Apple device and simulator, which the iOS project adds like any other library.</p>
+<p>For distribution, the umbrella framework is usually built as an <b>XCFramework</b>: one bundle holding the selected device and simulator builds you distribute, which the iOS project adds like any other library.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>

@@ -23,7 +23,7 @@
       {
         "title": "Give every asynchronous operation a completion point",
         "explanation": "Use a per-connection queue for GATT procedures that expect a callback. Starting a characteristic read or descriptor write asks the stack to begin work; immediate acceptance does not tell you that the remote operation succeeded. Advance the queue after the matching terminal callback. Handle an immediate rejection separately because no completion may follow.",
-        "example": "The queue contains discovery, a descriptor write and a measurement read. Discover on this connection, select the returned handles, then write the subscription descriptor. If its callback reports failure, record that subscription failed. Issuing all operations at once makes it difficult to associate an outcome with the step that needed it.",
+        "example": "The queue contains discovery, a descriptor write and a read of a separate readable battery-level characteristic. Discover on this connection, select the returned handles, then write the subscription descriptor. If its callback reports failure, record that subscription failed. Issuing all operations at once makes it difficult to associate an outcome with the step that needed it.",
         "exercise": "A callback from a discarded connection arrives after a reconnect. Should it release the new connection’s next operation?",
         "answer": "No. Associate callbacks with a connection instance and current operation. End the old queue and ignore its late completion. Start the new session with fresh discovery where required.",
         "source": "https://developer.android.com/reference/android/bluetooth/BluetoothGatt",

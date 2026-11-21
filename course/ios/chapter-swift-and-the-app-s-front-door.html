@@ -18,13 +18,15 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Swift and the app’s front door · iOS for Android developers</title>
   <link rel="canonical" href="https://pachulski.dev/course/ios/chapter-swift-and-the-app-s-front-door">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
   <link rel="stylesheet" href="../../style.css">
+  <script src="../progress-index.js" defer></script>
+  <script src="../course.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -46,47 +48,52 @@
   </header>
 
   <main id="main">
-<article class="puzzle course-top wrap narrow">
+<article class="puzzle course-top wrap narrow" data-practice-course="ios">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">iOS for Android developers</a></p>
       <p class="eyebrow">Practice chapter 1 of 3</p><h1>Swift and the app’s front door</h1>
-      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Read a nullable Swift value</a></li><li><a href="#lesson-2">Follow a struct copy and a class reference</a></li><li><a href="#lesson-3">Start an app and identify a scene</a></li><li><a href="#lesson-4">Separate a Task from an awaited call</a></li></ol></nav>
+      <p class="small" role="status" data-practice-status></p>
+      <nav aria-label="In this chapter"><ol><li><a href="#lesson-1">Read a nullable Swift value</a> <span class="small" data-practice-nav="chapter-swift-and-the-app-s-front-door:read-a-nullable-swift-value"></span></li><li><a href="#lesson-2">Follow a struct copy and a class reference</a> <span class="small" data-practice-nav="chapter-swift-and-the-app-s-front-door:follow-a-struct-copy-and-a-class-reference"></span></li><li><a href="#lesson-3">Start an app and identify a scene</a> <span class="small" data-practice-nav="chapter-swift-and-the-app-s-front-door:start-an-app-and-identify-a-scene"></span></li><li><a href="#lesson-4">Separate a Task from an awaited call</a> <span class="small" data-practice-nav="chapter-swift-and-the-app-s-front-door:separate-a-task-from-an-awaited-call"></span></li></ol></nav>
       <section aria-labelledby="lesson-1">
-      <h2 id="lesson-1">Read a nullable Swift value</h2>
+      <h2 id="lesson-1" data-practice-heading="chapter-swift-and-the-app-s-front-door:read-a-nullable-swift-value">Read a nullable Swift value</h2>
       <p>Swift's let binds a constant and var permits reassignment. An optional explicitly represents either a wrapped value or its absence. Unwrap it before using a nonoptional operation. A forced unwrap transfers the missing-value check to a runtime trap.</p>
       <h3>Worked example</h3><p>A route contains a note ID as text. Int(&quot;17&quot;) yields an optional containing 17. Int(&quot;river&quot;) yields nil. Use guard let id = Int(raw) else { return } before loading the note, and decide how the screen presents an invalid route.</p>
       <h3>Try it</h3><p>Is an empty note list the same state as failing to parse the requested ID?</p>
       <details class="recall"><summary>Compare your answer</summary><p>No. Empty is a valid collection value. A missing or invalid route is a different input outcome and should be handled at the navigation boundary.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-swift-and-the-app-s-front-door:read-a-nullable-swift-value"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/">The Swift Programming Language · The Basics</a></p>
     </section>
 <section aria-labelledby="lesson-2">
-      <h2 id="lesson-2">Follow a struct copy and a class reference</h2>
+      <h2 id="lesson-2" data-practice-heading="chapter-swift-and-the-app-s-front-door:follow-a-struct-copy-and-a-class-reference">Follow a struct copy and a class reference</h2>
       <p>Swift structures have value semantics: changing a copied value does not change the original value. Classes have reference semantics and can be shared by multiple variables. A struct can contain a reference property, in which case copying the struct copies that reference as part of its value.</p>
       <h3>Worked example</h3><p>With struct Draft { var title: String }, set b = a, then b.title = &quot;Lake&quot;. The title of a stays River. If Draft is a class and both variables point to the same instance, mutating b.title is visible through a.</p>
       <h3>Try it</h3><p>A struct stores a class-based Editor. After copying the struct, do both copies see a change made to that same Editor?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Yes. The copied properties refer to one Editor instance. Use an independent value representation or intentionally create a new editor when isolation is required.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-swift-and-the-app-s-front-door:follow-a-struct-copy-and-a-class-reference"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/">The Swift Programming Language · Structures and Classes</a></p>
     </section>
 <section aria-labelledby="lesson-3">
-      <h2 id="lesson-3">Start an app and identify a scene</h2>
+      <h2 id="lesson-3" data-practice-heading="chapter-swift-and-the-app-s-front-door:start-an-app-and-identify-a-scene">Start an app and identify a scene</h2>
       <p>The @main App type is the entry point for a SwiftUI app. Its body describes scenes, and a WindowGroup can host separate instances of a window's content. A process may own several scene sessions with different selections and lifecycle states.</p>
       <h3>Worked example</h3><p>A notes app's WindowGroup opens a root list. One window edits note 17 and another edits 29. Both can share the persisted note repository while keeping their navigation selection attached to the individual scene.</p>
       <h3>Try it</h3><p>A single global selectedNote changes both windows when one user navigates. What should move?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Move selection to scene- or view-owned state. Keep genuinely shared data, such as saved notes, in a separate shared model.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-swift-and-the-app-s-front-door:start-an-app-and-identify-a-scene"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://developer.apple.com/documentation/swiftui/app">Apple · SwiftUI App</a></p>
     </section>
 <section aria-labelledby="lesson-4">
-      <h2 id="lesson-4">Separate a Task from an awaited call</h2>
+      <h2 id="lesson-4" data-practice-heading="chapter-swift-and-the-app-s-front-door:separate-a-task-from-an-awaited-call">Separate a Task from an awaited call</h2>
       <p>An async function may suspend. Calling it with await does not by itself start independent concurrent work or move CPU-heavy code off an actor. Task creates unstructured work with a handle and can inherit the surrounding actor context. Actor isolation governs access to mutable state.</p>
       <h3>Worked example</h3><p>A main-actor action creates Task { await refresh() }. When refresh awaits network data other main-actor work may proceed. Synchronously decoding a huge document on that same actor can still block input. Identify the executor or isolation of each expensive step.</p>
       <h3>Try it</h3><p>Two taps start independent refreshes. Why can an older response still replace a newer one despite main-actor writes?</p>
       <details class="recall"><summary>Compare your answer</summary><p>Serialization of individual state updates does not impose request order across suspension. Cancel superseded work or validate an operation generation before publishing it.</p></details>
+      <label class="small" hidden data-practice-control><input type="checkbox" data-practice-item="chapter-swift-and-the-app-s-front-door:separate-a-task-from-an-awaited-call"> I attempted the exercise and compared my answer</label>
       <p class="small">Source · <a href="https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/">The Swift Programming Language · Concurrency</a></p>
     </section>
       <nav class="pager" aria-label="Chapter navigation"><a class="button" href="./#practice-chapters">Course outline</a>
         <a class="button primary" href="chapter-screens-and-the-system.html">Screens and the system →</a></nav>
     </article>
   </main>
-  <img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fios%2Fchapter-swift-and-the-app-s-front-door" alt="" width="1" height="1">
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fios%2Fchapter-swift-and-the-app-s-front-door" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

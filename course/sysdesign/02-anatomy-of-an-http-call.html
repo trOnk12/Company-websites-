@@ -81,8 +81,8 @@
 <g class="step s1"><rect class="d-paper" x="20" y="100" width="70" height="120" rx="12"/><rect class="d-hl" x="27" y="114" width="56" height="86" rx="4"/><circle class="d-ink" cx="55" cy="210" r="3"/><text class="d-tiny" x="55" y="238" text-anchor="middle">app</text></g>
 <g class="step s1"><rect class="d-wood" x="540" y="90" width="80" height="120" rx="6"/><rect class="d-paper" x="550" y="102" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="113" r="4"/><rect class="d-paper" x="550" y="134" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="145" r="4"/><rect class="d-paper" x="550" y="166" width="60" height="22" rx="3"/><circle class="d-ok" cx="600" cy="177" r="4"/><text class="d-tiny" x="580" y="228" text-anchor="middle">server</text></g>
 <g class="step s1" data-pulse="1"><rect class="d-band" x="120" y="40" width="200" height="110" rx="8"/><text class="d-a" x="220" y="66" text-anchor="middle">GET /users/42</text><text class="d-mi" x="220" y="94" text-anchor="middle">Authorization: …</text><text class="d-tiny" x="220" y="128" text-anchor="middle">no body</text><path class="d-arr-ink" d="M324,95 L534,120" marker-end="url(#ah-http-ink)"/></g>
-<g class="step s2" data-pulse="2"><rect class="d-hl" x="300" y="190" width="220" height="110" rx="8"/><text class="d-a" x="410" y="216" text-anchor="middle">200 OK</text><text class="d-mi" x="410" y="244" text-anchor="middle">Content-Type: json</text><text class="d-mi" x="410" y="272" text-anchor="middle">{ "name": "Anna" }</text><path class="d-arr-acc" d="M296,240 L96,200" marker-end="url(#ah-http-acc)"/></g>
-<g class="step s3" data-pulse="3"><text class="d-a" x="20" y="325">2xx worked · 3xx elsewhere</text><text class="d-r" x="20" y="345">4xx your fault · 5xx theirs</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="300" y="190" width="220" height="110" rx="8"/><text class="d-a" x="410" y="216" text-anchor="middle">200 OK</text><text class="d-mi" x="410" y="244" text-anchor="middle">application/json</text><text class="d-mi" x="410" y="272" text-anchor="middle">{ "name": "Anna" }</text><path class="d-arr-acc" d="M296,240 L96,200" marker-end="url(#ah-http-acc)"/></g>
+<g class="step s3" data-pulse="3"><text class="d-a" x="20" y="325">2xx worked · 3xx elsewhere</text><text class="d-r" x="20" y="345">4xx client · 5xx server</text></g>
 <g class="step s4" data-pulse="4"><text class="d-r" x="410" y="180" text-anchor="middle">404: don't just retry</text></g>
 <g class="step s1" data-move="1:220,170 2:540,250 3:280,320 4:540,175"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
@@ -91,19 +91,19 @@
 <li><p>A request: an <b>HTTP method</b> (GET), a <b>path</b>, <b>headers</b> about the message, and here no <b>body</b>.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-http-2">Next →</label></div></li>
 <li><p>The response: a <b>status code</b>, its own headers, and the JSON body.</p><div class="stepnav"><label for="st-http-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-http-3">Next →</label></div></li>
 <li><p>Status codes come in families by first digit. <i>Predict: a 404, should you retry?</i></p><div class="stepnav"><label for="st-http-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-http-4">Next →</label></div></li>
-<li><p>No: a 4xx says your request was wrong, so the same request will fail again. A 5xx might pass later.</p><div class="stepnav"><label for="st-http-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-http-1">↺ Again</label></div></li>
+<li><p>For this missing user, show the missing record. A 429, by contrast, can call for a delayed retry.</p><div class="stepnav"><label for="st-http-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-http-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-http-1" title="Step 1"></label><label for="st-http-2" title="Step 2"></label><label for="st-http-3" title="Step 3"></label><label for="st-http-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/http.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>An HTTP request has four parts:</p>
+<p>An HTTP request can carry these parts; its body is optional:</p>
 <div class="table-wrap"><table><thead><tr><th scope="col">Part</th><th scope="col">Example</th><th scope="col">In Retrofit</th></tr></thead><tbody><tr><th scope="row"><b>HTTP method</b></th><td><code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code></td><td><code>@GET</code>, <code>@POST</code>…</td></tr><tr><th scope="row"><b>path</b></th><td><code>/users/42</code></td><td>the annotation's string</td></tr><tr><th scope="row"><b>headers</b></th><td><code>Authorization: Bearer …</code></td><td><code>@Header</code>, or an interceptor</td></tr><tr><th scope="row"><b>body</b></th><td>JSON of a new order</td><td><code>@Body</code></td></tr></tbody></table></div>
-<p>The method says what you want: <code>GET</code> reads, <code>POST</code> creates something new, <code>PUT</code> replaces something at that path, <code>DELETE</code> removes it. <b>Headers</b> are name–value pairs about the message, not the data itself: who you are, what format you accept, how long something may be cached.</p>
-<p>The response comes back with a <b>status code</b>, headers, and a body. Status codes come in families, by their first digit:</p>
-<div class="table-wrap"><table><thead><tr><th scope="col">Family</th><th scope="col">Meaning</th><th scope="col">Examples</th></tr></thead><tbody><tr><th scope="row">2xx</th><td>it worked</td><td>200 OK, 201 Created</td></tr><tr><th scope="row">3xx</th><td>look elsewhere, or use what you have</td><td>301 Moved Permanently</td></tr><tr><th scope="row">4xx</th><td>your request was wrong</td><td>400 Bad Request, 401, 404, 429 Too Many Requests</td></tr><tr><th scope="row">5xx</th><td>the server failed</td><td>500, 503</td></tr></tbody></table></div>
-<p>The family is what your code usually decides on: a 4xx won't fix itself if you send the same request again; a 5xx might.</p>
+<p>The method says what you want: <code>GET</code> reads, <code>POST</code> submits input for the resource to handle (often creating a new item), <code>PUT</code> creates or replaces the representation at that path, <code>DELETE</code> removes it. <b>Headers</b> are name–value pairs about the message, not the data itself: who you are, what format you accept, how long something may be cached.</p>
+<p>The response comes back with a <b>status code</b>, headers, and an optional body. Status codes come in families, by their first digit:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Family</th><th scope="col">Meaning</th><th scope="col">Examples</th></tr></thead><tbody><tr><th scope="row">2xx</th><td>it worked</td><td>200 OK, 201 Created</td></tr><tr><th scope="row">3xx</th><td>look elsewhere, or use what you have</td><td>301 Moved Permanently</td></tr><tr><th scope="row">4xx</th><td>client-side condition</td><td>400 Bad Request, 401, 404, 429 Too Many Requests</td></tr><tr><th scope="row">5xx</th><td>the server failed</td><td>500, 503</td></tr></tbody></table></div>
+<p>The exact code and operation determine the response. An unknown user may warrant showing a missing record; 429 can invite a delayed retry. Even a server error does not make replaying a payment safe.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -113,15 +113,15 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend>Your app gets a 404 from <code>GET /users/42</code>. Should it retry the same request?</legend>
-<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-1" data-ok><label for="q-02-anatomy-of-an-http-call-1-1"><span>No: a 4xx means the request itself was wrong</span></label>
+<input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-1" data-ok><label for="q-02-anatomy-of-an-http-call-1-1"><span>Usually no: show the missing record for this lookup</span></label>
 <input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-2"><label for="q-02-anatomy-of-an-http-call-1-2"><span>Yes, but sending it as a POST instead of a GET this time</span></label>
 <input type="radio" name="q-02-anatomy-of-an-http-call-1" id="q-02-anatomy-of-an-http-call-1-3"><label for="q-02-anatomy-of-an-http-call-1-3"><span>Yes, since almost any network error might pass if you try again</span></label>
-<p class="fb ok opt-1"><b>Right.</b> 4xx won't fix itself.</p>
+<p class="fb ok opt-1"><b>Right.</b> Handle the specific status and operation.</p>
 <p class="fb no opt-2"><b>Not quite.</b> Changing the method changes the meaning; it doesn't fix a missing user. <label class="show-me" for="st-http-4" data-goto="st-http">Show me step 4 again ↑</label></p>
-<p class="fb no opt-3"><b>Not quite.</b> Only server failures (5xx) might pass; a 4xx is about your request. <label class="show-me" for="st-http-4" data-goto="st-http">Show me step 4 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> An ordinary missing-record lookup has no reason for an immediate retry. <label class="show-me" for="st-http-4" data-goto="st-http">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Where does a request say &quot;this response can be cached for a minute&quot;?</legend>
+<legend>Where does the server say &quot;this response can be cached for a minute&quot;?</legend>
 <input type="radio" name="q-02-anatomy-of-an-http-call-2" id="q-02-anatomy-of-an-http-call-2-1" data-ok><label for="q-02-anatomy-of-an-http-call-2-1"><span>In a header, a name–value pair about the message</span></label>
 <input type="radio" name="q-02-anatomy-of-an-http-call-2" id="q-02-anatomy-of-an-http-call-2-2"><label for="q-02-anatomy-of-an-http-call-2-2"><span>In the body, next to the JSON data</span></label>
 <input type="radio" name="q-02-anatomy-of-an-http-call-2" id="q-02-anatomy-of-an-http-call-2-3"><label for="q-02-anatomy-of-an-http-call-2-3"><span>In the status code, as part of the 2xx family</span></label>
@@ -131,14 +131,15 @@
 </fieldset>
 <fieldset class="quiz">
 <legend>What's the difference between GET and POST?</legend>
-<input type="radio" name="q-02-anatomy-of-an-http-call-3" id="q-02-anatomy-of-an-http-call-3-1"><label for="q-02-anatomy-of-an-http-call-3-1"><span>GET creates something new, while POST reads something</span></label>
-<input type="radio" name="q-02-anatomy-of-an-http-call-3" id="q-02-anatomy-of-an-http-call-3-2" data-ok><label for="q-02-anatomy-of-an-http-call-3-2"><span>GET reads something, while POST creates something new</span></label>
+<input type="radio" name="q-02-anatomy-of-an-http-call-3" id="q-02-anatomy-of-an-http-call-3-1"><label for="q-02-anatomy-of-an-http-call-3-1"><span>GET submits input for processing, while POST requests a representation</span></label>
+<input type="radio" name="q-02-anatomy-of-an-http-call-3" id="q-02-anatomy-of-an-http-call-3-2" data-ok><label for="q-02-anatomy-of-an-http-call-3-2"><span>GET requests a representation, while POST submits input for processing</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> That's the two swapped. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Read vs create.</p>
+<p class="fb ok opt-2"><b>Right.</b> Read versus submit for processing.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview">MDN: An overview of HTTP</a> (&quot;HTTP headers make this protocol easy to extend and experiment with&quot;; requests and responses as HTTP messages)</li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">MDN: HTTP response status codes</a> (&quot;Responses are grouped in five classes: Informational responses (100 – 199), Successful responses (200 – 299), Redirection messages (300 – 399), Client error responses (400 – 499), Server error responses (500 – 599)&quot;)</li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An HTTP request is a method (GET to read, POST to create, PUT to replace, DELETE to remove), a path, headers (name: value pairs about the message) and an optional body. The response has a status code, headers and a body. Status codes come in families: 2xx worked, 3xx look elsewhere or use what you have, 4xx your request was wrong, 5xx the server failed.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.rfc-editor.org/rfc/rfc9110.html#section-9.3">RFC 9110 · HTTP method definitions</a></li></ul>
+<ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview">MDN: An overview of HTTP</a> (&quot;HTTP headers make this protocol easy to extend and experiment with&quot;; requests and responses as HTTP messages)</li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">MDN: HTTP response status codes</a> (&quot;Responses are grouped in five classes: Informational responses (100 – 199), Successful responses (200 – 299), Redirection messages (300 – 399), Client error responses (400 – 499), Server error responses (500 – 599)&quot;)</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An HTTP request is a method (GET to read, POST for resource-defined processing, PUT to create or replace, DELETE to remove), a path, headers (name: value pairs about the message) and an optional body. The response has a status code, headers and an optional body. Status codes come in families: 2xx worked, 3xx look elsewhere or use what you have, 4xx client-side conditions, 5xx the server failed.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="01-finding-the-server.html">← Puzzle 1</a>

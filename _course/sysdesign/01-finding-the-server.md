@@ -20,11 +20,11 @@ Every machine reachable on the internet has an **IP address**: a number, like `9
 
 Numbers are hard to remember and change when a company moves servers, so people and code use a **hostname** instead: `api.example.com`.
 
-**DNS**, the Domain Name System, is the internet's phone book: a worldwide system of servers that answers "which address does this hostname have?". Before your app's first connection to a host, the phone sends that question and waits for the answer.
+**DNS**, the Domain Name System, is the internet's phone book: a worldwide system of servers that answers "which address does this hostname have?". Before connecting, the phone needs an address. If there is no usable cached answer, name resolution can add a network wait.
 
 Two consequences for an app:
 
-- The very first request to a host waits for a DNS answer first: more waiting before anything useful happens.
+- A cold lookup adds waiting. Another app, the operating system or a resolver may already have a usable answer.
 - The answer is **cached**: kept for a while by the phone (and by DNS servers on the way), so the next requests skip the lookup.
 
 ## The analogy

@@ -23,9 +23,9 @@ Puzzle 1 said the model picks the next token. More precisely, at each step it gi
 - Higher: less likely tokens get picked more often. More varied, more creative, sometimes less accurate.
 - Lower: the most likely tokens win more often. More predictable, more repetitive.
 
-For an app feature that must be consistent, like extracting fields or summarising, use a low temperature. For brainstorming names, a higher one.
+For an app feature that must be consistent, like extracting fields or summarising, use a low temperature when the chosen model supports it. For brainstorming, compare settings on representative examples. Some models do not accept a temperature parameter.
 
-But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic (the same input always giving the same output), and identical inputs might produce different outputs. Temperature 0 means "pick the top token", but tiny numeric differences on the provider's servers can still change which token is on top. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk.
+But Anthropic's documentation is explicit: even at temperature 0, results aren't fully deterministic (the same input always giving the same output), and identical inputs might produce different outputs. A low temperature can reduce variation; it does not promise identical outputs across runs, model revisions or serving configurations. So tests can't compare exact strings. Test what must be true: valid JSON, the required fields present, length under a limit, no forbidden words. For quality, keep a set of example inputs and check the answers in bulk.
 
 ## The analogy
 

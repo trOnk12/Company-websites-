@@ -20,7 +20,7 @@ A **readiness probe** asks whether an instance can currently serve its expected 
 
 ### Read the incident as a sequence of observations
 
-At 10:00, a bookmark write succeeds. After a table rename, the same write fails and the readiness response changes from 200 to 503. The live response stays at 200. Those observations point to the work performed by the ready route after it reaches storage. Replacing the image still leaves the renamed table in the database. In the local drill restore the original name, send a new write, then read its exact value. Keep the old sample too: reading only the new row would miss accidental loss of the earlier data.
+At 10:00, a bookmark write succeeds. After a table rename, the same write fails and the readiness response changes from 200 to 503. The live response stays at 200. Those observations point to the work performed by the ready route after it reaches storage. Compare two branches from that failure. Before restarting, restoring the original table name makes river visible again. Restarting instead runs the startup routine: it creates an empty bookmarks table because that name is free. Readiness now returns 200 and a new write can succeed, while river is still in the renamed table. Check both identities. Once new writes exist in the replacement table, preserve both tables and reconcile their contents; a blind rename is no longer a complete recovery.
 
 ## Try it
 
@@ -36,7 +36,7 @@ Run the incident drill. Write a short incident report and rehearse the rollback.
 
 - The read probe succeeds after recovery. What should you verify next?::*A real write and its stored result||Only that the process has the same identifier >> A running process can still fail to write. >> the-building-block::A process can answer a simple probe while its storage path fails.
 
-- Both versions fail on the same renamed table. Which change addresses that observation?::Restart the same image repeatedly >> The incompatible layout persists across restarts. >> the-building-block||*Restore the table layout the versions expect::The incompatible layout persists across restarts.
+- After restarting, readiness returns 200 but river is missing from the list. Where should you look?::In the new empty table only >> Startup created a fresh table under the expected name. >> the-building-block||*In the renamed table that held river::A successful probe checked the replacement table.
 - Why keep the bookmark written before the incident as a test case?::*It detects loss of earlier data||It proves future requests will never fail >> A successful new write can coexist with missing old rows. >> the-building-block::A successful new write can coexist with missing old rows.
 
 ## Sources
