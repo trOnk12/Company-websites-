@@ -250,3 +250,9 @@ Reviewed all 136 published puzzles, 116 practice topics and 13 projects. Correct
 ### Deferred learning-method research
 
 After the portal meets its agreed maintenance and multi-session learning goals, review the evidence for delayed recall, corrective feedback and transfer in technical education. Compare an in-portal prompt, one HTML email question and a separate app. Evaluate retention after a delay and the ability to solve a changed case alongside maintenance effort. Email delivery and application development require a later product decision.
+
+### Platform internals, operations and distributed data · 21 November 2026
+
+Added six English practice chapters with worked investigations and independent checks. Android follows an AOSP service through startup, HAL discovery and framework/vendor compatibility, then uses Linux memory, CPU and pressure data. Backend operations adds Docker runtime diagnosis and SQL reporting with adversarial data. System design adds Kafka record ownership, replay and compaction, plus scatter/gather ranking and partial-result contracts inspired by Brendan Burns. The mobile design puzzle now links to a two-client IndexedDB experiment with reversible arrival order, a lost reply and retained drafts.
+
+Remaining assessment work includes running the Android investigations on a target emulator, exercising Kafka group reassignment on a real broker, and implementing explicit conflict resolution across networked clients. See _course/COVERAGE.md for the broader audit.

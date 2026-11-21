@@ -35,6 +35,10 @@ Two devices can still edit the same note offline. Then the server must decide wh
 
 A team with one shared whiteboard. Everyone reads the whiteboard, never each other's notes. The runner who goes to head office (the network) copies what they bring back onto the whiteboard, and takes the whiteboard's new items with them on the next trip.
 
+## Try it
+
+[Run the two-phone sync lab](https://pachulski.dev/labs/offline-sync/). Type a different title on each phone. Before you reconnect, predict which queue will still contain a draft. Reverse the order and compare the server version with both local copies.
+
 ## Check yourself
 
 - In an offline-first app, the network returns a fresh list of notes. Where does it go?::*Into the local database, and the screens update from there||Straight to the screen that asked for it, then into the database >> Then other screens could disagree; results always go through the database. >> s3||Into a separate in-memory cache next to the database >> A second store is a second source of truth: the thing this design removes. >> s3::Network → database → screens.

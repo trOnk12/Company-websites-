@@ -97,6 +97,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/android/chapter-inside-aosp-follow-a-platform-service</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/android/chapter-read-linux-resource-evidence</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/android/check-1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -253,6 +263,16 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/backend-ops/chapter-follow-one-booking-through-spring-mvc-and-a-database-transaction</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/backend-ops/chapter-diagnose-a-running-docker-container</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/backend-ops/chapter-build-a-sql-report-that-survives-awkward-data</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -1023,6 +1043,16 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/system-design/chapter-rebuild-a-concert-seating-map-from-reservation-events</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/system-design/chapter-follow-a-record-through-apache-kafka</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/system-design/chapter-design-a-search-across-independent-shards</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

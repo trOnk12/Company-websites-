@@ -103,5 +103,69 @@
         "sourceTitle": "Spring Framework · Rolling back a declarative transaction"
       }
     ]
+  },
+  {
+    "title": "Diagnose a running Docker container",
+    "lessons": [
+      {
+        "title": "Why does localhost work in one container and fail in its neighbor?",
+        "explanation": "A port belongs to a listening process at a network address. With ordinary bridge networking, each container has its own loopback address. On a user-defined Docker bridge, peers can also resolve each other's container names. Publishing a port sets up a host entry point. Two containers on the same bridge can talk directly to a listening service without publishing it.",
+        "example": "On a machine with Docker Engine running Linux containers, create an isolated exercise network with `docker network create course-peer-net`. Start a tiny server with `docker run -d --name course-peer-web --network course-peer-net busybox:1.36 sh -c 'echo READY > /tmp/index.html && exec httpd -f -p 8080 -h /tmp'`. No host port is published. Inside the server, `docker exec course-peer-web wget -qO- http://127.0.0.1:8080` prints READY.",
+        "exercise": "Start a second container with `docker run --rm --network course-peer-net busybox:1.36 wget -qO- http://course-peer-web:8080`. Predict the result. Repeat with 127.0.0.1 in place of course-peer-web. Which machine would have to be listening for that second command to succeed?",
+        "answer": "The name reaches the server and prints READY. Loopback reaches the short-lived client container, where nothing serves port 8080. Publishing the server port would leave the meaning of the client's loopback unchanged. Remove the exercise server with `docker rm -f course-peer-web`, then remove its bridge with `docker network rm course-peer-net`.",
+        "source": "https://docs.docker.com/engine/network/drivers/bridge/",
+        "sourceTitle": "Docker · User-defined bridge networks"
+      },
+      {
+        "title": "Where did the image's welcome page go?",
+        "explanation": "A mount places a second filesystem at a path. Opening a file under that path now searches the mounted directory. Files from the underlying image can still be in the image even when the running process cannot see them. Docker normally copies existing image files into a newly mounted empty volume. The volume-nocopy option suppresses that initialization.",
+        "example": "Read the original page size with `docker run --rm nginx:alpine wc -c /usr/share/nginx/html/index.html`. You should see a positive byte count. Create a fresh exercise volume with `docker volume create course-empty-web`. Use a new name if that volume already exists. Run `docker run --rm --mount type=volume,src=course-empty-web,dst=/usr/share/nginx/html,volume-nocopy nginx:alpine ls -A /usr/share/nginx/html`. The empty listing describes the mounted volume.",
+        "exercise": "Repeat the original byte-count command without the mount. Predict whether the file returns. Then run the listing with a second fresh volume named course-seeded-web and omit volume-nocopy. Explain both results before changing any Dockerfile.",
+        "answer": "The image-only container still finds index.html. The second fresh volume receives the image's files on its first ordinary mount. Rebuilding the image would not fix a deployment mounting an existing volume with the wrong contents. Check the mount destination and the actual contents. Release these exercise volumes with `docker volume rm course-empty-web course-seeded-web`.",
+        "source": "https://docs.docker.com/engine/storage/volumes/",
+        "sourceTitle": "Docker · Mounting a volume over existing data"
+      },
+      {
+        "title": "What can a worker finish during docker stop?",
+        "explanation": "Stopping a container gives its main process a chance to finish. With the default stop signal Docker sends SIGTERM. After the configured timeout it can force termination with SIGKILL. A worker needs a shutdown policy for any job already in progress. Here the job is a two-second cleanup that announces its beginning and end.",
+        "example": "Use a disposable worker. Run `docker run -d --name course-drain busybox:1.36 sh -c 'trap \"echo draining; sleep 2; echo finished; exit 0\" TERM; echo ready; while :; do sleep 1; done'`. Wait until `docker logs course-drain` shows ready. Run `docker stop -t 6 course-drain`, then inspect its logs and exit status with `docker inspect --format '{{.State.ExitCode}}' course-drain`.",
+        "exercise": "After the successful run, use `docker start course-drain`. Wait for a second ready line before repeating with `docker stop -t 1 course-drain`. Which output marks completed cleanup? Can the first line of cleanup prove a job was committed?",
+        "answer": "Six seconds allows this fixture to print finished and exit with zero under ordinary scheduling. One second cannot cover the two-second cleanup. The forced stop usually yields 137 and no second finished line. A production worker should record its durable outcome and acknowledge its job according to that outcome. A log line announcing cleanup establishes only that the handler began. Remove the stopped fixture with `docker rm course-drain`.",
+        "source": "https://docs.docker.com/reference/cli/docker/container/stop/",
+        "sourceTitle": "Docker · Container stop signals and timeout"
+      }
+    ]
+  },
+  {
+    "title": "Build a SQL report that survives awkward data",
+    "lessons": [
+      {
+        "title": "Can a customer with zero paid orders appear in the report?",
+        "explanation": "A join pairs rows by a condition. A left join also keeps each unmatched left row and supplies NULL values for its missing right side. NULL represents an unknown or absent value here. An ON condition controls which rows pair up. A WHERE condition subsequently filters the rows that survived the join.",
+        "example": "In PostgreSQL, run this read-only query. The VALUES lists act as tiny tables so there is nothing to install in the database.\n\n`WITH customers(id) AS (VALUES (1),(2),(3)), orders(id,owner,state) AS (VALUES (10,1,'paid'),(11,1,'open'),(12,2,'open')) SELECT c.id,o.id AS paid_order FROM customers c LEFT JOIN orders o ON o.owner=c.id AND o.state='paid' ORDER BY c.id;`",
+        "exercise": "Write down the three rows. Now move the paid condition from ON to a WHERE clause immediately before ORDER BY. Which customers disappear? Would adding OR o.id IS NULL to that WHERE clause recover both?",
+        "answer": "The original returns (1,10), (2,NULL), (3,NULL). Filtering after joining returns only (1,10). Adding OR o.id IS NULL recovers customer 3. Customer 2 had a matching open order, so the join never produced a NULL-filled row for that customer. Filtering that order afterwards discards the customer's only row.",
+        "source": "https://www.postgresql.org/docs/17/queries-table-expressions.html",
+        "sourceTitle": "PostgreSQL 17 · Joined tables and filtering"
+      },
+      {
+        "title": "Why does a second tag double the reported revenue?",
+        "explanation": "State what one input row represents before summing money. If one order can have several tags, a join produces one row per matching order and tag. SUM adds a value from each such row. DISTINCT on the amount treats equal amounts as the same value even when they came from different orders.",
+        "example": "Run `WITH orders(id,cents) AS (VALUES (10,500),(11,500)), tags(order_id,tag) AS (VALUES (10,'red'),(10,'blue'),(11,'red')) SELECT COUNT(*) AS joined_rows, SUM(o.cents) AS revenue, SUM(DISTINCT o.cents) AS distinct_amounts FROM orders o JOIN tags t ON t.order_id=o.id;` The numbers are 3, 1500 and 500. The contract says to count revenue from each tagged order once. The correct total is 1000 cents.",
+        "exercise": "Keep the same two input tables. Replace the SELECT with a query that counts each tagged order once. Predict what happens if order 12 costs 700 cents and has no tags. Then add a second blue tag on a different order. Which changes should affect revenue?",
+        "answer": "Use `SELECT SUM(o.cents) FROM orders o WHERE EXISTS (SELECT 1 FROM tags t WHERE t.order_id=o.id);` The test asks a yes-or-no question once per order and preserves its single amount. An untagged order contributes nothing. An additional tag on an already tagged order leaves revenue unchanged. Adding the first tag to order 12 raises revenue to 1700. For an empty matching set SUM returns NULL. Use COALESCE around the sum if the contract requires zero.",
+        "source": "https://www.postgresql.org/docs/17/functions-aggregate.html",
+        "sourceTitle": "PostgreSQL 17 · Aggregate functions"
+      },
+      {
+        "title": "Which payment took the balance below zero?",
+        "explanation": "A grouped sum collapses a customer's ledger into one total. A window function can attach a running sum to each original entry. PARTITION BY starts a separate calculation per account. ORDER BY defines the posting sequence inside it. A window frame says which entries in that sequence contribute to the current sum. Use whole cents to represent the fixture's money.",
+        "example": "Here day is an integer day number. For entries on the same day the business contract says the smaller posting ID happened first. Run `WITH ledger(acct,day,id,cents) AS (VALUES ('a',1,10,500),('a',2,20,-700),('a',2,21,300),('b',2,30,50)) SELECT acct,id,SUM(cents) OVER (PARTITION BY acct ORDER BY day,id ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS balance FROM ledger ORDER BY acct,day,id;`",
+        "exercise": "Identify the overdrawn posting. Replace the window's ORDER BY day,id and its ROWS frame with just ORDER BY day, keeping the outer display order. Predict the two balances on day 2 for account a. Explain how a report could miss a real overdraft even with all ledger rows present.",
+        "answer": "The explicit posting sequence gives account a balances of 500, -200 and 100 cents. Posting 20 caused the overdraft. Account b starts independently at 50. With just ORDER BY day the default frame includes all peers through the current day. Both day-2 entries for a show 100. The outer sort arranges the display after the balances have been calculated and cannot reconstruct the missing intermediate balance. A unique ID is a useful tie-breaker only if the business agrees that its order represents posting order.",
+        "source": "https://www.postgresql.org/docs/17/tutorial-window.html",
+        "sourceTitle": "PostgreSQL 17 · Window functions and frames"
+      }
+    ]
   }
 ]

@@ -1,0 +1,16 @@
+<section class="lab-card" aria-labelledby="experiment">
+  <h2 id="experiment">Two edits, one starting version</h2>
+  <p>Both phones last saw the title “Field notes” at version 1. While offline each phone saves its own draft and a queued edit. Predict the server title after both reconnect. Where can you find the other title?</p>
+  <form id="sync">
+    <label>Phone A title<input name="a" value="Trail map" required maxlength="80"></label>
+    <label>Phone B title<input name="b" value="Water stops" required maxlength="80"></label>
+    <label>Reconnect first<select name="first"><option>A</option><option>B</option></select></label>
+    <label>First reply<select name="reply"><option value="normal">Delivered</option><option value="lost">Lost after commit</option></select></label>
+    <button class="button primary" type="submit">Run sync</button>
+  </form>
+  <noscript>Enable JavaScript to run the two local clients.</noscript>
+  <output id="trace" aria-live="polite">Ready to run.</output>
+  <p>Reverse the order and run again. Then lose the first reply. Count the server version changes and inspect both pending queues. Each run starts fresh.</p>
+  <details><summary>Explain the outcome</summary><p>The server accepts an edit only if its base version matches the current version. The first edit advances the record once. A receipt with the same operation ID lets a retry recover the original acknowledgement. The other phone keeps its draft and its conflicting edit for review. To combine the titles, a user would review both and submit a new edit based on version 2.</p></details>
+  <p class="small">This browser experiment writes each phone and the simulated server to separate IndexedDB databases. It closes and reopens them after the offline edits. No network connection to a backend is involved.</p>
+</section>

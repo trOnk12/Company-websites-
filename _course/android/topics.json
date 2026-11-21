@@ -239,5 +239,69 @@
         "sourceTitle": "Android · Enable app optimization with R8"
       }
     ]
+  },
+  {
+    "title": "Inside AOSP: follow a platform service",
+    "lessons": [
+      {
+        "title": "Read a service declaration from boot to process",
+        "explanation": "Android Open Source Project (AOSP) includes init, the first user-space process. Init reads configuration files ending in .rc. A service declaration names a program and its options. An action connects a trigger, such as a property changing value, to commands. To explain why a program appeared, find both its declaration and the action or class start that launched it.",
+        "example": "Read this miniature configuration as two stanzas. The first starts with “service fieldlog /vendor/bin/fieldlog” and contains the option “disabled”. The second starts with “on property:vendor.fieldlog.enabled=1” and contains the command “start fieldlog”. The program can be installed throughout boot. The disabled option leaves it out of the ordinary class start, and the explicit start requests it when the action runs.",
+        "exercise": "On an Android emulator with adb connected, run adb shell getprop init.svc.zygote. Record the result and the emulator build. If it says running, can you conclude that the launcher has already drawn its first frame?",
+        "answer": "Running identifies init's observed service state. The launcher can still be starting. Frame presentation needs a separate observation on the launcher or display timeline. If the property is empty, list the available init.svc properties with adb shell getprop and locate a service declared by that build before drawing a conclusion.",
+        "source": "https://android.googlesource.com/platform/system/core/+/refs/heads/main/init/README.md",
+        "sourceTitle": "AOSP · Android init language and service states"
+      },
+      {
+        "title": "Locate a failing call across the hardware boundary",
+        "explanation": "A hardware abstraction layer (HAL) gives platform code an interface to a device-specific implementation. For a binderized HAL, client and implementation live in separate processes. The service registers an instance so a client can find it. AIDL, the Android Interface Definition Language, specifies calls and data across that boundary. A service can start successfully and still return an error when it tries to use the hardware.",
+        "example": "Consider a camera request on a build with a binderized camera provider. The app reaches the framework camera service. Its provider lookup succeeds. The provider receives an open request and reports that the device is unavailable. These observations locate the failure after lookup. The device might be occupied, disconnected or in another implementation-defined failure state. A registered instance alone cannot distinguish those explanations.",
+        "exercise": "Two traces show the same app error. Trace A ends with provider lookup unsuccessful. Trace B contains provider entry, then a failed device operation. For each trace, choose the first boundary to inspect and predict one observation that would move your investigation elsewhere.",
+        "answer": "For A, compare the requested interface and instance with the provider registered on this build. A successful lookup for that exact instance during the failing request moves the investigation past discovery. For B, correlate the provider operation with device state and the request timestamp. A successful device operation followed by a failed reply moves the investigation toward the return path.",
+        "source": "https://source.android.com/docs/core/architecture/hal",
+        "sourceTitle": "AOSP · Hardware abstraction layer overview"
+      },
+      {
+        "title": "Decide whether a framework update fits a vendor image",
+        "explanation": "Android can update its framework and device-specific implementation on different schedules. The vendor interface (VINTF) records the contract between them. A manifest describes capabilities a side provides. A compatibility matrix lists what the other side requires. Check both directions when evaluating an image pair. Passing this comparison establishes compatibility of the declarations; live behavior still needs a device test.",
+        "example": "Use a simplified contract with exact instance names. The device manifest provides temperature/default. The candidate framework requires temperature/default and fan/default. In the other direction the device requires a diagnostics service that the framework does provide. The first direction fails because fan/default is missing. A successful temperature reading on the old build tells us nothing about this new requirement.",
+        "exercise": "An engineer adds fan/default to the manifest without shipping its implementation. Predict what a static comparison using only these declarations could accept. Design a runtime check that would expose the remaining gap.",
+        "answer": "The names in the simplified comparison now match. Boot the intended framework and vendor pair on the target device, resolve the named instance and issue a representative supported operation. Record the returned value or failure and a timestamp. Real VINTF matching also considers properties such as interface versions and the applicable matrix level.",
+        "source": "https://source.android.com/docs/core/architecture/vintf",
+        "sourceTitle": "AOSP · VINTF manifests and compatibility matrices"
+      }
+    ]
+  },
+  {
+    "title": "Read Linux resource evidence",
+    "lessons": [
+      {
+        "title": "Account for memory shared by two processes",
+        "explanation": "Linux exposes a process's memory mappings under /proc. Resident set size (RSS) counts pages belonging to a mapping that are present in physical memory. Adding RSS across processes can count the same physical page several times. Proportional set size (PSS) apportions the cost of shared pages between their mappings. This matters on Android, where several processes may use the same code pages.",
+        "example": "Suppose A and B each have 12 MiB of private resident pages and both map the same 8 MiB of resident code exactly once. Each reports 20 MiB RSS and 16 MiB PSS for those pages. The two together occupy 32 MiB. On Linux with smaps_rollup enabled, run grep -E '^(Rss|Pss):' /proc/self/smaps_rollup. The reported process is grep itself because grep opens the file.",
+        "exercise": "B exits while A keeps its mappings, with no eviction or allocation. Predict A's RSS and PSS. Would the PSS change by itself justify filing an app memory leak?",
+        "answer": "A's RSS stays at 20 MiB. Its PSS rises to 20 MiB because the eight shared MiB are now entirely attributed to A. To investigate a leak, repeat a bounded operation and look for growth in retained allocations or private memory under comparable conditions. Record other processes that join or leave during the measurement.",
+        "source": "https://docs.kernel.org/filesystems/proc.html",
+        "sourceTitle": "Linux kernel · Process memory mappings and proportional set size"
+      },
+      {
+        "title": "Recognize a CPU budget in a trace",
+        "explanation": "A Linux control group groups processes for accounting and resource control. With the cgroup v2 CPU controller, cpu.max gives a CPU-time allowance and its replenishment period, in microseconds. Threads share that allowance. On several cores, two runnable threads can use it twice as fast in elapsed time. Exhaustion can leave ready work waiting while the host has spare CPU.",
+        "example": "For a group with cpu.max set to 50000 100000, the allowance is 50 ms each 100 ms. Assume a fresh period, two continuously running threads on separate cores, no burst allowance and no tighter ancestor limit. They can consume the group's 50 ms in about 25 ms of wall time. Read cpu.stat before and after a slow interval to compare nr_periods and nr_throttled.",
+        "exercise": "In one second the host averaged 35% CPU. The group's nr_periods advanced by 10 and nr_throttled by 9. A request took 220 ms. Which explanation is supported? Which measurement would test the specific request?",
+        "answer": "The group hit its CPU limit in nine periods. A host average hides that local constraint. The counters cover the whole group, so attributing all 220 ms to throttling is unwarranted. Correlate the request interval with scheduling evidence for its worker. In a controlled repeat, keep work constant and change the CPU allowance, then compare throttling and request latency.",
+        "source": "https://docs.kernel.org/admin-guide/cgroup-v2.html",
+        "sourceTitle": "Linux kernel · Control group v2 CPU interface"
+      },
+      {
+        "title": "Measure time lost to memory pressure",
+        "explanation": "Capacity and delay answer different questions. Linux pressure stall information (PSI) measures time when work stalls on a resource. For memory, some counts time with at least one task stalled, and full counts time when every non-idle task in the measured group is stalled together. The total field accumulates microseconds. Taking two readings gives a measurement for the exact interval you studied.",
+        "example": "On a Linux host with PSI enabled, read cat /proc/pressure/memory before and after a timed action. In this example the interval is 5.00 seconds. The some total rises from 8,000,000 to 8,750,000 and full rises by 100,000. Some pressure occupied 15% of the interval. Full pressure occupied 2%. Full is already included in some.",
+        "exercise": "A UI pause lasted 300 ms inside that interval. What can the two percentages establish about the pause? How could you distinguish pressure in the app's workload from an unrelated batch job?",
+        "answer": "They establish that memory stalls occurred somewhere within the measured host and window. The individual pause still needs attribution. If the app runs in an identifiable cgroup v2 group with PSI, sample its memory.pressure and the host counters over the same action. Correlate an app thread trace with the stalls, then repeat with the batch workload absent. A pressure total can increase even if the UI thread was runnable throughout.",
+        "source": "https://docs.kernel.org/accounting/psi.html",
+        "sourceTitle": "Linux kernel · Pressure stall information"
+      }
+    ]
   }
 ]

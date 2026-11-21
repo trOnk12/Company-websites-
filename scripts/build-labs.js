@@ -7,6 +7,7 @@ const L = require('./build-learning');
 const courses = {
   'backend-ops': 'Backend operations',
   jvm: 'JVM fundamentals',
+  sysdesign: 'Mobile system design',
   'system-design': 'System design',
 };
 
@@ -80,7 +81,13 @@ function labPages() {
     body: `<nav class="lesson-jumps" aria-label="Experiments"><a href="#race">Last space</a><a href="#retry">Lost reply</a><a href="#isolation">Isolation</a><a href="#queue">Overload</a><a href="#delivery">Event delivery</a><a href="cases.html">Design review</a></nav>
       ${fs.readFileSync(path.join(__dirname, 'lab-templates/reservation.html'), 'utf8')}`,
   };
-  const pages = [reservation, casesPage(), workbench('backend-ops', 'backend-workbench'), workbench('jvm', 'jvm-workbench')];
+  const offline = {
+    file: 'offline-sync/index.html', course: 'sysdesign', title: 'Two offline edits',
+    intro: 'Reconnect two independent phone stores to a shared record and inspect what each one keeps.',
+    scripts: ['lab.js'],
+    body: fs.readFileSync(path.join(__dirname, 'lab-templates/offline-sync.html'), 'utf8'),
+  };
+  const pages = [offline, reservation, casesPage(), workbench('backend-ops', 'backend-workbench'), workbench('jvm', 'jvm-workbench')];
   return new Map(pages.map(config => [path.join(L.ROOT, 'labs', config.file), labPage(config)]));
 }
 
