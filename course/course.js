@@ -294,7 +294,7 @@
         if (!row.hidden) count++;
       }
       list.hidden = !count;
-      status.textContent = !terms.length ? '' : count ? `${count} matching puzzle${count === 1 ? '' : 's'}` : 'No puzzles found. Try a shorter term or browse the courses below.';
+      status.textContent = !terms.length ? '' : count ? `${count} matching lesson${count === 1 ? '' : 's'}` : 'No lessons found. Try a shorter term or browse the courses below.';
     }
     filterPuzzles();
     panel.hidden = false;
@@ -378,6 +378,9 @@
         '',
         `The course, in order (✓ = I've passed it):`,
         ...d.puzzles.map(p => `${have.has(p.n) ? '✓' : '·'} ${p.n}. ${p.title}: ${p.takeaway}`),
+        ...(d.chapters?.length ? ['', 'Practice chapters with worked examples and exercises:',
+          ...d.chapters.map(ch => `- ${ch.title}: ${ch.lessons.join('; ')} — ${ch.url}`)] : []),
+        ...(d.project ? [`Final project: ${d.project.title} — ${d.project.url}`] : []),
         ...(d.upcoming.length ? ['', 'Not written yet (good places to go next):', ...d.upcoming.map(u => `- ${u}`)] : []),
         ...(d.assumes ? ['', `The course assumes I know: ${d.assumes}.`] : []),
         '',
@@ -387,7 +390,7 @@
         '',
         next
           ? `Where I am: next is puzzle ${next.n}, "${next.title}". Start with one question to check I really have the block it builds on${missed.length ? ', or one of my weak spots' : ''}. Then teach me what it covers, your way, and keep going.`
-          : `I've passed every puzzle. ${missed.length ? 'Start by testing my weak spots. Then' : 'Start with one question on the hardest idea. Then'} take me into the topics that aren't written yet, the same way.`,
+          : `I've passed every puzzle. ${missed.length ? 'Start by testing my weak spots. Then' : 'Start with one question on the hardest idea. Then'} take me through the published practice material and final project.`,
       ];
       const text = lines.join('\n');
       out.value = text;

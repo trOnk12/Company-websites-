@@ -32,20 +32,7 @@
       ]
     }
   ],
-  "upcoming": [
-    {
-      "title": "Next: what a call costs and how it fails",
-      "topics": "max_tokens and a cut-off answer, why output tokens cost more than input, rate limits and retries, prompt caching, and structured output you can parse."
-    },
-    {
-      "title": "Module 3: Tool use and chat assistants",
-      "topics": "Compare model tool calling and reusable skills with the same text cases. Under explicit permissions, connect a chat interface to a read-only test tool and inspect the tool logs."
-    },
-    {
-      "title": "Module 4: Shipping it",
-      "topics": "Prompt caching and cost, evaluating answers, guardrails, latency budgets on mobile, and fallbacks when the model is down."
-    }
-  ],
+  "upcoming": [],
   "support": {
     "url": "",
     "label": "Buy me a coffee",

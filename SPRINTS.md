@@ -238,3 +238,7 @@ Reviewed the home page, course catalog, lessons, learning log, music pages and p
 ### Independent practice in every published engineering course
 
 The 13 course outlines and their final lessons lead into a course-specific investigation with stated prerequisites, a concrete fixture, evidence to collect, a worked review and a changed assumption. The same projects ship with the offline vaults. All 38 lessons in the Backend, JVM and general System Design path received a separate content review. Planned modules remain identifiable on their course outlines.
+
+### Published topic chapters across all 13 courses
+
+Replaced the previously announced Android, BLE, iOS, LLM, performance, security and mobile system design topics with English teaching material. Added advanced topics to the other six courses. Each lesson contains a worked case, a transfer question, a reasoned solution and a source. Chapters are reachable from course outlines, catalog search, the final puzzle and the offline vault.

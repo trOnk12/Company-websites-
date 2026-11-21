@@ -21,16 +21,7 @@
       ]
     }
   ],
-  "upcoming": [
-    {
-      "title": "Module 2: Secrets on the phone",
-      "topics": "Where an app keeps keys and tokens: the Android Keystore and hardware-backed keys, encrypted storage, certificate pinning and when it backfires."
-    },
-    {
-      "title": "Module 3: Accounts and tokens",
-      "topics": "Passwords and why servers hash them, OAuth and access tokens, refresh tokens, and what to do when a token leaks."
-    }
-  ],
+  "upcoming": [],
   "support": {
     "url": "",
     "label": "Buy me a coffee",

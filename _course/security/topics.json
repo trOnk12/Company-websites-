@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Keys and protected data on a phone",
+    "lessons": [
+      {
+        "title": "Give the app permission to use a key",
+        "explanation": "Android Keystore can hold a key identified by an alias and perform allowed cryptographic operations without exposing its key material to the app. Some keys are protected by secure hardware. Check the security level for the particular key and device. Choose permitted operations and authentication conditions according to the feature’s threat model.",
+        "example": "A notes app uses an alias to encrypt and decrypt a private journal. The saved record holds ciphertext plus the information needed to decrypt it. Copying the file alone does not copy the non-exportable key. A process already allowed to request decryption can still obtain plaintext while authorized.",
+        "exercise": "A device lacks the required hardware protection. Should you silently claim the feature has the same guarantee?",
+        "answer": "Define a product policy: require the capability for this feature or explicitly support a documented lower assurance level. Inspect the generated key’s security level rather than guessing from the phone model.",
+        "source": "https://developer.android.com/privacy-and-security/keystore",
+        "sourceTitle": "Android Developers · Keystore system"
+      },
+      {
+        "title": "Design the record format and its recovery path",
+        "explanation": "For encrypted app storage, use established authenticated encryption so modified ciphertext fails verification. Keep keys separate from encrypted files. Store the key version and the nonce needed for decryption, and obey the algorithm’s nonce requirements. Decide what happens when a backup restores bytes onto a device without the original key.",
+        "example": "A journal record holds format version 2, key alias generation 3, a fresh encryption nonce and authenticated ciphertext. A user restores the file after replacing their handset. The old alias is unavailable. Local encryption protected those bytes, but the restore feature still needs a separate authorized recovery design if promised.",
+        "exercise": "The new app version rotates its key. When can the old generation be removed?",
+        "answer": "After a verified migration of all records that must remain readable, including the intended backup policy. Test an interrupted migration and old records; on authentication failure never substitute unverified plaintext.",
+        "source": "https://developer.android.com/privacy-and-security/cryptography",
+        "sourceTitle": "Android Developers · Cryptography"
+      },
+      {
+        "title": "Evaluate certificate pinning through a rotation",
+        "explanation": "A normal TLS client verifies the server name and certificate chain against its trusted authorities. Pinning adds a restriction to particular public keys or chains. It can reduce accepted credentials, but also makes the client depend on future certificate deployment choices. Android cautions against routine pinning because certificate changes can strand installed clients.",
+        "example": "A mobile version pins only key A. The service changes to an otherwise valid certificate with key B. Browsers connect while that app rejects the service. A backup pin helps only if the deployed replacement can actually satisfy it and clients already know it.",
+        "exercise": "Before adding a pin to an app whose users rarely update, what release rehearsal matters?",
+        "answer": "Test rotation and emergency recovery on the oldest supported client with the future chain. Weigh that operational risk against the concrete threat the pin addresses. Keep standard hostname and chain checks enabled.",
+        "source": "https://developer.android.com/privacy-and-security/security-config",
+        "sourceTitle": "Android Developers · Network security configuration"
+      }
+    ]
+  },
+  {
+    "title": "Accounts, delegated authority and recovery",
+    "lessons": [
+      {
+        "title": "Verify a password without storing the original",
+        "explanation": "A verifier stores a salt, a cost setting and a password hash produced with a dedicated password hashing scheme. A unique random salt prevents equal passwords from sharing the same stored verifier. A tunable work factor increases the cost of each guess. A fast general-purpose checksum does not supply this property.",
+        "example": "Two accounts choose the same password. Generate distinct salts and their stored verifiers differ. At login, load that account’s parameters and verify the submitted password using the chosen library. After a valid login, the service can upgrade old parameters under its migration policy.",
+        "exercise": "Does encrypting a recoverable copy of every password provide the same design?",
+        "answer": "No. Routine verification needs a match decision, not recovery of the original. Use a supported password hashing library, protect transport and rate-limit failed authentication attempts.",
+        "source": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+        "sourceTitle": "NIST SP 800-63B · Password verifiers"
+      },
+      {
+        "title": "Limit what an access token authorizes",
+        "explanation": "OAuth separates the user, client app, authorization server and resource server. A native public client can use authorization code with PKCE: create a verifier, bind its challenge to the authorization request, then present the verifier when exchanging the returned code. The resulting access token is constrained by the server’s audience, scope and lifetime policies.",
+        "example": "A calendar app requests read-only access. The user signs in through the authorization service. The app exchanges the code and uses the token at the calendar API. The API checks whether this token is meant for it and permits the requested read. Successful sign-in alone confers no right to edit an event.",
+        "exercise": "A token issued for the calendar API arrives at a photo API using the same identity provider. Should the signature alone authorize a read?",
+        "answer": "Reject it when the intended audience does not match. Validate the token according to its format and issuer contract and enforce the requested action and resource ownership.",
+        "source": "https://www.rfc-editor.org/rfc/rfc9700.html",
+        "sourceTitle": "RFC 9700 · OAuth security best current practice"
+      },
+      {
+        "title": "Handle refresh and loss as separate incidents",
+        "explanation": "An access token authorizes resource requests for its permitted lifetime. A refresh token obtains replacement access tokens from the authorization server and may outlive them. Protect it accordingly. Rotation can replace the refresh credential on use and help detect reuse. Serialize concurrent refresh in the client so its own parallel requests do not accidentally reuse the old credential.",
+        "example": "Two API calls receive an expiry response together. One refreshes while the other waits; both retry eligible operations with the replacement access token. If a refresh token was exposed, revoke the affected grant or token family under provider policy, clear local credentials and require reauthorization. Avoid placing secrets in diagnostic logs.",
+        "exercise": "Does deleting a token on one lost device immediately disable every issued access token at every service?",
+        "answer": "No. Coordinate revocation with the authorization server and the resource servers’ token-validation model. Some already issued access tokens remain valid until expiry or until revocation information reaches the verifier. Test the actual containment window.",
+        "source": "https://www.rfc-editor.org/rfc/rfc7009.html",
+        "sourceTitle": "RFC 7009 · OAuth token revocation"
+      }
+    ]
+  }
+]

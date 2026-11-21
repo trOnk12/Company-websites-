@@ -1,0 +1,143 @@
+[
+  {
+    "title": "Swift and the app’s front door",
+    "lessons": [
+      {
+        "title": "Read a nullable Swift value",
+        "explanation": "Swift's let binds a constant and var permits reassignment. An optional explicitly represents either a wrapped value or its absence. Unwrap it before using a nonoptional operation. A forced unwrap transfers the missing-value check to a runtime trap.",
+        "example": "A route contains a note ID as text. Int(\"17\") yields an optional containing 17. Int(\"river\") yields nil. Use guard let id = Int(raw) else { return } before loading the note, and decide how the screen presents an invalid route.",
+        "exercise": "Is an empty note list the same state as failing to parse the requested ID?",
+        "answer": "No. Empty is a valid collection value. A missing or invalid route is a different input outcome and should be handled at the navigation boundary.",
+        "source": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/thebasics/",
+        "sourceTitle": "The Swift Programming Language · The Basics"
+      },
+      {
+        "title": "Follow a struct copy and a class reference",
+        "explanation": "Swift structures have value semantics: changing a copied value does not change the original value. Classes have reference semantics and can be shared by multiple variables. A struct can contain a reference property, in which case copying the struct copies that reference as part of its value.",
+        "example": "With struct Draft { var title: String }, set b = a, then b.title = \"Lake\". The title of a stays River. If Draft is a class and both variables point to the same instance, mutating b.title is visible through a.",
+        "exercise": "A struct stores a class-based Editor. After copying the struct, do both copies see a change made to that same Editor?",
+        "answer": "Yes. The copied properties refer to one Editor instance. Use an independent value representation or intentionally create a new editor when isolation is required.",
+        "source": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/classesandstructures/",
+        "sourceTitle": "The Swift Programming Language · Structures and Classes"
+      },
+      {
+        "title": "Start an app and identify a scene",
+        "explanation": "The @main App type is the entry point for a SwiftUI app. Its body describes scenes, and a WindowGroup can host separate instances of a window's content. A process may own several scene sessions with different selections and lifecycle states.",
+        "example": "A notes app's WindowGroup opens a root list. One window edits note 17 and another edits 29. Both can share the persisted note repository while keeping their navigation selection attached to the individual scene.",
+        "exercise": "A single global selectedNote changes both windows when one user navigates. What should move?",
+        "answer": "Move selection to scene- or view-owned state. Keep genuinely shared data, such as saved notes, in a separate shared model.",
+        "source": "https://developer.apple.com/documentation/swiftui/app",
+        "sourceTitle": "Apple · SwiftUI App"
+      },
+      {
+        "title": "Separate a Task from an awaited call",
+        "explanation": "An async function may suspend. Calling it with await does not by itself start independent concurrent work or move CPU-heavy code off an actor. Task creates unstructured work with a handle and can inherit the surrounding actor context. Actor isolation governs access to mutable state.",
+        "example": "A main-actor action creates Task { await refresh() }. When refresh awaits network data other main-actor work may proceed. Synchronously decoding a huge document on that same actor can still block input. Identify the executor or isolation of each expensive step.",
+        "exercise": "Two taps start independent refreshes. Why can an older response still replace a newer one despite main-actor writes?",
+        "answer": "Serialization of individual state updates does not impose request order across suspension. Cancel superseded work or validate an operation generation before publishing it.",
+        "source": "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/",
+        "sourceTitle": "The Swift Programming Language · Concurrency"
+      }
+    ]
+  },
+  {
+    "title": "Screens and the system",
+    "lessons": [
+      {
+        "title": "Restore windows independently",
+        "explanation": "A scene manages one instance of the user interface; a window presents content for that scene. Scene activation describes whether that particular interface can interact. Sharing the app process gives scenes access to common resources while leaving each one's navigation independent.",
+        "example": "Scene A shows note 17; scene B shows settings. A backgrounds while B remains active. Save A's restoration identity with its scene, then rebuild it from note 17 if the scene reconnects later.",
+        "exercise": "Should A entering background unconditionally tear down a database connection needed by B?",
+        "answer": "Coordinate process-wide resources across users. Treat A's lifecycle as the end of A's immediate interaction, not proof that all scenes stopped.",
+        "source": "https://developer.apple.com/documentation/uikit/scenes",
+        "sourceTitle": "Apple · UIKit scenes"
+      },
+      {
+        "title": "Compare a view description with a controller",
+        "explanation": "SwiftUI's body produces a description from current state. Updating state can cause SwiftUI to reevaluate affected view descriptions while preserving storage associated with view identity. A UIKit view controller instead owns and coordinates a view hierarchy and receives explicit lifecycle callbacks.",
+        "example": "A counter in SwiftUI stores its value with @State. A button changes the value and a Text reads it during body evaluation. In UIKit, an action changes the model and explicitly refreshes a label or uses a binding mechanism. UIKit viewDidLoad concerns loading the view hierarchy; it is not called for every value change.",
+        "exercise": "Why can a network request launched unconditionally while computing body issue several copies?",
+        "answer": "SwiftUI may reevaluate body multiple times. Attach work to an appropriate lifecycle-aware task or model, give it a stable identity and handle cancellation.",
+        "source": "https://developer.apple.com/documentation/swiftui/managing-user-interface-state",
+        "sourceTitle": "Apple · Managing user interface state"
+      },
+      {
+        "title": "Choose a background execution strategy",
+        "explanation": "Background execution is granted for particular purposes under system control. A short finishing task asks for time to complete work already in progress. Scheduled background tasks run when the system decides conditions are suitable. A background URL session is intended for supported transfers.",
+        "example": "The user starts uploading a large attachment and leaves. Persist its local identity and use a suitable background transfer mechanism. On a later callback reconnect the transfer result with that identity. Do not keep success only inside the old view controller.",
+        "exercise": "A periodic refresh was requested for 09:00. Can the app promise it finished at exactly 09:00?",
+        "answer": "No. Treat the schedule as an opportunity, persist the last successful update and expose data age. Handle expiration without losing the pending work.",
+        "source": "https://developer.apple.com/documentation/backgroundtasks/choosing-background-strategies-for-your-app",
+        "sourceTitle": "Apple · Choosing Background Strategies for Your App"
+      },
+      {
+        "title": "Interpret a jetsam report",
+        "explanation": "Under memory pressure the system may terminate a process. A jetsam report describes memory conditions and the terminated process. A relaunch with missing volatile state is a symptom, not by itself proof of a particular crash or a reference cycle.",
+        "example": "An image editor disappears under pressure. Match its process and termination reason in the jetsam report. Reproduce the image workflow and inspect memory growth while decoding, rendering and releasing images. Persist edits during normal operation.",
+        "exercise": "Does receiving a memory warning guarantee enough time to save every open document before termination?",
+        "answer": "No. Reduce expendable memory when possible and persist meaningful user changes before termination becomes imminent.",
+        "source": "https://developer.apple.com/documentation/xcode/identifying-high-memory-use-with-jetsam-event-reports",
+        "sourceTitle": "Apple · Identifying high-memory use with jetsam event reports"
+      },
+      {
+        "title": "Measure launch through the first useful interaction",
+        "explanation": "Launch includes loading the executable and dependencies, application initialization and drawing the first content. Work before the first frame can delay display; moving work after it can still delay the first useful interaction. Measure both boundaries on comparable launches.",
+        "example": "A navigation shell appears after 320 ms and stored notes appear at 870 ms. Deferring a 150 ms synchronous index build may advance the first frame while leaving the list unusable until the same data arrives. Track when the user can open the first note.",
+        "exercise": "The shell is faster but tapping a row freezes for 180 ms. What do you measure next?",
+        "answer": "Trace the tap and the main thread during the first interaction. Distinguish work removed from startup from work merely shifted onto the critical interaction.",
+        "source": "https://developer.apple.com/documentation/xcode/reducing-your-app-s-launch-time",
+        "sourceTitle": "Apple · Reducing your app’s launch time"
+      }
+    ]
+  },
+  {
+    "title": "Build, distribute and diagnose",
+    "lessons": [
+      {
+        "title": "Trace a target through the build graph",
+        "explanation": "An Xcode target describes a product and its build settings, source files and dependencies. A scheme selects targets and configurations for actions such as running or archiving. Compiling source produces inputs for linking; copying resources and signing affect the final bundle.",
+        "example": "A Debug simulator run succeeds, but a Release archive misses a JSON file. Check target membership, copy-resource phases and configuration-dependent settings in the actual archive. Successfully compiling a reference to a resource name says nothing about whether the resource was bundled.",
+        "exercise": "Changing a library rebuilds unexpectedly many targets. What evidence do you inspect?",
+        "answer": "Inspect the build report, dependency graph, changed interfaces and script inputs or outputs. Compare incremental builds with the same configuration before reorganizing modules.",
+        "source": "https://developer.apple.com/documentation/xcode/build-system",
+        "sourceTitle": "Apple · Build system"
+      },
+      {
+        "title": "Explain why a signed archive may fail distribution",
+        "explanation": "Code signing binds code to a signing identity; provisioning for a distribution route governs which app identity and capabilities are allowed. Development, testing and distribution use different conditions. Inspect the archive and its entitlements when the failing path differs from a simulator run.",
+        "example": "A push-enabled app runs in Simulator but its distribution archive fails entitlement validation. Compare the app identifier and capabilities configured for the target with the entitlements authorized for the signing route. Build a fresh archive and validate it again.",
+        "exercise": "Would changing Swift source fix a mismatch between an enabled entitlement and the selected provisioning profile?",
+        "answer": "Correct the capability and signing configuration and validate the resulting signed artifact. A source change that happens to trigger a rebuild does not establish the cause.",
+        "source": "https://developer.apple.com/documentation/xcode/distributing-your-app-for-beta-testing-and-releases",
+        "sourceTitle": "Apple · Distributing your app for beta testing and releases"
+      },
+      {
+        "title": "Separate dependency delivery from its linked product",
+        "explanation": "A Swift package describes products, targets and dependencies. Xcode resolves package versions and builds the chosen product. A framework bundles a module and related resources or code. A package can expose a library or deliver a binary framework, so packaging and dependency resolution answer different questions.",
+        "example": "An app adds a package and selects its Core library product for the app target. The project may resolve the package even if the target never links that product. Start with the failing target's product linkage when an import fails only in an extension.",
+        "exercise": "A clean machine uses a different dependency revision. What input would you compare first?",
+        "answer": "Compare package constraints and the resolved versions used by the two builds. Then verify the target, platform and destination support the same product.",
+        "source": "https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app",
+        "sourceTitle": "Apple · Adding package dependencies to your app"
+      },
+      {
+        "title": "Distinguish CPU samples from elapsed time in Instruments",
+        "explanation": "Time Profiler samples executing stacks. More samples in a function can indicate CPU cost, while a long wall-clock interval may include time waiting. Use an interval around one reproducible interaction and compare allocations or other instruments when CPU alone cannot explain the delay.",
+        "example": "Opening a gallery takes 700 ms. The main thread has 60 ms of decode samples but spends a long interval waiting for a storage read. A faster decoder can address the measured CPU portion; trace the separate wait before estimating the overall saving.",
+        "exercise": "One profile includes initial import of thumbnails and the next uses a warm cache. Can you attribute the whole improvement to the code change?",
+        "answer": "Repeat comparable cold and warm cases separately. Keep device, dataset, build and measurement boundary consistent, then inspect the remaining wait or hot stack.",
+        "source": "https://developer.apple.com/documentation/xcode/improving-your-app-s-performance",
+        "sourceTitle": "Apple · Improving your app’s performance"
+      },
+      {
+        "title": "Make the owner of mutable state explicit in Swift 6",
+        "explanation": "Swift's data-race safety checks use isolation and transfer rules to limit unsafe simultaneous access. An actor serializes access to its isolated state. Sendable describes values suitable for crossing concurrency domains under the applicable rules. Suspension allows other work to enter an actor between two segments.",
+        "example": "An Inventory actor checks stock == 1, awaits an external confirmation, then decrements. Another task can enter during the await and observe the same stock. Reserve the right inside one synchronous actor-isolated step and define how failure releases it.",
+        "exercise": "If the compiler accepts the program, can two customers still receive an invalid business outcome?",
+        "answer": "Yes. Type-checked isolation addresses data races. An invariant spanning a suspension or an external system still needs a state-transition design and failure tests.",
+        "source": "https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/dataracesafety/",
+        "sourceTitle": "Swift · Data race safety"
+      }
+    ]
+  }
+]

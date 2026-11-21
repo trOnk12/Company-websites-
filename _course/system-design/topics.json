@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Guarantees under load and partial failure",
+    "lessons": [
+      {
+        "title": "What did the replica actually acknowledge?",
+        "explanation": "A primary records changes in its write-ahead log. A standby receives log records and replays them into its own readable database. Receiving, durably flushing and replaying a record are distinct milestones. With asynchronous replication a primary can acknowledge a write before the standby reaches any of them. Choose the milestone based on the promise you make to the caller and which failures you intend to survive.",
+        "example": "Ada confirms seat B12 at log position 820. A standby has received through 820 but applied only through 818. A read routed there can still show B12 as available. The booking service must arbitrate the next purchase at the authoritative writer. For a read-your-write receipt, route that read to the primary or wait for an eligible replica to apply 820, within a deadline.",
+        "exercise": "The primary stops before the standby receives record 820. The phone has a successful reply. Can the new primary reconstruct the sale from its own data?",
+        "answer": "The promoted standby can lack the acknowledged sale. Returning to a primary for the read fixes ordinary lag only while the original record survives. To promise survival of a specified primary failure, configure the required synchronous acknowledgements and an eligible promotion policy, then rehearse that failure. Decide how the system responds when the required acknowledger is unavailable.",
+        "source": "https://www.postgresql.org/docs/17/warm-standby.html",
+        "sourceTitle": "PostgreSQL · Standby servers"
+      },
+      {
+        "title": "How many failures can a user journey afford?",
+        "explanation": "A service level indicator is an observed ratio or measurement. Define the eligible requests, what counts as good and the time window before choosing a target. For a reservation journey, a correct full-lot response may be good. A timeout can be bad even if the server later commits. Count from a place that can observe the promised outcome.",
+        "example": "Assume one million eligible attempts in 30 days and a 99.9% success target. The budget is 1,000 bad attempts. A release fails 240 of 8,000 attempts. It spent 24% of the monthly budget while handling 0.8% of the monthly traffic. Its 3% error rate is 30 times the permitted 0.1% rate.",
+        "exercise": "The busiest hour improves, but customers on one mobile carrier still time out. Which evidence would justify closing the incident?",
+        "answer": "Split eligible attempts by carrier and client version, inspect sample size, then recompute the same journey indicator before and after the fix. Weight the overall result by actual attempt counts. A healthy server-only ratio cannot establish that the affected phones received timely confirmations.",
+        "source": "https://sre.google/workbook/implementing-slos/",
+        "sourceTitle": "Google SRE · Implementing SLOs"
+      },
+      {
+        "title": "Where should retries spend the request budget?",
+        "explanation": "A timeout limits how long one caller waits. It does not cancel every operation that caller started. A retry can therefore add concurrent work to a dependency that is already slow. Set a deadline for the whole journey, assign one layer responsibility for retries and use stable operation identities for writes with repeatable effects.",
+        "example": "A phone calls a gateway, which calls a service, which calls a database-facing dependency. If all three calling layers make up to three attempts, one user action can trigger 27 attempts at the deepest boundary. With a 500 ms deadline, 220 ms spent on the first call and 100 ms of backoff, at most 180 ms remain for another call and returning the result.",
+        "exercise": "The downstream call usually needs 200 ms. Would jitter make another attempt fit? What happens to an unknown payment outcome?",
+        "answer": "Jitter spreads arrivals across time. It supplies no extra time or capacity. Stop when the remaining deadline cannot support the chosen call budget. Record the unresolved payment identity and reconcile its status through the documented provider contract. Count physical attempts separately from user actions.",
+        "source": "https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/",
+        "sourceTitle": "AWS Builders' Library · Timeouts, retries and backoff"
+      }
+    ]
+  },
+  {
+    "title": "Choosing boundaries that hold during overload",
+    "lessons": [
+      {
+        "title": "Does splitting a table distribute its writes across machines?",
+        "explanation": "Declarative partitioning divides one logical table into partitions using a routing rule. Partition pruning can avoid scanning irrelevant partitions when a predicate restricts the partition key. This feature alone does not give every partition its own independently writable database server.",
+        "example": "Bookings are partitioned by month. A report for January can avoid unrelated months when its predicate allows pruning. A single popular event in January still places all its concurrent reservations in the same month. A partitioning scheme good for retention need not spread the hot event.",
+        "exercise": "The business wants to delete whole months quickly and handle one hot concert. What two measurements should determine your next design?",
+        "answer": "Measure pruning and retention maintenance for the time-based layout, then measure lock contention and write throughput for the hot event. If proposing independent shards, identify the routing key and which reservations must still share a transaction. Prove the invariant during a shard move.",
+        "source": "https://www.postgresql.org/docs/17/ddl-partitioning.html",
+        "sourceTitle": "PostgreSQL · Table partitioning"
+      },
+      {
+        "title": "Which requests should an overloaded service admit?",
+        "explanation": "Load shedding refuses some work early so admitted work can still finish. Bounded queues constrain memory and waiting time. A queue that accepts everything can spend most of its capacity finishing requests after callers have already left. Define how callers distinguish an overload response from an unknown committed outcome.",
+        "example": "At 100 completed requests per second, 500 already ahead of a new request imply roughly five seconds of waiting in a simple FIFO model before service. With a one-second client deadline, acceptance alone offers little value. Track rejected requests alongside successful latency so dropping difficult work cannot artificially improve the dashboard.",
+        "exercise": "Would raising the queue limit from 500 to 1,000 improve throughput when the processor is already saturated?",
+        "answer": "Under the stated constant capacity it adds waiting space, not service rate. A short burst may be absorbed if callers can wait and spare capacity follows. Compare useful completions before deadline, rejected work and recovery time under the same arrival trace.",
+        "source": "https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/",
+        "sourceTitle": "AWS Builders’ Library · Load shedding"
+      },
+      {
+        "title": "How can losing a single replica take down its neighbors?",
+        "explanation": "A load balancer redistributes traffic when it removes an unhealthy replica. If the remaining capacity is below demand, the extra load can make previously healthy replicas slow. Retries and failed health checks can amplify the effect. Recovery requires a path back to a sustainable load.",
+        "example": "Three replicas each handle 100 requests per second. At 240 arrivals per second they average 80 each. Losing one sends 120 to each survivor, 20 beyond its assumed capacity even before retries. Steady backlog now grows by 40 requests per second. A restart loop can remove more useful capacity.",
+        "exercise": "One replica comes back. Is 300 requests per second of nominal capacity sufficient to declare recovery?",
+        "answer": "Observe its readiness and actual useful throughput as caches warm. With an existing backlog, sustainable service must exceed arrivals long enough to drain it. Limit retries, protect critical requests and verify client-side latency until the backlog falls.",
+        "source": "https://sre.google/sre-book/addressing-cascading-failures/",
+        "sourceTitle": "Google SRE · Addressing cascading failures"
+      }
+    ]
+  }
+]

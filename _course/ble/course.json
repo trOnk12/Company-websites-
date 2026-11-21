@@ -18,16 +18,7 @@
       ]
     }
   ],
-  "upcoming": [
-    {
-      "title": "Module 2: Making it fast and reliable",
-      "topics": "Why only 20 bytes per packet (MTU, Data Length Extension, 2M PHY), throughput math, Android's one-operation-at-a-time rule and status 133."
-    },
-    {
-      "title": "Module 3: Trust and permissions",
-      "topics": "Pairing and bonding, why \"Just Works\" doesn't stop a man in the middle, Android 12+ and iOS permissions."
-    }
-  ],
+  "upcoming": [],
   "support": {
     "url": "",
     "label": "Buy me a coffee",

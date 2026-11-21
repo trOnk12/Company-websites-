@@ -1,0 +1,243 @@
+[
+  {
+    "title": "Screens, windows and ownership",
+    "lessons": [
+      {
+        "title": "Send a value across a process boundary",
+        "explanation": "An object reference identifies an object within its process. To call a remote component, Binder carries a marshalled representation of arguments. The receiver can reconstruct values in its own memory. A Binder interface handle is a special case that enables later calls across the boundary.",
+        "example": "Process A sends a parcel containing a note title equal to River. Process B decodes the title and renames its local note to Lake. A still reads River unless B sends a result or both consult shared durable storage.",
+        "exercise": "A callback needs to notify A when the edit completes. Would sending the original Java object address establish that callback?",
+        "answer": "No. Pass a supported Binder interface or another explicit reply mechanism. The remote process cannot dereference A’s object address.",
+        "source": "https://developer.android.com/guide/components/aidl",
+        "sourceTitle": "Android · AIDL"
+      },
+      {
+        "title": "Pass an identity through an Intent",
+        "explanation": "An Intent describes the work to perform and can carry named extras. A screen opened by another component needs an explicit contract for names, types and missing values. Passing a small stable record ID also lets the destination load the current record after recreation.",
+        "example": "The list adds putExtra(\"note_id\", 17L). Detail reads a long with a reserved fallback, checks that the ID is valid and loads note 17. If it no longer exists, detail shows a missing-note state.",
+        "exercise": "Why is passing a 12 MB photo in the same extra a poor replacement for passing the ID?",
+        "answer": "Interprocess transactions have bounded buffer space and the image adds copying and lifetime problems. Pass a content reference with appropriate access and load only the required image size.",
+        "source": "https://developer.android.com/guide/components/intents-filters",
+        "sourceTitle": "Android · Intents and intent filters"
+      },
+      {
+        "title": "Match a Context to its owner",
+        "explanation": "A Context provides access to resources and system services. An Activity context also carries screen configuration and theme. Holding that context holds its Activity as long as the reference remains reachable. A process-wide object can outlive many successive Activity instances.",
+        "example": "Rotate a themed editor twice. The screen instances are A, B and C. A singleton that stores A as its listener can keep A and its view tree reachable after C appears. Remove the listener when its owner stops observing. Use an application context for a process-wide dependency when it meets the API’s needs.",
+        "exercise": "Should a themed dialog use the application context just to avoid a leak?",
+        "answer": "Use the active screen’s context for the dialog and bound the dialog’s lifetime to that screen. Correct ownership solves the leak while preserving window and theme information.",
+        "source": "https://developer.android.com/reference/android/content/Context",
+        "sourceTitle": "Android · Context"
+      },
+      {
+        "title": "Distinguish a task from a process",
+        "explanation": "A task is a navigation history of activities. With ordinary launch behavior, starting a new activity adds an entry and Back removes the top activity. The system can preserve task information while reclaiming the app process. The current object instances and the navigation history have different lifetimes.",
+        "example": "Open List, Detail and Edit. Back from Edit normally exposes Detail. Reopening a previously backgrounded task may recreate Detail if its original process died. Persist the record and retain a small ID for restoration.",
+        "exercise": "If Back reveals Detail, does that prove the same Detail object survived?",
+        "answer": "No. Compare navigation identity with object lifetime. A recreated Detail can render the same stored note using restored arguments.",
+        "source": "https://developer.android.com/guide/components/activities/tasks-and-back-stack",
+        "sourceTitle": "Android · Tasks and the back stack"
+      },
+      {
+        "title": "Follow a touch from parent to child",
+        "explanation": "A window hosts a hierarchy of views. Once a gesture reaches that hierarchy, a parent ViewGroup can examine it, delegate to a child or intercept later movement. A child that had the gesture must handle cancellation when a parent takes it over.",
+        "example": "A button receives DOWN inside a scrolling list. Motion later crosses the parent’s scrolling threshold. The parent intercepts, the child receives CANCEL and the parent handles the scroll. A button that commits on DOWN would have fired during an intended scroll.",
+        "exercise": "How would you test a row that accidentally opens while the list moves?",
+        "answer": "Record DOWN, MOVE, CANCEL and UP at parent and child. Compare a short tap with a drag crossing the threshold and make activation follow a completed click.",
+        "source": "https://developer.android.com/develop/ui/views/touch-and-input/gestures/viewgroup",
+        "sourceTitle": "Android · Manage touch events in a ViewGroup"
+      }
+    ]
+  },
+  {
+    "title": "Work without a screen",
+    "lessons": [
+      {
+        "title": "Choose a service by its execution contract",
+        "explanation": "A Service is an Android component with a lifecycle. By default its callbacks run on the app’s main thread. A started service receives commands; a bound service exposes an interface to clients. A foreground service represents ongoing user-visible work and is subject to launch and type restrictions.",
+        "example": "A playback service receives a play command. Its notification makes playback visible; decoding must still run on appropriate execution resources. An expensive synchronous decode in onStartCommand delays other main-thread callbacks.",
+        "exercise": "Which component would you choose for an eventual upload that may resume tomorrow?",
+        "answer": "A persistent scheduler such as WorkManager suits deferrable work. A foreground playback service meets a different user-visible requirement.",
+        "source": "https://developer.android.com/develop/background-work/services",
+        "sourceTitle": "Android · Services overview"
+      },
+      {
+        "title": "Finish a broadcast before its execution window closes",
+        "explanation": "A broadcast delivers a short-lived event to a receiver. Once onReceive returns, an app with no other active component may lose its execution priority. An unmanaged thread started from the callback therefore has no durable lifetime guarantee.",
+        "example": "A receiver learns that a local export needs indexing. It records or enqueues uniquely identifiable work and returns. The worker reads the stored input later. goAsync provides only a bounded extension for finishing a broadcast.",
+        "exercise": "The same hint arrives twice. What should the indexing worker read?",
+        "answer": "Use a durable export identity or current index version and make repeat execution converge to the same result. A broadcast count is a poor substitute for the actual work record.",
+        "source": "https://developer.android.com/develop/background-work/background-tasks/broadcasts",
+        "sourceTitle": "Android · Broadcasts overview"
+      },
+      {
+        "title": "Give another component a bounded PendingIntent",
+        "explanation": "A PendingIntent is a system-maintained token for a specified operation under its creator’s identity. Construct it with an explicit destination and use immutability when the recipient has no need to fill in fields. Equality for matching tokens does not use Intent extras alone.",
+        "example": "Two notification actions open note 17 and note 29. If both use the same request code and equal matching Intent fields, different extras alone can select the same token. Give the actions distinct request codes or distinct data URIs.",
+        "exercise": "Notification 17 opens note 29 after the second notification arrives. What do you inspect first?",
+        "answer": "Compare the operation type, creator, request code, matching Intent fields and update flags. Verify the target checks current authorization when opened.",
+        "source": "https://developer.android.com/reference/android/app/PendingIntent",
+        "sourceTitle": "Android · PendingIntent"
+      },
+      {
+        "title": "Persist before process priority changes",
+        "explanation": "Android ranks processes partly by their most important active component. A process hosting the visible interaction is typically more important than a cached process. Memory pressure can reclaim cached processes without delivering a final callback in which to save data.",
+        "example": "A user saves a draft and backgrounds the app. If the only copy lives in a singleton, reclaiming the cached process removes it. Commit the draft when the edit is accepted; rebuild the screen from an ID after process recreation.",
+        "exercise": "Does restoring a navigation screen prove that cached bytes or an unfinished thread survived?",
+        "answer": "No. Read the persisted draft and a durable work record. Test with process recreation separately from ordinary rotation.",
+        "source": "https://developer.android.com/guide/components/activities/process-lifecycle",
+        "sourceTitle": "Android · Processes and app lifecycle"
+      },
+      {
+        "title": "Separate device idle from app usage restrictions",
+        "explanation": "Doze changes the device’s treatment of background network and scheduled work during idle periods. App Standby Buckets classify an individual app by usage and affect its resource opportunities. A delayed job can reflect either policy as well as its own constraints.",
+        "example": "An unused news app requests a refresh while an unplugged phone rests with its screen off. Its job can wait even though the stored job record is correct. Inspect device idle state, the app’s bucket, job constraints and actual execution times.",
+        "exercise": "Can a periodically requested refresh promise that data is exactly fifteen minutes old at every screen open?",
+        "answer": "No. Persist the last successful fetch time, display its age, and define what opening the screen should do if the refresh is overdue.",
+        "source": "https://developer.android.com/topic/performance/appstandby",
+        "sourceTitle": "Android · App Standby Buckets"
+      },
+      {
+        "title": "Schedule around Doze maintenance windows",
+        "explanation": "During device idle, Android defers categories of background CPU and network work. Maintenance windows temporarily allow deferred work. A pending operation can be correctly recorded on disk while its first opportunity to contact the server is still in the future.",
+        "example": "At 23:00 a device enters idle with a deferred notes upload. The service receives nothing at 23:05. When an allowed window opens, the worker can attempt the upload if its own constraints are also satisfied. Inspect both scheduling and network outcomes before diagnosing a lost edit.",
+        "exercise": "A user opens the app before the worker has run. What should their notes screen show?",
+        "answer": "Render the local saved edit and its pending state. A background scheduling delay should not erase a draft or falsely mark it synchronized.",
+        "source": "https://developer.android.com/training/monitoring-device-state/doze-standby",
+        "sourceTitle": "Android · Optimize for Doze and App Standby"
+      },
+      {
+        "title": "Resume persistent work without repeating its effect",
+        "explanation": "WorkManager persists a request and waits for its constraints. The worker may be stopped or run again. A stable work name can coordinate local scheduling; the remote write still needs an identity or a repeat-safe operation.",
+        "example": "Persist upload 81. The worker sends it, the server accepts it and the phone stops before recording success. On a later run, the worker resends upload 81. A server that records that identity can return the original result.",
+        "exercise": "Would a brand-new server-side upload ID on every worker attempt be safe?",
+        "answer": "It could create duplicates. Keep the operation identity with the input, retry transient failure with backoff and mark completion after recovering the outcome.",
+        "source": "https://developer.android.com/develop/background-work/background-tasks/persistent",
+        "sourceTitle": "Android · Task scheduling"
+      }
+    ]
+  },
+  {
+    "title": "Threads, coroutines and Flow",
+    "lessons": [
+      {
+        "title": "Trace suspension and dispatch separately",
+        "explanation": "A coroutine can suspend by retaining the state needed to continue later. Its thread is then available for other work. A dispatcher chooses where runnable continuations execute. Declaring a function suspend provides no automatic background thread for blocking code.",
+        "example": "On Main, delay(100) suspends without holding the main thread for 100 ms. Thread.sleep(100) blocks that thread. Use withContext(Dispatchers.IO) around a blocking file operation and return the result to the caller’s context.",
+        "exercise": "A function marked suspend directly parses a large JSON string on Main. Why can scrolling still pause?",
+        "answer": "The CPU work runs on the current dispatcher until it suspends or changes context. Move substantial CPU work to an appropriate dispatcher and measure the cost.",
+        "source": "https://kotlinlang.org/docs/coroutine-context-and-dispatchers.html",
+        "sourceTitle": "Kotlin · Coroutine context and dispatchers"
+      },
+      {
+        "title": "Make cancellation observable",
+        "explanation": "A coroutine Job expresses a lifetime. Cancelling its owner signals children, but arbitrary running code must reach a cancellation check or a cancellable suspension point. Resource cleanup belongs in a finally block or another construct that runs on exit.",
+        "example": "A query changes from ca to cat. Cancel work for ca. A suspending delay observes cancellation promptly; a long CPU loop can check ensureActive between chunks. Also prevent an older result from overwriting the currently requested query.",
+        "exercise": "Why can catching every exception and returning a fallback cause a stale result?",
+        "answer": "The catch may swallow CancellationException and turn cancelled work into successful output. Propagate cancellation and handle the actual recoverable errors separately.",
+        "source": "https://kotlinlang.org/docs/cancellation-and-timeouts.html",
+        "sourceTitle": "Kotlin · Cancellation and timeouts"
+      },
+      {
+        "title": "Decide who starts the producer",
+        "explanation": "A cold flow begins its producer for each collection. A shared hot stream has a producer whose lifetime is controlled separately. StateFlow carries the latest state and can conflate successive equal values or let slow collectors skip intermediate states.",
+        "example": "Two screens collect flow { emit(loadNotes()) }. The load can run twice. Sharing it with stateIn in a suitable owner scope can give both collectors the same latest list; the chosen sharing policy controls when upstream runs.",
+        "exercise": "A payment history must retain every confirmed payment. Is a StateFlow of the latest payment enough?",
+        "answer": "Store every payment in a durable collection and expose the latest view of that collection as state. A latest-value stream alone cannot replay every historical transition.",
+        "source": "https://developer.android.com/kotlin/flow/stateflow-and-sharedflow",
+        "sourceTitle": "Android · StateFlow and SharedFlow"
+      }
+    ]
+  },
+  {
+    "title": "Pixels, collection and retained objects",
+    "lessons": [
+      {
+        "title": "Spend one display interval",
+        "explanation": "A frame callback coordinates work with display timing. UI work records or updates drawing commands, rendering work is submitted and the GPU processes it before display composition. CPU and GPU work can overlap across frames, so adding all thread durations does not by itself predict presentation.",
+        "example": "At 120 Hz the interval is about 8.33 ms. A 12 ms main-thread layout beginning at the frame opportunity already exceeds one interval even if GPU work is cheap. Inspect the trace to locate the missed deadline.",
+        "exercise": "If profiling shows 3 ms of GPU activity for that frame, would lowering shader cost alone fix the 12 ms layout?",
+        "answer": "It would leave the identified main-thread cost. Inspect layout and scheduling first, then compare actual presentation deadlines after the change.",
+        "source": "https://developer.android.com/topic/performance/vitals/render",
+        "sourceTitle": "Android · Slow rendering"
+      },
+      {
+        "title": "Read state in the phase that needs it",
+        "explanation": "Compose tracks state reads in composition, layout and drawing. A changed value can restart work from the phase that consumed it. Composition describes nodes, layout measures and places them, and drawing produces pixels.",
+        "example": "A background color read inside a draw lambda can invalidate drawing without needing to measure text again. A new text string consumed during composition may change its size and require layout. Inspect where the state value is actually read.",
+        "exercise": "A drag changes only placement. What experiment would distinguish composition work from placement work?",
+        "answer": "Compare reading position while constructing the modifier with reading it inside a placement lambda. Keep the gesture constant and inspect recomposition counts plus frame timing.",
+        "source": "https://developer.android.com/develop/ui/compose/phases",
+        "sourceTitle": "Android · Jetpack Compose phases"
+      },
+      {
+        "title": "Separate garbage from a leak",
+        "explanation": "The managed collector can reclaim objects that no longer have a path from a root. Short-lived allocations can still raise collection frequency. A leaked Activity is reachable even though the product no longer needs it, so repeated collections cannot solve that retention.",
+        "example": "Repeated screen rotations create five old editor instances. A heap dump shows a singleton listener registry pointing to all five. Remove registrations on disposal, repeat the rotations and compare the retaining paths and instance counts.",
+        "exercise": "What if old editors disappear but allocation rate remains high during drawing?",
+        "answer": "That suggests churn on the drawing path, a different mechanism. Record allocations during the same gesture to find objects recreated per frame.",
+        "source": "https://developer.android.com/studio/profile/memory-profiler",
+        "sourceTitle": "Android Studio · Capture a heap dump"
+      }
+    ]
+  },
+  {
+    "title": "Libraries under the hood",
+    "lessons": [
+      {
+        "title": "Build a dependency graph with explicit lifetimes",
+        "explanation": "Constructor injection exposes the objects a class needs. Dagger constructs a graph using generated code; Hilt supplies Android-aware components and scopes on top of Dagger. The scope determines which consumers reuse an instance within that component.",
+        "example": "A repository needs a database and a network client. Keep those dependencies in a process-level graph when their lifetimes require it. Create an editor presenter per screen so it can release screen state on destruction.",
+        "exercise": "Can a singleton repository safely retain an Activity supplied by a screen component?",
+        "answer": "Its longer lifetime would retain a short-lived screen. Pass the needed data or an appropriate process-scoped dependency and leave screen-specific behavior with its owner.",
+        "source": "https://developer.android.com/training/dependency-injection/hilt-android",
+        "sourceTitle": "Android · Dependency injection with Hilt"
+      },
+      {
+        "title": "Read a Koin definition as a construction rule",
+        "explanation": "Koin resolves definitions from a running container. A single definition reuses an instance within its container lifetime; a factory constructs a fresh value per resolution. A scope can tie an object to a shorter-lived context. Validate that required bindings exist for the production composition.",
+        "example": "Two requests for a single database receive the same defined instance. Two requests for a factory editor receive distinct editors. Storing a factory-created editor in a singleton can still extend its actual lifetime.",
+        "exercise": "A unit test needs an in-memory repository while the app uses disk. Where should the choice live?",
+        "answer": "Bind the implementation at composition or test setup. Keep the consumer’s constructor dependent on the repository contract so its behavior can be exercised independently.",
+        "source": "https://insert-koin.io/docs/reference/koin-core/definitions/",
+        "sourceTitle": "Koin · Definitions"
+      },
+      {
+        "title": "Trace Retrofit down to OkHttp",
+        "explanation": "Retrofit maps a declared service method and annotations to an HTTP request and uses converters for supported body types. With an OkHttp-backed client, connection selection, network exchange and interceptors belong to the HTTP layer. Parsing application data and deciding how the UI handles failure are separate boundaries.",
+        "example": "A GET method requests notes/17. The server returns HTTP 200 with malformed JSON. The transport received a successful HTTP response, yet the converter can fail before the repository gets a Note. Record the status and the conversion failure separately.",
+        "exercise": "If the network times out after a reservation write, would automatically repeating every failed Retrofit call be safe?",
+        "answer": "Recover the operation using a stable request identity and a defined server contract. A timeout does not establish whether the server committed the first attempt.",
+        "source": "https://square.github.io/retrofit/",
+        "sourceTitle": "Square · Retrofit"
+      },
+      {
+        "title": "Follow one logical call through OkHttp",
+        "explanation": "An OkHttp client owns resources such as a connection pool. Reusing a client allows compatible connections to be reused rather than paying setup for each request. A call can include multiple exchanges, for example when following a redirect. Closing a response body releases its resources.",
+        "example": "Two small requests target the same HTTPS origin. The first establishes a connection; the second may use that still-healthy connection. A server close or incompatible route can force a new connection. Measure connection events rather than assuming that an identical URL proves reuse.",
+        "exercise": "A chart counts two network exchanges for one app request after a redirect. Does that prove the user tapped twice?",
+        "answer": "No. Record the logical call identity and its individual exchanges. Compare original destination, redirect response and final destination before interpreting the count.",
+        "source": "https://square.github.io/okhttp/",
+        "sourceTitle": "Square · OkHttp"
+      },
+      {
+        "title": "Observe a Room query over SQLite",
+        "explanation": "Room validates supported annotated SQL and generates DAO plumbing. SQLite still executes the transaction. An observable query can rerun when a table it depends on is invalidated. Schema design, indexes and transaction boundaries still determine work and consistency.",
+        "example": "A DAO updates a note title and inserts its pending sync row. Put both statements inside one transaction. A process stop after commit leaves both; a failure before commit leaves neither. The UI observes the resulting local note table.",
+        "exercise": "The note is visible after restart but no sync work exists. Which boundary should you inspect?",
+        "answer": "Look for separate commits or an independently enqueued in-memory action. Persisting the pending intention with the note makes reconstruction possible.",
+        "source": "https://developer.android.com/training/data-storage/room",
+        "sourceTitle": "Android · Save data using Room"
+      },
+      {
+        "title": "Measure release code after R8 optimization",
+        "explanation": "R8 can shrink unreachable code, optimize bytecode and rename classes or members. Code reached indirectly by reflection may require narrow keep rules. Startup also depends on actual initialization work and compilation, so reducing package size alone cannot establish a faster first frame.",
+        "example": "A release build fails to construct a class looked up by name although debug works. Reproduce with the optimized variant, identify the reflective entry point and apply the smallest rule or library-supported declaration that preserves the required contract.",
+        "exercise": "After the fix, how would you test the claim that startup improved?",
+        "answer": "Benchmark equivalent release variants on the same device and startup mode. Compare first-display measurements and a trace, while holding compilation state and initial data constant.",
+        "source": "https://developer.android.com/topic/performance/app-optimization/enable-app-optimization",
+        "sourceTitle": "Android · Enable app optimization with R8"
+      }
+    ]
+  }
+]

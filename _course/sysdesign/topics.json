@@ -1,0 +1,93 @@
+[
+  {
+    "title": "Design a feed from the screen to storage",
+    "lessons": [
+      {
+        "title": "Continue from a cursor without losing tied rows",
+        "explanation": "Choose one stable total order, such as descending publication time followed by descending unique post ID. A cursor records the boundary of the last result using the same keys. In an offline-capable client, write returned rows and the next-page key together. Let the screen observe local storage so it has one consistent view of appended pages.",
+        "example": "The server has (time 10, id 9), (10, 8) and (9, 7). A one-row page ends at (10, 9). Filtering only for times below 10 skips ID 8. Seeking below the full pair returns (10, 8). A repeated page can be merged by stable post ID.",
+        "exercise": "A post can change its ranking score while the reader pages. Does a tie-breaker alone prevent all gaps?",
+        "answer": "No. A tie-breaker solves equal-key ordering. A changing rank moves a post across the boundary. Freeze a ranking version, accept defined movement or refresh the list. Specify which behavior the reader can rely on.",
+        "source": "https://developer.android.com/topic/libraries/architecture/paging/v3-network-db",
+        "sourceTitle": "Android Developers · Paging with network and database"
+      },
+      {
+        "title": "Cache the representation you actually display",
+        "explanation": "An image cache key identifies a specific representation. Include identity, version and requested transformation when they affect bytes or pixels. Encoded file size and decoded memory occupy different budgets. Honor HTTP cache directives and validators when reusing server responses, and keep private images scoped to an authorized user.",
+        "example": "A 2,000 × 1,500 image decoded into four bytes per pixel takes about 12 MB before overhead. A 200 × 150 thumbnail needs about 120 kB with the same format. A compressed download of 250 kB is not the correct number to use for the full-size memory cache.",
+        "exercise": "The avatar URL stays constant across profile edits. How can the next screen show the new image without unconditionally downloading every old avatar?",
+        "answer": "Use a versioned representation identity or a freshness policy with a validator. When stale, validate the cached response and replace it if changed. Invalidate transformed thumbnails associated with the obsolete version.",
+        "source": "https://www.rfc-editor.org/rfc/rfc9111.html",
+        "sourceTitle": "RFC 9111 · HTTP caching"
+      },
+      {
+        "title": "Reconcile an offline edit against the version it changed",
+        "explanation": "An offline-first client persists the user’s intended change and a pending synchronization record locally. Attach a stable operation identity for retries and the base record version for conflict detection. An acknowledged write and a stale edit require different recovery paths. Define per-field or whole-record merge semantics before automating reconciliation.",
+        "example": "Two phones read bookmark v4. Ada changes its title while offline; Ben changes its title online, producing v5. When Ada reconnects, a conditional save against v4 fails. Preserve her draft, fetch v5 and present both titles. If they changed independent fields and the product permits merging, the client can build and submit a fresh conditional update.",
+        "exercise": "The connection closes after Ada’s write is accepted and before its reply arrives. Is that the same as a confirmed conflict?",
+        "answer": "No. Recover the operation’s outcome by identity before deciding to overwrite or prompt for a merge. A version mismatch on replay alone does not establish who made the previous change.",
+        "source": "https://developer.android.com/topic/architecture/data-layer/offline-first",
+        "sourceTitle": "Android Developers · Offline-first data layer"
+      },
+      {
+        "title": "Choose an update channel by the freshness promise",
+        "explanation": "Periodic polling asks on a schedule even when nothing changed. Long polling holds a request until an event or timeout and then opens another. A WebSocket maintains a bidirectional channel for foreground exchanges. Platform push can wake or notify the client under platform delivery policies. Each approach needs reconnection and a way to find changes missed during a gap.",
+        "example": "At an idealized 30-second poll interval, 6,000 continuously active clients generate about 200 polls/s before retries. A long poll can reduce empty responses but consumes open connections. A foreground collaborative screen may justify a socket; a background feed can treat a push as a hint to fetch a durable change list.",
+        "exercise": "A phone has applied event 51, sleeps, then receives a hint for event 58. Which data should it request?",
+        "answer": "Request the durable changes after 51, apply them in order or according to the chosen merge rule, and persist the new cursor with the local update. If the server no longer retains the gap, perform a snapshot resync.",
+        "source": "https://www.rfc-editor.org/rfc/rfc6202.html",
+        "sourceTitle": "RFC 6202 · Long polling and streaming"
+      },
+      {
+        "title": "Roll out an implementation independently of installation",
+        "explanation": "A feature flag lets compatible clients select between code paths. Define a default, a stable cohort assignment and a measurable condition for expanding or stopping. Keep both paths compatible with any stored data they may encounter. Disabling a flag cannot reverse an irreversible data conversion.",
+        "example": "Release a new feed loader disabled. Enable it for a stable 5% cohort; compare load success, latency and stale-list reports with a control group on the same client version. Persist a safe default when configuration is unavailable. Test switching the flag off after the new loader has cached a page.",
+        "exercise": "Why can a repeatedly randomized five-percent choice per request make a mobile rollout harder to diagnose?",
+        "answer": "One person can move between implementations within one session and carry state between them. Use stable assignment for the experiment, label measurements by exposure and preserve a compatible fallback.",
+        "source": "https://firebase.google.com/docs/remote-config/rollouts",
+        "sourceTitle": "Firebase · Remote Config rollouts"
+      }
+    ]
+  },
+  {
+    "title": "Measure what happened on real devices",
+    "lessons": [
+      {
+        "title": "Give crash and unresponsive rates a denominator",
+        "explanation": "A crash ends a process abnormally; an application-not-responding event captures a failure to respond under platform conditions. Define whether you count events, affected users, sessions or operations and over which interval. Platform vitals have specific user-based definitions. Avoid comparing them directly to an independently defined per-request rate.",
+        "example": "In a fictional day 100 users open the app. One user crashes five times and another crashes once. The affected-user fraction is 2%, while the raw event count is six. If one of those users also experiences an unresponsive screen, summing separate affected-user counts double-counts that person.",
+        "exercise": "A release with fewer overall users has fewer total crashes. What would make a comparison informative?",
+        "answer": "Compare equivalent affected-user measures over the same window, with cohort sizes, version, device mix and uncertainty visible. Inspect the new stack or trace grouping as well as the aggregate.",
+        "source": "https://developer.android.com/google/play/vitals",
+        "sourceTitle": "Android Developers · Android vitals"
+      },
+      {
+        "title": "Spend a network error budget on a user journey",
+        "explanation": "A service-level indicator is an observed fraction, such as completed feed refreshes divided by eligible refreshes. A service-level objective sets its target over a window. The error budget is the permitted shortfall. Decide what counts as good when offline reading works but refreshing fails, and avoid counting each transport retry as an independent user journey.",
+        "example": "A target of 99.5% successful refreshes across 20,000 attempts allows 100 unsuccessful journeys. If 70 have failed, 30 remain. Five hundred failed low-level calls could represent fewer failed refreshes if retries eventually completed within the deadline. Track both layers with separate names.",
+        "exercise": "If 40 of the next already-budgeted journeys fail, what has happened to the original allowance?",
+        "answer": "There are now 110 failures against the fixed 100 allowance, ten beyond it. For a rolling window, recalculate numerator and denominator as older events leave and new ones arrive.",
+        "source": "https://sre.google/workbook/implementing-slos/",
+        "sourceTitle": "Google SRE · Implementing SLOs"
+      },
+      {
+        "title": "Connect a slow screen to searchable events",
+        "explanation": "Emit structured observations with stable fields for operation, app version, outcome and elapsed time. Use a correlation or trace ID to follow one refresh through the phone and server when available. Prefer an operation name to a full URL containing user data. Keep credentials and private content out of diagnostic events.",
+        "example": "An event for feed.refresh has outcome timeout, version 14, elapsed 1,980 ms and a trace ID. The server trace shows a 90 ms handler after the request arrived. Inspect client queueing, connectivity, network transit and rendering; the difference does not automatically belong to any single stage.",
+        "exercise": "Two logs contain the same bookmark title. Is that reliable evidence that they belong to one refresh?",
+        "answer": "No. Different users and retries can produce identical titles. Use a generated request or trace identity with a clear retry relationship. Query by structured fields without copying user content into logs.",
+        "source": "https://opentelemetry.io/docs/specs/otel/logs/data-model/",
+        "sourceTitle": "OpenTelemetry · Logs Data Model"
+      },
+      {
+        "title": "Read the tail without discarding the average",
+        "explanation": "A percentile is a position in ordered observations. For nearest-rank p99 of 100 successful requests, inspect position 99. A mean describes total duration divided by count; the tail describes a different experience. State whether timeouts and failed requests are excluded and report their frequency separately.",
+        "example": "Ninety-eight requests take 100 ms and two take 2,000 ms. The mean is (9,800 + 4,000) / 100 = 138 ms. Position 99 is 2,000 ms. A change that improves the fast requests can lower the mean while leaving both very slow users unaffected.",
+        "exercise": "Can you average the p99 from a small Wi-Fi cohort and a large cellular cohort to get the overall p99?",
+        "answer": "No. Combine underlying observations or compatible histograms weighted by their actual counts and compute the percentile again. Keep cohort-level tails too, because a small affected population can disappear in the aggregate.",
+        "source": "https://sre.google/sre-book/monitoring-distributed-systems/",
+        "sourceTitle": "Google SRE · Monitoring distributed systems"
+      }
+    ]
+  }
+]
