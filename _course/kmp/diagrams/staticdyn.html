@@ -11,7 +11,7 @@
 <ol class="caps">
 <li><p>Two binaries: the app's executable, which Xcode builds from Swift, and your Kotlin framework. Swift's calls into Kotlin still need addresses.</p></li>
 <li><p>A <b>static library</b> is joined at build time: Xcode's linker copies your Kotlin into the app's executable. One file reaches the phone.</p></li>
-<li><p><i>Predict: what if your framework holds a dynamic library instead?</i></p></li>
+<li><p><i>Predict: what if the library inside your framework isn't copied in?</i></p></li>
 <li><p>A <b>dynamic library</b> isn't copied in: it ships as its own file inside the app, next to the executable.</p></li>
 <li><p>Each time the app starts, the <b>dynamic loader</b> loads it and connects Swift's calls to its addresses.</p></li>
 </ol>

@@ -42,15 +42,15 @@ Frontend is puzzle 0's front end; PsiToIr writes the IR. Bitcode is LLVM IR stor
 
 ## Go deeper: What can an optimizer do to add(2, 3)?
 
-Puzzle 0's deeper section said a compiler may "work out the answer in advance". This is where. Suppose your code calls `add(2, 3)` and nothing else ever calls `add`.
+Puzzle 0's deeper section said a compiler may "work out the answer in advance". This is where. Suppose your code calls add(2, 3) and nothing else ever calls add.
 
-1. The optimizer sees that the call's inputs are fixed numbers, so it can copy `add`'s body into the caller: `2 + 3`.
-2. Both sides are known while compiling, so it can replace `2 + 3` with `5`.
+1. The optimizer sees that the call's inputs are fixed numbers, so it can copy the body of add into the caller: 2 + 3.
+2. Both sides are known while compiling, so it can replace 2 + 3 with 5.
 3. The code generator then writes one instruction that puts 5 where the result goes. No addition is left for the iPhone to do.
 
 This is a model of what optimizers commonly do, not a promise for every build: debug builds keep the function as written, so a debugger can step through it.
 
-- Change the call to `add(2, x)`, where `x` is read from the screen. Can step 2 still happen?::No. x is only known when the app runs, so the optimizer can copy the body in, but the addition itself must stay as an instruction.
+- Change the call to add(2, x), where x is read from the screen. Can step 2 still happen?::No. x is only known when the app runs, so the optimizer can copy the body in, but the addition itself must stay as an instruction.
 
 ## The analogy
 

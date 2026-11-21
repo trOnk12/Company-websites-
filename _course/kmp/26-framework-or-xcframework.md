@@ -18,7 +18,7 @@ Puzzle 23's link tasks are per target: `linkReleaseFrameworkIosArm64` makes a fr
 
 A framework from the link stage holds one target's binary, plus the header from puzzle 5 and a small file of settings, Info.plist. One framework, one target.
 
-A processor's **architecture** is the family of instructions it understands. Puzzle 0's `add w0, w0, w1` is an arm64 instruction: real iPhones and the simulator on a Mac with Apple's own chip both run arm64. An older Intel Mac runs x86-64 instead, the architecture of `iosX64` (puzzle 16).
+A processor's **architecture** is the family of instructions it understands. Puzzle 0's add instruction is an arm64 instruction: real iPhones and the simulator on a Mac with Apple's own chip both run arm64. An older Intel Mac runs x86-64 instead, the architecture of `iosX64` (puzzle 16).
 
 The older way to ship several builds as one is a **universal framework**, also called a fat framework. A tool named `lipo` merges binaries for different architectures into one file, and the device loads the part for its own architecture. That worked when every target had its own architecture. Kotlin's docs say merging "especially makes sense for 32-bit and 64-bit iOS frameworks". Two limits followed:
 

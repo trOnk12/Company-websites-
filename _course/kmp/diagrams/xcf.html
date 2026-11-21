@@ -1,0 +1,17 @@
+<!-- label: One framework per target; lipo can't merge two arm64 builds; an XCFramework keeps them side by side and Xcode picks one -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="xc-t"><title id="xc-t">Two frameworks, for iosArm64 and iosSimulatorArm64, both hold arm64 code; an iPhone and an Apple-chip Mac are arm64, an Intel Mac x86-64; lipo can put only one arm64 build into a universal framework; an XCFramework holds both side by side; Xcode building for the simulator takes the simulator's framework, and an x86-64 slot is missing</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s2 hide-3" data-pulse="2"><x-chip x="212" y="40" w="84" label="iPhone"/><text class="d-a" x="254" y="114" text-anchor="middle">arm64</text><x-chip x="322" y="40" w="84" label="new Mac"/><text class="d-a" x="364" y="114" text-anchor="middle">arm64</text><x-chip x="432" y="40" w="84" label="Intel Mac"/><text class="d-a" x="474" y="114" text-anchor="middle">x86-64</text></g>
+<g class="step only-3" data-pulse="3"><x-machine x="210" y="150" w="120" label="lipo"/><rect class="d-dash" x="384" y="230" width="226" height="116" rx="8"/><text class="d-tiny" x="497" y="248" text-anchor="middle">universal</text><circle class="d-bad" cx="300" cy="300" r="13"/><path class="d-red" d="M292,292 L308,308 M308,292 L292,308"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-paper" x="390" y="24" width="236" height="316" rx="10"/><text class="d-b" x="508" y="50" text-anchor="middle">XCFramework</text></g>
+<g class="step s1" data-pulse="1" data-move="1:24,40 3:422,250 4:433,64"><rect class="d-wood" x="0" y="0" width="150" height="90" rx="8"/><text class="d-tiny" x="75" y="24" text-anchor="middle">iosArm64</text><rect class="d-band" x="20" y="40" width="110" height="34" rx="5"/><text class="d-tiny" x="75" y="62" text-anchor="middle">arm64</text></g>
+<g class="step s1" data-move="1:24,170 3:120,256 4:433,170"><rect class="d-wood" x="0" y="0" width="150" height="90" rx="8"/><text class="d-tiny" x="75" y="24" text-anchor="middle">iosSimulatorArm64</text><rect class="d-band" x="20" y="40" width="110" height="34" rx="5"/><text class="d-tiny" x="75" y="62" text-anchor="middle">arm64</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-dash" x="433" y="274" width="150" height="40" rx="6"/><text class="d-m" x="508" y="299" text-anchor="middle">x86-64</text><x-machine x="160" y="186" w="150" label="Xcode: simulator"/><x-arrow tone="acc" d="M312,214 L428,214"/></g>
+</svg>
+<ol class="caps">
+<li><p>Each link task makes one framework for one target: one for real iPhones, one for the simulator.</p></li>
+<li><p>A processor's <b>architecture</b> is the instruction family it runs. iPhones and Apple-chip Macs run arm64; Intel Macs, x86-64. <i>Predict: can one file hold both arm64 builds?</i></p></li>
+<li><p>No. A <b>universal framework</b>, merged with <code>lipo</code>, holds each architecture once, so only one arm64 build fits.</p></li>
+<li><p>An XCFramework doesn't merge: it keeps one framework per platform side by side, labelled device or simulator.</p></li>
+<li><p>Xcode, building for the simulator, takes the simulator's framework. A platform that isn't inside, like an Intel Mac's x86-64 simulator, gets nothing.</p></li>
+</ol>

@@ -30,5 +30,22 @@
       ]
     }
   ],
-  "upcoming": []
+  "upcoming": [
+    {
+      "title": "Module 3: Compose Multiplatform on iOS",
+      "topics": "Skia through Skiko, inside ComposeUIViewController, one Metal-backed view, how frames are scheduled with CADisplayLink at up to 120 Hz, how touches arrive, and where a frame's time goes on an iPhone."
+    },
+    {
+      "title": "Module 4: Living with UIKit",
+      "topics": "Interop in both directions done properly, text input and the keyboard, accessibility in depth, and looking at home on iOS."
+    },
+    {
+      "title": "Module 5: Shared app plumbing",
+      "topics": "Resources, navigation, lifecycle and ViewModel in common code, performance on iOS, testing, and Compose Multiplatform or SwiftUI, screen by screen."
+    },
+    {
+      "title": "Module 6: Expert floor",
+      "topics": "Effects and their lifetimes, snapshots in depth, CompositionLocal, custom layouts and Modifier.Node, lazy layouts, and the compiler's stability reports."
+    }
+  ]
 }

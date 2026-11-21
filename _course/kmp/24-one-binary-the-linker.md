@@ -34,7 +34,7 @@ The runtime is object code too: the garbage collector from puzzle 7 and the rest
 
 ## The analogy
 
-The print shop from puzzle 23 has printed every manuscript. Each one says "see the recipe called 'Ktor bread'" instead of a page number, since nobody knew the page yet. The binder puts all the sheets into one book, numbers the pages, and replaces every "see 'Ktor bread'" with "see page 214". Recipes nobody refers to, starting from the table of contents, are left out. But any recipe listed in the table of contents stays, because readers outside the shop may open the book there.
+The print shop from puzzle 23 has printed every manuscript. Each one says "see the recipe called 'Ktor bread'" instead of a page number, since nobody knew the page yet. The bookbinder puts all the sheets into one book, numbers the pages, and replaces every "see 'Ktor bread'" with "see page 214". Recipes nobody refers to, starting from the table of contents, are left out. But any recipe listed in the table of contents stays, because readers outside the shop may open the book there.
 
 ## Check yourself
 

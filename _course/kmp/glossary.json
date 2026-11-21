@@ -735,6 +735,192 @@
    "in": "21",
    "def": "How Kotlin/Native writes the iosSimulatorArm64 target's name in published metadata.",
    "kind": "code"
+  },
+  "link stage": {
+   "in": "23",
+   "def": "The second stage of a Kotlin/Native build: once per final binary, it reads every klib and makes machine code.",
+   "aliases": [
+    "link stages"
+   ]
+  },
+  "LLVM IR": {
+   "in": "23",
+   "def": "LLVM's own intermediate representation: lower level than Kotlin's IR, still not tied to one processor.",
+   "aliases": []
+  },
+  "LLVM": {
+   "in": "23",
+   "def": "A collection of reusable compiler parts: an optimizer and code generators for many processors, used by Kotlin/Native and Clang.",
+   "aliases": []
+  },
+  "linkDebugFrameworkIosArm64": {
+   "in": "23",
+   "def": "The Gradle task that builds a debug framework for iosArm64.",
+   "kind": "code"
+  },
+  "linkReleaseFrameworkIosArm64": {
+   "in": "23",
+   "def": "The Gradle task that builds a release framework for iosArm64.",
+   "kind": "code"
+  },
+  "object code": {
+   "in": "24",
+   "def": "Machine instructions that aren't a finished program yet: calls to other code are left open and named.",
+   "aliases": []
+  },
+  "symbol": {
+   "in": "24",
+   "def": "The name of a function or global variable inside compiled code, used to connect calls to it.",
+   "aliases": [
+    "symbols"
+   ]
+  },
+  "linker": {
+   "in": "24",
+   "def": "The program that joins object code into one binary and connects each call to an address.",
+   "aliases": [
+    "linkers"
+   ]
+  },
+  "executable": {
+   "in": "25",
+   "def": "The app's own binary: the file the phone starts.",
+   "aliases": [
+    "executables"
+   ]
+  },
+  "static library": {
+   "in": "25",
+   "def": "A library whose code is copied into the app's executable when the app is built.",
+   "aliases": [
+    "static libraries"
+   ]
+  },
+  "dynamic library": {
+   "in": "25",
+   "def": "A library that stays a separate file and is loaded and connected when the app starts.",
+   "aliases": [
+    "dynamic libraries"
+   ]
+  },
+  "dynamic loader": {
+   "in": "25",
+   "def": "The program that loads an app's dynamic libraries and connects calls to them when the app starts.",
+   "aliases": []
+  },
+  "isStatic": {
+   "in": "25",
+   "def": "Framework setting: true puts a static library inside instead of a dynamic one.",
+   "kind": "code"
+  },
+  "architecture": {
+   "in": "26",
+   "def": "The family of instructions a processor understands, such as arm64 or x86-64.",
+   "aliases": [
+    "architectures"
+   ]
+  },
+  "universal framework": {
+   "in": "26",
+   "def": "One framework file whose binary merges builds for different architectures; also called a fat framework.",
+   "aliases": [
+    "fat framework",
+    "universal frameworks"
+   ]
+  },
+  "lipo": {
+   "in": "26",
+   "def": "Apple's tool that merges binaries for different architectures into one universal file.",
+   "kind": "code"
+  },
+  "XCFramework()": {
+   "in": "26",
+   "def": "Gradle code that declares an XCFramework to assemble.",
+   "kind": "code"
+  },
+  "assembleXCFramework": {
+   "in": "26",
+   "def": "The Gradle task that links every target in an XCFramework and gathers them.",
+   "kind": "code"
+  },
+  "crash report": {
+   "in": "27",
+   "def": "What iOS collects when an app crashes, including a backtrace for each thread.",
+   "aliases": [
+    "crash reports"
+   ]
+  },
+  "backtrace": {
+   "in": "27",
+   "def": "The chain of functions that were running in one thread, as addresses in each binary.",
+   "aliases": [
+    "backtraces"
+   ]
+  },
+  "symbolication": {
+   "in": "27",
+   "def": "Turning a crash report's addresses into function names and line numbers.",
+   "aliases": []
+  },
+  "dSYM": {
+   "in": "27",
+   "def": "A separate file of debug information for one release binary, used for symbolication.",
+   "aliases": [
+    ".dSYM"
+   ]
+  },
+  "build UUID": {
+   "in": "27",
+   "def": "A unique ID the build writes into a binary and its dSYM; they match only when it's identical.",
+   "aliases": [
+    "build UUIDs",
+    "UUID",
+    "UUIDs"
+   ]
+  },
+  "link-time optimization": {
+   "in": "28",
+   "def": "Optimizing all modules together during the link stage, as release builds do.",
+   "aliases": [
+    "LTO"
+   ]
+  },
+  "compilation cache": {
+   "in": "28",
+   "def": "Already compiled libraries kept by Kotlin/Native so later debug builds skip that work.",
+   "aliases": [
+    "compilation caches"
+   ]
+  },
+  "embedAndSignAppleFrameworkForXcode": {
+   "in": "28",
+   "def": "Code name in puzzle 28.",
+   "kind": "code"
+  },
+  "smallBinary": {
+   "in": "28",
+   "def": "Code name in puzzle 28.",
+   "kind": "code"
+  },
+  "binaryOption": {
+   "in": "28",
+   "def": "Code name in puzzle 28.",
+   "kind": "code"
+  },
+  "transitiveExport": {
+   "in": "28",
+   "def": "Code name in puzzle 28.",
+   "kind": "code"
+  },
+  "~/.konan": {
+   "in": "28",
+   "def": "Code name in puzzle 28.",
+   "kind": "code"
+  },
+  "PsiToIr": {
+   "in": "23",
+   "def": "The compiler phase that writes IR, as named in its profiling log.",
+   "kind": "code"
   }
  },
  "avoid": {
