@@ -1,26 +1,20 @@
-<!-- label: A Binder call, from your house to the town hall -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="bd-t"><title id="bd-t">Your app's thread calls the proxy, which packs a Parcel; Binder in the kernel carries it and stamps your UID; a Binder thread in system_server calls the real method; the reply comes back while your thread waits; it works the other way too</title>
-<x-ground class="step s1" y="286" label="kernel"/>
-<x-postoffice class="step s1" data-pulse="3" x="245" y="304" w="150" h="70" flag="0"/>
-<x-house class="step s1" x="20" y="80" w="220" h="206" label="your app"/>
-<g class="step s1"><rect class="d-hl" x="38" y="124" width="100" height="36" rx="6"/><text class="d-a" x="88" y="148" text-anchor="middle">proxy</text></g>
-<x-townhall class="step s1" x="380" y="96" w="250" h="190"/>
-<g class="step s1"><rect class="d-hl" x="430" y="134" width="100" height="36" rx="6"/><text class="d-a" x="480" y="158" text-anchor="middle">real one</text></g>
-<x-person class="step s1" data-pulse="2 5" x="80" y="196" label=""/>
-<text class="step s2 hide-5 d-rt" x="80" y="268" text-anchor="middle">waiting…</text>
-<text class="step s5 d-a" x="80" y="268" text-anchor="middle">goes on</text>
-<x-person class="step s4" data-pulse="4" x="548" y="186" label=""/>
-<g class="step s4"><text class="d-tiny" x="548" y="250" text-anchor="middle">Binder</text><text class="d-tiny" x="548" y="266" text-anchor="middle">thread</text></g>
-<x-arrow class="step only-3" tone="path" d="M200,280 C220,320 240,330 262,332"/>
-<x-arrow class="step only-4" tone="path" d="M398,330 C450,330 470,300 480,240"/>
-<x-arrow class="step only-5" tone="path" d="M530,236 C480,330 400,342 320,340 C240,338 210,320 196,250"/>
-<g class="step s2 hide-5" data-move="1:52,170 2:140,190 3:283,324 4:432,186"><x-letter x="0" y="0" w="74" h="44" label="Parcel"/><g class="step s3"><rect class="d-bad" x="46" y="-14" width="40" height="22" rx="3"/><text class="d-rt" x="66" y="3" text-anchor="middle">UID</text></g></g>
-<x-letter class="step s5" data-move="4:432,186 5:140,190" x="0" y="0" tone="hl" label="reply"/>
+<!-- label: One Binder call, in time order. Question: what happens, and who waits, when your app calls a method in system_server? -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="bc-t"><title id="bc-t">Sequence diagram with time going down: your app's main thread calls the proxy, which packs a Parcel and calls transact; the Binder driver in the kernel copies the bytes into system_server and stamps your UID; a Binder thread there runs onTransact and the real method; the reply travels back; the main thread is blocked for the whole round trip</title>
+<g class="step s1"><text class="d-a" x="110" y="26" text-anchor="middle">your app</text><text class="d-tiny" x="110" y="42" text-anchor="middle">main thread</text><line class="d-dash" x1="110" y1="52" x2="110" y2="368"/></g>
+<g class="step s1"><text class="d-a" x="320" y="26" text-anchor="middle">Binder</text><text class="d-tiny" x="320" y="42" text-anchor="middle">kernel driver</text><line class="d-dash" x1="320" y1="52" x2="320" y2="368"/></g>
+<g class="step s1"><text class="d-a" x="530" y="26" text-anchor="middle">system_server</text><text class="d-tiny" x="530" y="42" text-anchor="middle">a waiting thread</text><line class="d-dash" x1="530" y1="52" x2="530" y2="368"/></g>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="100" y="62" width="20" height="40" rx="3"/><text class="d-tiny" x="128" y="88">proxy.startActivity(intent)</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-band" x="132" y="108" width="94" height="22" rx="3"/><text class="d-tiny" x="179" y="123" text-anchor="middle">Parcel: bytes</text><x-arrow tone="acc" d="M120,140 L312,140"/><text class="d-tiny" x="216" y="156" text-anchor="middle">transact()</text></g>
+<g class="step s2"><rect class="d-bad" x="100" y="140" width="20" height="176" rx="3"/><text class="d-r" x="92" y="232" text-anchor="end">blocked</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="310" y="146" width="20" height="40" rx="3"/><text class="d-tiny" x="338" y="162">copies the bytes</text><text class="d-tiny" x="338" y="178">stamps your UID</text><x-arrow tone="acc" d="M330,196 L522,196"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="520" y="196" width="20" height="74" rx="3"/><text class="d-tiny" x="512" y="216" text-anchor="end">onTransact(): unpack</text><text class="d-tiny" x="512" y="234" text-anchor="end">run the real startActivity()</text><text class="d-tiny" x="512" y="252" text-anchor="end">check the UID's permission</text></g>
+<g class="step s5" data-pulse="5"><x-arrow tone="path" d="M520,280 L330,280"/><x-arrow tone="path" d="M310,300 L122,316"/><text class="d-tiny" x="425" y="296" text-anchor="middle">reply Parcel</text><text class="d-a" x="128" y="342">returns</text><text class="d-r" x="128" y="362">screen frozen all along</text></g>
+<g class="step s1" data-move="1:110,82 2:216,140 3:320,170 4:530,232 5:110,316"><circle class="d-acc" cx="0" cy="0" r="8"/></g>
 </svg>
 <ol class="caps">
-<li><p>Your app calls a method that lives in system_server. In your process sits a <b>proxy</b>: an object that looks exactly like the one in system_server.</p></li>
-<li><p>Objects can't leave a process; bytes can. The proxy packs the arguments into a <b>Parcel</b>: a flat envelope of bytes (a byte is the smallest unit of data a program stores). Your thread that called now waits.</p></li>
-<li><p>Binder, in the kernel, carries the Parcel and stamps it with your app's UID, its key. <i>Predict: who picks it up at the town hall?</i></p></li>
-<li><p>One of system_server's <b>Binder threads</b>: ordinary threads inside a process that wait for Binder to hand them calls. It unpacks the Parcel and calls the real method.</p></li>
-<li><p>The reply (a result, or just "done") travels back the same way, and only now does your waiting thread go on. If it was the main thread, the screen waited too.</p></li>
+<li><p>Your main thread calls a method that lives in system_server. It looks local, because your process holds a <b>proxy</b>: an object with the same methods as the real one. Time goes down.</p></li>
+<li><p>Objects can't leave a process; bytes can. The proxy packs the arguments into a <b>Parcel</b>, a flat run of bytes, and calls <code>transact()</code>. From here your thread is blocked.</p></li>
+<li><p>The Binder driver in the kernel copies the bytes into system_server's memory and stamps them with your app's UID. <i>Predict: who in system_server runs the call?</i></p></li>
+<li><p>One of system_server's <b>Binder threads</b>, which wait only for calls like this. In <code>onTransact()</code> it unpacks the Parcel, checks your UID, and runs the real method.</p></li>
+<li><p>The reply comes back the same way, and only now does your call return. The red bar is how long your main thread, and so your screen, waited.</p></li>
 </ol>

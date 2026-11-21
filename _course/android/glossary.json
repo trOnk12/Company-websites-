@@ -509,6 +509,16 @@
    "aliases": [
     "runOnUiThread"
    ]
+  },
+  "transact()": {
+   "in": "15",
+   "def": "The proxy's call that hands the Parcel to Binder and waits for the reply.",
+   "kind": "code"
+  },
+  "onTransact()": {
+   "in": "15",
+   "def": "The method a Binder thread runs on the receiving side: it unpacks the Parcel and calls the real method.",
+   "kind": "code"
   }
  },
  "avoid": {
