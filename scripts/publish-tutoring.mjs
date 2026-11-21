@@ -27,9 +27,9 @@ const OLX = 'https://www.olx.pl/api';
 
 // Posts rotate by ISO week, so a weekly or fortnightly schedule never repeats the same text twice in a row.
 const POSTS = [
-  `Dzień dobry! Mam na imię Mateusz, mieszkam w Lginiu koło Wschowy. Prowadzę indywidualne korepetycje z matematyki online dla klas 4–6, 45 zł za 45 minut. Na pierwszą lekcję wystarczy jedno zadanie z zeszytu, z którym dziecko ma kłopot: rozrysujemy je razem krok po kroku.`,
-  `Ułamki, procenty, zadania tekstowe? Uczę matematyki klasy 4–6 online, jeden na jeden, 45 zł za 45 minut. Najpierw rysujemy, potem liczymy. Na stronie można wypróbować przykładowe zadanie z ułamków i zaproponować termin.`,
-  `Szukasz korepetycji z matematyki dla dziecka z klasy 4, 5 lub 6? Prowadzę lekcje online z okolic Wschowy (Lgiń), 45 zł za 45 minut. Proszę napisać, z czym dziecko ma trudność, a zaproponuję termin.`,
+  `Dzień dobry! Mam na imię Mateusz, mieszkam w Lginiu koło Wschowy. Prowadzę indywidualne korepetycje z matematyki dla klas 4–8, online albo na miejscu w okolicy Wschowy, od 45 zł za 45 minut. Pierwsze 20 minut za darmo. Na pierwszą lekcję wystarczy jedno zadanie z zeszytu, z którym dziecko ma kłopot: rozrysujemy je razem krok po kroku.`,
+  `Ułamki, procenty, zadania tekstowe? Uczę matematyki klasy 4–8, online albo na miejscu, jeden na jeden, od 45 zł za 45 minut. Także egzamin ósmoklasisty. Najpierw rysujemy, potem liczymy. Na stronie można wypróbować przykładowe zadanie z ułamków i zaproponować termin.`,
+  `Szukasz korepetycji z matematyki dla dziecka z klas 4–8 albo przed egzaminem ósmoklasisty? Prowadzę lekcje online i na miejscu w okolicy Wschowy (Lgiń), od 45 zł za 45 minut. Proszę napisać, z czym dziecko ma trudność, a zaproponuję termin.`,
 ];
 const week = () => { const d = new Date(); const t = Date.UTC(d.getUTCFullYear(), 0, 1); return Math.floor((d - t) / 6048e5); };
 const post = () => POSTS[week() % POSTS.length];
@@ -82,7 +82,7 @@ async function olxExchange(code) {
 async function olx() {
   need('OLX_CATEGORY_ID', 'OLX_CITY_ID', 'OLX_CONTACT_NAME');
   const advert = {
-    title: 'Korepetycje z matematyki online, klasy 4–6',
+    title: 'Korepetycje z matematyki, klasy 4–8, online i Wschowa',
     description: `${POSTS[0]}\n\nZasady: lekcje indywidualne online, 45 minut, 45 zł. Kontakt przez wiadomość OLX lub stronę ${URL_PAGE}`,
     category_id: Number(process.env.OLX_CATEGORY_ID),
     advertiser_type: 'private',
