@@ -165,6 +165,19 @@ To do, in order:
 - [ ] Quizzes everywhere: replace the "What's the difference between X and Y" template where it only tests recall;
   no two-option questions; applied/numeric questions.
 
+## Sprint 15 (planned): every diagram earns its place
+
+Mateusz (21 November 2026): "the knowledge has gaps and unexplained language; the diagrams sometimes don't bring
+anything". The standard is in the course-author skill, section 3b: pick the diagram type from the question (sequence,
+state machine, memory layout, timeline, layer stack, before/after, pipeline, annotated code, number chart, decision
+tree), show the mechanism with real names, and score each diagram on the 10-point rubric (ship at ≥ 16/20).
+Pilot done: Android 15 (Binder call) redrawn as a sequence diagram (rubric ≈ 9/20 → 18/20).
+
+Per course: one reviewer scores every diagram from its strip (`.shots/<course>/strips/`) and caption, and reads the
+puzzle for gaps and words used before taught; the writer redraws everything under 16 and fixes the text. Order:
+**system design (distributed `system-design`, then mobile `sysdesign`; Mateusz: "system design must be complete")**,
+KMP, Compose, JVM, Android, Docker (backend operations), then the rest. Runs together with sprint 14, course by course.
+
 ## Sprint 14 (planned): every course complete, every piece of content analysed
 
 Mateusz (21 November 2026): "complete the courses completely; analyse every piece of content". The book course
