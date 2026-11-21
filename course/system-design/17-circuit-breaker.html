@@ -53,13 +53,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="17">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 17 · 18 of 18</p>
+        <p class="eyebrow">Puzzle 17 · 18 of 19</p>
         <h1>When is it worth calling a failing dependency again?</h1>
         <p class="lede">Use failure replies and a quiet interval to control how many calls reach a recovering dependency.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" aria-current="page" title="When is it worth calling a failing dependency again?">17</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" aria-current="page" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -114,7 +114,14 @@
         <h2 id="try-a-successful-and-a-failed-probe">Try a successful and a failed probe</h2>
 <p>Each time in the code is milliseconds on one local clock. The fixture delivers failure responses at times 5 and 10, opens the breaker at 10, and sends a request at 50. Predict whether storage receives that request. Then compare the row at 111, when the probe is in flight, with the row at 116, when its response has arrived.</p>
 <div class="read-path-example" data-read-path="breaker">
-<pre><code class="language-javascript">function testBreaker(probeReply) {
+<pre><code class="language-javascript">if (state === 'open' &amp;&amp; time &gt;= nextProbe) state = 'ready';
+const allowed = state === 'closed' || state === 'ready';
+if (state === 'ready') state = 'probing';</code></pre>
+<div data-controls hidden><div class="actions"><label>Scenario <select><option value="0">Recovery probe succeeds</option><option value="1">Recovery probe fails</option><option value="2">Recovery probe never replies</option></select></label>
+<button type="button" class="button">Run scenario</button></div>
+<pre><code data-call></code></pre></div>
+<p role="status" class="small"></p><div class="table-wrap" data-output></div>
+<details class="course-extras"><summary>Read the complete runnable code</summary><pre><code class="language-javascript">function testBreaker(probeReply) {
   let state = 'closed';
   let failures = 0;
   let nextProbe = 0;
@@ -145,11 +152,7 @@
   }
   attempt(116, 'next');
   return rows;
-}</code></pre>
-<div data-controls hidden><div class="actions"><label>Scenario <select><option value="0">Recovery probe succeeds</option><option value="1">Recovery probe fails</option><option value="2">Recovery probe never replies</option></select></label>
-<button type="button" class="button">Run scenario</button></div>
-<pre><code data-call></code></pre></div>
-<p role="status" class="small"></p><div class="table-wrap" data-output></div></div>
+}</code></pre></details></div>
 <p>The caller at 50 is refused locally. The caller at 110 holds the one probe slot. The caller at 111 cannot start a second trial. A successful reply at 115 closes the breaker, allowing the attempt at 116. A failed reply opens it for another 100 milliseconds, until 215. The rows separate attempts from responses so the interval while the probe is unanswered stays visible.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-what-does-the-simple-policy-leave-out">
@@ -192,16 +195,12 @@
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://learn.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker">Azure Architecture Center · Circuit Breaker pattern</a> — “A limited number of requests from the application are allowed to pass through”</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A circuit breaker refuses work while open and limits the probes that test recovery.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
-      <p class="puzzle-bridge">In the final design project, name the exact condition that admits a request, rejects it, or allows one recovery probe.</p>
+      <p class="puzzle-bridge">A missed deadline can release a caller. What if a second driver still needs the underlying read?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="16-coalescing.html">← Puzzle 16</a>
-        <a class="button" href="./">Back to the overview →</a>
+        <a class="button primary" href="18-waiter-deadlines.html">Puzzle 18: Let one caller leave a shared read →</a>
       </nav>
-      <section class="finish" aria-labelledby="finish-heading">
-        <h2 id="finish-heading">Apply what you learned</h2>
-        <p>Continue with worked examples and practice cases. When you reach the final project, make your own decisions before comparing your evidence with the worked review.</p>
-        <p class="actions"><a class="button primary" href="chapter-guarantees-under-load-and-partial-failure.html">Continue to Guarantees under load and partial failure →</a> <a class="button" href="final-project.html">Start the final project →</a></p>
-      </section>
+
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20When%20is%20it%20worth%20calling%20a%20failing%20dependency%20again%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>

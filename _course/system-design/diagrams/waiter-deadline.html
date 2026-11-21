@@ -1,0 +1,18 @@
+<!-- label: Two callers waiting for the same storage reply -->
+<svg class="design-figure" viewBox="0 0 420 248" role="img" aria-labelledby="d-title">
+<title id="d-title">Three lifetimes during a shared map read</title>
+<text class="d-b" x="12" y="27">One pending read for west</text>
+<text class="d-t" x="12" y="80">Ada</text><text class="d-t" x="12" y="133">Ben</text><text class="d-t" x="12" y="186">Storage</text>
+<path class="d-line" d="M102 204H395"/><text class="d-mi" x="100" y="230">Start</text><text class="d-mi" x="209" y="230">Deadline</text><text class="d-mi" x="344" y="230">Reply</text>
+<g class="step s1"><path class="d-acc" d="M104 74H174 M104 127H174 M104 180H174"/></g>
+<g class="step s2"><path class="d-acc" d="M174 74H236 M174 127H236 M174 180H236"/><path class="d-red" d="M230 68L242 80 M242 68L230 80"/><text class="d-r" x="250" y="80">504</text></g>
+<g class="step s3"><path class="d-acc" d="M236 127H349 M236 180H349"/><text class="d-a" x="359" y="133">200</text><circle class="d-dot" cx="349" cy="180" r="5"/></g>
+<g class="step s4"><path class="d-dash" d="M349 178V135"/><text class="d-mi" x="185" y="159">Result to Ben</text></g>
+<g transform="translate(104 202)" data-move="1:104,202 2:236,202 3:349,202 4:349,134"><circle class="d-dot" r="4"/></g>
+</svg>
+<ol class="caps">
+<li><p>Ada and Ben have joined the same lookup. The three lines show each caller's wait and the underlying storage work.</p></li>
+<li><p>Ada's deadline expires before storage replies. Her line ends at the cross. Ben still has time left. Predict what he can receive.</p></li>
+<li><p>Storage completes once. Ben's wait ends with a successful reading. Ada's earlier timeout stays a timeout.</p></li>
+<li><p>One result served the remaining waiter. If the callers had used different service instances, both could still receive these replies even though storage did twice the work.</p></li>
+</ol>

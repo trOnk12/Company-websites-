@@ -52,6 +52,7 @@
     const key = prediction && course ? 'course:' + course + ':diagram:' + radios[0].name : null;
     const question = prediction?.querySelector('legend').textContent;
     const saved = key && read(key);
+    const alternateActive = () => choice?.value === 'changed' && prediction?.hasAttribute('data-changed-reason');
     let answered = Boolean(saved && saved.question === question && saved.answered === true);
     if (saved && saved.question === question) {
       if (Number.isInteger(saved.step) && radios[saved.step]) radios[saved.step].checked = true;
@@ -102,6 +103,7 @@
     };
     btn.addEventListener('click', () => { touched = true; setPlaying(!playing); if (playing) count(`play ${location.pathname}`, true, 'Played a diagram'); });
 
+    let refreshPrediction;
     if (prediction) {
       const controls = prediction.querySelector('[data-prediction-controls]');
       const feedback = prediction.querySelector('[role="status"]');
@@ -112,8 +114,12 @@
       show.type = 'button';
       show.className = 'button';
       show.textContent = 'Reveal next step';
-      show.hidden = !answered;
-      if (answered) feedback.textContent = prediction.dataset.reason;
+      refreshPrediction = () => {
+        show.hidden = !answered;
+        const reason = alternateActive() ? prediction.dataset.changedReason : prediction.dataset.reason;
+        feedback.textContent = answered ? reason : '';
+      };
+      refreshPrediction();
       reveal.after(show);
       show.addEventListener('click', () => {
         go(current() + 1);
@@ -125,9 +131,9 @@
         const button = event.target.closest('button');
         if (!button) return;
         setPlaying(false);
-        answered = button.hasAttribute('data-answer');
-        feedback.textContent = answered ? prediction.dataset.reason : prediction.dataset.hint;
-        show.hidden = !answered;
+        answered = button.hasAttribute(alternateActive() ? 'data-changed-answer' : 'data-answer');
+        refreshPrediction();
+        if (!answered) feedback.textContent = alternateActive() ? prediction.dataset.changedHint : prediction.dataset.hint;
         remember();
       });
     }
@@ -150,6 +156,12 @@
       setPlaying(false);
       const target = Math.max(current(), Number(choice.dataset.compareStep) - 1);
       const checkpoint = caps.indexOf(prediction?.closest('li'));
+      if (prediction?.hasAttribute('data-changed-reason')) {
+        answered = false;
+        refreshPrediction();
+        go(checkpoint);
+        return;
+      }
       go(!answered && current() <= checkpoint ? Math.min(target, checkpoint) : target);
     });
 

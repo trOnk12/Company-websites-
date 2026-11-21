@@ -7,7 +7,7 @@ takeaway: Every service instance needs the same durable authority for a conteste
 
 ## The problem
 
-A **process** is one running instance of a program with its own memory. Two copies of the service run behind one address. The phone may reach either. Which component can decide whether the last space still exists?
+A **process** is one running instance of a program with its own memory. The handler is the part of that running program that answers the request. To commit a reservation is to finish saving the decision so another copy can retrieve it. Two copies of the service run behind one address. The phone may reach either. Which component can decide whether the last space still exists?
 
 ## See it
 

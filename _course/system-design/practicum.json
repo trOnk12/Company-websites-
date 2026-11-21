@@ -8,7 +8,7 @@
     "Trace two contenders. Stop the winning process after its commit and before the reply. Retry the same intention through another process and list every surviving grant.",
     "Calculate queue length and cumulative drops after 60 seconds. Change recovery arrivals to 70 per second and predict the time needed to empty the queue.",
     "Release an expired hold, grant the seat to another customer and then deliver the old payment success twice. Draw the durable transitions through reconciliation.",
-    "Storage returns two qualifying failures at 5 and 10 ms. Your breaker waits 100 ms and allows one probe. Label the caller at 50, the probe at 110 and its competing caller at 111. Contrast a confirmed recovery at 115 with a missing probe reply. Specify the probe deadline and the state change when it expires."
+    "Storage returns two qualifying failures at 5 and 10 ms. Your breaker waits 100 ms and allows one probe. Label the caller at 50, the probe at 110 and its competing caller at 111. Contrast a confirmed recovery at 115 with a missing probe reply. Specify the probe deadline and the state change when it expires. If two drivers share a map read, give them different wait budgets and state who can still receive the result after the first timeout."
   ],
   "evidence": [
     "Only one customer owns B12. The winner can retrieve the same grant after restart, and the replay consumes no other seat.",

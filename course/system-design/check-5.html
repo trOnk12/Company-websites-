@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="system-design">
       <p class="eyebrow"><a href="./">System design from first principles to design review</a> · check</p>
       <h1>Know Operate a busy read path already?</h1>
-      <p class="lede">One question for each of the 3 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 15"><p class="eyebrow">Puzzle 15: Why does an idle worker watch a request wait?</p>
 <fieldset class="quiz" data-n="15">
 <legend>At time 10, where does round robin send request three?</legend>
@@ -75,6 +75,14 @@
 <input type="radio" name="q-17-circuit-breaker-1" id="q-17-circuit-breaker-1-2"><label for="q-17-circuit-breaker-1-2"><span>It joins the storage queue</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The quiet interval lasts until time 110.</p>
 <p class="fb no opt-2"><b>Not quite.</b> An open breaker stops new dependency calls. <a class="show-me" href="17-circuit-breaker.html">Learn it in puzzle 17 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 18"><p class="eyebrow">Puzzle 18: If one driver gives up, whose read should stop?</p>
+<fieldset class="quiz" data-n="18">
+<legend>What expires when Ada's time runs out?</legend>
+<input type="radio" name="q-18-waiter-deadlines-1" id="q-18-waiter-deadlines-1-1" data-ok><label for="q-18-waiter-deadlines-1-1"><span>Ada's wait for this result</span></label>
+<input type="radio" name="q-18-waiter-deadlines-1" id="q-18-waiter-deadlines-1-2"><label for="q-18-waiter-deadlines-1-2"><span>The lifetime of Ben's lookup</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A caller can stop waiting while shared work is pending.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Ben has his own deadline and still needs the read. <a class="show-me" href="18-waiter-deadlines.html">Learn it in puzzle 18 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

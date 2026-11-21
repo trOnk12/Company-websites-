@@ -8,10 +8,10 @@ test('a learner makes a prediction, gets a hint, then reveals the next event', a
   const caps = figure.locator('.caps > li');
   await caps.nth(0).locator('label.next').click();
   const prediction = caps.nth(1).locator('.diagram-prediction');
-  await prediction.getByRole('button', { name: 'Two', exact: true }).click();
-  await expect(prediction.getByRole('status')).toContainText('map read');
+  await prediction.getByRole('button', { name: 'Two requests for B12', exact: true }).click();
+  await expect(prediction.getByRole('status')).toContainText('A tap asks');
   await expect(caps.nth(2)).toBeHidden();
-  await prediction.getByRole('button', { name: 'Zero', exact: true }).click();
+  await prediction.getByRole('button', { name: 'Two active grants for B12', exact: true }).click();
   await caps.nth(1).getByRole('button', { name: 'Reveal next step' }).press('Enter');
   await expect(caps.nth(2)).toBeFocused();
   await expect(caps.nth(2)).toContainText('Ada');
@@ -25,7 +25,8 @@ test('a learner makes a prediction, gets a hint, then reveals the next event', a
 for (const sample of [
   { slug: '15-routing', option: 'Fewest outstanding requests', row: ['3','B','10','10','20','0'] },
   { slug: '16-coalescing', option: 'Shared west read fails', row: ['burst','1','1','unavailable, unavailable, east map'] },
-  { slug: '17-circuit-breaker', option: 'Recovery probe fails', row: ['116','next','open','refuse'] }
+  { slug: '17-circuit-breaker', option: 'Recovery probe fails', row: ['116','next','open','refuse'] },
+  { slug: '18-waiter-deadlines', option: 'One caller on each instance', row: ['storage replies','504 timeout','200 west','2'] }
 ]) {
   test(sample.slug + ' runs the selected implementation and reports the changed outcome', async ({ page }) => {
     await page.goto('/course/system-design/' + sample.slug + '.html');
@@ -38,3 +39,22 @@ for (const sample of [
       rows.map(row => Array.from(row.cells, c => c.textContent)))).toContainEqual(sample.row);
   });
 }
+
+test('finishing the first puzzle resumes at demand after leaving the course', async ({ page }) => {
+  await page.goto('/course/system-design/');
+  await page.getByRole('link', { name: 'Start learning' }).click();
+  await expect(page).toHaveURL(/00-promise\.html$/);
+  for (const q of await page.locator('fieldset.quiz').all()) {
+    const id = await q.locator('input[data-ok]').getAttribute('id');
+    await q.locator('label[for="' + id + '"]').click();
+  }
+  const next = page.locator('.pager a.primary');
+  await expect(next).not.toHaveClass(/locked/);
+  await next.click();
+  await expect(page).toHaveURL(/01-demand\.html$/);
+  const freshTab = await page.context().newPage();
+  await freshTab.goto('/course/system-design/');
+  await freshTab.locator('[data-resume="system-design"]').click();
+  await expect(freshTab).toHaveURL(/01-demand\.html$/);
+  await freshTab.close();
+});

@@ -25,7 +25,7 @@
 </svg>
 <ol class="caps">
 <li><p>The entry point sends Ada’s request to handler A. A can receive the request without having made any durable decision.</p></li>
-<li><p>A’s database transaction commits grant 17. The replacement handler could retrieve this row even if A stopped now.</p></li>
+<li><p>A’s database transaction commits grant 17. Grant 17 is now saved in the shared store.</p></li>
 <li><p>A stops before the success reply reaches Ada. From her phone the outcome is unknown. Count the committed rows at this moment.</p></li>
 <li><p>Ada asks B about the same grant identity. B reads the shared store and returns the existing result. No private memory from A is needed.</p></li>
 </ol>

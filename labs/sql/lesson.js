@@ -48,8 +48,11 @@ for (const exercise of document.querySelectorAll('[data-sql-exercise]')) {
       worker.onerror = () => finish('SQLite could not start. Run again to retry.');
       worker.onmessage = ({ data }) => {
         if (data.error) return finish('SQLite: ' + data.error);
-        for (const result of data.results) {
+        for (const [index, result] of data.results.entries()) {
           const table = document.createElement('table');
+          const count = result.rows.length;
+          const amount = result.truncated ? 'first ' + count + ' rows' : count + (count === 1 ? ' row' : ' rows');
+          table.createCaption().textContent = 'Result ' + (index + 1) + ' · ' + amount;
           const head = table.createTHead().insertRow();
           for (const name of result.columns) {
             const cell = document.createElement('th');
@@ -66,7 +69,6 @@ for (const exercise of document.querySelectorAll('[data-sql-exercise]')) {
           box.className = 'table-wrap';
           box.append(table);
           if (!result.rows.length) box.append('No rows matched.');
-          if (result.truncated) box.append('Showing the first 30 rows.');
           output.append(box);
         }
         finish(data.results.length ? 'Finished. Query results follow.' : 'Finished. Add a SELECT to inspect the rows.');

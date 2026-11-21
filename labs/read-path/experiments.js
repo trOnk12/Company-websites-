@@ -83,23 +83,61 @@ function testBreaker(probeReply) {
   return rows;
 }
 
+async function compareWaiters(split) {
+  let releaseStorage, expireCaller;
+  let reads = 0;
+  const storageReady = new Promise(resolve => { releaseStorage = resolve; });
+  const shortDeadline = new Promise(resolve => { expireCaller = resolve; });
+  const noDeadlineInThisTrace = new Promise(() => {});
+
+  function makeInstance() {
+    const pending = new Map();
+    return function read(lot, deadline) {
+      if (!pending.has(lot)) {
+        reads++;
+        const work = storageReady.then(() => '200 ' + lot);
+        pending.set(lot, work.finally(() => pending.delete(lot)));
+      }
+      return Promise.race([pending.get(lot), deadline]);
+    };
+  }
+
+  const first = makeInstance();
+  const second = split ? makeInstance() : first;
+  const short = first('west', shortDeadline);
+  const long = second('west', noDeadlineInThisTrace);
+  expireCaller('504 timeout');
+  const shortReply = await short;
+  const rows = [{ event: 'deadline', short: shortReply, long: 'waiting', reads }];
+  releaseStorage();
+  const longReply = await long;
+  rows.push({ event: 'storage replies', short: shortReply, long: longReply, reads });
+  const later = await second('west', noDeadlineInThisTrace);
+  rows.push({ event: 'later lookup: ' + later, short: 'finished', long: 'finished', reads });
+  return rows;
+}
+
 const traffic = [[0, 100], [0, 10], [10, 10], [20, 10]];
 const readPathExamples = {
-  routing: { run: routeRequests, variants: [
+  routing: { run: routeRequests, focus: ['const busy =', 'if (policy ==='], variants: [
     ['Round robin', ['round robin', traffic]],
     ['Fewest outstanding requests', ['fewest outstanding', traffic]],
     ['Equal jobs, round robin', ['round robin', [[0, 10], [0, 10], [10, 10], [20, 10]]]]
   ] },
-  coalescing: { run: readBurst, variants: [
+  coalescing: { run: readBurst, focus: ['if (!pending.has(key))', 'return pending.get(key);'], variants: [
     ['Independent reads', [false, false]],
     ['Share reads for each lot', [true, false]],
     ['Shared west read fails', [true, true]],
     ['Keep the failed promise', [true, true, false]]
   ] },
-  breaker: { run: testBreaker, variants: [
+  breaker: { run: testBreaker, focus: ["if (state === 'open'", "if (state === 'ready') state"], variants: [
     ['Recovery probe succeeds', ['success']],
     ['Recovery probe fails', ['failure']],
     ['Recovery probe never replies', ['missing']]
+  ] },
+  waiters: { run: compareWaiters, focus: ['if (!pending.has(lot))', 'return Promise.race'], variants: [
+    ['Both callers reach one instance', [false]],
+    ['One caller on each instance', [true]]
   ] }
 };
 

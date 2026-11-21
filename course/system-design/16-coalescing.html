@@ -53,13 +53,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="16">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 16 · 17 of 18</p>
+        <p class="eyebrow">Puzzle 16 · 17 of 19</p>
         <h1>Can two cache misses share one read?</h1>
         <p class="lede">Make overlapping requests for the same reading share the work and observe how a failed read propagates.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" aria-current="page" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" aria-current="page" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -112,7 +112,18 @@
         <h2 id="trace-the-pending-reads">Trace the pending reads</h2>
 <p>The fixture starts three calls before waiting for any result. The storage function counts actual invocations and yields once so the requests overlap. It returns a known map or fails with a known error. The last call happens after the burst finishes. Compare <b>Independent reads</b> with <b>Share reads for each lot</b>.</p>
 <div class="read-path-example" data-read-path="coalescing">
-<pre><code class="language-javascript">async function readBurst(share, failWest, clearSettled = true) {
+<pre><code class="language-javascript">if (!pending.has(key)) {
+  const result = fetchReading(key).finally(() =&gt; {
+    if (clearSettled) pending.delete(key);
+  });
+  pending.set(key, result);
+}
+return pending.get(key);</code></pre>
+<div data-controls hidden><div class="actions"><label>Scenario <select><option value="0">Independent reads</option><option value="1">Share reads for each lot</option><option value="2">Shared west read fails</option><option value="3">Keep the failed promise</option></select></label>
+<button type="button" class="button">Run scenario</button></div>
+<pre><code data-call></code></pre></div>
+<p role="status" class="small"></p><div class="table-wrap" data-output></div>
+<details class="course-extras"><summary>Read the complete runnable code</summary><pre><code class="language-javascript">async function readBurst(share, failWest, clearSettled = true) {
   const pending = new Map();
   const calls = { west: 0, east: 0 };
 
@@ -143,11 +154,7 @@
   const [later] = await Promise.allSettled([read('west')]);
   return [burst, { phase: 'later read', westCalls: calls.west,
     eastCalls: calls.east, replies: describe(later) }];
-}</code></pre>
-<div data-controls hidden><div class="actions"><label>Scenario <select><option value="0">Independent reads</option><option value="1">Share reads for each lot</option><option value="2">Shared west read fails</option><option value="3">Keep the failed promise</option></select></label>
-<button type="button" class="button">Run scenario</button></div>
-<pre><code data-call></code></pre></div>
-<p role="status" class="small"></p><div class="table-wrap" data-output></div></div>
+}</code></pre></details></div>
 <p>In the independent burst storage receives two west requests and one east request. Sharing reduces west to one while both west callers receive the result. Now choose the failure scenario. One failed west read reaches both west callers. East still succeeds. The later west lookup succeeds because the failed promise was removed. The counts shown in the later row include the earlier calls.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-what-belongs-in-the-sharing-key">

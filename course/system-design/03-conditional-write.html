@@ -52,19 +52,19 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="3">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 3 · 4 of 18</p>
+        <p class="eyebrow">Puzzle 3 · 4 of 19</p>
         <h1>How does the database choose a winner?</h1>
         <p class="lede">Keep the claim and the inventory change together.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" aria-current="page" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" aria-current="page" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#try-the-two-meanings-of-zero-rows">Run SQL</a>
-        <a href="#go-deeper-what-if-the-rule-spans-different-rows">Go deeper</a>
+        <a href="#run-the-same-condition-twice">Run SQL</a>
+        <a href="#go-deeper-why-would-an-old-edit-also-change-zero-rows">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -75,7 +75,7 @@
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Both processes read one, calculate zero and write their own reservation. The final counter looks right. How could the lot have sold twice?</p>
+<p>Both processes read one, calculate zero and write their own reservation. The final counter looks right. How could the lot have sold twice? To read the diagram, follow one rule: while a writer holds the inventory row, the other writer must wait. A commit keeps the first change. A rollback undoes it.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -116,9 +116,9 @@
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>Two transactions try to change the same inventory row. There is one free space. Each has started its own provisional reservation.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-conditional-write-2">Next →</label></div></li>
-<li><p>Ada changes one to zero and holds the row lock. Ben attempts his conditional update. He waits while the outcome of Ada’s transaction is undecided.</p><fieldset class="diagram-prediction" data-hint="Zero would assert a result before the fate of Ada's change is known." data-reason="Ben waits. Change Ada's decision above, then compare which grant survives.">
-<legend>While Ada holds the row and has not committed or rolled back, what does Ben's conditional update do?</legend>
-<div class="actions" data-prediction-controls hidden><button type="button" class="button">Returns zero immediately</button><button type="button" class="button" data-answer>Waits for the decision</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-conditional-write-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-conditional-write-3">Next →</label></div></li>
+<li><p>Ada changes one to zero and holds the row lock. Ben attempts his conditional update. He waits while the outcome of Ada’s transaction is undecided.</p><fieldset class="diagram-prediction" data-hint="The selected decision is commit. Start from one space and keep Ada’s decrement before testing for a positive count." data-reason="Ada commits a free count of zero. Ben rechecks the row, finds no free space and changes zero rows." data-changed-hint="The selected decision is rollback. Undo Ada’s decrement first. What number does Ben test now?" data-changed-reason="Ada rolls back. The free count returns to one. Ben’s condition matches and his update changes one row.">
+<legend>When Ada's selected decision takes effect, how many inventory rows can Ben's update change?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button" data-answer>Zero rows</button><button type="button" class="button" data-changed-answer>One row</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-conditional-write-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-conditional-write-3">Next →</label></div></li>
 <li><p><span class="original-outcome">Ada commits zero free spaces. Ben wakes and checks whether the free count is positive.</span><span class="changed-outcome">Ada rolls back. Her decrement disappears. Ben wakes and checks the restored count of one.</span></p><div class="stepnav"><label for="st-conditional-write-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-conditional-write-4">Next →</label></div></li>
 <li><p><span class="original-outcome">Zero rows match. Ben rolls back his provisional grant. Only Ada receives confirmation.</span><span class="changed-outcome">One row matches. Ben takes the space and commits his provisional grant. Only Ben receives confirmation.</span></p><div class="stepnav"><label for="st-conditional-write-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-conditional-write-1">↺ Again</label></div></li>
 </ol>
@@ -132,21 +132,53 @@
 <p>In the JVM lab, both statements run inside one transaction. A zero update count causes a rollback.</p>
 <pre><code class="language-sql">INSERT INTO parking_session(id, lot) VALUES (?, ?);
 UPDATE lot SET free = free - 1 WHERE name = ? AND free &gt; 0;</code></pre>
-<h3>Distinguish an empty lot from an old edit</h3>
+      </section>
+      <section aria-labelledby="run-the-same-condition-twice">
+        <h2 id="run-the-same-condition-twice">Run the same condition twice</h2>
+<p>Start after the two requests reach the database. Each attempt inserts a provisional grant, then tries to take a space. Read the output from top to bottom. <code>RETURNING</code> asks the database to show the row that the update changed. Before pressing Run SQL, predict what Ben's update returns and whose name survives his rollback.</p>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE lot (name TEXT PRIMARY KEY, free INTEGER);
+CREATE TABLE grant_log (driver TEXT PRIMARY KEY);
+INSERT INTO lot VALUES ('west', 1);
+
+BEGIN;
+INSERT INTO grant_log VALUES ('Ada');
+UPDATE lot SET free = free - 1 WHERE name = 'west' AND free &gt; 0
+RETURNING free AS after_ada;
+COMMIT;
+
+BEGIN;
+INSERT INTO grant_log VALUES ('Ben');
+UPDATE lot SET free = free - 1 WHERE name = 'west' AND free &gt; 0
+RETURNING free AS after_ben;
+ROLLBACK;
+
+SELECT driver, free FROM grant_log CROSS JOIN lot;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>The first result contains a row whose value is zero. That is a successful write: Ada took the last space. The second result contains <b>no row</b>. Ben's condition failed. The last result contains Ada and zero free spaces. Ben's rollback removed his provisional grant.</p>
+<p>Run a deliberate mistake: change only Ben’s rollback to a commit. Will the free count show that anything went wrong? It still says zero, but the final query now lists both drivers. This is why the service checks the affected-row count before choosing either branch. The SQL above spells out the application’s two decisions for this exact one-space schedule.</p>
+<p>In the reservation service the condition requires a positive free count and a provisional grant already exists in the same transaction. This is the branch that turns the database result into a reply. The variable named take holds the prepared conditional update. Executing it returns its affected-row count.</p>
+<pre><code class="language-java">take.setString(1, lot);
+if (take.executeUpdate() == 0) {
+    db.rollback();
+    return new Reply(409, &quot;full&quot;);
+}
+db.commit();
+return new Reply(201, lot);</code></pre>
+<p>A count of zero does not automatically undo the provisional grant. The explicit rollback does that. The browser example runs statements in a chosen order on SQLite. The PostgreSQL exercise below uses two live connections to measure the wait that can precede the same decision.</p>
+      </section>
+      <details class="depth-puzzle" id="go-deeper-why-would-an-old-edit-also-change-zero-rows">
+        <summary><span class="depth-label">Go deeper</span>Why would an old edit also change zero rows?</summary>
+        <div class="depth-content">
 <p>Suppose an operator opens a lot record at version 7. A second operator edits it and saves version 8. The first tries to save a new capacity only where the stored version still equals 7. Zero rows change. Here zero means the original version condition failed for an existing record. The service can return a conflict and ask the operator to review the current values.</p>
 <p>This is optimistic concurrency control: the reader starts work without reserving exclusive access and validates its earlier observation at write time. The inventory statement above checks a different condition. If three spaces remain, two increments of demand can both succeed in sequence. Requiring the exact old version in that case could reject an otherwise valid reservation.</p>
-      </section>
-      <details class="depth-puzzle" id="go-deeper-what-if-the-rule-spans-different-rows">
-        <summary><span class="depth-label">Go deeper</span>What if the rule spans different rows?</summary>
-        <div class="depth-content">
-<p>Two attendants are on duty. Each may leave if another remains. Two transactions read the same initial picture, see two attendants, then update different rows. Locking just each writer’s own row leaves the shared rule unprotected. This anomaly is called write skew. Serialize the decision on a shared duty record, or use serializable isolation and retry an aborted transaction from the beginning, including its decision-making read.</p>
-<details class="recall"><summary>Does one changed row per writer prove that an attendant remains?</summary><p>No. A per-write count does not prove the cross-row rule. Inspect the combined outcome.</p></details>
-          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
-        </div>
-      </details>
-      <section aria-labelledby="try-the-two-meanings-of-zero-rows">
-        <h2 id="try-the-two-meanings-of-zero-rows">Try the two meanings of zero rows</h2>
-<p>Two operators both opened version 7. Ada saves first. Predict the result of Ben's save and the capacity that the driver will read afterward. <code>RETURNING</code> asks the database to show each row that this statement actually changed.</p>
+<p>Two operators both opened version 7. Ada saves first. Predict the result of Ben's save and the capacity that the driver will read afterward.</p>
 <div class="lesson-sql" data-sql-exercise>
 <pre><code class="language-sql">CREATE TABLE lot (
   name TEXT PRIMARY KEY, capacity INTEGER, version INTEGER
@@ -170,16 +202,18 @@ SELECT name, capacity, version FROM lot;</code></pre>
 </div>
 <p class="small" role="status"></p><div data-output></div></div>
 <p>The first update returns capacity 12 at version 8. The second returns no rows. The final read still shows capacity 12 at version 8. Remove only the version condition from Ben’s update. Now both saves report success and Ben silently overwrites Ada. Try a missing lot name too. The same empty result can mean a missing record or a stale version. The service needs more context before telling the client why the save failed.</p>
-<p>In the reservation service the condition requires a positive free count and a provisional grant already exists in the same transaction. This is the branch that turns the database result into a reply. The variable named take holds the prepared conditional update. Executing it returns its affected-row count.</p>
-<pre><code class="language-java">take.setString(1, lot);
-if (take.executeUpdate() == 0) {
-    db.rollback();
-    return new Reply(409, &quot;full&quot;);
-}
-db.commit();
-return new Reply(201, lot);</code></pre>
-<p>A count of zero does not automatically undo the provisional grant. The explicit rollback does that. The browser example runs statements in a chosen order on SQLite. The PostgreSQL exercise below uses two live connections to measure the wait that can precede the same decision.</p>
-      </section>
+<details class="recall"><summary>What should an editor reread after a version conflict?</summary><p>The current values and their version, before deciding whether its intended change still makes sense.</p></details>
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>
+      <details class="depth-puzzle" id="go-deeper-what-if-the-rule-spans-different-rows">
+        <summary><span class="depth-label">Go deeper</span>What if the rule spans different rows?</summary>
+        <div class="depth-content">
+<p>Two attendants are on duty. Each may leave if another remains. Two transactions read the same initial picture, see two attendants, then update different rows. Locking just each writer’s own row leaves the shared rule unprotected. This anomaly is called write skew. Serialize the decision on a shared duty record, or use serializable isolation and retry an aborted transaction from the beginning, including its decision-making read.</p>
+<details class="recall"><summary>Does one changed row per writer prove that an attendant remains?</summary><p>No. A per-write count does not prove the cross-row rule. Inspect the combined outcome.</p></details>
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Run the browser lab. Start with one space, send both requests and inspect the surviving claims. Repeat with two spaces. Imagine committing the insert separately before decrementing the counter. Which row would survive a crash between the two commits?</p>

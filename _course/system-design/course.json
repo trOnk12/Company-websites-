@@ -48,7 +48,8 @@
       "puzzles": [
         "15-routing.md",
         "16-coalescing.md",
-        "17-circuit-breaker.md"
+        "17-circuit-breaker.md",
+        "18-waiter-deadlines.md"
       ]
     }
   ],

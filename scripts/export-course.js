@@ -57,7 +57,7 @@ function puzzleNote(c, p, blocks) {
     } else lines.push(`## ${s.title}`, '', s.text.replace(/^```sql run$/gm, '```sql')
       .replace(/^```read-path ([a-z-]+)\n```$/gm, (_, key) => require('./read-path-example').note(key)), '');
   }
-  if (p.prediction) lines.push('## Check your prediction', '', p.prediction.why, '', p.prediction.bridge, '');
+  if (p.prediction) lines.push('## Check your prediction', '', p.prediction.why, ...(p.prediction.changed ? ['', p.prediction.changed.why] : []), '', p.prediction.bridge, '');
   return lines.join('\n').replace(/\n{3,}/g, '\n\n');
 }
 

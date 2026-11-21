@@ -53,13 +53,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="system-design" data-n="15">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 15 · 16 of 18</p>
+        <p class="eyebrow">Puzzle 15 · 16 of 19</p>
         <h1>Why does an idle worker watch a request wait?</h1>
         <p class="lede">Route four reads and measure time spent waiting behind earlier work.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" aria-current="page" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" aria-current="page" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -118,7 +118,14 @@
         <h2 id="run-both-routing-policies">Run both routing policies</h2>
 <p>Each input pair gives arrival time and service time in milliseconds. A worker starts a request when both the request and the worker are ready. An earlier completion at exactly the arrival time frees that worker before dispatch. Before pressing Run scenario, predict request three's worker, start and finish. Run the scenario and check the third row. Now switch policies and make a second prediction.</p>
 <div class="read-path-example" data-read-path="routing">
-<pre><code class="language-javascript">function routeRequests(policy, requests) {
+<pre><code class="language-javascript">const busy = finishTimes.map(times =&gt; times.filter(t =&gt; t &gt; arrival).length);
+let worker = index % 2;
+if (policy === 'fewest outstanding') worker = busy[0] &lt;= busy[1] ? 0 : 1;</code></pre>
+<div data-controls hidden><div class="actions"><label>Scenario <select><option value="0">Round robin</option><option value="1">Fewest outstanding requests</option><option value="2">Equal jobs, round robin</option></select></label>
+<button type="button" class="button">Run scenario</button></div>
+<pre><code data-call></code></pre></div>
+<p role="status" class="small"></p><div class="table-wrap" data-output></div>
+<details class="course-extras"><summary>Read the complete runnable code</summary><pre><code class="language-javascript">function routeRequests(policy, requests) {
   const finishTimes = [[], []];
   return requests.map(([arrival, duration], index) =&gt; {
     const busy = finishTimes.map(times =&gt; times.filter(t =&gt; t &gt; arrival).length);
@@ -132,11 +139,7 @@
     return { request: index + 1, worker: ['A', 'B'][worker],
       arrival, start, finish, waiting: start - arrival };
   });
-}</code></pre>
-<div data-controls hidden><div class="actions"><label>Scenario <select><option value="0">Round robin</option><option value="1">Fewest outstanding requests</option><option value="2">Equal jobs, round robin</option></select></label>
-<button type="button" class="button">Run scenario</button></div>
-<pre><code data-call></code></pre></div>
-<p role="status" class="small"></p><div class="table-wrap" data-output></div></div>
+}</code></pre></details></div>
 <p>With round robin, request three arrives at 10, starts on A at 100 and finishes at 110. With the second policy it starts on B at 10 and finishes at 20. Neither worker became faster. Only the queue in front of that request changed.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-which-count-can-the-balancer-see">

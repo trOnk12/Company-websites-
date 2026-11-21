@@ -279,4 +279,4 @@ Remaining assessment work includes running the Android investigations on a targe
 
 ## Distributed system design · read-path puzzles
 
-The core path now has 18 puzzles. Each diagram asks for a prediction before the decisive step and gives a reason to continue to the next problem. In puzzles 15–17 the learner runs the displayed routing, shared-read and circuit-breaker implementations with controlled inputs. The final project asks for a probe policy with a missing reply. The [roadmap](_course/system-design/ROADMAP.md) distinguishes those exercises from production qualification.
+The core path now has 19 puzzles. Each diagram asks for a prediction before the decisive step and gives a reason to continue to the next problem. In puzzles 15–17 the learner runs the displayed routing, shared-read and circuit-breaker implementations with controlled inputs. Puzzle 18 changes the lifetime of one waiter on a shared read and reproduces both routing cases over loopback HTTP. The final project asks for a probe policy with a missing reply. The [roadmap](_course/system-design/ROADMAP.md) distinguishes those exercises from production qualification.

@@ -38,13 +38,34 @@ test('changing the transaction outcome changes the lock diagram and its explanat
   const figure = page.locator('.stepper').first();
   await figure.getByRole('combobox', { name: 'Ada’s transaction' }).selectOption('changed');
   await expect(figure.locator('.diagram-prediction')).toBeVisible();
-  await figure.getByRole('button', { name: 'Waits for the decision' }).click();
+  await figure.getByRole('button', { name: 'One row', exact: true }).click();
   await figure.getByRole('button', { name: 'Reveal next step' }).click();
-  await expect(figure.getByText('Ada rolls back.', { exact: false }).first()).toBeVisible();
+  await expect(figure.locator('.caps .changed-outcome').filter({ hasText: 'Ada rolls back.' })).toBeVisible();
   await figure.locator('.dots label').last().click();
   await expect(figure.getByText('Grant: Ben', { exact: true })).toBeVisible();
   await figure.getByRole('combobox').selectOption('original');
+  await figure.getByRole('button', { name: 'Zero rows', exact: true }).click();
+  await figure.getByRole('button', { name: 'Reveal next step' }).click();
+  await figure.locator('.dots label').last().click();
   await expect(figure.getByText('Grant: Ada', { exact: true })).toBeVisible();
   await expect(figure.getByText('Grant: Ben', { exact: true })).toBeHidden();
   expect(await figure.locator('.stage').evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1);
+});
+
+test('committing the losing reservation exposes two grants despite the same free count', async ({ page }) => {
+  await page.goto('/course/system-design/03-conditional-write.html');
+  const exercise = page.locator('[data-sql-exercise]').first();
+  await exercise.getByRole('button', { name: 'Run SQL' }).click();
+  const results = exercise.locator('[data-output] table');
+  await expect(results).toHaveCount(3);
+  await expect(results.nth(0)).toHaveAccessibleName('Result 1 · 1 row');
+  await expect(results.nth(1)).toHaveAccessibleName('Result 2 · 0 rows');
+  await expect(results.nth(0).getByRole('cell')).toHaveText(['0']);
+  await expect(results.nth(1).getByRole('cell')).toHaveCount(0);
+  await expect(results.nth(2).getByRole('cell')).toHaveText(['Ada', '0']);
+  await exercise.getByRole('button', { name: 'Edit SQL' }).click();
+  const editor = exercise.getByRole('textbox', { name: 'SQL to run' });
+  await editor.fill((await editor.inputValue()).replace('ROLLBACK;', 'COMMIT;'));
+  await exercise.getByRole('button', { name: 'Run SQL' }).click();
+  await expect(results.nth(2).getByRole('cell')).toHaveText(['Ada', '0', 'Ben', '0']);
 });

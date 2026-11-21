@@ -1,19 +1,19 @@
 {
   "00-promise": {
     "step": 2,
-    "question": "Both phones show B12 as free. How many grants have the two map reads created?",
+    "question": "Both drivers have tapped Reserve. Which observation would prove the service broke its promise?",
     "options": [
-      "Zero",
-      "Two"
+      "Two active grants for B12",
+      "Two requests for B12"
     ],
     "answer": 0,
-    "hint": "A map read only reports what the phone saw. Which action actually allocates B12?",
-    "why": "Zero. The next action is a reservation attempt. Only a committed grant changes who owns the space.",
+    "hint": "A tap asks for a space. Which observation would show that both drivers actually own it?",
+    "why": "Two active grants for the same space prove a double booking. Two requests tell us only that there were two contenders.",
     "bridge": "Two phones can ask for the same space. How many such requests could arrive in the busiest ten minutes?"
   },
   "01-demand": {
     "step": 2,
-    "question": "One fifth of 1.2 million reads arrive in ten minutes. Which rate should the peak test reproduce?",
+    "question": "One fifth of 1.2 million reads arrive in ten minutes. What is the average arrival rate within that window?",
     "options": [
       "14 reads/s",
       "400 reads/s"
@@ -37,15 +37,20 @@
   },
   "03-conditional-write": {
     "step": 2,
-    "question": "While Ada holds the row and has not committed or rolled back, what does Ben's conditional update do?",
+    "question": "When Ada's selected decision takes effect, how many inventory rows can Ben's update change?",
     "options": [
-      "Returns zero immediately",
-      "Waits for the decision"
+      "Zero rows",
+      "One row"
     ],
-    "answer": 1,
-    "hint": "Zero would assert a result before the fate of Ada's change is known.",
-    "why": "Ben waits. Change Ada's decision above, then compare which grant survives.",
-    "bridge": "One grant survives. What should the phone send if the winning confirmation never arrives?"
+    "answer": 0,
+    "hint": "The selected decision is commit. Start from one space and keep Ada’s decrement before testing for a positive count.",
+    "why": "Ada commits a free count of zero. Ben rechecks the row, finds no free space and changes zero rows.",
+    "bridge": "One grant survives. What should the phone send if the winning confirmation never arrives?",
+    "changed": {
+      "answer": 1,
+      "hint": "The selected decision is rollback. Undo Ada’s decrement first. What number does Ben test now?",
+      "why": "Ada rolls back. The free count returns to one. Ben’s condition matches and his update changes one row."
+    }
   },
   "04-retry-identity": {
     "step": 3,
@@ -213,6 +218,18 @@
     "answer": 0,
     "hint": "The quiet interval has ended, but how many simultaneous trial calls does this policy permit?",
     "why": "The single probe is in flight. Its reply decides whether subsequent calls pass.",
-    "bridge": "In the final design project, name the exact condition that admits a request, rejects it, or allows one recovery probe."
+    "bridge": "A missed deadline can release a caller. What if a second driver still needs the underlying read?"
+  },
+  "18-waiter-deadlines": {
+    "step": 2,
+    "question": "Ada's wait has expired. Ben's deadline has not. Storage now returns the west map. Which reply can Ben still receive?",
+    "options": [
+      "A successful map reading",
+      "Only the same timeout as Ada"
+    ],
+    "answer": 0,
+    "hint": "Look at the line that ended at the cross. Is it Ben's wait, Ada's wait, or the underlying read?",
+    "why": "Ben can still receive the reading because his own wait and the shared work were both still active.",
+    "bridge": "In the final project, decide which caller may stop waiting, which operation continues and what evidence the next attempt must consult."
   }
 }

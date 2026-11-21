@@ -106,9 +106,11 @@ function gifLink(course, name) {
 }
 
 function diagramPrediction(prediction) {
+  const changed = prediction.changed;
+  const alternate = changed ? ` data-changed-hint="${L.esc(changed.hint)}" data-changed-reason="${L.esc(changed.why)}"` : '';
   const options = prediction.options.map((option, index) =>
-    `<button type="button" class="button"${index === prediction.answer ? ' data-answer' : ''}>${L.esc(option)}</button>`).join('');
-  return `<fieldset class="diagram-prediction" data-hint="${L.esc(prediction.hint)}" data-reason="${L.esc(prediction.why)}">
+    `<button type="button" class="button"${index === prediction.answer ? ' data-answer' : ''}${index === changed?.answer ? ' data-changed-answer' : ''}>${L.esc(option)}</button>`).join('');
+  return `<fieldset class="diagram-prediction" data-hint="${L.esc(prediction.hint)}" data-reason="${L.esc(prediction.why)}"${alternate}>
 <legend>${L.esc(prediction.question)}</legend>
 <div class="actions" data-prediction-controls hidden>${options}</div><p class="small" role="status"></p></fieldset>`;
 }

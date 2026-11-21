@@ -7,7 +7,7 @@ takeaway: A map may be stale while the reservation contract still admits at most
 
 ## The problem
 
-One space is free. Ada and Ben see a green pin and tap Reserve at the same time. May both screens say “reserved”?
+One space is free. A grant is a saved record assigning the space to a driver. Ada and Ben see a green pin and tap Reserve at the same time. May both screens say “reserved”?
 
 ## See it
 
