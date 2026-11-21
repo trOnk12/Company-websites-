@@ -39,3 +39,7 @@ Extended `restore.py before_delete --reconcile` on top of `bf3aab3`. PostgreSQL 
 ### Codex · 21 November 2026 · transaction waits and retry
 
 Started from `cfb095e`. Added the PostgreSQL wait-graph drill and an executable two-client fixture. Three native PostgreSQL 17.6 runs produced one-direction timeout `55P03`, one deadlock victim at `40P01`, counters [1, 1] after its rollback, and [2, 2] after the whole-transaction retry. Next assess the same diagnosis with a third lock type and collect a wait graph from a production-like trace.
+
+### Codex · 21 November 2026 · diagnose a migration queue
+
+Based on `aee6c7f`. Added [the wait-graph exercise](labs/parking-design/cases.html#a-waiting-migration-blocks-fresh-reads) and `wait_graph.py`. Native PostgreSQL 17.6 showed request → migration → idle report. Ending the report allowed the schema change and read to finish. Canceling the migration allowed the read while the report stayed open and the schema remained unchanged. Next practice: compare this with statement and lock deadlines under concurrent load.

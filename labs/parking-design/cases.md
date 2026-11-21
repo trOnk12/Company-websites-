@@ -78,6 +78,30 @@ Each seat starts with zero edits. Immediately after the cycle resolves, both cou
 
 </details>
 
+## A waiting migration blocks fresh reads
+
+A report finished its SQL query and left its transaction open. A schema migration started next. A customer read came last. The database returned this snapshot:
+
+| Session | State | Wait category | Blocking sessions |
+| --- | --- | --- | --- |
+| report | idle in transaction | Client | none |
+| migration | active | Lock | report |
+| request | active | Lock | migration |
+
+Draw arrows from each waiter to its blocker. Which session started the chain? Predict what the customer sees if you end the report transaction, then predict the outcome if you cancel only the migration.
+
+For a local run, use Python with psycopg and PostgreSQL 17 server tools, as in the recovery drill. Save [wait_graph.py](https://pachulski.dev/labs/postgres-isolation/wait_graph.py), [failover.py](https://pachulski.dev/labs/postgres-isolation/failover.py) and [races.py](https://pachulski.dev/labs/postgres-isolation/races.py) together. Run `python3 wait_graph.py` and `python3 wait_graph.py --cancel-migration`. Both runs create a private disposable database.
+
+<details><summary>Worked review and failure drill</summary>
+
+The report holds a lock until its transaction ends. The migration requests a lock that conflicts with both reads. The new read queues behind the migration, even though its own lock would be compatible with the report's lock. The PostgreSQL function `pg_blocking_pids` reports the immediate dependency. Follow the arrows to find the report.
+
+Ending the report allows the migration to commit and the read to finish. Canceling the migration lets the same read finish while the report remains open, and the schema stays unchanged. In production, identify the transaction owner and intended release before deciding whether either action is acceptable. A single snapshot shows who was waiting when sampled.
+
+[PostgreSQL 17 · Blocking sessions and lock queue order](https://www.postgresql.org/docs/17/functions-info.html)
+
+</details>
+
 ## Review rubric
 
 | Review question | Evidence |
