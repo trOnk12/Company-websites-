@@ -34,6 +34,22 @@ function fail(file, msg) {
 
 // ─── Parsing ──────────────────────────────────────────────────────────────
 
+// "Builds on": a card can name the course puzzles that teach the blocks it stands on (frontmatter
+// `blocks: [course/slug, …]`, slug without the NN- prefix), so a reader can go one step down before reading on.
+function buildsOn(blocks, file) {
+  if (!blocks || !blocks.length) return '';
+  const list = [].concat(blocks).map(ref => {
+    const [course, slug] = ref.split('/');
+    const dir = path.join(ROOT, '_course', course);
+    const f = fs.existsSync(dir) && fs.readdirSync(dir).find(x => x.replace(/^\d+-/, '') === `${slug}.md`);
+    if (!f) throw new Error(`${file}: blocks entry "${ref}" is not a course puzzle`);
+    const t = (fs.readFileSync(path.join(dir, f), 'utf8').match(/^title:\s*(.+)$/m) || [])[1] || slug;
+    const ct = JSON.parse(fs.readFileSync(path.join(dir, 'course.json'), 'utf8')).title;
+    return `<li><a href="../course/${course}/${f.replace(/\.md$/, '.html')}">${esc(t)}</a> <span class="small">· ${esc(ct)}</span></li>`;
+  });
+  return `<aside class="builds-on-card" aria-label="Builds on"><p><b>Builds on.</b> New to this? These puzzles teach the blocks this card stands on.</p><ul>${list.join('')}</ul></aside>`;
+}
+
 function parseFrontmatter(text, file) {
   const m = text.match(/^---\n([\s\S]*?)\n---\n/);
   if (!m) throw new Error(`${file}: missing --- frontmatter ---`);
@@ -245,6 +261,7 @@ ${renderBlocks(s.blocks, ctx, { recall: s.title === 'Check yourself' })}
       <p class="eyebrow"><time datetime="${meta.date}">${meta.date}</time> · <span class="status status-${meta.status}">${meta.status}</span> · ${meta.tags.map(esc).join(', ')}</p>
       <h1>${esc(meta.title)}</h1>
       <p class="lede">${inline(meta.summary, ctx)}</p>
+      ${buildsOn(meta.blocks, card.file)}
 ${body}
 ${back}    </article>`,
   });

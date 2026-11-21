@@ -3,6 +3,7 @@ title: Objects don't run on threads. Whoever calls them does.
 date: 2026-11-13
 status: budding
 tags: [android, threading]
+blocks: [android/threads-are-the-workers, android/threads-share-one-house, android/the-main-threads-queue]
 summary: An object doesn't belong to a thread. Its method runs on whichever thread calls it, which is why "run this on the main thread" means putting a message in the main thread's queue.
 ---
 

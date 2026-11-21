@@ -51,6 +51,7 @@
       <p class="eyebrow"><time datetime="2026-11-13">2026-11-13</time> · <span class="status status-budding">budding</span> · gradle, testing, modularisation</p>
       <h1>testFixtures share fakes between modules without shipping them</h1>
       <p class="lede">The java-test-fixtures plugin gives a module a third source set for fakes and builders. Other modules' tests can use it, and it stays out of the production jar.</p>
+      
       <section aria-labelledby="the-gap">
         <h2 id="the-gap">The gap</h2>
 <p>I kept seeing <code>testFixtures(project(...))</code> in our modules' test dependencies and couldn't say what it actually published, who could use it, or why the fakes didn't just live in <code>main</code>.</p>

@@ -3,6 +3,7 @@ title: Twelve help questions, two ways to find the right article
 date: 2026-11-19
 status: budding
 tags: [ai, retrieval, experiments]
+blocks: [llm/one-token-at-a-time, llm/find-evidence-before-writing, llm/measure-retrieval-and-answer-separately]
 summary: A reproducible run compared TF-IDF and MiniLM on the same synthetic help articles. The difference showed up when questions used different words from their answers.
 ---
 
@@ -12,7 +13,7 @@ A customer asks to require an extra proof at login. The help article says to add
 
 ## The click
 
-Deciding what text to send a chat model is an experiment of its own. Give two search methods the same article collection, queries and expected answers. Compare their document rankings before adding a model that writes a response.
+Word matching finds an article only when the question uses the article's words. Asked in the article's own words, TF-IDF found the right one 6 times out of 6; asked in other words, only 1 time out of 6. An embedding model (MiniLM) compares meaning instead of words and found it 6 out of 6 both ways. So which article reaches the chat model is a measurable step of its own: compare search methods on the same questions and expected answers before a model writes any reply.
 
 ## How I checked it
 

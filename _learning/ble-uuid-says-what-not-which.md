@@ -3,6 +3,7 @@ title: A BLE UUID says what kind of data, not which device
 date: 2026-11-13
 status: seedling
 tags: [ble, android]
+blocks: [ble/shouting-into-the-room, ble/the-filing-cabinet]
 summary: In BLE, a UUID names a kind of service or characteristic and is the same on every device of that model. The device address is what tells two devices apart.
 ---
 

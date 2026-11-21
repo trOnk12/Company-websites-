@@ -51,6 +51,7 @@
       <p class="eyebrow"><time datetime="2026-11-13">2026-11-13</time> · <span class="status status-budding">budding</span> · android, threading</p>
       <h1>Objects don't run on threads. Whoever calls them does.</h1>
       <p class="lede">An object doesn't belong to a thread. Its method runs on whichever thread calls it, which is why &quot;run this on the main thread&quot; means putting a message in the main thread's queue.</p>
+      <aside class="builds-on-card" aria-label="Builds on"><p><b>Builds on.</b> New to this? These puzzles teach the blocks this card stands on.</p><ul><li><a href="../course/android/02-threads-are-the-workers.html">Threads are the workers</a> <span class="small">· Android from the foundation</span></li><li><a href="../course/android/03-threads-share-one-house.html">Threads share one house</a> <span class="small">· Android from the foundation</span></li><li><a href="../course/android/16-the-main-threads-queue.html">The main thread's queue</a> <span class="small">· Android from the foundation</span></li></ul></aside>
       <section aria-labelledby="the-gap">
         <h2 id="the-gap">The gap</h2>
 <p>I pictured objects as living &quot;on&quot; a thread: the ViewModel on the main thread, the repository on a background thread. Then I couldn't explain why the same object's code sometimes ran on main and sometimes didn't, or what <code>Handler.post</code> actually changes.</p>

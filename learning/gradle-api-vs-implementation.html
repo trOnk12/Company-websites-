@@ -51,6 +51,7 @@
       <p class="eyebrow"><time datetime="2026-11-13">2026-11-13</time> · <span class="status status-budding">budding</span> · gradle, modularisation</p>
       <h1>A green build doesn't prove implementation() is right</h1>
       <p class="lede">If a module's public API uses a type from another module, that dependency has to be api(). The modules that use it today can hide the mistake.</p>
+      <aside class="builds-on-card" aria-label="Builds on"><p><b>Builds on.</b> New to this? These puzzles teach the blocks this card stands on.</p><ul><li><a href="../course/kmp/19-dependencies-per-source-set.html">Dependencies per source set</a> <span class="small">· Kotlin Multiplatform, from the compiler up</span></li></ul></aside>
       <section aria-labelledby="the-gap">
         <h2 id="the-gap">The gap</h2>
 <p>I knew that <code>api()</code> dependencies are visible to consumers and <code>implementation()</code> ones aren't. What I couldn't say was when <code>api()</code> is <em>required</em>, or why CI stayed green when I picked the wrong one.</p>

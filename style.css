@@ -918,3 +918,8 @@ li[data-state='done'] .puzzle-state { color: #245B37; background: #E3EFE1; }
 #search-heading ~ ul { list-style: none; padding: 0; }
 #search-heading ~ ul li { border-bottom: 1px solid var(--rule); padding: .35rem 0; }
 #search-heading ~ ul a { display: inline-block; padding-block: .55rem; }
+/* Learning log: the course puzzles a card stands on */
+.builds-on-card { margin: 1.2rem 0 1.6rem; padding: .8rem 1rem; border-left: 3px solid var(--accent-deep, #2456B5); background: #ffffff8c; border-radius: 0 6px 6px 0; }
+.builds-on-card p { margin: 0 0 .4rem; }
+.builds-on-card ul { margin: 0; padding-left: 1.1rem; }
+.builds-on-card li { margin: .15rem 0; }

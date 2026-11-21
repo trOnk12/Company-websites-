@@ -3,6 +3,7 @@ title: Swift loses the type of a Kotlin Flow, because Flow is an interface
 date: 2026-11-13
 status: seedling
 tags: [kmp, ios]
+blocks: [kmp/how-swift-sees-your-kotlin, kmp/lost-in-translation]
 summary: Kotlin/Native talks to Swift through an Objective-C header, and Objective-C only puts generics on classes. Flow is an interface, so its element type doesn't survive the trip.
 ---
 

@@ -3,6 +3,7 @@ title: A green build doesn't prove implementation() is right
 date: 2026-11-13
 status: budding
 tags: [gradle, modularisation]
+blocks: [kmp/dependencies-per-source-set]
 summary: If a module's public API uses a type from another module, that dependency has to be api(). The modules that use it today can hide the mistake.
 ---
 
