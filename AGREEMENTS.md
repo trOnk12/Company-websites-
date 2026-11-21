@@ -29,7 +29,9 @@ Everything decided in conversation, so it isn't lost when a session ends. Sprint
 
 Mateusz: "mega complete, leading to expert". Every course gets a `ROADMAP.md` from its first puzzle to expert level
 (shipping and maintaining it in production), and modules are written in that order. A course isn't "done" until
-its roadmap is written and strict-reviewed. Order: KMP, Compose Multiplatform, iOS, then the rest.
+its roadmap is written and strict-reviewed. Order: KMP and Compose Multiplatform (in progress), then **JVM internals
+and system design** (both courses: mobile `sysdesign` and distributed `system-design`; Mateusz: "mega important"),
+then iOS, then the rest.
 
 ## How we teach (non-negotiable)
 
