@@ -35,6 +35,18 @@ its roadmap is written and strict-reviewed. Order: KMP and Compose Multiplatform
 and system design** (both courses: mobile `sysdesign` and distributed `system-design`; Mateusz: "mega important"),
 then iOS, then the rest.
 
+## AI Lab and music breakdowns (agreed 21 November 2026)
+
+- **AI Lab:** a section beside the blog with reproducible comparisons of AI approaches and tools on the same task:
+  identical inputs, pinned versions, results table (correctness, time, cost, fixes needed), raw outputs and the
+  script in the repo, a "when to use what" verdict, small-sample caveats, synthetic or public data only, keys stay
+  with Mateusz. Optional "living benchmark" re-runs via GitHub Actions. First experiment: one agent vs writer +
+  independent reviewer on course puzzles (data from our own work: reviewers found errors the writers missed).
+- **Music, Side C: breakdowns of electronic-music classics.** Mateusz writes the transcript (the track's parts and
+  what the artist uses); Claude structures it, checks gear and technique claims against primary sources
+  (interviews, manufacturers), and adds how to rebuild each idea on his rig. Commentary and analysis only: link to
+  official audio, never embed or copy recordings, lyrics or scores.
+
 ## How we teach (non-negotiable)
 
 - Write learner-facing tutorials, exercises, diagrams, quizzes and solutions in English. **Everything in the
