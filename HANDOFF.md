@@ -45,3 +45,7 @@ Started from `cfb095e`. Added the PostgreSQL wait-graph drill and an executable 
 Based on `aee6c7f`. Added [the wait-graph exercise](labs/parking-design/cases.html#a-waiting-migration-blocks-fresh-reads) and `wait_graph.py`. Native PostgreSQL 17.6 showed request → migration → idle report. Ending the report allowed the schema change and read to finish. Canceling the migration allowed the read while the report stayed open and the schema remained unchanged. Next practice: compare this with statement and lock deadlines under concurrent load.
 
 The follow-up deadline experiment ran all four modes on PostgreSQL 17.6. The shorter lock deadline produced 55P03, the shorter statement deadline produced 57014, and the queued read completed in both without ending the report. Next validate the application's retry budget and backoff under repeated migration attempts.
+
+### Codex · 21 November 2026 · migration retry budget
+
+Compared two bounded retry schedules from main `15d72b8`. PostgreSQL 17.6 returned one of three reads before its deadline when the second read queued behind the retry. It returned two of three when the second read arrived in the pause. Both runs deferred the migration after two lock timeouts and kept the report transaction open. These are controlled arrival schedules. Next measure deadline misses under an independent stream of reads and more than one possible migrator.

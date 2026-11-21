@@ -80,11 +80,64 @@ def observe(server, mode):
         assert len(observer.execute("SELECT * FROM receipts").description) == expected_columns
 
 
+def retry_experiment(server, pause):
+    with (server.connect() as report, server.connect() as migration,
+          server.connect() as request, server.connect() as observer):
+        observer.execute("CREATE TABLE receipts (id int PRIMARY KEY)")
+        observer.execute("INSERT INTO receipts VALUES (1)")
+        migration.execute("SET lock_timeout = '2s'")
+        request.execute("SET statement_timeout = '200ms'")
+        report.execute("BEGIN")
+        report.execute("SELECT id FROM receipts")
+
+        def probe():
+            try:
+                rows = request.execute("SELECT id FROM receipts").fetchall()
+            except QueryCanceled as error:
+                print(f"Read missed its deadline: {error.sqlstate}")
+                return False
+            assert rows == [(1,)]
+            print("Read returned receipt 1 within its deadline")
+            return True
+
+        def attempt(worker):
+            ddl = worker.submit(migration.execute, "ALTER TABLE receipts ADD COLUMN note text")
+            wait_for_block(observer, migration, report)
+            return ddl
+
+        def timed_out(ddl):
+            try:
+                ddl.result(timeout=4)
+            except LockNotAvailable:
+                return
+            raise AssertionError("Expected migration lock timeout")
+
+        # Keep the report transaction open for the entire two-attempt retry budget.
+        # In the pause run, deliberately place the second read in the open interval.
+        with ThreadPoolExecutor(max_workers=1) as worker:
+            first = attempt(worker)
+            first_ok = probe()
+            timed_out(first)
+            if pause:
+                second_ok = probe()
+            second = attempt(worker)
+            if not pause:
+                second_ok = probe()
+            timed_out(second)
+        final_ok = probe()
+        assert (first_ok, second_ok, final_ok) == (False, pause, True)
+        assert len(observer.execute("SELECT * FROM receipts").description) == 1
+        assert observer.execute("SELECT state FROM pg_stat_activity WHERE pid = %s",
+                                (report.info.backend_pid,)).fetchone() == ("idle in transaction",)
+        print(f"Passed {sum((first_ok, second_ok, final_ok))}/3 read deadlines; migration deferred after two attempts")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--cancel-migration", dest="mode", action="store_const", const="cancel")
     modes.add_argument("--timeout", dest="mode", choices=["lock", "statement"])
+    modes.add_argument("--retry", choices=["immediate", "pause"])
     parser.set_defaults(mode="commit")
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="course-lock-queue-") as tmp:
@@ -100,7 +153,10 @@ def main():
         password_file.unlink()
         try:
             server.start()
-            observe(server, args.mode)
+            if args.retry:
+                retry_experiment(server, args.retry == "pause")
+            else:
+                observe(server, args.mode)
         finally:
             server.stop()
 

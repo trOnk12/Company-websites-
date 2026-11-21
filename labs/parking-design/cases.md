@@ -106,6 +106,22 @@ Ending the report allows the migration to commit and the read to finish. Canceli
 
 </details>
 
+## Does retrying a migration keep reads queued?
+
+The report transaction stays open. The migration gets two tries, each with a two-second lock deadline. Three customer reads have 200 ms to finish: one queues behind the first attempt, one arrives near the retry boundary, and one arrives after the retry budget is spent.
+
+Predict how many reads meet their deadline if the second read arrives after the migration rejoins the lock queue. Predict again if the second read arrives in a pause before the retry. Does either policy complete the schema change?
+
+Use the same three files as in the previous exercise. Run `python3 wait_graph.py --retry immediate` and `python3 wait_graph.py --retry pause`.
+
+<details><summary>Worked review and failure drill</summary>
+
+In the immediate schedule only the last read succeeds. In the pause schedule the second and last reads succeed. The report's lock remains held throughout, so both migration attempts time out in both schedules. The retry budget prevents a third attempt from creating another queue. The test places each read deliberately. The totals illustrate these schedules and cannot estimate how often production traffic will happen to arrive during a pause.
+
+**Transfer check.** If the report ends during the pause, explain why the next attempt can acquire the lock. Then describe how to choose a retry budget for deployment. Record customer deadline misses, deferral time and whether the schema actually changed. Test with concurrent traffic and several independent migrators before relying on a fixed delay.
+
+</details>
+
 ## Review rubric
 
 | Review question | Evidence |
