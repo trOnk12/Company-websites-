@@ -27,3 +27,7 @@ Reviewed main at `9d162c5`. Added two [workbench investigations](labs/jvm-workbe
 ### Codex · 21 November 2026 · stale owner after handoff
 
 Added a [mobile failure drill](labs/parking-design/cases.html#a-paused-worker-publishes-an-old-parking-count) and an independent SQLite replay with two connections. Tested both arrival orders with ordinary and guarded writes. Checking the generation inside the update rejected the stale worker in both orders, even when the correct final value would have masked a stale write. The four browser combinations passed on desktop and both mobile Chromium profiles. The local database is the single authority for the grant and the write. A deployment with an external sink or a promoted replica still needs its own ownership and recovery evidence.
+
+### Codex · 21 November 2026 · PostgreSQL recovery
+
+Reviewed `1d9ad58`. Added the named-point experiment to the system design recovery lesson. Native PostgreSQL 17.6 reproduced both named targets from a cold base copy and archived WAL. Before deletion the recovered IDs were 10 and 20; after deletion only 10 remained. Original ID 30 was outside both targets. Verified ID 40 committed after recovery from a second connection. Remaining: restore a production-sized backup from remote storage and reconcile legitimate later operations before reopening traffic.

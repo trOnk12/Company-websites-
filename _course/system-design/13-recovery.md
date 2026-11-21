@@ -28,6 +28,19 @@ Suppose the newest consistent state you can actually recover is 10:04. The gap a
 
 ## Try it
 
+A receipt database starts with ID 10. The service commits ID 20, marks a recovery point, accidentally deletes 20, marks a second point, then commits ID 30. Before running the experiment, write down the exact IDs you expect at each point. Which valid receipt could you lose even if you restore perfectly?
+
+On Linux or macOS, use Python 3 with psycopg 3 and the PostgreSQL 17 server tools on your command path. Save [the experiment](https://pachulski.dev/labs/postgres-isolation/restore.py) and [its helper](https://pachulski.dev/labs/postgres-isolation/failover.py) in one folder. From that folder run both commands as an ordinary user.
+
+```sh
+python3 restore.py before_delete
+python3 restore.py after_delete
+```
+
+Each command creates disposable local clusters, takes a clean base copy, archives subsequent writes and restores to the named point in a separate directory.
+
+Before deletion the restored IDs are 10 and 20. After deletion only 10 survives. The original database contains 10 and 30 at shutdown. Receipt 30 is a valid later commit after both named points. Before reopening service, decide how to reconcile it with an independent receipt record. The lab also writes ID 40 on the recovered timeline and checks it from a fresh connection. Compare its measured time with the full incident timeline below.
+
 Record detection, decision, restore, validation and reopening times. A fifteen-minute interruption budget covers that entire path. For a schema change, first add a compatible field, switch writers and readers, and remove the old field after the compatibility window. Run the old application against the upgraded schema before relying on rollback.
 
 ## Check yourself

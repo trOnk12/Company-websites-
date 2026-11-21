@@ -89,3 +89,7 @@ python failover.py
 Stopping the old primary fences it in this lab. A real deployment requires a mechanism to prevent an isolated former primary from serving writes. This fixture tests two configured PostgreSQL acknowledgement policies. It does not implement leader election or simulate an entire region outage.
 
 [PostgreSQL 17 · Synchronous replication](https://www.postgresql.org/docs/17/warm-standby.html#SYNCHRONOUS-REPLICATION)
+
+## Restore a receipt deleted by mistake
+
+With the same local binaries and Python environment as the promotion exercise, run `python3 restore.py before_delete` and `python3 restore.py after_delete`. Predict the results in the [recovery lesson](https://pachulski.dev/course/system-design/13-recovery.html#try-it). Each run restores from a stopped database copy into a second directory using archived WAL. The reported interval covers copying the backup through verification of a new committed write. Operator response, production backup transfer, reconciliation and traffic cutover require separate measurements.

@@ -67,8 +67,8 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-13">
         <p id="builds-on-13"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="6"><details><summary>Puzzle 6: Why does a confirmed space still look free?</summary><p>A cache can extend the staleness it inherited from its source.</p><p><a href="06-freshness.html">Review puzzle 6</a></p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="06-freshness.html">6</a>. Know them already? Start here.</p>
+        <ul><li data-block="3"><details><summary>Puzzle 3: How does the database choose a winner?</summary><p>A zero-row conditional decrement lets the transaction roll back a claim on a full lot.</p><p><a href="03-conditional-write.html">Review puzzle 3</a></p></details></li><li data-block="6"><details><summary>Puzzle 6: Why does a confirmed space still look free?</summary><p>A cache can extend the staleness it inherited from its source.</p><p><a href="06-freshness.html">Review puzzle 6</a></p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-promise.html">0</a> → <a href="03-conditional-write.html">3</a> → <a href="06-freshness.html">6</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
@@ -107,6 +107,12 @@
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
+<p>A receipt database starts with ID 10. The service commits ID 20, marks a recovery point, accidentally deletes 20, marks a second point, then commits ID 30. Before running the experiment, write down the exact IDs you expect at each point. Which valid receipt could you lose even if you restore perfectly?</p>
+<p>On Linux or macOS, use Python 3 with psycopg 3 and the PostgreSQL 17 server tools on your command path. Save <a href="/labs/postgres-isolation/restore.py">the experiment</a> and <a href="/labs/postgres-isolation/failover.py">its helper</a> in one folder. From that folder run both commands as an ordinary user.</p>
+<pre><code class="language-sh">python3 restore.py before_delete
+python3 restore.py after_delete</code></pre>
+<p>Each command creates disposable local clusters, takes a clean base copy, archives subsequent writes and restores to the named point in a separate directory.</p>
+<p>Before deletion the restored IDs are 10 and 20. After deletion only 10 survives. The original database contains 10 and 30 at shutdown. Receipt 30 is a valid later commit after both named points. Before reopening service, decide how to reconcile it with an independent receipt record. The lab also writes ID 40 on the recovered timeline and checks it from a fresh connection. Compare its measured time with the full incident timeline below.</p>
 <p>Record detection, decision, restore, validation and reopening times. A fifteen-minute interruption budget covers that entire path. For a schema change, first add a compatible field, switch writers and readers, and remove the old field after the compatibility window. Run the old application against the upgraded schema before relying on rollback.</p>
       </section>
       <section aria-labelledby="check-yourself">
