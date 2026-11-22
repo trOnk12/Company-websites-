@@ -11,7 +11,7 @@ test('a learner makes a prediction, gets a hint, then reveals the next event', a
   await prediction.getByRole('button', { name: 'Two requests for B12', exact: true }).click();
   await expect(prediction.getByRole('status')).toContainText('A tap asks');
   await expect(caps.nth(2)).toBeHidden();
-  await prediction.getByRole('button', { name: 'Two active grants for B12', exact: true }).click();
+  await prediction.getByRole('button', { name: 'Two current bookings for B12', exact: true }).click();
   await caps.nth(1).getByRole('button', { name: 'Reveal next step' }).press('Enter');
   await expect(caps.nth(2)).toBeFocused();
   await expect(caps.nth(2)).toContainText('Ada');

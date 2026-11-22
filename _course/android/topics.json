@@ -301,6 +301,15 @@
         "answer": "They establish that memory stalls occurred somewhere within the measured host and window. The individual pause still needs attribution. If the app runs in an identifiable cgroup v2 group with PSI, sample its memory.pressure and the host counters over the same action. Correlate an app thread trace with the stalls, then repeat with the batch workload absent. A pressure total can increase even if the UI thread was runnable throughout.",
         "source": "https://docs.kernel.org/accounting/psi.html",
         "sourceTitle": "Linux kernel · Pressure stall information"
+      },
+      {
+        "title": "Why did deleting the log fail to free its space?",
+        "explanation": "A pathname is a directory entry that leads to a file. An open file descriptor is a process-owned handle to an open file description. Removing the pathname does not invalidate a descriptor that already refers to the file. On Linux the file's storage can remain allocated until the last open descriptor is closed. The process's /proc/<pid>/fd directory exposes symbolic links for its open descriptors, so a deleted target can still be found from the process that holds it.",
+        "example": "A service opens incident.log, writes four MiB and keeps descriptor 3 open. An operator removes incident.log. A directory listing no longer shows the name, while /proc/<service-pid>/fd/3 points to a target ending in (deleted). The descriptor's stat data reports a link count of zero and the original size. Closing the last descriptor releases the remaining reference. Creating a new incident.log would make a different file and would not close descriptor 3.",
+        "exercise": "Before running it, predict which observations remain after the unlink. Save the [open-file experiment](https://pachulski.dev/labs/linux-open-file/open_deleted.py) and run `python3 open_deleted.py`. Explain why checking only the directory can misdiagnose the incident. Then name the evidence you would capture before restarting a production process and the durable fix you would test.",
+        "answer": "The pathname is missing, but the descriptor target contains (deleted), fstat still reports the bytes and the link count is zero. After close, that /proc descriptor entry disappears. In an incident, record the process ID, descriptor target and size, confirm that the process owns the unexpected reference and check whether the data must be preserved. A controlled close or process restart releases it. The durable fix is a tested log-rotation or reopen policy that closes the old descriptor. Deleting the name repeatedly or creating a replacement file does not release the old handle.",
+        "source": "https://docs.kernel.org/filesystems/proc.html#proc-pid-fd-list-of-symlinks-to-open-files",
+        "sourceTitle": "Linux kernel · Open file descriptors in procfs"
       }
     ]
   }

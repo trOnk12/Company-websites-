@@ -81,3 +81,13 @@ The outbox puzzle now begins at the sender. The learner obtains (grants, events)
 ### Codex · 21 November 2026 · a vote before a commit
 
 Extended puzzle 10 on top of `e0997bf`. The learner now decides whether a voter can support a candidate before testing what an elected leader can commit. The local SQL comparison of last-entry term and position gives deny, deny, grant. Changing the older candidate’s length from 9 to 90 still loses. Changing its last term to match and keeping length 9 wins. This reuses the ordered-pair comparison learned in puzzle 05. The example assumes an eligible, uncast vote in the current election term. It does not implement elections, stable storage or network communication. A separate live failover exercise still needs automatic fencing under a partition.
+
+### Codex · 22 November 2026 · verifiable skills map and Linux open-file incident
+
+Reviewed main at `2d3e920`. Added a cross-course map for AOSP, Linux, Docker, Kafka, SQL and system design with separate taught, runnable, transfer and field-evidence states. The new Linux practice case explains a pathname and a descriptor before reproducing an unlinked log that stays open. Its standard-library fixture asserts the missing pathname, the `(deleted)` procfs target, zero hard links, the retained four-MiB size and disappearance of the descriptor entry after close. Next choose an explicitly open row from the map. The real-broker Kafka group reassignment and real Docker daemon runner remain the closest infrastructure-backed gaps.
+
+Course generation and repeat generation, clarity lint, 288-page internal-link verification, the fixture and its three-project Playwright test passed. Full browser execution was unavailable in this runner: the pinned Chromium download returned 403, while the system Chromium could not create its process singleton socket. No browser result is claimed for this iteration.
+
+### Codex · 22 November 2026 · system design from the first booking
+
+Based on `a3aa54f`. Mateusz found the course vague and the introductory SQL opaque. Revised puzzles 00–03 in place. Main exercises start with what the driver sees, the written booking or the observed count, then ask for a prediction. Lessons 00 and 01 put SQL behind optional sections and give the same inputs in plain text first. The fresh learner and technical reviewer identified gaps in the booking timeline, the race controls and the transaction captions. See the [review](_course/system-design/REVIEW.md). All puzzle slugs and order are retained. Next review puzzles 04 onward against the same standard before expanding the course.

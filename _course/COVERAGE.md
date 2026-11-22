@@ -2,6 +2,8 @@
 
 Editorial review, 21 November 2026. The scope is the 13 catalog courses, their practice chapters and final projects, and the executable fixtures under `labs/`. Each row selects one professional task small enough for a second engineer to reproduce. The final column names the evidence still needed to assess that task. A worked solution establishes what the author can explain. An independent run establishes what a learner can reproduce, diagnose and defend.
 
+The cross-course [verifiable engineering skills map](PROFESSIONAL-SKILLS.md) now tracks AOSP, Linux, Docker, Kafka, SQL and distributed system design from foundations through runnable failures and professional acceptance evidence.
+
 | Course | What the current material exercises | Next assessment and acceptance evidence |
 | --- | --- | --- |
 | Android foundations | The [trail-note project](android/practicum.json) traces activity recreation and recovery after process death. The background-work chapter follows a persistent worker through a retry. | **Test a constrained background upload on Android.** Supply an emulator-ready fixture. Hold the network constraint, release it, inject a retry and assert the recorded upload effect occurred once. Retain the worker states and durable records. [Android WorkManager integration testing](https://developer.android.com/develop/background-work/background-tasks/testing/persistent/integration-testing) |

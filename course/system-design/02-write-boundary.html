@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Trace a request through two service instances and one store.">
+  <meta name="description" content="Find Ada’s booking after the program that saved it stops.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="Who can grant the last space? – System design from first principles to design review – Mateusz Pachulski">
-  <meta property="og:description" content="Trace a request through two service instances and one store.">
+  <meta property="og:title" content="Where is Ada’s booking when her reply is lost? – System design from first principles to design review – Mateusz Pachulski">
+  <meta property="og:description" content="Find Ada’s booking after the program that saved it stops.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/system-design/02-write-boundary">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>Who can grant the last space? – System design from first principles to design review – Mateusz Pachulski</title>
+  <title>Where is Ada’s booking when her reply is lost? – System design from first principles to design review – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/system-design/02-write-boundary">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -52,46 +52,46 @@
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
         <p class="eyebrow">Puzzle 2 · 3 of 19</p>
-        <h1>Who can grant the last space?</h1>
-        <p class="lede">Trace a request through two service instances and one store.</p>
+        <h1>Where is Ada’s booking when her reply is lost?</h1>
+        <p class="lede">Find Ada’s booking after the program that saved it stops.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" aria-current="page" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Two drivers tap Reserve. Who gets the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" aria-current="page" title="Where is Ada’s booking when her reply is lost?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#restart-the-handler-after-the-commit">Worked code</a>
+        <a href="#close-one-connection-and-look-up-the-booking">Worked code</a>
         <a href="#go-deeper-who-may-read-this-reservation">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-2">
         <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Two drivers tap Reserve. Who gets the last space?</summary><p>Two phones can show the same free space. At most one driver can have it booked for the same time.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>A <b>process</b> is one running instance of a program with its own memory. The handler is the part of that running program that answers the request. To commit a reservation is to finish saving the decision so another copy can retrieve it. Two copies of the service run behind one address. The phone may reach either. Which component can decide whether the last space still exists?</p>
+<p>In puzzle 1, we estimated the rush after a concert. Suppose the team starts a second copy of the parking program to help handle the traffic. A <b>process</b> is one running copy of that program. Call the two processes A and B. Ada’s phone includes reference 17 in its request. A saves her booking under that reference and stops before replying. Ada’s phone asks process B about 17. Where should B look?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="A replacement retrieves a grant after a handler stops"><input type="radio" name="st-write-boundary" id="st-write-boundary-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-write-boundary" id="st-write-boundary-2" aria-label="Step 2 of 4"><input type="radio" name="st-write-boundary" id="st-write-boundary-3" aria-label="Step 3 of 4"><input type="radio" name="st-write-boundary" id="st-write-boundary-4" aria-label="Step 4 of 4">
+<figure class="stepper" aria-label="Process B finds the booking after A stops"><input type="radio" name="st-write-boundary" id="st-write-boundary-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-write-boundary" id="st-write-boundary-2" aria-label="Step 2 of 4"><input type="radio" name="st-write-boundary" id="st-write-boundary-3" aria-label="Step 3 of 4"><input type="radio" name="st-write-boundary" id="st-write-boundary-4" aria-label="Step 4 of 4">
 <div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 272" role="img" aria-labelledby="d-title">
-<title id="d-title">A replacement retrieves a grant after a handler stops</title><defs><marker id="ah-write-boundary-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-write-boundary-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-write-boundary-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-write-boundary-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<title id="d-title">Process B finds the booking after A stops</title><defs><marker id="ah-write-boundary-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-write-boundary-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-write-boundary-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-write-boundary-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <rect class="d-box" x="126" y="16" width="161" height="43" rx="5"/><text class="d-t" x="206.5" y="43.5" text-anchor="middle">Phone · Ada</text>
-<rect class="d-box" x="13" y="101" width="155" height="48" rx="5"/><text class="d-t" x="90.5" y="131" text-anchor="middle">Handler A</text>
-<rect class="d-box" x="251" y="101" width="155" height="48" rx="5"/><text class="d-t" x="328.5" y="131" text-anchor="middle">Handler B</text>
+<rect class="d-box" x="13" y="101" width="155" height="48" rx="5"/><text class="d-t" x="90.5" y="131" text-anchor="middle">Process A</text>
+<rect class="d-box" x="251" y="101" width="155" height="48" rx="5"/><text class="d-t" x="328.5" y="131" text-anchor="middle">Process B</text>
 <rect class="d-band" x="83" y="199" width="257" height="56" rx="5"/>
-<text class="d-b" x="104" y="235" text-anchor="start">Store</text>
+<text class="d-b" x="104" y="235" text-anchor="start">Database</text>
 <g class="step s1">
   <path class="d-arr-acc" d="M157,59L94,98" marker-end="url(#ah-write-boundary-acc)"/>
 </g>
 <g class="step s2">
   <path class="d-arr-acc" d="M92,151 L133,196" marker-end="url(#ah-write-boundary-acc)"/>
-  <text class="d-a" x="212" y="235" text-anchor="start">Grant 17</text>
+  <text class="d-a" x="212" y="235" text-anchor="start">Booking 17</text>
 </g>
 <g class="step s3">
   <path class="d-red" d="M28,109l125,31m-125,0 125,-31"/>
@@ -105,23 +105,23 @@
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The entry point sends Ada’s request to handler A. A can receive the request without having made any durable decision.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-write-boundary-2">Next →</label></div></li>
-<li><p>A’s database transaction commits grant 17. Grant 17 is now saved in the shared store.</p><div class="stepnav"><label for="st-write-boundary-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-write-boundary-3">Next →</label></div></li>
-<li><p>A stops before the success reply reaches Ada. From her phone the outcome is unknown. Count the committed rows at this moment.</p><fieldset class="diagram-prediction" data-hint="B starts with its own memory. Follow grant 17 to the component that recorded it." data-reason="B can retrieve grant 17 from the shared store even though the first reply was lost.">
-<legend>Handler A has stopped after commit. Where can B discover the outcome?</legend>
-<div class="actions" data-prediction-controls hidden><button type="button" class="button" data-answer>The shared store</button><button type="button" class="button">A fresh process counter</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-write-boundary-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-write-boundary-4">Next →</label></div></li>
-<li><p>Ada asks B about the same grant identity. B reads the shared store and returns the existing result. No private memory from A is needed.</p><div class="stepnav"><label for="st-write-boundary-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-write-boundary-1">↺ Again</label></div></li>
+<li><p>Ada’s request reaches process A. The database has no booking yet.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-write-boundary-2">Next →</label></div></li>
+<li><p>A saves booking 17 to the database. Both processes use this same database.</p><div class="stepnav"><label for="st-write-boundary-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-write-boundary-3">Next →</label></div></li>
+<li><p>A stops before replying. Ada’s phone still has no answer. Where is booking 17 now?</p><fieldset class="diagram-prediction" data-hint="A is gone. Which place did it save the booking before it stopped?" data-reason="B reads booking 17 from the same database. The database kept it when A stopped.">
+<legend>Process A saved booking 17 and then stopped. Where can process B find the booking?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button" data-answer>The database both processes use</button><button type="button" class="button">The variables in process A</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-write-boundary-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-write-boundary-4">Next →</label></div></li>
+<li><p>Ada’s next request reaches B. B asks the database for booking 17 and can tell Ada that she has B12.</p><div class="stepnav"><label for="st-write-boundary-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-write-boundary-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-write-boundary-1" title="Step 1"></label><label for="st-write-boundary-2" title="Step 2"></label><label for="st-write-boundary-3" title="Step 3"></label><label for="st-write-boundary-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/write-boundary.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>The phone resolves a service name to an address and sends its request. A load balancer chooses a healthy process. That process validates the request and checks the driver's permission. The two processes have separate memory. If both keep their own authoritative count, each can see one free space.</p>
-<p>Start with one deployable program backed by one relational database. All copies send reservations to the same store. That store commits the change before the process sends a success response. If the process stops after commit, a replacement can read the outcome. Map reads and reservations can be separate modules of the same program. Splitting them into services introduces another boundary where a request or reply can be lost.</p>
-<h3>Locate the last durable decision</h3>
-<p>Ada's phone sends one reservation through process A. The database commits, then A stops before sending the reply. Process B takes the next request. B cannot inspect A's memory. It can read the stored grant if the client supplies an identity that points back to it. The next two lessons build the concurrency rule and that identity.</p>
-<p>Change the failure point: the database is unreachable before the write. B still has a healthy network connection to the phone. What can B promise? It can report that the service is unavailable. Returning a fabricated confirmation from its own memory would give the driver a reservation no replacement process could retrieve.</p>
+<p>Each process has its own working memory. A can remember the booking while it runs, but B cannot read A’s variables. If both processes keep their own free-space count, each could start at one and believe it had B12 to give away.</p>
+<p>Give A and B access to the same database, which stores the records outside either process’s memory. To commit the booking means to finish saving it for other processes to read. The program sends “B12 is yours” only after that save succeeds. Think of two ticket clerks at separate desks. Each can lose their scratch pad. Either can still look up 17 in the shared booking book.</p>
+<h3>Follow booking 17</h3>
+<p>Follow reference 17. A receives the request. The database saves the booking. A stops. B receives a lookup for 17 and reads that row from the database. For this exercise assume the phone already knows reference 17. Puzzle 4 explains where that reference comes from when the phone loses the original reply.</p>
+<p>Move the failure earlier. A stops before saving 17. B can still reach the database, but its lookup finds no row. Just getting a reply from B gives Ada no booking. The next puzzle asks what happens when A and B attempt to book the same space while both are running.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-who-may-read-this-reservation">
         <summary><span class="depth-label">Go deeper</span>Who may read this reservation?</summary>
@@ -131,9 +131,10 @@
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
-      <section aria-labelledby="restart-the-handler-after-the-commit">
-        <h2 id="restart-the-handler-after-the-commit">Restart the handler after the commit</h2>
-<p>Here is a single-file experiment in Python 3. It uses SQLite, a database stored in a file. A connection is a program's open handle to that database. Predict the second handler's result before saving the file as reservation.py and running this command in its directory. On Windows with the Python launcher, use the second command instead.</p>
+      <section aria-labelledby="close-one-connection-and-look-up-the-booking">
+        <h2 id="close-one-connection-and-look-up-the-booking">Close one connection and look up the booking</h2>
+<p>This Python 3 experiment uses SQLite, which stores the practice database in a file. A connection is the open channel a program uses to read and write the database. Read the code in three parts. The setup creates an empty table and saves it. The first connection adds one row and saves it, then closes. The second connection opens the same file and asks for that row. Predict what it prints if the first connection undoes its unfinished change by calling rollback instead of saving it.</p>
+<p>Save the code as reservation.py and run this command from the same folder. On Windows with the Python launcher, use the second command.</p>
 <pre><code class="language-sh">python3 reservation.py</code></pre>
 <pre><code class="language-sh">py -3 reservation.py</code></pre>
 <pre><code class="language-python">import sqlite3
@@ -155,46 +156,46 @@ with TemporaryDirectory() as directory:
     ).fetchone()
     print(row[0] if row else &quot;missing&quot;)
     second.close()</code></pre>
-<p>You should see ada-17. At the marked line, call rollback on the first connection and run again. Now the lookup prints “missing”. The question mark binds a value to the query. The two handlers share only the database file and the requested ID. Closing the first connection before the reply models one failure boundary. This exercise tests which decision the replacement can read. A machine failure would also test the storage device and its durability settings.</p>
+<p>The second connection prints ada-17. The question mark is a placeholder for the value &quot;ada-17&quot; supplied by Python. At the marked line, replace first.commit() with first.rollback() and run again. The lookup now prints “missing.” The script uses two connections in a single Python process. Closing one connection stands in for losing access to A. The exercise checks which data survives that boundary.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Draw both request and reply paths. Break one arrow at a time. Name the last component that knows the outcome and the components that still need to discover it. Now separate email delivery. A driver should be able to reserve while the mail provider is unavailable.</p>
+<p>Use the same sequence with booking 18. The save succeeds and the reply disappears. Decide which of the three places holds the answer at that moment: Ada’s phone, A’s lost working memory or the database. Then ask what B could read if the save had failed.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>What survives a restart of both instances?</legend>
-<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-1" data-ok><label for="q-02-write-boundary-1-1"><span>A committed database row</span></label>
-<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-2"><label for="q-02-write-boundary-1-2"><span>The counter in process A</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Process memory disappears on restart.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Process memory disappears on restart. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>What survives if both running copies stop and the database stays up?</legend>
+<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-1"><label for="q-02-write-boundary-1-1"><span>The variables in process A</span></label>
+<input type="radio" name="q-02-write-boundary-1" id="q-02-write-boundary-1-2" data-ok><label for="q-02-write-boundary-1-2"><span>The booking saved in the database</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Process memory disappears when A stops. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Either copy can read the saved booking after restarting.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What must precede a successful grant reply?</legend>
-<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-1" data-ok><label for="q-02-write-boundary-2-1"><span>Committing the grant</span></label>
-<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-2"><label for="q-02-write-boundary-2-2"><span>Starting the database call</span></label>
-<p class="fb ok opt-1"><b>Right.</b> An unfinished write can still roll back.</p>
-<p class="fb no opt-2"><b>Not quite.</b> An unfinished write can still roll back. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>A has started writing Ada’s booking. When can it confirm B12?</legend>
+<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-1"><label for="q-02-write-boundary-2-1"><span>As soon as it starts the save</span></label>
+<input type="radio" name="q-02-write-boundary-2" id="q-02-write-boundary-2-2" data-ok><label for="q-02-write-boundary-2-2"><span>After the save succeeds</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The save can still fail. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Then B can find the booking if A stops.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What does a second process add?</legend>
-<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-1"><label for="q-02-write-boundary-3-1"><span>Another independent last space</span></label>
-<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-2" data-ok><label for="q-02-write-boundary-3-2"><span>Another request handler</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Both handlers must honor the same inventory. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Both handlers must honor the same inventory.</p>
+<legend>A stops before saving booking 17. B checks the database. What will it find?</legend>
+<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-1" data-ok><label for="q-02-write-boundary-3-1"><span>No booking under 17</span></label>
+<input type="radio" name="q-02-write-boundary-3" id="q-02-write-boundary-3-2"><label for="q-02-write-boundary-3-2"><span>The completed booking 17</span></label>
+<p class="fb ok opt-1"><b>Right.</b> B can read only what the database kept.</p>
+<p class="fb no opt-2"><b>Not quite.</b> A stopped before completing the save. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/">AWS · Making retries safe</a></li><li><a href="https://sre.google/sre-book/load-balancing-datacenter/">Google SRE · Load Balancing in the Datacenter</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Every service instance needs the same durable authority for a contested grant.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Process B can recover a booking saved by A when both use the same database and B knows which booking to look for.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
-      <p class="puzzle-bridge">Sharing one database gives both handlers a place to write. What keeps both from claiming the last space?</p>
+      <p class="puzzle-bridge">A and B share a database. What happens if both read one free space before either saves a booking?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="01-demand.html">← Puzzle 1</a>
         <a class="button primary" href="03-conditional-write.html">Puzzle 3: How does the database choose a winner? →</a>
       </nav>
 
-      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Who%20can%20grant%20the%20last%20space%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
+      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Where%20is%20Ada%E2%80%99s%20booking%20when%20her%20reply%20is%20lost%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
   <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsystem-design%2F02-write-boundary" alt="" width="1" height="1"></noscript>

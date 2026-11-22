@@ -1,13 +1,13 @@
 ---
-title: Who can grant the last space?
-short: Who can grant the last space?
-summary: Trace a request through two service instances and one store.
-takeaway: Every service instance needs the same durable authority for a contested grant.
+title: Where is Ada’s booking when her reply is lost?
+short: Where is Ada’s booking when her reply is lost?
+summary: Find Ada’s booking after the program that saved it stops.
+takeaway: Process B can recover a booking saved by A when both use the same database and B knows which booking to look for.
 ---
 
 ## The problem
 
-A **process** is one running instance of a program with its own memory. The handler is the part of that running program that answers the request. To commit a reservation is to finish saving the decision so another copy can retrieve it. Two copies of the service run behind one address. The phone may reach either. Which component can decide whether the last space still exists?
+In puzzle 1, we estimated the rush after a concert. Suppose the team starts a second copy of the parking program to help handle the traffic. A **process** is one running copy of that program. Call the two processes A and B. Ada’s phone includes reference 17 in its request. A saves her booking under that reference and stops before replying. Ada’s phone asks process B about 17. Where should B look?
 
 ## See it
 
@@ -16,15 +16,15 @@ A **process** is one running instance of a program with its own memory. The hand
 
 ## The building block
 
-The phone resolves a service name to an address and sends its request. A load balancer chooses a healthy process. That process validates the request and checks the driver's permission. The two processes have separate memory. If both keep their own authoritative count, each can see one free space.
+Each process has its own working memory. A can remember the booking while it runs, but B cannot read A’s variables. If both processes keep their own free-space count, each could start at one and believe it had B12 to give away.
 
-Start with one deployable program backed by one relational database. All copies send reservations to the same store. That store commits the change before the process sends a success response. If the process stops after commit, a replacement can read the outcome. Map reads and reservations can be separate modules of the same program. Splitting them into services introduces another boundary where a request or reply can be lost.
+Give A and B access to the same database, which stores the records outside either process’s memory. To commit the booking means to finish saving it for other processes to read. The program sends “B12 is yours” only after that save succeeds. Think of two ticket clerks at separate desks. Each can lose their scratch pad. Either can still look up 17 in the shared booking book.
 
-### Locate the last durable decision
+### Follow booking 17
 
-Ada's phone sends one reservation through process A. The database commits, then A stops before sending the reply. Process B takes the next request. B cannot inspect A's memory. It can read the stored grant if the client supplies an identity that points back to it. The next two lessons build the concurrency rule and that identity.
+Follow reference 17. A receives the request. The database saves the booking. A stops. B receives a lookup for 17 and reads that row from the database. For this exercise assume the phone already knows reference 17. Puzzle 4 explains where that reference comes from when the phone loses the original reply.
 
-Change the failure point: the database is unreachable before the write. B still has a healthy network connection to the phone. What can B promise? It can report that the service is unavailable. Returning a fabricated confirmation from its own memory would give the driver a reservation no replacement process could retrieve.
+Move the failure earlier. A stops before saving 17. B can still reach the database, but its lookup finds no row. Just getting a reply from B gives Ada no booking. The next puzzle asks what happens when A and B attempt to book the same space while both are running.
 
 ## Go deeper: Who may read this reservation?
 
@@ -32,9 +32,11 @@ Ada is signed in but requests Ben’s reservation identity. Authentication estab
 
 - How do you test the claim with a warm cache?::Read Ben’s grant as Ben, then request the same identity as Ada. Ada must receive none of Ben’s data.
 
-## Restart the handler after the commit
+## Close one connection and look up the booking
 
-Here is a single-file experiment in Python 3. It uses SQLite, a database stored in a file. A connection is a program's open handle to that database. Predict the second handler's result before saving the file as reservation.py and running this command in its directory. On Windows with the Python launcher, use the second command instead.
+This Python 3 experiment uses SQLite, which stores the practice database in a file. A connection is the open channel a program uses to read and write the database. Read the code in three parts. The setup creates an empty table and saves it. The first connection adds one row and saves it, then closes. The second connection opens the same file and asks for that row. Predict what it prints if the first connection undoes its unfinished change by calling rollback instead of saving it.
+
+Save the code as reservation.py and run this command from the same folder. On Windows with the Python launcher, use the second command.
 
 ```sh
 python3 reservation.py
@@ -66,17 +68,17 @@ with TemporaryDirectory() as directory:
     second.close()
 ```
 
-You should see ada-17. At the marked line, call rollback on the first connection and run again. Now the lookup prints “missing”. The question mark binds a value to the query. The two handlers share only the database file and the requested ID. Closing the first connection before the reply models one failure boundary. This exercise tests which decision the replacement can read. A machine failure would also test the storage device and its durability settings.
+The second connection prints ada-17. The question mark is a placeholder for the value "ada-17" supplied by Python. At the marked line, replace first.commit() with first.rollback() and run again. The lookup now prints “missing.” The script uses two connections in a single Python process. Closing one connection stands in for losing access to A. The exercise checks which data survives that boundary.
 
 ## Try it
 
-Draw both request and reply paths. Break one arrow at a time. Name the last component that knows the outcome and the components that still need to discover it. Now separate email delivery. A driver should be able to reserve while the mail provider is unavailable.
+Use the same sequence with booking 18. The save succeeds and the reply disappears. Decide which of the three places holds the answer at that moment: Ada’s phone, A’s lost working memory or the database. Then ask what B could read if the save had failed.
 
 ## Check yourself
 
-- What survives a restart of both instances?::*A committed database row||The counter in process A >> Process memory disappears on restart. >> the-building-block::Process memory disappears on restart.
-- What must precede a successful grant reply?::Starting the database call >> An unfinished write can still roll back. >> the-building-block||*Committing the grant::An unfinished write can still roll back.
-- What does a second process add?::*Another request handler||Another independent last space >> Both handlers must honor the same inventory. >> the-building-block::Both handlers must honor the same inventory.
+- What survives if both running copies stop and the database stays up?::*The booking saved in the database||The variables in process A >> Process memory disappears when A stops. >> the-building-block::Either copy can read the saved booking after restarting.
+- A has started writing Ada’s booking. When can it confirm B12?::As soon as it starts the save >> The save can still fail. >> the-building-block||*After the save succeeds::Then B can find the booking if A stops.
+- A stops before saving booking 17. B checks the database. What will it find?::*No booking under 17||The completed booking 17 >> A stopped before completing the save. >> the-building-block::B can read only what the database kept.
 
 ## Sources
 

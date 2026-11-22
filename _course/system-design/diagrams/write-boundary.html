@@ -1,17 +1,17 @@
-<!-- label: A replacement retrieves a grant after a handler stops -->
+<!-- label: Process B finds the booking after A stops -->
 <svg class="design-figure" viewBox="0 0 420 272" role="img" aria-labelledby="d-title">
-<title id="d-title">A replacement retrieves a grant after a handler stops</title>
+<title id="d-title">Process B finds the booking after A stops</title>
 <rect class="d-box" x="126" y="16" width="161" height="43" rx="5"/><text class="d-t" x="206.5" y="43.5" text-anchor="middle">Phone · Ada</text>
-<rect class="d-box" x="13" y="101" width="155" height="48" rx="5"/><text class="d-t" x="90.5" y="131" text-anchor="middle">Handler A</text>
-<rect class="d-box" x="251" y="101" width="155" height="48" rx="5"/><text class="d-t" x="328.5" y="131" text-anchor="middle">Handler B</text>
+<rect class="d-box" x="13" y="101" width="155" height="48" rx="5"/><text class="d-t" x="90.5" y="131" text-anchor="middle">Process A</text>
+<rect class="d-box" x="251" y="101" width="155" height="48" rx="5"/><text class="d-t" x="328.5" y="131" text-anchor="middle">Process B</text>
 <rect class="d-band" x="83" y="199" width="257" height="56" rx="5"/>
-<text class="d-b" x="104" y="235" text-anchor="start">Store</text>
+<text class="d-b" x="104" y="235" text-anchor="start">Database</text>
 <g class="step s1">
   <x-arrow tone="acc" d="M157,59L94,98"/>
 </g>
 <g class="step s2">
   <x-arrow tone="acc" d="M92,151 L133,196"/>
-  <text class="d-a" x="212" y="235" text-anchor="start">Grant 17</text>
+  <text class="d-a" x="212" y="235" text-anchor="start">Booking 17</text>
 </g>
 <g class="step s3">
   <path class="d-red" d="M28,109l125,31m-125,0 125,-31"/>
@@ -24,8 +24,8 @@
 <g transform="translate(158 61)" data-move="1:158,61 2:175,216 3:91,151 4:279,220"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>The entry point sends Ada’s request to handler A. A can receive the request without having made any durable decision.</p></li>
-<li><p>A’s database transaction commits grant 17. Grant 17 is now saved in the shared store.</p></li>
-<li><p>A stops before the success reply reaches Ada. From her phone the outcome is unknown. Count the committed rows at this moment.</p></li>
-<li><p>Ada asks B about the same grant identity. B reads the shared store and returns the existing result. No private memory from A is needed.</p></li>
+<li><p>Ada’s request reaches process A. The database has no booking yet.</p></li>
+<li><p>A saves booking 17 to the database. Both processes use this same database.</p></li>
+<li><p>A stops before replying. Ada’s phone still has no answer. Where is booking 17 now?</p></li>
+<li><p>Ada’s next request reaches B. B asks the database for booking 17 and can tell Ada that she has B12.</p></li>
 </ol>

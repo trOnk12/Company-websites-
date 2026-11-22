@@ -306,6 +306,10 @@ Added six English practice chapters with worked investigations and independent c
 
 Remaining assessment work includes running the Android investigations on a target emulator, exercising Kafka group reassignment on a real broker, and implementing explicit conflict resolution across networked clients. See _course/COVERAGE.md for the broader audit.
 
+### Verifiable skills map · AOSP, Linux, Docker, Kafka, SQL and system design
+
+The cross-course map in `_course/PROFESSIONAL-SKILLS.md` names the taught path, runnable failure, professional acceptance evidence and remaining environment-dependent gap for each requested area. The first closed Linux gap follows a removed log through its still-open descriptor and proves the release boundary with a standard-library fixture. Continue by choosing the next **Field evidence open** row and retaining the actual run rather than promoting an explanation to completed evidence.
+
 ## Distributed system design · read-path puzzles
 
 The core path now has 19 puzzles. Each diagram asks for a prediction before the decisive step and gives a reason to continue to the next problem. In puzzles 15–17 the learner runs the displayed routing, shared-read and circuit-breaker implementations with controlled inputs. Puzzle 18 changes the lifetime of one waiter on a shared read and reproduces both routing cases over loopback HTTP. The final project asks for a probe policy with a missing reply. The [roadmap](_course/system-design/ROADMAP.md) distinguishes those exercises from production qualification.
