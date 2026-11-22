@@ -16,9 +16,9 @@ test.describe('Learning log', () => {
     execFileSync('node', ['scripts/build-learning.js', '--check'], { cwd: ROOT, stdio: 'pipe' });
   });
 
-  test('home page links to the learning log from both navs', async ({ page }) => {
+  test('home page links to the learning log from the footer (the top menu waits for the blog launch)', async ({ page }) => {
     await page.goto('/');
-    for (const nav of ['nav[aria-label="Sections"]', 'nav[aria-label="Footer"]']) {
+    for (const nav of ['nav[aria-label="Footer"]']) {
       await expect(page.locator(`${nav} a[href="learning/"]`)).toBeAttached();
     }
   });

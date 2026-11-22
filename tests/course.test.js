@@ -270,9 +270,9 @@ test.describe('Course', () => {
 });
 
 test('an unfinished visit appears in Your learning before the first pass', async ({ page }) => {
-  await page.goto('/course/compose/03-pixels-and-voiceover.html');
+  await page.goto('/course/compose/10-pixels-and-voiceover.html');
   await expect(page.locator('.gate-msg')).toContainText('mark this puzzle as passed');
   await page.goto('/course/me.html');
-  await expect(page.locator('.me-next a[href="compose/03-pixels-and-voiceover.html"]')).toBeVisible();
+  await expect(page.locator('.me-next a[href="compose/10-pixels-and-voiceover.html"]')).toBeVisible();
   await expect(page.locator('.me-course').filter({ has: page.locator('a[href="compose/"]') })).toContainText('0 passed');
 });
