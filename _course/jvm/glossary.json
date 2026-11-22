@@ -5,7 +5,9 @@
       "JDK",
       "Bookmark",
       "ArrayList",
-      "List"
+      "List",
+      "APK",
+      "R8"
     ]
   },
   "terms": {
@@ -520,6 +522,84 @@
       "in": 14,
       "kind": "code",
       "def": "Load a class by a name given as a string."
+    },
+    "heap": {
+      "in": 15,
+      "def": "The memory where objects live, managed by the garbage collector."
+    },
+    "metaspace": {
+      "in": 15,
+      "def": "Memory outside the heap where HotSpot keeps class metadata, in chunks owned by each class loader."
+    },
+    "class unloading": {
+      "in": 15,
+      "def": "Freeing a loader's classes together with the loader, once nothing reachable leads to them."
+    },
+    "OutOfMemoryError": {
+      "in": 15,
+      "kind": "code",
+      "def": "Thrown when the JVM can't get memory it needs; its message names which kind, such as Metaspace."
+    },
+    "ThreadLocal": {
+      "in": 15,
+      "kind": "code",
+      "def": "A JDK class that keeps one value per thread."
+    },
+    "PermGen": {
+      "in": 15,
+      "kind": "code",
+      "def": "The permanent generation: where class metadata lived on the heap before JDK 8."
+    },
+    "MaxMetaspaceSize": {
+      "in": 15,
+      "kind": "code",
+      "def": "The HotSpot option that sets an upper limit on metaspace."
+    },
+    "register": {
+      "in": 16,
+      "aliases": [
+        "registers"
+      ],
+      "def": "In DEX, a numbered slot of the method's frame that an instruction names as an input or output."
+    },
+    "desugaring": {
+      "in": 16,
+      "def": "d8 rewriting newer Java features, such as lambdas, into simpler code older Android versions can run."
+    },
+    "d8": {
+      "in": 16,
+      "kind": "code",
+      "def": "The Android build tool that converts class files into DEX."
+    },
+    "PathClassLoader": {
+      "in": 16,
+      "kind": "code",
+      "def": "The class loader Android uses for apps."
+    },
+    "MyActivity": {
+      "in": 16,
+      "kind": "code",
+      "def": "An example class name from Android's R8 documentation."
+    },
+    "string_ids": {
+      "in": 16,
+      "kind": "code",
+      "def": "The DEX table listing every string a DEX file uses."
+    },
+    "vAA": {
+      "in": 16,
+      "kind": "code",
+      "def": "A register operand in Android's DEX instruction reference."
+    },
+    "vBB": {
+      "in": 16,
+      "kind": "code",
+      "def": "A register operand in Android's DEX instruction reference."
+    },
+    "vCC": {
+      "in": 16,
+      "kind": "code",
+      "def": "A register operand in Android's DEX instruction reference."
     }
   },
   "from": {
@@ -538,6 +618,18 @@
     "compiler": {
       "course": "kmp",
       "in": 0
+    },
+    "AOT": {
+      "course": "android",
+      "in": 10
+    },
+    "dex2oat": {
+      "course": "android",
+      "in": 10
+    },
+    "JIT": {
+      "course": "android",
+      "in": 10
     }
   }
 }

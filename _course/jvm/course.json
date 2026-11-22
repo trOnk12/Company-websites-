@@ -39,7 +39,9 @@
         "11-loading-linking.md",
         "12-static-init-order.md",
         "13-class-loaders.md",
-        "14-classpath-modulepath.md"
+        "14-classpath-modulepath.md",
+        "15-metaspace.md",
+        "16-android-bridge.md"
       ]
     }
   ],

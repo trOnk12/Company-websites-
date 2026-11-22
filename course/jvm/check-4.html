@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="jvm">
       <p class="eyebrow"><a href="./">JVM internals for Kotlin and Android developers</a> · check</p>
       <h1>Know Loading and linking code already?</h1>
-      <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 5 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 11"><p class="eyebrow">Puzzle 11: When does a class arrive?</p>
 <fieldset class="quiz" data-n="11">
 <legend>You delete both Rare.value lines but keep new Rare[2]. What does the program print?</legend>
@@ -91,6 +91,16 @@
 <p class="fb no opt-1"><b>Not quite.</b> A direct call compiles to bytecode referring to Json; no string name is involved. <a class="show-me" href="14-classpath-modulepath.html">Learn it in puzzle 14 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Compiled code depended on a class that isn't deployed.</p>
 <p class="fb no opt-3"><b>Not quite.</b> That message says &quot;Could not initialize class&quot; instead of being caused by ClassNotFoundException. <a class="show-me" href="14-classpath-modulepath.html">Learn it in puzzle 14 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 15"><p class="eyebrow">Puzzle 15: Where do classes live, and how do they leak?</p>
+<fieldset class="quiz" data-n="15">
+<legend>The list keeps the loader object instead of the Greeter. What happens to the run?</legend>
+<input type="radio" name="q-15-metaspace-1" id="q-15-metaspace-1-1"><label for="q-15-metaspace-1-1"><span>It finishes, because no Greeter object is kept</span></label>
+<input type="radio" name="q-15-metaspace-1" id="q-15-metaspace-1-2" data-ok><label for="q-15-metaspace-1-2"><span>It still fails: a reachable loader keeps every class it defined</span></label>
+<input type="radio" name="q-15-metaspace-1" id="q-15-metaspace-1-3"><label for="q-15-metaspace-1-3"><span>It fails sooner, because a loader is bigger than a Greeter</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A class is unloaded only with its loader, and the list reaches the loader. <a class="show-me" href="15-metaspace.html">Learn it in puzzle 15 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Reaching the loader is enough.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The failure comes from class metadata kept in metaspace, not from the size of what's in the list. <a class="show-me" href="15-metaspace.html">Learn it in puzzle 15 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>
