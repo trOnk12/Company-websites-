@@ -1,13 +1,13 @@
 ---
 title: One frame, from tree to pixels
 short: Composition, layout, drawing
-summary: Puzzles 0 to 3 ended with an up-to-date tree of UI elements. A tree isn't pixels yet. Here's what Compose does with it in every frame, in three steps, and why a parent sizes each child only once.
+summary: Puzzles 0 to 4 ended with an up-to-date tree of UI elements. A tree isn't pixels yet. Here's what Compose does with it in every frame, in three steps, and why a parent sizes each child only once.
 takeaway: Compose makes a frame in three phases, always in this order. Composition runs what's marked and updates the tree of nodes. Layout passes constraints down, measures each child once within them, lets each parent pick its own size, then places each child relative to its parent. Drawing has each node paint itself onto a canvas. Each phase can be skipped when its inputs didn't change.
 ---
 
 ## The problem
 
-Puzzle 1 said some calls leave a node, a real UI element, and puzzles 2 and 3 showed how the tree of nodes stays up to date. But a `Column` node holding a `Text` and a card says nothing yet about pixels: how wide is the text, where does the card start, and what puts the colour on the screen? Something has to turn the tree into a picture, again for every frame that changes.
+Puzzle 1 said some calls leave a node, a real UI element, and puzzles 3 and 4 showed how the tree of nodes stays up to date. But a `Column` node holding a `Text` and a card says nothing yet about pixels: how wide is the text, where does the card start, and what puts the colour on the screen? Something has to turn the tree into a picture, again for every frame that changes.
 
 ## See it
 
@@ -16,7 +16,7 @@ Puzzle 1 said some calls leave a node, a real UI element, and puzzles 2 and 3 sh
 
 ## The building block
 
-A frame (one redraw of the screen) is made in three **phases**, always in this order. Android's docs give them as: composition, "what UI to show"; layout, "where to place UI"; drawing, "how it renders". Composition is everything puzzles 0 to 3 covered: run what's marked, skip what's equal, update the nodes.
+A frame (one redraw of the screen) is made in three **phases**, always in this order. Android's docs give them as: composition, "what UI to show"; layout, "where to place UI"; drawing, "how it renders". Composition is everything puzzles 0 to 4 covered: run what's marked, skip what's equal, update the nodes.
 
 Layout walks the node tree from the top. A parent hands each child **constraints**: the smallest and largest width and height the child may take. The parent then asks each child to **measure** itself: the child picks a size within the constraints, after measuring its own children the same way. A `Text` with too little width wraps onto more lines and gets taller; it can't get wider than its constraints allow. With the children's sizes known, the parent picks its own size.
 
@@ -26,7 +26,7 @@ Then **placement**: the parent sets each measured child's x and y, relative to i
 
 Drawing comes last. Each node paints itself, at its place, onto a **canvas**: the drawing surface, with commands such as `drawRect` (fill a rectangle with a colour) or draw a line of text. Compose's `Canvas` is a Kotlin interface. On Android, the object behind it wraps Android's own canvas; on iOS, it wraps Skia's (the KMP course, puzzle 15). Your composables never see which one.
 
-All three phases run, in principle, for every frame, but each one is skipped where its inputs didn't change: a frame where only a colour changed can redo drawing alone. Puzzle 2's state reads are noted per phase too, and puzzle 7 uses that to move work out of composition.
+All three phases run, in principle, for every frame, but each one is skipped where its inputs didn't change: a frame where only a colour changed can redo drawing alone. Puzzle 3's state reads are noted per phase too, and puzzle 8 uses that to move work out of composition.
 
 ## Go deeper: Who decides a size: the parent or the child?
 

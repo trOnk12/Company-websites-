@@ -7,7 +7,7 @@ takeaway: A call is skipped when every argument equals the one stored in its slo
 
 ## The problem
 
-Puzzle 2 ended with one marked composable, `Screen`, running again from its start. Running its body means calling `Header`, `Counter` and `Tags` again. If each of those ran its body every time, one change near the top would rerun the whole screen below it, which is what puzzle 2 tried to avoid. Most of those calls got exactly what they got last time. How does a call know it can stay as it is?
+Puzzle 3 ended with one marked composable, `Screen`, running again from its start. Running its body means calling `Header`, `Counter` and `Tags` again. If each of those ran its body every time, one change near the top would rerun the whole screen below it, which is what puzzle 3 tried to avoid. Most of those calls got exactly what they got last time. How does a call know it can stay as it is?
 
 ## See it
 
@@ -20,7 +20,7 @@ Puzzle 1 said a group keeps the arguments it got last time in its slots. When a 
 
 Equal how? That depends on the argument's type, and on whether Compose can trust the answer.
 
-A **stable** type is one that can't change without Compose seeing it: it never changes once made (Int, String, a data class whose properties are all vals of stable types), or it changes only through snapshot state, which Compose watches (puzzle 2). For a stable argument, Compose calls `equals`: a new `User("Ana")` equal to last time's skips.
+A **stable** type is one that can't change without Compose seeing it: it never changes once made (Int, String, a data class whose properties are all vals of stable types), or it changes only through snapshot state, which Compose watches (puzzle 3). For a stable argument, Compose calls `equals`: a new `User("Ana")` equal to last time's skips.
 
 An **unstable** type could change without Compose seeing a watched write: a class with a plain var property, or the `List`, `Set` and `Map` interfaces, since the list behind a `List` might be a mutable one. So are classes from a module the Compose compiler didn't compile. Before Kotlin 2.0.20, a call with an unstable argument always ran when its parent ran. Since then the compiler's **strong skipping** mode is on by default: an unstable argument is compared by instance, with `===`, and the call is skipped when the very same object comes back.
 
@@ -35,7 +35,7 @@ Under strong skipping the compiler also remembers the lambdas you write inside a
 
 When the compiler can't prove a type stable, but you know its changes are always visible to Compose, the **`@Stable`** annotation promises it. Compose then compares it with `equals`, which is only worth it if `equals` is cheap: comparing a long list item by item can cost more than running the call.
 
-Skipping and puzzle 2 work together. Skipping decides whether a child runs because its parent ran. A skipped child that read some state that changed is still marked on its own, and restarts by itself at the next frame.
+Skipping and puzzle 3 work together. Skipping decides whether a child runs because its parent ran. A skipped child that read some state that changed is still marked on its own, and restarts by itself at the next frame.
 
 ## Go deeper: What does a skip look like in the generated code?
 
@@ -48,7 +48,7 @@ Back in the theatre. When a scene is redone, the stage manager checks each prop 
 ## Check yourself
 
 - `Screen` runs again and calls Profile(User(name)), building a new `User` each run. User is a data class with one val, a String, in your own module. name hasn't changed. Does Profile run?::*No: User is stable, so equals compares it, and it's equal||Yes: it's a new instance, and new instances always count as changed >> Comparing by instance is for unstable types; a data class of vals is stable and compared with equals. >> the-building-block||Yes: every child of a composable that runs again runs too >> Each child call compares its arguments first; equal arguments skip. >> s2::A stable argument is compared with equals.
-- Why does Compose treat a class with a plain var property as unstable?::*The var could change with no watched write, so Compose can't know||A class with a var can't be compared with equals at all >> Any class has equals; the problem is that a change to the var is never seen. >> the-building-block||Reading a var property counts as a state read and marks the group >> Only snapshot state is watched (puzzle 2); a plain var is invisible to Compose. >> the-building-block::Unstable means Compose can't see its changes.
+- Why does Compose treat a class with a plain var property as unstable?::*The var could change with no watched write, so Compose can't know||A class with a var can't be compared with equals at all >> Any class has equals; the problem is that a change to the var is never seen. >> the-building-block||Reading a var property counts as a state read and marks the group >> Only snapshot state is watched (puzzle 3); a plain var is invisible to Compose. >> the-building-block::Unstable means Compose can't see its changes.
 - A parent reads the scroll position, so it runs on every scroll frame. It passes `items.filter { it.done }` to a child, Done(list). Under strong skipping, what makes Done skip when nothing changed?::*Filter once, in remember keyed on items, and pass that list||Mark the child composable itself with @Stable, so it skips >> @Stable is for types, and filter still makes a new List instance on every run. >> the-building-block||Nothing: List arguments make a call run every time, whatever you do >> Under strong skipping, an unstable List skips when the same instance comes back. >> s6::Same instance, skipped.
 
 ## Sources

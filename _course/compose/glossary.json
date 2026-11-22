@@ -90,7 +90,18 @@
    "position",
    "position.value",
    "y",
-   "val y = position.value"
+   "val y = position.value",
+   "PersonRow",
+   "PersonRow(person)",
+   "person",
+   "person.id",
+   "people",
+   "Zoe",
+   "items(people, key = { it.id }) { PersonRow(it) }",
+   "if",
+   "if (showError) ErrorBanner()",
+   "Counter()",
+   "ErrorBanner()"
   ],
   "homonyms": [
    "suspend"
@@ -122,7 +133,7 @@
   },
   "group": {
    "in": "00",
-   "def": "Everything one composable call records between its start and its end, labelled with a key from its place in the source.",
+   "def": "Everything one composable call records between its start and its end, labelled with a key: from the function's name and parameters for a function's own group, from its position for groups inside a body.",
    "aliases": [
     "groups"
    ]
@@ -159,43 +170,45 @@
    "aliases": []
   },
   "call site": {
-   "in": "01",
-   "def": "The place in your source code where a composable is called; it decides which group a call finds again.",
+   "in": "02",
+   "def": "The place in your source where a composable is called; calls from one call site, such as a loop, are told apart only by their order.",
    "aliases": [
     "call sites"
    ]
   },
   "key()": {
-   "in": "01",
-   "def": "A composable that gives the calls inside it an identity from a value you pass, such as an item's id.",
+   "in": "02",
+   "def": "A composable that wraps calls in a movable group whose identity comes from a value you pass, such as an item's id, so the group moves with its item.",
    "kind": "code"
   },
   "snapshot state": {
-   "in": "02",
+   "in": "03",
    "def": "A value holder made by mutableStateOf; Compose watches every read and every write of its value.",
    "aliases": []
   },
   "state read": {
-   "in": "02",
+   "in": "03",
    "def": "Code reading a snapshot state's value while Compose runs it; Compose notes which group was running.",
    "aliases": [
     "state reads"
    ]
   },
   "restart group": {
-   "in": "02",
-   "def": "The group of a composable that Compose can run again on its own, from its start.",
+   "in": "03",
+   "def": "The group of a composable that Compose can run again on its own, from its start; Android's docs call it a restart scope.",
    "aliases": [
-    "restart groups"
+    "restart groups",
+    "restart scope",
+    "restart scopes"
    ]
   },
   "Recomposer": {
-   "in": "02",
+   "in": "03",
    "def": "The part of the runtime that decides when marked groups run: it waits for the next frame, then runs every marked restart group again.",
    "kind": "code"
   },
   "skipping": {
-   "in": "03",
+   "in": "04",
    "def": "A call not running its body, and keeping last time's record, because its arguments equal the ones it got last time.",
    "aliases": [
     "skip",
@@ -204,31 +217,31 @@
    ]
   },
   "stable": {
-   "in": "03",
+   "in": "04",
    "def": "A type that can't change without Compose seeing it: it never changes, or changes only through snapshot state. Compared with equals.",
    "aliases": [
     "stability"
    ]
   },
   "unstable": {
-   "in": "03",
+   "in": "04",
    "def": "A type that could change without Compose seeing it, such as a class with a var or a List.",
    "aliases": []
   },
   "strong skipping": {
-   "in": "03",
+   "in": "04",
    "def": "The compiler mode, on by default since Kotlin 2.0.20, that lets a call with unstable arguments be skipped when the same instances (===) come back.",
    "aliases": [
     "strong skipping mode"
    ]
   },
   "@Stable": {
-   "in": "03",
+   "in": "04",
    "def": "An annotation that promises Compose a type is stable when it can't prove it.",
    "kind": "code"
   },
   "phase": {
-   "in": "04",
+   "in": "05",
    "def": "One of the three stages Compose runs to make a frame, in order: composition, layout, drawing.",
    "aliases": [
     "phases",
@@ -236,12 +249,12 @@
    ]
   },
   "constraints": {
-   "in": "04",
+   "in": "05",
    "def": "The smallest and largest width and height a parent allows a child.",
    "aliases": []
   },
   "measure": {
-   "in": "04",
+   "in": "05",
    "def": "Ask a child to choose its size within the constraints; in Compose, each child is measured at most once per layout.",
    "aliases": [
     "measures",
@@ -250,66 +263,66 @@
    ]
   },
   "placement": {
-   "in": "04",
+   "in": "05",
    "def": "A parent setting each measured child's x, y position, relative to itself.",
    "aliases": [
     "placed"
    ]
   },
   "canvas": {
-   "in": "04",
+   "in": "05",
    "def": "The drawing surface a node draws itself onto, with commands like drawRect; Compose's Canvas is an interface.",
    "aliases": []
   },
   "drawRect": {
-   "in": "04",
+   "in": "05",
    "def": "A canvas command that fills a rectangle with a colour.",
    "kind": "code"
   },
   "Applier": {
-   "in": "05",
+   "in": "06",
    "def": "The plug between the runtime and a tree: it inserts, moves and removes nodes; the runtime knows nodes only through it.",
    "kind": "code"
   },
   "Compose UI": {
-   "in": "05",
+   "in": "06",
    "def": "The layer that turns nodes into a screen: LayoutNode, Modifier, input, layout and drawing.",
    "aliases": []
   },
   "foundation": {
-   "in": "05",
+   "in": "06",
    "def": "The layer of building blocks with no look of their own: Row, Column, LazyColumn, gestures.",
    "aliases": []
   },
   "design system": {
-   "in": "05",
+   "in": "06",
    "def": "A set of rules and ready-made components for how an app looks: colours, type, shapes. Material Design is Google's.",
    "aliases": [
     "design systems"
    ]
   },
   "hosting boundary": {
-   "in": "08",
+   "in": "09",
    "def": "The region where one UI system embeds another.",
    "aliases": []
   },
   "accessibility semantics": {
-   "in": "09",
+   "in": "10",
    "def": "Labels, roles, states and actions exposed to assistive technology.",
    "aliases": []
   },
   "skipToGroupEnd()": {
-   "in": "03",
+   "in": "04",
    "def": "The Composer call a skipped composable makes: jump past its group and keep what it recorded last time.",
    "kind": "code"
   },
   "UiApplier": {
-   "in": "05",
+   "in": "06",
    "def": "Compose UI's Applier on Android: it inserts, moves and removes LayoutNodes.",
    "kind": "code"
   },
   "deferring a read": {
-   "in": "06",
+   "in": "07",
    "def": "Moving a state read out of a parent and into the child, or the later phase, that needs the value, so less code runs again when it changes.",
    "aliases": [
     "deferred read",
@@ -319,8 +332,13 @@
    ]
   },
   "drawBehind": {
-   "in": "07",
+   "in": "08",
    "def": "A modifier whose lambda runs during drawing, so a state read inside it reruns drawing alone.",
+   "kind": "code"
+  },
+  "org.jetbrains.kotlin.plugin.compose": {
+   "in": "00",
+   "def": "The id of the Gradle plugin that turns the Compose compiler plugin on in a build.",
    "kind": "code"
   }
  },

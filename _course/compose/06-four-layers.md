@@ -1,13 +1,13 @@
 ---
 title: Four layers, one edge per platform
 short: Runtime, UI, foundation, Material
-summary: Puzzles 0 to 4 followed one screen from a composable to pixels. Those steps live in different libraries, stacked on top of each other. Here's the stack, the one plug that keeps the runtime away from pixels, and why only one edge of it had to be written again for iOS.
+summary: Puzzles 0 to 5 followed one screen from a composable to pixels. Those steps live in different libraries, stacked on top of each other. Here's the stack, the one plug that keeps the runtime away from pixels, and why only one edge of it had to be written again for iOS.
 takeaway: Compose is four layers. The runtime keeps the composition and changes a tree of nodes only through an Applier. Compose UI plugs in an Applier for LayoutNodes and does layout, drawing and input. foundation builds layout and gesture blocks with no look of their own; Material adds a design system. Each layer uses only the ones below it, so Compose Multiplatform keeps its iOS code at the edge that meets the phone: mostly in Compose UI (the window, the canvas, touches, text input and accessibility), with a few touches in foundation.
 ---
 
 ## The problem
 
-The KMP course (puzzle 14) said Compose Multiplatform shares the Compose runtime with Jetpack Compose, and writes a thin platform layer for each target. Since then you've seen the runtime build a composition (puzzles 0 to 3) and a frame turn nodes into pixels (puzzle 4). If the runtime holds LayoutNodes in its slot table, how can it know "nothing about pixels"? And where exactly is the line between what's shared and what's written for iOS?
+The KMP course (puzzle 14) said Compose Multiplatform shares the Compose runtime with Jetpack Compose, and writes a thin platform layer for each target. Since then you've seen the runtime build a composition (puzzles 0 to 4) and a frame turn nodes into pixels (puzzle 5). If the runtime holds LayoutNodes in its slot table, how can it know "nothing about pixels"? And where exactly is the line between what's shared and what's written for iOS?
 
 ## See it
 
@@ -18,9 +18,9 @@ The KMP course (puzzle 14) said Compose Multiplatform shares the Compose runtime
 
 Android's docs describe Compose as layers in which "each layer is built upon the lower levels". From the bottom:
 
-**The runtime** holds the composition, the slot table, snapshot state and the Recomposer: everything from puzzles 0 to 3. When a call leaves a node, the runtime stores it, but never looks inside it. To change the tree of nodes, it goes through an **Applier**: a small object with operations such as insert a node at an index, remove some, move some. The runtime's code says that to build "a tree of a novel type" you write your own Applier. So the runtime works with any tree: LayoutNodes, or something else entirely.
+**The runtime** holds the composition, the slot table, snapshot state and the Recomposer: everything from puzzles 0 to 4. When a call leaves a node, the runtime stores it, but never looks inside it. To change the tree of nodes, it goes through an **Applier**: a small object with operations such as insert a node at an index, remove some, move some. The runtime's code says that to build "a tree of a novel type" you write your own Applier. So the runtime works with any tree: LayoutNodes, or something else entirely.
 
-**Compose UI** is the layer that plugs in an Applier for LayoutNodes (on Android, a class called `UiApplier`) and does everything from puzzle 4: `Modifier`, layout, drawing onto a canvas, and input such as touches.
+**Compose UI** is the layer that plugs in an Applier for LayoutNodes (on Android, a class called `UiApplier`) and does everything from puzzle 5: `Modifier`, layout, drawing onto a canvas, and input such as touches.
 
 **foundation** builds on Compose UI. `Row`, `Column`, `LazyColumn` and gestures such as scrolling live here: building blocks with no look of their own.
 

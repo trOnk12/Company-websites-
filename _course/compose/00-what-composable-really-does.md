@@ -2,7 +2,7 @@
 title: What @Composable really does
 short: The compiler plugin and the Composer
 summary: The KMP course said a compiler plugin adds "hidden bookkeeping" to every composable. Here's what it really adds: a hidden parameter that every composable hands on to the next, and a start and an end around every call.
-takeaway: The Compose compiler plugin rewrites every @Composable function. It adds a hidden $composer parameter (and a $changed one), and wraps the body in a start and an end, so everything the call records in between forms its group, labelled with a key from its place in the source. Each composable passes its Composer on to the composables it calls, which is why only a composable can call a composable.
+takeaway: The Compose compiler plugin rewrites every @Composable function. It adds a hidden $composer parameter (and a $changed one), and wraps the body in a start and an end, so everything the call records in between forms its group. The group's key comes from the function's name and parameters, so every call to the same function opens a group with the same key. Each composable passes its Composer on to the composables it calls, which is why only a composable can call a composable.
 ---
 
 ## The problem
@@ -18,7 +18,7 @@ Look at `Greeting`. It takes a name, calls `Text`, and returns `Unit`. A plain K
 
 ## The building block
 
-`@Composable` is an annotation, but it does more than label the function: the Compose compiler plugin, part of the Kotlin compiler since Kotlin 2.0.0, rewrites every function that carries it. Roughly (simplified from the comments in the plugin's own source code):
+`@Composable` is an annotation, but it does more than label the function: the Compose compiler plugin rewrites every function that carries it. Since Kotlin 2.0.0 the plugin's code lives with the Kotlin compiler's own code and ships with every Kotlin release, at the same version; your build turns it on with the Gradle plugin `org.jetbrains.kotlin.plugin.compose`. Roughly (simplified from the comments in the plugin's own source code):
 
 ```kotlin
 // What you write
@@ -30,7 +30,7 @@ fun Greeting(name: String) {
 // Roughly what the plugin turns it into
 @Composable
 fun Greeting(name: String, $composer: Composer, $changed: Int) {
-    $composer.startRestartGroup(1234)          // the key: a number for this spot in the source
+    $composer.startRestartGroup(1234)          // Greeting's key, made from its name and parameters
     Text("Hello, $name", $composer, /* … */)   // the composer is handed on
     $composer.endRestartGroup()
 }
@@ -40,15 +40,19 @@ Three things changed.
 
 **A hidden parameter.** `$composer` is the **Composer**, an object from the Compose runtime. Every composable call records what it did through it: which composables it called, in which order, with which arguments, and which values it asked to keep. You never call it yourself: the runtime's code says the Composer is "targeted by the Compose Kotlin compiler plugin", so it trusts that only generated code uses it.
 
-**A start and an end.** `startRestartGroup` opens the call's record and `endRestartGroup` closes it. Everything one call records between its start and its end belongs to that call: its **group**. Each group carries a key, a number the plugin computes from where the code sits in your source file (its offsets in the function), so the runtime can tell one group from its neighbours. Groups nest the way calls nest: `Greeting`'s group holds `Text`'s group inside it.
+**A start and an end.** `startRestartGroup` opens the call's record and `endRestartGroup` closes it. Everything one call records between its start and its end belongs to that call: its **group**. Groups nest the way calls nest: `Text` is a composable too, so it opens a group of its own, inside `Greeting`'s.
 
-**A second hidden parameter**, `$changed`: an `Int` in which the caller passes on what it already knows about each argument, such as "this is the same value as last time". Puzzle 3 shows what it's for.
+Each group carries a key, a number the plugin computes while it compiles. For a function's own group, the key comes from the function's name and parameter types: every call to `Greeting`, wherever it sits, opens a group with the same key. (Groups the plugin adds inside a body, such as one around an `if`, get keys from their position in the source instead; puzzle 1 uses them.) So the key says *which function* recorded a group, not which call. Two `Text` calls side by side open two groups with the same key; puzzle 1 shows how the runtime still tells them apart.
+
+The word *restart* in the name is a promise: Compose can later run this group again, on its own, from its start. Puzzle 3 shows when, and why that needs the group.
+
+**A second hidden parameter**, `$changed`: an `Int` in which the caller passes on what it already knows about each argument, such as "this is the same value as last time". Puzzle 4 shows what it's for.
 
 Then the rule you've met as a compile error. Inside `Greeting`, the call to `Text` gets `Greeting`'s own `$composer`. So one Composer travels down through every composable call, from where Compose starts (on Android, `setContent { }`; on iOS, the lambda you pass to `ComposeUIViewController`) to the smallest `Text`. A plain function, such as an `onClick` lambda, has no `$composer` to hand on, so the compiler refuses the call. That's what "a composable can only be called from another composable" means. It's the same shape as `suspend`: you can only call a suspending function from another suspending function.
 
-## Go deeper: Why a number and not the function's name?
+## Go deeper: Does a function's key change when you move it?
 
-- Two calls to `Text` sit in one `Column`, one above the other. Why can't the runtime label both groups "Text"?::Both would carry the same label, and the runtime could not tell them apart. The plugin computes each key from the call's position in the source, so the first and second `Text` get different keys.
+- You add ten blank lines above `Greeting` and build again. Does the key in `startRestartGroup` change?::No. The plugin's key builder hashes a text made from the function's name and parameter types ("fun-" followed by them), not its line or offset. Its own comment says the key is "durable": "a function with the same semantic identity will usually have the same key each time it is compiled". That lets tools that swap in edited code while the app runs tell the runtime exactly which functions' groups are out of date. Only the groups inside a body, around an `if` for example, use positions, and those positions are counted from the start of the function, so moving the whole function doesn't change them either.
 
 ## The analogy
 
@@ -57,14 +61,15 @@ The theatre from the KMP course, where the same play is staged in two theatres. 
 ## Check yourself
 
 - You write a plain function, showName, that calls `Text`, and you forget the @Composable on it. You build. What happens?::*The build fails: showName has no `$composer` to hand to `Text`||It builds, and `Text` throws an exception when showName runs >> The check happens at compile time: the hidden parameter is missing in the call, so the code never gets to run. >> s5||It builds, and the plugin adds a `$composer` parameter to showName >> The plugin rewrites only functions marked @Composable; showName stays a plain function. >> s2::No @Composable, no Composer to hand on, no build.
-- Why does the plugin wrap each composable's body in a start and an end?::*So the runtime knows which records belong to this one call||So Kotlin can run the body on a background thread later >> Nothing here is about threads: the start and end mark where one call's records begin and stop. >> s3||So the function returns an object Compose keeps and updates >> A composable still returns Unit; what's kept is what it recorded through the Composer. >> s1::Start and end mark one call's group.
-- `Greeting` calls `Text` twice: once for a title, once for a subtitle. How many groups does one run of `Greeting` record?::*Three: one for Greeting, with one for each Text inside it||One: the two Text calls share Greeting's group >> Every composable call opens its own group, nested inside its caller's. >> s3||Two: one per Text call, and none for Greeting itself >> Greeting is a composable too; the plugin wrapped its body in a start and an end. >> s3::One group per call, nested the way the calls nest.
+- A header and a footer both call `Greeting`. Each call opens a group. Do the two groups carry the same key?::*Yes: it comes from Greeting's name and parameters||No: each call gets a key from its own line in the source >> Position-based keys are for groups inside a body, such as around an `if`; a function's own group uses the function's key. >> the-building-block||No: the runtime numbers groups 1, 2, 3 as they run >> The key is computed by the plugin while it compiles, before anything runs. >> s3::Same function, same key; puzzle 1 shows how the two calls are told apart.
+- `Greeting` calls `Text` twice: a title, then a subtitle. While the subtitle's `Text` runs, which groups are open (started and not yet ended)?::*Greeting's group, and the subtitle Text's group inside it||Only the subtitle Text's: Greeting's group closed when the title's Text ended >> Greeting's end comes after its last line, so its group stays open around both Text calls. >> s3||Greeting's, the title Text's and the subtitle Text's >> The title's group ended when that call returned, before the subtitle started. >> s3::Groups nest the way calls nest, and each closes when its call returns.
 
 ## Sources
 
 - [Compose runtime source: Composable.kt](https://github.com/androidx/androidx/blob/c13c6d0da6b9d595f72caad9fa1759c6a8aece83/compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/Composable.kt#L24) ("Annotating a function or expression with [Composable] changes the type of that function or expression. For example, [Composable] functions can only ever be called from within another [Composable] function. A useful mental model for [Composable] functions is that an implicit "composable context" is passed into a [Composable] function")
 - [Compose runtime source: Composer.kt](https://github.com/androidx/androidx/blob/c13c6d0da6b9d595f72caad9fa1759c6a8aece83/compose/runtime/runtime/src/commonMain/kotlin/androidx/compose/runtime/Composer.kt#L153) ("Composer is the interface that is targeted by the Compose Kotlin compiler plugin and used by code generation helpers. It is highly recommended that direct calls these be avoided as the runtime assumes that the calls are generated by the compiler")
-- [Compose compiler plugin source: ComposableFunctionBodyTransformer.kt](https://github.com/JetBrains/kotlin/blob/445745fcddeb23e605547c2600a81472ef225c29/plugins/compose/compiler-hosted/src/main/java/androidx/compose/compiler/plugins/kotlin/lower/ComposableFunctionBodyTransformer.kt#L244) ("Generally speaking, every composable function *must* emit a single group when it executes. Every group can have any number of children groups."; its example rewrite: "@Composable fun A(x: Int, $composer: Composer<*>, $changed: Int) { $composer.startRestartGroup() … $composer.endRestartGroup()"; and the key, in sourceKey(): "hash = 31 * hash + (startOffset - currentFunctionScope.function.startOffset)")
-- [Kotlin docs: Compose compiler migration guide](https://kotlinlang.org/docs/compose-compiler-migration-guide.html) ("The Compose compiler has been merged into the Kotlin repository since Kotlin 2.0.0"; "the Compose compiler ships simultaneously with Kotlin and will always be compatible with Kotlin of the same version")
+- [Compose compiler plugin source: ComposableFunctionBodyTransformer.kt](https://github.com/JetBrains/kotlin/blob/445745fcddeb23e605547c2600a81472ef225c29/plugins/compose/compiler-hosted/src/main/java/androidx/compose/compiler/plugins/kotlin/lower/ComposableFunctionBodyTransformer.kt#L244) ("Generally speaking, every composable function *must* emit a single group when it executes. Every group can have any number of children groups."; its example rewrite: "@Composable fun A(x: Int, $composer: Composer<*>, $changed: Int) { $composer.startRestartGroup() … $composer.endRestartGroup()"; the function's own group gets "irStartRestartGroup(body, scope, irFunctionSourceKey())", while groups inside a body use sourceKey(): "hash = 31 * hash + (startOffset - currentFunctionScope.function.startOffset)")
+- [Compose compiler plugin source: DurableFunctionKeyTransformer.kt](https://github.com/JetBrains/kotlin/blob/445745fcddeb23e605547c2600a81472ef225c29/plugins/compose/compiler-hosted/src/main/java/androidx/compose/compiler/plugins/kotlin/lower/DurableFunctionKeyTransformer.kt#L50) ("This transform will generate a "durable" and mostly unique key for every function in the module."; "a function with the same semantic identity will usually have the same key each time it is compiled"; the key is built from "fun-$signature"; and in AbstractComposeLowering.kt, `IrSimpleFunction.sourceKey()` returns that durable key)
+- [Kotlin docs: Compose compiler migration guide](https://kotlinlang.org/docs/compose-compiler-migration-guide.html) ("The Compose compiler has been merged into the Kotlin repository since Kotlin 2.0.0"; "the Compose compiler ships simultaneously with Kotlin and will always be compatible with Kotlin of the same version"; the Gradle plugin entry: `compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }`)
 - [Android Developers: Thinking in Compose](https://developer.android.com/develop/ui/compose/mental-model) ("This annotation informs the Compose compiler that this function is intended to convert data into UI.")
 - [Kotlin docs: Coroutines basics](https://kotlinlang.org/docs/coroutines-basics.html) ("You can only call a suspending function from another suspending function.")

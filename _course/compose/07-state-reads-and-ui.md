@@ -7,7 +7,7 @@ takeaway: The group that runs again is the one where the state read happened, no
 
 ## The problem
 
-Module 1 ended with the whole stack, from the compiler plugin down to the edge that meets the phone. Now we use it on one shared screen that runs on Android and iOS. A reading app shows a header with the number of bookmarks and a list of saved items below it. Tapping a bookmark changes the count from 2 to 3. Puzzle 2 said Compose marks the groups that read the count. On this screen, which group is that, and how much of the screen runs again?
+Module 1 ended with the whole stack, from the compiler plugin down to the edge that meets the phone. Now we use it on one shared screen that runs on Android and iOS. A reading app shows a header with the number of bookmarks and a list of saved items below it. Tapping a bookmark changes the count from 2 to 3. Puzzle 3 said Compose marks the groups that read the count. On this screen, which group is that, and how much of the screen runs again?
 
 ## See it
 
@@ -26,7 +26,7 @@ fun BookmarksScreen(count: State<Int>) {
 }
 ```
 
-`count.value` is evaluated while `BookmarksScreen` runs, so the state read is noted against the screen's group. A tap marks the screen, and the whole screen body runs again: the header gets a new number and runs, and the list is skipped only because its arguments are equal (puzzle 3). On a small screen that's cheap. On a big one, or with a value that changes on every frame, it's work you don't need.
+`count.value` is evaluated while `BookmarksScreen` runs, so the state read is noted against the screen's group. A tap marks the screen, and the whole screen body runs again: the header gets a new number and runs, and the list is skipped only because its arguments are equal (puzzle 4). On a small screen that's cheap. On a big one, or with a value that changes on every frame, it's work you don't need.
 
 The fix is to move the read to where the value is used. Pass a lambda that reads the count, and call it inside the header:
 
@@ -45,7 +45,7 @@ fun BookmarkHeader(count: () -> Int) {
 
 Now the screen never reads the count. The lambda runs, and reads it, while `BookmarkHeader` runs, so the read is noted against the header's group. A tap marks only the header, and the screen and the list don't run at all. That's **deferring a read**: moving a state read out of a parent and into the child that needs the value, so less code runs again when it changes. Passing the `State` object itself works the same way, as long as the child is the one that reads `.value`.
 
-The lambda doesn't cost you skipping either. Under strong skipping (puzzle 3), the compiler remembers lambdas written inside a composable, so when the screen runs again for another reason, the header gets the same lambda instance and is skipped.
+The lambda doesn't cost you skipping either. Under strong skipping (puzzle 4), the compiler remembers lambdas written inside a composable, so when the screen runs again for another reason, the header gets the same lambda instance and is skipped.
 
 Deferring is a tool, not a rule. Android's guide lists it under fixing a performance issue you've found: reach for it when a value changes often, or the parent is big.
 

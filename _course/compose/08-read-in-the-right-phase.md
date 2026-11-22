@@ -7,7 +7,7 @@ takeaway: A state read is noted in the phase that makes it. Read a scroll positi
 
 ## The problem
 
-Puzzle 6 deferred a read from a parent into the child that needs the value. Now a card on the same screen slides down as you scroll. Its text and size stay the same; only its position changes, on every frame of the scroll. Running composition for each of those frames is work nobody sees. Can the read move somewhere cheaper than composition?
+Puzzle 7 deferred a read from a parent into the child that needs the value. Now a card on the same screen slides down as you scroll. Its text and size stay the same; only its position changes, on every frame of the scroll. Running composition for each of those frames is work nobody sees. Can the read move somewhere cheaper than composition?
 
 ## See it
 
@@ -16,7 +16,7 @@ Puzzle 6 deferred a read from a parent into the child that needs the value. Now 
 
 ## The building block
 
-Puzzle 4 split every frame into three phases: composition, layout (measure, then place) and drawing. Puzzle 2's state reads are noted per phase: Compose records which phase was running when the value was read, and a change reruns that phase onward, not everything.
+Puzzle 5 split every frame into three phases: composition, layout (measure, then place) and drawing. Puzzle 3's state reads are noted per phase: Compose records which phase was running when the value was read, and a change reruns that phase onward, not everything.
 
 The first version reads the position at the top of the composable. The position is an integer number of pixels:
 
@@ -37,7 +37,7 @@ Box(modifier = Modifier.offset { IntOffset(x = 0, y = position.value) }) {
 }
 ```
 
-Now a scroll step reruns placement only. Composition doesn't run, and measuring doesn't either: Android's docs note that measuring and placing have separate restart scopes, so a read during placement doesn't redo the measuring before it. The card keeps its size and moves. It's the same idea as puzzle 6, deferring a read, but to a later phase instead of a smaller group.
+Now a scroll step reruns placement only. Composition doesn't run, and measuring doesn't either: Android's docs note that measuring and placing have separate restart scopes, so a read during placement doesn't redo the measuring before it. The card keeps its size and moves. It's the same idea as puzzle 7, deferring a read, but to a later phase instead of a smaller group.
 
 The same works one phase further. If a value only changes paint, such as a background colour that follows the scroll, read it inside a drawing lambda:
 

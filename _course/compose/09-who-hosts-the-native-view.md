@@ -7,7 +7,7 @@ takeaway: A shared screen can sit inside an iOS view controller. Inside that scr
 
 ## The problem
 
-Puzzles 6 and 7 stayed inside the shared screen. Puzzle 5 said the part of Compose that meets the phone is written per platform, and on iOS the whole screen is drawn inside one UIKit view controller (the KMP course, puzzle 15). Now the edges. Our shared bookmarks screen already runs on Android. On iOS it sits under the app’s existing navigation bar. The search field uses UIKit because it needs a behavior specific to Apple’s text field. Which object hosts which?
+Puzzles 7 and 8 stayed inside the shared screen. Puzzle 6 said the part of Compose that meets the phone is written per platform, and on iOS the whole screen is drawn inside one UIKit view controller (the KMP course, puzzle 15). Now the edges. Our shared bookmarks screen already runs on Android. On iOS it sits under the app’s existing navigation bar. The search field uses UIKit because it needs a behavior specific to Apple’s text field. Which object hosts which?
 
 ## See it
 

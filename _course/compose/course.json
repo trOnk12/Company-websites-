@@ -13,20 +13,21 @@
       "puzzles": [
         "00-what-composable-really-does.md",
         "01-the-tree-compose-remembers.md",
-        "02-who-read-that-state.md",
-        "03-what-gets-skipped.md",
-        "04-one-frame.md",
-        "05-four-layers.md"
+        "02-which-row-is-which.md",
+        "03-who-read-that-state.md",
+        "04-what-gets-skipped.md",
+        "05-one-frame.md",
+        "06-four-layers.md"
       ]
     },
     {
       "title": "Module 2: One screen, two platforms",
       "blurb": "Trace state reads, placement, native UI and accessibility through the same shared bookmark screen.",
       "puzzles": [
-        "06-state-reads-and-ui.md",
-        "07-read-in-the-right-phase.md",
-        "08-who-hosts-the-native-view.md",
-        "09-pixels-and-voiceover.md"
+        "07-state-reads-and-ui.md",
+        "08-read-in-the-right-phase.md",
+        "09-who-hosts-the-native-view.md",
+        "10-pixels-and-voiceover.md"
       ]
     }
   ],
