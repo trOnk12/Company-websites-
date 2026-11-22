@@ -46,9 +46,10 @@
     {
       "id": "backend",
       "title": "Backend and system design",
-      "intro": "Start with a single request and take a bookmark service through deployment. Then inspect the JVM that runs the code. Finish by defending a reservation design when clients retry and servers fail.",
+      "intro": "Start with a single request and take a bookmark service through deployment. Look under the container it ships in, then inspect the JVM that runs the code. Finish by defending a reservation design when clients retry and servers fail.",
       "courses": [
         "backend-ops",
+        "docker",
         "jvm",
         "system-design"
       ]
@@ -95,6 +96,7 @@
     "ble": "Follow a sensor from its first radio advertisement to a connection and a GATT notification.",
     "llm": "Trace a model call from tokens to streaming, then compare two ways of finding evidence for a chat assistant.",
     "compose": "Follow a shared screen through state reads, placement, native iOS interop and VoiceOver.",
-    "transport": "Work through TCP byte numbers, TLS identity checks, HTTPS timing and what packet loss does to HTTP/2 and HTTP/3."
+    "transport": "Work through TCP byte numbers, TLS identity checks, HTTPS timing and what packet loss does to HTTP/2 and HTTP/3.",
+    "docker": "Find a container's process on the host, then take its fence apart: namespaces, cgroups, and the chain from docker run to runc."
   }
 }

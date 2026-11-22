@@ -1,0 +1,19 @@
+<!-- label: A mount namespace gives a process its own list of mounts: a mount made inside is invisible outside, and Docker mounts the image's files at / -->
+<!-- question: Which file tree does each process see, and where does a container's / come from? type: before/after (the same file tree drawn twice, host and new mount namespace). Real output from the run on 22 November 2026: the tmpfs file "inside" is listed inside and nothing outside; the container's /etc/os-release says Alpine Linux v3.20. -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mn-t"><title id="mn-t">Left, the host: / is mounted from the host's disk, /etc/os-release says Ubuntu, /tmp/demo is an empty folder. Right, a new mount namespace starts as a copy of the same list. A tmpfs mounted at /tmp/demo inside holds the file inside; the host's /tmp/demo stays empty. Docker mounts the image alpine:3.20 at / instead, so /etc/os-release there says Alpine</title>
+<g class="step s1"><text class="d-b" x="36" y="44">host</text><text class="d-mi" x="36" y="92">/ ← host disk</text><text class="d-mi" x="36" y="142">etc/os-release:</text><text class="d-a" x="200" y="142">Ubuntu</text><rect class="d-paper" x="30" y="168" width="256" height="128" rx="8"/><text class="d-mi" x="44" y="194">tmp/demo/</text></g>
+<line class="d-line step s2" x1="320" y1="24" x2="320" y2="300"/>
+<g class="step s2" data-pulse="2"><text class="d-a step s2 hide-5" x="344" y="44">new mount namespace</text><text class="d-a step s5" x="344" y="44">the container's</text><text class="d-mi step s2 hide-5" x="344" y="92">/ ← host disk</text><text class="d-mi" x="344" y="142">etc/os-release:</text><text class="d-a step s2 hide-5" x="508" y="142">Ubuntu</text></g>
+<g class="step s2 hide-5"><rect class="d-paper" x="338" y="168" width="266" height="128" rx="8"/><text class="d-mi" x="352" y="194">tmp/demo/</text></g>
+<g class="step s3 hide-5" data-pulse="3"><rect class="d-hl" x="350" y="208" width="242" height="78" rx="6"/><text class="d-tiny" x="362" y="230">tmpfs mounted here</text><text class="d-mi" x="330" y="336">$ mount -t tmpfs none /tmp/demo</text></g>
+<g class="step s3 hide-5" data-move="2:520,320 3:520,232"><rect class="d-paper" x="0" y="0" width="30" height="36" rx="3"/><line class="d-line" x1="6" y1="12" x2="24" y2="12"/><line class="d-line" x1="6" y1="22" x2="20" y2="22"/><text class="d-tiny" x="-40" y="26" text-anchor="middle">inside</text></g>
+<text class="d-r step s4" x="158" y="246" text-anchor="middle" data-pulse="4">empty</text>
+<g class="step s5" data-pulse="5"><text class="d-mi" x="344" y="92">/ ← alpine:3.20</text><text class="d-tiny" x="604" y="70" text-anchor="end">pivot_root</text><text class="d-a" x="508" y="142">Alpine</text><rect class="d-share" x="338" y="168" width="266" height="128" rx="8"/><text class="d-tiny" x="471" y="238" text-anchor="middle">the image's files</text></g>
+</svg>
+<ol class="caps">
+<li><p>All files sit in one tree that starts at /. A <b>mount</b> attaches a set of files, such as a disk, to a folder in that tree. On the host, / comes from its disk, and /etc/os-release says Ubuntu.</p></li>
+<li><p><code>unshare --mount</code> starts a shell in a new <b>mount namespace</b>: its own list of mounts, starting as a copy of the host's. For now both sides see the same files.</p></li>
+<li><p>Inside, the shell mounts a tmpfs, a filesystem kept in memory, on /tmp/demo and creates a file, inside. <i>Predict: what does the host's ls /tmp/demo print?</i></p></li>
+<li><p>Nothing: that mount is only in the new namespace's list. The host's /tmp/demo is still the empty folder on its disk.</p></li>
+<li><p>Docker goes further: in the container's namespace, Docker's runtime calls pivot_root: the image's files go to / and the host's are unmounted. That's the container's <b>root filesystem</b>: /etc/os-release now says Alpine, and the host's files aren't in its tree at all.</p></li>
+</ol>
