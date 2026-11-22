@@ -1,11 +1,11 @@
 {
   "title": "System design from first principles to design review",
   "intro": "Design a parking service that can refuse the last space, survive a lost reply and recover its booking history. Trace each decision in a diagram, then inspect the rows or timings that would prove it wrong.",
-  "how": "Start with the two-driver reservation. Use Run SQL to change the data in your browser, Worked code for Python 3, or Run code to compare JavaScript scenarios. The transaction lesson lets you switch between commit and rollback. Finish by defending a design for a different workload.",
+  "how": "Start with two drivers and one parking space. Follow what each driver sees and what the service saves. The first two lessons can be done by hand. Their optional SQL examples show how to check the same answers in your browser.",
   "modules": [
     {
-      "title": "From promises to a write path",
-      "blurb": "Estimate demand and decide who owns the last space.",
+      "title": "Bookings, busy periods and lost replies",
+      "blurb": "Check who booked the last space, size a test for the busy minutes and find a saved booking after a process stops.",
       "puzzles": [
         "00-promise.md",
         "01-demand.md",

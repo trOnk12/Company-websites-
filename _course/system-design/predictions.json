@@ -3,52 +3,52 @@
     "step": 2,
     "question": "Both drivers have tapped Reserve. Which observation would prove the service broke its promise?",
     "options": [
-      "Two active grants for B12",
+      "Two current bookings for B12",
       "Two requests for B12"
     ],
     "answer": 0,
-    "hint": "A tap asks for a space. Which observation would show that both drivers actually own it?",
-    "why": "Two active grants for the same space prove a double booking. Two requests tell us only that there were two contenders.",
-    "bridge": "Two phones can ask for the same space. How many such requests could arrive in the busiest ten minutes?"
+    "hint": "A tap asks for a space. The service can still refuse it. Which answer shows that both drivers got B12?",
+    "why": "Two bookings for B12 tonight give both drivers the same space. Two requests can still end with one refusal.",
+    "bridge": "Both drivers checked the map before booking. After a concert, how many map requests should the service be able to handle?"
   },
   "01-demand": {
     "step": 2,
-    "question": "One fifth of 1.2 million reads arrive in ten minutes. What is the average arrival rate within that window?",
+    "question": "One fifth of 1.2 million map requests arrive in ten minutes. How many requests per second is that on average?",
     "options": [
-      "14 reads/s",
-      "400 reads/s"
+      "14 requests per second",
+      "400 requests per second"
     ],
     "answer": 1,
     "hint": "First count the 240,000 reads in the burst. How many seconds are in the burst itself?",
     "why": "240,000 divided by 600 gives 400 reads per second. Dividing by a day would hide the burst.",
-    "bridge": "Suppose the peak needs two service instances. Which one is allowed to grant the last space?"
+    "bridge": "The team starts a second copy of the program for the rush. Can it find a booking saved by the first copy?"
   },
   "02-write-boundary": {
     "step": 3,
-    "question": "Handler A has stopped after commit. Where can B discover the outcome?",
+    "question": "Process A saved booking 17 and then stopped. Where can process B find the booking?",
     "options": [
-      "The shared store",
-      "A fresh process counter"
+      "The database both processes use",
+      "The variables in process A"
     ],
     "answer": 0,
-    "hint": "B starts with its own memory. Follow grant 17 to the component that recorded it.",
-    "why": "B can retrieve grant 17 from the shared store even though the first reply was lost.",
-    "bridge": "Sharing one database gives both handlers a place to write. What keeps both from claiming the last space?"
+    "hint": "A is gone. Which place did it save the booking before it stopped?",
+    "why": "B reads booking 17 from the same database. The database kept it when A stopped.",
+    "bridge": "A and B share a database. What happens if both read one free space before either saves a booking?"
   },
   "03-conditional-write": {
     "step": 2,
-    "question": "When Ada's selected decision takes effect, how many inventory rows can Ben's update change?",
+    "question": "After Ada makes the selected choice, how many rows will Ben’s update change?",
     "options": [
       "Zero rows",
       "One row"
     ],
     "answer": 0,
-    "hint": "The selected decision is commit. Start from one space and keep Ada’s decrement before testing for a positive count.",
+    "hint": "Ada keeps her change. After her count drops from one to zero, does Ben’s check that the count is above zero pass?",
     "why": "Ada commits a free count of zero. Ben rechecks the row, finds no free space and changes zero rows.",
-    "bridge": "One grant survives. What should the phone send if the winning confirmation never arrives?",
+    "bridge": "One booking survives. What should the driver’s phone send if the confirmation never arrives?",
     "changed": {
       "answer": 1,
-      "hint": "The selected decision is rollback. Undo Ada’s decrement first. What number does Ben test now?",
+      "hint": "Ada undoes her change. After the count goes back to one, does Ben’s check that it is above zero pass?",
       "why": "Ada rolls back. The free count returns to one. Ben’s condition matches and his update changes one row."
     }
   },

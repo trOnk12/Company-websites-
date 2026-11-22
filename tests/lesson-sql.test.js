@@ -4,25 +4,28 @@ const { test, expect } = require('@playwright/test');
 
 test('run, change, repair and restore the reservation contract in its lesson', async ({ page }) => {
   await page.goto('/course/system-design/00-promise.html');
+  await expect(page.getByRole('heading', { name: 'Read the two bookings' })).toBeVisible();
+  await expect(page.locator('[data-sql-exercise]')).toBeHidden();
   await page.getByRole('link', { name: 'Run SQL', exact: true }).click();
   const exercise = page.locator('[data-sql-exercise]');
   const run = exercise.getByRole('button', { name: 'Run SQL' });
   const status = exercise.getByRole('status');
   await run.click();
-  await expect(exercise.getByRole('cell', { name: 'evening' })).toBeVisible();
+  await expect(exercise.getByRole('cell', { name: 'Ada' })).toBeVisible();
+  await expect(exercise.getByRole('cell', { name: 'Ben' })).toBeVisible();
   await exercise.getByRole('button', { name: 'Edit SQL' }).click();
   const editor = exercise.getByRole('textbox', { name: 'SQL to run' });
   const original = await editor.inputValue();
-  await editor.fill(original.replace("'Ben', 'B12', 1", "'Ben', 'B12', 0"));
+  await editor.fill(original.replace("'Ben', 'B12'", "'Ben', 'B13'"));
   await run.click();
-  await expect(exercise.getByText('No rows matched.')).toBeVisible();
+  await expect(exercise.getByRole('cell')).toHaveText(['Ada']);
   await editor.fill('SELECT FROM');
   await run.click();
   await expect(status).toContainText('SQLite:');
   await exercise.getByRole('button', { name: 'Restore original SQL' }).click();
   await expect(editor).toHaveValue(original);
   await run.click();
-  await expect(exercise.getByRole('cell', { name: 'evening' })).toBeVisible();
+  await expect(exercise.getByRole('cell', { name: 'Ben' })).toBeVisible();
 });
 
 test('duplicate delivery leaves one effect and rollback leaves zero', async ({ page }) => {
@@ -42,13 +45,13 @@ test('changing the transaction outcome changes the lock diagram and its explanat
   await figure.getByRole('button', { name: 'Reveal next step' }).click();
   await expect(figure.locator('.caps .changed-outcome').filter({ hasText: 'Ada rolls back.' })).toBeVisible();
   await figure.locator('.dots label').last().click();
-  await expect(figure.getByText('Grant: Ben', { exact: true })).toBeVisible();
+  await expect(figure.getByText('Booked: Ben', { exact: true })).toBeVisible();
   await figure.getByRole('combobox').selectOption('original');
   await figure.getByRole('button', { name: 'Zero rows', exact: true }).click();
   await figure.getByRole('button', { name: 'Reveal next step' }).click();
   await figure.locator('.dots label').last().click();
-  await expect(figure.getByText('Grant: Ada', { exact: true })).toBeVisible();
-  await expect(figure.getByText('Grant: Ben', { exact: true })).toBeHidden();
+  await expect(figure.getByText('Booked: Ada', { exact: true })).toBeVisible();
+  await expect(figure.getByText('Booked: Ben', { exact: true })).toBeHidden();
   expect(await figure.locator('.stage').evaluate(el => el.scrollWidth - el.clientWidth)).toBeLessThanOrEqual(1);
 });
 

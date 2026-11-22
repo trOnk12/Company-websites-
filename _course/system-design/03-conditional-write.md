@@ -1,13 +1,15 @@
 ---
 title: How does the database choose a winner?
 short: How does the database choose a winner?
-summary: Keep the claim and the inventory change together.
-takeaway: A zero-row conditional decrement lets the transaction roll back a claim on a full lot.
+summary: Follow Ada and Ben as they try to take the last space from the same database.
+takeaway: Check that a space is free at the moment you take it. Save the booking only when that change succeeds.
 ---
 
 ## The problem
 
-Both processes read one, calculate zero and write their own reservation. The final counter looks right. How could the lot have sold twice? To read the diagram, follow one rule: while a writer holds the inventory row, the other writer must wait. A commit keeps the first change. A rollback undoes it.
+In puzzle 2, two copies of the parking program shared one database. Ada’s request reaches one copy and Ben’s reaches the other. Each reads “1 free,” subtracts one and writes “0 free.” If each also saves a booking, both drivers get B12. The final count of zero hides the mistake.
+
+To follow the diagram, picture Ada changing the count first. A transaction is a group of changes the database saves or undoes together. The database locks the row with the free-space count, which makes Ben’s update wait. A commit keeps Ada’s changes. A rollback undoes her unfinished changes. Decide what Ben should see after each outcome.
 
 ## See it
 
@@ -16,11 +18,11 @@ Both processes read one, calculate zero and write their own reservation. The fin
 
 ## The building block
 
-Use a transaction, a group of changes committed or rolled back together. Insert the reservation, then decrement inventory only where the lot matches and the free count is positive. The affected-row count reports how many rows changed. A primary key identifies one lot, so this particular update can affect zero or one. An update across many lots can return a larger number.
+For one attempt, start a transaction, add the booking and try to subtract one from the lot’s free-space count. Put the check “free > 0” in the update that subtracts one. Picture a clerk who writes down Ben’s name in pencil, then erases it if the last spot is already taken. The database’s transaction lets the program undo that booking.
 
-PostgreSQL is a relational database. Under its default Read Committed isolation, a competing update can wait for the first writer. If the first writer commits, the database checks the condition again against the updated row. Zero matches means this existing lot has no available space. Roll back the inserted reservation. The phone sees the service's refusal. It never receives a low-level database lock notification.
+In PostgreSQL’s default mode, called Read Committed, Ben’s update waits while Ada holds the lock. Once Ada commits, PostgreSQL checks Ben’s “free > 0” against the new value, zero. It changes zero rows. If Ada instead rolls back, Ben can take the space. The program reads the number of rows changed and uses it to decide whether to save Ben’s booking or undo it.
 
-In the JVM lab, both statements run inside one transaction. A zero update count causes a rollback.
+The two statements below do the work for one booking. Each question mark is a placeholder. The program supplies the booking’s reference and lot name to the first statement, then the same lot name to the update. Since the lot name identifies one row in this example, that update can change at most one row.
 
 ```sql
 INSERT INTO parking_session(id, lot) VALUES (?, ?);
@@ -29,7 +31,9 @@ UPDATE lot SET free = free - 1 WHERE name = ? AND free > 0;
 
 ## Run the same condition twice
 
-Start after the two requests reach the database. Each attempt inserts a provisional grant, then tries to take a space. Read the output from top to bottom. `RETURNING` asks the database to show the row that the update changed. Before pressing Run SQL, predict what Ben's update returns and whose name survives his rollback.
+The first three lines set up one lot with one free space and an empty list of bookings. Each block starts a transaction, adds the driver’s booking, then subtracts one only if the count is still positive. `RETURNING` shows the new free count for each row the update changed. The last question pairs each saved driver’s name with the free count for the only lot in the example.
+
+Before pressing Run SQL, write down three predictions: what Ada’s update shows, what Ben’s update shows and whose name appears at the end.
 
 ```sql run
 CREATE TABLE lot (name TEXT PRIMARY KEY, free INTEGER);
@@ -116,12 +120,11 @@ Ada has changed the last free space to zero, but her transaction is still open. 
 
 [Step through four PostgreSQL schedules](https://pachulski.dev/labs/parking-design/#isolation)
 
-The final two experiments move the rule across rows. Compare the number of attendants left on call under Repeatable Read and Serializable. When PostgreSQL rejects a decision, identify the first read that must be repeated.
 
 ## Check yourself
 
 - Why can a valid update affect zero rows?::The service never received the request >> A successfully executed statement can match nothing. >> the-building-block||*Its condition no longer matches::A successfully executed statement can match nothing.
-- Does a final count of zero prove correctness?::*Count the active grants too||Yes, zero proves one sale >> Two grants could have written the same final count. >> the-building-block::Two grants could have written the same final count.
+- The final count says zero. Could both drivers still have a booking?::*Yes, if both saved a booking and wrote zero||No, zero proves that only one driver booked >> Two attempts could write the same count. Check the booking records. >> the-building-block::The count alone can hide two bookings.
 - What disappears when Ben rolls back?::Ada's committed grant >> Each attempt owns its own transaction. >> the-building-block||*Ben's uncommitted grant::Each attempt owns its own transaction.
 
 ## Sources

@@ -1,14 +1,14 @@
-<!-- label: One inventory row, two attempted grants -->
+<!-- label: Two attempts to book the last space -->
 <label class="diagram-choice">Ada’s transaction
 <select data-compare-step="3"><option value="original">Commit the change</option><option value="changed">Roll back the change</option></select></label>
 <svg class="design-figure" viewBox="0 0 420 253" role="img" aria-labelledby="d-title">
-<title id="d-title">One inventory row, two attempted grants</title>
-<text class="d-b" x="12" y="28" text-anchor="start">Same lot · Read Committed</text>
+<title id="d-title">Two attempts to book the last space</title>
+<text class="d-b" x="12" y="28" text-anchor="start">One free space</text>
 <path class="d-dash" d="M18,65H402"/>
 <path class="d-dash" d="M18,111H402"/>
 <path class="d-dash" d="M18,158H402"/>
 <path class="d-dash" d="M18,206H402"/>
-<text class="d-mi" x="15" y="56" text-anchor="start">Lot row</text>
+<text class="d-mi" x="15" y="56" text-anchor="start">Free count</text>
 <text class="d-b" x="144" y="56" text-anchor="start">Ada</text>
 <text class="d-b" x="272" y="56" text-anchor="start">Ben</text>
 <g class="step s1">
@@ -27,15 +27,15 @@
   <text class="d-t" x="272" y="190" text-anchor="start">Rechecks</text>
 </g>
 <g class="step s4">
-  <text class="d-t" x="15" y="237" text-anchor="start"><tspan class="original-outcome">Grant: Ada</tspan><tspan class="changed-outcome">Grant: Ben</tspan></text>
+  <text class="d-t" x="15" y="237" text-anchor="start"><tspan class="original-outcome">Booked: Ada</tspan><tspan class="changed-outcome">Booked: Ben</tspan></text>
   <text class="d-a" x="144" y="237" text-anchor="start"><tspan class="original-outcome">Confirmed</tspan><tspan class="changed-outcome">Rolled back</tspan></text>
   <text class="d-r" x="272" y="237" text-anchor="start"><tspan class="original-outcome">0 changed</tspan><tspan class="changed-outcome">1 changed</tspan></text>
 </g>
 <g transform="translate(397 88)" data-move="1:397,88 2:397,136 3:397,183 4:397,230"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
 </svg>
 <ol class="caps">
-<li><p>Two transactions try to change the same inventory row. There is one free space. Each has started its own provisional reservation.</p></li>
-<li><p>Ada changes one to zero and holds the row lock. Ben attempts his conditional update. He waits while the outcome of Ada’s transaction is undecided.</p></li>
-<li><p><span class="original-outcome">Ada commits zero free spaces. Ben wakes and checks whether the free count is positive.</span><span class="changed-outcome">Ada rolls back. Her decrement disappears. Ben wakes and checks the restored count of one.</span></p></li>
-<li><p><span class="original-outcome">Zero rows match. Ben rolls back his provisional grant. Only Ada receives confirmation.</span><span class="changed-outcome">One row matches. Ben takes the space and commits his provisional grant. Only Ben receives confirmation.</span></p></li>
+<li><p>Ada and Ben start separate transactions. Each adds a booking that will disappear if its transaction rolls back.</p></li>
+<li><p>Ada changes one to zero. Ben’s update waits for her lock on the free-space row.</p></li>
+<li><p><span class="original-outcome">Ada commits. Ben’s update checks the saved count, now zero.</span><span class="changed-outcome">Ada rolls back. Ben’s update checks the restored count of one.</span></p></li>
+<li><p><span class="original-outcome">Ben changes zero rows and rolls back his booking. Only Ada gets confirmed.</span><span class="changed-outcome">Ben changes one row and commits his booking. Only Ben gets confirmed.</span></p></li>
 </ol>

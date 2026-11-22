@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Keep the claim and the inventory change together.">
+  <meta name="description" content="Follow Ada and Ben as they try to take the last space from the same database.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="How does the database choose a winner? – System design from first principles to design review – Mateusz Pachulski">
-  <meta property="og:description" content="Keep the claim and the inventory change together.">
+  <meta property="og:description" content="Follow Ada and Ben as they try to take the last space from the same database.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/system-design/03-conditional-write">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -54,11 +54,11 @@
       <div class="lesson-header">
         <p class="eyebrow">Puzzle 3 · 4 of 19</p>
         <h1>How does the database choose a winner?</h1>
-        <p class="lede">Keep the claim and the inventory change together.</p>
+        <p class="lede">Follow Ada and Ben as they try to take the last space from the same database.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" aria-current="page" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Two drivers tap Reserve. Who gets the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Where is Ada’s booking when her reply is lost?">2</a></li><li><a href="03-conditional-write.html" aria-current="page" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -70,25 +70,26 @@
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Two drivers tap Reserve. Who gets the last space?</summary><p>Two phones can show the same free space. At most one driver can have it booked for the same time.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
-      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
+      </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Both processes read one, calculate zero and write their own reservation. The final counter looks right. How could the lot have sold twice? To read the diagram, follow one rule: while a writer holds the inventory row, the other writer must wait. A commit keeps the first change. A rollback undoes it.</p>
+<p>In puzzle 2, two copies of the parking program shared one database. Ada’s request reaches one copy and Ben’s reaches the other. Each reads “1 free,” subtracts one and writes “0 free.” If each also saves a booking, both drivers get B12. The final count of zero hides the mistake.</p>
+<p>To follow the diagram, picture Ada changing the count first. A transaction is a group of changes the database saves or undoes together. The database locks the row with the free-space count, which makes Ben’s update wait. A commit keeps Ada’s changes. A rollback undoes her unfinished changes. Decide what Ben should see after each outcome.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="One inventory row, two attempted grants"><input type="radio" name="st-conditional-write" id="st-conditional-write-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-2" aria-label="Step 2 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-3" aria-label="Step 3 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-4" aria-label="Step 4 of 4"><label class="diagram-choice">Ada’s transaction
+<figure class="stepper" aria-label="Two attempts to book the last space"><input type="radio" name="st-conditional-write" id="st-conditional-write-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-2" aria-label="Step 2 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-3" aria-label="Step 3 of 4"><input type="radio" name="st-conditional-write" id="st-conditional-write-4" aria-label="Step 4 of 4"><label class="diagram-choice">Ada’s transaction
 <select data-compare-step="3"><option value="original">Commit the change</option><option value="changed">Roll back the change</option></select></label>
 <div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 253" role="img" aria-labelledby="d-title">
-<title id="d-title">One inventory row, two attempted grants</title>
-<text class="d-b" x="12" y="28" text-anchor="start">Same lot · Read Committed</text>
+<title id="d-title">Two attempts to book the last space</title>
+<text class="d-b" x="12" y="28" text-anchor="start">One free space</text>
 <path class="d-dash" d="M18,65H402"/>
 <path class="d-dash" d="M18,111H402"/>
 <path class="d-dash" d="M18,158H402"/>
 <path class="d-dash" d="M18,206H402"/>
-<text class="d-mi" x="15" y="56" text-anchor="start">Lot row</text>
+<text class="d-mi" x="15" y="56" text-anchor="start">Free count</text>
 <text class="d-b" x="144" y="56" text-anchor="start">Ada</text>
 <text class="d-b" x="272" y="56" text-anchor="start">Ben</text>
 <g class="step s1">
@@ -107,7 +108,7 @@
   <text class="d-t" x="272" y="190" text-anchor="start">Rechecks</text>
 </g>
 <g class="step s4">
-  <text class="d-t" x="15" y="237" text-anchor="start"><tspan class="original-outcome">Grant: Ada</tspan><tspan class="changed-outcome">Grant: Ben</tspan></text>
+  <text class="d-t" x="15" y="237" text-anchor="start"><tspan class="original-outcome">Booked: Ada</tspan><tspan class="changed-outcome">Booked: Ben</tspan></text>
   <text class="d-a" x="144" y="237" text-anchor="start"><tspan class="original-outcome">Confirmed</tspan><tspan class="changed-outcome">Rolled back</tspan></text>
   <text class="d-r" x="272" y="237" text-anchor="start"><tspan class="original-outcome">0 changed</tspan><tspan class="changed-outcome">1 changed</tspan></text>
 </g>
@@ -115,27 +116,28 @@
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>Two transactions try to change the same inventory row. There is one free space. Each has started its own provisional reservation.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-conditional-write-2">Next →</label></div></li>
-<li><p>Ada changes one to zero and holds the row lock. Ben attempts his conditional update. He waits while the outcome of Ada’s transaction is undecided.</p><fieldset class="diagram-prediction" data-hint="The selected decision is commit. Start from one space and keep Ada’s decrement before testing for a positive count." data-reason="Ada commits a free count of zero. Ben rechecks the row, finds no free space and changes zero rows." data-changed-hint="The selected decision is rollback. Undo Ada’s decrement first. What number does Ben test now?" data-changed-reason="Ada rolls back. The free count returns to one. Ben’s condition matches and his update changes one row.">
-<legend>When Ada's selected decision takes effect, how many inventory rows can Ben's update change?</legend>
+<li><p>Ada and Ben start separate transactions. Each adds a booking that will disappear if its transaction rolls back.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-conditional-write-2">Next →</label></div></li>
+<li><p>Ada changes one to zero. Ben’s update waits for her lock on the free-space row.</p><fieldset class="diagram-prediction" data-hint="Ada keeps her change. After her count drops from one to zero, does Ben’s check that the count is above zero pass?" data-reason="Ada commits a free count of zero. Ben rechecks the row, finds no free space and changes zero rows." data-changed-hint="Ada undoes her change. After the count goes back to one, does Ben’s check that it is above zero pass?" data-changed-reason="Ada rolls back. The free count returns to one. Ben’s condition matches and his update changes one row.">
+<legend>After Ada makes the selected choice, how many rows will Ben’s update change?</legend>
 <div class="actions" data-prediction-controls hidden><button type="button" class="button" data-answer>Zero rows</button><button type="button" class="button" data-changed-answer>One row</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-conditional-write-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-conditional-write-3">Next →</label></div></li>
-<li><p><span class="original-outcome">Ada commits zero free spaces. Ben wakes and checks whether the free count is positive.</span><span class="changed-outcome">Ada rolls back. Her decrement disappears. Ben wakes and checks the restored count of one.</span></p><div class="stepnav"><label for="st-conditional-write-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-conditional-write-4">Next →</label></div></li>
-<li><p><span class="original-outcome">Zero rows match. Ben rolls back his provisional grant. Only Ada receives confirmation.</span><span class="changed-outcome">One row matches. Ben takes the space and commits his provisional grant. Only Ben receives confirmation.</span></p><div class="stepnav"><label for="st-conditional-write-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-conditional-write-1">↺ Again</label></div></li>
+<li><p><span class="original-outcome">Ada commits. Ben’s update checks the saved count, now zero.</span><span class="changed-outcome">Ada rolls back. Ben’s update checks the restored count of one.</span></p><div class="stepnav"><label for="st-conditional-write-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-conditional-write-4">Next →</label></div></li>
+<li><p><span class="original-outcome">Ben changes zero rows and rolls back his booking. Only Ada gets confirmed.</span><span class="changed-outcome">Ben changes one row and commits his booking. Only Ben gets confirmed.</span></p><div class="stepnav"><label for="st-conditional-write-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-conditional-write-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-conditional-write-1" title="Step 1"></label><label for="st-conditional-write-2" title="Step 2"></label><label for="st-conditional-write-3" title="Step 3"></label><label for="st-conditional-write-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/conditional-write.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Use a transaction, a group of changes committed or rolled back together. Insert the reservation, then decrement inventory only where the lot matches and the free count is positive. The affected-row count reports how many rows changed. A primary key identifies one lot, so this particular update can affect zero or one. An update across many lots can return a larger number.</p>
-<p>PostgreSQL is a relational database. Under its default Read Committed isolation, a competing update can wait for the first writer. If the first writer commits, the database checks the condition again against the updated row. Zero matches means this existing lot has no available space. Roll back the inserted reservation. The phone sees the service's refusal. It never receives a low-level database lock notification.</p>
-<p>In the JVM lab, both statements run inside one transaction. A zero update count causes a rollback.</p>
+<p>For one attempt, start a transaction, add the booking and try to subtract one from the lot’s free-space count. Put the check “free &gt; 0” in the update that subtracts one. Picture a clerk who writes down Ben’s name in pencil, then erases it if the last spot is already taken. The database’s transaction lets the program undo that booking.</p>
+<p>In PostgreSQL’s default mode, called Read Committed, Ben’s update waits while Ada holds the lock. Once Ada commits, PostgreSQL checks Ben’s “free &gt; 0” against the new value, zero. It changes zero rows. If Ada instead rolls back, Ben can take the space. The program reads the number of rows changed and uses it to decide whether to save Ben’s booking or undo it.</p>
+<p>The two statements below do the work for one booking. Each question mark is a placeholder. The program supplies the booking’s reference and lot name to the first statement, then the same lot name to the update. Since the lot name identifies one row in this example, that update can change at most one row.</p>
 <pre><code class="language-sql">INSERT INTO parking_session(id, lot) VALUES (?, ?);
 UPDATE lot SET free = free - 1 WHERE name = ? AND free &gt; 0;</code></pre>
       </section>
       <section aria-labelledby="run-the-same-condition-twice">
         <h2 id="run-the-same-condition-twice">Run the same condition twice</h2>
-<p>Start after the two requests reach the database. Each attempt inserts a provisional grant, then tries to take a space. Read the output from top to bottom. <code>RETURNING</code> asks the database to show the row that the update changed. Before pressing Run SQL, predict what Ben's update returns and whose name survives his rollback.</p>
+<p>The first three lines set up one lot with one free space and an empty list of bookings. Each block starts a transaction, adds the driver’s booking, then subtracts one only if the count is still positive. <code>RETURNING</code> shows the new free count for each row the update changed. The last question pairs each saved driver’s name with the free count for the only lot in the example.</p>
+<p>Before pressing Run SQL, write down three predictions: what Ada’s update shows, what Ben’s update shows and whose name appears at the end.</p>
 <div class="lesson-sql" data-sql-exercise>
 <pre><code class="language-sql">CREATE TABLE lot (name TEXT PRIMARY KEY, free INTEGER);
 CREATE TABLE grant_log (driver TEXT PRIMARY KEY);
@@ -221,7 +223,6 @@ SELECT name, capacity, version FROM lot;</code></pre>
 <h3>Predict the database result</h3>
 <p>Ada has changed the last free space to zero, but her transaction is still open. Ben tries the same update. A third connection reads the lot. Predict what each connection sees. Now change just one event: Ada rolls back. Which results change? Verify both the free count and the name on the surviving claim.</p>
 <p><a href="/labs/parking-design/#isolation">Step through four PostgreSQL schedules</a></p>
-<p>The final two experiments move the rule across rows. Compare the number of attendants left on call under Repeatable Read and Serializable. When PostgreSQL rejects a decision, identify the first read that must be repeated.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
@@ -233,11 +234,11 @@ SELECT name, capacity, version FROM lot;</code></pre>
 <p class="fb no opt-2"><b>Not quite.</b> A successfully executed statement can match nothing. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Does a final count of zero prove correctness?</legend>
-<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-1" data-ok><label for="q-03-conditional-write-2-1"><span>Count the active grants too</span></label>
-<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-2"><label for="q-03-conditional-write-2-2"><span>Yes, zero proves one sale</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Two grants could have written the same final count.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Two grants could have written the same final count. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>The final count says zero. Could both drivers still have a booking?</legend>
+<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-1" data-ok><label for="q-03-conditional-write-2-1"><span>Yes, if both saved a booking and wrote zero</span></label>
+<input type="radio" name="q-03-conditional-write-2" id="q-03-conditional-write-2-2"><label for="q-03-conditional-write-2-2"><span>No, zero proves that only one driver booked</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The count alone can hide two bookings.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Two attempts could write the same count. Check the booking records. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>What disappears when Ben rolls back?</legend>
@@ -248,9 +249,9 @@ SELECT name, capacity, version FROM lot;</code></pre>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/transaction-iso.html">PostgreSQL · Transaction Isolation</a> — “it will attempt to apply its operation to the updated version of the row”</li><li><a href="https://www.sqlite.org/lang_returning.html">SQLite · RETURNING</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A zero-row conditional decrement lets the transaction roll back a claim on a full lot.</p></div></section>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Check that a space is free at the moment you take it. Save the booking only when that change succeeds.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
-      <p class="puzzle-bridge">One grant survives. What should the phone send if the winning confirmation never arrives?</p>
+      <p class="puzzle-bridge">One booking survives. What should the driver’s phone send if the confirmation never arrives?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-write-boundary.html">← Puzzle 2</a>
         <a class="button primary" href="04-retry-identity.html">Puzzle 4: What if a successful reply disappears? →</a>

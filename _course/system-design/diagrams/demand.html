@@ -1,10 +1,10 @@
-<!-- label: Use a different denominator for the concert window -->
+<!-- label: Count map requests in the busiest ten minutes -->
 <svg class="design-figure" viewBox="0 0 420 273" role="img" aria-labelledby="d-title">
-<title id="d-title">Use a different denominator for the concert window</title>
-<text class="d-b" x="14" y="29" text-anchor="start">Map reads in one day</text>
+<title id="d-title">Count map requests in the busiest ten minutes</title>
+<text class="d-b" x="14" y="29" text-anchor="start">Map requests in one day</text>
 <rect class="d-box" x="20" y="53" width="380" height="39" rx="3"/>
 <g class="step s1">
-  <text class="d-t" x="210" y="79" text-anchor="middle">1,200,000 reads</text>
+  <text class="d-t" x="210" y="79" text-anchor="middle">1,200,000 requests</text>
 </g>
 <g class="step s2">
   <rect class="d-hl" x="20" y="103" width="76" height="26" rx="2"/>
@@ -22,8 +22,8 @@
 <g transform="translate(399 72)" data-move="1:399,72 2:59,116 3:59,186 4:69,245"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
 </svg>
 <ol class="caps">
-<li><p>120,000 drivers open the map ten times. That is 1.2 million map reads spread across a day.</p></li>
-<li><p>The shaded fifth of the reads falls into one concert window. The bar represents a share of requests, not a share of the day.</p></li>
+<li><p>120,000 drivers open the map ten times. Their phones send 1.2 million map requests in a day.</p></li>
+<li><p>The shaded fifth marks the requests that arrived in the ten minutes after the concert.</p></li>
 <li><p>Divide 240,000 requests by the 600 seconds in that window. The average within the peak is 400 per second.</p></li>
-<li><p>Hold the number of concert reads fixed and cut the window in half. The peak rate doubles although the daily total does not change.</p></li>
+<li><p>Send the same 240,000 requests over five minutes. Each second must now handle twice as many.</p></li>
 </ol>

@@ -35,7 +35,7 @@
     },
     "reservation": {
       "in": 0,
-      "def": "A durable claim by one driver on a space."
+      "def": "A saved booking that assigns a space to one driver for a particular time."
     },
     "in flight": {
       "in": 1,
@@ -61,13 +61,8 @@
       "kind": "code"
     },
     "GROUP BY": {
-      "in": 0,
+      "in": 1,
       "def": "Groups rows with the same values so each group can be counted or summarized.",
-      "kind": "code"
-    },
-    "HAVING": {
-      "in": 0,
-      "def": "Keeps groups whose aggregate result passes a condition.",
       "kind": "code"
     },
     "RETURNING": {

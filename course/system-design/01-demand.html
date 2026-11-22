@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Estimate peak demand and concurrent work with units.">
+  <meta name="description" content="Work out how many map requests to send in a test for the minutes after a concert.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="How much traffic arrives after a concert? – System design from first principles to design review – Mateusz Pachulski">
-  <meta property="og:description" content="Estimate peak demand and concurrent work with units.">
+  <meta property="og:description" content="Work out how many map requests to send in a test for the minutes after a concert.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/system-design/01-demand">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -54,38 +54,38 @@
       <div class="lesson-header">
         <p class="eyebrow">Puzzle 1 · 2 of 19</p>
         <h1>How much traffic arrives after a concert?</h1>
-        <p class="lede">Estimate peak demand and concurrent work with units.</p>
+        <p class="lede">Work out how many map requests to send in a test for the minutes after a concert.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Can two green maps promise the last space?">0</a></li><li><a href="01-demand.html" aria-current="page" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Who can grant the last space?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Two drivers tap Reserve. Who gets the last space?">0</a></li><li><a href="01-demand.html" aria-current="page" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Where is Ada’s booking when her reply is lost?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="What if a successful reply disappears?">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#measure-a-burst-that-an-average-hides">Run SQL</a>
+        <a href="#go-deeper-count-requests-from-a-short-list-of-arrival-times">Run SQL</a>
         <a href="#go-deeper-what-will-storage-cost-in-bytes">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: Can two green maps promise the last space?</summary><p>A map may be stale while the reservation contract still admits at most one winner.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Two drivers tap Reserve. Who gets the last space?</summary><p>Two phones can show the same free space. At most one driver can have it booked for the same time.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>There are 120,000 daily drivers. Each opens the map ten times and attempts one reservation. Which number belongs in a peak-load test?</p>
+<p>In puzzle 0, Ada and Ben opened the parking map before trying to book. Each time a phone asks for the map, count one map request. Now imagine 120,000 drivers each send 10 of those requests during a day. The team tests by sending about 14 requests each second, its average for the day. After a concert, many people open the map at once. Will the test tell you how the service behaves then?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Use a different denominator for the concert window"><input type="radio" name="st-demand" id="st-demand-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-demand" id="st-demand-2" aria-label="Step 2 of 4"><input type="radio" name="st-demand" id="st-demand-3" aria-label="Step 3 of 4"><input type="radio" name="st-demand" id="st-demand-4" aria-label="Step 4 of 4">
+<figure class="stepper" aria-label="Count map requests in the busiest ten minutes"><input type="radio" name="st-demand" id="st-demand-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-demand" id="st-demand-2" aria-label="Step 2 of 4"><input type="radio" name="st-demand" id="st-demand-3" aria-label="Step 3 of 4"><input type="radio" name="st-demand" id="st-demand-4" aria-label="Step 4 of 4">
 <div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 273" role="img" aria-labelledby="d-title">
-<title id="d-title">Use a different denominator for the concert window</title>
-<text class="d-b" x="14" y="29" text-anchor="start">Map reads in one day</text>
+<title id="d-title">Count map requests in the busiest ten minutes</title>
+<text class="d-b" x="14" y="29" text-anchor="start">Map requests in one day</text>
 <rect class="d-box" x="20" y="53" width="380" height="39" rx="3"/>
 <g class="step s1">
-  <text class="d-t" x="210" y="79" text-anchor="middle">1,200,000 reads</text>
+  <text class="d-t" x="210" y="79" text-anchor="middle">1,200,000 requests</text>
 </g>
 <g class="step s2">
   <rect class="d-hl" x="20" y="103" width="76" height="26" rx="2"/>
@@ -104,35 +104,38 @@
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>120,000 drivers open the map ten times. That is 1.2 million map reads spread across a day.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-demand-2">Next →</label></div></li>
-<li><p>The shaded fifth of the reads falls into one concert window. The bar represents a share of requests, not a share of the day.</p><fieldset class="diagram-prediction" data-hint="First count the 240,000 reads in the burst. How many seconds are in the burst itself?" data-reason="240,000 divided by 600 gives 400 reads per second. Dividing by a day would hide the burst.">
-<legend>One fifth of 1.2 million reads arrive in ten minutes. What is the average arrival rate within that window?</legend>
-<div class="actions" data-prediction-controls hidden><button type="button" class="button">14 reads/s</button><button type="button" class="button" data-answer>400 reads/s</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-demand-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-demand-3">Next →</label></div></li>
+<li><p>120,000 drivers open the map ten times. Their phones send 1.2 million map requests in a day.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-demand-2">Next →</label></div></li>
+<li><p>The shaded fifth marks the requests that arrived in the ten minutes after the concert.</p><fieldset class="diagram-prediction" data-hint="First count the 240,000 reads in the burst. How many seconds are in the burst itself?" data-reason="240,000 divided by 600 gives 400 reads per second. Dividing by a day would hide the burst.">
+<legend>One fifth of 1.2 million map requests arrive in ten minutes. How many requests per second is that on average?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button">14 requests per second</button><button type="button" class="button" data-answer>400 requests per second</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-demand-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-demand-3">Next →</label></div></li>
 <li><p>Divide 240,000 requests by the 600 seconds in that window. The average within the peak is 400 per second.</p><div class="stepnav"><label for="st-demand-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-demand-4">Next →</label></div></li>
-<li><p>Hold the number of concert reads fixed and cut the window in half. The peak rate doubles although the daily total does not change.</p><div class="stepnav"><label for="st-demand-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-demand-1">↺ Again</label></div></li>
+<li><p>Send the same 240,000 requests over five minutes. Each second must now handle twice as many.</p><div class="stepnav"><label for="st-demand-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-demand-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-demand-1" title="Step 1"></label><label for="st-demand-2" title="Step 2"></label><label for="st-demand-3" title="Step 3"></label><label for="st-demand-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/demand.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>There are 86,400 seconds in a day. The averages are about 13.9 map reads and 1.39 reservation attempts per second. Now suppose one fifth of all map reads arrive in the same ten minutes after a concert. That gives 240,000 / 600 = 400 reads per second. The traffic distribution is an assumption. Daily totals alone cannot tell you the peak.</p>
-<p>At a stable 400 completed requests per second and a mean of 0.15 seconds from arrival to reply, an average of 60 requests are <b>in flight</b>, meaning they have arrived but their replies are still outstanding. This is Little’s law. Keep the rate and duration inside the same measurement boundary. If each request holds a database connection for only 0.010 seconds, that part of the workload occupies four connections on average. Short bursts can require more.</p>
-<h3>Find the bottleneck hidden by the daily average</h3>
-<p>Suppose each map response carries 12,000 bytes. At the 400-per-second peak the service sends 4.8 million bytes each second, about 38.4 million bits per second before protocol overhead. Doubling response size doubles outgoing bandwidth even when the number of database reads stays fixed.</p>
-<p>Now assume the backend completes only 350 reads per second for the ten-minute peak. Starting empty, with no abandoned or rejected work, 30,000 requests remain after those ten minutes: 50 unfinished requests per second for 600 seconds. Measuring only completions would understate offered demand. Once the queue keeps growing, stop using the steady-state estimate of 60 outstanding requests.</p>
+<p>Start with the same 1,200,000 requests. Spread them across the 86,400 seconds in a day and you get about 14 requests per second. Now suppose the service’s records show that one fifth, or 240,000 requests, arrived in the ten minutes after the concert. Ten minutes is 600 seconds, so an even replay of that interval sends 240,000 ÷ 600 = 400 requests per second. That gives the team a first test for those minutes. If most of those requests arrived in the first minute, replaying their original arrival times gives a better test.</p>
+<h3>How many requests are waiting for a reply?</h3>
+<p>A request is <b>in flight</b> from the moment it arrives until the service sends its reply, including time spent waiting for a turn. Suppose the test settles at 400 arrivals and 400 replies each second, with an average time of 0.15 seconds from arrival to reply. Little’s law gives the average number present: 400 per second × 0.15 seconds = 60 requests. The two measurements refer to the same part of the service, from arrival to reply.</p>
+<p>The database connection is the channel the program uses to talk to the database. If every request holds one for just 0.010 seconds, the average number in use is 400 × 0.010 = 4. A brief rush may need more. Four is an observed average in this example, so measure how long requests wait for a connection before choosing a limit.</p>
+<p>Now suppose only 350 requests finish each second while 400 arrive. If nothing is dropped, the service has 50 more unfinished requests after each second. Starting at zero, it ends the ten minutes with 30,000 unfinished requests. The earlier estimate of 60 belonged to a test where requests finished as fast as they arrived.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-what-will-storage-cost-in-bytes">
         <summary><span class="depth-label">Go deeper</span>What will storage cost in bytes?</summary>
         <div class="depth-content">
-<p>At 120,000 accepted sessions per day and 800 bytes of row and index data per session, one day adds 96 million bytes. After 365 days one copy contains about 35.04 billion bytes. Three full copies total about 105.12 billion before backups, engine overhead and spare space. Test the 800-byte assumption by measuring both table and index growth in a representative fixture.</p>
-<details class="recall"><summary>What happens if accepted sessions double at the same retention and size?</summary><p>One copy grows to about 70.08 billion bytes.</p></details>
+<p>Suppose the service saves 120,000 confirmed bookings per day. If each adds 800 bytes to the database, one day adds 96 million bytes. Keeping 365 days takes about 35 billion bytes for one copy or 105 billion for three copies, plus any space set aside for backups and future growth. To check the 800-byte estimate, load a known number of sample bookings into a test database and measure how much the files grow.</p>
+<details class="recall"><summary>What happens if the number of daily bookings doubles and you still keep 365 days?</summary><p>One copy grows to about 70 billion bytes.</p></details>
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
-      <section aria-labelledby="measure-a-burst-that-an-average-hides">
-        <h2 id="measure-a-burst-that-an-average-hides">Measure a burst that an average hides</h2>
-<p>A service records one timestamp for each arriving request. In this small trace a number is seconds since the experiment began. Divide the number by ten and keep the whole part to assign each request to a ten-second bucket. Which bucket should set the minimum load for the next test?</p>
+      <details class="depth-puzzle" id="go-deeper-count-requests-from-a-short-list-of-arrival-times">
+        <summary><span class="depth-label">Go deeper</span>Count requests from a short list of arrival times</summary>
+        <div class="depth-content">
+<p>The sample log contains eight arrival times, in seconds since the test started: 0, 10, 20, 20, 21, 22, 22, 29. A repeated time means two requests arrived in that second. Before looking at the code, tally the requests in seconds 0–9, 10–19 and 20–29. Which ten-second interval was busiest?</p>
+<p>The first two statements build the input table. In the question below them, the column called second stores whole numbers. In SQLite, dividing those numbers by the whole number 10 drops the remainder. For 29, the result is 2. Multiplying back by 10 gives 20, the start of its interval. Read each name after the word “as” as a column heading in the answer.</p>
+<p><code>GROUP BY</code> places all requests with the same interval start together. The count expression with the star counts all rows for that interval. Dividing by 10.0 gives requests per second, including fractions. The last line shows earlier intervals first.</p>
 <div class="lesson-sql" data-sql-exercise>
 <pre><code class="language-sql">CREATE TABLE arrival (second INTEGER);
 INSERT INTO arrival VALUES
@@ -151,8 +154,10 @@ ORDER BY bucket_start;</code></pre>
 <button type="button" class="button" data-reset hidden>Restore original SQL</button>
 </div>
 <p class="small" role="status"></p><div data-output></div></div>
-<p>Eight requests in thirty seconds average about 0.27 per second. The last bucket alone gets six, or 0.6 per second. Change 29 to 30. The request moves to the next bucket because the interval includes its start and excludes its end. A bucket is a measurement choice. Two spikes on opposite sides of a boundary can hit the same database queue. A load test should replay the arrival times if that ordering matters.</p>
-      </section>
+<p>Run the code and compare the three counts with your tally: 1, 1 and 6. Change only the last arrival from 29 to 30. Predict the counts before running again. The last request now belongs to the interval starting at 30. The total remains eight.</p>
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
 <p>Shorten the peak to five minutes while keeping its total demand. Predict the arrival rate and work in flight before reading on. At the same mean duration the answers are 800 per second and 120 in flight. Measure arrivals, completions and backlog separately to check whether the duration actually holds.</p>
@@ -167,27 +172,27 @@ ORDER BY bucket_start;</code></pre>
 <p class="fb no opt-2"><b>Not quite.</b> Use the duration of the burst. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>At 400 per second and 0.15 seconds each, how many are in flight on average?</legend>
+<legend>The test settles at 400 replies per second with an average reply time of 0.15 seconds. How many requests are in flight on average?</legend>
 <input type="radio" name="q-01-demand-2" id="q-01-demand-2-1" data-ok><label for="q-01-demand-2-1"><span>60</span></label>
 <input type="radio" name="q-01-demand-2" id="q-01-demand-2-2"><label for="q-01-demand-2-2"><span>2667</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Multiply throughput by mean duration.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Multiply throughput by mean duration. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-1"><b>Right.</b> 400 × 0.15 gives 60 requests.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Multiply the rate by the time. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Does four occupied connections on average determine the pool limit?</legend>
-<input type="radio" name="q-01-demand-3" id="q-01-demand-3-1"><label for="q-01-demand-3-1"><span>Yes, choose exactly four</span></label>
-<input type="radio" name="q-01-demand-3" id="q-01-demand-3-2" data-ok><label for="q-01-demand-3-2"><span>Measure waits and bursts</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Averages hide brief periods of saturation. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Averages hide brief periods of saturation.</p>
+<legend>In one second, 400 requests arrive and 350 finish. None is dropped. How many are added to the unfinished work?</legend>
+<input type="radio" name="q-01-demand-3" id="q-01-demand-3-1" data-ok><label for="q-01-demand-3-1"><span>50</span></label>
+<input type="radio" name="q-01-demand-3" id="q-01-demand-3-2"><label for="q-01-demand-3-2"><span>350</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The other 350 finished. The unfinished work grows by 50.</p>
+<p class="fb no opt-2"><b>Not quite.</b> That is the number that finished. Subtract it from the arrivals. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/sre-book/handling-overload/">Google SRE · Handling Overload</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Size for a measured burst and use throughput times mean duration to estimate concurrent work.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/sre-book/handling-overload/">Google SRE · Handling Overload</a> — “Different queries can have vastly different resource requirements.”</li><li><a href="https://www.sqlite.org/lang_expr.html">SQLite · Expressions</a></li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The daily total tells you how much work arrived in a day. To test a busy period, count how much arrived in that period and how long it lasted.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
-      <p class="puzzle-bridge">Suppose the peak needs two service instances. Which one is allowed to grant the last space?</p>
+      <p class="puzzle-bridge">The team starts a second copy of the program for the rush. Can it find a booking saved by the first copy?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-promise.html">← Start</a>
-        <a class="button primary" href="02-write-boundary.html">Puzzle 2: Who can grant the last space? →</a>
+        <a class="button primary" href="02-write-boundary.html">Puzzle 2: Where is Ada’s booking when her reply is lost? →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20How%20much%20traffic%20arrives%20after%20a%20concert%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
