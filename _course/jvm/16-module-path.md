@@ -1,7 +1,7 @@
 ---
 title: Can the JVM check before main runs?
 short: The module path checks first
-summary: Puzzle 15's missing class was found only at its first use, an hour into the run. Put the same App and Helper into Java modules and see the JVM refuse to start instead.
+summary: Puzzle 15's missing class was found only at its first use, an hour into the run. Put the same App and Helper into named groups that declare what they need, and see the JVM refuse to start instead.
 takeaway: A Java module is a named set of packages whose module-info file says which other modules it requires. On the module path, the JVM resolves every requires line before main runs, so a missing module stops the program at startup instead of failing at first use.
 ---
 
@@ -16,7 +16,7 @@ In puzzle 15, App printed start and then died at the first call to Helper, becau
 
 ## The building block
 
-Since JDK 9, Java code can be grouped into **modules**. A module is a named set of packages with a small file, module-info.java, at its top that says which other modules it **requires** and which of its own packages it exports to others. Here are App and Helper again, now in two modules, app and bonus:
+Since JDK 9, Java code can be grouped into **Java modules** (not to be confused with this course's modules, its groups of puzzles). A Java module is a named set of packages with a small file, module-info.java, at its top that says which other modules it **requires** and which of its own packages it exports to others. Here are App and Helper again, now in two modules, app and bonus:
 
 ```text
 src/
@@ -104,8 +104,8 @@ Before the last command, predict whether start is printed.
 
 ## Check yourself
 
-- The module app requires bonus, and bonus requires a third module, json, which is missing. App's main doesn't touch json at all. Does start print?::*No: the JVM follows requires lines from app to bonus to json before main runs||Yes, because app itself doesn't require json >> Resolving follows each required module's own requires lines too. >> s4||Yes, and it fails when bonus first uses json >> That is the class path's behavior; the module path checks first. >> the-building-block::Startup resolution covers every module reachable through requires.
-- Why can the module path fail before main, while the class path can't?::*Each module's requires lines say what it needs, so the JVM can check them first||The module path is searched faster than the class path >> Speed isn't the difference; the class path doesn't say what the program needs. >> s2||The JVM loads every class of every module at startup >> Only the modules are checked; classes still load when first needed. >> s4::A declared dependency can be checked; a search list can't.
+- The module app requires bonus, and bonus requires a third module, json, which is missing. App's main doesn't touch json at all. Does start print?::*No: resolution follows bonus's requires line too||Yes, because app's own module-info doesn't mention json >> Resolving follows each required module's own requires lines too. >> s4||Yes, and it fails when bonus first uses json >> That is the class path's behavior; the module path checks first. >> the-building-block::Startup resolution covers every module reachable through requires.
+- Why can the module path fail before main, while the class path can't?::*Its requires lines say what is needed||The module path is searched faster than the class path, so it finishes before main >> Speed isn't the difference; the class path doesn't say what the program needs. >> s2||The JVM loads every class of every module at startup >> Only the modules are checked; classes still load when first needed. >> s4::A declared dependency can be checked; a search list can't.
 - A service starts with java -cp app.jar:json.jar, and json.jar is missing on one server. When does it fail?::*When code first uses a class from json.jar||Before main runs, like a missing module >> -cp is the class path, which checks nothing at startup. >> the-building-block||Never: the JVM substitutes another version >> Nothing substitutes a missing class; its first use fails. >> s5::Only the module path checks at startup.
 
 ## Sources

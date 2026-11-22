@@ -58,7 +58,7 @@ The mark is permanent for that class in that run: there is no retry. So a progra
 
 ### The edges
 
-- *An Error thrown by static code isn't wrapped.* The JVM wraps only exceptions; if the static code throws an Error, such as `OutOfMemoryError`, that Error is thrown as it is, and the class is still marked erroneous.
+- *An Error thrown by static code isn't wrapped.* The JVM wraps only exceptions; if the static code throws an Error itself, that Error is thrown as it is, and the class is still marked erroneous.
 - *"Could not initialize class" is not "class missing".* `NoClassDefFoundError` also means a class file can't be found (puzzle 15 shows that case). The words "Could not initialize" tell you the class was found and its static code failed.
 - *A Kotlin object or companion* runs its code in a static initializer too, so a throwing line in an object's body gives exactly these two errors.
 
@@ -79,8 +79,8 @@ Before running, write down the class name of what you expect each attempt to pri
 
 ## Check yourself
 
-- Prices' static code is fixed, but a class Rates has static int r = 1 / 0, which throws ArithmeticException. main reads Rates.r three times, catching each time. What does the third attempt get?::*`NoClassDefFoundError`: Could not initialize class Rates||`ExceptionInInitializerError` again, with the same cause >> Only the first attempt runs the static code; after that Rates is marked erroneous. >> s4||The value 0, because the field was prepared with a default >> A class marked erroneous can't be used at all, so the field is never read. >> s5::Every use after the first failure gets NoClassDefFoundError.
-- Why doesn't the second attempt show `NumberFormatException` as the error itself?::*The JVM doesn't run the static code again; it only reports the class as failed||The static code ran again and threw something else >> Nothing runs: the erroneous mark is checked first. >> s5||The first catch fixed the `NumberFormatException` >> Catching an error doesn't change the class's state. >> s3::The erroneous mark replaces a second run.
+- Prices' static code is fixed, but a class Rates has static int r = 1 / 0, which throws as soon as it runs. main reads Rates.r three times, catching each time. What does the third attempt get?::*`NoClassDefFoundError`: Could not initialize class Rates||`ExceptionInInitializerError` again, with the same cause >> Only the first attempt runs the static code; after that Rates is marked erroneous. >> s4||The value 0, because the field was prepared with a default >> A class marked erroneous can't be used at all, so the field is never read. >> s5::Every use after the first failure gets NoClassDefFoundError.
+- Why doesn't the second attempt show `NumberFormatException` as the error itself?::*The JVM doesn't run the static code a second time||The static code ran again and this time threw a different exception >> Nothing runs: the erroneous mark is checked first. >> s5||Catching the first error repaired the class, so a new error appeared >> Catching an error doesn't change the class's state. >> s3::The erroneous mark replaces a second run.
 - A crash report shows only NoClassDefFoundError: Could not initialize class Prices. Where is the real cause?::*In an earlier `ExceptionInInitializerError`||In a Prices class file that went missing >> "Could not initialize" means the class was found but its static code failed before. >> the-building-block||In the line of code that threw this error >> That line only touched a class already marked failed. >> s5::Find the first failure and its cause.
 
 ## Sources

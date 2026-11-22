@@ -1,23 +1,35 @@
-<!-- label: The same lambda passed to a plain function and to an inline function: invokedynamic builds a function object on the left; the body is copied into main on the right -->
-<!-- question: What does a lambda leave in main's bytecode, with and without inline? type: small multiples (same layout twice, only the compiled main differs) -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="li-t"><title id="li-t">Left: main's bytecode for runLater, with invokedynamic producing a function object that holds step = 7 and is passed into runLater's frame, which calls invoke. Right: main's bytecode for runNow, with the println call copied in and no call to runNow</title>
-<text class="d-mi" x="16" y="40">runLater { println(step) }</text>
-<text class="d-mi" x="330" y="40">runNow { println(step) }</text>
-<rect class="d-paper" x="16" y="54" width="296" height="128" rx="8"/>
-<rect class="d-paper" x="328" y="54" width="296" height="128" rx="8"/>
-<text class="d-tiny" x="28" y="76">main</text>
-<text class="d-tiny" x="340" y="76">main</text>
-<g class="step s1"><text class="d-mi" x="28" y="104">iload_0</text><text class="d-mi" x="28" y="132">invokedynamic</text><text class="d-mi" x="28" y="160">invokestatic runLater</text></g>
-<g class="step s2"><rect class="d-box" x="16" y="222" width="296" height="134" rx="8"/><text class="d-tiny" x="28" y="246">inside runLater</text><text class="d-mi" x="28" y="340">invoke() → lambda body</text></g>
-<g class="step s1" data-move="1:182,107 2:40,262" data-pulse="1"><rect class="d-hl" x="0" y="0" width="118" height="36" rx="8"/><text class="d-tiny" x="59" y="24" text-anchor="middle">step = 7</text></g>
-<g class="step only-3"><text class="d-b" x="476" y="128" text-anchor="middle">?</text></g>
-<g class="step s4" data-pulse="4"><text class="d-mi" x="340" y="104">getstatic System.out</text><text class="d-mi" x="340" y="132">iload_0</text><text class="d-mi" x="340" y="160">invokevirtual println</text><text class="d-r" x="340" y="214">no object, no runNow call</text></g>
-<g class="step s5"><rect class="d-dash" x="328" y="246" width="296" height="110" rx="8"/><text class="d-tiny" x="340" y="276">before Kotlin 2.0:</text><text class="d-mi" x="340" y="306">LambdasKt$main$1.class</text><text class="d-tiny" x="340" y="336">one class per lambda</text></g>
+<!-- label: The same lambda passed to a plain function and to an inline function: the first run of invokedynamic goes through LambdaMetafactory to a hidden class and a factory, later runs only make objects; with inline, the body is copied into main -->
+<!-- question: What does a lambda leave in main's bytecode, and what happens when that bytecode runs, with and without inline? type: annotated code + pipeline (top: the bootstrap chain on first and later runs; bottom: the inline copy) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="li-t"><title id="li-t">Top: main's invokedynamic for runLater. The first run calls the bootstrap method in LambdaMetafactory, which defines a hidden class and links the call site to a factory; the factory returns a function object holding step = 7, passed to runLater. A later run goes straight to the factory. Bottom: main for runNow contains the copied println instructions and no call</title>
+<text class="d-mi" x="16" y="30">runLater { println(step) }</text>
+<rect class="d-paper" x="16" y="44" width="196" height="130" rx="8"/>
+<text class="d-tiny" x="28" y="66">main</text>
+<text class="d-mi" x="28" y="96">iload_0</text>
+<rect class="d-hl step s1" x="22" y="106" width="184" height="30" rx="4"/>
+<text class="d-mi" x="28" y="127">invokedynamic</text>
+<text class="d-mi" x="28" y="160">invokestatic</text>
+<g class="step s1 hide-4"><x-arrow tone="acc" d="M208,121 C228,121 228,66 250,66"/></g>
+<g class="step s1"><rect class="d-box" x="254" y="44" width="184" height="44" rx="6"/><text class="d-mi" x="264" y="72">LambdaMetafactory</text></g>
+<g class="step s2"><x-arrow tone="acc" d="M440,66 L460,66"/><rect class="d-hl" x="464" y="44" width="160" height="44" rx="6"/><text class="d-tiny" x="474" y="72">hidden class</text></g>
+<g class="step s3"><rect class="d-box" x="464" y="110" width="160" height="40" rx="6"/><text class="d-tiny" x="474" y="136">factory</text><x-arrow tone="path" d="M544,90 L544,106"/>
+<rect class="d-box" x="254" y="128" width="184" height="46" rx="6"/><text class="d-tiny" x="264" y="157">runLater: invoke()</text></g>
+<g class="step s3" data-move="3:330,182 4:330,182"><rect class="d-hl" x="0" y="0" width="108" height="30" rx="6"/><text class="d-tiny" x="54" y="21" text-anchor="middle">step = 7</text></g>
+<g class="step s4" data-move="4:500,182"><rect class="d-hl" x="0" y="0" width="108" height="30" rx="6"/><text class="d-tiny" x="54" y="21" text-anchor="middle">step = 7</text></g>
+<g class="step s4"><x-arrow tone="acc" d="M208,128 C330,210 420,140 462,132"/><text class="d-a" x="254" y="112">later runs</text></g>
+<g class="step only-3"><text class="d-b" x="560" y="200" text-anchor="middle">?</text></g>
+<path class="d-dash" d="M16,226 H624"/>
+<text class="d-mi" x="16" y="256">runNow { println(step) }</text>
+<rect class="d-paper" x="16" y="270" width="330" height="100" rx="8"/>
+<text class="d-tiny" x="28" y="292">main</text>
+<g class="step only-5"><text class="d-b" x="180" y="338" text-anchor="middle">?</text></g>
+<g class="step s6" data-pulse="6"><text class="d-mi" x="28" y="318">getstatic System.out</text><text class="d-mi" x="28" y="340">iload_0</text><text class="d-mi" x="28" y="362">invokevirtual println</text><text class="d-r" x="364" y="330">no object, no call</text></g>
+<g class="step s5"><rect class="d-dash" x="364" y="270" width="260" height="34" rx="6"/><text class="d-tiny" x="376" y="293">inline fun runNow</text></g>
 </svg>
 <ol class="caps">
-<li><p>On the left, <code>invokedynamic</code> runs. The first time, its bootstrap method creates a class for the lambda. Each run then returns a <b>function object</b> of that class, holding the captured value, step = 7.</p></li>
-<li><p><code>invokestatic</code> passes that object to runLater, which calls its invoke() with <code>invokeinterface</code>. invoke() runs the lambda's code, compiled into a private method of main's class.</p></li>
-<li><p>On the right, runNow is an <b>inline function</b>: kotlinc copies its body into each caller. <i>Predict: what does main contain for this call?</i></p></li>
+<li><p>The first time main's <code>invokedynamic</code> runs, the JVM calls its bootstrap method, <code>LambdaMetafactory</code>'s metafactory, with the lambda's private method as an argument.</p></li>
+<li><p>LambdaMetafactory defines a <b>hidden class</b> for the lambda: created while the program runs, with no class file, and no name other bytecode can use.</p></li>
+<li><p>It links this <b>call site</b>, the place in main where the call is written, to a factory for that class. The factory returns a <b>function object</b> holding step = 7, and runLater calls its invoke(). <i>Predict: the loop runs this line again. What runs?</i></p></li>
+<li><p>Only the factory: it returns a new object of the same class. The bootstrap method ran once for this call site and never runs again.</p></li>
+<li><p>Now runNow, an <b>inline function</b>: kotlinc copies its body into each caller. <i>Predict: what does main contain for this call?</i></p></li>
 <li><p>The lambda's body itself, copied into main: read System.out, push step, call println. No function object, no call to runNow.</p></li>
-<li><p>Before Kotlin 2.0, a lambda like the left one got its own class file instead, created with new. Kotlin 2.0 switched to <code>invokedynamic</code>, which keeps the app smaller.</p></li>
 </ol>

@@ -112,6 +112,7 @@ public static void visit$default(Bookmark, int, int, java.lang.Object);
 
 - *Java callers must pass every argument.* Java has no default arguments, so Java code must pass times. `@JvmOverloads` on the function generates the shorter overloads too.
 - *Inside its own class, Kotlin reads the field directly.* Bookmark's own code uses `getfield`, because the field is private to that class; the getter is for everyone else. A const val skips the getter entirely and is copied into the caller (puzzle 6).
+- *Your own Android app's bytecode.* An Android build runs the same kotlinc, and the class files it writes stay in the module's build folder. From the project folder, find app/build -name 'MainActivity*.class' lists them (use your own class name), and javap -c -p on that file reads it exactly as here. What the phone finally runs is a different format, which puzzle 18 shows; Android Studio's APK Analyzer can show that one.
 - *Names can change.* `@JvmName` renames a generated method, and a property whose name starts with is keeps that name for its getter (isOpen, not getIsOpen). When javap shows a name you don't expect, look for these annotations before assuming a bug.
 
 ## The analogy
@@ -119,6 +120,8 @@ public static void visit$default(Bookmark, int, int, java.lang.Object);
 You ask the front desk for "visit, the usual amount". The office has no form for "the usual". So the desk fills in a standard form with a box ticked: "amount not given". The clerk who receives it sees the tick, writes in the usual amount, and passes the completed form on. The person you asked never saw your shorthand.
 
 ## Run it yourself
+
+Save the program at the top of this page as Bookmark.kt, then:
 
 ```sh
 kotlinc Bookmark.kt -d out

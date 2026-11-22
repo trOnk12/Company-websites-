@@ -1,8 +1,8 @@
 ---
 title: How does a call find the override?
 short: Virtual dispatch and the method table
-summary: Puzzle 7 said invokevirtual picks the method from the receiver's class. See how the JVM you run does that in one lookup, and why Kotlin's final-by-default classes change less about speed than you might expect.
-takeaway: HotSpot gives every class a method table, a copy of its parent's with overridden entries replaced, so invokevirtual finds the right override with one lookup at a fixed position. Marking a method final doesn't change the bytecode; it only spares the table an entry, and HotSpot's optimizing compilers turn calls with a single possible target into direct calls whether or not they are final.
+summary: Puzzle 7 said invokevirtual picks the method from the receiver's class. See how the JVM you run does that in one lookup, and what marking a method final changes in it.
+takeaway: HotSpot gives every class a method table, a copy of its parent's with overridden entries replaced, so invokevirtual finds the right override with one lookup at a fixed position. Marking a method final doesn't change the caller's bytecode; it only spares the table an entry, because a final method can be called directly.
 ---
 
 ## The problem
@@ -65,9 +65,7 @@ This is a simplified picture: real tables also hold the methods every class inhe
 
 Now final. Plain.next can't be overridden, so a call to it can only ever reach one method. HotSpot's source comments: "a final method never needs a new entry; final methods can be statically resolved". The table gets no entry, and HotSpot calls the method directly. But the bytecode is the same `invokevirtual` either way: final is a fact about the class, not about the call site, so you can't see it in the caller's bytecode.
 
-So does Kotlin's final-by-default make your code faster? Less than you'd think, because HotSpot doesn't stop at the table. The bytecode first runs one instruction at a time, and HotSpot later compiles frequently called methods into machine instructions with its optimizing compilers (module 4 covers them). Those compilers know which classes are loaded. If an open method has no override loaded at all, they treat a call to it like a final one: "Virtual (and interface) invocations are often demoted to "special" invocations, if the class hierarchy permits it." If a class loaded later adds an override, HotSpot throws that compiled code away and goes back to the slower path (module 4 calls this deoptimisation). And for a call site that has only ever seen one receiver class, it compiles a quick check for that class instead of a table lookup.
-
-So the cost that remains is at a call site that really meets many receiver classes, which HotSpot's documentation calls megamorphic: there the table lookup happens on every call. That's a property of how your code is used, not of whether you wrote open or final.
+So does Kotlin's final-by-default make your code faster? Less than you'd think: HotSpot's optimizing compilers, which translate frequently called methods into machine instructions (the processor's own instructions) while the program runs, can call an open method directly too when no loaded class overrides it (coming in a later module).
 
 ### The edges
 
@@ -81,6 +79,8 @@ Every department keeps a phone list in a fixed order: line 1 for complaints, lin
 
 ## Run it yourself
 
+Save the Kotlin program at the top of this page as Dispatch.kt, then:
+
 ```sh
 kotlinc Dispatch.kt -d out
 javap -classpath out -c -p DispatchKt
@@ -93,13 +93,13 @@ In the second listing find both `invokevirtual` instructions. In the third, comp
 
 - A class Shout extends Loud and overrides next again with v + 100. A Shout reaches use(c). Which entry does `invokevirtual` read, and what does use return?::*The entry for next in Shout's table, so 101 + 2 = 103||Loud's entry, because Shout's table is a copy of Loud's >> The copy is made first, then Shout's override replaces that entry. >> s3||Counter's entry, because the instruction names Counter.next >> The instruction names the method; the receiver's table decides the code. >> s5::Each class's table has its own overrides at the same position.
 - You mark Counter.next final (and delete Loud). What changes in use's bytecode?::*Nothing: still `invokevirtual`||It becomes `invokestatic`, since one method is possible >> A final method still needs a receiver; only static methods use `invokestatic`. >> s6||It becomes `invokespecial`, like a constructor >> The compiler emits `invokevirtual` for a method declared in a class, final or not. >> s6::final changes the class and its table, not the call site.
-- An open method has one implementation, and no subclass is ever loaded. Why can its calls end up as fast as calls to a final method?::*HotSpot's compilers see only one possible method and call it directly||HotSpot rewrites the class file to mark the method final >> Nothing is rewritten; the compiled machine code assumes it and is redone if that changes. >> the-building-block||The method table is skipped for every open method >> Open methods have entries; the shortcut depends on which classes are loaded. >> the-building-block::The decision depends on the loaded classes, not on the keyword.
+- Counter gets a second open method, reset(), declared after next(). Loud overrides only next(). Where is reset in Loud's table, and what does its entry point to?::*At the same position as in Counter's table, pointing to Counter's reset||Appended at the end of Loud's table, after Loud's own methods >> Loud's table starts as a copy of Counter's, so inherited entries keep their positions. >> s3||Nowhere: Loud's table only lists the methods Loud declares >> The copy holds every entry of the parent; only overridden ones are replaced. >> s3::A copied entry that isn't overridden still points to the parent's code.
 
 ## Sources
 
 - [JVM specification, 5.4.6 Method Selection](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-5.html#jvms-5.4.6) ("During execution of an invokeinterface or invokevirtual instruction, a method is selected with respect to (i) the run-time type of the object on the stack, and (ii) a method that was previously resolved by the instruction."; "a search for a declaration of an instance method that can override mR is performed, starting with the direct superclass of C and continuing with the direct superclass of that class, and so forth")
 - [OpenJDK source, klassVtable.cpp, jdk-21+35](https://github.com/openjdk/jdk/blob/jdk-21%2B35/src/hotspot/share/oops/klassVtable.cpp#L130) (line 130: "Copy super class's vtable to the first part (prefix) of this class's vtable"; line 199: "if override, replace in copy of super vtable, otherwise append to end"; lines 419–421: "a final method never needs a new entry; final methods can be statically resolved and they have to be present in the vtable only if they override a super's method, in which case they re-use its entry"; lines 653–657: "private methods don't need to be in vtable", "static methods don't need to be in vtable", "<init> is never called dynamically-bound")
-- [OpenJDK wiki: HotSpot performance techniques](https://wiki.openjdk.org/display/HotSpot/PerformanceTechniques) ("Static, private, final, and/or "special" invocations are easy to inline. Virtual (and interface) invocations are often demoted to "special" invocations, if the class hierarchy permits it. A dependency is registered in case further class loading spoils things."; "If a class is loaded that invalidates an earlier class hierarchy analysis, any affected method activations, in any thread, are forced to a safepoint and deoptimized."; "An inline cache will flip to a "megamorphic" state if a second receiver type is encountered. Megamorphic calls use assembly-coded vtable and itable stubs")
+- [OpenJDK wiki: HotSpot performance techniques](https://wiki.openjdk.org/display/HotSpot/PerformanceTechniques) ("Static, private, final, and/or "special" invocations are easy to inline. Virtual (and interface) invocations are often demoted to "special" invocations, if the class hierarchy permits it. A dependency is registered in case further class loading spoils things.")
 - [OpenJDK: the HotSpot group](https://openjdk.org/groups/hotspot/) ("the HotSpot virtual machine"; "you get two or three JIT compilers from bytecode to native instructions")
 - [Kotlin docs: Inheritance](https://kotlinlang.org/docs/inheritance.html) ("By default, Kotlin classes are final – they can't be inherited.")
 - The program output (4 and 13) and the listings were produced in this session with kotlinc 2.2.21 and OpenJDK 21.0.12.

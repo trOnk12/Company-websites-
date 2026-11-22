@@ -79,7 +79,7 @@ A new office opens and the clerk works through the opening checklist from the to
 
 ## Run it yourself
 
-Save the Settings class and main from the top of this page as Settings.kt. A Kotlin program needs Kotlin's standard library, kotlin-stdlib.jar, on the class path; it sits in the lib folder next to the bin folder that holds kotlinc, so the command finds it from wherever kotlinc is installed (or run the program with the kotlin command, which adds the library for you):
+Save the Settings class and main from the top of this page as Settings.kt. A Kotlin program needs Kotlin's standard library, kotlin-stdlib.jar, in the list after -cp. That file is a **jar**: one zip file holding class files, which a -cp list can name just like a folder. It sits in the lib folder next to the bin folder that holds kotlinc, so the command finds it from wherever kotlinc is installed (or run the program with the kotlin command, which adds the library for you):
 
 ```sh
 kotlinc Settings.kt -d out

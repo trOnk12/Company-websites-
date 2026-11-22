@@ -45,7 +45,7 @@ static int score(int, int);
 
 Two new instructions. `getstatic` reads a static field (one that belongs to the class, not to an object) and pushes its value. `ldc` pushes a constant. Look at the offsets: `getstatic` starts at 1 and the next instruction at 4, so it is three bytes long, the opcode plus two bytes holding one number, 7. The text after // is not in the class file. javap adds it to help you, and you are about to see where it gets it.
 
-Every class file starts with a **constant pool**: a numbered table of the names, texts and numbers its code refers to. 7 is an index into that table. The verbose option of javap prints it (this is part of the real output for Score):
+Near the start of every class file, right after a magic number and the version, is its **constant pool**: a numbered table of the names, texts and numbers its code refers to. 7 is an index into that table. The verbose option of javap prints it (this is part of the real output for Score):
 
 ```text
 Constant pool:
@@ -67,13 +67,26 @@ So the instruction says "read the field named weight, of type int, in class Scor
 
 Big numbers live in the pool too. `ldc` #13 points at an entry that holds 100000 itself, so `ldc` just pushes it. `ldc` has a one-byte index (it starts at 6, the next instruction at 8); for an entry past number 255 the compiler emits `ldc_w`, which carries a two-byte index.
 
-Why a table rather than text inside each instruction? Instructions stay small and the same size, and a name used in twenty places is stored once. The pool is also where the class names itself, its methods and its parent class.
+Why a table rather than text inside each instruction? Instructions stay small (an index takes one or two bytes, however long the name), and a name used in twenty places is stored once. The pool is also where the class names itself, its methods and its parent class.
 
 ### The edges
 
 - *A long or double takes two entries.* In puzzle 5's big method the long 100000 was #7, and the next entry was #9: #8 doesn't exist. The JVM specification itself calls this "a poor choice", kept for compatibility.
 - *The table has a limit.* The class file stores the entry count in two bytes, so a class can have at most 65,534 usable entries. Huge generated classes (big lookup tables written as code) can hit it, and the compiler then refuses to compile them.
-- *A constant can be copied into the caller.* A static final field with a constant value in Java, or a const val in Kotlin, is not looked up by name at all: the compiler writes its value into every class that uses it. This run shows the trap, with a class Config declaring two fields, a constant (static final int base = 2) and a plain static int weight = 2. Score's fixed method multiplies by base, its live method by weight:
+- *A constant can be copied into the caller.* A static final field with a constant value in Java, or a const val in Kotlin, is not looked up by name at all: the compiler writes its value into every class that uses it. This run shows the trap, with a class Config declaring two fields, a constant and a plain static field, and a second Score whose fixed method multiplies by base and whose live method multiplies by weight:
+
+```java
+public class Config {
+    static final int base = 2;
+    static int weight = 2;
+}
+
+public class Score {
+    static int fixed(int visits) { return visits * Config.base; }
+    static int live(int visits) { return visits * Config.weight; }
+    public static void main(String[] a) { System.out.println(fixed(3) + " " + live(3)); }
+}
+```
 
 ```text
 static int fixed(int);          static int live(int);
@@ -91,10 +104,14 @@ A clerk's order slip doesn't say "the drawer with Mrs Novak's file in the record
 
 ## Run it yourself
 
+Save the Score class from the top of this page as Score.java, then:
+
 ```sh
 javac -d out Score.java
 javap -classpath out -v Score
 ```
+
+For the constant trap, put Config.java and the second Score.java in a new folder and run javac -d out Config.java Score.java, then java -cp out Score. Change both 2s in Config to 5, run javac -d out Config.java only, and run Score again. Predict both numbers before each run.
 
 Find the line for `getstatic` in score, then follow its index through the constant pool by hand before reading javap's comment.
 
@@ -107,7 +124,7 @@ Find the line for `getstatic` in score, then follow its index through the consta
 ## Sources
 
 - [JVM specification, 4.4 The Constant Pool](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4) ("Java Virtual Machine instructions do not rely on the run-time layout of classes, interfaces, class instances, or arrays. Instead, instructions refer to symbolic information in the constant_pool table.")
-- [JVM specification, 4.1 The ClassFile Structure](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1) ("u2 constant_pool_count;"; "The value of the constant_pool_count item is equal to the number of entries in the constant_pool table plus one.")
+- [JVM specification, 4.1 The ClassFile Structure](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.1) ("u4 magic; u2 minor_version; u2 major_version; u2 constant_pool_count;"; "The value of the constant_pool_count item is equal to the number of entries in the constant_pool table plus one.")
 - [JVM specification, 4.4.5 CONSTANT_Long_info and CONSTANT_Double_info](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.4.5) ("All 8-byte constants take up two entries in the constant_pool table of the class file."; "In retrospect, making 8-byte constants take two constant pool entries was a poor choice.")
 - [JVM specification, 4.3 Descriptors](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-4.html#jvms-4.3) ("I int integer J long long integer L ClassName ; reference an instance of class ClassName"; "A method descriptor contains zero or more parameter descriptors, representing the types of parameters that the method takes, and a return descriptor")
 - [JVM specification, 2.6.3 Dynamic Linking](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.6.3) ("The class file code for a method refers to methods to be invoked and variables to be accessed via symbolic references.")

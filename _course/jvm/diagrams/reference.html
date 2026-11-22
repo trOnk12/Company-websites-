@@ -1,17 +1,30 @@
-<!-- label: Why do both names read eight? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Why do both names read eight?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">First</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Alias</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Write 8</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Rebind local</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: main's and edit's frames hold references; first, second and inside all lead to one Counter A; the field write changes A; reassigning inside moves only inside's arrow to a new Counter B -->
+<!-- question: Which object does each name lead to, before and after inside = new Counter(99)? type: box-and-pointer (frame slots, objects, references as arrows) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="rf-t"><title id="rf-t">Left: main's frame with slots first and second, and edit's frame with slot inside. Right: Counter A and later Counter B. All three slots point to A; A's value changes from 7 to 8; inside's arrow moves to B, which holds 99; edit's frame disappears and B is left with no arrow</title>
+<rect class="d-box" x="16" y="16" width="200" height="160" rx="10"/>
+<text class="d-tiny" x="28" y="40">main's frame</text>
+<rect class="d-paper" x="28" y="54" width="176" height="44" rx="6"/><text class="d-mi" x="40" y="82">first</text>
+<g class="step s2"><rect class="d-paper" x="28" y="112" width="176" height="44" rx="6"/><text class="d-mi" x="40" y="140">second</text></g>
+<g class="step s2 hide-5"><rect class="d-box" x="16" y="210" width="200" height="110" rx="10"/><text class="d-tiny" x="28" y="234">edit's frame</text>
+<rect class="d-paper" x="28" y="250" width="176" height="44" rx="6"/><text class="d-mi" x="40" y="278">inside</text></g>
+<rect class="d-paper" x="380" y="70" width="200" height="90" rx="10"/>
+<text class="d-tiny" x="394" y="96">Counter A</text>
+<text class="d-mi" x="394" y="136">value</text>
+<g class="step s1 hide-3"><text class="d-b" x="520" y="138" text-anchor="middle">7</text></g>
+<g class="step s3" data-pulse="3"><text class="d-b" x="520" y="138" text-anchor="middle">8</text></g>
+<x-arrow tone="ink" d="M206,76 C290,76 300,96 374,100"/>
+<x-arrow class="step s2" tone="ink" d="M206,134 C290,134 300,126 374,122"/>
+<x-arrow class="step s2 hide-4" tone="acc" d="M206,272 C300,272 330,170 380,150"/>
+<g class="step only-3"><text class="d-b" x="480" y="270" text-anchor="middle">?</text></g>
+<g class="step s4"><rect class="d-paper" x="380" y="230" width="200" height="90" rx="10"/><text class="d-tiny" x="394" y="256">Counter B</text><text class="d-mi" x="394" y="296">value</text><text class="d-b" x="520" y="298" text-anchor="middle">99</text></g>
+<x-arrow class="step s4 hide-5" tone="acc" d="M206,272 C290,272 320,276 374,276"/>
+<g class="step s1" data-move="1:228,62 3:600,112 4:600,112 5:228,350"><circle class="d-dot" r="7"/></g>
+<g class="step s5"><text class="d-r" x="394" y="350">no arrow left</text><text class="d-mi" x="28" y="350">prints 8 8</text></g>
 </svg>
 <ol class="caps">
-<li><p>The caller has a reference to a counter.</p></li>
-<li><p>The second name reaches the same counter.</p></li>
-<li><p>Writing through the parameter updates that object.</p></li>
-<li><p>Reassigning the parameter leaves the caller pointing at the original.</p></li>
+<li><p>new Counter(7) creates object A. main's slot first doesn't hold A: it holds a <b>reference</b>, drawn as an arrow, a value that leads to A.</p></li>
+<li><p>second = first copies the arrow, and edit(second) copies it again into edit's slot inside. Three slots, one object.</p></li>
+<li><p>inside.value = 8 follows the arrow and writes into A, so all three names now read 8. <i>Predict: inside = new Counter(99). Which arrows move?</i></p></li>
+<li><p>Only inside's. It now leads to the new object B; first and second still lead to A.</p></li>
+<li><p>edit returns and its frame is gone. main reads 8 8 through A. Nothing leads to B any more.</p></li>
 </ol>

@@ -7,7 +7,8 @@
    "ArrayList",
    "List",
    "APK",
-   "R8"
+   "R8",
+   "URL"
   ]
  },
  "terms": {
@@ -31,12 +32,12 @@
    "def": "A change applied only when the current value matches the expected value."
   },
   "iload_0": {
-   "in": "01",
+   "in": "00",
    "kind": "code",
    "def": "Copy the integer in local slot zero onto the operand stack."
   },
   "iconst_1": {
-   "in": "01",
+   "in": "00",
    "kind": "code",
    "def": "Push the integer constant one onto the operand stack."
   },
@@ -71,12 +72,12 @@
    "def": "The first letter of many instruction names, giving the type it works on: i for int, l for long, a for a reference."
   },
   "iadd": {
-   "in": "01",
+   "in": "00",
    "kind": "code",
    "def": "Remove two integers from the operand stack and push their sum."
   },
   "ireturn": {
-   "in": "01",
+   "in": "00",
    "kind": "code",
    "def": "Hand the integer on top of the operand stack to the caller and finish the call."
   },
@@ -108,7 +109,7 @@
    "def": "Remove the integer on top of the operand stack and write it into a local slot."
   },
   "iconst_2": {
-   "in": "05",
+   "in": "00",
    "kind": "code",
    "def": "Push the integer constant two onto the operand stack."
   },
@@ -194,12 +195,12 @@
   "invokevirtual": {
    "in": "07",
    "kind": "code",
-   "def": "Call a method declared in a class, choosing the version in the receiver class."
+   "def": "Call a method through a class type, choosing the version in the receiver class."
   },
   "invokeinterface": {
    "in": "07",
    "kind": "code",
-   "def": "Call a method declared in an interface, choosing the version in the receiver class."
+   "def": "Call a method through an interface type, choosing the version in the receiver class."
   },
   "invokedynamic": {
    "in": "07",
@@ -221,9 +222,10 @@
    "def": "Copy the reference in a local slot onto the operand stack."
   },
   "astore": {
-   "in": "07",
+   "in": "02",
    "kind": "code",
    "aliases": [
+    "astore_0",
     "astore_2"
    ],
    "def": "Remove the reference on top of the stack and write it into a local slot."
@@ -436,17 +438,17 @@
    "def": "Write the value on top of the stack into a static field."
   },
   "ExceptionInInitializerError": {
-   "in": "12",
+   "in": "13",
    "kind": "code",
    "def": "Thrown the first time a class's static initializer throws; its cause is the real error."
   },
   "NoClassDefFoundError": {
-   "in": "12",
+   "in": "13",
    "kind": "code",
    "def": "Thrown when running code needs a class that can't be used: gone since compilation, or failed to initialize."
   },
   "NumberFormatException": {
-   "in": "12",
+   "in": "13",
    "kind": "code",
    "def": "Thrown when text can't be read as a number."
   },
@@ -509,7 +511,7 @@
    "def": "Thrown when code asks a loader for a class by a name in a string and no loader has it."
   },
   "FindException": {
-   "in": "15",
+   "in": "16",
    "kind": "code",
    "def": "Thrown at startup when a required module isn't on the module path."
   },
@@ -519,7 +521,7 @@
    "def": "Thrown when compiled code calls a method the loaded class doesn't have."
   },
   "Class.forName": {
-   "in": "15",
+   "in": "11",
    "kind": "code",
    "def": "Load a class by a name given as a string."
   },
@@ -564,7 +566,7 @@
   },
   "desugaring": {
    "in": "18",
-   "def": "d8 rewriting newer Java features, such as lambdas, into simpler code older Android versions can run."
+   "def": "d8 rewriting Java features ART cannot run as written, such as invokedynamic lambdas, into ordinary code; lambdas are always rewritten into classes."
   },
   "d8": {
    "in": "18",
@@ -600,17 +602,117 @@
    "in": "18",
    "kind": "code",
    "def": "A register operand in Android's DEX instruction reference."
+  },
+  "operand stack": {
+   "in": "01",
+   "def": "The pile of values a frame's instructions take their inputs from and put their results on.",
+   "aliases": [
+    "operand stacks"
+   ]
+  },
+  "putfield": {
+   "in": "02",
+   "kind": "code",
+   "def": "Write the value on top of the stack into a field of the object whose reference is below it."
+  },
+  "checkcast": {
+   "in": "14",
+   "kind": "code",
+   "def": "The instruction a cast in code compiles to: check the object is an instance of a class, or throw ClassCastException."
+  },
+  "jar": {
+   "in": "12",
+   "def": "One zip file holding class files, which can be listed on a class path like a folder.",
+   "aliases": [
+    "jars"
+   ]
+  },
+  "hidden class": {
+   "in": "09",
+   "def": "A class created while the program runs, with no class file, that no other bytecode can name.",
+   "aliases": [
+    "hidden classes"
+   ]
+  },
+  "Java module": {
+   "in": "16",
+   "def": "A named set of packages whose module-info file says which other modules it requires and which packages it exports.",
+   "aliases": [
+    "Java modules"
+   ]
+  },
+  "NullPointerException": {
+   "in": "03",
+   "kind": "code",
+   "def": "Thrown when code reads a field or calls a method through a reference that is null."
+  },
+  "AtomicInteger": {
+   "in": "04",
+   "kind": "code",
+   "def": "A JDK class holding an int that offers indivisible operations such as compareAndSet."
+  },
+  "SharedCounter": {
+   "in": "04",
+   "kind": "code",
+   "def": "The lab program that replays two threads updating one AtomicInteger."
+  },
+  "SDKMAN": {
+   "in": "05",
+   "kind": "code",
+   "def": "A command-line installer for JDKs and kotlinc on macOS and Linux."
+  },
+  "GitHub": {
+   "in": "05",
+   "kind": "code",
+   "def": "The website hosting Kotlin compiler releases."
+  },
+  "JEP": {
+   "in": "07",
+   "kind": "code",
+   "def": "JDK Enhancement Proposal: the document that describes a change to the JDK."
+  },
+  "InterfaceMethod": {
+   "in": "07",
+   "kind": "code",
+   "def": "How javap labels a constant-pool reference to a method of an interface."
+  },
+  "DefaultImpls": {
+   "in": "07",
+   "kind": "code",
+   "def": "The class kotlinc emits beside an interface, forwarding to its default methods."
+  },
+  "MainActivity": {
+   "in": "08",
+   "kind": "code",
+   "def": "An example class name in an Android app."
+  },
+  "JvmSerializableLambda": {
+   "in": "09",
+   "kind": "code",
+   "def": "Kotlin annotation: compile this one lambda to its own class, the pre-2.0 way."
+  },
+  "SE": {
+   "in": "14",
+   "kind": "code",
+   "def": "Java SE: the standard Java platform the JDK implements."
+  },
+  "CompressedClassSpaceSize": {
+   "in": "17",
+   "kind": "code",
+   "def": "The HotSpot option that sets the size of the compressed class space."
+  },
+  "ExternalSyntheticLambda": {
+   "in": "18",
+   "kind": "code",
+   "def": "The part of a d8-generated lambda class name after the containing class."
+  },
+  "ExternalSynthetic": {
+   "in": "18",
+   "kind": "code",
+   "def": "The separator R8 and d8 put in the names of classes they generate."
   }
  },
  "from": {
-  "DEX": {
-   "course": "android",
-   "in": 9
-  },
-  "ART": {
-   "course": "android",
-   "in": 9
-  },
   "JVM": {
    "course": "kmp",
    "in": 0
@@ -619,11 +721,19 @@
    "course": "kmp",
    "in": 0
   },
-  "AOT": {
+  "dex2oat": {
    "course": "android",
    "in": 10
   },
-  "dex2oat": {
+  "DEX": {
+   "course": "android",
+   "in": 9
+  },
+  "ART": {
+   "course": "android",
+   "in": 9
+  },
+  "AOT": {
    "course": "android",
    "in": 10
   },

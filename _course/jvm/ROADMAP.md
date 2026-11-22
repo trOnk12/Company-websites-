@@ -6,7 +6,7 @@ out-of-memory JVM process from evidence (thread dumps, recordings, heap dumps), 
 Rules: AGREEMENTS.md, the course-author and course-clarity skills (pass 2f: no return trips). Modules are
 written in this order; each puzzle has one core idea and uses only what earlier puzzles taught.
 
-## Module 1: From source to a live object (written, 5 puzzles)
+## Module 1: From source to a live object (written, puzzles 00–04)
 Class file, frame, reference, reachability, shared counter.
 
 ## Module 2: Reading bytecode (written, puzzles 05–10)
@@ -17,13 +17,15 @@ Class file, frame, reference, reachability, shared counter.
 5. Lambdas and inline functions: invokedynamic and LambdaMetafactory vs code copied at the call site.
 6. Virtual dispatch: the method table, and why `final` (and Kotlin's default) matters less than you think.
 
-## Module 3: Loading and linking code (written, puzzles 11–16)
+## Module 3: Loading and linking code (written, puzzles 11–18)
 1. A class is loaded when first needed: loading, linking (verify, prepare, resolve), initialisation.
-2. Static initialisation order and its traps (a static read before it's set).
-3. Class loaders and delegation: bootstrap, platform, application; why two loaders mean two classes.
-4. Classpath vs module path; `ClassNotFoundException` vs `NoClassDefFoundError`.
-5. Metaspace: where class metadata lives, and how a class-loader leak fills it.
-6. Bridge: what Android does differently (DEX, ART, AOT), linking to the Android course.
+2. Static initialisation order and its trap (a static read before it's set).
+3. When static code throws: ExceptionInInitializerError, then NoClassDefFoundError; Exception vs Error.
+4. Class loaders and delegation: bootstrap, platform, application; why two loaders mean two classes.
+5. The class path: `ClassNotFoundException` vs `NoClassDefFoundError`.
+6. The module path: requires lines checked before main runs.
+7. Metaspace: where class metadata lives, and how a class-loader leak fills it.
+8. Bridge: what Android does differently (DEX, ART, JIT and profiles, dex2oat), linking to the Android course.
 
 ## Module 4: How the JVM makes code fast
 1. The interpreter, and why the first thousand calls are slow.
@@ -31,6 +33,9 @@ Class file, frame, reference, reachability, shared counter.
 3. Inlining: the optimisation every other one depends on.
 4. Escape analysis: objects that never reach the heap.
 5. Deoptimisation: when an assumption breaks, back to the interpreter.
+   Note from puzzle 10 (cut there to keep it to one idea): class hierarchy analysis lets the compilers call an open
+   method directly while no override is loaded; loading one forces deoptimisation; a call site that meets many
+   receiver classes is megamorphic and keeps the table lookup. Teach all three here, with the PerformanceTechniques quotes.
 6. Warm-up and measuring honestly: why naive timing lies, and what JMH does about it.
 7. Starting faster: class data sharing and ahead-of-time options.
 

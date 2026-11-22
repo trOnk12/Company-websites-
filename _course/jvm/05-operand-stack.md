@@ -25,7 +25,23 @@ The compiled instructions contain no brackets, no operator precedence and no var
 
 ## The building block
 
-The instructions inside a class file are called **bytecode**, because each one starts with a single byte, its **opcode**, that says which operation to perform. Some instructions carry a few more bytes after the opcode, such as a small number. This is the bytecode of score, printed by javap from puzzle 0 (the same output comes from the Kotlin function above and from the same method written in Java):
+The instructions inside a class file are called **bytecode**, because each one starts with a single byte, its **opcode**, that says which operation to perform. Some instructions carry a few more bytes after the opcode, such as a small number. This is the bytecode of score, printed by javap from puzzle 0. The instructions are the same from the Kotlin function above (in class ScoreKt, as public static final) and from the method written in Java, shown here with a second method, big, used further down, and a main to run it:
+
+```java
+public class Score {
+    static int score(int visits, int stars) {
+        int total = visits * 2 + stars;
+        return total;
+    }
+    static long big(long visits) {
+        return visits + 100000;
+    }
+    public static void main(String[] args) {
+        System.out.println(score(3, 4));
+    }
+}
+```
+
 
 ```text
 static int score(int, int);
@@ -84,7 +100,7 @@ static long big(long);
 ### The edges
 
 - The class file records how deep the stack can get and how many local slots the method uses, so a frame can be set up before its first instruction runs. Print them with javap's verbose option: score shows stack=2, locals=3. The compiler computed that depth by walking the same list you just walked.
-- This is the execution model the instructions describe. As puzzle 1 said, a runtime may run the same method differently, for example translated to machine instructions, as long as the result is the one this model gives.
+- This is the execution model the instructions describe. As puzzle 1 said, a runtime may run the same method differently, for example translated to machine instructions, the processor's own instructions that it runs directly, as long as the result is the one this model gives.
 - A Kotlin function written at the top of a file becomes a static method of a class named after the file (Score.kt becomes a class named `ScoreKt`). Puzzle 8 reads more of what Kotlin compiles to.
 
 ## The analogy
@@ -93,13 +109,17 @@ A clerk works with a spike for paper slips and a row of numbered drawers. A load
 
 ## Run it yourself
 
+You need a JDK (it brings javac, java and javap) and, for the Kotlin puzzles, kotlinc. One way on macOS or Linux is SDKMAN!, a small installer for both: after installing it from sdkman.io, run sdk install java and sdk install kotlin. Or download them by hand: a JDK build from your vendor of choice, and the Kotlin compiler zip from Kotlin's GitHub releases, adding its kotlinc/bin folder to your path. Check with javac -version and kotlinc -version. This course used JDK 21 and kotlinc 2.2.21.
+
+Save the Java class above as Score.java, then:
+
 ```sh
 javac -d out Score.java
 javap -classpath out -c Score
 javap -classpath out -v Score
 ```
 
-Before running the second command, write down the instruction list you expect for score. Then change the constant 2 to 100 and predict the new offsets.
+Before running the javap commands, write down the instruction list you expect for score, and the stack and locals numbers -v will print. Then change the constant 2 to 100 and predict the new offsets.
 
 ## Check yourself
 
@@ -116,4 +136,5 @@ Before running the second command, write down the instruction list you expect fo
 - [JVM specification, 6.5 istore_&lt;n&gt;](https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-6.html#jvms-6.5.istore_n) ("The value on the top of the operand stack must be of type int. It is popped from the operand stack, and the value of the local variable at &lt;n&gt; is set to value.")
 - [The javap command (JDK 21)](https://docs.oracle.com/en/java/javase/21/docs/specs/man/javap.html) ("-c Prints disassembled code, for example, the instructions that comprise the Java bytecodes, for each of the methods in the class."; "-verbose or -v Prints additional information about the selected class.")
 - [Kotlin docs: Calling Kotlin from Java](https://kotlinlang.org/docs/java-to-kotlin-interop.html) ("Kotlin represents package-level functions as static methods.")
+- [SDKMAN! usage](https://sdkman.io/usage/) ("sdk install java") and [Kotlin docs: command-line compiler](https://kotlinlang.org/docs/command-line.html) ("To install the Kotlin compiler via SDKMAN!, run the following command in the terminal: sdk install kotlin"; "Unzip the standalone compiler into a directory and optionally add the kotlinc/bin directory to the system path.")
 - The bytecode listings were produced in this session with javac and javap from OpenJDK 21.0.12 and kotlinc 2.2.21.
