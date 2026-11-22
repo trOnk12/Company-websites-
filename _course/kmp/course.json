@@ -54,7 +54,7 @@
     },
     {
       "title": "Module 5: Kotlin/Native under the hood",
-      "blurb": "What happens after the klibs: the link stage and LLVM, the linker, static or dynamic frameworks, frameworks and XCFrameworks, reading a crash with a dSYM, and where build time and binary size go.",
+      "blurb": "What happens after the klibs: the link stage and LLVM, the linker and dead code elimination, static or dynamic frameworks and embedding, XCFrameworks and where the files land, how Xcode runs Gradle, what has to match (Mac, Xcode, iOS version), reading a crash with a dSYM, and where build minutes and megabytes go.",
       "puzzles": [
         "23-from-ir-to-machine-code.md",
         "24-one-binary-the-linker.md",
@@ -75,7 +75,7 @@
     },
     {
       "title": "Module 7: Shipping it to iOS",
-      "topics": "How Xcode gets your framework (embedAndSignAppleFrameworkForXcode, signing); Swift Package Manager with a binary XCFramework; CocoaPods; the local and the released loop; versioning a shared module and its dSYMs; CI for Apple targets."
+      "topics": "Shipping a framework to an iOS team that doesn't build Kotlin: Swift Package Manager with a binary XCFramework; CocoaPods; signing; the local and the released loop; versioning a shared module and its dSYMs; CI for Apple targets."
     },
     {
       "title": "Module 8: The common stack",

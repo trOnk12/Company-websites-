@@ -1134,6 +1134,11 @@
    "in": "31",
    "def": "An example module used inside the framework but not exported.",
    "kind": "code"
+  },
+  "MyApp": {
+   "in": "29",
+   "def": "The example app's own executable in puzzle 29's crash report.",
+   "kind": "code"
   }
  },
  "avoid": {
