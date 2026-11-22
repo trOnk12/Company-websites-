@@ -6,9 +6,11 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const ALL = fs.readdirSync(path.join(ROOT, '_music')).filter(f => f.endsWith('.md') && !f.startsWith('_'));
-const isLesson = f => /^kind:\s*(lesson|breakdown)\s*$/m.test(fs.readFileSync(path.join(ROOT, '_music', f), 'utf8').split(/^---\s*$/m)[1] || '');
-const RECIPES = ALL.filter(f => !isLesson(f)).map(f => f.replace(/\.md$/, ''));
-const LESSONS = ALL.filter(isLesson).map(f => f.replace(/\.md$/, ''));
+const kind = f => ((fs.readFileSync(path.join(ROOT, '_music', f), 'utf8').split(/^---\s*$/m)[1] || '').match(/^kind:\s*(\w+)\s*$/m) || [])[1] || 'recipe';
+const slugs = k => ALL.filter(f => kind(f) === k).map(f => f.replace(/\.md$/, ''));
+const RECIPES = slugs('recipe');
+const LESSONS = slugs('lesson');
+const BREAKDOWNS = slugs('breakdown');
 
 test.describe('Music', () => {
   test('generated pages match the recipes', () => {
@@ -25,7 +27,7 @@ test.describe('Music', () => {
   test('the index lists every recipe', async ({ page }) => {
     await page.goto('/music/');
     await expect(page.locator('h1')).toHaveCount(1);
-    for (const r of [...RECIPES, ...LESSONS]) await expect(page.locator(`.cassette a[href="${r}.html"]`)).toHaveCount(1);
+    for (const r of [...RECIPES, ...LESSONS, ...BREAKDOWNS]) await expect(page.locator(`.cassette a[href="${r}.html"]`)).toHaveCount(1);
   });
 
   test('every recipe draws its knobs, links its manuals and fits a phone', async ({ page }) => {
@@ -54,6 +56,21 @@ test.describe('Music', () => {
       const before = await toy.locator('.fm-read').textContent();
       await toy.locator('input[type=range]').last().fill('3');
       await expect(toy.locator('.fm-read')).not.toHaveText(before || '');
+      const [scroll, client] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
+      expect(scroll, r).toBeLessThanOrEqual(client);
+      expect(errors, r).toEqual([]);
+    }
+  });
+
+  test('every breakdown links official audio, sources every gear claim and fits a phone', async ({ page }) => {
+    expect(BREAKDOWNS.length).toBeGreaterThan(0);
+    for (const r of BREAKDOWNS) {
+      const errors = [];
+      page.on('pageerror', e => errors.push(e.message));
+      await page.goto(`/music/${r}.html`);
+      await expect(page.locator('h1')).toHaveCount(1);
+      await expect(page.getByText('source needed'), r).toHaveCount(0);
+      expect(await page.locator('#sources a[href^="http"]').count(), r).toBeGreaterThan(2);
       const [scroll, client] = await page.evaluate(() => [document.documentElement.scrollWidth, document.documentElement.clientWidth]);
       expect(scroll, r).toBeLessThanOrEqual(client);
       expect(errors, r).toEqual([]);
