@@ -50,7 +50,10 @@
   },
   "garbage collector": {
    "in": "03",
-   "def": "The part of the runtime that automatically reclaims storage for objects the program can no longer reach."
+   "def": "The part of the runtime that automatically reclaims storage for objects the program can no longer reach.",
+   "aliases": [
+    "GC"
+   ]
   },
   "bytecode": {
    "in": "05",
@@ -710,6 +713,277 @@
    "in": "18",
    "kind": "code",
    "def": "The separator R8 and d8 put in the names of classes they generate."
+  },
+  "template interpreter": {
+   "in": "19",
+   "def": "HotSpot interpreter: for each opcode it jumps to a small piece of machine code, the template, that carries out that instruction."
+  },
+  "invocation counter": {
+   "in": "19",
+   "def": "A number HotSpot keeps per method and increases on every call, to find the methods worth compiling.",
+   "aliases": [
+    "invocation counters"
+   ]
+  },
+  "code cache": {
+   "in": "19",
+   "def": "The memory where HotSpot keeps the machine code its compilers produce."
+  },
+  "Xint": {
+   "in": "19",
+   "def": "The java option that turns the compilers off: every method is interpreted.",
+   "kind": "code"
+  },
+  "nanoTime": {
+   "in": "19",
+   "def": "System.nanoTime(): a clock reading in nanoseconds, for measuring how long something took.",
+   "kind": "code"
+  },
+  "C1": {
+   "in": "20",
+   "def": "HotSpot's quick compiler: compiles a method fast, with simple optimizations, and can add profiling code."
+  },
+  "C2": {
+   "in": "20",
+   "def": "HotSpot's optimizing compiler: compiles slowly but produces the fastest code, using the method profile."
+  },
+  "tiered compilation": {
+   "in": "20",
+   "def": "Moving a hot method through levels: interpreter, then C1 with profiling, then C2."
+  },
+  "method profile": {
+   "in": "20",
+   "def": "What HotSpot records while a method runs: how often each branch went each way and which classes each call met.",
+   "aliases": [
+    "method profiles"
+   ]
+  },
+  "on-stack replacement": {
+   "in": "20",
+   "def": "Switching a method that is still running, inside a long loop, from the interpreter to compiled code.",
+   "aliases": [
+    "OSR"
+   ]
+  },
+  "PrintCompilation": {
+   "in": "20",
+   "def": "The HotSpot option that prints a line each time a method is compiled or its compiled code is retired.",
+   "kind": "code"
+  },
+  "TieredStopAtLevel": {
+   "in": "20",
+   "def": "The HotSpot option that sets the highest compilation level used.",
+   "kind": "code"
+  },
+  "MethodData": {
+   "in": "20",
+   "def": "The object in which HotSpot keeps a method profile.",
+   "kind": "code"
+  },
+  "inlining": {
+   "in": "21",
+   "def": "A compiler copying a called method's body into the caller's compiled code, so the call disappears.",
+   "aliases": [
+    "inlined",
+    "inline (hot)"
+   ]
+  },
+  "type profile": {
+   "in": "21",
+   "def": "The part of a method profile that counts which receiver classes a call site met."
+  },
+  "monomorphic": {
+   "in": "21",
+   "def": "A call site that has met only one receiver class.",
+   "aliases": [
+    "bimorphic"
+   ]
+  },
+  "megamorphic": {
+   "in": "21",
+   "def": "A call site that has met too many receiver classes to inline them; it keeps the method-table lookup."
+  },
+  "inline cache": {
+   "in": "21",
+   "def": "A call site in compiled code that remembers the last receiver class and jumps straight to its method.",
+   "aliases": [
+    "inline caches"
+   ]
+  },
+  "PrintInlining": {
+   "in": "21",
+   "def": "The diagnostic HotSpot option that prints each inlining decision.",
+   "kind": "code"
+  },
+  "UnlockDiagnosticVMOptions": {
+   "in": "21",
+   "def": "The HotSpot option that makes diagnostic options such as PrintInlining available.",
+   "kind": "code"
+  },
+  "CompileCommand": {
+   "in": "21",
+   "def": "The HotSpot option that applies a command or option to chosen methods.",
+   "kind": "code"
+  },
+  "TypeProfile": {
+   "in": "21",
+   "def": "How PrintInlining shows which receiver classes a call site met.",
+   "kind": "code"
+  },
+  "MaxInlineSize": {
+   "in": "21",
+   "def": "C2 inlines a rarely called method only if its bytecode is at most this many bytes (35).",
+   "kind": "code"
+  },
+  "FreqInlineSize": {
+   "in": "21",
+   "def": "C2 inlines a frequently called method only if its bytecode is at most this many bytes (325 on x86-64).",
+   "kind": "code"
+  },
+  "MixedKt": {
+   "in": "21",
+   "def": "The class holding the top-level functions of Mixed.kt.",
+   "kind": "code"
+  },
+  "escape analysis": {
+   "in": "22",
+   "def": "C2's check of whether a new object can be reached outside the compiled method and its inlined calls."
+  },
+  "scalar replacement": {
+   "in": "22",
+   "def": "Replacing an object that doesn't escape by its fields, kept as local values: the object is never allocated."
+  },
+  "DoEscapeAnalysis": {
+   "in": "22",
+   "def": "The HotSpot option that turns escape analysis on (the default) or off.",
+   "kind": "code"
+  },
+  "ThreadMXBean": {
+   "in": "22",
+   "def": "A JDK interface that reports per-thread numbers, such as bytes allocated.",
+   "kind": "code"
+  },
+  "getThreadAllocatedBytes": {
+   "in": "22",
+   "def": "Returns how many bytes a thread has allocated on the heap so far.",
+   "kind": "code"
+  },
+  "EscapeKt": {
+   "in": "22",
+   "def": "The class holding the top-level functions of Escape.kt.",
+   "kind": "code"
+  },
+  "deoptimization": {
+   "in": "23",
+   "def": "Discarding compiled code whose assumption no longer holds and continuing the method in the interpreter.",
+   "aliases": [
+    "deoptimized",
+    "deoptimizes",
+    "deoptimize"
+   ]
+  },
+  "class hierarchy analysis": {
+   "in": "23",
+   "def": "Checking the classes loaded so far to prove an open method has no override, so it can be called directly.",
+   "aliases": [
+    "CHA"
+   ]
+  },
+  "uncommon trap": {
+   "in": "23",
+   "def": "A spot in compiled code, for a case the profile never saw, that deoptimizes if that case happens.",
+   "aliases": [
+    "uncommon traps"
+   ]
+  },
+  "LogCompilation": {
+   "in": "23",
+   "def": "The diagnostic HotSpot option that writes every compiler event to an XML log file.",
+   "kind": "code"
+  },
+  "HotKt": {
+   "in": "23",
+   "def": "The class holding the top-level functions of Hot.kt.",
+   "kind": "code"
+  },
+  "BranchKt": {
+   "in": "23",
+   "def": "The class holding the top-level functions of Branch.kt.",
+   "kind": "code"
+  },
+  "warm-up": {
+   "in": "24",
+   "def": "The start of a run, while methods are still interpreted or compiled at lower levels.",
+   "aliases": [
+    "warm up",
+    "warms up"
+   ]
+  },
+  "dead code elimination": {
+   "in": "24",
+   "def": "A compiler removing code whose result is never used.",
+   "aliases": [
+    "dead-code elimination"
+   ]
+  },
+  "JMH": {
+   "in": "24",
+   "def": "The Java Microbenchmark Harness: an OpenJDK tool that warms code up, keeps results alive and runs each benchmark in a fresh JVM."
+  },
+  "Blackhole": {
+   "in": "24",
+   "def": "The JMH object that consumes a value so the compiler cannot treat it as unused.",
+   "kind": "code"
+  },
+  "class data sharing": {
+   "in": "25",
+   "def": "Loading classes from a prepared archive file instead of reading and parsing class files.",
+   "aliases": [
+    "CDS"
+   ]
+  },
+  "CDS archive": {
+   "in": "25",
+   "def": "The file class data sharing maps into memory: classes already parsed, in the form HotSpot keeps them.",
+   "aliases": [
+    "CDS archives"
+   ]
+  },
+  "training run": {
+   "in": "25",
+   "def": "A run of the application whose only purpose is to record what a later cache should contain.",
+   "aliases": [
+    "training runs"
+   ]
+  },
+  "AOT cache": {
+   "in": "25",
+   "def": "JDK 24's successor to the CDS archive: classes already loaded and linked, and from JDK 25 method profiles too."
+  },
+  "ArchiveClassesAtExit": {
+   "in": "25",
+   "def": "The option that writes the classes a run loaded into a CDS archive when it exits.",
+   "kind": "code"
+  },
+  "SharedArchiveFile": {
+   "in": "25",
+   "def": "The option that names the CDS archive to use.",
+   "kind": "code"
+  },
+  "AOTCache": {
+   "in": "25",
+   "def": "JDK 24+ option that names the AOT cache to use.",
+   "kind": "code"
+  },
+  "AOTCacheOutput": {
+   "in": "25",
+   "def": "JDK 25+ option: do a training run and write an AOT cache in one command.",
+   "kind": "code"
+  },
+  "StartKt": {
+   "in": "25",
+   "def": "The class holding the top-level functions of Start.kt.",
+   "kind": "code"
   }
  },
  "from": {
@@ -740,6 +1014,14 @@
   "JIT": {
    "course": "android",
    "in": 10
+  },
+  "interpreter": {
+   "course": "android",
+   "in": 9
+  },
+  "machine code": {
+   "course": "android",
+   "in": 9
   }
  }
 }

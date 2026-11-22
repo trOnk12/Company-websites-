@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Already know Reading bytecode? Answer one question per puzzle; each right answer marks that puzzle as passed.">
+  <meta name="description" content="Already know Loading and linking code? Answer one question per puzzle; each right answer marks that puzzle as passed.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="Check: Reading bytecode – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="Already know Reading bytecode? Answer one question per puzzle; each right answer marks that puzzle as passed.">
+  <meta property="og:title" content="Check: Loading and linking code – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
+  <meta property="og:description" content="Already know Loading and linking code? Answer one question per puzzle; each right answer marks that puzzle as passed.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/jvm/check-3">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>Check: Reading bytecode – JVM internals for Kotlin and Android developers – Mateusz Pachulski</title>
+  <title>Check: Loading and linking code – JVM internals for Kotlin and Android developers – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/jvm/check-3">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -50,67 +50,87 @@
   <main id="main">
     <article class="module-check course-top wrap narrow" data-course="jvm">
       <p class="eyebrow"><a href="./">JVM internals for Kotlin and Android developers</a> · check</p>
-      <h1>Know Reading bytecode already?</h1>
-      <p class="lede">One question for each of the 6 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
-<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: Where does the arithmetic happen?</p>
-<fieldset class="quiz" data-n="5">
-<legend>A method returns visits - stars. Which instruction list computes it?</legend>
-<input type="radio" name="q-05-operand-stack-1" id="q-05-operand-stack-1-1"><label for="q-05-operand-stack-1-1"><span><code>isub</code>, <code>iload_0</code>, <code>iload_1</code></span></label>
-<input type="radio" name="q-05-operand-stack-1" id="q-05-operand-stack-1-2"><label for="q-05-operand-stack-1-2"><span><code>iload_1</code>, <code>iload_0</code>, <code>isub</code></span></label>
-<input type="radio" name="q-05-operand-stack-1" id="q-05-operand-stack-1-3" data-ok><label for="q-05-operand-stack-1-3"><span><code>iload_0</code>, <code>iload_1</code>, <code>isub</code></span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The inputs must be on the stack before the instruction that uses them runs. <a class="show-me" href="05-operand-stack.html">Learn it in puzzle 5 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> The value pushed first is the left-hand side; this list computes stars - visits. <a class="show-me" href="05-operand-stack.html">Learn it in puzzle 5 →</a></p>
-<p class="fb ok opt-3"><b>Right.</b> The first value pushed sits deeper and is the left-hand side.</p>
+      <h1>Know Loading and linking code already?</h1>
+      <p class="lede">One question for each of the 8 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+<section aria-label="Puzzle 11"><p class="eyebrow">Puzzle 11: When does a class arrive?</p>
+<fieldset class="quiz" data-n="11">
+<legend>You delete both Rare.value lines but keep new Rare[2]. What does the program print?</legend>
+<input type="radio" name="q-11-loading-linking-1" id="q-11-loading-linking-1-1"><label for="q-11-loading-linking-1-1"><span>Only main starts: the program stops when Rare can't initialize</span></label>
+<input type="radio" name="q-11-loading-linking-1" id="q-11-loading-linking-1-2"><label for="q-11-loading-linking-1-2"><span>main starts, Rare initialized, array made</span></label>
+<input type="radio" name="q-11-loading-linking-1" id="q-11-loading-linking-1-3" data-ok><label for="q-11-loading-linking-1-3"><span>main starts and array made, without Rare initialized</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Nothing fails; Rare is loaded and never needs initializing. <a class="show-me" href="11-loading-linking.html">Learn it in puzzle 11 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> Creating an array of Rares loads Rare but runs none of its code. <a class="show-me" href="11-loading-linking.html">Learn it in puzzle 11 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> Loading isn't initialization.</p>
 </fieldset></section>
-<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: What does #7 point to?</p>
-<fieldset class="quiz" data-n="6">
-<legend>You rename the field weight to factor and recompile Score. In the constant pool, what changes?</legend>
-<input type="radio" name="q-06-constant-pool-1" id="q-06-constant-pool-1-1"><label for="q-06-constant-pool-1-1"><span>The number after <code>getstatic</code> becomes the field's new memory address</span></label>
-<input type="radio" name="q-06-constant-pool-1" id="q-06-constant-pool-1-2" data-ok><label for="q-06-constant-pool-1-2"><span>The Utf8 entry that held weight now holds factor</span></label>
-<input type="radio" name="q-06-constant-pool-1" id="q-06-constant-pool-1-3"><label for="q-06-constant-pool-1-3"><span>Nothing: names are removed when the class is compiled</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The instruction holds an index into the pool, never an address. <a class="show-me" href="06-constant-pool.html">Learn it in puzzle 6 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Fields are described by name and descriptor.</p>
-<p class="fb no opt-3"><b>Not quite.</b> The name is exactly what the pool keeps, so it can be looked up while the program runs. <a class="show-me" href="06-constant-pool.html">Learn it in puzzle 6 →</a></p>
+<section aria-label="Puzzle 12"><p class="eyebrow">Puzzle 12: Why is it zero?</p>
+<fieldset class="quiz" data-n="12">
+<legend>In Settings, you add a third static line after limit: val tripled = limit * 3. What does tripled hold?</legend>
+<input type="radio" name="q-12-static-init-order-1" id="q-12-static-init-order-1-1" data-ok><label for="q-12-static-init-order-1-1"><span>30, because limit was written on the line before</span></label>
+<input type="radio" name="q-12-static-init-order-1" id="q-12-static-init-order-1-2"><label for="q-12-static-init-order-1-2"><span>It depends on which thread runs first</span></label>
+<input type="radio" name="q-12-static-init-order-1" id="q-12-static-init-order-1-3"><label for="q-12-static-init-order-1-3"><span>0, because the static code reads defaults</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Order matters line by line.</p>
+<p class="fb no opt-2"><b>Not quite.</b> One thread runs the static code, top to bottom. <a class="show-me" href="12-static-init-order.html">Learn it in puzzle 12 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Only reads before the writing line see defaults; limit is 10 by then. <a class="show-me" href="12-static-init-order.html">Learn it in puzzle 12 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Which method does a call run?</p>
-<fieldset class="quiz" data-n="7">
-<legend>Counter.next() is overridable, and a subclass Loud overrides it. A method takes a parameter c: Counter and calls c.next(). You pass it a Loud. Which instruction is in the method's bytecode, and which next() runs?</legend>
-<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-1" data-ok><label for="q-07-five-invokes-1-1"><span><code>invokevirtual</code> Counter.next, and Loud's next() runs</span></label>
-<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-2"><label for="q-07-five-invokes-1-2"><span><code>invokespecial</code> Counter.next, so Counter's next() runs</span></label>
-<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-3"><label for="q-07-five-invokes-1-3"><span><code>invokevirtual</code> Loud.next, because a Loud was passed</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The declared type picks the instruction; the receiver's class picks the code.</p>
-<p class="fb no opt-2"><b>Not quite.</b> invokespecial is for calls that must run one exact method; an overridable call isn't one. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> The compiler only knows the declared type, Counter; the object is known only while the program runs. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
+<section aria-label="Puzzle 13"><p class="eyebrow">Puzzle 13: Why does the second try say something different?</p>
+<fieldset class="quiz" data-n="13">
+<legend>Prices' static code is fixed, but a class Rates has static int r = 1 / 0, which throws as soon as it runs. main reads Rates.r three times, catching each time. What does the third attempt get?</legend>
+<input type="radio" name="q-13-static-init-failure-1" id="q-13-static-init-failure-1-1"><label for="q-13-static-init-failure-1-1"><span><code>ExceptionInInitializerError</code> again, with the same cause</span></label>
+<input type="radio" name="q-13-static-init-failure-1" id="q-13-static-init-failure-1-2" data-ok><label for="q-13-static-init-failure-1-2"><span><code>NoClassDefFoundError</code>: Could not initialize class Rates</span></label>
+<input type="radio" name="q-13-static-init-failure-1" id="q-13-static-init-failure-1-3"><label for="q-13-static-init-failure-1-3"><span>The value 0, because the field was prepared with a default</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Only the first attempt runs the static code; after that Rates is marked erroneous. <a class="show-me" href="13-static-init-failure.html">Learn it in puzzle 13 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Every use after the first failure gets NoClassDefFoundError.</p>
+<p class="fb no opt-3"><b>Not quite.</b> A class marked erroneous can't be used at all, so the field is never read. <a class="show-me" href="13-static-init-failure.html">Learn it in puzzle 13 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: What did Kotlin write for you?</p>
-<fieldset class="quiz" data-n="8">
-<legend>visit gets a third parameter, note: String = &quot;&quot;. You call visit(b, 5) and leave note out. Which mask does visit$default receive?</legend>
-<input type="radio" name="q-08-kotlin-in-javap-1" id="q-08-kotlin-in-javap-1-1" data-ok><label for="q-08-kotlin-in-javap-1-1"><span>4, because note is argument 2</span></label>
-<input type="radio" name="q-08-kotlin-in-javap-1" id="q-08-kotlin-in-javap-1-2"><label for="q-08-kotlin-in-javap-1-2"><span>1, because it's the first argument left out</span></label>
-<input type="radio" name="q-08-kotlin-in-javap-1" id="q-08-kotlin-in-javap-1-3"><label for="q-08-kotlin-in-javap-1-3"><span>2, because one argument was left out</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Bit n is set for argument n.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Bit 0 belongs to argument 0, b, which was given. <a class="show-me" href="08-kotlin-in-javap.html">Learn it in puzzle 8 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> The mask marks which argument, by position, not how many: bit 2 has the value 4. <a class="show-me" href="08-kotlin-in-javap.html">Learn it in puzzle 8 →</a></p>
+<section aria-label="Puzzle 14"><p class="eyebrow">Puzzle 14: Why can't Greeter be cast to Greeter?</p>
+<fieldset class="quiz" data-n="14">
+<legend>You write your own class named java.lang.String and put it on the class path. Which String does your code get?</legend>
+<input type="radio" name="q-14-class-loaders-1" id="q-14-class-loaders-1-1"><label for="q-14-class-loaders-1-1"><span>Both, one per loader</span></label>
+<input type="radio" name="q-14-class-loaders-1" id="q-14-class-loaders-1-2"><label for="q-14-class-loaders-1-2"><span>Yours, because the class path is searched first</span></label>
+<input type="radio" name="q-14-class-loaders-1" id="q-14-class-loaders-1-3" data-ok><label for="q-14-class-loaders-1-3"><span>The JDK's, because the request reaches bootstrap first</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Only one loader ever gets to define it: bootstrap answers first. <a class="show-me" href="14-class-loaders.html">Learn it in puzzle 14 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The application loader asks its parents before it looks at the class path. <a class="show-me" href="14-class-loaders.html">Learn it in puzzle 14 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> Parent delegation protects the core classes.</p>
 </fieldset></section>
-<section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: Where did my lambda go?</p>
-<fieldset class="quiz" data-n="9">
-<legend>You remove inline from runNow and recompile. What appears in main where the println instructions were?</legend>
-<input type="radio" name="q-09-lambdas-and-inline-1" id="q-09-lambdas-and-inline-1-1" data-ok><label for="q-09-lambdas-and-inline-1-1"><span><code>invokedynamic</code> and a call to runNow</span></label>
-<input type="radio" name="q-09-lambdas-and-inline-1" id="q-09-lambdas-and-inline-1-2"><label for="q-09-lambdas-and-inline-1-2"><span>Only a call to runNow, with no lambda</span></label>
-<input type="radio" name="q-09-lambdas-and-inline-1" id="q-09-lambdas-and-inline-1-3"><label for="q-09-lambdas-and-inline-1-3"><span>The same copied println instructions</span></label>
-<p class="fb ok opt-1"><b>Right.</b> A plain function receives the lambda as an object.</p>
-<p class="fb no opt-2"><b>Not quite.</b> runNow still needs the lambda, so main must build a function object to pass. <a class="show-me" href="09-lambdas-and-inline.html">Learn it in puzzle 9 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Without inline, nothing is copied; the lambda must become an object to be passed. <a class="show-me" href="09-lambdas-and-inline.html">Learn it in puzzle 9 →</a></p>
+<section aria-label="Puzzle 15"><p class="eyebrow">Puzzle 15: Not found, or no longer there?</p>
+<fieldset class="quiz" data-n="15">
+<legend>A server crashes with NoClassDefFoundError: com/example/Json, caused by ClassNotFoundException. The code calls Json.parse directly. What's the most likely cause?</legend>
+<input type="radio" name="q-15-classpath-modulepath-1" id="q-15-classpath-modulepath-1-1"><label for="q-15-classpath-modulepath-1-1"><span>Someone passed a wrong class name to Class.forName</span></label>
+<input type="radio" name="q-15-classpath-modulepath-1" id="q-15-classpath-modulepath-1-2" data-ok><label for="q-15-classpath-modulepath-1-2"><span>The jar containing Json is missing from the server's class path</span></label>
+<input type="radio" name="q-15-classpath-modulepath-1" id="q-15-classpath-modulepath-1-3"><label for="q-15-classpath-modulepath-1-3"><span>Json's static initializer failed earlier</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A direct call compiles to bytecode referring to Json; no string name is involved. <a class="show-me" href="15-classpath-modulepath.html">Learn it in puzzle 15 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Compiled code depended on a class that isn't deployed.</p>
+<p class="fb no opt-3"><b>Not quite.</b> That message says &quot;Could not initialize class&quot; instead of being caused by ClassNotFoundException. <a class="show-me" href="15-classpath-modulepath.html">Learn it in puzzle 15 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 10"><p class="eyebrow">Puzzle 10: How does a call find the override?</p>
-<fieldset class="quiz" data-n="10">
-<legend>A class Shout extends Loud and overrides next again with v + 100. A Shout reaches use(c). Which entry does <code>invokevirtual</code> read, and what does use return?</legend>
-<input type="radio" name="q-10-virtual-dispatch-1" id="q-10-virtual-dispatch-1-1"><label for="q-10-virtual-dispatch-1-1"><span>Counter's entry, because the instruction names Counter.next</span></label>
-<input type="radio" name="q-10-virtual-dispatch-1" id="q-10-virtual-dispatch-1-2"><label for="q-10-virtual-dispatch-1-2"><span>Loud's entry, because Shout's table is a copy of Loud's</span></label>
-<input type="radio" name="q-10-virtual-dispatch-1" id="q-10-virtual-dispatch-1-3" data-ok><label for="q-10-virtual-dispatch-1-3"><span>The entry for next in Shout's table, so 101 + 2 = 103</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The instruction names the method; the receiver's table decides the code. <a class="show-me" href="10-virtual-dispatch.html">Learn it in puzzle 10 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> The copy is made first, then Shout's override replaces that entry. <a class="show-me" href="10-virtual-dispatch.html">Learn it in puzzle 10 →</a></p>
-<p class="fb ok opt-3"><b>Right.</b> Each class's table has its own overrides at the same position.</p>
+<section aria-label="Puzzle 16"><p class="eyebrow">Puzzle 16: Can the JVM check before main runs?</p>
+<fieldset class="quiz" data-n="16">
+<legend>The module app requires bonus, and bonus requires a third module, json, which is missing. App's main doesn't touch json at all. Does start print?</legend>
+<input type="radio" name="q-16-module-path-1" id="q-16-module-path-1-1" data-ok><label for="q-16-module-path-1-1"><span>No: resolution follows bonus's requires line too</span></label>
+<input type="radio" name="q-16-module-path-1" id="q-16-module-path-1-2"><label for="q-16-module-path-1-2"><span>Yes, and it fails when bonus first uses json</span></label>
+<input type="radio" name="q-16-module-path-1" id="q-16-module-path-1-3"><label for="q-16-module-path-1-3"><span>Yes, because app's own module-info doesn't mention json</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Startup resolution covers every module reachable through requires.</p>
+<p class="fb no opt-2"><b>Not quite.</b> That is the class path's behavior; the module path checks first. <a class="show-me" href="16-module-path.html">Learn it in puzzle 16 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Resolving follows each required module's own requires lines too. <a class="show-me" href="16-module-path.html">Learn it in puzzle 16 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 17"><p class="eyebrow">Puzzle 17: Where do classes live, and how do they leak?</p>
+<fieldset class="quiz" data-n="17">
+<legend>The list keeps the loader object instead of the Greeter. What happens to the run?</legend>
+<input type="radio" name="q-17-metaspace-1" id="q-17-metaspace-1-1"><label for="q-17-metaspace-1-1"><span>It finishes, because no Greeter object is kept</span></label>
+<input type="radio" name="q-17-metaspace-1" id="q-17-metaspace-1-2" data-ok><label for="q-17-metaspace-1-2"><span>It still fails: a reachable loader keeps every class it defined</span></label>
+<input type="radio" name="q-17-metaspace-1" id="q-17-metaspace-1-3"><label for="q-17-metaspace-1-3"><span>It fails sooner, because a loader is bigger than a Greeter</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A class is unloaded only with its loader, and the list reaches the loader. <a class="show-me" href="17-metaspace.html">Learn it in puzzle 17 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Reaching the loader is enough.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The failure comes from class metadata kept in metaspace, not from the size of what's in the list. <a class="show-me" href="17-metaspace.html">Learn it in puzzle 17 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 18"><p class="eyebrow">Puzzle 18: What does Android do with all this?</p>
+<fieldset class="quiz" data-n="18">
+<legend>You unzip your release APK and search it for Bookmark.class, which kotlinc wrote during the build. What do you find?</legend>
+<input type="radio" name="q-18-android-bridge-1" id="q-18-android-bridge-1-1"><label for="q-18-android-bridge-1-1"><span>Bookmark.class next to classes.dex, for PathClassLoader to load</span></label>
+<input type="radio" name="q-18-android-bridge-1" id="q-18-android-bridge-1-2" data-ok><label for="q-18-android-bridge-1-2"><span>No Bookmark.class: its code is inside classes.dex</span></label>
+<input type="radio" name="q-18-android-bridge-1" id="q-18-android-bridge-1-3"><label for="q-18-android-bridge-1-3"><span>Bookmark.class, unchanged, because d8 only runs for debug builds</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> PathClassLoader loads classes from DEX; the APK carries no class files. <a class="show-me" href="18-android-bridge.html">Learn it in puzzle 18 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> d8 converts every class file into DEX before packaging.</p>
+<p class="fb no opt-3"><b>Not quite.</b> d8 runs in every build; it is how class files become DEX. <a class="show-me" href="18-android-bridge.html">Learn it in puzzle 18 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

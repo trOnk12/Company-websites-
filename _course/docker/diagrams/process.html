@@ -1,0 +1,19 @@
+<!-- label: A container's program is an ordinary process: the host's kernel runs it and numbers it like any other; the container is the fence around what it can see -->
+<!-- question: Where does a container's program run, and what makes it a container? type: layer stack (processes standing on the kernel), then what one process can see. Real PIDs from the run on 22 November 2026 (Docker Engine 29.9.2, Linux 6.18.44). -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="pr-t"><title id="pr-t">The Linux kernel runs bash and ps, with PIDs 3633 and 3635. docker run starts sleep 1000 from the image alpine:3.20, and it appears as one more process, PID 3393, on the same kernel. Inside its fence, ps lists only sleep and itself: that fence is the container</title>
+<x-ground class="step s1" y="300" label="Linux kernel"/>
+<g class="step s1"><rect class="d-paper" x="30" y="206" width="150" height="80" rx="8"/><text class="d-mi" x="105" y="240" text-anchor="middle">bash</text></g>
+<g class="step s1"><rect class="d-paper" x="200" y="206" width="150" height="80" rx="8"/><text class="d-mi" x="275" y="240" text-anchor="middle">ps</text></g>
+<g class="step s2" data-pulse="2"><text class="d-a" x="105" y="272" text-anchor="middle">PID 3633</text><text class="d-a" x="275" y="272" text-anchor="middle">PID 3635</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-share" x="398" y="138" width="234" height="158" rx="10"/><text class="d-a" x="515" y="164" text-anchor="middle">container</text><rect class="d-paper" x="568" y="206" width="56" height="80" rx="8"/><text class="d-mi" x="596" y="252" text-anchor="middle">ps</text><path class="d-dash" d="M398,246 L352,246"/><circle class="d-bad" cx="375" cy="246" r="11"/><path class="d-red" d="M369,240 L381,252 M381,240 L369,252"/></g>
+<text class="d-mi step s3" x="30" y="60">$ docker run alpine:3.20 sleep 1000</text>
+<x-sheet class="step s3" x="470" y="34" w="54" h="64" label="alpine:3.20"/>
+<x-arrow class="step s3" tone="acc" d="M497,124 L490,196"/>
+<g class="step s3" data-move="2:408,30 3:408,206" data-pulse="3"><rect class="d-hl" x="0" y="0" width="150" height="80" rx="8"/><text class="d-mi" x="75" y="34" text-anchor="middle">sleep 1000</text><text class="d-a" x="75" y="66" text-anchor="middle">PID 3393</text></g>
+</svg>
+<ol class="caps">
+<li><p>The <b>kernel</b> is the core of the operating system: the one program that runs all the others and shares out the processor, memory and files. Here it runs two processes: your shell, bash, and ps.</p></li>
+<li><p>The kernel numbers each process when it starts: its <b>PID</b>, process ID. <code>ps</code> prints one line per process, with its PID and its command.</p></li>
+<li><p>You type <code>docker run alpine:3.20 sleep 1000</code>. <code>alpine:3.20</code> is a <b>container image</b>: the files the program starts from. One more process appears, PID 3393. <i>Predict: a ps started beside sleep, inside, lists what?</i></p></li>
+<li><p>Only sleep and itself: bash and the first ps are out of its sight. That fence makes sleep a <b>container</b>: an ordinary process that the kernel keeps from seeing, and using, everything else.</p></li>
+</ol>

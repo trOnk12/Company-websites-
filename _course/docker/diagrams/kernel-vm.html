@@ -1,0 +1,23 @@
+<!-- label: A container's system calls go to the host's one kernel; a virtual machine boots its own kernel on a hypervisor; on a Mac, Docker Desktop puts the containers inside such a VM -->
+<!-- question: Which kernel answers a container's system calls, and how is that different from a virtual machine? type: before/after (small multiples: the same stack drawn twice). Output from the run on 22 November 2026: uname -r prints 6.18.44-fc-v726 inside and outside. -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="kv-t"><title id="kv-t">Right: a Linux host. bash and a container's sleep stand on one Linux kernel, 6.18.44, on the hardware; sleep's system calls go to that kernel, so uname -r inside the container prints the host's version. Left: a virtual machine with its own Linux kernel and an app, standing on a hypervisor on the hardware. Last, the container moves into the virtual machine: that is Docker Desktop on a Mac</title>
+<g class="step s1"><rect class="d-band" x="340" y="330" width="280" height="36" rx="4"/><text class="d-tiny" x="480" y="354" text-anchor="middle">hardware</text></g>
+<g class="step s1" data-pulse="3"><rect class="d-wood" x="340" y="290" width="280" height="36" rx="4"/><text class="d-tiny" x="480" y="314" text-anchor="middle">Linux kernel 6.18.44</text></g>
+<g class="step s1"><rect class="d-paper" x="350" y="180" width="100" height="70" rx="8"/><text class="d-mi" x="400" y="221" text-anchor="middle">bash</text></g>
+<text class="d-tiny step s1 hide-6" x="548" y="281">system call</text>
+
+<text class="d-mi step s2" x="340" y="44">$ docker exec box uname -r</text>
+<text class="d-a step s3" x="340" y="76">6.18.44-fc-v726</text>
+<g class="step s4"><rect class="d-band" x="20" y="330" width="280" height="36" rx="4"/><text class="d-tiny" x="160" y="354" text-anchor="middle">hardware</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-p2" x="20" y="290" width="280" height="36" rx="4"/><text class="d-tiny" x="160" y="314" text-anchor="middle">hypervisor</text></g>
+<g class="step s4" data-move="4:0,40 5:0,0"><rect class="d-box" x="30" y="108" width="260" height="176" rx="10"/><text class="d-a" x="34" y="98">virtual machine</text><rect class="d-wood" x="40" y="236" width="240" height="36" rx="4"/><text class="d-tiny" x="160" y="260" text-anchor="middle">its own Linux kernel</text><g class="hide-6 step s4"><rect class="d-paper" x="44" y="150" width="84" height="70" rx="8"/><text class="d-mi" x="86" y="191" text-anchor="middle">app</text></g></g>
+<g class="step s1" data-move="1:0,0 5:0,0 6:-330,-32"><rect class="d-share" x="470" y="150" width="140" height="112" rx="10"/><rect class="d-hl" x="482" y="180" width="116" height="70" rx="8"/><text class="d-mi" x="540" y="221" text-anchor="middle">sleep</text><x-arrow tone="acc" d="M540,252 L540,286"/></g>
+</svg>
+<ol class="caps">
+<li><p>A process can't reach a file, the network or another process by itself. It asks the kernel, with a <b>system call</b>: open this file, start that program. sleep's calls go to the host's kernel, Linux 6.18.44.</p></li>
+<li><p><code>uname -r</code> asks the kernel which version it is. <i>Predict: run inside the Alpine container, does it print the host's kernel version, or one that came with Alpine?</i></p></li>
+<li><p>The host's: 6.18.44-fc-v726, exactly what the host itself prints. The image brought Alpine's files, not a kernel. Every container on this machine calls this one kernel.</p></li>
+<li><p>Compare a <b>virtual machine</b>, a VM: a whole pretend computer that boots its own operating system, with its own kernel. Its app's system calls go to that kernel, not to the host's.</p></li>
+<li><p>Below the VM runs a <b>hypervisor</b>: the program that runs VMs and keeps each one behind its own pretend hardware. A VM is separated by that hardware boundary; containers only by the kernel they share.</p></li>
+<li><p>On a Mac or Windows laptop, Docker Desktop runs a small Linux VM, and your containers run inside it, on its Linux kernel. That's why your Mac's own process list never shows them.</p></li>
+</ol>

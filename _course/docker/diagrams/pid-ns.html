@@ -1,0 +1,18 @@
+<!-- label: A PID namespace is a second numbering inside the first: sleep is 3393 to the host and 1 to itself, sees only its own namespace, and is seen from outside -->
+<!-- question: Which PIDs does each process see, and why is the container's program PID 1? type: nested boxes (one namespace inside another), then before/after of a lookup in each direction. Real numbers from the run on 22 November 2026 (NSpid: 3393 1; kill -0 23807 from inside: No such process). -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="pn-t"><title id="pn-t">The host's PID namespace holds bash 23807 and ps 23809. Docker creates a new PID namespace inside it; sleep 1000 is PID 1 inside and 3393 outside. A ps inside reads /proc and lists PID 1 and 71. From inside, kill -0 23807 finds no such process; from outside, the host sees sleep as 3393</title>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="16" y="26" width="608" height="320" rx="12"/><text class="d-a" x="34" y="56">the host's PIDs</text><rect class="d-paper" x="34" y="86" width="150" height="80" rx="8"/><text class="d-mi" x="109" y="118" text-anchor="middle">bash</text><text class="d-a" x="109" y="150" text-anchor="middle">PID 23807</text><rect class="d-paper" x="34" y="200" width="150" height="80" rx="8"/><text class="d-mi" x="109" y="232" text-anchor="middle">ps</text><text class="d-a" x="109" y="264" text-anchor="middle">PID 23809</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-share" x="246" y="70" width="362" height="260" rx="10"/><text class="d-a" x="262" y="98">new PID namespace</text><rect class="d-hl" x="270" y="120" width="180" height="104" rx="8"/><text class="d-mi" x="360" y="148" text-anchor="middle">sleep 1000</text><text class="d-a" x="360" y="180" text-anchor="middle">PID 1 here</text><text class="d-m" x="360" y="208" text-anchor="middle">3393 outside</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-paper" x="470" y="120" width="120" height="104" rx="8"/><text class="d-mi" x="530" y="160" text-anchor="middle">ps</text><text class="d-a" x="530" y="196" text-anchor="middle">PID 71</text><x-sheet x="300" y="244" w="46" h="54" label="/proc"/><x-arrow tone="acc" d="M352,262 C420,262 500,262 520,230"/></g>
+<text class="d-mi step s4" x="396" y="312">$ kill -0 23807</text>
+<path class="d-dash step s4" d="M268,170 L188,128"/>
+<g class="step s5" data-pulse="5"><circle class="d-bad" cx="226" cy="148" r="12"/><path class="d-red" d="M219,141 L233,155 M233,141 L219,155"/><text class="d-r" x="109" y="189" text-anchor="middle">no such process</text><x-arrow tone="acc" d="M186,250 C220,250 236,236 266,214"/></g>
+<g class="step s4" data-move="4:262,166 5:226,148"><circle class="d-reddot" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>The kernel keeps a list of processes and their PIDs. Every process on the host is in one such list, the first one. A list like this, private to the processes inside it, is a <b>namespace</b>.</p></li>
+<li><p><code>docker run</code> asks for a new <b>PID namespace</b>, inside the first. Its first process, sleep, is PID 1 there, but still 3393 in the host's list: one process, two numbers.</p></li>
+<li><p>A ps inside lists PID 1 and 71. ps reads <b>/proc</b>, a folder the kernel fills in as you read it, one entry per process; Docker gives the container a /proc for its own namespace.</p></li>
+<li><p>From inside, <code>kill -0 23807</code> asks the kernel whether PID 23807 exists. bash really is 23807 on the host. <i>Predict: what does the kernel answer sleep's namespace?</i></p></li>
+<li><p>"No such process": a namespace sees only itself and the namespaces inside it. Outward it is blind; inward the host sees everything, so the host's ps lists sleep as 3393.</p></li>
+</ol>

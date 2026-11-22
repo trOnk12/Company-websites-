@@ -1,0 +1,59 @@
+{
+  "title": "Docker from the kernel up",
+  "intro": "What a container really is underneath docker run: one ordinary Linux process, fenced in by namespaces and held to limits by cgroups, on the same kernel as everything else. Every puzzle shows real output from a real machine, and you can run the same commands yourself. For Android and Kotlin engineers who use Docker but have never looked under it.",
+  "how": "Each puzzle starts with a problem, gives you one building block, shows it in a diagram that plays itself, and ends with three questions. Every output on the page was produced on a real Linux machine (Docker Engine 29.9.2, Linux 6.18) and you can reproduce it under Run it yourself. Facts come from Docker's documentation, the Linux manual pages, the kernel documentation and the Open Container Initiative specifications, quoted on every page.",
+  "modules": [
+    {
+      "title": "Module 1: What a container really is",
+      "blurb": "Find a container's program in the host's process list, compare it with a virtual machine, then open the fence one piece at a time: process IDs, files, hostname and network, users, resource limits, and finally who builds it all when you type docker run.",
+      "puzzles": [
+        "00-a-container-is-a-process.md",
+        "01-one-kernel-or-many.md",
+        "02-whose-pid-1.md",
+        "03-a-file-tree-of-its-own.md",
+        "04-a-namespace-per-resource.md",
+        "05-root-in-the-container.md",
+        "06-how-much-it-may-use.md",
+        "07-who-builds-the-container.md"
+      ]
+    }
+  ],
+  "upcoming": [
+    {
+      "title": "Module 2: Images",
+      "topics": "Layers as stacked file changes, the union filesystem (overlayfs: lower and upper directories, copy-up, whiteouts), content-addressed digests versus movable tags, registries and pulling, and the OCI image spec: index, manifest, config and layers."
+    },
+    {
+      "title": "Module 3: The Dockerfile and the build",
+      "topics": "Which instructions make layers, the build cache's rules, multi-stage builds, .dockerignore and the build context, BuildKit, and reproducible builds with pinned base images and versions."
+    },
+    {
+      "title": "Module 4: Running a container well",
+      "topics": "PID 1 and signals (SIGTERM, exec form versus shell form, docker stop's grace period, --init), exit codes, restart policies, health checks, and logs."
+    },
+    {
+      "title": "Module 5: Data and networking",
+      "topics": "Volumes versus bind mounts, the bridge network and veth pairs, publishing ports, DNS between containers on a user-defined network, and Compose."
+    },
+    {
+      "title": "Module 6: Limits and failures",
+      "topics": "Memory limits and the OOM killer (exit code 137), CPU shares versus quota and throttling, and a JVM in a container: container-aware heap sizing."
+    },
+    {
+      "title": "Module 7: Security",
+      "topics": "Root versus a non-root user, capabilities, seccomp, read-only filesystems, rootless mode and user namespace remapping, image scanning, and secrets that must never end up in a layer."
+    },
+    {
+      "title": "Module 8: Small, fast images",
+      "topics": "Distroless and Alpine trade-offs (musl versus glibc), layer ordering for cache hits, multi-architecture images with buildx, and an Android Gradle build in a container."
+    },
+    {
+      "title": "Module 9: To production",
+      "topics": "Promoting an image by digest, a bridge to Kubernetes pods, and debugging a running container with exec, inspect, nsenter and a debug sidecar."
+    }
+  ],
+  "relatedCourses": [
+    "backend-ops",
+    "jvm"
+  ]
+}

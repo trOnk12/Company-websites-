@@ -1,0 +1,25 @@
+{
+  "title": "Take a running container apart",
+  "brief": "Start one container with a memory limit and find every piece of its fence from the host: its process, its namespaces, its user and its cgroup, then predict what each piece changes.",
+  "prerequisites": "Complete Module 1: the container as a process, the shared kernel, the PID, mount, UTS, network and user namespaces, cgroups, and the chain from docker run to runc.",
+  "setup": "A Linux machine (or a Linux virtual machine) with Docker Engine, where you can run commands as root. Start: docker run -d --name lab --memory 64m --cpus 0.5 alpine:3.20 sleep 3000. Keep a notes file for every command and its output.",
+  "steps": [
+    "Find the container's process on the host and write down its PID and its parent's PID. Name the program the parent belongs to.",
+    "List the namespace links of that process and of your own shell under /proc. Mark which namespaces the container shares with the host and which it has of its own.",
+    "Compare the hostname, the network interfaces and the first line of /etc/os-release inside and outside the container. Say which namespace explains each difference.",
+    "Find the user the process runs as, as the host sees it. Decide whether a user namespace is in use, and what that means for a file on the host that only root may change.",
+    "Find the container's memory limit and CPU quota in the cgroup files. Then predict, before running it, what free -m prints inside the container, and check."
+  ],
+  "evidence": [
+    "Two PIDs for one process: the host's and the container's, and the parent's PID, which belongs to containerd-shim-runc-v2.",
+    "A table of namespace links with equal and different numbers, and the reason for each difference.",
+    "The cgroup values (67108864 bytes, 50000 out of 100000 microseconds) next to what free shows, with one sentence on why they disagree."
+  ],
+  "worked": [
+    "On the run behind this course, the host listed sleep 3000 under its own PID, and its parent was containerd-shim-runc-v2: runc had already exited. Inside, ps listed sleep as PID 1.",
+    "The pid, mnt, net, uts and ipc links differed from the shell's; user matched, because Docker uses no user namespace unless the daemon is set up for one. So the process is UID 0 on the host too: a file only root may change on the host could be changed through a bind mount.",
+    "memory.limit_in_bytes read 67108864 (64 MiB) and cpu.cfs_quota_us read 50000 against a period of 100000. free -m still printed the host's total memory: free reads /proc/meminfo, which no namespace changes, so a program that sizes itself from it will think it has the whole machine."
+  ],
+  "variation": "You restart the same container with --pid=host. Which of your answers change, and which stay the same?",
+  "solution": "Only the PID view changes: the pid link now matches the host's, ps inside lists every process on the machine, and sleep's PID inside equals the host's PID. The mount, network, UTS and user answers and the cgroup limits are unchanged, because each namespace and the cgroup are separate settings."
+}

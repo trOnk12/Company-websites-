@@ -1,0 +1,524 @@
+{
+ "baseline": {
+  "_about": "What the learner already knows: an Android and Kotlin engineer who has built and shipped apps, has run docker run at work, and knows what a program and a file are, but has never looked under Docker. They have NOT taken the Android internals, JVM or backend courses here; anything those teach is either taught again here or linked under \"from\" and still said in plain words.",
+  "words": [
+   "Kotlin",
+   "Android",
+   "app",
+   "apps",
+   "phone",
+   "laptop",
+   "Mac",
+   "macOS",
+   "Windows",
+   "Docker",
+   "Docker Desktop",
+   "Docker Engine",
+   "Ubuntu",
+   "Alpine",
+   "Node.js",
+   "program",
+   "programs",
+   "file",
+   "files",
+   "folder",
+   "command",
+   "terminal",
+   "shell",
+   "bash",
+   "sh",
+   "grep",
+   "ls",
+   "cat",
+   "echo",
+   "CPU",
+   "MB",
+   "GB",
+   "ID",
+   "IDs",
+   "JSON",
+   "Gradle",
+   "OK",
+   "API"
+  ],
+  "homonyms": []
+ },
+ "terms": {
+  "PID": {
+   "in": "00",
+   "def": "Process ID: the number the kernel gives a process when it starts it.",
+   "aliases": [
+    "PIDs",
+    "process ID"
+   ]
+  },
+  "container image": {
+   "in": "00",
+   "def": "A package of the files a program needs to start, plus settings such as which command to run; a container starts from one."
+  },
+  "container": {
+   "in": "00",
+   "def": "An ordinary process (or a few) that the kernel runs inside a fence limiting what it can see and how much it can use.",
+   "aliases": [
+    "containers"
+   ]
+  },
+  "docker run": {
+   "in": "00",
+   "kind": "code",
+   "def": "Starts a new container from an image.",
+   "aliases": [
+    "docker run alpine:3.20 sleep 1000",
+    "docker run -d --name box alpine:3.20 sleep 1000",
+    "docker run -d"
+   ]
+  },
+  "docker exec": {
+   "in": "00",
+   "kind": "code",
+   "def": "Runs one more program inside a container that is already running.",
+   "aliases": [
+    "docker exec box ps"
+   ]
+  },
+  "ps": {
+   "in": "00",
+   "kind": "code",
+   "def": "Prints the processes the kernel is running, one line each, with their PIDs.",
+   "aliases": [
+    "ps -o pid,args",
+    "ps -eo pid,ppid,cmd"
+   ]
+  },
+  "sleep 1000": {
+   "in": "00",
+   "kind": "code",
+   "def": "A tiny program that waits 1000 seconds and exits.",
+   "aliases": [
+    "sleep"
+   ]
+  },
+  "alpine:3.20": {
+   "in": "00",
+   "kind": "code",
+   "def": "The image of Alpine Linux 3.20, a small Linux distribution."
+  },
+  "--name": {
+   "in": "00",
+   "kind": "code",
+   "def": "Gives a new container a name you choose."
+  },
+  "system call": {
+   "in": "01",
+   "def": "A request a process makes to the kernel, such as open this file or start a process: the only way a program reaches anything outside its own memory.",
+   "aliases": [
+    "system calls"
+   ]
+  },
+  "virtual machine": {
+   "in": "01",
+   "def": "A whole pretend computer, with its own operating system and its own kernel, run by a hypervisor.",
+   "aliases": [
+    "virtual machines",
+    "VM",
+    "VMs"
+   ]
+  },
+  "hypervisor": {
+   "in": "01",
+   "def": "The program that runs virtual machines and keeps them apart, each behind its own pretend hardware.",
+   "aliases": [
+    "hypervisors"
+   ]
+  },
+  "uname -r": {
+   "in": "01",
+   "kind": "code",
+   "def": "Prints the version of the kernel the calling process runs on."
+  },
+  "--rm": {
+   "in": "01",
+   "kind": "code",
+   "def": "docker run's option that removes the container as soon as its program exits."
+  },
+  "namespace": {
+   "in": "02",
+   "def": "A kernel feature that gives the processes inside it their own copy of one global resource, such as the list of PIDs, invisible to processes outside.",
+   "aliases": [
+    "namespaces"
+   ]
+  },
+  "PID namespace": {
+   "in": "02",
+   "def": "A namespace for process IDs: inside it, PIDs start again at 1, and only the processes in it (and in namespaces it contains) can be seen.",
+   "aliases": [
+    "PID namespaces"
+   ]
+  },
+  "/proc": {
+   "in": "02",
+   "def": "A folder whose files the kernel fills in as you read them: one entry per process, and more; ps reads it.",
+   "aliases": [
+    "proc filesystem"
+   ]
+  },
+  "unshare": {
+   "in": "02",
+   "kind": "code",
+   "def": "Runs a program in new namespaces of the kinds you name.",
+   "aliases": [
+    "unshare --pid --fork --mount-proc ps",
+    "unshare --mount",
+    "unshare --uts",
+    "unshare --user --map-root-user"
+   ]
+  },
+  "--mount-proc": {
+   "in": "02",
+   "kind": "code",
+   "def": "unshare's option that gives the new process a fresh /proc for its PID namespace."
+  },
+  "--fork": {
+   "in": "02",
+   "kind": "code",
+   "def": "unshare's option that starts the program as a child, so it becomes PID 1 of the new PID namespace.",
+   "aliases": [
+    "--pid --fork"
+   ]
+  },
+  "kill -0": {
+   "in": "02",
+   "kind": "code",
+   "def": "Asks the kernel whether a PID exists (and may be signalled), without sending anything.",
+   "aliases": [
+    "kill -0 23807"
+   ]
+  },
+  "--pid=host": {
+   "in": "02",
+   "kind": "code",
+   "def": "docker run's option that keeps the container in the host's PID namespace.",
+   "aliases": [
+    "docker run --pid=host"
+   ]
+  },
+  "pgrep": {
+   "in": "02",
+   "kind": "code",
+   "def": "Prints the PIDs of processes with a given name.",
+   "aliases": [
+    "pgrep -x sleep"
+   ]
+  },
+  "mount": {
+   "in": "03",
+   "def": "Attaching a filesystem (a disk, or a set of files) to a folder in the one file tree that starts at /.",
+   "aliases": [
+    "mounts",
+    "mounted",
+    "mounting"
+   ]
+  },
+  "mount namespace": {
+   "in": "03",
+   "def": "A namespace for the list of mounts: processes in different mount namespaces see different file trees.",
+   "aliases": [
+    "mount namespaces"
+   ]
+  },
+  "root filesystem": {
+   "in": "03",
+   "def": "The files mounted at /, the root (top) of a process's file tree; a container's comes from its image.",
+   "aliases": [
+    "root filesystems",
+    "root"
+   ]
+  },
+  "/etc/os-release": {
+   "in": "01",
+   "kind": "code",
+   "def": "A file that names the Linux distribution whose files you are looking at."
+  },
+  "hostname": {
+   "in": "04",
+   "def": "The machine's name, which programs can read and set; with no other name given, Docker sets a container's to the start of its ID.",
+   "aliases": [
+    "hostnames"
+   ]
+  },
+  "UTS namespace": {
+   "in": "04",
+   "def": "A namespace for the hostname: changing it inside changes it only for the processes in that namespace.",
+   "aliases": [
+    "UTS namespaces",
+    "UTS"
+   ]
+  },
+  "network namespace": {
+   "in": "04",
+   "def": "A namespace for networking: its own network interfaces, addresses, routes and ports.",
+   "aliases": [
+    "network namespaces"
+   ]
+  },
+  "network interface": {
+   "in": "04",
+   "def": "One connection to a network, with its own address, such as eth0 or lo.",
+   "aliases": [
+    "network interfaces"
+   ]
+  },
+  "/proc/PID/ns": {
+   "in": "04",
+   "kind": "code",
+   "def": "The folder that holds one link per namespace a process is in; equal numbers mean the same namespace.",
+   "aliases": [
+    "/proc/3393/ns",
+    "/proc/self/ns"
+   ]
+  },
+  "root user": {
+   "in": "05",
+   "def": "The user with UID 0, called root, whom the kernel lets past its permission checks.",
+   "aliases": [
+    "superuser"
+   ]
+  },
+  "user namespace": {
+   "in": "05",
+   "def": "A namespace for user IDs: a process can be UID 0 inside it and an ordinary UID outside it.",
+   "aliases": [
+    "user namespaces"
+   ]
+  },
+  "UID map": {
+   "in": "05",
+   "def": "A user namespace's table that says which UID outside each UID inside really is.",
+   "aliases": [
+    "uid_map",
+    "UID maps"
+   ]
+  },
+  "id -u": {
+   "in": "05",
+   "kind": "code",
+   "def": "Prints the UID of the process that runs it."
+  },
+  "-v": {
+   "in": "05",
+   "kind": "code",
+   "def": "docker run's option that mounts a host folder into the container's tree.",
+   "aliases": [
+    "-v /tmp/secret:/data"
+   ]
+  },
+  "--user": {
+   "in": "05",
+   "kind": "code",
+   "def": "docker run's option that sets the UID the container's program runs as.",
+   "aliases": [
+    "--user 1000"
+   ]
+  },
+  "userns-remap": {
+   "in": "05",
+   "kind": "code",
+   "def": "A Docker daemon setting that gives every container a user namespace, mapping its root to an unprivileged host UID."
+  },
+  "chmod 600": {
+   "in": "05",
+   "kind": "code",
+   "def": "Lets only a file's owner read or write it."
+  },
+  "cgroup": {
+   "in": "06",
+   "def": "Control group: a group of processes whose use of memory, processor time and more the kernel counts and limits.",
+   "aliases": [
+    "cgroups",
+    "control group",
+    "control groups"
+   ]
+  },
+  "memory limit": {
+   "in": "06",
+   "def": "The most memory a cgroup's processes may use together; past it, the kernel reclaims memory or kills one of them.",
+   "aliases": [
+    "memory limits"
+   ]
+  },
+  "CPU quota": {
+   "in": "06",
+   "def": "How much processor time a cgroup may use in each period (100 ms by default) before the kernel makes it wait.",
+   "aliases": [
+    "quota"
+   ]
+  },
+  "--memory": {
+   "in": "06",
+   "kind": "code",
+   "def": "docker run's option that sets a container's memory limit.",
+   "aliases": [
+    "docker run --memory 64m",
+    "--memory 64m"
+   ]
+  },
+  "--cpus": {
+   "in": "06",
+   "kind": "code",
+   "def": "docker run's option that sets a container's CPU quota, in processors.",
+   "aliases": [
+    "--cpus 0.5"
+   ]
+  },
+  "dockerd": {
+   "in": "07",
+   "def": "The Docker daemon: the long-running program that the docker command sends every request to.",
+   "aliases": [
+    "Docker daemon",
+    "daemon"
+   ]
+  },
+  "containerd": {
+   "in": "07",
+   "def": "The program dockerd asks to manage each container's life: create, start, stop.",
+   "aliases": []
+  },
+  "runc": {
+   "in": "07",
+   "def": "The small program that reads a container's config.json, asks the kernel for its namespaces and cgroup, starts its process, and exits.",
+   "aliases": []
+  },
+  "shim": {
+   "in": "07",
+   "def": "containerd-shim-runc-v2: a small process that stays behind as the container process's parent once runc has gone.",
+   "aliases": [
+    "containerd-shim",
+    "containerd-shim-runc-v2",
+    "shims"
+   ]
+  },
+  "OCI runtime spec": {
+   "in": "07",
+   "def": "The Open Container Initiative's standard for config.json: which program to run, its root filesystem, namespaces and limits.",
+   "aliases": [
+    "OCI",
+    "runtime spec"
+   ]
+  },
+  "-d": {
+   "in": "00",
+   "kind": "code",
+   "def": "docker run's option that starts the container in the background and gives you the terminal back."
+  },
+  "tmpfs": {
+   "in": "03",
+   "kind": "code",
+   "def": "A filesystem kept in memory.",
+   "aliases": []
+  },
+  "free -m": {
+   "in": "06",
+   "kind": "code",
+   "def": "Prints how much memory the machine has and uses, read from /proc.",
+   "aliases": []
+  },
+  "memory.limit_in_bytes": {
+   "in": "06",
+   "kind": "code",
+   "def": "cgroup version 1's file for a group's memory limit, in bytes.",
+   "aliases": [
+    "limit_in_bytes"
+   ]
+  },
+  "memory.usage_in_bytes": {
+   "in": "06",
+   "kind": "code",
+   "def": "cgroup version 1's file for the memory a group uses now, in bytes.",
+   "aliases": [
+    "usage_in_bytes"
+   ]
+  },
+  "--cpu-shares": {
+   "in": "06",
+   "kind": "code",
+   "def": "docker run's option that sets a relative CPU weight, which counts only when processors are busy."
+  },
+  "docker info": {
+   "in": "06",
+   "kind": "code",
+   "def": "Prints how the Docker daemon and its machine are set up."
+  },
+  "docker inspect": {
+   "in": "06",
+   "kind": "code",
+   "def": "Prints a container's details, such as its ID, state and exit code."
+  },
+  "--memory-swap": {
+   "in": "06",
+   "kind": "code",
+   "def": "docker run's option for memory plus swap; set equal to --memory, the limit covers swap too.",
+   "aliases": [
+    "--memory-swap 64m"
+   ]
+  },
+  "tail /dev/zero": {
+   "in": "06",
+   "kind": "code",
+   "def": "Reads an endless stream of zero bytes and keeps it in memory: a quick way to use memory up."
+  },
+  "config.json": {
+   "in": "07",
+   "kind": "code",
+   "def": "The file, defined by the OCI runtime spec, that tells runc which program to run, from which root filesystem, in which namespaces, with which limits."
+  },
+  "docker.sock": {
+   "in": "07",
+   "kind": "code",
+   "def": "The special file, /var/run/docker.sock, through which the docker command sends its requests to dockerd.",
+   "aliases": [
+    "/var/run/docker.sock",
+    "unix:///var/run/docker.sock"
+   ]
+  }
+ },
+ "from": {
+  "Linux": {
+   "course": "android",
+   "in": 1
+  },
+  "memory": {
+   "course": "android",
+   "in": 0
+  },
+  "process": {
+   "course": "android",
+   "in": 0,
+   "aliases": [
+    "processes"
+   ]
+  },
+  "kernel": {
+   "course": "android",
+   "in": 1
+  },
+  "UID": {
+   "course": "android",
+   "in": 7,
+   "aliases": [
+    "UIDs",
+    "user ID"
+   ]
+  }
+ },
+ "avoid": {
+  "_about": "Words a beginner misreads or that hide who does what. The lint fails on them; name the actor or say the plain word instead.",
+  "phrases": {
+   "the system": "name the actor: the kernel, dockerd, runc",
+   "simply": "cut it: it makes a learner who's stuck feel slow",
+   "obviously": "cut it",
+   "just a": "cut it, or say what it is",
+   "magic": "say what does it: the kernel, runc",
+   "lightweight VM": "a container is not a VM: say what it is (a process in namespaces and a cgroup)"
+  }
+ }
+}
