@@ -1,5 +1,6 @@
 <!-- label: Intermediate source sets: iosMain, appleMain and nativeMain between commonMain and the targets -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="hi-t"><title id="hi-t">Three platform source sets under commonMain; iOS code written twice moves up into iosMain, shared by both iOS targets; the template adds appleMain and nativeMain above it but no watchosMain; building iosArm64 compiles every source set on its path up to commonMain</title>
+<!-- question: Where does iosMain come from, and what does one target compile? type: layer stack (tree) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="hi-t"><title id="hi-t">Three platform source sets under commonMain; iOS code written twice moves up into iosMain, shared by both iOS targets; the template adds appleMain, then nativeMain above it; building iosArm64 compiles every source set on its path up to commonMain</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
 <g class="step s1"><rect class="d-hl" x="210" y="14" width="180" height="36" rx="6"/><text class="d-a" x="300" y="38" text-anchor="middle">commonMain</text>
 <rect class="d-band" x="10" y="290" width="150" height="36" rx="6"/><text class="d-tiny" x="85" y="314" text-anchor="middle">androidMain</text>
@@ -13,15 +14,18 @@
 <x-arrow class="step s2" tone="ink" d="M285,288 L350,256"/>
 <x-arrow class="step s2" tone="ink" d="M515,288 L450,256"/>
 <x-arrow class="step only-2" tone="ink" d="M400,214 C400,150 340,100 320,56"/>
-<g class="step s3" data-pulse="3"><rect class="d-band" x="315" y="84" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="108" text-anchor="middle">nativeMain</text><rect class="d-band" x="315" y="150" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="174" text-anchor="middle">appleMain</text><x-arrow tone="ink" d="M400,214 L400,190"/><x-arrow tone="ink" d="M400,148 L400,124"/><x-arrow tone="ink" d="M380,82 L344,56"/><rect class="d-dash" x="504" y="150" width="128" height="36" rx="6"/><text class="d-m" x="568" y="174" text-anchor="middle">watchosMain</text></g>
-<g class="step s5" data-pulse="5"><rect class="d-hl" x="200" y="290" width="170" height="36" rx="6"/><text class="d-tiny" x="285" y="314" text-anchor="middle">iosArm64Main</text><rect class="d-hl" x="315" y="216" width="170" height="36" rx="6"/><text class="d-b" x="380" y="241" text-anchor="middle">iosMain</text><rect class="d-hl" x="315" y="150" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="174" text-anchor="middle">appleMain</text><rect class="d-hl" x="315" y="84" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="108" text-anchor="middle">nativeMain</text></g>
-<g class="step s4" data-pulse="4" data-move="4:184,308 5:200,32"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-band" x="315" y="150" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="174" text-anchor="middle">appleMain</text><x-arrow tone="ink" d="M400,214 L400,190"/></g>
+<x-arrow class="step only-3" tone="ink" d="M400,148 C400,100 340,80 320,56"/>
+<g class="step s4" data-pulse="4"><rect class="d-band" x="315" y="84" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="108" text-anchor="middle">nativeMain</text><x-arrow tone="ink" d="M400,148 L400,124"/><x-arrow tone="ink" d="M380,82 L344,56"/></g>
+<g class="step s6" data-pulse="6"><rect class="d-hl" x="200" y="290" width="170" height="36" rx="6"/><text class="d-tiny" x="285" y="314" text-anchor="middle">iosArm64Main</text><rect class="d-hl" x="315" y="216" width="170" height="36" rx="6"/><text class="d-b" x="380" y="241" text-anchor="middle">iosMain</text><rect class="d-hl" x="315" y="150" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="174" text-anchor="middle">appleMain</text><rect class="d-hl" x="315" y="84" width="170" height="36" rx="6"/><text class="d-tiny" x="400" y="108" text-anchor="middle">nativeMain</text></g>
+<g class="step s5" data-pulse="5" data-move="5:184,308 6:200,32"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 <g class="step s1" data-move="1:240,236 2:446,219"><x-sheet x="0" y="0" w="26" h="30" lines="2"/></g>
 </svg>
 <ol class="caps">
 <li><p>Puzzle 16's targets, each with its platform source set under commonMain. The iOS code is the same for both iOS targets, so it's written twice.</p></li>
 <li><p>An <b>intermediate source set</b> is compiled for some targets, not all. iosMain sits above both iOS targets: the code moves up and is written once.</p></li>
-<li><p>You didn't create iosMain: the plugin's <b>default hierarchy template</b> did, with appleMain and nativeMain above it. No watch target, so no watchosMain.</p></li>
+<li><p>You didn't create iosMain: the plugin's <b>default hierarchy template</b> did. It also adds appleMain above it, for every Apple target you declare.</p></li>
+<li><p>Then nativeMain above appleMain, for every Kotlin/Native target. A level appears only if a target needs it: no watch target, so no watchosMain.</p></li>
 <li><p>Now build the iosArm64 target. <i>Predict: which source sets are compiled into it?</i></p></li>
 <li><p>Every source set on its path up, in one compilation: iosArm64Main, iosMain, appleMain, nativeMain and commonMain. androidMain isn't on the path.</p></li>
 </ol>

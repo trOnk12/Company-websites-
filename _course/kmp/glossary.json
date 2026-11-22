@@ -134,7 +134,8 @@
    "AppKit",
    "price()",
    "HTTP",
-   "OkHttp"
+   "OkHttp",
+   "SharedPreferences"
   ],
   "homonyms": [
    "ViewModel",
@@ -607,7 +608,7 @@
   },
   "dependsOn": {
    "in": "18",
-   "def": "The link from a source set to the one above it: it sees that one's code, can keep its expect promises, and gets its libraries.",
+   "def": "The arrow from a source set to the one above it: it sees that one's code, can keep its expect promises, and gets its libraries.",
    "kind": "code"
   },
   "multiplatform library": {
@@ -630,6 +631,513 @@
   "androidLibrary": {
    "in": "16",
    "def": "The older name of the Android target block, before version 8.12 of Android's plugin.",
+   "kind": "code"
+  },
+  "iosX64": {
+   "in": "16",
+   "def": "The iOS target for the simulator on a Mac with an Intel chip.",
+   "kind": "code"
+  },
+  "klib": {
+   "in": "20",
+   "def": "A Kotlin/Native library file: a zip, for one target, holding the code as IR, a description of its declarations and a manifest.",
+   "aliases": [
+    "klibs"
+   ]
+  },
+  "IR": {
+   "in": "20",
+   "def": "Intermediate representation: the compiler's own checked form of the code, after the front end and before any machine code.",
+   "aliases": [
+    "intermediate representation"
+   ]
+  },
+  "HttpClient": {
+   "in": "20",
+   "def": "Ktor's HTTP client class.",
+   "kind": "code"
+  },
+  "publication": {
+   "in": "21",
+   "def": "A separately named package of a library's files in a repository; a multiplatform library has one per target plus a root.",
+   "aliases": [
+    "publications",
+    "root publication"
+   ]
+  },
+  "Gradle module metadata": {
+   "in": "21",
+   "def": "A file format published next to a library (the .module file) that lists the library's variants for Gradle.",
+   "aliases": []
+  },
+  "variant": {
+   "in": "21",
+   "def": "One version of a library, built for one kind of consumer and tagged with attributes such as its target.",
+   "aliases": [
+    "variants"
+   ]
+  },
+  "dependency injection": {
+   "in": "22",
+   "def": "Handing an object what it depends on from outside, instead of letting it create it.",
+   "aliases": [
+    "DI"
+   ]
+  },
+  "dependency injection framework": {
+   "in": "22",
+   "def": "A library, such as Koin, that builds objects and hands each one what it needs, from rules you write.",
+   "aliases": [
+    "DI framework"
+   ]
+  },
+  "Bookmarks": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "Storage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "FakeStorage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "DefaultsStorage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "PrefsStorage": {
+   "in": "22",
+   "def": "Code name in puzzle 22's example.",
+   "kind": "code"
+  },
+  "Koin": {
+   "in": "22",
+   "def": "A dependency injection framework that works in common code.",
+   "kind": "code"
+  },
+  "ios_arm64": {
+   "in": "20",
+   "def": "How Kotlin/Native writes the iosArm64 target's name inside a klib and in published metadata.",
+   "kind": "code"
+  },
+  "ios_simulator_arm64": {
+   "in": "21",
+   "def": "How Kotlin/Native writes the iosSimulatorArm64 target's name in published metadata.",
+   "kind": "code"
+  },
+  "link stage": {
+   "in": "23",
+   "def": "The second stage of a Kotlin/Native build: once per final binary, it reads every klib and makes machine code.",
+   "aliases": [
+    "link stages"
+   ]
+  },
+  "LLVM IR": {
+   "in": "23",
+   "def": "LLVM's own intermediate representation: lower level than Kotlin's IR, already marked with the target, but not yet instructions.",
+   "aliases": []
+  },
+  "LLVM": {
+   "in": "23",
+   "def": "A collection of reusable compiler parts: an optimizer and code generators for many processors, used by Kotlin/Native and Clang.",
+   "aliases": []
+  },
+  "linkDebugFrameworkIosArm64": {
+   "in": "23",
+   "def": "The Gradle task that builds a debug framework for iosArm64.",
+   "kind": "code"
+  },
+  "linkReleaseFrameworkIosArm64": {
+   "in": "23",
+   "def": "The Gradle task that builds a release framework for iosArm64.",
+   "kind": "code"
+  },
+  "object code": {
+   "in": "24",
+   "def": "Machine instructions that aren't a finished program yet: calls to other code are left open and named.",
+   "aliases": []
+  },
+  "symbol": {
+   "in": "24",
+   "def": "The name of a function or global variable inside compiled code, used to connect calls to it.",
+   "aliases": [
+    "symbols"
+   ]
+  },
+  "linker": {
+   "in": "24",
+   "def": "The program that joins object code into one binary and connects each call to an address.",
+   "aliases": [
+    "linkers"
+   ]
+  },
+  "executable": {
+   "in": "25",
+   "def": "The app's own binary: the file the phone starts.",
+   "aliases": [
+    "executables"
+   ]
+  },
+  "static library": {
+   "in": "25",
+   "def": "A library whose code is copied into the app's executable when the app is built.",
+   "aliases": [
+    "static libraries"
+   ]
+  },
+  "dynamic library": {
+   "in": "25",
+   "def": "A library that stays a separate file and is loaded and connected when the app starts.",
+   "aliases": [
+    "dynamic libraries"
+   ]
+  },
+  "dynamic loader": {
+   "in": "25",
+   "def": "The program that loads an app's dynamic libraries and connects calls to them when the app starts.",
+   "aliases": [
+    "dyld"
+   ]
+  },
+  "isStatic": {
+   "in": "25",
+   "def": "Framework setting: true puts a static library inside instead of a dynamic one.",
+   "kind": "code",
+   "aliases": [
+    "isStatic = true"
+   ]
+  },
+  "architecture": {
+   "in": "26",
+   "def": "The family of instructions a processor understands, such as arm64 or x86-64.",
+   "aliases": [
+    "architectures"
+   ]
+  },
+  "universal framework": {
+   "in": "26",
+   "def": "One framework file whose binary merges builds for different architectures; also called a fat framework.",
+   "aliases": [
+    "fat framework",
+    "universal frameworks"
+   ]
+  },
+  "lipo": {
+   "in": "26",
+   "def": "Apple's tool that merges binaries for different architectures into one universal file.",
+   "kind": "code"
+  },
+  "XCFramework()": {
+   "in": "26",
+   "def": "Gradle code that declares an XCFramework to assemble.",
+   "kind": "code"
+  },
+  "assembleXCFramework": {
+   "in": "26",
+   "def": "The Gradle task that links every target in an XCFramework and gathers them.",
+   "kind": "code"
+  },
+  "crash report": {
+   "in": "29",
+   "def": "What iOS collects when an app crashes, including a backtrace for each thread.",
+   "aliases": [
+    "crash reports"
+   ]
+  },
+  "backtrace": {
+   "in": "29",
+   "def": "The chain of functions that were running in one thread, as addresses in each binary.",
+   "aliases": [
+    "backtraces"
+   ]
+  },
+  "symbolication": {
+   "in": "29",
+   "def": "Turning a crash report's addresses into function names and line numbers.",
+   "aliases": []
+  },
+  "dSYM": {
+   "in": "29",
+   "def": "A separate file of debug information for one release binary, used for symbolication.",
+   "aliases": [
+    ".dSYM"
+   ]
+  },
+  "build UUID": {
+   "in": "29",
+   "def": "A unique ID the build writes into a binary and its dSYM; they match only when it's identical.",
+   "aliases": [
+    "build UUIDs",
+    "UUID",
+    "UUIDs"
+   ]
+  },
+  "link-time optimization": {
+   "in": "30",
+   "def": "Optimizing all modules together during the link stage, as release builds do.",
+   "aliases": [
+    "LTO"
+   ]
+  },
+  "compilation cache": {
+   "in": "30",
+   "def": "Already compiled libraries kept by Kotlin/Native so later debug builds skip that work.",
+   "aliases": [
+    "compilation caches"
+   ]
+  },
+  "embedAndSignAppleFrameworkForXcode": {
+   "in": "27",
+   "def": "The Gradle task Xcode's Run Script runs: it links the one framework Xcode needs, copies it into derived data, and embeds and signs it.",
+   "kind": "code"
+  },
+  "smallBinary": {
+   "in": "31",
+   "def": "A binary option that makes LLVM optimize release binaries for size.",
+   "kind": "code"
+  },
+  "binaryOption": {
+   "in": "26",
+   "def": "Sets a Kotlin/Native binary option on one binary, such as bundleId or smallBinary.",
+   "kind": "code"
+  },
+  "transitiveExport": {
+   "in": "31",
+   "def": "Exports every dependency of each exported module too; not recommended.",
+   "kind": "code"
+  },
+  "~/.konan": {
+   "in": "30",
+   "def": "Kotlin/Native's folder in your home directory: its downloaded tools and the compilation cache.",
+   "kind": "code"
+  },
+  "PsiToIr": {
+   "in": "23",
+   "def": "The compiler phase that writes IR, as named in its profiling log.",
+   "kind": "code"
+  },
+  "build phase": {
+   "in": "27",
+   "def": "One step of Xcode's build of an app target, such as Compile Sources; they run in order.",
+   "aliases": [
+    "build phases"
+   ]
+  },
+  "Run Script phase": {
+   "in": "27",
+   "def": "A build phase that runs a shell script you write.",
+   "aliases": [
+    "Run Script"
+   ]
+  },
+  "derived data": {
+   "in": "27",
+   "def": "The folder where Xcode keeps its own build output for a project.",
+   "aliases": []
+  },
+  "deployment target": {
+   "in": "28",
+   "def": "The oldest OS version an app supports.",
+   "aliases": [
+    "deployment targets"
+   ]
+  },
+  "load address": {
+   "in": "29",
+   "def": "Where in memory iOS placed a binary in one run; it changes from launch to launch.",
+   "aliases": [
+    "load addresses"
+   ]
+  },
+  "Gradle build cache": {
+   "in": "30",
+   "def": "Gradle's store of task outputs, reused when a task's inputs haven't changed.",
+   "aliases": [
+    "Gradle's build cache",
+    "build cache"
+   ]
+  },
+  "configuration cache": {
+   "in": "30",
+   "def": "Gradle's stored result of reading the build files, so later builds skip that step.",
+   "aliases": [
+    "Gradle's configuration cache"
+   ]
+  },
+  "enableReleaseBinaryCache": {
+   "in": "30",
+   "def": "The experimental option that lets release builds use the compilation cache.",
+   "kind": "code",
+   "aliases": [
+    "kotlin.native.binary.enableReleaseBinaryCache"
+   ]
+  },
+  "-dead_strip": {
+   "in": "24",
+   "def": "The linker option that removes machine code nothing refers to.",
+   "kind": "code",
+   "aliases": [
+    "dead_strip"
+   ]
+  },
+  "-Xprofile-phases": {
+   "in": "23",
+   "def": "The compiler option that prints the time each phase took.",
+   "kind": "code"
+  },
+  "runtime.bc": {
+   "in": "23",
+   "def": "The main file of Kotlin's runtime, as LLVM bitcode, merged in at the link stage.",
+   "kind": "code"
+  },
+  "bundleId": {
+   "in": "26",
+   "def": "The binary option that sets the framework's bundle ID in its Info.plist.",
+   "kind": "code"
+  },
+  "Info.plist": {
+   "in": "26",
+   "def": "A framework's small settings file.",
+   "kind": "code"
+  },
+  "assembleSharedReleaseXCFramework": {
+   "in": "26",
+   "def": "The task that builds the release XCFramework of a module called shared.",
+   "kind": "code",
+   "aliases": [
+    "assembleSharedDebugXCFramework"
+   ]
+  },
+  "linkDebugFrameworkIosSimulatorArm64": {
+   "in": "27",
+   "def": "The link task for a debug simulator framework.",
+   "kind": "code"
+  },
+  "$SRCROOT": {
+   "in": "27",
+   "def": "Xcode's name for the iOS project's folder.",
+   "kind": "code"
+  },
+  "KOTLIN_FRAMEWORK_BUILD_TYPE": {
+   "in": "27",
+   "def": "The Xcode setting that tells the task to link a Debug or Release framework.",
+   "kind": "code"
+  },
+  "OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED": {
+   "in": "27",
+   "def": "The variable the IDE sets so the Run Script skips a second build.",
+   "kind": "code"
+  },
+  "xcrun crashlog": {
+   "in": "29",
+   "def": "Apple's command that symbolicates a whole crash report.",
+   "kind": "code",
+   "aliases": [
+    "crashlog"
+   ]
+  },
+  "dwarfdump": {
+   "in": "29",
+   "def": "The command that prints a dSYM's build UUID with --uuid.",
+   "kind": "code",
+   "aliases": [
+    "dwarfdump --uuid"
+   ]
+  },
+  "androidTarget": {
+   "in": "16",
+   "def": "The older name of the Android target line, used with com.android.library.",
+   "kind": "code",
+   "aliases": [
+    "androidTarget()"
+   ]
+  },
+  "com.android.library": {
+   "in": "16",
+   "def": "Android's ordinary library plugin.",
+   "kind": "code"
+  },
+  "build host": {
+   "in": "28",
+   "def": "The machine that runs the build.",
+   "aliases": [
+    "build hosts"
+   ]
+  },
+  ":shared": {
+   "in": "21",
+   "def": "How Gradle writes the name of a module called shared.",
+   "kind": "code"
+  },
+  "actual typealias": {
+   "in": "22",
+   "def": "Keeps an expect class by naming an existing platform class.",
+   "kind": "code"
+  },
+  "LinkBitcodeDependencies": {
+   "in": "23",
+   "def": "The link-stage phase that merges bitcode files, such as the runtime, into the program.",
+   "kind": "code"
+  },
+  "x86_64": {
+   "in": "26",
+   "def": "How Apple writes the x86-64 architecture.",
+   "kind": "code"
+  },
+  "import shared": {
+   "in": "27",
+   "def": "Swift's line that imports the Kotlin framework.",
+   "kind": "code"
+  },
+  "cd \"$SRCROOT/..\"": {
+   "in": "27",
+   "def": "The script line that steps up from the iOS project to the Gradle project.",
+   "kind": "code"
+  },
+  "binaries.framework": {
+   "in": "12",
+   "def": "The block that declares a framework for a target.",
+   "kind": "code"
+  },
+  "org.gradle.caching=true": {
+   "in": "30",
+   "def": "The gradle.properties line that turns on Gradle's build cache.",
+   "kind": "code"
+  },
+  "org.gradle.configuration-cache=true": {
+   "in": "30",
+   "def": "The gradle.properties line that turns on Gradle's configuration cache.",
+   "kind": "code"
+  },
+  "export(project(\":network\"))": {
+   "in": "12",
+   "def": "Exports the :network module to Swift through the framework.",
+   "kind": "code"
+  },
+  "./gradlew :shared:embedAndSignAppleFrameworkForXcode": {
+   "in": "27",
+   "def": "The command the Run Script phase runs: Gradle, in the shared module, runs the embedAndSign task.",
+   "kind": "code"
+  },
+  ":network": {
+   "in": "12",
+   "def": "The example network module of puzzle 12.",
+   "kind": "code"
+  },
+  ":db": {
+   "in": "31",
+   "def": "An example module used inside the framework but not exported.",
+   "kind": "code"
+  },
+  "MyApp": {
+   "in": "29",
+   "def": "The example app's own executable in puzzle 29's crash report.",
    "kind": "code"
   }
  },
@@ -699,6 +1207,17 @@
    "in": 7,
    "aliases": [
     "references"
+   ]
+  },
+  "Application": {
+   "course": "android",
+   "in": 14
+  },
+  "onCreate()": {
+   "course": "android",
+   "in": 6,
+   "aliases": [
+    "onCreate"
    ]
   }
  }

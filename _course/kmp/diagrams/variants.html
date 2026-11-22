@@ -1,0 +1,33 @@
+<!-- label: One dependency line names the root publication; its .module file lists variants; each compilation gets the variant that matches its target -->
+<!-- question: How does one dependency line resolve to each target's file? type: pipeline (resolution) with the real .module data -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="va-t"><title id="va-t">Your one line names Ktor core's root publication; its .module file lists variants tagged ios_arm64, ios_simulator_arm64, jvm and common, each pointing at its own publication; the iosArm64 and simulator compilations each get the matching variant, and Android's androidJvm request is given the jvm variant; OkHttp's .module file has no ios_arm64 variant, so the iOS compilation fails</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s1" data-pulse="1"><rect class="d-paper" x="16" y="20" width="210" height="40" rx="6"/><text class="d-mi" x="30" y="45">ktor-client-core</text>
+<rect class="d-wood" x="250" y="20" width="150" height="40" rx="6"/><text class="d-tiny" x="325" y="45" text-anchor="middle">root publication</text>
+<x-arrow tone="ink" d="M228,40 L246,40"/></g>
+<g class="step s2" data-pulse="2"><rect class="d-paper" x="240" y="76" width="170" height="206" rx="6"/><text class="d-b" x="325" y="100" text-anchor="middle">.module</text>
+<rect class="d-band" x="248" y="116" width="154" height="32" rx="5"/><text class="d-tiny" x="325" y="137" text-anchor="middle">ios_arm64</text>
+<rect class="d-band" x="248" y="156" width="154" height="32" rx="5"/><text class="d-tiny" x="325" y="177" text-anchor="middle">ios_simulator_arm64</text>
+<rect class="d-band" x="248" y="196" width="154" height="32" rx="5"/><text class="d-tiny" x="325" y="217" text-anchor="middle">jvm</text>
+<rect class="d-hl" x="248" y="236" width="154" height="32" rx="5"/><text class="d-tiny" x="325" y="257" text-anchor="middle">common</text></g>
+<g class="step s3 hide-5" data-pulse="3"><rect class="d-wood" x="464" y="112" width="160" height="40" rx="6"/><text class="d-tiny" x="544" y="137" text-anchor="middle">iosarm64 klib</text>
+<rect class="d-wood" x="464" y="162" width="160" height="40" rx="6"/><text class="d-tiny" x="544" y="187" text-anchor="middle">simulator klib</text>
+<rect class="d-wood" x="464" y="212" width="160" height="40" rx="6"/><text class="d-tiny" x="544" y="237" text-anchor="middle">jvm jar</text>
+<x-arrow tone="ink" d="M412,132 L458,132"/><x-arrow tone="ink" d="M412,172 L458,180"/><x-arrow tone="ink" d="M412,212 L458,228"/></g>
+<g class="step s4" data-pulse="4"><x-machine x="16" y="108" w="150" label="iosArm64"/><x-machine x="16" y="178" w="150" label="simulator"/><x-machine x="16" y="248" w="150" label="Android"/></g>
+<g class="step only-4"><x-arrow tone="acc" d="M168,134 L244,132"/><x-arrow tone="acc" d="M168,204 C210,204 220,176 244,172"/><x-arrow tone="path" d="M168,274 C214,274 224,214 244,212"/><text class="d-m" x="176" y="320">androidJvm → jvm</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-paper" x="16" y="20" width="210" height="40" rx="6"/><text class="d-mi" x="30" y="45">ktor-client-okhttp</text>
+<rect class="d-paper" x="240" y="76" width="170" height="206" rx="6"/><text class="d-b" x="325" y="100" text-anchor="middle">.module</text>
+<rect class="d-dash" x="248" y="116" width="154" height="32" rx="5"/>
+<rect class="d-band" x="248" y="196" width="154" height="32" rx="5"/><text class="d-tiny" x="325" y="217" text-anchor="middle">jvm</text>
+<rect class="d-hl" x="248" y="236" width="154" height="32" rx="5"/><text class="d-tiny" x="325" y="257" text-anchor="middle">common</text>
+<x-arrow tone="red" d="M168,134 L244,132"/><circle class="d-bad" cx="211" cy="110" r="12"/><path class="d-red" d="M204,103 L218,117 M218,103 L204,117"/><text class="d-rt" x="490" y="137">no match</text></g>
+<g class="step s1" data-move="1:237,40 2:325,68 3:436,132 4:436,132 5:325,132"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Your one line names Ktor's core without any target: its root <b>publication</b>. The other publications each hold one target's files.</p></li>
+<li><p>The root holds a .module file in <b>Gradle module metadata</b>: a list of <b>variants</b>, each tagged with the target it's built for.</p></li>
+<li><p>Each variant points at the publication holding its files. <i>Predict: which file does iosArm64's compilation get?</i></p></li>
+<li><p>The iosArm64 klib. Each compilation asks for the variant matching its target. Android asks for androidJvm; there's none, and Kotlin's plugin accepts the jvm one instead.</p></li>
+<li><p>The OkHttp part's .module file has only jvm and common. The iosArm64 compilation finds no match, so the build stops with an error.</p></li>
+</ol>

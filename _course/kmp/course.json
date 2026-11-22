@@ -41,19 +41,57 @@
     },
     {
       "title": "Module 4: The build",
-      "blurb": "What the kotlin { } block declares, the tree of source sets between commonMain and each target, who can see what, and where each library goes.",
+      "blurb": "What the kotlin { } block declares, the tree of source sets between commonMain and each target, who can see what, where each library goes, what a klib holds, how one dependency line finds every target's file, and how platform code is handed in.",
       "puzzles": [
         "16-the-kotlin-block.md",
         "17-source-sets-in-between.md",
         "18-who-can-see-what.md",
-        "19-dependencies-per-source-set.md"
+        "19-dependencies-per-source-set.md",
+        "20-what-a-klib-is.md",
+        "21-one-line-every-target.md",
+        "22-expect-actual-or-an-interface.md"
+      ]
+    },
+    {
+      "title": "Module 5: Kotlin/Native under the hood",
+      "blurb": "What happens after the klibs: the link stage and LLVM, the linker and dead code elimination, static or dynamic frameworks and embedding, XCFrameworks and where the files land, how Xcode runs Gradle, what has to match (Mac, Xcode, iOS version), reading a crash with a dSYM, and where build minutes and megabytes go.",
+      "puzzles": [
+        "23-from-ir-to-machine-code.md",
+        "24-one-binary-the-linker.md",
+        "25-static-or-dynamic.md",
+        "26-framework-or-xcframework.md",
+        "27-how-xcode-builds-your-kotlin.md",
+        "28-versions-that-must-agree.md",
+        "29-reading-a-crash.md",
+        "30-where-the-build-minutes-go.md",
+        "31-where-the-megabytes-come-from.md"
       ]
     }
   ],
   "upcoming": [
     {
-      "title": "Module 4, continued: one line, every target",
-      "topics": "What a klib is; how a multiplatform library publishes one variant per target (Gradle module metadata) so one dependency line resolves everywhere; expect/actual or an interface with dependency injection, and when each fits."
+      "title": "Module 6: Across the boundary",
+      "topics": "Reading the generated header; generics, sealed classes and enums in Swift; default arguments, overloads and names (@ObjCName, @HiddenFromObjC); exceptions as an error contract and Kotlin crashes in crash reports; suspend and Flow from Swift, threads and cancellation; SKIE and Swift export."
+    },
+    {
+      "title": "Module 7: Shipping it to iOS",
+      "topics": "Shipping a framework to an iOS team that doesn't build Kotlin: Swift Package Manager with a binary XCFramework; CocoaPods; signing; the local and the released loop; versioning a shared module and its dSYMs; CI for Apple targets."
+    },
+    {
+      "title": "Module 8: The common stack",
+      "topics": "Ktor's HttpClient and engines; kotlinx.serialization without reflection; SQLDelight; key-value settings; dependency injection with Koin across platforms; a ViewModel in commonMain; dates, files and bytes with kotlinx-datetime and kotlinx-io."
+    },
+    {
+      "title": "Module 9: Testing shared code",
+      "topics": "commonTest and kotlin.test on every target; running tests on the iOS simulator; fakes instead of mocks; testing coroutines with runTest; testing the API Swift really sees."
+    },
+    {
+      "title": "Module 10: Architecture and migrating an existing app",
+      "topics": "Where to draw the shared line; modules and one export module; migrating an Android app step by step; designing the API with the Swift team; memory and performance in production; crashes and logs from the field."
+    },
+    {
+      "title": "Module 11: The expert's toolbox",
+      "topics": "cinterop for C and Objective-C libraries; compiler plugins and KSP in multiplatform; upgrading Kotlin safely; publishing your own multiplatform library; a capstone that ships one feature end to end."
     }
   ],
   "support": {

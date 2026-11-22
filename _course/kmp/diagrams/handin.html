@@ -1,0 +1,25 @@
+<!-- label: Bookmarks takes a Storage from outside: expect/actual fixes one per target; with an interface, each app start, and a test, hands its own in -->
+<!-- question: How does platform code get into Bookmarks: fixed by the compiler or handed in? type: small multiples (before/after) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="hi2-t"><title id="hi2-t">Bookmarks in commonMain has an empty Storage slot; with expect and actual, the compiler fixes one iOS actual into it; with an interface, three identical panels: the Android app's start hands PrefsStorage into its Bookmarks, the iOS app's start hands DefaultsStorage into its own, and a test hands in FakeStorage</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s1" data-pulse="1"><rect class="d-hl" x="220" y="10" width="200" height="140" rx="10"/><text class="d-tiny" x="320" y="30" text-anchor="middle">commonMain</text>
+<rect class="d-paper" x="245" y="40" width="150" height="44" rx="6"/><text class="d-b" x="320" y="69" text-anchor="middle">Bookmarks</text>
+<rect class="d-dash" x="245" y="98" width="150" height="38" rx="5"/><text class="d-tiny" x="320" y="122" text-anchor="middle">Storage</text></g>
+<g class="step only-2" data-pulse="2"><x-machine x="20" y="40" w="150" label="compiler"/><x-arrow tone="acc" d="M120,98 C150,120 200,122 240,118"/><rect class="d-wood" x="245" y="98" width="150" height="38" rx="5"/><text class="d-tiny" x="320" y="122" text-anchor="middle">iOS actual</text><text class="d-a" x="530" y="122" text-anchor="middle">one per target</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-band" x="12" y="164" width="196" height="176" rx="8"/><text class="d-tiny" x="110" y="184" text-anchor="middle">Android start</text>
+<rect class="d-band" x="222" y="164" width="196" height="176" rx="8"/><text class="d-tiny" x="320" y="184" text-anchor="middle">iOS start</text>
+<rect class="d-band" x="432" y="164" width="196" height="176" rx="8"/><text class="d-tiny" x="530" y="184" text-anchor="middle">a test</text>
+<rect class="d-paper" x="35" y="194" width="150" height="40" rx="6"/><text class="d-tiny" x="110" y="219" text-anchor="middle">Bookmarks</text><rect class="d-dash" x="35" y="242" width="150" height="34" rx="5"/>
+<rect class="d-paper" x="245" y="194" width="150" height="40" rx="6"/><text class="d-tiny" x="320" y="219" text-anchor="middle">Bookmarks</text><rect class="d-dash" x="245" y="242" width="150" height="34" rx="5"/>
+<rect class="d-paper" x="455" y="194" width="150" height="40" rx="6"/><text class="d-tiny" x="530" y="219" text-anchor="middle">Bookmarks</text><rect class="d-dash" x="455" y="242" width="150" height="34" rx="5"/></g>
+<g class="step s3" data-move="3:35,296 4:35,242"><rect class="d-band" x="0" y="0" width="150" height="34" rx="5"/><text class="d-tiny" x="75" y="22" text-anchor="middle">PrefsStorage</text></g>
+<g class="step s3" data-move="3:245,296 4:245,242"><rect class="d-band" x="0" y="0" width="150" height="34" rx="5"/><text class="d-tiny" x="75" y="22" text-anchor="middle">DefaultsStorage</text></g>
+<g class="step s5" data-pulse="5" data-move="5:455,242"><rect class="d-ok" x="0" y="0" width="150" height="34" rx="5"/><text class="d-tiny" x="75" y="22" text-anchor="middle">FakeStorage</text></g>
+</svg>
+<ol class="caps">
+<li><p><code>Bookmarks</code>, in commonMain, needs a <code>Storage</code>: an interface it takes in its constructor instead of creating one.</p></li>
+<li><p>With <code>expect</code>, the compiler fixes exactly one <code>actual</code> into each target's build: one per target, chosen before the app runs.</p></li>
+<li><p>With an interface, the same <code>Bookmarks</code> is built in three places, and each platform implements <code>Storage</code> with its own store. <i>Predict: who puts one in?</i></p></li>
+<li><p>Each app's start: Android's hands in <code>PrefsStorage</code>, iOS's <code>DefaultsStorage</code>. That's <b>dependency injection</b>: what an object needs comes from outside.</p></li>
+<li><p>A test builds <code>Bookmarks</code> with no phone and hands in a <b>fake</b>: a small, working <code>Storage</code> that keeps values in memory, so the test can check what was saved.</p></li>
+</ol>

@@ -1,0 +1,21 @@
+<!-- label: One framework per target; lipo can't merge two arm64 builds; an XCFramework keeps a device slot and a simulator slot, and inside the simulator slot lipo merges architectures -->
+<!-- question: How do device and simulator builds ship as one thing? type: before/after -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="xc-t"><title id="xc-t">Two frameworks, for iosArm64 and iosSimulatorArm64, both hold arm64 code; an iPhone and an Apple-chip Mac are arm64, an Intel Mac x86-64; lipo can put only one arm64 build into a universal framework; an XCFramework has a device slot and a simulator slot; adding iosX64, lipo merges its x86-64 build with the arm64 simulator build into one universal binary in the simulator slot</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s2 hide-3" data-pulse="2"><x-chip x="212" y="40" w="84" label="iPhone"/><text class="d-a" x="254" y="114" text-anchor="middle">arm64</text><x-chip x="322" y="40" w="84" label="new Mac"/><text class="d-a" x="364" y="114" text-anchor="middle">arm64</text><x-chip x="432" y="40" w="84" label="Intel Mac"/><text class="d-a" x="474" y="114" text-anchor="middle">x86-64</text></g>
+<g class="step only-3" data-pulse="3"><x-machine x="210" y="150" w="120" label="lipo"/><rect class="d-dash" x="384" y="222" width="226" height="130" rx="8"/><text class="d-tiny" x="497" y="240" text-anchor="middle">universal</text><circle class="d-bad" cx="300" cy="300" r="13"/><path class="d-red" d="M292,292 L308,308 M308,292 L292,308"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-paper" x="390" y="16" width="236" height="330" rx="10"/><text class="d-b" x="508" y="40" text-anchor="middle">XCFramework</text>
+<rect class="d-dash" x="404" y="52" width="208" height="112" rx="8"/><text class="d-m" x="508" y="158" text-anchor="middle">device</text>
+<rect class="d-dash" x="404" y="174" width="208" height="164" rx="8"/><text class="d-m" x="508" y="332" text-anchor="middle">simulator</text></g>
+<g class="step s1" data-pulse="1" data-move="1:24,40 3:422,256 4:433,60"><rect class="d-wood" x="0" y="0" width="150" height="80" rx="8"/><text class="d-tiny" x="75" y="22" text-anchor="middle">iosArm64</text><rect class="d-band" x="20" y="36" width="110" height="32" rx="5"/><text class="d-tiny" x="75" y="57" text-anchor="middle">arm64</text></g>
+<g class="step s1" data-move="1:24,170 3:100,226 4:433,182"><rect class="d-wood" x="0" y="0" width="150" height="122" rx="8"/><text class="d-tiny" x="75" y="22" text-anchor="middle">iosSimulatorArm64</text><rect class="d-band" x="20" y="36" width="110" height="32" rx="5"/><text class="d-tiny" x="75" y="57" text-anchor="middle">arm64</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-band" x="453" y="258" width="110" height="32" rx="5"/><text class="d-tiny" x="508" y="279" text-anchor="middle">x86-64</text>
+<rect class="d-wood" x="24" y="250" width="150" height="60" rx="8"/><text class="d-tiny" x="99" y="285" text-anchor="middle">iosX64</text><x-machine x="210" y="250" w="120" label="lipo"/><x-arrow tone="ink" d="M176,280 L206,278"/><x-arrow tone="acc" d="M332,276 L448,274"/></g>
+</svg>
+<ol class="caps">
+<li><p>Each link task makes one framework for one target: one for real iPhones, one for the simulator.</p></li>
+<li><p>A processor's <b>architecture</b> is the instruction family it runs. iPhones and Apple-chip Macs run arm64; Intel Macs, x86-64. <i>Predict: can one file hold both arm64 builds?</i></p></li>
+<li><p>No. A <b>universal framework</b>, merged with <code>lipo</code>, holds each architecture once, so only one arm64 build fits.</p></li>
+<li><p>An XCFramework keeps a device slot and a simulator slot side by side. Xcode takes the slot that matches what it's building.</p></li>
+<li><p>Add iosX64, and lipo merges its x86-64 build with the arm64 one into a single universal binary, inside the simulator slot.</p></li>
+</ol>

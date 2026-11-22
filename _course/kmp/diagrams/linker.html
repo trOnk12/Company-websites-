@@ -1,0 +1,21 @@
+<!-- label: The linker joins object code into one binary and connects calls by symbol; in a release build, unused code was already dropped before LLVM, and the linker trims a little more -->
+<!-- question: How do separate pieces of object code become one binary, and where does unused code go? type: pipeline (before/after: debug, then release) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="lk-t"><title id="lk-t">Debug build: your new object code and Ktor's cached object code; your call and Ktor's function share the symbol HttpClient; the linker joins them into one binary and connects the call. Release build: all the Kotlin arrives as one piece, unused code already dropped before LLVM; the linker joins it and its -dead_strip option trims a little more</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<text class="d-m step s1 hide-4" x="20" y="28">debug build</text>
+<text class="d-r step s4" x="20" y="28">release build</text>
+<g class="step s3" data-pulse="3"><rect class="d-wood" x="404" y="24" width="216" height="300" rx="10"/><text class="d-b" x="512" y="50" text-anchor="middle">shared binary</text><x-machine x="214" y="150" w="130" label="linker"/><x-arrow tone="acc" d="M346,177 L398,177"/></g>
+<g class="step s1 hide-4" data-pulse="1" data-move="1:20,60 3:420,70"><rect class="d-paper" x="0" y="0" width="186" height="52" rx="6"/><text class="d-tiny" x="10" y="31">your code</text><g class="step s2"><rect class="d-hl" x="104" y="15" width="76" height="22" rx="4"/><text class="d-tiny" x="142" y="31" text-anchor="middle">HttpClient</text></g></g>
+<g class="step s1 hide-4" data-move="1:20,140 3:420,140"><rect class="d-band" x="0" y="0" width="186" height="52" rx="6"/><text class="d-tiny" x="10" y="31">Ktor, cached</text><g class="step s2"><rect class="d-hl" x="104" y="15" width="76" height="22" rx="4"/><text class="d-tiny" x="142" y="31" text-anchor="middle">HttpClient</text></g></g>
+<x-arrow class="step s3 hide-4" tone="acc" d="M600,108 C616,118 616,136 600,152"/>
+<g class="step s4" data-pulse="4" data-move="4:20,150 5:427,120"><rect class="d-paper" x="0" y="0" width="170" height="70" rx="6"/><text class="d-tiny" x="85" y="30" text-anchor="middle">all Kotlin,</text><text class="d-tiny" x="85" y="52" text-anchor="middle">one piece</text></g>
+<g class="step s4"><rect class="d-dash" x="20" y="60" width="170" height="44" rx="6"/><text class="d-m" x="105" y="88" text-anchor="middle">unused code</text><circle class="d-bad" cx="190" cy="62" r="12"/><path class="d-red" d="M183,55 L197,69 M197,55 L183,69"/><text class="d-m" x="20" y="258">dropped before LLVM</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-dash" x="560" y="250" width="44" height="24" rx="4"/><circle class="d-bad" cx="604" cy="250" r="11"/><path class="d-red" d="M598,244 L610,256 M610,244 L598,256"/><text class="d-mi" x="512" y="306" text-anchor="middle">-dead_strip</text></g>
+</svg>
+<ol class="caps">
+<li><p>In a debug build, LLVM wrote <b>object code</b> for your module, and Ktor's comes ready from a cache. Your call into Ktor leaves the address open.</p></li>
+<li><p>The open call names its target by a <b>symbol</b>: the function's name in compiled code. Ktor's object code defines the same symbol.</p></li>
+<li><p>The <b>linker</b> joins the pieces into one binary and replaces each named call with an address. <i>Predict: what's different in a release build?</i></p></li>
+<li><p>All the Kotlin arrives as one piece, merged before LLVM. Dead code elimination already dropped what nothing reaches, there, before LLVM.</p></li>
+<li><p>The linker still joins it into the binary, and its <code>-dead_strip</code> option trims a few more unused bits: a second, smaller cut.</p></li>
+</ol>

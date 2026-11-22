@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="kmp">
       <p class="eyebrow"><a href="./">Kotlin Multiplatform, from the compiler up</a> · check</p>
       <h1>Know The build already?</h1>
-      <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 7 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 16"><p class="eyebrow">Puzzle 16: The kotlin { } block</p>
 <fieldset class="quiz" data-n="16">
 <legend>You declare only <code>iosArm64()</code> for iOS, then try to run the shared tests in the simulator on your Mac. What happens?</legend>
@@ -80,7 +80,7 @@
 <input type="radio" name="q-18-who-can-see-what-1" id="q-18-who-can-see-what-1-3"><label for="q-18-who-can-see-what-1-3"><span>It works, because iosMain dependsOn commonMain, so the two share everything</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> commonMain is checked against all its targets; it can't compile a call to code Android doesn't have. <a class="show-me" href="18-who-can-see-what.html">Learn it in puzzle 18 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Up, never down.</p>
-<p class="fb no opt-3"><b>Not quite.</b> The link goes one way: iosMain sees commonMain, not the reverse. <a class="show-me" href="18-who-can-see-what.html">Learn it in puzzle 18 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> The arrow goes one way: iosMain sees commonMain, not the reverse. <a class="show-me" href="18-who-can-see-what.html">Learn it in puzzle 18 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 19"><p class="eyebrow">Puzzle 19: Dependencies per source set</p>
 <fieldset class="quiz" data-n="19">
@@ -91,6 +91,36 @@
 <p class="fb no opt-1"><b>Not quite.</b> A library arrives already built for its platforms; Kotlin/Native can't make an iOS one from it. <a class="show-me" href="19-dependencies-per-source-set.html">Learn it in puzzle 19 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> commonMain takes only libraries built for all its targets.</p>
 <p class="fb no opt-3"><b>Not quite.</b> commonMain is compiled for every target; nothing is skipped on iOS, it just doesn't compile. <a class="show-me" href="19-dependencies-per-source-set.html">Learn it in puzzle 19 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 20"><p class="eyebrow">Puzzle 20: What a klib is</p>
+<fieldset class="quiz" data-n="20">
+<legend>Your shared module declares iosArm64 and iosSimulatorArm64. You hand a colleague only the klib from the iosArm64 compilation and ask them to build for the simulator. What happens?</legend>
+<input type="radio" name="q-20-what-a-klib-is-1" id="q-20-what-a-klib-is-1-1" data-ok><label for="q-20-what-a-klib-is-1-1"><span>It can't be used: its manifest names ios_arm64 as its only target</span></label>
+<input type="radio" name="q-20-what-a-klib-is-1" id="q-20-what-a-klib-is-1-2"><label for="q-20-what-a-klib-is-1-2"><span>It works on the simulator, but more slowly than a real iPhone</span></label>
+<input type="radio" name="q-20-what-a-klib-is-1" id="q-20-what-a-klib-is-1-3"><label for="q-20-what-a-klib-is-1-3"><span>It works, because IR names no processor, so any target can use it</span></label>
+<p class="fb ok opt-1"><b>Right.</b> One klib, one target.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Nothing runs at all: the simulator target needs its own klib. <a class="show-me" href="20-what-a-klib-is.html">Learn it in puzzle 20 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> IR names no processor, but the klib is still built for one target, and its manifest names that target. <a class="show-me" href="20-what-a-klib-is.html">Learn it in puzzle 20 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 21"><p class="eyebrow">Puzzle 21: One line, every target</p>
+<fieldset class="quiz" data-n="21">
+<legend>A library's .module file lists variants for jvm, ios_arm64 and common, but not ios_simulator_arm64. You add it to commonMain in a project with android, iosArm64 and iosSimulatorArm64 targets. What happens?</legend>
+<input type="radio" name="q-21-one-line-every-target-1" id="q-21-one-line-every-target-1-1"><label for="q-21-one-line-every-target-1-1"><span>Every build works, and the simulator reuses the ios_arm64 klib</span></label>
+<input type="radio" name="q-21-one-line-every-target-1" id="q-21-one-line-every-target-1-2" data-ok><label for="q-21-one-line-every-target-1-2"><span>The simulator compilation fails: no variant matches its target</span></label>
+<input type="radio" name="q-21-one-line-every-target-1" id="q-21-one-line-every-target-1-3"><label for="q-21-one-line-every-target-1-3"><span>Only the Android build works, because only jvm is a full variant</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A klib is built for one target; the simulator's compilation needs a variant tagged with its own target. <a class="show-me" href="21-one-line-every-target.html">Learn it in puzzle 21 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Each compilation needs its own matching variant.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The iosArm64 compilation finds its matching variant too; only the simulator has none. <a class="show-me" href="21-one-line-every-target.html">Learn it in puzzle 21 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 22"><p class="eyebrow">Puzzle 22: expect/actual or an interface</p>
+<fieldset class="quiz" data-n="22">
+<legend>Your iOS app needs two storages on iOS: NSUserDefaults for settings and an encrypted store for passwords. Storage is an expect class with one <code>actual</code> in iosMain. What's the problem?</legend>
+<input type="radio" name="q-22-expect-actual-or-an-interface-1" id="q-22-expect-actual-or-an-interface-1-1" data-ok><label for="q-22-expect-actual-or-an-interface-1-1"><span>The compiler merges one actual per target, so iOS can't have two</span></label>
+<input type="radio" name="q-22-expect-actual-or-an-interface-1" id="q-22-expect-actual-or-an-interface-1-2"><label for="q-22-expect-actual-or-an-interface-1-2"><span>The actual can't use Apple's APIs, so neither store works</span></label>
+<input type="radio" name="q-22-expect-actual-or-an-interface-1" id="q-22-expect-actual-or-an-interface-1-3"><label for="q-22-expect-actual-or-an-interface-1-3"><span>There is none, since an actual can be written once in iosMain and once in appleMain</span></label>
+<p class="fb ok opt-1"><b>Right.</b> expect/actual: exactly one implementation per target.</p>
+<p class="fb no opt-2"><b>Not quite.</b> An actual in iosMain can use Apple's APIs; the limit is one actual per target. <a class="show-me" href="22-expect-actual-or-an-interface.html">Learn it in puzzle 22 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> The compiler accepts exactly one actual per target; a second one for the same target is an error. <a class="show-me" href="22-expect-actual-or-an-interface.html">Learn it in puzzle 22 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>
