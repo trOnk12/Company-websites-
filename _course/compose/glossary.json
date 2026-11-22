@@ -99,9 +99,24 @@
    "Zoe",
    "items(people, key = { it.id }) { PersonRow(it) }",
    "if",
-   "if (showError) ErrorBanner()",
    "Counter()",
-   "ErrorBanner()"
+   "ErrorBanner()",
+   "Cart",
+   "CartBadge",
+   "CartBadge(cart)",
+   "cart.count++",
+   "class Cart(var count: Int)",
+   "Counter(count)",
+   "query",
+   "query = \"\"",
+   "BookmarkSearch",
+   "bookmarkIcon",
+   "bookmarkIcon(saved)",
+   "saved",
+   "onToggle",
+   "item.title",
+   "update",
+   "contentDescription"
   ],
   "homonyms": [
    "suspend"
@@ -340,6 +355,139 @@
    "in": "00",
    "def": "The id of the Gradle plugin that turns the Compose compiler plugin on in a build.",
    "kind": "code"
+  },
+  "@Immutable": {
+   "in": "04",
+   "def": "An annotation that promises Compose a type never changes once an instance is made.",
+   "kind": "code"
+  },
+  "skikoMain": {
+   "in": "06",
+   "def": "The source set shared by every Compose target that draws with Skia through Skiko: iOS, desktop and web.",
+   "kind": "code"
+  },
+  "iosMain": {
+   "in": "06",
+   "def": "The source set for code that only iOS builds compile.",
+   "kind": "code"
+  },
+  "androidMain": {
+   "in": "06",
+   "def": "The source set for code that only Android builds compile.",
+   "kind": "code"
+  },
+  "nativeMain": {
+   "in": "06",
+   "def": "The source set shared by every Kotlin/Native target.",
+   "kind": "code"
+  },
+  "darwinMain": {
+   "in": "06",
+   "def": "The source set shared by every Apple target.",
+   "kind": "code"
+  },
+  "DefaultUiApplier": {
+   "in": "06",
+   "def": "Compose UI's Applier on iOS, desktop and web, in skikoMain: it inserts, moves and removes LayoutNodes.",
+   "kind": "code"
+  },
+  "UIViewController": {
+   "in": "09",
+   "def": "UIKit's base class for a controller that manages one screen's views.",
+   "kind": "code"
+  },
+  "UINavigationController": {
+   "in": "09",
+   "def": "UIKit's controller for a stack of screens, with a title bar, a back button and the back swipe.",
+   "kind": "code"
+  },
+  "MainViewController": {
+   "in": "09",
+   "def": "Our Kotlin function in iosMain that returns ComposeUIViewController { BookmarksScreen() } for Swift to use.",
+   "kind": "code",
+   "aliases": [
+    "Main_iosKt.MainViewController"
+   ]
+  },
+  "Main_iosKt": {
+   "in": "09",
+   "def": "The name Swift sees for the top-level functions of the Kotlin file main.ios.kt.",
+   "kind": "code"
+  },
+  "UIViewControllerRepresentable": {
+   "in": "09",
+   "def": "A SwiftUI protocol that wraps a UIKit view controller so SwiftUI can show it.",
+   "kind": "code"
+  },
+  "makeUIViewController": {
+   "in": "09",
+   "def": "The method of a UIViewControllerRepresentable that creates the wrapped controller.",
+   "kind": "code"
+  },
+  "factory": {
+   "in": "09",
+   "def": "UIKitView's parameter that creates the native view, once, when the call enters the composition.",
+   "kind": "code"
+  },
+  "onRelease": {
+   "in": "09",
+   "def": "UIKitView's parameter that runs when the native view leaves the composition for good, to clean up.",
+   "kind": "code"
+  },
+  "onReset": {
+   "in": "09",
+   "def": "UIKitView's parameter that, when set, lets Compose reuse the same native view instead of creating a new one.",
+   "kind": "code"
+  },
+  "addTarget": {
+   "in": "09",
+   "def": "UIKit's call that tells a control to call a method by name when an event happens.",
+   "kind": "code"
+  },
+  "UIControlEventEditingChanged": {
+   "in": "09",
+   "def": "The UIKit event a text field sends whenever its text changes.",
+   "kind": "code"
+  },
+  "@ObjCAction": {
+   "in": "09",
+   "def": "A Kotlin/Native annotation that makes a Kotlin function callable as an Objective-C action method.",
+   "kind": "code"
+  },
+  "editingChanged": {
+   "in": "09",
+   "def": "Our Kotlin method on the text field, called by UIKit on every edit.",
+   "kind": "code"
+  },
+  "pointerInput": {
+   "in": "10",
+   "def": "A modifier that hands raw touch events to your code; it adds no semantics.",
+   "kind": "code"
+  },
+  "detectTapGestures": {
+   "in": "10",
+   "def": "A helper inside pointerInput that calls you back on a tap.",
+   "kind": "code"
+  },
+  "Modifier.toggleable": {
+   "in": "10",
+   "def": "A foundation modifier that makes an element on or off, reacts to taps and accessibility actions, and adds the matching semantics.",
+   "kind": "code"
+  },
+  "Role.Switch": {
+   "in": "10",
+   "def": "The semantics role that tells accessibility services an element is a switch.",
+   "kind": "code"
+  },
+  "IconToggleButton": {
+   "in": "10",
+   "def": "Material's on/off icon button; it is toggleable with a checkbox role and merges its children's semantics.",
+   "kind": "code"
+  },
+  "onValueChange": {
+   "in": "10",
+   "def": "toggleable's callback: asked to flip the value, after a tap or an accessibility action.",
+   "kind": "code"
   }
  },
  "from": {
@@ -459,6 +607,21 @@
   "ViewModel": {
    "course": "android",
    "in": 21
+  },
+  "source set": {
+   "course": "kmp",
+   "in": 1,
+   "aliases": [
+    "source sets"
+   ]
+  },
+  "intermediate source set": {
+   "course": "kmp",
+   "in": 17
+  },
+  "Kotlin/Native": {
+   "course": "kmp",
+   "in": 0
   }
  },
  "avoid": {

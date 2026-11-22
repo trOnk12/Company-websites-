@@ -1,17 +1,21 @@
-<!-- label: Which side hosts the other? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Which side hosts the other?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">iOS app</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Screen host</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Shared screen</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Apple field</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: Which side hosts the other, and which arrow carries the text each way? (nesting plus data flow) -->
+<svg viewBox="0 0 480 285" role="img" aria-labelledby="wh-t"><title id="wh-t">A UINavigationController with a back button holds the view controller from ComposeUIViewController; Compose draws the bookmarks screen inside it; a UIKitView cuts out a region where a native UITextField sits; typing sends editingChanged to the snapshot state query; tapping the Compose Clear button sets query to empty, and because update read query it runs again and empties the field</title>
+<g class="step s1" data-pulse="1"><rect class="d-box" x="8" y="8" width="464" height="269" rx="12"/><rect class="d-band" x="8" y="8" width="464" height="40" rx="12"/><text class="d-tiny" x="22" y="34">‹ Back</text><text class="d-tiny" x="240" y="34" text-anchor="middle">Bookmarks</text><text class="d-m" x="458" y="34" text-anchor="end">UIKit</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-share" x="18" y="56" width="444" height="212" rx="8"/><rect class="d-band" x="32" y="222" width="220" height="32" rx="4"/><text class="d-tiny" x="44" y="243">Lake walk</text><text class="d-m" x="452" y="258" text-anchor="end">Compose</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="32" y="70" width="252" height="44" rx="6"/><text class="d-m" x="44" y="98">UITextField</text><rect class="d-band" x="316" y="70" width="100" height="44" rx="8"/><text class="d-tiny" x="366" y="98" text-anchor="middle">Clear</text><rect class="d-paper" x="296" y="170" width="150" height="38" rx="19"/></g>
+<g class="step s3 hide-4"><text class="d-mi" x="371" y="195" text-anchor="middle">query = ""</text></g>
+<g class="step s4 hide-6"><text class="d-b" x="218" y="100">lake</text></g>
+<g class="step s4 hide-5"><text class="d-mi" x="371" y="195" text-anchor="middle">query = lake</text></g>
+<g class="step only-4"><x-arrow tone="acc" d="M150,116 C150,170 220,190 292,190"/><text class="d-a" x="36" y="146">editingChanged</text></g>
+<g class="step s5" data-pulse="5"><text class="d-mi" x="371" y="195" text-anchor="middle">query = ""</text><x-arrow tone="ink" d="M366,116 L370,166"/></g>
+<g class="step s6" data-pulse="6"><rect class="d-hl" x="32" y="70" width="252" height="44" rx="6"/><text class="d-m" x="44" y="98">UITextField</text><x-arrow tone="acc" d="M300,176 C270,160 260,140 252,118"/><text class="d-a" x="190" y="160">update</text></g>
+<g class="step s1" data-move="1:240,62 2:380,214 3:158,128 4:220,172 5:384,140 6:252,140"><path class="d-dot" d="M0,-9 L8,6 L-8,6 Z"/></g>
 </svg>
 <ol class="caps">
-<li><p>An existing iOS app owns the navigation around bookmarks.</p></li>
-<li><p>Its navigation presents a controller which hosts the shared UI.</p></li>
-<li><p>Compose arranges the contents inside that controller.</p></li>
-<li><p>The shared region can in turn host one native text field.</p></li>
+<li><p>The app's own <code>UINavigationController</code> owns the top: the back button and the title. UIKit decides where the next screen goes.</p></li>
+<li><p>Below the bar, the controller from <code>ComposeUIViewController</code>: Compose draws everything here. That edge is a <b>hosting boundary</b>, UIKit outside and Compose inside.</p></li>
+<li><p>Inside Compose, <code>UIKitView</code> cuts out a region for Apple's own <code>UITextField</code>: a second boundary, the other way round. Compose's snapshot state <code>query</code> holds the text.</p></li>
+<li><p>The user types "lake". UIKit calls <code>editingChanged</code>, which writes the field's text into <code>query</code>: native to Compose.</p></li>
+<li><p>Now the user taps Compose's Clear button, which sets <code>query = ""</code>. <i>Predict: which arrow reaches the field?</i></p></li>
+<li><p><code>update</code>. It read <code>query</code> the last time it ran, so the write marks it, it runs again, and it empties the field: Compose to native.</p></li>
 </ol>

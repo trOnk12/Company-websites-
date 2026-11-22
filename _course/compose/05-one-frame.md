@@ -26,7 +26,7 @@ Then **placement**: the parent sets each measured child's x and y, relative to i
 
 Drawing comes last. Each node paints itself, at its place, onto a **canvas**: the drawing surface, with commands such as `drawRect` (fill a rectangle with a colour) or draw a line of text. Compose's `Canvas` is a Kotlin interface. On Android, the object behind it wraps Android's own canvas; on iOS, it wraps Skia's (the KMP course, puzzle 15). Your composables never see which one.
 
-All three phases run, in principle, for every frame, but each one is skipped where its inputs didn't change: a frame where only a colour changed can redo drawing alone. Puzzle 3's state reads are noted per phase too, and puzzle 8 uses that to move work out of composition.
+All three phases run, in principle, for every frame, but each one is skipped where its inputs didn't change: a frame where only a colour changed can redo drawing alone, if the colour is read while drawing; puzzle 8 shows where a read has to sit for that. Puzzle 3's state reads are noted per phase too, and puzzle 8 uses that to move work out of composition.
 
 ## Go deeper: Who decides a size: the parent or the child?
 
@@ -39,7 +39,7 @@ The theatre once more. The script says who is in the scene (composition). Before
 ## Check yourself
 
 - A `Column` gets at most 300 pixels of width. Its child, a `Text`, needs 400 pixels to fit its words on one line. What happens when the `Text` is measured?::*It takes at most 300 wide and wraps onto more lines, so it gets taller||It takes 400 wide and runs past the right edge of the Column >> A child picks its size within the constraints; it can't choose more than the maximum. >> s2||The Column measures it again with 400, then shrinks it to fit >> Each child is measured once per layout; the constraints come first. >> the-building-block::Within the constraints, so it wraps.
-- Why may a parent measure each of its children only once per layout?::*So the work grows with the number of nodes, not doubling at each level||Measuring a child draws it on the canvas, and pixels can't be drawn twice >> Measuring picks a size; drawing is a later phase. >> s5||A child's size is kept in a slot that can be written only once >> Sizes come from the layout phase, not from slots. >> s3::One measure per child keeps layout linear in the tree.
+- A custom layout library lets every parent measure each child twice, to try two widths. In a tree ten levels deep, how many times is the node at the bottom measured in one layout?::*About a thousand: each level doubles it, 2 to the power 10||20 times: twice for each of the ten levels >> The doubling compounds: each of the two measures of a parent measures the child twice again. >> the-building-block||Twice: only its own parent measures it >> Each time a parent is measured, it measures its children again. >> s3::One measure per child is what keeps layout linear in the tree.
 - A card's text changes from one short line to a three-line paragraph. Which phases have new work to do?::*Composition, layout and drawing: new text, a new height, new pixels||Only drawing, because text is pixels on the canvas >> The card got taller, so it must be measured again and what's below it moves. >> s3||Only composition, because layout and drawing happened last frame >> Each frame needs layout and drawing again for whatever changed size or looks. >> the-building-block::A size change reaches every phase.
 
 ## Sources

@@ -1,13 +1,13 @@
 ---
 title: Can VoiceOver understand the bookmark?
-short: Can VoiceOver understand the bookmark?
-summary: A custom bookmark icon looks right. Make its action understandable without seeing the screen.
-takeaway: Compose semantics describe meaning and actions independently from pixels. On iOS the mapping to native accessibility information makes those semantics available to VoiceOver.
+short: Semantics, roles and VoiceOver
+summary: A custom bookmark icon turns solid when you tap it. A sighted user sees the change; VoiceOver hears nothing. Give the icon a label, a role and a state, and follow them from Compose to what VoiceOver says on an iPhone.
+takeaway: Pixels don't speak. VoiceOver only knows what Compose's semantics say, and Compose Multiplatform maps those semantics to iOS accessibility properties. A tap handler with no semantics is silent; Modifier.toggleable(role = Role.Switch) plus a contentDescription gives VoiceOver a label, a switch role and an on/off value, and IconToggleButton does the same with Material's defaults. An icon inside a control that already has a label gets a null contentDescription.
 ---
 
 ## The problem
 
-Puzzle 9 placed the shared screen inside an iOS controller and a native field inside the screen. The rest of the screen is still drawn by Compose, as pixels. A custom icon toggles a bookmark and changes from outline to solid. A sighted person can see the difference. What information can a person using VoiceOver get?
+Puzzle 9 put the shared screen inside an iOS app and a native text field inside the screen. The native field already speaks to VoiceOver, Apple's screen reader, because UIKit built it. Everything else on the screen is Compose, drawn as pixels into one view (the KMP course, puzzle 15). Each saved item has a custom bookmark icon: an outline that turns solid when you tap it. A sighted user sees the change. A VoiceOver user moves a finger over the item and hears nothing. Why, and what has to change?
 
 ## See it
 
@@ -16,33 +16,67 @@ Puzzle 9 placed the shared screen inside an iOS controller and a native field in
 
 ## The building block
 
-**Accessibility semantics** are UI descriptions that a device's assistive technology can use, such as a label, a role, a current state or an action. On iOS, the screen reader is VoiceOver. Compose Multiplatform maps its semantics data to native accessibility services.
+VoiceOver can't look at pixels. It asks the app for **accessibility semantics**: a description of each element, made of a label (what it is), a role (what kind of control), a state (on or off) and the actions it supports. Compose keeps that description in its semantics tree (the KMP course, puzzle 15), and on iOS, JetBrains' docs say, "semantics data produced by Compose APIs is now mapped to native objects and properties that are consumed by iOS Accessibility Services".
 
-For this bookmark, expose what the control does and whether the item is currently saved. Prefer a control that already represents a toggle, then give it a meaningful label and expose the checked state. Keep the icon decorative if the surrounding control already provides the complete description.
+Here is the icon as first written:
 
-| Situation | What the user should be able to learn |
-|---|---|
-| Focus before saving | Which item the action applies to and whether it is saved |
-| Activate the control | That bookmarking can be toggled |
-| Focus after saving | That the item is now saved |
+```kotlin
+Icon(
+    painter = bookmarkIcon(saved),           // outline or solid picture
+    contentDescription = null,
+    modifier = Modifier.pointerInput(Unit) {
+        detectTapGestures { onToggle(!saved) }
+    },
+)
+```
 
-A visual check proves part of the behavior. On an iPhone, verify focus order, spoken meaning and whether activating the item changes the state. Test a native field embedded in the same screen independently as well. At the hosting boundary, its view and interaction differ from the surrounding shared UI.
+`pointerInput` with `detectTapGestures` reacts to raw touches and adds no semantics at all, and a `contentDescription` of `null` says the picture means nothing on its own. So the semantics tree has nothing here, and VoiceOver skips the icon, or can't say what it does. For VoiceOver the bookmark doesn't exist.
 
-## Go deeper: Design a two-platform check
+The fix is to describe the control, not the picture:
 
-- What would a useful check record if the same icon works on iOS and Android?::Record the focused control, distinguish its saved and unsaved states, activate it with the platform screen reader, and verify the result. Keep platform-specific wording separate from the intended meaning.
+```kotlin
+Icon(
+    painter = bookmarkIcon(saved),
+    contentDescription = null,               // decorative: the control below speaks for it
+    modifier = Modifier
+        .toggleable(
+            value = saved,
+            role = Role.Switch,
+            onValueChange = onToggle,
+        )
+        .semantics { contentDescription = "Bookmark ${item.title}" },
+)
+```
+
+`Modifier.toggleable` makes the element something that is either on or off, and reacts to a tap or to an accessibility action by asking to flip it (`onValueChange`). It adds the semantics with it: a toggleable state (on or off) and a click action. `Role.Switch`, passed as its role, says what kind of control it is. The `semantics { }` block adds the label: `contentDescription`, the text a screen reader speaks for an element.
+
+What iOS receives, in Compose Multiplatform's iOS code: the label becomes the element's accessibility label; the toggleable state adds a toggle trait and the value "1" or "0"; and `Role.Switch` adds UIKit's toggle-button trait on iOS 17 and later. VoiceOver puts those together and says something like "Bookmark Lake walk, switch button, on". The exact words depend on the iOS version and the user's VoiceOver settings, so check them on a device.
+
+Why a `contentDescription` of `null` on the icon? A screen reader treats a control as one element, and the label belongs to the control. If the picture also had a description, it could be read as well, or instead. Android's docs say a null description marks a graphic that is "purely decorative".
+
+Material has this built in. `IconToggleButton(checked = saved, onCheckedChange = onToggle) { Icon(bookmarkIcon(saved), contentDescription = "Bookmark ${item.title}") }` is already toggleable, with the role of a checkbox, and it merges its children's semantics into itself, so the icon's description becomes the button's label. Use it unless your design needs a custom control.
+
+A screenshot can't test any of this. Turn on VoiceOver on an iPhone, move to the bookmark, listen, double-tap, and listen again: the value should change from off to on. The native field from puzzle 9 is UIKit's own element, so check it the same way, but separately.
+
+## Go deeper: Where does Role.Switch become an iOS trait?
+
+- On an iPhone with iOS 16, the same bookmark is read without "switch button". What changed?::Compose Multiplatform's iOS code adds UIKit's toggle-button trait for `Role.Switch` only when the iOS version is 17 or later (the code checks the iOS version before adding it). The toggleable state still maps to a value, "1" or "0", and the label stays, so VoiceOver still says the name and on or off; only the role word is missing.
 
 ## The analogy
 
-The painted set from puzzle 9's theatre. A sighted audience sees a painted door that's open or closed. A blind audience member hears the play through an audio describer (VoiceOver), who can only say what the script tells them: "door, closed, opens on a tap". If the script says nothing about the door, the describer says nothing, however well it is painted.
+The painted set from puzzle 9's theatre. A sighted audience sees a painted door that's open or closed. A blind audience member hears the play through an audio describer (VoiceOver), who can only say what the script tells them: "door to the garden, a switch, now open". If the script says nothing about the door, the describer says nothing, however well it is painted.
 
 ## Check yourself
 
-- The icon is solid after saving, but the action has no label or state. What is the missing signal?::*A semantic description of the action and its state||A larger solid icon so the change is easier to see >> Changing pixels does not expose a saved state to the screen reader. >> the-building-block||An extra native navigation bar above the control >> The navigation bar does not describe an unlabeled bookmark. >> the-building-block::Provide the meaning of the control along with its pixels.
-- The button already provides the full label. What can duplicate text on the icon cause?::*The same meaning may be announced more than once||The button automatically loses its saved state >> Duplicating the name does not remove the state. >> the-building-block||The native field stops reporting text edits >> This concerns focus and labels on the bookmark. >> the-building-block::Describe one logical control coherently.
-- An automated check finds the icon. Which additional check best verifies the intended interaction?::*Focus and activate the bookmark with VoiceOver on an iPhone||Check only whether the icon is filled in a screenshot >> A screenshot checks pixels instead of the screen reader interaction. >> the-building-block||Check only whether the page loads without crashing >> Successful navigation does not verify the label or toggle. >> the-building-block::Check focus, spoken meaning and a changed state.
+- You keep the `pointerInput` version but give the Icon a content description, "Bookmark". VoiceOver focuses it. What can the user learn?::*Its name, but not that it's a switch, nor whether it's on||Everything: the description is all VoiceOver needs to know >> A label names an element; the role, the state and the action come from toggleable. >> s2||Nothing: VoiceOver never reads icons, whatever their description >> An icon with a description gets a label and is read; it's the missing role and state that hurt here. >> the-building-block::A label alone doesn't make a control.
+- Why does the fixed version set the Icon's own `contentDescription` to `null`?::*The control carries the label, so a second one could be read twice||Without it, toggleable throws an exception when it runs >> Nothing throws; the problem is what VoiceOver says. >> the-building-block||null hides the whole bookmark control from VoiceOver >> It hides only the picture's own description; the toggleable element still has its label, role and state. >> s4::One control, one label.
+- A teammate replaces the custom icon with `IconToggleButton` and gives the Icon inside it the content description "Bookmark Lake walk". Is the label lost because it sits on the child?::*No: the button merges its children's semantics into itself||Yes: only modifiers on the button itself ever reach VoiceOver >> Material's buttons merge their children's semantics into one element. >> the-building-block||Yes: IconToggleButton has no semantics at all on iOS >> Material components come with semantics, and Compose Multiplatform maps them on iOS too. >> the-building-block::Merging lifts the child's label onto the control.
 
 ## Sources
 
-- [JetBrains: iOS accessibility](https://kotlinlang.org/docs/multiplatform/compose-ios-accessibility.html)
-- [Android Developers: Compose semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics)
+- [Kotlin docs: Support for iOS accessibility features](https://kotlinlang.org/docs/multiplatform/compose-ios-accessibility.html) ("Screen readers and VoiceOver can access the content of the Compose Multiplatform UI."; "This is possible because semantics data produced by Compose APIs is now mapped to native objects and properties that are consumed by iOS Accessibility Services. For most interfaces built with Material widgets, this should happen automatically.")
+- [Android Developers: Semantics](https://developer.android.com/develop/ui/compose/accessibility/semantics) ("Information about the meaning and role of a component in Compose is called semantics"; "The Role indicates the type of element."; "The ToggleableState is the current state of the Switch."; "the clickable and toggleable modifiers will automatically merge their descendants.")
+- [Android Developers: Merging and clearing](https://developer.android.com/develop/ui/compose/accessibility/merging-clearing) (a custom toggle: ".toggleable(value = checked.value, onValueChange = { checked.value = it })" with "role = Role.Switch", and its Icon with "contentDescription = null // not needed here")
+- [Android Developers: Accessibility API defaults](https://developer.android.com/develop/ui/compose/accessibility/api-defaults) ("Some graphic elements are purely decorative and you might not want to communicate them to the user. When you set the contentDescription parameter to null, you indicate to the Android framework that this element does not have associated actions or state.")
+- [Compose Multiplatform source: SemanticConfigurationUtils.ios.kt](https://github.com/JetBrains/compose-multiplatform-core/blob/97210bb938d0143fd1bf0bea3d1b83a977568537/compose/ui/ui/src/iosMain/kotlin/androidx/compose/ui/platform/accessibility/SemanticConfigurationUtils.ios.kt#L73) ("if (contains(SemanticsProperties.ToggleableState)) { result = result or CMPAccessibilityTraitToggle }"; "Role.Switch -> { if (available(OS.Ios to OSVersion(major = 17))) { result = result or UIAccessibilityTraitToggleButton } }"; and for the value: "ToggleableState.On -> "1"", "ToggleableState.Off -> "0"")
+- [Compose foundation source: Toggleable.kt](https://github.com/JetBrains/compose-multiplatform-core/blob/97210bb938d0143fd1bf0bea3d1b83a977568537/compose/foundation/foundation/src/commonMain/kotlin/androidx/compose/foundation/selection/Toggleable.kt#L126) (`public fun Modifier.toggleable(value: Boolean, enabled: Boolean = true, role: Role? = null, interactionSource: MutableInteractionSource? = null, onValueChange: (Boolean) -> Unit)`; "Configure component to make it toggleable via input and accessibility events"); and material3's IconButton.kt, where IconToggleButton uses ".toggleable(… role = Role.Checkbox …)"

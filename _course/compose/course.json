@@ -9,7 +9,7 @@
   "modules": [
     {
       "title": "Module 1: Compose underneath",
-      "blurb": "What the compiler plugin does to a composable, the tree Compose remembers, which code runs again when state changes and what gets skipped, one frame from tree to pixels, and the layers that let Compose leave Android.",
+      "blurb": "What the compiler plugin does to a composable, the tree Compose remembers, which row is which in a loop, which code runs again when state changes and what gets skipped, one frame from tree to pixels, and the layers that let Compose leave Android.",
       "puzzles": [
         "00-what-composable-really-does.md",
         "01-the-tree-compose-remembers.md",
@@ -32,6 +32,10 @@
     }
   ],
   "upcoming": [
+    {
+      "title": "Module 2b: Seeing and steering recomposition",
+      "topics": "Layout Inspector recomposition counts and the compiler's reports and metrics, what $changed encodes, non-restartable and non-skippable composables (inline Column/Row/Box, @NonRestartableComposable, @ReadOnlyComposable), derivedStateOf, collectAsState, collectAsStateWithLifecycle and snapshotFlow, collections in state (mutableStateListOf, immutable collections, mutation policies), the stability configuration file, phases out of order (SubcomposeLayout, intrinsics, graphicsLayer), and side-effect-free composables."
+    },
     {
       "title": "Module 3: Compose Multiplatform on iOS",
       "topics": "Skia through Skiko, inside ComposeUIViewController, one Metal-backed view, how frames are scheduled with CADisplayLink at up to 120 Hz, how touches arrive, and where a frame's time goes on an iPhone."

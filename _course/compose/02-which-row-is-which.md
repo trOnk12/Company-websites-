@@ -1,8 +1,8 @@
 ---
 title: Which row is which?
 short: Loops, order and keys
-summary: Puzzle 1's next run matches each call to its group by key and order. A loop calls the same composable from one line, once per item. Here's what happens to a row's remembered values when an item is inserted at the top, and how key() keeps them with the right item.
-takeaway: Every call from a loop comes from the same call site and carries the same key, so the next run can only match the rows by their order. Insert an item at the top and each remembered value stays at its position, not with its item. Wrap the row in key(person.id) and the runtime matches rows by that id, moving each group, slots and nodes, with its item; LazyColumn's items takes the same id as its key parameter.
+summary: Puzzle 1's next run matches each call to its group by key and order. A loop calls the same composable from one line, once per item. Here's what happens to a row's remembered values when an item is inserted at the top, and how a key keeps them with the right item.
+takeaway: Every call from a loop comes from the same call site and carries the same key, so the next run can only match the rows by their order. Insert an item at the top and each remembered value stays at its position, not with its item. Wrap the row in a key with the person's id and the runtime matches rows by that id, moving each group, slots and nodes, with its item; LazyColumn's items takes the same id as its key parameter.
 ---
 
 ## The problem

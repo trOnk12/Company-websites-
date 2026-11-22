@@ -10,7 +10,7 @@
 <ol class="caps">
 <li><p>What you write: <code>Greeting</code> takes a name and calls <code>Text</code>. A plain Kotlin function forgets everything the moment it returns.</p></li>
 <li><p>The compiler plugin adds parameters you never wrote. <code>$composer</code> is the <b>Composer</b>: the runtime's recorder, handed into every composable call.</p></li>
-<li><p>It also wraps the body in a start and an end. What the call records in between is its <b>group</b>, labelled with a key for this spot in your source.</p></li>
+<li><p>It also wraps the body in a start and an end. What the call records in between is its <b>group</b>. Its key comes from Greeting's name and parameters, so every call to Greeting opens a group with the same key.</p></li>
 <li><p><code>Column</code> hands its <code>$composer</code> to <code>Greeting</code>, which hands it to <code>Text</code>: one Composer travels down every call. <i>Predict: can an <code>onClick</code> lambda call <code>Greeting</code>?</i></p></li>
 <li><p>No. An <code>onClick</code> lambda isn't a composable, so it has no <code>$composer</code> to hand on, and the compiler refuses the call.</p></li>
 </ol>

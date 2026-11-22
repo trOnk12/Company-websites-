@@ -9,19 +9,37 @@ Rules: one core idea per puzzle, 5–7 puzzles per module, foundation first (no 
 teaches). Facts from developer.android.com, kotlinlang.org, jetbrains.com, and the androidx and
 compose-multiplatform-core sources, quoted on every page. Status: **done**, *next*, or planned.
 
-## Module 1: Compose underneath (**done**, puzzles 0–5)
-0. What @Composable really does: the compiler plugin, the Composer, groups, `$changed`.
-1. The tree Compose remembers: composition, nodes, slots, the slot table, call sites, `key()`.
-2. Who read that state: snapshot state, state reads, restart groups, the Recomposer and the frame.
-3. What gets skipped: skipping, stable and unstable types, strong skipping, `@Stable`.
-4. One frame: composition, layout (constraints, measure once, placement), drawing onto a canvas.
-5. Four layers: runtime, Compose UI (the Applier), foundation, Material; where the per-platform code lives.
+## Module 1: Compose underneath (**done**, puzzles 0–6)
+0. What @Composable really does: the compiler plugin, the Composer, groups, keys from the function's name and parameters, `$changed`.
+1. The tree Compose remembers: composition, nodes, slots, the slot table, matching by key and order, the group around an `if`.
+2. Which row is which: call sites, loops, `key()` and movable groups, LazyColumn's `key`.
+3. Who read that state: snapshot state, state reads, restart groups, the Recomposer and the frame.
+4. What gets skipped: skipping, stable and unstable types, strong skipping, remembered lambdas, `@Stable`, `@Immutable`.
+5. One frame: composition, layout (constraints, measure once, placement), drawing onto a canvas.
+6. Four layers: runtime, Compose UI (the Applier), foundation, Material; source sets, skikoMain and the iOS edge of every layer.
 
-## Module 2: One screen, two platforms (**done**, puzzles 6–9, the applied module)
-6. Who read the bookmark count: deferring a read into the child.
-7. Which work a moving card needs: deferring a read to a later phase.
-8. Which side hosts the other: ComposeUIViewController and UIKitView.
-9. Can VoiceOver understand the bookmark: semantics to iOS accessibility.
+## Module 2: One screen, two platforms (**done**, puzzles 7–10, the applied module)
+7. Who read the bookmark count: deferring a read into the child.
+8. Which work a moving card needs: deferring a read to a later phase.
+9. Which side hosts the other: ComposeUIViewController from Swift, UIKitView's factory, update and onRelease, editingChanged.
+10. Can VoiceOver understand the bookmark: toggleable, Role.Switch, content descriptions, and their iOS mapping.
+
+## Module 2b: Seeing and steering recomposition (*next*, return-trip topics from the 21 November review)
+Written before Module 3, because every later module asks the learner to measure, not guess.
+1. Watching it happen, early: Layout Inspector's recomposition and skip counts, and the compiler's reports and metrics
+   (which composables are restartable and skippable, which parameters are stable).
+2. What `$changed` encodes: the bits per parameter (same, different, static, uncertain) and how a caller saves a child a comparison.
+3. Non-restartable and non-skippable composables: inline `Column`/`Row`/`Box`, `@NonRestartableComposable`,
+   `@ReadOnlyComposable`, and why a read inside `Column { }` marks the function around it.
+4. derivedStateOf: reading a fast-changing state but only reacting when a result changes (scroll position → "show the button").
+5. State from the outside world: `collectAsState`, `collectAsStateWithLifecycle`, and `snapshotFlow` the other way round.
+6. Collections in state: `mutableStateListOf`/`mutableStateMapOf`, immutable collections, and mutation policies
+   (`structuralEqualityPolicy`, `referentialEqualityPolicy`, `neverEqualPolicy`).
+7. The stability configuration file: marking classes from other modules stable without wrapping them.
+8. Phases out of order: `SubcomposeLayout` (composition during layout), intrinsic measurements, and `graphicsLayer`
+   (changes applied without redrawing the content).
+9. Side-effect-free composables: why a composable must not write state or start work while it runs, and what goes
+   wrong (loops of recomposition, work repeated on every run); the bridge to Module 6's effects.
 
 ## Module 3: Compose Multiplatform on iOS (*next*)
 1. Skia and Skiko: what a graphics library does, and how Kotlin/Native reaches Skia's C++ (Skiko).
