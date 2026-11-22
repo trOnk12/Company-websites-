@@ -1,7 +1,8 @@
 # Korepetycje: jak zdobyć pierwszych uczniów
 
-Strona: https://pachulski.dev/korepetycje/ (po polsku, dla rodziców i uczniów z okolicy). Oferta: matematyka online,
-klasy 4–6, 45 zł za 45 minut. Zmiany na stronie nie mogą psuć wyglądu, który Mateusz zaakceptował.
+Strona: https://pachulski.dev/korepetycje/ (po polsku, dla rodziców i uczniów z okolicy). Oferta: matematyka od 4 klasy do matury, online
+albo na miejscu w okolicy Wschowy: 45 zł (klasy 4–6), 50 zł (7–8, egzamin ósmoklasisty), 60 zł (liceum, technikum,
+matura) za 45 minut; pierwsze 20 minut za darmo. Zmiany na stronie nie mogą psuć wyglądu, który Mateusz zaakceptował.
 
 ## Zrobione na stronie (21 listopada 2026)
 
@@ -15,7 +16,7 @@ klasy 4–6, 45 zł za 45 minut. Zmiany na stronie nie mogą psuć wyglądu, kt�
 1. **Wizytówka w Google (Google Business Profile)** jako firma usługowa bez adresu publicznego: obszar Wschowa,
    Lgiń, Sława, Góra; kategoria „Korepetytor”; link do strony. To ona pokazuje się w Mapach na „korepetycje
    matematyka Wschowa”.
-2. **Profil na e-korepetycje.net**: dopisać matematykę (klasy 4–6) i link do strony; tam są już opinie 5,0/5.
+2. **Profil na e-korepetycje.net**: dopisać matematykę (od 4 klasy do matury) i link do strony; tam są już opinie 5,0/5.
 3. **Lokalne grupy na Facebooku** (Wschowa, Sława, Lgiń, grupy rodziców szkół): post poniżej; link pokaże podgląd.
 4. **Ogłoszenie na tablicy** w szkole, bibliotece, sklepie w Lginiu: kartka A5 z ceną i kodem QR do strony.
 5. **Numer telefonu** na stronie: wielu rodziców woli zadzwonić lub napisać SMS niż e-mail. Decyzja Mateusza;
@@ -56,9 +57,9 @@ Settings → Secrets and variables → Actions). Bez `--send` skrypt tylko pokaz
 
 ## Gotowy post do grup
 
-> Dzień dobry! Mam na imię Mateusz, mieszkam w Lginiu. Prowadzę indywidualne korepetycje z matematyki online
-> dla klas 4–6 (45 zł za 45 minut). Na pierwszą lekcję wystarczy jedno zadanie z zeszytu, z którym dziecko
-> ma kłopot: rozrysujemy je razem krok po kroku. Na stronie można wypróbować przykładowe zadanie z ułamków
+> Dzień dobry! Mam na imię Mateusz, mieszkam w Lginiu. Prowadzę indywidualne korepetycje z matematyki od 4 klasy
+> do matury, online albo na miejscu w okolicy Wschowy (od 45 zł za 45 minut). Na pierwszą lekcję wystarczy jedno
+> zadanie z zeszytu, z którym jest kłopot: rozrysujemy je razem krok po kroku. Na stronie można wypróbować przykładowe zadanie z ułamków
 > i zaproponować termin: https://pachulski.dev/korepetycje/
 
 ## Decyzje Mateusza (fakty do strony)
@@ -70,3 +71,11 @@ Settings → Secrets and variables → Actions). Bez `--send` skrypt tylko pokaz
 
 Nie wpisywać na stronę ani do danych strukturalnych opinii, których nie ma; opinie z programowania są podpisane
 jako opinie z programowania i linkują do źródła.
+
+## Zakres (22 listopada 2026)
+
+Mateusz: „dlaczego nie liceum?”. Decyzja: **od 4 klasy do matury, online i na miejscu.** Rynek (raport
+`_tutoring-review-2026-11-21.md`): we Wschowie jedyna konkurencja uczy klasy 4–8 i maturę za 90 zł/h, tylko na
+miejscu; matura podstawowa w regionie kosztuje 60–100 zł/h. Cena 60 zł / 45 min (80 zł/h) jest w środku rynku.
+Zasada: nie pisać o wynikach matur ani zdawalności, dopóki nie ma uczniów po egzaminie; opisywać tylko sposób pracy.
+Do ustalenia: lekcje na miejscu u Mateusza czy dojazd do ucznia (promień, koszt dojazdu).
