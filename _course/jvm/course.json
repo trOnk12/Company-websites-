@@ -39,6 +39,19 @@
         "17-metaspace.md",
         "18-android-bridge.md"
       ]
+    },
+    {
+      "title": "How the JVM makes code fast",
+      "blurb": "Why the first calls are slow, how HotSpot picks methods to compile, what inlining, escape analysis and deoptimization do, how to measure honestly, and how to start faster.",
+      "puzzles": [
+        "19-interpreter.md",
+        "20-tiered-compilation.md",
+        "21-inlining.md",
+        "22-escape-analysis.md",
+        "23-deoptimization.md",
+        "24-warm-up-and-jmh.md",
+        "25-class-data-sharing.md"
+      ]
     }
   ],
   "upcoming": []
