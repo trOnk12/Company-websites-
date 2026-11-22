@@ -9,7 +9,7 @@
 <g class="step s2" data-move="2:410,104 3:462,146"><circle class="d-reddot" cx="0" cy="0" r="7"/></g>
 </svg>
 <ol class="caps">
-<li><p>The kernel decides what a process may do by its UID. This host file belongs to UID 0, and only its owner may write it. UID 0 is the <b>root user</b>, whom the kernel lets past every such check.</p></li>
+<li><p>The kernel decides what a process may do by its UID. This host file belongs to UID 0, and only its owner may write it. UID 0 is the <b>root user</b>, whom the kernel lets past file permission checks.</p></li>
 <li><p>By default, a container's program runs as UID 0, and Docker adds no fence for user IDs: the host sees UID 0 too. <i>Predict: through a mounted folder, can it change notes.txt?</i></p></li>
 <li><p>Yes: the write went through. To the kernel this is root, the same root as the host's. Only the other fences stand between it and the host.</p></li>
 <li><p>Now the same program in a <b>user namespace</b>: a fence for user IDs. Inside, it is still UID 0. <i>Predict: is the write allowed now?</i></p></li>

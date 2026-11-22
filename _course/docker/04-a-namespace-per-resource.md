@@ -2,7 +2,7 @@
 title: A namespace per resource
 short: Reading the fence, and the UTS and network namespaces
 summary: Puzzles 2 and 3 fenced off process IDs and files. A program also reads its machine's name and talks through the network. Here's how to read, for any process, which fences it has, and what two more of them change.
-takeaway: Each kind of namespace fences one resource, and /proc/PID/ns shows which ones a process is in: equal numbers mean the same namespace. Docker gives a container new PID, mount, UTS, network and IPC namespaces, so it has its own hostname and its own network interfaces, localhost included; it does not, by default, give it a user namespace.
+takeaway: Each kind of namespace fences one resource, and /proc/PID/ns shows which ones a process is in: equal numbers mean the same namespace. Docker gives a container new PID, mount, UTS, network and IPC namespaces (and, on current versions and machines, a time namespace and one for puzzle 6's limit groups), so it has its own hostname and its own network interfaces, localhost included; it does not, by default, give it a user namespace.
 ---
 
 ## The problem
@@ -27,17 +27,25 @@ The kernel has one kind of namespace for each resource it can fence. And it show
 | uts | the hostname | yes |
 | net | network interfaces, addresses, ports | yes |
 | ipc | message queues and shared memory between processes | yes |
-| time | two of the kernel's clocks | yes |
+| time | two of the kernel's clocks | yes (Docker 29.5 and later) |
+| one more (named in puzzle 6) | the view of puzzle 6's limit groups | no on this machine: Docker's default is a new one on machines with the newer version 2 of that feature, the host's on the older version 1, which this machine runs |
 | user | user IDs (puzzle 5) | no: same number as the host |
-
-There is one more link, for a resource-limit feature that puzzle 6 introduces; on the test machine it matched the host's too.
 
 A **UTS namespace** holds the hostname. (UTS is an old Unix name; the kernel returns the hostname from the same system call as puzzle 1's `uname -r`.) Changing the hostname inside one changes it for that namespace only. Docker gives every container its own and sets the name to the start of the container's ID: here 7cd6333d62bd, while the host is called vm. `unshare --uts` shows the same thing by hand: a shell renames itself box, and the host's name stays vm.
 
 A **network namespace** holds the network: its interfaces, their addresses, the routes between them and the ports programs listen on. The container's has two interfaces:
 
 - lo, the loopback interface, address 127.0.0.1, also called localhost: a connection from the namespace to itself. Inside a container, localhost is the container, not the host. A program that expects a database on localhost finds nothing there unless that database runs in the same container.
-- eth0, with address 172.17.0.2: the container's one way out. Its other end is on the host (the veth interface in the host's list). How packets travel from there, and how to reach a container's port from outside, is Module 5 (coming soon).
+- eth0, with address 172.17.0.2: the container's one way out. It is one end of a veth: a pair of linked interfaces, one end in each namespace (Module 5). The other end is the veth interface in the host's list:
+
+```
+$ ls /sys/class/net
+docker0 eth0 ifb0 ifb1 lo vethd28ea49
+$ docker exec box ls /sys/class/net
+eth0 lo
+```
+
+(The /8 and /16 after the addresses in the output below say how many of the address's leading bits name the network; Module 5 uses them.) How packets travel from there, and how to reach a container's port from outside, is Module 5 (coming soon).
 
 Because ports belong to a network namespace, two containers can both run a server on port 80 without colliding.
 
@@ -88,6 +96,8 @@ vm
 - [Linux manual: uts_namespaces(7)](https://man7.org/linux/man-pages/man7/uts_namespaces.7.html) ("UTS namespaces provide isolation of two system identifiers: the hostname and the NIS domain name."; "can be retrieved using uname(2)")
 - [Linux manual: network_namespaces(7)](https://man7.org/linux/man-pages/man7/network_namespaces.7.html) ("Network namespaces provide isolation of the system resources associated with networking: network devices, IPv4 and IPv6 protocol stacks, IP routing tables, firewall rules"; "port numbers (sockets)")
 - [Docker docs: docker container run, UTS settings](https://docs.docker.com/reference/cli/docker/container/run/) ("The UTS namespace is for setting the hostname and the domain that's visible to running processes in that namespace. By default, all containers, including those with --network=host , have their own UTS namespace.")
+- [Docker docs: Engine 29 release notes, 29.5.0](https://docs.docker.com/engine/release-notes/29/) ("Enable private time namespace for containers by default on supported kernels.")
+- [Docker docs: Runtime metrics](https://docs.docker.com/engine/containers/runmetrics/) ("The default cgroup namespace mode ( docker run --cgroupns ) is private on v2, host on v1.")
 - [Docker docs: Networking overview](https://docs.docker.com/engine/network/) ("a container's hostname defaults to be the container's ID in Docker."; "DNS requests will be forwarded from the container's network namespace so, for example, --dns=127.0.0.1 refers to the container's own loopback address.")
 - [Docker docs: Docker Engine security](https://docs.docker.com/engine/security/) ("Each container also gets its own network stack, meaning that a container doesn't get privileged access to the sockets or interfaces of another container.")
-- The namespace numbers, hostnames, interface lists and addresses were read in this session with Docker Engine 29.9.2 and util-linux 2.39.3 on Linux 6.18.44; `docker exec box readlink /proc/self/ns/uts` printed uts:[4026532265], the same as sleep's.
+- The namespace numbers, hostnames, interface lists and addresses were read in this session with Docker Engine 29.9.2 and util-linux 2.39.3 on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1); `docker exec box readlink /proc/self/ns/uts` printed uts:[4026532265], the same as sleep's.

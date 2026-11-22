@@ -39,6 +39,17 @@ An apartment block. The caretaker, the kernel, runs the whole building: water, p
 
 ## Run it yourself
 
+### Before you start
+
+Every Run it yourself in this course needs a Linux machine with Docker Engine, where you can also look at the host's side: its process list, its files.
+
+- On Linux, install Docker Engine for your distribution with Docker's instructions (docs.docker.com/engine/install).
+- On a Mac or a Windows laptop, Docker Desktop runs the docker commands, but hides the Linux host they run on (puzzle 1 shows why). To see both sides, make yourself a small Ubuntu machine with a tool such as Multipass, and install Docker Engine inside it.
+- The docker command needs root's rights: put sudo in front of it, or add your user to the docker group (Docker's post-installation steps show how). Docker warns that "the docker group grants root-level privileges to the user", which puzzle 5 explains.
+- If every docker command prints "permission denied while trying to connect to the docker API at unix:///var/run/docker.sock", Docker is running but your user may not use it: use sudo, or log out and in again after joining the group.
+
+### The commands
+
 On a Linux machine with Docker installed. Before you run the third command, write down how many lines it will print, and whether the second command will find sleep at all.
 
 ```sh
@@ -58,18 +69,21 @@ PID   COMMAND
     7 ps -o pid,args
 ```
 
-The first line is the new container's ID. Inside, the numbers are different: sleep is 1 there, not 3393. Puzzle 2 shows why one process has two numbers. On a Mac or a Windows laptop with Docker Desktop, the second command finds nothing: puzzle 1 shows where the process really runs.
+The first line is the new container's ID. Inside, the numbers are different: sleep is 1 there, not 3393. Puzzle 2 shows why one process has two numbers. On a Mac or a Windows laptop, and with Docker Desktop even on Linux, the second command finds nothing: puzzle 1 shows where the process really runs.
 
 ## Check yourself
 
 - You start two containers from the same image, each running `sleep 1000`. How many sleep processes does the host's `ps` list?::*Two, each with its own PID||One, which both containers share >> Each docker run starts its own process; the image is only files, and nothing in it runs by itself. >> the-building-block||None, because containers run outside the host's process list >> The kernel runs a container's program like any other process, and ps lists it. >> s3::Two processes: one per container, both on the host's list.
-- Why doesn't `ps` inside the container list bash?::*The kernel hides other processes from the container's process||bash stops while a container is running >> bash keeps running: the host's ps still lists it. >> s4||The container has its own kernel, which never started bash >> There is one kernel; sleep stands on it next to bash. >> s3::The fence is the kernel's: it limits what the process can see.
+- A second container, web, also runs `sleep 1000` on the same machine. How many sleep lines does `docker exec box ps` print?::*One: box's own sleep||Two: both sleeps run on the same kernel >> The kernel hides every process outside box's fence, other containers' included. >> s4||None: from inside, ps sees no processes at all >> It sees its own container's processes: sleep and itself. >> s4::Each container sees only its own processes.
 - The kernel ends the process with PID 3393, for example to free memory. What is left of the container's program?::*Nothing: that process was the program||It goes on inside Docker, which runs it >> Docker asked the kernel to start the process and stepped aside; the kernel runs it. >> the-building-block||It goes on inside the image, which still holds it >> An image is files; nothing runs from it until a process starts. >> s3::The container's program is that one process.
 
 ## Sources
 
 - [Docker docs: What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) ("A container is an ordinary process on your computer, such as a Node.js server, that runs in isolation."; "its own kernel, the core of the operating system that talks to the hardware"; "An image is a package of everything a container needs to start: the operating system files, the language runtime, the app’s dependencies and code, and settings such as which command to run.")
 - [Docker docs: Docker Engine security](https://docs.docker.com/engine/security/) ("When you start a container with docker run , behind the scenes Docker creates a set of namespaces and control groups for the container."; "Processes running within a container cannot see, and even less affect, processes running in another container, or in the host system.")
+- [Docker docs: Install Docker Engine](https://docs.docker.com/engine/install/) ("This section describes how to install Docker Engine on Linux.")
+- [Docker docs: Linux post-installation steps for Docker Engine](https://docs.docker.com/engine/install/linux-postinstall/) ("By default it's the root user that owns the Unix socket, and other users can only access it using sudo ."; "The docker group grants root-level privileges to the user.")
+- [Multipass documentation](https://canonical.com/multipass/docs) ("Multipass is a tool to generate cloud-style virtual machines (VMs) quickly on Linux, macOS and Windows.")
 - [Linux manual: credentials(7)](https://man7.org/linux/man-pages/man7/credentials.7.html) ("Each process has a unique nonnegative integer identifier that is assigned when the process is created using fork(2).")
 - [Linux manual: getpid(2)](https://man7.org/linux/man-pages/man2/getpid.2.html) ("getpid() returns the process ID (PID) of the calling process.")
-- The output under Run it yourself, and the PIDs in the diagram (bash 3633, ps 3635, sleep 3393), were produced in this session with Docker Engine 29.9.2 on Linux 6.18.44 (Ubuntu 24.04 host), image `alpine:3.20`.
+- The output under Run it yourself, and the PIDs in the diagram (bash 3633, ps 3635, sleep 3393), were produced in this session (the permission denied message as UID 1000 without the docker group) with Docker Engine 29.9.2 on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1), image `alpine:3.20`.

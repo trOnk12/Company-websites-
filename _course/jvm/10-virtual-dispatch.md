@@ -65,7 +65,7 @@ This is a simplified picture: real tables also hold the methods every class inhe
 
 Now final. Plain.next can't be overridden, so a call to it can only ever reach one method. HotSpot's source comments: "a final method never needs a new entry; final methods can be statically resolved". The table gets no entry, and HotSpot calls the method directly. But the bytecode is the same `invokevirtual` either way: final is a fact about the class, not about the call site, so you can't see it in the caller's bytecode.
 
-So does Kotlin's final-by-default make your code faster? Less than you'd think: HotSpot's optimizing compilers, which translate frequently called methods into machine instructions (the processor's own instructions) while the program runs, can call an open method directly too when no loaded class overrides it (coming in a later module).
+So does Kotlin's final-by-default make your code faster? Less than you'd think: HotSpot's optimizing compilers, which translate frequently called methods into machine instructions (the processor's own instructions) while the program runs, can call an open method directly too when no loaded class overrides it ([puzzle 23](23-deoptimization.html) shows how, and what happens when an override is loaded later).
 
 ### The edges
 

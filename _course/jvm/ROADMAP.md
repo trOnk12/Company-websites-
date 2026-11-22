@@ -27,17 +27,14 @@ Class file, frame, reference, reachability, shared counter.
 7. Metaspace: where class metadata lives, and how a class-loader leak fills it.
 8. Bridge: what Android does differently (DEX, ART, JIT and profiles, dex2oat), linking to the Android course.
 
-## Module 4: How the JVM makes code fast
-1. The interpreter, and why the first thousand calls are slow.
-2. Profiling counters and tiered compilation (C1, C2).
-3. Inlining: the optimisation every other one depends on.
-4. Escape analysis: objects that never reach the heap.
-5. Deoptimisation: when an assumption breaks, back to the interpreter.
-   Note from puzzle 10 (cut there to keep it to one idea): class hierarchy analysis lets the compilers call an open
-   method directly while no override is loaded; loading one forces deoptimisation; a call site that meets many
-   receiver classes is megamorphic and keeps the table lookup. Teach all three here, with the PerformanceTechniques quotes.
-6. Warm-up and measuring honestly: why naive timing lies, and what JMH does about it.
-7. Starting faster: class data sharing and ahead-of-time options.
+## Module 4: How the JVM makes code fast (written, puzzles 19–25)
+1. The interpreter, and why the first thousand calls are slow (template interpreter, invocation counter, code cache; Xint vs default, measured).
+2. Profiling counters and tiered compilation (C1, C2): levels 0–4, method profile, on-stack replacement, read from PrintCompilation.
+3. Inlining: the optimization every other one depends on; type profile, monomorphic/bimorphic/megamorphic, inline caches (PrintInlining).
+4. Escape analysis: objects that never reach the heap (scalar replacement; 240 MB per round with it off, measured).
+5. Deoptimization: class hierarchy analysis, recorded dependencies, uncommon traps, class checks; Kotlin's final-by-default answered (puzzle 10's cut material, now linked from 10).
+6. Warm-up and measuring honestly: naive timing vs JMH (dead code elimination, Blackhole, forks), JMH 1.37 run.
+7. Starting faster: class data sharing (default and dynamic archives, measured), AOT cache JDK 24/25 and AOT code JDK 28 (JEP 544), from the JEPs.
 
 ## Module 5: Memory and the garbage collector
 1. The heap's regions and the generational hypothesis.

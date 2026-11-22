@@ -7,14 +7,14 @@
 <rect class="d-paper" x="380" y="90" width="200" height="90" rx="6"/><text class="d-tiny" x="394" y="114">a Stats</text><text class="d-mi" x="394" y="142">visits = 7</text><text class="d-mi" x="394" y="166">stars = 2</text>
 <x-arrow tone="ink" d="M194,110 L374,110"/></g>
 <g class="step only-2"><text class="d-b" x="250" y="240" text-anchor="middle">?</text></g>
-<g class="step only-3" data-pulse="3"><rect class="d-hl" x="32" y="170" width="250" height="88" rx="6"/><text class="d-mi" x="44" y="198">stats.visits * 2</text><text class="d-mi" x="44" y="226">+ stats.stars</text><text class="d-a" x="44" y="250">only use: read fields</text></g>
-<g class="step s4 hide-5" data-pulse="4"><rect class="d-hl" x="32" y="90" width="250" height="88" rx="6"/><text class="d-mi" x="44" y="118">visits = 7</text><text class="d-mi" x="44" y="146">stars = 2</text><text class="d-mi" x="44" y="170">7 * 2 + 2</text>
+<g class="step only-3" data-pulse="3"><rect class="d-hl" x="32" y="170" width="250" height="98" rx="6"/><text class="d-mi" x="44" y="198">stats.visits * 2</text><text class="d-mi" x="44" y="226">+ stats.stars</text><text class="d-a" x="44" y="250">only use: read fields</text></g>
+<g class="step s4 hide-5" data-pulse="4"><rect class="d-hl" x="32" y="90" width="250" height="104" rx="6"/><text class="d-mi" x="44" y="118">visits = 7</text><text class="d-mi" x="44" y="148">stars = 2</text><text class="d-mi" x="44" y="178">7 * 2 + 2</text>
 <text class="d-a" x="380" y="160">nothing allocated</text></g>
 <g class="step s5"><rect class="d-paper" x="32" y="90" width="160" height="40" rx="6"/><text class="d-mi" x="44" y="116">stats</text>
 <rect class="d-bad" x="32" y="214" width="250" height="40" rx="6"/><text class="d-mi" x="44" y="240">last = stats</text>
 <rect class="d-paper" x="380" y="90" width="200" height="56" rx="6"/><text class="d-tiny" x="394" y="124">a Stats per call</text>
 <x-arrow tone="ink" d="M194,110 L374,110"/><x-arrow tone="red" d="M284,234 C340,234 340,140 374,132"/></g>
-<g class="step s1" data-move="1:480,200 3:200,214 4:150,214 5:480,200" data-pulse="1"><circle class="d-dot" r="8"/></g>
+<g class="step s1" data-move="1:480,200 3:300,290 4:150,230 5:480,200" data-pulse="1"><circle class="d-dot" r="8"/></g>
 <g class="step s5"><text class="d-r" x="344" y="290">240,000,000 bytes/round</text></g>
 </svg>
 <ol class="caps">

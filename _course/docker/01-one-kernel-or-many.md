@@ -2,7 +2,7 @@
 title: One kernel, or many?
 short: The shared kernel, and how a VM differs
 summary: Puzzle 0's container is a process on the host's kernel. So which kernel does it really use, the host's or one that came with its image? And how is that different from a virtual computer?
-takeaway: A container brings files, not a kernel: every system call its process makes goes to the host's one kernel, so uname -r prints the host's version. A virtual machine boots its own kernel on a hypervisor. On a Mac or Windows laptop, Docker Desktop runs a Linux VM and your containers live inside it.
+takeaway: A container brings files, not a kernel: every system call its process makes goes to the host's one kernel, so uname -r prints the host's version. A virtual machine boots its own kernel on a hypervisor. On a Mac or Windows laptop, and with Docker Desktop even on Linux, a Linux VM runs your containers.
 ---
 
 ## The problem
@@ -37,7 +37,7 @@ A **virtual machine** (VM) is the other way to isolate a program: a whole preten
 
 The two isolate at different places. Docker's documentation puts the trade-off plainly: a VM's isolation is stronger, because containers sharing a kernel are separated only by that kernel, while VMs are separated by the hardware boundary the hypervisor creates. The puzzles after this one show how that kernel draws its fences.
 
-That's also what happens on your laptop. On a Mac or Windows machine, Docker Desktop starts a small Linux VM and runs your containers inside it, on its Linux kernel. So the Mac's own `ps` never lists your container's process: it's a process inside the VM. And `uname -r` in a container there prints the VM's kernel version, not anything about macOS.
+That's also what happens on your laptop. On a Mac or Windows laptop, and with Docker Desktop even on Linux, Docker Desktop runs a small Linux VM and puts your containers inside it, on its Linux kernel. So the Mac's own `ps` never lists your container's process: it's a process inside the VM. And `uname -r` in a container there prints the VM's kernel version, not anything about macOS.
 
 ## The analogy
 
@@ -68,13 +68,14 @@ On a Mac, the first command reports the Mac's own kernel and the second reports 
 ## Check yourself
 
 - An image made from an older Linux distribution runs on a host whose kernel is 6.18.44. What does `uname -r` print inside the container?::*6.18.44, the host's kernel version||The version of the kernel that older distribution shipped with >> The image brought that distribution's files, not its kernel; the host's kernel answers. >> s3||Nothing, because a container has no kernel to ask >> uname -r makes a system call, and the shared kernel answers it. >> s1::One kernel answers every container's system calls.
-- Why does a container start in about a second, while a VM takes much longer?::*Nothing boots: the host's kernel is already running||Docker keeps every container running in the background >> Starting a container starts a process; nothing ran before it. >> the-building-block||A container's kernel is smaller and boots faster >> A container has no kernel of its own to boot at all. >> s3::Starting a container is starting a process.
+- You start a container from a large image of a full Linux distribution, already downloaded, and a VM that boots the same distribution. Which one runs its first program sooner, and why?::*The container: its program starts on the running host kernel||The VM: a full distribution needs its own kernel booted first >> The image holds the distribution's files only; nothing in a container boots. >> s3||Both take as long: the same distribution starts either way >> Only the VM starts an operating system; the container starts one process. >> s4::A container starts a process; a VM boots a kernel.
 - On your Mac, Docker Desktop runs a container with sleep 1000. Does the Mac's own `ps` list sleep?::*No: sleep is a process inside the Linux VM||Yes, with its own PID, as on a Linux host >> On a Mac the containers' host is the Linux VM, not macOS. >> s6||Yes, but under the image's name >> The Mac's ps lists only macOS processes; sleep runs inside the VM. >> s6::On a Mac, the containers live in Docker Desktop's VM.
 
 ## Sources
 
 - [Docker docs: What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) ("Every VM boots its own complete operating system, including its own kernel, the core of the operating system that talks to the hardware."; "It’s still a process, so every container on a machine shares that machine’s kernel. There is no operating system to boot, which is why a container starts in about a second"; "The trade-off is that a VM’s isolation is stronger: containers that share a kernel are separated by that kernel, while VMs are separated by the hardware boundary the hypervisor creates."; "on macOS and Windows, Docker Desktop runs your Linux containers inside a small Linux VM that it manages for you, because Linux containers need a Linux kernel to share.")
 - [Android Developers: Configure hardware acceleration for the Android Emulator](https://developer.android.com/studio/run/emulator-acceleration) ("VM acceleration uses your computer's processor to significantly improve the execution speed of the emulator. A tool called a hypervisor manages this interaction")
+- [Docker docs: Install Docker Desktop on Linux](https://docs.docker.com/desktop/setup/install/linux/) ("Docker Desktop on Linux runs a Virtual Machine (VM)")
 - [Linux manual: syscalls(2)](https://man7.org/linux/man-pages/man2/syscalls.2.html) ("The system call is the fundamental interface between an application and the Linux kernel.")
 - [Linux manual: uname(2)](https://man7.org/linux/man-pages/man2/uname.2.html) ("uname() returns system information"; the field `release` is the "Operating system release")
-- The table and the output under Run it yourself were produced in this session with Docker Engine 29.9.2 on Linux 6.18.44 (Ubuntu 24.04 host), image `alpine:3.20`. The Mac behaviour in the last paragraph was not run here; it follows from Docker's statement above.
+- The table and the output under Run it yourself were produced in this session with Docker Engine 29.9.2 on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1), image `alpine:3.20`. The Mac behaviour in the last paragraph was not run here; it follows from Docker's statement above.

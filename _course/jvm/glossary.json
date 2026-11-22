@@ -995,6 +995,16 @@
    "in": "23",
    "def": "The deoptimization reason HotSpot logs when an inlined call meets a class its check did not expect.",
    "kind": "code"
+  },
+  "ScoreBench": {
+   "in": "24",
+   "def": "The JMH benchmark class in puzzle 24.",
+   "kind": "code"
+  },
+  "DumpLoadedClassList": {
+   "in": "25",
+   "def": "The option that writes the list of classes a run loaded, for -Xshare:dump.",
+   "kind": "code"
   }
  },
  "from": {

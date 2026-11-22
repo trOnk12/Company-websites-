@@ -39,9 +39,13 @@
    "JSON",
    "Gradle",
    "OK",
-   "API"
+   "API",
+   "root"
   ],
-  "homonyms": []
+  "homonyms": [
+   "root"
+  ],
+  "_homonyms_about": "root has two meanings in this course, kept apart on the page: the root filesystem, the top of the file tree, / (puzzle 3, glossary 'root filesystem'), and the root user, UID 0 (puzzle 5, glossary 'root user'). Puzzle 5 says so where the second meaning arrives."
  },
  "terms": {
   "PID": {
@@ -230,8 +234,7 @@
    "in": "03",
    "def": "The files mounted at /, the root (top) of a process's file tree; a container's comes from its image.",
    "aliases": [
-    "root filesystems",
-    "root"
+    "root filesystems"
    ]
   },
   "/etc/os-release": {
@@ -347,7 +350,7 @@
    ]
   },
   "CPU quota": {
-   "in": "06",
+   "in": "07",
    "def": "How much processor time a cgroup may use in each period (100 ms by default) before the kernel makes it wait.",
    "aliases": [
     "quota"
@@ -363,11 +366,12 @@
    ]
   },
   "--cpus": {
-   "in": "06",
+   "in": "07",
    "kind": "code",
    "def": "docker run's option that sets a container's CPU quota, in processors.",
    "aliases": [
-    "--cpus 0.5"
+    "--cpus 0.5",
+    "docker run --cpus 0.5"
    ]
   },
   "dockerd": {
@@ -439,7 +443,7 @@
    ]
   },
   "--cpu-shares": {
-   "in": "06",
+   "in": "07",
    "kind": "code",
    "def": "docker run's option that sets a relative CPU weight, which counts only when processors are busy."
   },
@@ -472,13 +476,93 @@
    "def": "The file, defined by the OCI runtime spec, that tells runc which program to run, from which root filesystem, in which namespaces, with which limits."
   },
   "docker.sock": {
-   "in": "08",
+   "in": "00",
    "kind": "code",
    "def": "The special file, /var/run/docker.sock, through which the docker command sends its requests to dockerd.",
    "aliases": [
     "/var/run/docker.sock",
     "unix:///var/run/docker.sock"
    ]
+  },
+  "--cap-drop": {
+   "in": "05",
+   "kind": "code",
+   "def": "docker run's option that removes a capability from the container's root.",
+   "aliases": [
+    "--cap-drop DAC_OVERRIDE"
+   ]
+  },
+  "capability": {
+   "in": "05",
+   "def": "One piece of root's power, such as passing file permission checks, that the kernel can grant or withhold on its own.",
+   "aliases": [
+    "capabilities"
+   ]
+  },
+  "CAP_DAC_OVERRIDE": {
+   "in": "05",
+   "kind": "code",
+   "def": "The capability that lets a process past file read, write and execute permission checks.",
+   "aliases": [
+    "DAC_OVERRIDE"
+   ]
+  },
+  "chown": {
+   "in": "05",
+   "kind": "code",
+   "def": "Changes which UID owns a file.",
+   "aliases": [
+    "chown 1234:1234"
+   ]
+  },
+  "docker-ID.scope": {
+   "in": "06",
+   "kind": "code",
+   "def": "The folder name that systemd gives a container's cgroup on version 2 machines.",
+   "aliases": [
+    "scope"
+   ]
+  },
+  "cpu.max": {
+   "in": "07",
+   "kind": "code",
+   "def": "cgroup version 2's file for the CPU quota and period, such as 50000 100000."
+  },
+  "cpu.cfs_quota_us": {
+   "in": "07",
+   "kind": "code",
+   "def": "cgroup version 1's file for the CPU quota, in microseconds.",
+   "aliases": [
+    "cfs_quota_us",
+    "cpu.cfs_period_us",
+    "cfs_period_us"
+   ]
+  },
+  "cpu.stat": {
+   "in": "07",
+   "kind": "code",
+   "def": "The cgroup file that counts periods, throttled periods and waiting time.",
+   "aliases": [
+    "nr_periods",
+    "nr_throttled",
+    "throttled_usec",
+    "throttled_time"
+   ]
+  },
+  "docker stats": {
+   "in": "07",
+   "kind": "code",
+   "def": "Shows each running container's use of processor time and memory."
+  },
+  "pivot_root": {
+   "in": "03",
+   "kind": "code",
+   "def": "The system call that makes a new set of files the root mount of a mount namespace, so the old one can be unmounted."
+  },
+  "chroot": {
+   "in": "03",
+   "kind": "code",
+   "def": "An older system call that changes where one process's paths start, leaving the mounts as they are."
   }
  },
  "from": {

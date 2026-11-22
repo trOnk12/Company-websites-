@@ -20,7 +20,9 @@ On Linux, every file sits in one tree that starts at /. The files themselves can
 
 The kernel keeps the list of mounts per **mount namespace**. A process in a new mount namespace starts with a copy of its parent's list, so at first it sees the same files. But from then on the two lists are separate: a mount added or removed inside changes only the inside list. In the diagram, `unshare --mount` gives a shell a new mount namespace, the shell mounts a tmpfs (a filesystem kept in memory) on /tmp/demo and creates a file there. Inside, ls /tmp/demo lists it; on the host, the same command prints nothing. Same path, same kernel, two lists of mounts, two different folders.
 
-Docker does more than copy the list. In the container's mount namespace, it makes the image's files the mount at /. That set of files is the container's **root filesystem**: the top of its tree, and everything below it. From then on every path the container opens, /etc/os-release, /bin/sh, /home, is looked up in Alpine's files. The host's files are not in the tree at all: ls /home on the host listed three folders on the run behind this page; in the container it printed nothing. That's the answer to puzzle 1's two os-release files.
+Docker does more than copy the list. In the container's mount namespace, Docker's runtime (puzzle 8 names it) makes the image's files the mount at /. That set of files is the container's **root filesystem**: the top of its tree, and everything below it. From then on every path the container opens, /etc/os-release, /bin/sh, /home, is looked up in Alpine's files. The host's files are not in the tree at all: ls /home on the host listed three folders on the run behind this page; in the container it printed nothing. That's the answer to puzzle 1's two os-release files.
+
+It does this with a system call, pivot_root: it makes the image's files the root mount of the namespace and then unmounts the host's old root, so the host's tree is gone from the container's list of mounts, not just out of reach. The older chroot only changes where one process's paths start; the host's mounts stay in its list.
 
 The mount at / is a little more than the image's files. The first line of the container's mount list reads "overlay / overlay rw,…": Docker stacks the image's files with a thin layer of its own where the container's writes go, so the image itself never changes. How that stack works is Module 2 (coming soon).
 
@@ -55,7 +57,7 @@ overlay / overlay rw,relatime,lowerdir=/
 PRETTY_NAME="Alpine Linux v3.20"
 ```
 
-The second command printed inside; the third printed nothing, because the host's /tmp/demo is the empty folder on its disk. The last line is the host reading the container's own os-release through /proc.
+The second command printed inside; the third printed nothing, because the host's /tmp/demo is the empty folder on its disk. (The mount stayed inside because unshare makes the new namespace's mounts private: since util-linux 2.27 it "automatically sets propagation to private in a new mount namespace", so mounts made on one side are not copied to the other.) The last line is the host reading the container's own os-release through /proc.
 
 ## Check yourself
 
@@ -66,8 +68,11 @@ The second command printed inside; the third printed nothing, because the host's
 ## Sources
 
 - [Linux manual: mount(8)](https://man7.org/linux/man-pages/man8/mount.8.html) ("All files accessible in a Unix system are arranged in one big tree, the file hierarchy, rooted at /. These files can be spread out over several devices. The mount command serves to attach the filesystem found on some device to the big file tree.")
+- [Linux manual: unshare(1)](https://man7.org/linux/man-pages/man1/unshare.1.html) ("unshare since util-linux version 2.27 automatically sets propagation to private in a new mount namespace to make sure that the new namespace is really unshared.")
 - [Linux manual: mount_namespaces(7)](https://man7.org/linux/man-pages/man7/mount_namespaces.7.html) ("Mount namespaces provide isolation of the list of mounts seen by the processes in each namespace instance. Thus, the processes in each of the mount namespace instances will see distinct single-directory hierarchies.")
-- [Linux manual: pivot_root(2)](https://man7.org/linux/man-pages/man2/pivot_root.2.html) ("pivot_root() changes the root mount in the mount namespace of the calling process.")
+- [Linux manual: pivot_root(2)](https://man7.org/linux/man-pages/man2/pivot_root.2.html) ("pivot_root() changes the root mount in the mount namespace of the calling process."; "pivot_root() allows the caller to switch to a new root filesystem while at the same time placing the old root mount at a location under new_root from where it can subsequently be unmounted.")
+- [Linux manual: chroot(2)](https://man7.org/linux/man-pages/man2/chroot.2.html) ("chroot() changes the root directory of the calling process to that specified in path.")
+- [runc v1.5.2: runc-run(8)](https://github.com/opencontainers/runc/blob/v1.5.2/man/runc-run.8.md) ("--no-pivot: Do not use pivot root to jail process inside rootfs. This should not be used except in exceptional circumstances")
 - [OCI runtime spec v1.3.0: config.md, Root](https://github.com/opencontainers/runtime-spec/blob/v1.3.0/config.md#root) ("root (object, OPTIONAL) specifies the container's root filesystem."; "On all other platforms, this field is REQUIRED.")
 - [Docker docs: What is a container?](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/) ("When a container starts, it uses the image’s layers as they are and adds one thin writable layer of its own on top.")
-- The output under Run it yourself, the ls /home comparison and the `/proc/3393/root` read were produced in this session with Docker Engine 29.9.2 and util-linux 2.39.3 on Linux 6.18.44.
+- The output under Run it yourself, the ls /home comparison and the `/proc/3393/root` read were produced in this session with Docker Engine 29.9.2 and util-linux 2.39.3 on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1).
