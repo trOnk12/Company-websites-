@@ -5,19 +5,39 @@
   "modules": [
     {
       "title": "From source to a live object",
-      "blurb": "Follow the same counter through four experiments.",
+      "blurb": "Follow one counter from a class file to frames, references, reachability and a change two threads share.",
       "puzzles": [
         "00-class-file.md",
         "01-frame.md",
         "02-reference.md",
-        "03-reachability.md"
+        "03-reachability.md",
+        "04-shared-counter.md"
       ]
     },
     {
-      "title": "Changing shared state",
-      "blurb": "A change applied only when the current value matches the expected value.",
+      "title": "Reading bytecode",
+      "blurb": "Read javap output line by line: the operand stack, the constant pool, the five calls, and what Kotlin compiles to.",
       "puzzles": [
-        "04-shared-counter.md"
+        "05-operand-stack.md",
+        "06-constant-pool.md",
+        "07-five-invokes.md",
+        "08-kotlin-in-javap.md",
+        "09-lambdas-and-inline.md",
+        "10-virtual-dispatch.md"
+      ]
+    },
+    {
+      "title": "Loading and linking code",
+      "blurb": "When a class arrives, who loads it, why two loaders mean two classes, and where class metadata lives.",
+      "puzzles": [
+        "11-loading-linking.md",
+        "12-static-init-order.md",
+        "13-static-init-failure.md",
+        "14-class-loaders.md",
+        "15-classpath-modulepath.md",
+        "16-module-path.md",
+        "17-metaspace.md",
+        "18-android-bridge.md"
       ]
     }
   ],

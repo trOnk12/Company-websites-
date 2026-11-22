@@ -1,17 +1,31 @@
-<!-- label: What does a method receive? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">What does a method receive?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Local 7</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Stack 7, 1</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Stack 8</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Return 8</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: main's frame and increment's frame side by side, each with local slots and an operand stack; 7 is copied in, iload_0, iconst_1 and iadd work on the stack, ireturn hands 8 back and the frame disappears -->
+<!-- question: Where is the 7 while increment runs, and where does the addition happen? type: memory layout (two stack frames, slots and operand stacks, step by step) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="fr-t"><title id="fr-t">Left: main's frame with the local original = 7 and an operand stack. Right: increment's frame with local slot 0 and its own operand stack. 7 is copied into slot 0; iload_0 copies it onto the stack, iconst_1 pushes 1, iadd leaves 8, ireturn moves 8 to main's stack and increment's frame is removed</title>
+<rect class="d-box" x="16" y="16" width="290" height="348" rx="10"/>
+<text class="d-tiny" x="30" y="42">main's frame</text>
+<rect class="d-paper" x="30" y="58" width="120" height="50" rx="6"/><text class="d-b" x="90" y="91" text-anchor="middle">7</text>
+<text class="d-tiny" x="30" y="128">original</text>
+<path class="d-line" d="M90,170 V340 H230 V170"/>
+<text class="d-tiny" x="160" y="160" text-anchor="middle">stack</text>
+<g class="step s1 hide-5"><rect class="d-box" x="334" y="16" width="290" height="348" rx="10"/>
+<text class="d-tiny" x="348" y="42">increment's frame</text>
+<rect class="d-paper" x="348" y="58" width="120" height="50" rx="6"/>
+<text class="d-tiny" x="348" y="128">slot 0</text>
+<path class="d-line" d="M410,170 V340 H550 V170"/>
+<text class="d-tiny" x="480" y="160" text-anchor="middle">stack</text></g>
+<g class="step s1 hide-5" data-move="1:368,62"><rect class="d-hl" x="0" y="0" width="80" height="42" rx="6"/><text class="d-b" x="40" y="30" text-anchor="middle">7</text></g>
+<x-arrow class="step only-1" tone="acc" d="M152,83 L344,83"/>
+<g class="step s2 hide-4"><rect class="d-paper" x="440" y="290" width="80" height="42" rx="6"/><text class="d-b" x="480" y="319" text-anchor="middle">7</text></g>
+<x-arrow class="step only-2" tone="acc" d="M408,108 C400,200 420,290 436,306"/>
+<g class="step only-3"><rect class="d-paper" x="440" y="242" width="80" height="42" rx="6"/><text class="d-b" x="480" y="271" text-anchor="middle">1</text></g>
+<g class="step only-3"><text class="d-b" x="590" y="300" text-anchor="middle">?</text></g>
+<g class="step s4" data-move="4:440,290 5:120,290" data-pulse="4 5"><rect class="d-hl" x="0" y="0" width="80" height="42" rx="6"/><text class="d-b" x="40" y="30" text-anchor="middle">8</text></g>
+<g class="step s5"><text class="d-r" x="370" y="200">frame gone</text><text class="d-a" x="160" y="90">still 7</text></g>
 </svg>
 <ol class="caps">
-<li><p>The called method receives a copy of seven.</p></li>
-<li><p>The load and constant instructions supply two inputs.</p></li>
-<li><p>Addition replaces both inputs with one result.</p></li>
-<li><p>The result returns to the caller.</p></li>
+<li><p>Calling increment(original) creates a new <b>stack frame</b>, the memory for one call. 7 is copied from main's local original into increment's slot 0.</p></li>
+<li><p><code>iload_0</code> copies the 7 in slot 0 onto increment's <b>operand stack</b>, the pile its instructions work on.</p></li>
+<li><p><code>iconst_1</code> pushes 1 on top. <i>Predict: what does <code>iadd</code> leave on the stack?</i></p></li>
+<li><p>One value, 8: <code>iadd</code> took both 7 and 1 off the top and pushed their sum.</p></li>
+<li><p><code>ireturn</code> moves 8 onto main's stack, and increment's frame is thrown away. main's original still holds 7.</p></li>
 </ol>

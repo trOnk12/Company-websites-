@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Follow a source edit into the file the runtime reads.">
+  <meta name="description" content="Follow a source edit into the file the runtime reads, and see why an edit alone changes nothing that runs.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Which program did you actually run? – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="Follow a source edit into the file the runtime reads.">
+  <meta property="og:description" content="Follow a source edit into the file the runtime reads, and see why an edit alone changes nothing that runs.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/jvm/00-class-file">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,94 +51,158 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="jvm" data-n="0">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">JVM internals for Kotlin and Android developers</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 0 · 1 of 5</p>
+        <p class="eyebrow">Puzzle 0 · 1 of 19</p>
         <h1>Which program did you actually run?</h1>
-        <p class="lede">Follow a source edit into the file the runtime reads.</p>
+        <p class="lede">Follow a source edit into the file the runtime reads, and see why an edit alone changes nothing that runs.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" aria-current="page" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" aria-current="page" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li><li><a href="11-loading-linking.html" title="When does a class arrive?">11</a></li><li><a href="12-static-init-order.html" title="Why is it zero?">12</a></li><li><a href="13-static-init-failure.html" title="Why does the second try say something different?">13</a></li><li><a href="14-class-loaders.html" title="Why can't Greeter be cast to Greeter?">14</a></li><li><a href="15-classpath-modulepath.html" title="Not found, or no longer there?">15</a></li><li><a href="16-module-path.html" title="Can the JVM check before main runs?">16</a></li><li><a href="17-metaspace.html" title="Where do classes live, and how do they leak?">17</a></li><li><a href="18-android-bridge.html" title="What does Android do with all this?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>compiler</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>A <b>class file</b> stores a compiled type and its instructions. You change a constant from one to two. The next run still prints the old answer. Which file did that run consume?</p>
+<p>This course starts from your editor, the one place every Kotlin developer already knows. A <b>class file</b> stores a compiled type and its instructions. You change a constant from one to two, run the program again, and it still prints the old answer. Which file did that run read?</p>
+<p>Here is the whole program. It is Java rather than Kotlin, so that the compiled output stays as small as possible; puzzle 8 reads what kotlinc writes.</p>
+<pre><code class="language-java">public final class Bookmark {
+    static final class Counter {
+        int value;
+        Counter(int value) { this.value = value; }
+    }
+
+    static int increment(int value) {
+        return value + 1;
+    }
+
+    static void edit(Counter inside) {
+        inside.value = 8;
+        inside = new Counter(99);
+    }
+
+    public static void main(String[] args) {
+        int original = 7;
+        Counter first = new Counter(original);
+        Counter second = first;
+        edit(second);
+        System.out.println(original + &quot; &quot; + increment(original));
+        System.out.println(first.value + &quot; &quot; + second.value);
+        second = null;
+        System.out.println(first.value);
+    }
+}</code></pre>
+<p>This puzzle needs only increment and the first printed line, 7 8. The rest of the program comes back in puzzles 1 to 3.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Which program did you actually run?"><input type="radio" name="st-class-file" id="st-class-file-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-class-file" id="st-class-file-2" aria-label="Step 2 of 4"><input type="radio" name="st-class-file" id="st-class-file-3" aria-label="Step 3 of 4"><input type="radio" name="st-class-file" id="st-class-file-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Which program did you actually run?</title><defs><marker id="ah-class-file-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-class-file-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-class-file-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-class-file-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Source</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Compile</text></g>
-<path class="step s2 d-arr-acc" d="M154,179 H180" marker-end="url(#ah-class-file-acc)"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Class file</text></g>
-<path class="step s3 d-arr-acc" d="M305,179 H331" marker-end="url(#ah-class-file-acc)"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Run</text></g>
-<path class="step s4 d-arr-acc" d="M456,179 H482" marker-end="url(#ah-class-file-acc)"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="The editor, the class files in out and next, and what java -cp out prints; editing alone or compiling into next leaves out/Bookmark.class with iconst_1, so the launcher still prints 7 8 until the edit is compiled into out"><input type="radio" name="st-class-file" id="st-class-file-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-class-file" id="st-class-file-2" aria-label="Step 2 of 5"><input type="radio" name="st-class-file" id="st-class-file-3" aria-label="Step 3 of 5"><input type="radio" name="st-class-file" id="st-class-file-4" aria-label="Step 4 of 5"><input type="radio" name="st-class-file" id="st-class-file-5" aria-label="Step 5 of 5">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="cf-t"><title id="cf-t">Four boxes in a row: the editor's Bookmark.java, out/Bookmark.class, next/Bookmark.class, and the launcher's printed line. The editor changes from value + 1 to value + 2; out keeps iconst_1 and the launcher prints 7 8; compiling into next writes iconst_2 there but the launcher still reads out; compiling into out changes it to iconst_2 and the launcher prints 7 9</title><defs><marker id="ah-class-file-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-class-file-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-class-file-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-class-file-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<text class="d-tiny" x="16" y="34">editor</text>
+<rect class="d-paper" x="16" y="46" width="170" height="64" rx="8"/>
+<text class="d-mi" x="28" y="70">Bookmark.java</text>
+<g class="step s1 hide-2"><text class="d-mi" x="28" y="98">value + 1</text></g>
+<g class="step s2" data-pulse="2"><text class="d-mi" x="28" y="98">value + 2</text></g>
+<text class="d-tiny" x="16" y="160">out/</text>
+<rect class="d-box" x="16" y="172" width="170" height="64" rx="8"/>
+<text class="d-mi" x="28" y="196">Bookmark.class</text>
+<g class="step s1 hide-5"><text class="d-mi" x="28" y="224">iconst_1</text></g>
+<g class="step s5" data-pulse="5"><text class="d-mi" x="28" y="224">iconst_2</text></g>
+<path class="step only-1 d-arr-acc" d="M100,112 L100,168" marker-end="url(#ah-class-file-acc)"/>
+<path class="step s5 d-arr-acc" d="M100,112 L100,168" marker-end="url(#ah-class-file-acc)"/>
+<g class="step s4"><text class="d-tiny" x="230" y="160">next/</text>
+<rect class="d-box" x="230" y="172" width="170" height="64" rx="8"/><text class="d-mi" x="242" y="196">Bookmark.class</text><text class="d-mi" x="242" y="224">iconst_2</text>
+<path class="d-arr-path" d="M180,112 C230,130 300,130 310,168" marker-end="url(#ah-class-file-path)"/></g>
+<text class="d-tiny" x="452" y="160">java -cp out</text>
+<rect class="d-hl" x="452" y="172" width="172" height="64" rx="8"/>
+<path class="d-arr-acc" d="M190,290 C320,330 520,320 540,240" marker-end="url(#ah-class-file-acc)"/>
+<path class="d-line" d="M100,238 V290 H190"/>
+<g class="step s1 hide-2"><text class="d-b" x="538" y="212" text-anchor="middle">7 8</text></g>
+<g class="step only-2"><text class="d-b" x="538" y="212" text-anchor="middle">?</text></g>
+<g class="step s3 hide-5" data-pulse="3"><text class="d-b" x="538" y="212" text-anchor="middle">7 8</text></g>
+<g class="step s5"><text class="d-b" x="538" y="212" text-anchor="middle">7 9</text></g>
+<g class="step s1" data-move="1:100,290 3:100,290 4:100,290 5:100,290"><circle class="d-dot" r="8"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The source adds one.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-class-file-2">Next →</label></div></li>
-<li><p>The compiler translates the method.</p><div class="stepnav"><label for="st-class-file-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-class-file-3">Next →</label></div></li>
-<li><p>The class file contains the translated method.</p><div class="stepnav"><label for="st-class-file-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-class-file-4">Next →</label></div></li>
-<li><p>The launcher loads the class from out.</p><div class="stepnav"><label for="st-class-file-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-class-file-1">↺ Again</label></div></li>
+<li><p>javac compiled Bookmark.java into a <b>class file</b> in out: increment's instruction <code>iconst_1</code>. java -cp out reads that file and prints 7 8.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-class-file-2">Next →</label></div></li>
+<li><p>You edit the source to value + 2 and don't compile. <i>Predict: what does java -cp out print now?</i></p><div class="stepnav"><label for="st-class-file-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-class-file-3">Next →</label></div></li>
+<li><p>Still 7 8. The launcher reads out/Bookmark.class, which still holds <code>iconst_1</code>; it never reads the source.</p><div class="stepnav"><label for="st-class-file-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-class-file-4">Next →</label></div></li>
+<li><p>You compile with javac -d next. The new class file, with <code>iconst_2</code>, lands in next. The launcher still reads out: 7 8.</p><div class="stepnav"><label for="st-class-file-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-class-file-5">Next →</label></div></li>
+<li><p>Compile into out, the folder the launcher reads, and its class file changes to <code>iconst_2</code>. Now it prints 7 9.</p><div class="stepnav"><label for="st-class-file-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-class-file-1">↺ Again</label></div></li>
 </ol>
-<div class="dots" aria-hidden="true"><label for="st-class-file-1" title="Step 1"></label><label for="st-class-file-2" title="Step 2"></label><label for="st-class-file-3" title="Step 3"></label><label for="st-class-file-4" title="Step 4"></label></div>
+<div class="dots" aria-hidden="true"><label for="st-class-file-1" title="Step 1"></label><label for="st-class-file-2" title="Step 2"></label><label for="st-class-file-3" title="Step 3"></label><label for="st-class-file-4" title="Step 4"></label><label for="st-class-file-5" title="Step 5"></label></div>
 </figure><p class="gif-link"><a href="gifs/class-file.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A source file is the text you edit. The Java compiler reads that text and writes a class file containing instructions. The Java Virtual Machine (JVM) can execute those instructions. In this exercise the launcher looks for Bookmark in a directory named out. Separate the two operations on paper. Under compile, write the input and output filenames. Under launch, write the name of the program and the directory searched for its classes.</p>
+<p>A source file is the text you edit. The Java compiler, javac, reads that text and writes a class file containing instructions. The Java Virtual Machine (JVM), the program that runs Java and Kotlin code, executes those instructions. It never reads your source.</p>
 <pre><code class="language-sh">javac -d out Bookmark.java
 java -cp out Bookmark
 javap -classpath out -c Bookmark</code></pre>
-<p>The first command places the compiled classes in the directory named out. The second looks there for Bookmark and starts its main method. The third prints a readable listing of the instructions in the class. Find the helper named increment. You can inspect a compiled class even if the editor currently shows different source.</p>
-<div class="table-wrap"><table><thead><tr><th scope="col">Action</th><th scope="col">Addition in the editor</th><th scope="col">Addition in out</th><th scope="col">First printed line</th></tr></thead><tbody><tr><th scope="row">Compile and launch the original</th><td>add one</td><td>add one</td><td>7 8</td></tr><tr><th scope="row">Edit only, then launch the existing class</th><td>add two</td><td>add one</td><td>7 8</td></tr><tr><th scope="row">Compile the edit into out and launch again</th><td>add two</td><td>add two</td><td>7 9</td></tr></tbody></table></div>
-<p>Imagine you compile the fix into another directory called next, then launch using the same command as before. The build succeeds. The result still comes from out. To investigate a stale deployment, identify the artifact the launcher selected and inspect that artifact's instructions. A screenshot of the corrected source cannot establish what ran.</p>
+<p>The first command places the compiled classes in the folder named out. The second, the launcher, looks in out for Bookmark and starts its main method. The third, javap, prints a readable listing of the instructions in a class file. This is what it prints for increment, compiled from value + 1:</p>
+<pre><code class="language-text">static int increment(int);
+  Code:
+     0: iload_0
+     1: iconst_1
+     2: iadd
+     3: ireturn</code></pre>
+<p>You don't need to read every line yet (puzzle 1 does). Look at <code>iconst_1</code>: the one from the source is inside the class file as an instruction. Change the source to value + 2 and recompile, and javap shows <code>iconst_2</code> there instead.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Action</th><th scope="col">Addition in the editor</th><th scope="col">Instruction in out/Bookmark.class</th><th scope="col">First printed line</th></tr></thead><tbody><tr><th scope="row">Compile and launch the original</th><td>value + 1</td><td><code>iconst_1</code></td><td>7 8</td></tr><tr><th scope="row">Edit only, then launch from out</th><td>value + 2</td><td><code>iconst_1</code></td><td>7 8</td></tr><tr><th scope="row">Compile the edit into next, launch from out</th><td>value + 2</td><td><code>iconst_1</code> (next has <code>iconst_2</code>)</td><td>7 8</td></tr><tr><th scope="row">Compile the edit into out, launch again</th><td>value + 2</td><td><code>iconst_2</code></td><td>7 9</td></tr></tbody></table></div>
+<p>The third row is the one that fools people: the build succeeded, but into a different folder, and the launch command still names out. To investigate a stale deployment, find the artifact the launcher selected and inspect that artifact's instructions. A screenshot of the corrected source can't establish what ran.</p>
       </section>
-      <section aria-labelledby="try-it">
-        <h2 id="try-it">Try it</h2>
-<p><a href="/labs/jvm-workbench/#00-class-file">Run the browser experiment</a></p>
-<h3>Optional local lab</h3>
-<p>Complete experiment 1 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>. Record your prediction before running the program.</p>
+      <section aria-labelledby="the-analogy">
+        <h2 id="the-analogy">The analogy</h2>
+<p>An office clerk works from a printed copy of the procedures, never from the author's draft. The author can change the draft all day; the clerk keeps following the printed copy in the folder on the desk. Printing a new copy into a different folder changes nothing either: the clerk reads the folder on the desk.</p>
+      </section>
+      <section aria-labelledby="run-it-yourself">
+        <h2 id="run-it-yourself">Run it yourself</h2>
+<p>Save the program above as Bookmark.java (puzzle 5 shows how to install a JDK if you don't have one), then:</p>
+<pre><code class="language-sh">javac -d out Bookmark.java
+java -cp out Bookmark</code></pre>
+<p>Now change value + 1 to value + 2. Before each of the next commands, write down the first line you expect:</p>
+<pre><code class="language-sh">java -cp out Bookmark
+javac -d next Bookmark.java
+java -cp out Bookmark
+java -cp next Bookmark
+javap -classpath out -c Bookmark</code></pre>
+<p><a href="/labs/jvm-workbench/#00-class-file">Run the browser experiment</a> for the same idea without installing anything, or experiment 1 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>You edit the source and run the existing class. What does its first line show?</legend>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1" data-ok><label for="q-00-class-file-1-1"><span>The earlier 7 8</span></label>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2"><label for="q-00-class-file-1-2"><span>The updated 7 9</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The launch command loads the class that already exists. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>You edit the source to value + 2 and launch from out without compiling. What does the first line show?</legend>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1"><label for="q-00-class-file-1-1"><span>7 9, from the edited source</span></label>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2" data-ok><label for="q-00-class-file-1-2"><span>7 8, from the earlier class file</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The launcher reads the class file in out; the source isn't read at all. <label class="show-me" for="st-class-file-2" data-goto="st-class-file">Show me step 2 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>You compiled the edit into next but still launch from out. Which result appears?</legend>
-<input type="radio" name="q-00-class-file-2" id="q-00-class-file-2-1"><label for="q-00-class-file-2-1"><span>The new 7 9</span></label>
-<input type="radio" name="q-00-class-file-2" id="q-00-class-file-2-2" data-ok><label for="q-00-class-file-2-2"><span>The earlier 7 8</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The launch command still names out. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>You compiled the edit into next but still launch with -cp out. Which result appears?</legend>
+<input type="radio" name="q-00-class-file-2" id="q-00-class-file-2-1"><label for="q-00-class-file-2-1"><span>7 9</span></label>
+<input type="radio" name="q-00-class-file-2" id="q-00-class-file-2-2" data-ok><label for="q-00-class-file-2-2"><span>7 8</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The launch command still names out, whose class file still holds <code>iconst_1</code>. <label class="show-me" for="st-class-file-4" data-goto="st-class-file">Show me step 4 again ↑</label></p>
 <p class="fb ok opt-2"><b>Right.</b> Compilation can succeed while the running program uses an older artifact.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Which evidence distinguishes stale compiled output from a source edit?</legend>
-<input type="radio" name="q-00-class-file-3" id="q-00-class-file-3-1" data-ok><label for="q-00-class-file-3-1"><span>Inspect the class in the launch directory</span></label>
-<input type="radio" name="q-00-class-file-3" id="q-00-class-file-3-2"><label for="q-00-class-file-3-2"><span>Inspect the most recently edited source file</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Inspect the actual artifact selected at launch.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The editor shows the intended input to a future compilation. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>A colleague says &quot;the fix is deployed, I can see it in the source&quot;. What would prove which version ran?</legend>
+<input type="radio" name="q-00-class-file-3" id="q-00-class-file-3-1"><label for="q-00-class-file-3-1"><span>A successful build log</span></label>
+<input type="radio" name="q-00-class-file-3" id="q-00-class-file-3-2"><label for="q-00-class-file-3-2"><span>The source file's last-modified time</span></label>
+<input type="radio" name="q-00-class-file-3" id="q-00-class-file-3-3" data-ok><label for="q-00-class-file-3-3"><span>javap on the class file the launcher read</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A build can succeed into a folder the launcher doesn't read. <label class="show-me" for="st-class-file-4" data-goto="st-class-file">Show me step 4 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> The source is only the input to a future compilation; the launcher never reads it. <label class="show-me" for="st-class-file-3" data-goto="st-class-file">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> Inspect the actual artifact selected at launch.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html">Java 21 compiler guide</a> — “compiles them into class files”</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html">Java 21 launcher guide</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javac.html">The javac command (JDK 21)</a> (&quot;The javac command reads source files that contain module, package and type declarations written in the Java programming language, and compiles them into class files that run on the Java Virtual Machine.&quot;; &quot;-d directory Sets the destination directory (or class output directory ) for class files.&quot;)</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html">The java command (JDK 21)</a> (&quot;The java command starts a Java application.&quot;; &quot;-cp classpath Specifies a list of directories, JAR files, and ZIP archives to search for class files.&quot;)</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javap.html">The javap command (JDK 21)</a> (&quot;The javap command disassembles one or more class files.&quot;; &quot;-c Prints disassembled code, for example, the instructions that comprise the Java bytecodes, for each of the methods in the class.&quot;)</li><li>The four runs (7 8, 7 8, 7 8 from out with next holding the fix, 7 9) and both javap listings of increment were produced in this session with javac, java and javap from OpenJDK 21.0.12.</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The compiler writes instructions into a class file, and the launcher runs the class file it finds, not the source in your editor. An edit changes what runs only after it is compiled into the folder the launcher reads.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="./">← Overview</a>
-        <a class="button primary" href="01-frame.html">Puzzle 1: What does a method receive? →</a>
+        <a class="button primary" href="01-frame.html">Puzzle 1: One frame per call →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Which%20program%20did%20you%20actually%20run%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>

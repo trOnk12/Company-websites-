@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Already know Changing shared state? Answer one question per puzzle; each right answer marks that puzzle as passed.">
+  <meta name="description" content="Already know Reading bytecode? Answer one question per puzzle; each right answer marks that puzzle as passed.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="Check: Changing shared state – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="Already know Changing shared state? Answer one question per puzzle; each right answer marks that puzzle as passed.">
+  <meta property="og:title" content="Check: Reading bytecode – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
+  <meta property="og:description" content="Already know Reading bytecode? Answer one question per puzzle; each right answer marks that puzzle as passed.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/jvm/check-2">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>Check: Changing shared state – JVM internals for Kotlin and Android developers – Mateusz Pachulski</title>
+  <title>Check: Reading bytecode – JVM internals for Kotlin and Android developers – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/jvm/check-2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -50,15 +50,67 @@
   <main id="main">
     <article class="module-check course-top wrap narrow" data-course="jvm">
       <p class="eyebrow"><a href="./">JVM internals for Kotlin and Android developers</a> · check</p>
-      <h1>Know Changing shared state already?</h1>
-      <p class="lede">One question for each of the 1 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
-<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: How can two increments produce eight?</p>
-<fieldset class="quiz" data-n="4">
-<legend>B reads only after A writes eight. What does B calculate?</legend>
-<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-1" data-ok><label for="q-04-shared-counter-1-1"><span>Nine</span></label>
-<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-2"><label for="q-04-shared-counter-1-2"><span>Eight</span></label>
-<p class="fb ok opt-1"><b>Right.</b> B reads eight and adds one.</p>
-<p class="fb no opt-2"><b>Not quite.</b> B starts from the value A just stored. <a class="show-me" href="04-shared-counter.html">Learn it in puzzle 4 →</a></p>
+      <h1>Know Reading bytecode already?</h1>
+      <p class="lede">One question for each of the 6 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: Where does the arithmetic happen?</p>
+<fieldset class="quiz" data-n="5">
+<legend>A method returns visits - stars. Which instruction list computes it?</legend>
+<input type="radio" name="q-05-operand-stack-1" id="q-05-operand-stack-1-1"><label for="q-05-operand-stack-1-1"><span><code>isub</code>, <code>iload_0</code>, <code>iload_1</code></span></label>
+<input type="radio" name="q-05-operand-stack-1" id="q-05-operand-stack-1-2"><label for="q-05-operand-stack-1-2"><span><code>iload_1</code>, <code>iload_0</code>, <code>isub</code></span></label>
+<input type="radio" name="q-05-operand-stack-1" id="q-05-operand-stack-1-3" data-ok><label for="q-05-operand-stack-1-3"><span><code>iload_0</code>, <code>iload_1</code>, <code>isub</code></span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The inputs must be on the stack before the instruction that uses them runs. <a class="show-me" href="05-operand-stack.html">Learn it in puzzle 5 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The value pushed first is the left-hand side; this list computes stars - visits. <a class="show-me" href="05-operand-stack.html">Learn it in puzzle 5 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> The first value pushed sits deeper and is the left-hand side.</p>
+</fieldset></section>
+<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: What does #7 point to?</p>
+<fieldset class="quiz" data-n="6">
+<legend>You rename the field weight to factor and recompile Score. In the constant pool, what changes?</legend>
+<input type="radio" name="q-06-constant-pool-1" id="q-06-constant-pool-1-1"><label for="q-06-constant-pool-1-1"><span>The number after <code>getstatic</code> becomes the field's new memory address</span></label>
+<input type="radio" name="q-06-constant-pool-1" id="q-06-constant-pool-1-2" data-ok><label for="q-06-constant-pool-1-2"><span>The Utf8 entry that held weight now holds factor</span></label>
+<input type="radio" name="q-06-constant-pool-1" id="q-06-constant-pool-1-3"><label for="q-06-constant-pool-1-3"><span>Nothing: names are removed when the class is compiled</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The instruction holds an index into the pool, never an address. <a class="show-me" href="06-constant-pool.html">Learn it in puzzle 6 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Fields are described by name and descriptor.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The name is exactly what the pool keeps, so it can be looked up while the program runs. <a class="show-me" href="06-constant-pool.html">Learn it in puzzle 6 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Which method does a call run?</p>
+<fieldset class="quiz" data-n="7">
+<legend>Counter.next() is overridable, and a subclass Loud overrides it. A method takes a parameter c: Counter and calls c.next(). You pass it a Loud. Which instruction is in the method's bytecode, and which next() runs?</legend>
+<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-1" data-ok><label for="q-07-five-invokes-1-1"><span><code>invokevirtual</code> Counter.next, and Loud's next() runs</span></label>
+<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-2"><label for="q-07-five-invokes-1-2"><span><code>invokespecial</code> Counter.next, so Counter's next() runs</span></label>
+<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-3"><label for="q-07-five-invokes-1-3"><span><code>invokevirtual</code> Loud.next, because a Loud was passed</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The declared type picks the instruction; the receiver's class picks the code.</p>
+<p class="fb no opt-2"><b>Not quite.</b> invokespecial is for calls that must run one exact method; an overridable call isn't one. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> The compiler only knows the declared type, Counter; the object is known only while the program runs. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: What did Kotlin write for you?</p>
+<fieldset class="quiz" data-n="8">
+<legend>visit gets a third parameter, note: String = &quot;&quot;. You call visit(b, 5) and leave note out. Which mask does visit$default receive?</legend>
+<input type="radio" name="q-08-kotlin-in-javap-1" id="q-08-kotlin-in-javap-1-1" data-ok><label for="q-08-kotlin-in-javap-1-1"><span>4, because note is argument 2</span></label>
+<input type="radio" name="q-08-kotlin-in-javap-1" id="q-08-kotlin-in-javap-1-2"><label for="q-08-kotlin-in-javap-1-2"><span>1, because it's the first argument left out</span></label>
+<input type="radio" name="q-08-kotlin-in-javap-1" id="q-08-kotlin-in-javap-1-3"><label for="q-08-kotlin-in-javap-1-3"><span>2, because one argument was left out</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Bit n is set for argument n.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Bit 0 belongs to argument 0, b, which was given. <a class="show-me" href="08-kotlin-in-javap.html">Learn it in puzzle 8 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> The mask marks which argument, by position, not how many: bit 2 has the value 4. <a class="show-me" href="08-kotlin-in-javap.html">Learn it in puzzle 8 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: Where did my lambda go?</p>
+<fieldset class="quiz" data-n="9">
+<legend>You remove inline from runNow and recompile. What appears in main where the println instructions were?</legend>
+<input type="radio" name="q-09-lambdas-and-inline-1" id="q-09-lambdas-and-inline-1-1" data-ok><label for="q-09-lambdas-and-inline-1-1"><span><code>invokedynamic</code> and a call to runNow</span></label>
+<input type="radio" name="q-09-lambdas-and-inline-1" id="q-09-lambdas-and-inline-1-2"><label for="q-09-lambdas-and-inline-1-2"><span>Only a call to runNow, with no lambda</span></label>
+<input type="radio" name="q-09-lambdas-and-inline-1" id="q-09-lambdas-and-inline-1-3"><label for="q-09-lambdas-and-inline-1-3"><span>The same copied println instructions</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A plain function receives the lambda as an object.</p>
+<p class="fb no opt-2"><b>Not quite.</b> runNow still needs the lambda, so main must build a function object to pass. <a class="show-me" href="09-lambdas-and-inline.html">Learn it in puzzle 9 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Without inline, nothing is copied; the lambda must become an object to be passed. <a class="show-me" href="09-lambdas-and-inline.html">Learn it in puzzle 9 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 10"><p class="eyebrow">Puzzle 10: How does a call find the override?</p>
+<fieldset class="quiz" data-n="10">
+<legend>A class Shout extends Loud and overrides next again with v + 100. A Shout reaches use(c). Which entry does <code>invokevirtual</code> read, and what does use return?</legend>
+<input type="radio" name="q-10-virtual-dispatch-1" id="q-10-virtual-dispatch-1-1"><label for="q-10-virtual-dispatch-1-1"><span>Counter's entry, because the instruction names Counter.next</span></label>
+<input type="radio" name="q-10-virtual-dispatch-1" id="q-10-virtual-dispatch-1-2"><label for="q-10-virtual-dispatch-1-2"><span>Loud's entry, because Shout's table is a copy of Loud's</span></label>
+<input type="radio" name="q-10-virtual-dispatch-1" id="q-10-virtual-dispatch-1-3" data-ok><label for="q-10-virtual-dispatch-1-3"><span>The entry for next in Shout's table, so 101 + 2 = 103</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The instruction names the method; the receiver's table decides the code. <a class="show-me" href="10-virtual-dispatch.html">Learn it in puzzle 10 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The copy is made first, then Shout's override replaces that entry. <a class="show-me" href="10-virtual-dispatch.html">Learn it in puzzle 10 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> Each class's table has its own overrides at the same position.</p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

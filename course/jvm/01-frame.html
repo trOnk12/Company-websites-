@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Track one number across a call and back.">
+  <meta name="description" content="Track the number seven across the call to increment and back, instruction by instruction.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="What does a method receive? – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="Track one number across a call and back.">
+  <meta property="og:description" content="Track the number seven across the call to increment and back, instruction by instruction.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/jvm/01-frame">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,95 +51,132 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="jvm" data-n="1">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">JVM internals for Kotlin and Android developers</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 1 · 2 of 5</p>
+        <p class="eyebrow">Puzzle 1 · 2 of 19</p>
         <h1>What does a method receive?</h1>
-        <p class="lede">Track one number across a call and back.</p>
+        <p class="lede">Track the number seven across the call to increment and back, instruction by instruction.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" aria-current="page" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" aria-current="page" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li><li><a href="11-loading-linking.html" title="When does a class arrive?">11</a></li><li><a href="12-static-init-order.html" title="Why is it zero?">12</a></li><li><a href="13-static-init-failure.html" title="Why does the second try say something different?">13</a></li><li><a href="14-class-loaders.html" title="Why can't Greeter be cast to Greeter?">14</a></li><li><a href="15-classpath-modulepath.html" title="Not found, or no longer there?">15</a></li><li><a href="16-module-path.html" title="Can the JVM check before main runs?">16</a></li><li><a href="17-metaspace.html" title="Where do classes live, and how do they leak?">17</a></li><li><a href="18-android-bridge.html" title="What does Android do with all this?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-1">
         <p id="builds-on-1"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: Which program did you actually run?</summary><p>The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p><p><a href="00-class-file.html">Review puzzle 0</a></p></details></li></ul>
+        <ul><li data-block="0"><details><summary>Puzzle 0: Which program did you actually run?</summary><p>The compiler writes instructions into a class file, and the launcher runs the class file it finds, not the source in your editor. An edit changes what runs only after it is compiled into the folder the launcher reads.</p><p><a href="00-class-file.html">Review puzzle 0</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-class-file.html">0</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Look at the increment instructions in the class file from the previous puzzle. The caller holds seven. A helper adds one and returns eight. Where did the seven go while the helper ran?</p>
+<p>Puzzle 0's javap printed four instructions for increment. Now run them. main holds 7 in its variable original and calls increment(original), which returns 8. While increment runs, where is the 7, and where does increment do its addition? When it returns, why does original still say 7?</p>
+<pre><code class="language-java">static int increment(int value) {
+    return value + 1;
+}
+// in main:
+int original = 7;
+... increment(original) ...</code></pre>
+<pre><code class="language-text">static int increment(int);
+  Code:
+     0: iload_0
+     1: iconst_1
+     2: iadd
+     3: ireturn</code></pre>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="What does a method receive?"><input type="radio" name="st-frame" id="st-frame-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-frame" id="st-frame-2" aria-label="Step 2 of 4"><input type="radio" name="st-frame" id="st-frame-3" aria-label="Step 3 of 4"><input type="radio" name="st-frame" id="st-frame-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">What does a method receive?</title><defs><marker id="ah-frame-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frame-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frame-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frame-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Local 7</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Stack 7, 1</text></g>
-<path class="step s2 d-arr-acc" d="M154,179 H180" marker-end="url(#ah-frame-acc)"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Stack 8</text></g>
-<path class="step s3 d-arr-acc" d="M305,179 H331" marker-end="url(#ah-frame-acc)"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Return 8</text></g>
-<path class="step s4 d-arr-acc" d="M456,179 H482" marker-end="url(#ah-frame-acc)"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="main's frame and increment's frame side by side, each with local slots and an operand stack; 7 is copied in, iload_0, iconst_1 and iadd work on the stack, ireturn hands 8 back and the frame disappears"><input type="radio" name="st-frame" id="st-frame-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-frame" id="st-frame-2" aria-label="Step 2 of 5"><input type="radio" name="st-frame" id="st-frame-3" aria-label="Step 3 of 5"><input type="radio" name="st-frame" id="st-frame-4" aria-label="Step 4 of 5"><input type="radio" name="st-frame" id="st-frame-5" aria-label="Step 5 of 5">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="fr-t"><title id="fr-t">Left: main's frame with the local original = 7 and an operand stack. Right: increment's frame with local slot 0 and its own operand stack. 7 is copied into slot 0; iload_0 copies it onto the stack, iconst_1 pushes 1, iadd leaves 8, ireturn moves 8 to main's stack and increment's frame is removed</title><defs><marker id="ah-frame-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frame-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frame-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-frame-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<rect class="d-box" x="16" y="16" width="290" height="348" rx="10"/>
+<text class="d-tiny" x="30" y="42">main's frame</text>
+<rect class="d-paper" x="30" y="58" width="120" height="50" rx="6"/><text class="d-b" x="90" y="91" text-anchor="middle">7</text>
+<text class="d-tiny" x="30" y="128">original</text>
+<path class="d-line" d="M90,170 V340 H230 V170"/>
+<text class="d-tiny" x="160" y="160" text-anchor="middle">stack</text>
+<g class="step s1 hide-5"><rect class="d-box" x="334" y="16" width="290" height="348" rx="10"/>
+<text class="d-tiny" x="348" y="42">increment's frame</text>
+<rect class="d-paper" x="348" y="58" width="120" height="50" rx="6"/>
+<text class="d-tiny" x="348" y="128">slot 0</text>
+<path class="d-line" d="M410,170 V340 H550 V170"/>
+<text class="d-tiny" x="480" y="160" text-anchor="middle">stack</text></g>
+<g class="step s1 hide-5" data-move="1:368,62"><rect class="d-hl" x="0" y="0" width="80" height="42" rx="6"/><text class="d-b" x="40" y="30" text-anchor="middle">7</text></g>
+<path class="step only-1 d-arr-acc" d="M152,83 L344,83" marker-end="url(#ah-frame-acc)"/>
+<g class="step s2 hide-4"><rect class="d-paper" x="440" y="290" width="80" height="42" rx="6"/><text class="d-b" x="480" y="319" text-anchor="middle">7</text></g>
+<path class="step only-2 d-arr-acc" d="M408,108 C400,200 420,290 436,306" marker-end="url(#ah-frame-acc)"/>
+<g class="step only-3"><rect class="d-paper" x="440" y="242" width="80" height="42" rx="6"/><text class="d-b" x="480" y="271" text-anchor="middle">1</text></g>
+<g class="step only-3"><text class="d-b" x="590" y="300" text-anchor="middle">?</text></g>
+<g class="step s4" data-move="4:440,290 5:120,290" data-pulse="4 5"><rect class="d-hl" x="0" y="0" width="80" height="42" rx="6"/><text class="d-b" x="40" y="30" text-anchor="middle">8</text></g>
+<g class="step s5"><text class="d-r" x="370" y="200">frame gone</text><text class="d-a" x="160" y="90">still 7</text></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The called method receives a copy of seven.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-frame-2">Next →</label></div></li>
-<li><p>The load and constant instructions supply two inputs.</p><div class="stepnav"><label for="st-frame-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-frame-3">Next →</label></div></li>
-<li><p>Addition replaces both inputs with one result.</p><div class="stepnav"><label for="st-frame-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-frame-4">Next →</label></div></li>
-<li><p>The result returns to the caller.</p><div class="stepnav"><label for="st-frame-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-frame-1">↺ Again</label></div></li>
+<li><p>Calling increment(original) creates a new <b>stack frame</b>, the memory for one call. 7 is copied from main's local original into increment's slot 0.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-frame-2">Next →</label></div></li>
+<li><p><code>iload_0</code> copies the 7 in slot 0 onto increment's <b>operand stack</b>, the pile its instructions work on.</p><div class="stepnav"><label for="st-frame-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-frame-3">Next →</label></div></li>
+<li><p><code>iconst_1</code> pushes 1 on top. <i>Predict: what does <code>iadd</code> leave on the stack?</i></p><div class="stepnav"><label for="st-frame-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-frame-4">Next →</label></div></li>
+<li><p>One value, 8: <code>iadd</code> took both 7 and 1 off the top and pushed their sum.</p><div class="stepnav"><label for="st-frame-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-frame-5">Next →</label></div></li>
+<li><p><code>ireturn</code> moves 8 onto main's stack, and increment's frame is thrown away. main's original still holds 7.</p><div class="stepnav"><label for="st-frame-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-frame-1">↺ Again</label></div></li>
 </ol>
-<div class="dots" aria-hidden="true"><label for="st-frame-1" title="Step 1"></label><label for="st-frame-2" title="Step 2"></label><label for="st-frame-3" title="Step 3"></label><label for="st-frame-4" title="Step 4"></label></div>
+<div class="dots" aria-hidden="true"><label for="st-frame-1" title="Step 1"></label><label for="st-frame-2" title="Step 2"></label><label for="st-frame-3" title="Step 3"></label><label for="st-frame-4" title="Step 4"></label><label for="st-frame-5" title="Step 5"></label></div>
 </figure><p class="gif-link"><a href="gifs/frame.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A <b>stack frame</b> belongs to one method call. It holds local variables and an operand stack for intermediate values. Calling increment copies the integer argument into its local slot. Inspect increment with javap. The load instruction pushes seven. The next instruction pushes one. Addition consumes both values and pushes eight. The integer return sends eight to the caller and the helper frame is discarded. The original local in the caller still holds seven.</p>
-<p>A local is a slot belonging to the current call. The operand stack is its scratch space. In the table the rightmost number is the top, where an instruction takes its next input. The caller passes seven to a static helper, so the helper's first local slot starts at seven.</p>
-<div class="table-wrap"><table><thead><tr><th scope="col">Helper instruction</th><th scope="col">Action</th><th scope="col">Helper stack afterwards</th></tr></thead><tbody><tr><th scope="row">Before the first instruction</th><td>Receive seven in local slot zero</td><td>empty</td></tr><tr><th scope="row">iload_0</th><td>Copy the value in slot zero onto the stack</td><td>7</td></tr><tr><th scope="row">iconst_1</th><td>Push a constant one</td><td>7, 1</td></tr><tr><th scope="row">iadd</th><td>Remove the two numbers and push their sum</td><td>8</td></tr><tr><th scope="row">ireturn</th><td>Deliver eight to the caller and finish this call</td><td>frame discarded</td></tr></tbody></table></div>
-<p>Notice that loading a local copies its value. If the caller throws away the returned eight and calls the helper again with its original seven, it gets eight again. If it passes the returned eight as the next argument, it gets nine. Trace both paths by drawing a fresh row for each call. This is the execution model described by the instructions. A runtime may optimize how it implements that model.</p>
+<p>A <b>stack frame</b> (frame for short) is the memory one method call works in. The JVM creates a new one each time a method is called and throws it away when the call returns. A frame has two parts:</p>
+<ul><li>numbered <b>local slots</b>: the method's parameters and local variables, by number instead of by name. increment's value is slot 0.</li><li>an <b>operand stack</b>: a pile of values the instructions work on. An instruction takes its inputs from the top of the pile and puts its result back on top.</li></ul>
+<p>Calling increment(original) creates increment's frame next to main's and copies 7 from main's slot into increment's slot 0. Then the four instructions run:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Instruction</th><th scope="col">What it does</th><th scope="col">increment's stack afterwards (top on the right)</th></tr></thead><tbody><tr><th scope="row">before the first one</th><td>7 arrives in local slot 0</td><td>empty</td></tr><tr><th scope="row"><code>iload_0</code></th><td>copy the value in slot 0 onto the stack</td><td>7</td></tr><tr><th scope="row"><code>iconst_1</code></th><td>push the constant 1</td><td>7, 1</td></tr><tr><th scope="row"><code>iadd</code></th><td>remove the two top values and push their sum</td><td>8</td></tr><tr><th scope="row"><code>ireturn</code></th><td>hand the top value to the caller and end this call</td><td>frame thrown away</td></tr></tbody></table></div>
+<p>The names follow a pattern you'll see everywhere: i for int, then the action (load, const, add, return), then a number when the instruction names a slot or a constant. <code>ireturn</code> puts 8 on main's own operand stack, and increment's frame is gone.</p>
+<p>The copy is the key. <code>iload_0</code> copied 7 onto the stack, and the call copied 7 into slot 0 in the first place; nothing ever wrote to main's slot. That's why original still holds 7. Call increment(original) again and you get 8 again, in a brand-new frame. Pass it the returned 8 instead, and you get 9.</p>
+<p>This is the model the instructions describe. A real JVM may carry it out differently, as long as the result is the same (puzzle 5 comes back to that).</p>
       </section>
-      <section aria-labelledby="try-it">
-        <h2 id="try-it">Try it</h2>
-<p><a href="/labs/jvm-workbench/#01-frame">Run the browser experiment</a></p>
-<h3>Optional local lab</h3>
-<p>Complete experiment 2 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>. Record your prediction before running the program.</p>
+      <section aria-labelledby="the-analogy">
+        <h2 id="the-analogy">The analogy</h2>
+<p>Each request to the office gets its own desk: a few numbered drawers (the local slots) and a spike for paper slips (the operand stack). The clerk who takes increment's request gets a photocopy of the number 7 in drawer 0. The clerk copies it onto a slip on the spike, spikes a slip with 1, replaces the two with one slip saying 8, and sends that slip back. Then the desk is cleared. The original 7 never left the first clerk's drawer.</p>
+      </section>
+      <section aria-labelledby="run-it-yourself">
+        <h2 id="run-it-yourself">Run it yourself</h2>
+<p>With Bookmark.java from puzzle 0 compiled into out:</p>
+<pre><code class="language-sh">javap -classpath out -c Bookmark
+java -cp out Bookmark</code></pre>
+<p>Before running, write down the stack after each of increment's instructions, and the first printed line. Then change main to print increment(increment(original)) and predict again.</p>
+<p><a href="/labs/jvm-workbench/#01-frame">Run the browser experiment</a>, or experiment 2 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>After the addition and before the return, what is on the helper stack?</legend>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1" data-ok><label for="q-01-frame-1-1"><span>One value, eight</span></label>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2"><label for="q-01-frame-1-2"><span>Two values, seven and eight</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Each method invocation has its own frame with locals and an operand stack.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Addition consumes both of its inputs. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>After <code>iadd</code> and before <code>ireturn</code>, what is on increment's operand stack?</legend>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1"><label for="q-01-frame-1-1"><span>Two values, 7 and 8</span></label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2" data-ok><label for="q-01-frame-1-2"><span>One value, 8</span></label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-3"><label for="q-01-frame-1-3"><span>Nothing: the sum went straight into slot 0</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> <code>iadd</code> removes both of its inputs and pushes only the sum. <label class="show-me" for="st-frame-4" data-goto="st-frame">Show me step 4 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Instructions take inputs from the stack and leave the result on top.</p>
+<p class="fb no opt-3"><b>Not quite.</b> An addition leaves its result on the stack; only a store would move it to a slot. <label class="show-me" for="st-frame-4" data-goto="st-frame">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>The caller ignores the result and calls the helper again with its original seven. What comes back?</legend>
-<input type="radio" name="q-01-frame-2" id="q-01-frame-2-1"><label for="q-01-frame-2-1"><span>Nine</span></label>
-<input type="radio" name="q-01-frame-2" id="q-01-frame-2-2" data-ok><label for="q-01-frame-2-2"><span>Eight</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> No value was assigned to the caller's original local. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The second invocation receives seven in a fresh local slot.</p>
+<legend>main ignores the result and calls increment(original) a second time. What comes back?</legend>
+<input type="radio" name="q-01-frame-2" id="q-01-frame-2-1"><label for="q-01-frame-2-1"><span>9</span></label>
+<input type="radio" name="q-01-frame-2" id="q-01-frame-2-2" data-ok><label for="q-01-frame-2-2"><span>8</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The first call never wrote to original; the second call gets a fresh copy of 7 in a new frame. <label class="show-me" for="st-frame-5" data-goto="st-frame">Show me step 5 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> Each call gets its own frame with its own copy of the argument.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>To get nine on the second call, which number must it receive?</legend>
-<input type="radio" name="q-01-frame-3" id="q-01-frame-3-1"><label for="q-01-frame-3-1"><span>The first call's unchanged input, seven</span></label>
-<input type="radio" name="q-01-frame-3" id="q-01-frame-3-2" data-ok><label for="q-01-frame-3-2"><span>The first call's result, eight</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The helper adds exactly one to the value it receives. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Passing the result explicitly connects two otherwise independent calls.</p>
+<legend>What would have to change for original to hold 8 after the call?</legend>
+<input type="radio" name="q-01-frame-3" id="q-01-frame-3-1"><label for="q-01-frame-3-1"><span>Nothing: <code>ireturn</code> writes the result into original</span></label>
+<input type="radio" name="q-01-frame-3" id="q-01-frame-3-2"><label for="q-01-frame-3-2"><span>increment must store 8 back into its slot 0</span></label>
+<input type="radio" name="q-01-frame-3" id="q-01-frame-3-3" data-ok><label for="q-01-frame-3-3"><span>main must store the returned value: original = increment(original)</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> <code>ireturn</code> hands the value to main's operand stack; only main's own store would put it in original. <label class="show-me" for="st-frame-5" data-goto="st-frame">Show me step 5 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Slot 0 belongs to increment's frame, which is thrown away on return. <label class="show-me" for="st-frame-5" data-goto="st-frame">Show me step 5 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> Only the caller can change its own locals.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.6">JVM specification, frames</a> — “A new frame is created each time a method is invoked.”</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javap.html">Java 21 disassembler guide</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Each method invocation has its own frame with locals and an operand stack.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.6">JVM specification, 2.6 Frames</a> (&quot;A new frame is created each time a method is invoked. A frame is destroyed when its method invocation completes&quot;; &quot;Each frame has its own array of local variables ( §2.6.1 ), its own operand stack ( §2.6.2 )&quot;)</li><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.6.2">JVM specification, 2.6.2 Operand Stacks</a> (&quot;Other Java Virtual Machine instructions take operands from the operand stack, operate on them, and push the result back onto the operand stack.&quot;)</li><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.6.1">JVM specification, 2.6.1 Local Variables</a> (&quot;On class method invocation, any parameters are passed in consecutive local variables starting from local variable 0 .&quot;)</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/specs/man/javap.html">The javap command (JDK 21)</a> (&quot;-c Prints disassembled code, for example, the instructions that comprise the Java bytecodes, for each of the methods in the class.&quot;)</li><li>The listing of increment and the output 7 8 were produced in this session with javac, java and javap from OpenJDK 21.0.12.</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Each method call gets its own frame, with numbered local slots and an operand stack. Arguments arrive as copies in the new frame's slots, instructions work on the stack, and the frame is thrown away when the method returns, leaving only the returned value behind.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="00-class-file.html">← Start</a>
-        <a class="button primary" href="02-reference.html">Puzzle 2: Why do both names read eight? →</a>
+        <a class="button primary" href="02-reference.html">Puzzle 2: Copying a reference, not an object →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20What%20does%20a%20method%20receive%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>

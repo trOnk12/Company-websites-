@@ -1,17 +1,35 @@
-<!-- label: Which program did you actually run? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Which program did you actually run?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Source</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Compile</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Class file</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Run</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: The editor, the class files in out and next, and what java -cp out prints; editing alone or compiling into next leaves out/Bookmark.class with iconst_1, so the launcher still prints 7 8 until the edit is compiled into out -->
+<!-- question: Which file does java -cp out read, and when does an edit reach it? type: before/after (same layout each step; only the changed file differs) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="cf-t"><title id="cf-t">Four boxes in a row: the editor's Bookmark.java, out/Bookmark.class, next/Bookmark.class, and the launcher's printed line. The editor changes from value + 1 to value + 2; out keeps iconst_1 and the launcher prints 7 8; compiling into next writes iconst_2 there but the launcher still reads out; compiling into out changes it to iconst_2 and the launcher prints 7 9</title>
+<text class="d-tiny" x="16" y="34">editor</text>
+<rect class="d-paper" x="16" y="46" width="170" height="64" rx="8"/>
+<text class="d-mi" x="28" y="70">Bookmark.java</text>
+<g class="step s1 hide-2"><text class="d-mi" x="28" y="98">value + 1</text></g>
+<g class="step s2" data-pulse="2"><text class="d-mi" x="28" y="98">value + 2</text></g>
+<text class="d-tiny" x="16" y="160">out/</text>
+<rect class="d-box" x="16" y="172" width="170" height="64" rx="8"/>
+<text class="d-mi" x="28" y="196">Bookmark.class</text>
+<g class="step s1 hide-5"><text class="d-mi" x="28" y="224">iconst_1</text></g>
+<g class="step s5" data-pulse="5"><text class="d-mi" x="28" y="224">iconst_2</text></g>
+<x-arrow class="step only-1" tone="acc" d="M100,112 L100,168"/>
+<x-arrow class="step s5" tone="acc" d="M100,112 L100,168"/>
+<g class="step s4"><text class="d-tiny" x="230" y="160">next/</text>
+<rect class="d-box" x="230" y="172" width="170" height="64" rx="8"/><text class="d-mi" x="242" y="196">Bookmark.class</text><text class="d-mi" x="242" y="224">iconst_2</text>
+<x-arrow tone="path" d="M180,112 C230,130 300,130 310,168"/></g>
+<text class="d-tiny" x="452" y="160">java -cp out</text>
+<rect class="d-hl" x="452" y="172" width="172" height="64" rx="8"/>
+<x-arrow tone="acc" d="M190,290 C320,330 520,320 540,240"/>
+<path class="d-line" d="M100,238 V290 H190"/>
+<g class="step s1 hide-2"><text class="d-b" x="538" y="212" text-anchor="middle">7 8</text></g>
+<g class="step only-2"><text class="d-b" x="538" y="212" text-anchor="middle">?</text></g>
+<g class="step s3 hide-5" data-pulse="3"><text class="d-b" x="538" y="212" text-anchor="middle">7 8</text></g>
+<g class="step s5"><text class="d-b" x="538" y="212" text-anchor="middle">7 9</text></g>
+<g class="step s1" data-move="1:100,290 3:100,290 4:100,290 5:100,290"><circle class="d-dot" r="8"/></g>
 </svg>
 <ol class="caps">
-<li><p>The source adds one.</p></li>
-<li><p>The compiler translates the method.</p></li>
-<li><p>The class file contains the translated method.</p></li>
-<li><p>The launcher loads the class from out.</p></li>
+<li><p>javac compiled Bookmark.java into a <b>class file</b> in out: increment's instruction <code>iconst_1</code>. java -cp out reads that file and prints 7 8.</p></li>
+<li><p>You edit the source to value + 2 and don't compile. <i>Predict: what does java -cp out print now?</i></p></li>
+<li><p>Still 7 8. The launcher reads out/Bookmark.class, which still holds <code>iconst_1</code>; it never reads the source.</p></li>
+<li><p>You compile with javac -d next. The new class file, with <code>iconst_2</code>, lands in next. The launcher still reads out: 7 8.</p></li>
+<li><p>Compile into out, the folder the launcher reads, and its class file changes to <code>iconst_2</code>. Now it prints 7 9.</p></li>
 </ol>

@@ -51,38 +51,52 @@
     <article class="module-check course-top wrap narrow" data-course="jvm">
       <p class="eyebrow"><a href="./">JVM internals for Kotlin and Android developers</a> · check</p>
       <h1>Know From source to a live object already?</h1>
-      <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 5 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: Which program did you actually run?</p>
 <fieldset class="quiz" data-n="0">
-<legend>You edit the source and run the existing class. What does its first line show?</legend>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1" data-ok><label for="q-00-class-file-1-1"><span>The earlier 7 8</span></label>
-<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2"><label for="q-00-class-file-1-2"><span>The updated 7 9</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The launch command loads the class that already exists. <a class="show-me" href="00-class-file.html">Learn it in puzzle 0 →</a></p>
+<legend>You edit the source to value + 2 and launch from out without compiling. What does the first line show?</legend>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-1"><label for="q-00-class-file-1-1"><span>7 9, from the edited source</span></label>
+<input type="radio" name="q-00-class-file-1" id="q-00-class-file-1-2" data-ok><label for="q-00-class-file-1-2"><span>7 8, from the earlier class file</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The launcher reads the class file in out; the source isn't read at all. <a class="show-me" href="00-class-file.html">Learn it in puzzle 0 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The compiler writes instructions into a class file. Running an existing class reads that earlier output.</p>
 </fieldset></section>
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: What does a method receive?</p>
 <fieldset class="quiz" data-n="1">
-<legend>After the addition and before the return, what is on the helper stack?</legend>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1" data-ok><label for="q-01-frame-1-1"><span>One value, eight</span></label>
-<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2"><label for="q-01-frame-1-2"><span>Two values, seven and eight</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Each method invocation has its own frame with locals and an operand stack.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Addition consumes both of its inputs. <a class="show-me" href="01-frame.html">Learn it in puzzle 1 →</a></p>
+<legend>After <code>iadd</code> and before <code>ireturn</code>, what is on increment's operand stack?</legend>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-1"><label for="q-01-frame-1-1"><span>Two values, 7 and 8</span></label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-2" data-ok><label for="q-01-frame-1-2"><span>One value, 8</span></label>
+<input type="radio" name="q-01-frame-1" id="q-01-frame-1-3"><label for="q-01-frame-1-3"><span>Nothing: the sum went straight into slot 0</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> <code>iadd</code> removes both of its inputs and pushes only the sum. <a class="show-me" href="01-frame.html">Learn it in puzzle 1 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Instructions take inputs from the stack and leave the result on top.</p>
+<p class="fb no opt-3"><b>Not quite.</b> An addition leaves its result on the stack; only a store would move it to a slot. <a class="show-me" href="01-frame.html">Learn it in puzzle 1 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Why do both names read eight?</p>
 <fieldset class="quiz" data-n="2">
-<legend>Reassign the parameter before writing eight. Which value does first see?</legend>
-<input type="radio" name="q-02-reference-1" id="q-02-reference-1-1"><label for="q-02-reference-1-1"><span>Eight in the newly created counter</span></label>
-<input type="radio" name="q-02-reference-1" id="q-02-reference-1-2" data-ok><label for="q-02-reference-1-2"><span>Seven in the original counter</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The caller still points at the original object. <a class="show-me" href="02-reference.html">Learn it in puzzle 2 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> A copied reference can still point to the same object. Reassigning one local changes only that local.</p>
+<legend>You swap the lines in edit: inside = new Counter(99) first, then inside.value = 8. What does main print for first.value and second.value?</legend>
+<input type="radio" name="q-02-reference-1" id="q-02-reference-1-1"><label for="q-02-reference-1-1"><span>99 99</span></label>
+<input type="radio" name="q-02-reference-1" id="q-02-reference-1-2"><label for="q-02-reference-1-2"><span>8 8</span></label>
+<input type="radio" name="q-02-reference-1" id="q-02-reference-1-3" data-ok><label for="q-02-reference-1-3"><span>7 7</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Only inside was given B; first and second still lead to A. <a class="show-me" href="02-reference.html">Learn it in puzzle 2 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> After the reassignment, inside leads to B, so the 8 lands in B. <a class="show-me" href="02-reference.html">Learn it in puzzle 2 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> The write follows whichever reference inside holds at that moment.</p>
 </fieldset></section>
 <section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: When can a counter be reclaimed?</p>
 <fieldset class="quiz" data-n="3">
-<legend>What does the last printed eight demonstrate?</legend>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1"><label for="q-03-reachability-1-1"><span>The collector ran just before the final print</span></label>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2" data-ok><label for="q-03-reachability-1-2"><span>The original counter was still reachable</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> A field read does not report collector activity. <a class="show-me" href="03-reachability.html">Learn it in puzzle 3 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Losing one reference leaves the object reachable while another live reference still leads to it.</p>
+<legend>You add first = null; just before the last println. What happens?</legend>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1" data-ok><label for="q-03-reachability-1-1"><span>It throws NullPointerException</span></label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2"><label for="q-03-reachability-1-2"><span>It prints 0, the default for an int</span></label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-3"><label for="q-03-reachability-1-3"><span>It prints 8, because A still exists until the collector runs</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A read needs a path through the variable you read from.</p>
+<p class="fb no opt-2"><b>Not quite.</b> No object is reached at all, so no field, default or not, is read. <a class="show-me" href="03-reachability.html">Learn it in puzzle 3 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> The read goes through first, and first no longer holds a reference to anything. <a class="show-me" href="03-reachability.html">Learn it in puzzle 3 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: How can two increments produce eight?</p>
+<fieldset class="quiz" data-n="4">
+<legend>B reads only after A's compareAndSet(7, 8) has succeeded. What does B's compareAndSet(8, 9) return?</legend>
+<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-1" data-ok><label for="q-04-shared-counter-1-1"><span>true, and the counter becomes 9</span></label>
+<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-2"><label for="q-04-shared-counter-1-2"><span>false, because A already wrote</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A comparison succeeds whenever nothing changed since that thread's read.</p>
+<p class="fb no opt-2"><b>Not quite.</b> B's expected value, 8, matches what A left. <a class="show-me" href="04-shared-counter.html">Learn it in puzzle 4 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

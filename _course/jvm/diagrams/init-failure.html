@@ -1,0 +1,24 @@
+<!-- label: Prices moves from not initialized to initializing at the first use; its static code throws, so the JVM wraps the exception in ExceptionInInitializerError and marks Prices erroneous; every later use finds the mark and gets NoClassDefFoundError -->
+<!-- question: What state is Prices in after each use, and what does each use get? type: state machine (class states, transitions labelled with the use that triggers them, the trap state marked) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="if-t"><title id="if-t">Three states of class Prices: not initialized, initializing, and erroneous, the trap. The first use moves it to initializing; parseInt throws NumberFormatException; the JVM throws ExceptionInInitializerError to attempt 1 and moves Prices to erroneous. Attempt 2 finds erroneous and gets NoClassDefFoundError without running any code</title>
+<rect class="d-paper" x="16" y="40" width="170" height="64" rx="32"/><text class="d-tiny" x="101" y="78" text-anchor="middle">not initialized</text>
+<g class="step s1"><x-arrow tone="acc" d="M188,72 L250,72"/><text class="d-a" x="194" y="60">1st use</text>
+<rect class="d-paper" x="254" y="40" width="170" height="64" rx="32"/><text class="d-tiny" x="339" y="78" text-anchor="middle">initializing</text>
+<text class="d-mi" x="254" y="132">parseInt("seven")</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-bad" x="234" y="146" width="210" height="40" rx="6"/><text class="d-tiny" x="339" y="172" text-anchor="middle">NumberFormatException</text></g>
+<g class="step s3"><x-arrow tone="red" d="M424,72 L486,72"/>
+<rect class="d-bad" x="490" y="40" width="134" height="64" rx="32"/><text class="d-tiny" x="557" y="78" text-anchor="middle">erroneous</text>
+<rect class="d-hl" x="16" y="214" width="290" height="44" rx="6"/><text class="d-tiny" x="28" y="242">1: ExceptionInInitializerError</text>
+<path class="d-dash" d="M252,190 L170,212"/></g>
+<g class="step only-3"><text class="d-b" x="460" y="300" text-anchor="middle">?</text></g>
+<g class="step s4"><x-arrow tone="path" d="M557,180 L557,108"/><text class="d-a" x="440" y="198">2nd use</text><text class="d-r" x="440" y="134">no code runs</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-bad" x="330" y="280" width="294" height="44" rx="6"/><text class="d-tiny" x="342" y="308">2: NoClassDefFoundError</text><x-arrow tone="red" d="M557,108 C620,180 600,250 560,276"/></g>
+<g class="step s1" data-move="1:339,114 3:557,114 4:557,114"><circle class="d-dot" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Attempt 1 reads Prices.base, the first use, so the JVM starts initializing Prices: it runs its static code, which calls parseInt("seven").</p></li>
+<li><p>parseInt throws <code>NumberFormatException</code>: "seven" isn't digits. The static code can't finish.</p></li>
+<li><p>The JVM wraps it in <code>ExceptionInInitializerError</code> for attempt 1 and marks Prices <b>erroneous</b>, for good. <i>Predict: what does attempt 2 get?</i></p></li>
+<li><p>Attempt 2 reads Prices.base. The JVM checks the state first, finds erroneous, and runs no code at all.</p></li>
+<li><p>It throws <code>NoClassDefFoundError</code>: Could not initialize class. The same happens at every later use.</p></li>
+</ol>

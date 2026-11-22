@@ -1,17 +1,31 @@
-<!-- label: When can a counter be reclaimed? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">When can a counter be reclaimed?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Two names</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Clear second</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">First reads 8</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Still reachable</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: Roots (main's locals and a static cache) on the left, objects on the right; clearing second removes one arrow; the traversal from the roots marks A; B and the C-D cycle are never reached -->
+<!-- question: Which objects can the program still reach after second = null? type: box-and-pointer (roots, objects, references, then a traversal from the roots) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="rc-t"><title id="rc-t">Left, the roots: main's locals first and second, and a static field cache. Right: Counter A, Counter B and two objects C and D pointing at each other. first, second and cache lead to A. second is cleared. A traversal from the roots marks A; B, C and D are never reached</title>
+<rect class="d-hl" x="16" y="16" width="190" height="300" rx="10"/>
+<text class="d-tiny" x="30" y="42">roots</text>
+<rect class="d-paper" x="30" y="56" width="162" height="44" rx="6"/><text class="d-mi" x="42" y="84">first</text>
+<rect class="d-paper" x="30" y="114" width="162" height="44" rx="6"/><text class="d-mi" x="42" y="142">second</text>
+<rect class="d-paper" x="30" y="236" width="162" height="44" rx="6"/><text class="d-mi" x="42" y="264">cache</text>
+<text class="d-tiny" x="30" y="200">main's locals ↑</text>
+<text class="d-tiny" x="30" y="302">static field</text>
+<rect class="d-paper" x="380" y="40" width="150" height="56" rx="8"/><text class="d-mi" x="394" y="74">A: 8</text>
+<rect class="d-paper" x="380" y="130" width="150" height="56" rx="8"/><text class="d-mi" x="394" y="164">B: 99</text>
+<rect class="d-paper" x="300" y="250" width="110" height="56" rx="8"/><text class="d-mi" x="314" y="284">C</text>
+<rect class="d-paper" x="500" y="250" width="110" height="56" rx="8"/><text class="d-mi" x="514" y="284">D</text>
+<x-arrow tone="ink" d="M412,262 C440,236 470,236 496,262"/>
+<x-arrow tone="ink" d="M496,296 C470,320 440,320 414,296"/>
+<x-arrow tone="ink" d="M194,78 L376,66"/>
+<x-arrow class="step s1 hide-2" tone="ink" d="M194,136 C280,136 320,80 376,74"/>
+<x-arrow tone="ink" d="M194,258 C300,230 330,100 376,84"/>
+<g class="step s2"><text class="d-r" x="120" y="142">null</text></g>
+<g class="step only-2"><text class="d-b" x="560" y="130" text-anchor="middle">?</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-acc" x="376" y="36" width="158" height="64" rx="10"/><text class="d-a" x="544" y="74">reached</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="376" y="126" width="158" height="64" rx="10"/><text class="d-mi" x="394" y="164">B: 99</text><rect class="d-bad" x="296" y="246" width="118" height="64" rx="10"/><text class="d-mi" x="314" y="284">C</text><rect class="d-bad" x="496" y="246" width="118" height="64" rx="10"/><text class="d-mi" x="514" y="284">D</text><text class="d-r" x="300" y="350">never reached: may be reclaimed</text></g>
+<g class="step s3" data-move="3:206,78 4:376,68"><circle class="d-dot" r="8"/></g>
 </svg>
 <ol class="caps">
-<li><p>Both caller variables reach the same counter.</p></li>
-<li><p>The second reference is cleared.</p></li>
-<li><p>The first reference still allows a read.</p></li>
-<li><p>One remaining path is enough here.</p></li>
+<li><p>A <b>root</b> is a starting point the program can always use: a local in a running method, like main's first and second, or a static field, like a shared cache.</p></li>
+<li><p>main runs second = null. One arrow to A is gone. <i>Predict: which objects can the program still reach?</i></p></li>
+<li><p>The <b>garbage collector</b> starts at every root and follows every arrow: first and cache both reach A.</p></li>
+<li><p>Nothing ever reaches B, C or D. C and D point at each other, but no path from a root enters the pair: all three may be reclaimed.</p></li>
 </ol>

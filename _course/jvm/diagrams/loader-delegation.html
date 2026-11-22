@@ -1,0 +1,27 @@
+<!-- label: Loader one asks its parents for Greeter first; none has it, so one defines (Greeter, one). Loader two does the same and defines (Greeter, two); the cast between them fails -->
+<!-- question: Who loads Greeter, in what order, and why do two loaders end up with two classes? type: sequence diagram (one lifeline per class loader, time going down) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ld-t"><title id="ld-t">Lifelines for the loaders one, two, app, platform and bootstrap. one asks app, app asks platform, platform asks bootstrap; each answers no; one defines the class (Greeter, one). two repeats the request and defines (Greeter, two); casting an object of one class to the other fails</title>
+<rect class="d-paper" x="8" y="16" width="96" height="40" rx="6"/><text class="d-tiny" x="56" y="42" text-anchor="middle">one</text>
+<rect class="d-paper" x="118" y="16" width="96" height="40" rx="6"/><text class="d-tiny" x="166" y="42" text-anchor="middle">two</text>
+<rect class="d-band" x="248" y="16" width="96" height="40" rx="6"/><text class="d-tiny" x="296" y="42" text-anchor="middle">app</text>
+<rect class="d-band" x="372" y="16" width="96" height="40" rx="6"/><text class="d-tiny" x="420" y="42" text-anchor="middle">platform</text>
+<rect class="d-band" x="506" y="16" width="108" height="40" rx="6"/><text class="d-tiny" x="560" y="42" text-anchor="middle">bootstrap</text>
+<path class="d-dash" d="M56,58 V368 M166,58 V368 M296,58 V368 M420,58 V368 M560,58 V368"/>
+<g class="step s1"><x-arrow tone="acc" d="M58,84 L292,84"/><text class="d-a" x="120" y="78">Greeter?</text></g>
+<g class="step s2"><x-arrow tone="acc" d="M298,106 L416,106"/><x-arrow tone="acc" d="M422,128 L556,128"/>
+<x-arrow tone="path" d="M558,152 L424,152"/><text class="d-r" x="480" y="146">no</text><x-arrow tone="path" d="M418,172 L300,172"/><text class="d-r" x="350" y="166">no</text><x-arrow tone="path" d="M294,192 L60,192"/><text class="d-r" x="230" y="186">no</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="8" y="206" width="150" height="40" rx="6"/><text class="d-tiny" x="83" y="232" text-anchor="middle">(Greeter, one)</text></g>
+<g class="step s4"><x-arrow tone="acc" d="M168,270 L292,270"/><text class="d-a" x="190" y="264">Greeter?</text></g>
+<g class="step only-4"><text class="d-b" x="166" y="320" text-anchor="middle">?</text></g>
+<g class="step s5" data-pulse="5"><x-arrow tone="path" d="M294,290 L170,290"/><text class="d-r" x="230" y="284">no</text><rect class="d-bad" x="118" y="296" width="150" height="40" rx="6"/><text class="d-tiny" x="193" y="322" text-anchor="middle">(Greeter, two)</text></g>
+<g class="step s6" data-pulse="6"><x-arrow tone="red" d="M84,248 C90,330 100,340 114,330"/><text class="d-r" x="290" y="362">cast fails: two different classes</text></g>
+<g class="step s1" data-move="1:296,84 2:56,192 3:56,226 4:296,270 5:166,316 6:166,316"><circle class="d-dot" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Code calls one.loadClass("Greeter"). A <b>class loader</b> is an object that finds class files and turns them into classes. one doesn't look yet: it asks its parent, app.</p></li>
+<li><p>app asks platform, which asks bootstrap: <b>parent delegation</b>, the request goes up first. None of them has Greeter, so each answers no, back down.</p></li>
+<li><p>Only now does one look in its own folder, plugin-out, and create Greeter. one is its <b>defining loader</b>, so this class is the pair (Greeter, one).</p></li>
+<li><p>A second loader, two, gets the same request and has the same folder and the same parent. <i>Predict: does it get the same class?</i></p></li>
+<li><p>No. The parents still say no, so two defines its own class from the same bytes: (Greeter, two).</p></li>
+<li><p>Same name, different defining loaders: two classes. An object of (Greeter, one) is not an instance of (Greeter, two), so the cast fails.</p></li>
+</ol>

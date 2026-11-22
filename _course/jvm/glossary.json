@@ -1,69 +1,745 @@
 {
-  "baseline": {
-    "words": [
-      "Java",
-      "JDK",
-      "Bookmark"
-    ]
+ "baseline": {
+  "words": [
+   "Java",
+   "JDK",
+   "Bookmark",
+   "ArrayList",
+   "List",
+   "APK",
+   "R8",
+   "URL"
+  ]
+ },
+ "terms": {
+  "reference": {
+   "in": "02",
+   "def": "A value through which code can reach an object."
   },
-  "terms": {
-    "reference": {
-      "in": 2,
-      "def": "A value through which code can reach an object."
-    },
-    "stack frame": {
-      "in": 1,
-      "def": "The local variables and operand stack of one method invocation.",
-      "aliases": [
-        "frame"
-      ]
-    },
-    "class file": {
-      "in": 0,
-      "def": "A file describing a compiled type and the instructions for its methods."
-    },
-    "conditional write": {
-      "in": 4,
-      "def": "A change applied only when the current value matches the expected value."
-    },
-    "iload_0": {
-      "in": 1,
-      "kind": "code",
-      "def": "Copy the integer in local slot zero onto the operand stack."
-    },
-    "iconst_1": {
-      "in": 1,
-      "kind": "code",
-      "def": "Push the integer constant one onto the operand stack."
-    },
-    "root": {
-      "in": 3,
-      "aliases": [
-        "roots"
-      ],
-      "def": "A starting point from which the runtime traces live references."
-    },
-    "garbage collector": {
-      "in": 3,
-      "def": "The part of the runtime that automatically reclaims storage for objects the program can no longer reach."
-    }
+  "stack frame": {
+   "in": "01",
+   "def": "The local variables and operand stack of one method invocation.",
+   "aliases": [
+    "frame"
+   ]
   },
-  "from": {
-    "DEX": {
-      "course": "android",
-      "in": 9
-    },
-    "ART": {
-      "course": "android",
-      "in": 9
-    },
-    "JVM": {
-      "course": "kmp",
-      "in": 0
-    },
-    "compiler": {
-      "course": "kmp",
-      "in": 0
-    }
+  "class file": {
+   "in": "00",
+   "def": "A file describing a compiled type and the instructions for its methods."
+  },
+  "conditional write": {
+   "in": "04",
+   "def": "A change applied only when the current value matches the expected value."
+  },
+  "iload_0": {
+   "in": "00",
+   "kind": "code",
+   "def": "Copy the integer in local slot zero onto the operand stack."
+  },
+  "iconst_1": {
+   "in": "00",
+   "kind": "code",
+   "def": "Push the integer constant one onto the operand stack."
+  },
+  "root": {
+   "in": "03",
+   "aliases": [
+    "roots"
+   ],
+   "def": "A starting point from which the runtime traces live references."
+  },
+  "garbage collector": {
+   "in": "03",
+   "def": "The part of the runtime that automatically reclaims storage for objects the program can no longer reach."
+  },
+  "bytecode": {
+   "in": "05",
+   "def": "The instructions inside a class file; each one starts with a one-byte opcode."
+  },
+  "opcode": {
+   "in": "05",
+   "def": "The single byte at the start of an instruction that says which operation to perform.",
+   "aliases": [
+    "opcodes"
+   ]
+  },
+  "byte offset": {
+   "in": "05",
+   "def": "The number javap prints before an instruction: where it starts, counted in bytes from the start of the method."
+  },
+  "type letter": {
+   "in": "05",
+   "def": "The first letter of many instruction names, giving the type it works on: i for int, l for long, a for a reference."
+  },
+  "iadd": {
+   "in": "00",
+   "kind": "code",
+   "def": "Remove two integers from the operand stack and push their sum."
+  },
+  "ireturn": {
+   "in": "00",
+   "kind": "code",
+   "def": "Hand the integer on top of the operand stack to the caller and finish the call."
+  },
+  "imul": {
+   "in": "05",
+   "kind": "code",
+   "def": "Remove two integers from the operand stack and push their product."
+  },
+  "isub": {
+   "in": "05",
+   "kind": "code",
+   "def": "Remove two integers and push the deeper one minus the top one."
+  },
+  "iload": {
+   "in": "05",
+   "kind": "code",
+   "aliases": [
+    "iload_1",
+    "iload_2"
+   ],
+   "def": "Copy the integer in a local slot onto the operand stack."
+  },
+  "istore": {
+   "in": "05",
+   "kind": "code",
+   "aliases": [
+    "istore_2"
+   ],
+   "def": "Remove the integer on top of the operand stack and write it into a local slot."
+  },
+  "iconst_2": {
+   "in": "00",
+   "kind": "code",
+   "def": "Push the integer constant two onto the operand stack."
+  },
+  "bipush": {
+   "in": "05",
+   "kind": "code",
+   "def": "Push a small integer carried in the instruction itself (one extra byte)."
+  },
+  "sipush": {
+   "in": "05",
+   "kind": "code",
+   "def": "Push an integer carried in the instruction itself (two extra bytes)."
+  },
+  "ScoreKt": {
+   "in": "05",
+   "kind": "code",
+   "def": "The class kotlinc creates for the top-level functions of Score.kt."
+  },
+  "constant pool": {
+   "in": "06",
+   "def": "The numbered table near the start of a class file holding the names, texts and numbers its code refers to."
+  },
+  "descriptor": {
+   "in": "06",
+   "aliases": [
+    "descriptors"
+   ],
+   "def": "A type written in the class file short code: I for int, J for long, L plus a class name for a reference; for a method, (parameters) then the return type."
+  },
+  "symbolic reference": {
+   "in": "06",
+   "aliases": [
+    "symbolic references"
+   ],
+   "def": "A reference to a class, field or method by its name and descriptor, which the JVM looks up while the program runs."
+  },
+  "getstatic": {
+   "in": "06",
+   "kind": "code",
+   "def": "Read a static field, named through the constant pool, and push its value."
+  },
+  "ldc": {
+   "in": "06",
+   "kind": "code",
+   "aliases": [
+    "ldc_w"
+   ],
+   "def": "Push a constant stored in the constant pool."
+  },
+  "Fieldref": {
+   "in": "06",
+   "kind": "code",
+   "def": "A constant-pool entry describing a field: its class plus its name and descriptor."
+  },
+  "NameAndType": {
+   "in": "06",
+   "kind": "code",
+   "def": "A constant-pool entry pairing a name with a descriptor."
+  },
+  "Utf8": {
+   "in": "06",
+   "kind": "code",
+   "def": "A constant-pool entry holding a piece of text."
+  },
+  "receiver": {
+   "in": "07",
+   "def": "The object a method is called on; inside the method it arrives in local slot 0."
+  },
+  "bootstrap method": {
+   "in": "07",
+   "def": "A method an invokedynamic instruction names; the JVM runs it once, the first time, to decide what the call does."
+  },
+  "invokestatic": {
+   "in": "07",
+   "kind": "code",
+   "def": "Call a static method: exactly the one the constant pool names."
+  },
+  "invokespecial": {
+   "in": "07",
+   "kind": "code",
+   "def": "Call exactly the named instance method: a constructor, a super call, a Kotlin private method."
+  },
+  "invokevirtual": {
+   "in": "07",
+   "kind": "code",
+   "def": "Call a method through a class type, choosing the version in the receiver class."
+  },
+  "invokeinterface": {
+   "in": "07",
+   "kind": "code",
+   "def": "Call a method through an interface type, choosing the version in the receiver class."
+  },
+  "invokedynamic": {
+   "in": "07",
+   "kind": "code",
+   "def": "A call whose target a bootstrap method decides the first time it runs."
+  },
+  "<init>": {
+   "in": "07",
+   "kind": "code",
+   "def": "The name a constructor has inside a class file."
+  },
+  "aload": {
+   "in": "07",
+   "kind": "code",
+   "aliases": [
+    "aload_0",
+    "aload_2"
+   ],
+   "def": "Copy the reference in a local slot onto the operand stack."
+  },
+  "astore": {
+   "in": "02",
+   "kind": "code",
+   "aliases": [
+    "astore_0",
+    "astore_2"
+   ],
+   "def": "Remove the reference on top of the stack and write it into a local slot."
+  },
+  "istore_1": {
+   "in": "07",
+   "kind": "code",
+   "def": "Store the top integer in local slot 1."
+  },
+  "getfield": {
+   "in": "07",
+   "kind": "code",
+   "def": "Read a field of the object whose reference is on top of the stack."
+  },
+  "getter": {
+   "in": "08",
+   "aliases": [
+    "getters"
+   ],
+   "def": "A generated method that returns a property field, such as getVisits()."
+  },
+  "setter": {
+   "in": "08",
+   "aliases": [
+    "setters"
+   ],
+   "def": "A generated method that stores its argument in a property field, such as setVisits(int)."
+  },
+  "mask": {
+   "in": "08",
+   "def": "The extra int a $default method receives: bit n is set when argument n was left out."
+  },
+  "visit$default": {
+   "in": "08",
+   "kind": "code",
+   "def": "The method kotlinc generates to fill in default arguments of visit."
+  },
+  "Bookmark$Companion": {
+   "in": "08",
+   "kind": "code",
+   "def": "The class kotlinc generates for the companion object of Bookmark."
+  },
+  "BookmarkKt": {
+   "in": "08",
+   "kind": "code",
+   "def": "The class holding the top-level functions of Bookmark.kt."
+  },
+  "checkNotNullParameter": {
+   "in": "08",
+   "kind": "code",
+   "def": "The Kotlin runtime check that throws when a non-null parameter receives null."
+  },
+  "@JvmStatic": {
+   "in": "08",
+   "kind": "code",
+   "def": "Kotlin annotation: also generate a real static method for a companion function."
+  },
+  "@JvmOverloads": {
+   "in": "08",
+   "kind": "code",
+   "def": "Kotlin annotation: generate one overload per default argument for Java callers."
+  },
+  "@JvmName": {
+   "in": "08",
+   "kind": "code",
+   "def": "Kotlin annotation: choose the JVM name of a generated method."
+  },
+  "iand": {
+   "in": "08",
+   "kind": "code",
+   "def": "Remove two integers and push the bits set in both."
+  },
+  "ifeq": {
+   "in": "08",
+   "kind": "code",
+   "def": "Jump to the given offset if the integer on top is zero."
+  },
+  "iconst_0": {
+   "in": "08",
+   "kind": "code",
+   "def": "Push the integer constant zero."
+  },
+  "isOpen": {
+   "in": "08",
+   "kind": "code",
+   "def": "A property name starting with is, whose getter keeps the name."
+  },
+  "getIsOpen": {
+   "in": "08",
+   "kind": "code",
+   "def": "The getter name Kotlin does not generate for isOpen."
+  },
+  "getUrl": {
+   "in": "08",
+   "kind": "code",
+   "def": "The getter kotlinc generates for val url."
+  },
+  "getVisits": {
+   "in": "08",
+   "kind": "code",
+   "def": "The getter for var visits."
+  },
+  "setVisits": {
+   "in": "08",
+   "kind": "code",
+   "def": "The setter for var visits."
+  },
+  "function object": {
+   "in": "09",
+   "aliases": [
+    "function objects"
+   ],
+   "def": "An object with one invoke() method that runs a lambda, carrying the values the lambda captured."
+  },
+  "inline function": {
+   "in": "09",
+   "aliases": [
+    "inline functions"
+   ],
+   "def": "A Kotlin function whose body, and the lambdas passed to it, kotlinc copies into each caller."
+  },
+  "call site": {
+   "in": "09",
+   "aliases": [
+    "call sites"
+   ],
+   "def": "One place in the code where a call is written, such as one invokedynamic instruction."
+  },
+  "Function0": {
+   "in": "09",
+   "kind": "code",
+   "def": "Kotlin interface for a function with no parameters; its method is invoke()."
+  },
+  "LambdaMetafactory": {
+   "in": "09",
+   "kind": "code",
+   "def": "The JDK class whose bootstrap method creates lambda classes while the program runs."
+  },
+  "main$lambda$0": {
+   "in": "09",
+   "kind": "code",
+   "def": "The private static method holding the lambda body."
+  },
+  "istore_0": {
+   "in": "09",
+   "kind": "code",
+   "def": "Store the top integer in local slot 0."
+  },
+  "LambdasKt": {
+   "in": "09",
+   "kind": "code",
+   "def": "The class holding the top-level functions of Lambdas.kt."
+  },
+  "HotSpot": {
+   "in": "10",
+   "def": "The JVM inside OpenJDK, the one java runs in this course."
+  },
+  "method table": {
+   "in": "10",
+   "aliases": [
+    "method tables",
+    "vtable"
+   ],
+   "def": "HotSpot per-class list with one entry per overridable method, at the same position as in the parent class."
+  },
+  "OpenJDK": {
+   "in": "10",
+   "kind": "code",
+   "def": "The open-source project that builds the JDK, including HotSpot."
+  },
+  "class loading": {
+   "in": "11",
+   "def": "Finding a class file bytes and creating the class in memory, the first time code needs the class."
+  },
+  "verification": {
+   "in": "11",
+   "def": "The linking step that checks a class bytecode is safe to run before any of it runs."
+  },
+  "preparation": {
+   "in": "11",
+   "def": "The linking step that creates a class static fields with default values (0, null)."
+  },
+  "resolution": {
+   "in": "11",
+   "def": "Turning a symbolic reference into the real class, field or method it names."
+  },
+  "linking": {
+   "in": "11",
+   "def": "Verification, preparation and resolution: making a loaded class ready to run."
+  },
+  "initialization": {
+   "in": "11",
+   "def": "Running a class static code, once, at its first real use."
+  },
+  "static initializer": {
+   "in": "12",
+   "aliases": [
+    "static initializers"
+   ],
+   "def": "All of a class's static code, compiled into one method, <clinit>, that initialization runs once."
+  },
+  "<clinit>": {
+   "in": "12",
+   "kind": "code",
+   "def": "The class-file name of a class's static initializer."
+  },
+  "putstatic": {
+   "in": "12",
+   "kind": "code",
+   "def": "Write the value on top of the stack into a static field."
+  },
+  "ExceptionInInitializerError": {
+   "in": "13",
+   "kind": "code",
+   "def": "Thrown the first time a class's static initializer throws; its cause is the real error."
+  },
+  "NoClassDefFoundError": {
+   "in": "13",
+   "kind": "code",
+   "def": "Thrown when running code needs a class that can't be used: gone since compilation, or failed to initialize."
+  },
+  "NumberFormatException": {
+   "in": "13",
+   "kind": "code",
+   "def": "Thrown when text can't be read as a number."
+  },
+  "class loader": {
+   "in": "14",
+   "aliases": [
+    "class loaders"
+   ],
+   "def": "An object that finds a class's bytes by name and asks the JVM to create the class from them."
+  },
+  "parent delegation": {
+   "in": "14",
+   "def": "The rule that a class loader asks its parent for a class before looking in its own places."
+  },
+  "defining loader": {
+   "in": "14",
+   "def": "The class loader that actually created a class; with the name, it identifies the class while the program runs."
+  },
+  "ClassLoader": {
+   "in": "14",
+   "kind": "code",
+   "def": "The JDK class every class loader except bootstrap is an instance of."
+  },
+  "PlatformClassLoader": {
+   "in": "14",
+   "kind": "code",
+   "def": "How the platform class loader prints itself."
+  },
+  "AppClassLoader": {
+   "in": "14",
+   "kind": "code",
+   "def": "How the application (system) class loader prints itself."
+  },
+  "URLClassLoader": {
+   "in": "14",
+   "kind": "code",
+   "def": "A JDK class loader that reads class files from the folders or jars you give it."
+  },
+  "ClassCastException": {
+   "in": "14",
+   "kind": "code",
+   "def": "Thrown when an object is cast to a class it isn't an instance of."
+  },
+  "LinkageError": {
+   "in": "14",
+   "kind": "code",
+   "def": "Thrown when linking finds an inconsistency, such as two loaders disagreeing about a class."
+  },
+  "class path": {
+   "in": "14",
+   "def": "The list of folders and jars, given with -cp, where the application class loader looks for classes."
+  },
+  "module path": {
+   "in": "16",
+   "def": "The list of folders and jars holding Java modules, given with -p; required modules are checked before main runs."
+  },
+  "ClassNotFoundException": {
+   "in": "15",
+   "kind": "code",
+   "def": "Thrown when code asks a loader for a class by a name in a string and no loader has it."
+  },
+  "FindException": {
+   "in": "16",
+   "kind": "code",
+   "def": "Thrown at startup when a required module isn't on the module path."
+  },
+  "NoSuchMethodError": {
+   "in": "15",
+   "kind": "code",
+   "def": "Thrown when compiled code calls a method the loaded class doesn't have."
+  },
+  "Class.forName": {
+   "in": "11",
+   "kind": "code",
+   "def": "Load a class by a name given as a string."
+  },
+  "heap": {
+   "in": "17",
+   "def": "The memory where objects live, managed by the garbage collector."
+  },
+  "metaspace": {
+   "in": "17",
+   "def": "Memory outside the heap where HotSpot keeps class metadata, in chunks owned by each class loader."
+  },
+  "class unloading": {
+   "in": "17",
+   "def": "Freeing a loader's classes together with the loader, once nothing reachable leads to them."
+  },
+  "OutOfMemoryError": {
+   "in": "17",
+   "kind": "code",
+   "def": "Thrown when the JVM can't get memory it needs; its message names which kind, such as Metaspace."
+  },
+  "ThreadLocal": {
+   "in": "17",
+   "kind": "code",
+   "def": "A JDK class that keeps one value per thread."
+  },
+  "PermGen": {
+   "in": "17",
+   "kind": "code",
+   "def": "The permanent generation: where class metadata lived on the heap before JDK 8."
+  },
+  "MaxMetaspaceSize": {
+   "in": "17",
+   "kind": "code",
+   "def": "The HotSpot option that sets an upper limit on metaspace."
+  },
+  "register": {
+   "in": "18",
+   "aliases": [
+    "registers"
+   ],
+   "def": "In DEX, a numbered slot of the method's frame that an instruction names as an input or output."
+  },
+  "desugaring": {
+   "in": "18",
+   "def": "d8 rewriting Java features ART cannot run as written, such as invokedynamic lambdas, into ordinary code; lambdas are always rewritten into classes."
+  },
+  "d8": {
+   "in": "18",
+   "kind": "code",
+   "def": "The Android build tool that converts class files into DEX."
+  },
+  "PathClassLoader": {
+   "in": "18",
+   "kind": "code",
+   "def": "The class loader Android uses for apps."
+  },
+  "MyActivity": {
+   "in": "18",
+   "kind": "code",
+   "def": "An example class name from Android's R8 documentation."
+  },
+  "string_ids": {
+   "in": "18",
+   "kind": "code",
+   "def": "The DEX table listing every string a DEX file uses."
+  },
+  "vAA": {
+   "in": "18",
+   "kind": "code",
+   "def": "A register operand in Android's DEX instruction reference."
+  },
+  "vBB": {
+   "in": "18",
+   "kind": "code",
+   "def": "A register operand in Android's DEX instruction reference."
+  },
+  "vCC": {
+   "in": "18",
+   "kind": "code",
+   "def": "A register operand in Android's DEX instruction reference."
+  },
+  "operand stack": {
+   "in": "01",
+   "def": "The pile of values a frame's instructions take their inputs from and put their results on.",
+   "aliases": [
+    "operand stacks"
+   ]
+  },
+  "putfield": {
+   "in": "02",
+   "kind": "code",
+   "def": "Write the value on top of the stack into a field of the object whose reference is below it."
+  },
+  "checkcast": {
+   "in": "14",
+   "kind": "code",
+   "def": "The instruction a cast in code compiles to: check the object is an instance of a class, or throw ClassCastException."
+  },
+  "jar": {
+   "in": "12",
+   "def": "One zip file holding class files, which can be listed on a class path like a folder.",
+   "aliases": [
+    "jars"
+   ]
+  },
+  "hidden class": {
+   "in": "09",
+   "def": "A class created while the program runs, with no class file, that no other bytecode can name.",
+   "aliases": [
+    "hidden classes"
+   ]
+  },
+  "Java module": {
+   "in": "16",
+   "def": "A named set of packages whose module-info file says which other modules it requires and which packages it exports.",
+   "aliases": [
+    "Java modules"
+   ]
+  },
+  "NullPointerException": {
+   "in": "03",
+   "kind": "code",
+   "def": "Thrown when code reads a field or calls a method through a reference that is null."
+  },
+  "AtomicInteger": {
+   "in": "04",
+   "kind": "code",
+   "def": "A JDK class holding an int that offers indivisible operations such as compareAndSet."
+  },
+  "SharedCounter": {
+   "in": "04",
+   "kind": "code",
+   "def": "The lab program that replays two threads updating one AtomicInteger."
+  },
+  "SDKMAN": {
+   "in": "05",
+   "kind": "code",
+   "def": "A command-line installer for JDKs and kotlinc on macOS and Linux."
+  },
+  "GitHub": {
+   "in": "05",
+   "kind": "code",
+   "def": "The website hosting Kotlin compiler releases."
+  },
+  "JEP": {
+   "in": "07",
+   "kind": "code",
+   "def": "JDK Enhancement Proposal: the document that describes a change to the JDK."
+  },
+  "InterfaceMethod": {
+   "in": "07",
+   "kind": "code",
+   "def": "How javap labels a constant-pool reference to a method of an interface."
+  },
+  "DefaultImpls": {
+   "in": "07",
+   "kind": "code",
+   "def": "The class kotlinc emits beside an interface, forwarding to its default methods."
+  },
+  "MainActivity": {
+   "in": "08",
+   "kind": "code",
+   "def": "An example class name in an Android app."
+  },
+  "JvmSerializableLambda": {
+   "in": "09",
+   "kind": "code",
+   "def": "Kotlin annotation: compile this one lambda to its own class, the pre-2.0 way."
+  },
+  "SE": {
+   "in": "14",
+   "kind": "code",
+   "def": "Java SE: the standard Java platform the JDK implements."
+  },
+  "CompressedClassSpaceSize": {
+   "in": "17",
+   "kind": "code",
+   "def": "The HotSpot option that sets the size of the compressed class space."
+  },
+  "ExternalSyntheticLambda": {
+   "in": "18",
+   "kind": "code",
+   "def": "The part of a d8-generated lambda class name after the containing class."
+  },
+  "ExternalSynthetic": {
+   "in": "18",
+   "kind": "code",
+   "def": "The separator R8 and d8 put in the names of classes they generate."
   }
+ },
+ "from": {
+  "JVM": {
+   "course": "kmp",
+   "in": 0
+  },
+  "compiler": {
+   "course": "kmp",
+   "in": 0
+  },
+  "dex2oat": {
+   "course": "android",
+   "in": 10
+  },
+  "DEX": {
+   "course": "android",
+   "in": 9
+  },
+  "ART": {
+   "course": "android",
+   "in": 9
+  },
+  "AOT": {
+   "course": "android",
+   "in": 10
+  },
+  "JIT": {
+   "course": "android",
+   "in": 10
+  }
+ }
 }

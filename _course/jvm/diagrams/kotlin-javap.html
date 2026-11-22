@@ -1,0 +1,35 @@
+<!-- label: Each Kotlin line on the left becomes the class-file members on the right: fields with getters and setters, a Companion class and field, a $default method -->
+<!-- question: What does each line of this Kotlin become in the class file? type: annotated code (source line highlighted, generated members beside it) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="kj-t"><title id="kj-t">Kotlin source of Bookmark and visit on the left, one line highlighted per step; on the right the fields and methods javap shows for that line</title>
+<rect class="d-paper" x="16" y="16" width="292" height="348" rx="8"/>
+<g class="step s1 hide-6" data-move="1:22,79 2:22,107 3:22,135 4:22,335 5:22,305"><rect class="d-hl" x="0" y="0" width="280" height="26" rx="4"/></g>
+<text class="d-tiny" x="28" y="42">Kotlin source</text>
+<text class="d-mi" x="28" y="70">class&#160;Bookmark(</text>
+<text class="d-mi" x="28" y="98">&#160;&#160;val&#160;url:&#160;String,</text>
+<text class="d-mi" x="28" y="126">&#160;&#160;var&#160;visits:&#160;Int)&#160;{</text>
+<text class="d-mi" x="28" y="154">&#160;&#160;companion&#160;object&#160;{</text>
+<text class="d-mi" x="28" y="182">&#160;&#160;&#160;&#160;fun&#160;create(url:&#160;String)</text>
+<text class="d-mi" x="28" y="210">&#160;&#160;&#160;&#160;&#160;&#160;=&#160;Bookmark(url,&#160;0)</text>
+<text class="d-mi" x="28" y="238">&#160;&#160;}</text>
+<text class="d-mi" x="28" y="262">}</text>
+<text class="d-mi" x="28" y="296">fun&#160;visit(b:&#160;Bookmark,</text>
+<text class="d-mi" x="28" y="324">&#160;&#160;times:&#160;Int&#160;=&#160;1)</text>
+<text class="d-mi" x="28" y="354">visit(b)</text>
+<text class="d-tiny" x="330" y="40">javap shows</text>
+<g class="step s1">
+<x-arrow class="step only-1" tone="acc" d="M304,92 L326,82"/><rect class="d-box" x="330" y="52" width="294" height="58" rx="6"/><text class="d-mi" x="340" y="74">private final String url</text><text class="d-mi" x="340" y="100">getUrl()</text></g>
+<g class="step s2">
+<x-arrow class="step only-2" tone="acc" d="M304,120 L326,158"/><rect class="d-box" x="330" y="118" width="294" height="84" rx="6"/><text class="d-mi" x="340" y="140">private int visits</text><text class="d-mi" x="340" y="166">getVisits()</text><text class="d-mi" x="340" y="192">setVisits(int)</text></g>
+<g class="step s3">
+<x-arrow class="step only-3" tone="acc" d="M304,148 L326,236"/><rect class="d-box" x="330" y="210" width="294" height="58" rx="6"/><text class="d-mi" x="340" y="232">class Bookmark$Companion</text><text class="d-mi" x="340" y="258">static field Companion</text></g>
+<g class="step only-4"><x-arrow tone="acc" d="M304,348 L326,320"/><rect class="d-dash" x="330" y="276" width="294" height="84" rx="6"/><text class="d-b" x="477" y="326" text-anchor="middle">?</text></g>
+<g class="step s5" data-pulse="5">
+<x-arrow class="step only-5" tone="acc" d="M304,318 L326,318"/><rect class="d-hl" x="330" y="276" width="294" height="84" rx="6"/><text class="d-mi" x="340" y="300">visit$default(b, 0, 2, null)</text><text class="d-mi" x="340" y="326">mask 2: times left out</text><text class="d-mi" x="340" y="352">→ visit(b, 1)</text></g>
+</svg>
+<ol class="caps">
+<li><p>val url becomes a private field and a <b>getter</b>, getUrl(), a method that returns the field. Code outside the class calls the getter; it never touches the field.</p></li>
+<li><p>var visits gets a field, a getter and a <b>setter</b>, setVisits(int), which stores its argument in the field. b.visits = 6 in Kotlin compiles to a setter call.</p></li>
+<li><p>The companion object is a separate class, Bookmark$Companion, and Bookmark gets a static field, Companion, holding its one instance.</p></li>
+<li><p>visit(b) leaves out times. The class file has no default values. <i>Predict: what does this call compile to?</i></p></li>
+<li><p>A call to visit$default with an extra int, the <b>mask</b>: bit 1 (value 2) means "the second argument was left out". It puts 1 in, then calls visit.</p></li>
+</ol>

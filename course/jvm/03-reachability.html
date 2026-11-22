@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Trace which object the remaining variable can reach.">
+  <meta name="description" content="Clear one of the two names from puzzle 2 and trace which objects the program can still reach, including two objects that only point at each other.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="When can a counter be reclaimed? – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="Trace which object the remaining variable can reach.">
+  <meta property="og:description" content="Clear one of the two names from puzzle 2 and trace which objects the program can still reach, including two objects that only point at each other.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/jvm/03-reachability">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,91 +51,122 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="jvm" data-n="3">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">JVM internals for Kotlin and Android developers</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 3 · 4 of 5</p>
+        <p class="eyebrow">Puzzle 3 · 4 of 19</p>
         <h1>When can a counter be reclaimed?</h1>
-        <p class="lede">Trace which object the remaining variable can reach.</p>
+        <p class="lede">Clear one of the two names from puzzle 2 and trace which objects the program can still reach, including two objects that only point at each other.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" aria-current="page" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" aria-current="page" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li><li><a href="11-loading-linking.html" title="When does a class arrive?">11</a></li><li><a href="12-static-init-order.html" title="Why is it zero?">12</a></li><li><a href="13-static-init-failure.html" title="Why does the second try say something different?">13</a></li><li><a href="14-class-loaders.html" title="Why can't Greeter be cast to Greeter?">14</a></li><li><a href="15-classpath-modulepath.html" title="Not found, or no longer there?">15</a></li><li><a href="16-module-path.html" title="Can the JVM check before main runs?">16</a></li><li><a href="17-metaspace.html" title="Where do classes live, and how do they leak?">17</a></li><li><a href="18-android-bridge.html" title="What does Android do with all this?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-3">
         <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary>Puzzle 2: Why do both names read eight?</summary><p>A copied reference can still point to the same object. Reassigning one local changes only that local.</p><p><a href="02-reference.html">Review puzzle 2</a></p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Why do both names read eight?</summary><p>A variable of a class type holds a reference to an object, and a call copies that reference, not the object. Writing a field through the copy changes the one shared object; assigning the parameter a new object changes only the helper's own slot.</p><p><a href="02-reference.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-class-file.html">0</a> → <a href="01-frame.html">1</a> → <a href="02-reference.html">2</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>The caller clears the second name and then reads the first. Did the object disappear when one name was cleared?</p>
+<p>Puzzle 2 ended with two objects: A, which first and second both lead to, and B, which nothing leads to after edit returns. Now main clears one name and reads through the other:</p>
+<pre><code class="language-java">second = null;
+System.out.println(first.value);   // prints 8</code></pre>
+<p>Did A disappear when second was cleared? What about B? Java has no delete: memory is freed by the runtime. How does it decide what it may free?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="When can a counter be reclaimed?"><input type="radio" name="st-reachability" id="st-reachability-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-reachability" id="st-reachability-2" aria-label="Step 2 of 4"><input type="radio" name="st-reachability" id="st-reachability-3" aria-label="Step 3 of 4"><input type="radio" name="st-reachability" id="st-reachability-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">When can a counter be reclaimed?</title><defs><marker id="ah-reachability-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reachability-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reachability-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reachability-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Two names</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Clear second</text></g>
-<path class="step s2 d-arr-acc" d="M154,179 H180" marker-end="url(#ah-reachability-acc)"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">First reads 8</text></g>
-<path class="step s3 d-arr-acc" d="M305,179 H331" marker-end="url(#ah-reachability-acc)"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Still reachable</text></g>
-<path class="step s4 d-arr-acc" d="M456,179 H482" marker-end="url(#ah-reachability-acc)"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Roots (main's locals and a static cache) on the left, objects on the right; clearing second removes one arrow; the traversal from the roots marks A; B and the C-D cycle are never reached"><input type="radio" name="st-reachability" id="st-reachability-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-reachability" id="st-reachability-2" aria-label="Step 2 of 4"><input type="radio" name="st-reachability" id="st-reachability-3" aria-label="Step 3 of 4"><input type="radio" name="st-reachability" id="st-reachability-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rc-t"><title id="rc-t">Left, the roots: main's locals first and second, and a static field cache. Right: Counter A, Counter B and two objects C and D pointing at each other. first, second and cache lead to A. second is cleared. A traversal from the roots marks A; B, C and D are never reached</title><defs><marker id="ah-reachability-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reachability-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reachability-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reachability-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<rect class="d-hl" x="16" y="16" width="190" height="300" rx="10"/>
+<text class="d-tiny" x="30" y="42">roots</text>
+<rect class="d-paper" x="30" y="56" width="162" height="44" rx="6"/><text class="d-mi" x="42" y="84">first</text>
+<rect class="d-paper" x="30" y="114" width="162" height="44" rx="6"/><text class="d-mi" x="42" y="142">second</text>
+<rect class="d-paper" x="30" y="236" width="162" height="44" rx="6"/><text class="d-mi" x="42" y="264">cache</text>
+<text class="d-tiny" x="30" y="200">main's locals ↑</text>
+<text class="d-tiny" x="30" y="302">static field</text>
+<rect class="d-paper" x="380" y="40" width="150" height="56" rx="8"/><text class="d-mi" x="394" y="74">A: 8</text>
+<rect class="d-paper" x="380" y="130" width="150" height="56" rx="8"/><text class="d-mi" x="394" y="164">B: 99</text>
+<rect class="d-paper" x="300" y="250" width="110" height="56" rx="8"/><text class="d-mi" x="314" y="284">C</text>
+<rect class="d-paper" x="500" y="250" width="110" height="56" rx="8"/><text class="d-mi" x="514" y="284">D</text>
+<path class="d-arr-ink" d="M412,262 C440,236 470,236 496,262" marker-end="url(#ah-reachability-ink)"/>
+<path class="d-arr-ink" d="M496,296 C470,320 440,320 414,296" marker-end="url(#ah-reachability-ink)"/>
+<path class="d-arr-ink" d="M194,78 L376,66" marker-end="url(#ah-reachability-ink)"/>
+<path class="step s1 hide-2 d-arr-ink" d="M194,136 C280,136 320,80 376,74" marker-end="url(#ah-reachability-ink)"/>
+<path class="d-arr-ink" d="M194,258 C300,230 330,100 376,84" marker-end="url(#ah-reachability-ink)"/>
+<g class="step s2"><text class="d-r" x="120" y="142">null</text></g>
+<g class="step only-2"><text class="d-b" x="560" y="130" text-anchor="middle">?</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-acc" x="376" y="36" width="158" height="64" rx="10"/><text class="d-a" x="544" y="74">reached</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="376" y="126" width="158" height="64" rx="10"/><text class="d-mi" x="394" y="164">B: 99</text><rect class="d-bad" x="296" y="246" width="118" height="64" rx="10"/><text class="d-mi" x="314" y="284">C</text><rect class="d-bad" x="496" y="246" width="118" height="64" rx="10"/><text class="d-mi" x="514" y="284">D</text><text class="d-r" x="300" y="350">never reached: may be reclaimed</text></g>
+<g class="step s3" data-move="3:206,78 4:376,68"><circle class="d-dot" r="8"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>Both caller variables reach the same counter.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-reachability-2">Next →</label></div></li>
-<li><p>The second reference is cleared.</p><div class="stepnav"><label for="st-reachability-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-reachability-3">Next →</label></div></li>
-<li><p>The first reference still allows a read.</p><div class="stepnav"><label for="st-reachability-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-reachability-4">Next →</label></div></li>
-<li><p>One remaining path is enough here.</p><div class="stepnav"><label for="st-reachability-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-reachability-1">↺ Again</label></div></li>
+<li><p>A <b>root</b> is a starting point the program can always use: a local in a running method, like main's first and second, or a static field, like a shared cache.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-reachability-2">Next →</label></div></li>
+<li><p>main runs second = null. One arrow to A is gone. <i>Predict: which objects can the program still reach?</i></p><div class="stepnav"><label for="st-reachability-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-reachability-3">Next →</label></div></li>
+<li><p>The <b>garbage collector</b> starts at every root and follows every arrow: first and cache both reach A.</p><div class="stepnav"><label for="st-reachability-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-reachability-4">Next →</label></div></li>
+<li><p>Nothing ever reaches B, C or D. C and D point at each other, but no path from a root enters the pair: all three may be reclaimed.</p><div class="stepnav"><label for="st-reachability-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-reachability-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-reachability-1" title="Step 1"></label><label for="st-reachability-2" title="Step 2"></label><label for="st-reachability-3" title="Step 3"></label><label for="st-reachability-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/reachability.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Draw locals first and objects second. After edit returns, first and second still point to the original counter. Clearing second removes one arrow. The subsequent read through first still reaches eight. The temporary counter created inside edit has no surviving reference in this example. The runtime may reclaim its storage. The printed values cannot establish when collection ran, or whether an optimizing runtime materialized that temporary allocation at all. This distinction matters when investigating a long-lived cache that still points to old objects.</p>
-<p>The <b>garbage collector</b> manages storage for objects. To reason about ordinary, strongly held references, start with values that the running program can still use. A <b>root</b> is one of these starting points in your drawing. Follow their references and mark every object reached. A cache is a collection that keeps values for later reuse. If a live application keeps a cache, references stored in its entries also matter.</p>
-<div class="table-wrap"><table><thead><tr><th scope="col">Change to the example</th><th scope="col">Objects still reachable</th><th scope="col">Path that proves it</th></tr></thead><tbody><tr><th scope="row">A live local and the cache both hold A. A holds B. Clear the local.</th><td>A and B</td><td>cache to A to B</td></tr><tr><th scope="row">Also remove A's link to B.</th><td>A only</td><td>cache to A</td></tr><tr><th scope="row">Instead, start again and clear both the local and the cache entry.</th><td>Neither A nor B</td><td>no path from a root</td></tr></tbody></table></div>
-<p>The rows assume there are no other references. Add a link from B back to A in the last row. The two objects now point at each other. A traversal starting from the roots still reaches neither. Conversely, retaining a single cache entry can keep a large group of objects alive. To diagnose unexpected retention, look for a path from a live owner to that group. The number of times a method returned tells you little about this path.</p>
+<p>The <b>garbage collector</b> is the part of the JVM that frees the memory of objects the program can no longer use. It decides by reachability, not by counting: an object may be kept while the running program could still follow references to it.</p>
+<p>Following references needs starting points. A <b>root</b> is one: a local in a running method (a slot in a frame that hasn't returned, like main's first), or a static field (a field that belongs to a class rather than an object, like a cache the whole app shares). Start at every root, follow every reference, and mark every object you reach. What isn't marked can be reclaimed.</p>
+<p>Apply it to Bookmark after second = null:</p>
+<ul><li>first is a local of main, which is still running, so it's a root, and it leads to A. A is reachable: the read through first prints 8. (Had first been cleared too, the read itself would fail: reading a field through a variable that holds null throws NullPointerException, because no object is reached.)</li><li>B was only ever referred to by inside, a slot in edit's frame, and that frame was thrown away when edit returned. No root leads to B: it may be reclaimed.</li></ul>
+<p>Now add a cache: a static field that keeps objects for later reuse. Suppose it holds A too.</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Change</th><th scope="col">Objects still reachable</th><th scope="col">The path that proves it</th></tr></thead><tbody><tr><th scope="row">A local and the cache both lead to A. Clear the local.</th><td>A</td><td>cache to A</td></tr><tr><th scope="row">Clear the cache entry too.</th><td>none</td><td>no path from a root</td></tr><tr><th scope="row">Two objects C and D refer to each other, and nothing else refers to either.</th><td>neither</td><td>the traversal never enters the pair</td></tr></tbody></table></div>
+<p>The last row is the one people get wrong: C and D each have an incoming reference, but neither has a path from a root, so both can be reclaimed. Conversely, one forgotten cache entry keeps alive everything reachable from it, however large. To explain unexpected memory use, look for the path from a root, not for who still &quot;has&quot; a reference.</p>
+<p>Two limits. Printed values can't tell you when the collector ran, or whether it ran at all: reachability says what may be reclaimed, not when. And this puzzle covers ordinary references only; Java also has weaker kinds, which are coming in a later module.</p>
       </section>
-      <section aria-labelledby="try-it">
-        <h2 id="try-it">Try it</h2>
-<p><a href="/labs/jvm-workbench/#03-reachability">Run the browser experiment</a></p>
-<h3>Optional local lab</h3>
-<p>Complete experiment 4 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>. Record your prediction before running the program.</p>
+      <section aria-labelledby="the-analogy">
+        <h2 id="the-analogy">The analogy</h2>
+<p>The office's archive is cleared once in a while. The clearer starts from the files on desks being worked on and the cabinets every clerk shares, follows every &quot;see also&quot; slip, and tags each file reached. Untagged files are shredded, even two files whose slips point at each other, because nobody working can reach either.</p>
+      </section>
+      <section aria-labelledby="run-it-yourself">
+        <h2 id="run-it-yourself">Run it yourself</h2>
+<p>With Bookmark.java from puzzle 0:</p>
+<pre><code class="language-sh">javac -d out Bookmark.java
+java -cp out Bookmark</code></pre>
+<p>Before running, write down the last printed line. Then add a line first = null; before the last println, predict what happens, and run.</p>
+<p><a href="/labs/jvm-workbench/#03-reachability">Run the browser experiment</a>, or experiment 4 in the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>What does the last printed eight demonstrate?</legend>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1"><label for="q-03-reachability-1-1"><span>The collector ran just before the final print</span></label>
-<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2" data-ok><label for="q-03-reachability-1-2"><span>The original counter was still reachable</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> A field read does not report collector activity. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Losing one reference leaves the object reachable while another live reference still leads to it.</p>
+<legend>You add first = null; just before the last println. What happens?</legend>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-1" data-ok><label for="q-03-reachability-1-1"><span>It throws NullPointerException</span></label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-2"><label for="q-03-reachability-1-2"><span>It prints 0, the default for an int</span></label>
+<input type="radio" name="q-03-reachability-1" id="q-03-reachability-1-3"><label for="q-03-reachability-1-3"><span>It prints 8, because A still exists until the collector runs</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A read needs a path through the variable you read from.</p>
+<p class="fb no opt-2"><b>Not quite.</b> No object is reached at all, so no field, default or not, is read. <label class="show-me" for="st-reachability-2" data-goto="st-reachability">Show me step 2 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> The read goes through first, and first no longer holds a reference to anything. <label class="show-me" for="st-reachability-2" data-goto="st-reachability">Show me step 2 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>The local is cleared but the cache holds A, which holds B. Which objects can still be reached?</legend>
-<input type="radio" name="q-03-reachability-2" id="q-03-reachability-2-1"><label for="q-03-reachability-2-1"><span>Only A</span></label>
-<input type="radio" name="q-03-reachability-2" id="q-03-reachability-2-2" data-ok><label for="q-03-reachability-2-2"><span>Both A and B</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Following fields from A also reaches B. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Trace each surviving path beyond the first object.</p>
+<legend>A static cache leads to A, and main's local leads to A too. The local is cleared. Is A reachable?</legend>
+<input type="radio" name="q-03-reachability-2" id="q-03-reachability-2-1"><label for="q-03-reachability-2-1"><span>Only until main returns</span></label>
+<input type="radio" name="q-03-reachability-2" id="q-03-reachability-2-2"><label for="q-03-reachability-2-2"><span>No: clearing a reference frees the object it led to</span></label>
+<input type="radio" name="q-03-reachability-2" id="q-03-reachability-2-3" data-ok><label for="q-03-reachability-2-3"><span>Yes, through the cache, a static field and so a root</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The cache is a static field, so it stays a root after main's frame is gone. <label class="show-me" for="st-reachability-1" data-goto="st-reachability">Show me step 1 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Clearing removes one path; A stays while any root still leads to it. <label class="show-me" for="st-reachability-3" data-goto="st-reachability">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> One remaining path from a root keeps an object.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Only A and B refer to each other and no live owner can reach them. What does the cycle prove?</legend>
-<input type="radio" name="q-03-reachability-3" id="q-03-reachability-3-1"><label for="q-03-reachability-3-1"><span>Both must stay alive forever</span></label>
-<input type="radio" name="q-03-reachability-3" id="q-03-reachability-3-2" data-ok><label for="q-03-reachability-3-2"><span>Neither is reachable from those roots</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Starting from the roots never enters the cycle. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Reachability depends on a path from a root, not the mere existence of incoming references.</p>
+<legend>C and D refer only to each other, and no root leads to either. What does the traversal decide?</legend>
+<input type="radio" name="q-03-reachability-3" id="q-03-reachability-3-1"><label for="q-03-reachability-3-1"><span>One of them is kept, chosen at random</span></label>
+<input type="radio" name="q-03-reachability-3" id="q-03-reachability-3-2"><label for="q-03-reachability-3-2"><span>Both must stay, because each has an incoming reference</span></label>
+<input type="radio" name="q-03-reachability-3" id="q-03-reachability-3-3" data-ok><label for="q-03-reachability-3-3"><span>Both may be reclaimed</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The traversal never enters the pair, so neither is marked. <label class="show-me" for="st-reachability-4" data-goto="st-reachability">Show me step 4 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Incoming references don't count; a path from a root does. <label class="show-me" for="st-reachability-4" data-goto="st-reachability">Show me step 4 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> Reachability starts at the roots.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.6.1">Java language specification, reachability</a> — “can be accessed in any potential continuing computation from any live thread”</li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Losing one reference leaves the object reachable while another live reference still leads to it.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.6.1">Java language specification, 12.6.1 Implementing Finalization</a> (&quot;A reachable object is any object that can be accessed in any potential continuing computation from any live thread.&quot;)</li><li>The outputs (8, and NullPointerException: Cannot read field &quot;value&quot; after first = null) were produced in this session with OpenJDK 21.0.12.</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>An object stays alive while a path of references leads to it from a root, a local of a running method or a static field. Clearing one reference frees nothing while another path remains, and objects that only reach each other are unreachable however many references they hold.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="02-reference.html">← Puzzle 2</a>

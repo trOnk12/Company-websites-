@@ -1,0 +1,23 @@
+<!-- label: Who asked for the class decides the error: when the JVM resolves App's bytecode, the loader's ClassNotFoundException comes back wrapped in NoClassDefFoundError; when App's code passes a name to Class.forName, the ClassNotFoundException comes straight back -->
+<!-- question: Who asks for the missing class, and which error reaches App's code? type: sequence diagram (lifelines App's code, the JVM, the app loader, the folder out; time going down) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mc-t"><title id="mc-t">Four lifelines: App's code, the JVM, the application class loader, and the folder out. Run 1: the invokestatic for Helper.bonus makes the JVM resolve Helper; it asks the loader, which finds nothing in out and throws ClassNotFoundException; the JVM wraps it in NoClassDefFoundError for App. Run 2: App calls Class.forName("Missing") on the loader directly and gets ClassNotFoundException back</title>
+<rect class="d-paper" x="8" y="12" width="140" height="40" rx="6"/><text class="d-tiny" x="78" y="38" text-anchor="middle">App's code</text>
+<rect class="d-band" x="172" y="12" width="140" height="40" rx="6"/><text class="d-tiny" x="242" y="38" text-anchor="middle">the JVM</text>
+<rect class="d-band" x="336" y="12" width="140" height="40" rx="6"/><text class="d-tiny" x="406" y="38" text-anchor="middle">app loader</text>
+<rect class="d-band" x="500" y="12" width="132" height="40" rx="6"/><text class="d-tiny" x="566" y="38" text-anchor="middle">out/</text>
+<path class="d-dash" d="M78,54 V372 M242,54 V372 M406,54 V372 M566,54 V372"/>
+<g class="step s1 hide-5"><x-arrow tone="acc" d="M80,80 L238,80"/><text class="d-mi" x="86" y="72">invokestatic</text></g>
+<g class="step s2 hide-5"><x-arrow tone="acc" d="M244,110 L402,110"/><text class="d-a" x="260" y="102">Helper?</text><x-arrow tone="path" d="M408,134 L562,134"/><text class="d-r" x="520" y="164">nothing</text></g>
+<g class="step s3 hide-5"><x-arrow tone="red" d="M404,190 L246,190"/><rect class="d-bad" x="250" y="198" width="230" height="34" rx="6"/><text class="d-tiny" x="260" y="221">ClassNotFoundException</text></g>
+<g class="step only-3"><text class="d-b" x="78" y="260" text-anchor="middle">?</text></g>
+<g class="step s4 hide-5" data-pulse="4"><x-arrow tone="red" d="M240,262 L82,262"/><rect class="d-bad" x="8" y="272" width="350" height="70" rx="8"/><text class="d-tiny" x="18" y="298">NoClassDefFoundError</text><text class="d-m" x="18" y="328">caused by ClassNotFoundException</text></g>
+<g class="step s5" data-pulse="5"><x-arrow tone="acc" d="M80,100 C200,100 300,100 402,100"/><text class="d-mi" x="86" y="90">Class.forName("Missing")</text><x-arrow tone="path" d="M408,134 L562,134"/><text class="d-r" x="520" y="164">nothing</text><x-arrow tone="red" d="M404,220 C300,220 200,220 82,220"/><rect class="d-bad" x="86" y="232" width="230" height="34" rx="6"/><text class="d-tiny" x="96" y="255">ClassNotFoundException</text></g>
+<g class="step s1" data-move="1:242,80 2:406,110 3:242,190 4:78,262 5:78,220"><circle class="d-dot" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Run 1: Helper.class was deleted. main prints start, then reaches <code>invokestatic</code> Helper.bonus. The JVM must resolve Helper, a class named in App's compiled bytecode.</p></li>
+<li><p>The JVM asks the application loader for Helper, and the loader searches the class path, the folder out. Nothing is there.</p></li>
+<li><p>The loader throws <code>ClassNotFoundException</code> back to the JVM. <i>Predict: what does App's code receive?</i></p></li>
+<li><p>The JVM wraps it: <code>NoClassDefFoundError</code>, caused by the <code>ClassNotFoundException</code>. Compiled code depended on Helper, so it's an Error.</p></li>
+<li><p>Run 2: App's own code passes the name "Missing" to Class.forName. The JVM resolves nothing; the loader's <code>ClassNotFoundException</code> comes straight back to App.</p></li>
+</ol>

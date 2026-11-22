@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Follow two callers that both read seven before either saves.">
+  <meta name="description" content="Follow two callers that both read seven before either saves, and see a write that checks the expected value first.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="How can two increments produce eight? – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="Follow two callers that both read seven before either saves.">
+  <meta property="og:description" content="Follow two callers that both read seven before either saves, and see a write that checks the expected value first.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/jvm/04-shared-counter">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,108 +51,122 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="jvm" data-n="4">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">JVM internals for Kotlin and Android developers</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 4 · 5 of 5</p>
+        <p class="eyebrow">Puzzle 4 · 5 of 19</p>
         <h1>How can two increments produce eight?</h1>
-        <p class="lede">Follow two callers that both read seven before either saves.</p>
+        <p class="lede">Follow two callers that both read seven before either saves, and see a write that checks the expected value first.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" aria-current="page" title="How can two increments produce eight?">4</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" aria-current="page" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li><li><a href="11-loading-linking.html" title="When does a class arrive?">11</a></li><li><a href="12-static-init-order.html" title="Why is it zero?">12</a></li><li><a href="13-static-init-failure.html" title="Why does the second try say something different?">13</a></li><li><a href="14-class-loaders.html" title="Why can't Greeter be cast to Greeter?">14</a></li><li><a href="15-classpath-modulepath.html" title="Not found, or no longer there?">15</a></li><li><a href="16-module-path.html" title="Can the JVM check before main runs?">16</a></li><li><a href="17-metaspace.html" title="Where do classes live, and how do they leak?">17</a></li><li><a href="18-android-bridge.html" title="What does Android do with all this?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-4">
         <p id="builds-on-4"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="2"><details><summary>Puzzle 2: Why do both names read eight?</summary><p>A copied reference can still point to the same object. Reassigning one local changes only that local.</p><p><a href="02-reference.html">Review puzzle 2</a></p></details></li></ul>
+        <ul><li data-block="2"><details><summary>Puzzle 2: Why do both names read eight?</summary><p>A variable of a class type holds a reference to an object, and a call copies that reference, not the object. Writing a field through the copy changes the one shared object; assigning the parameter a new object changes only the helper's own slot.</p><p><a href="02-reference.html">Review puzzle 2</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-class-file.html">0</a> → <a href="01-frame.html">1</a> → <a href="02-reference.html">2</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Two callers hold references to the same counter. Both want to add one. Starting at seven, could both finish their writes and leave eight?</p>
+<p>Puzzle 3 ended with one object reachable through two paths. Now two parts of the program use that one Counter at the same time, and both want to add one. Starting at 7, could both finish their writes and leave 8?</p>
+<p>A <b>thread</b> is one independent line of execution with its own frames (puzzle 1); two threads can run code at the same time, which is how A and B can both read seven. Each thread has its own frames, but the Counter they reach through their references (puzzle 2) is one object, shared.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Changing shared state"><input type="radio" name="st-shared-counter" id="st-shared-counter-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-shared-counter" id="st-shared-counter-2" aria-label="Step 2 of 4"><input type="radio" name="st-shared-counter" id="st-shared-counter-3" aria-label="Step 3 of 4"><input type="radio" name="st-shared-counter" id="st-shared-counter-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Changing shared state</title><defs><marker id="ah-shared-counter-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-shared-counter-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-shared-counter-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-shared-counter-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">A reads 7</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">B reads 7</text></g>
-<path class="step s2 d-arr-acc" d="M154,179 H180" marker-end="url(#ah-shared-counter-acc)"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">A saves 8</text></g>
-<path class="step s3 d-arr-acc" d="M305,179 H331" marker-end="url(#ah-shared-counter-acc)"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">B rejected</text></g>
-<path class="step s4 d-arr-acc" d="M456,179 H482" marker-end="url(#ah-shared-counter-acc)"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<figure class="stepper" aria-label="Two threads on a time axis share one counter cell; both read 7; A's compareAndSet(7, 8) returns true; B's compareAndSet(7, 8) returns false; B reads 8 and compareAndSet(8, 9) returns true"><input type="radio" name="st-shared-counter" id="st-shared-counter-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-shared-counter" id="st-shared-counter-2" aria-label="Step 2 of 5"><input type="radio" name="st-shared-counter" id="st-shared-counter-3" aria-label="Step 3 of 5"><input type="radio" name="st-shared-counter" id="st-shared-counter-4" aria-label="Step 4 of 5"><input type="radio" name="st-shared-counter" id="st-shared-counter-5" aria-label="Step 5 of 5">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="sc-t"><title id="sc-t">Two lanes, thread A on top and thread B at the bottom, with time running left to right; between them the shared counter cell. Both threads read 7. A's compareAndSet(7, 8) returns true and the cell becomes 8. B's compareAndSet(7, 8) returns false. B reads 8 and compareAndSet(8, 9) returns true; the cell becomes 9</title><defs><marker id="ah-shared-counter-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-shared-counter-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-shared-counter-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-shared-counter-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<rect class="d-lane" x="16" y="20" width="608" height="96" rx="8"/>
+<text class="d-tiny" x="28" y="44">thread A</text>
+<rect class="d-lane" x="16" y="264" width="608" height="96" rx="8"/>
+<text class="d-tiny" x="28" y="288">thread B</text>
+<text class="d-tiny" x="28" y="196">counter</text>
+<path class="d-arr-ink" d="M110,368 L620,368" marker-end="url(#ah-shared-counter-ink)"/>
+<text class="d-tiny" x="560" y="356">time</text>
+<rect class="d-box" x="110" y="160" width="510" height="60" rx="8"/>
+<g class="step only-1"><text class="d-b" x="160" y="198" text-anchor="middle">7</text></g>
+<g class="step s1"><rect class="d-paper" x="110" y="58" width="100" height="44" rx="6"/><text class="d-mi" x="124" y="86">get: 7</text>
+<rect class="d-paper" x="110" y="300" width="100" height="44" rx="6"/><text class="d-mi" x="124" y="328">get: 7</text></g>
+<g class="step s2"><rect class="d-hl" x="226" y="58" width="190" height="44" rx="6"/><text class="d-mi" x="236" y="86">cas(7, 8): true</text><path class="d-arr-acc" d="M320,104 L320,156" marker-end="url(#ah-shared-counter-acc)"/></g>
+<g class="step s2 hide-5" data-pulse="2"><text class="d-b" x="320" y="198" text-anchor="middle">8</text></g>
+<g class="step only-2"><text class="d-b" x="320" y="330">?</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-bad" x="226" y="300" width="190" height="44" rx="6"/><text class="d-mi" x="236" y="328">cas(7, 8): false</text><path class="d-red" d="M320,298 L320,224"/></g>
+<g class="step s4"><rect class="d-hl" x="430" y="300" width="186" height="44" rx="6"/><text class="d-mi" x="438" y="328">get 8, cas: true</text><path class="d-arr-acc" d="M520,298 L520,224" marker-end="url(#ah-shared-counter-acc)"/></g>
+<g class="step s5" data-pulse="5"><text class="d-b" x="520" y="198" text-anchor="middle">9</text></g>
+<g class="step s1" data-move="1:160,190 2:320,190 3:320,190 4:320,190 5:520,190"><circle class="d-acc" r="22"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>A reads the shared counter.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-shared-counter-2">Next →</label></div></li>
-<li><p>B reads the same seven. Predict whether both callers will be able to save against seven.</p><div class="stepnav"><label for="st-shared-counter-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-shared-counter-3">Next →</label></div></li>
-<li><p>A changes seven to eight after checking the expected seven.</p><div class="stepnav"><label for="st-shared-counter-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-shared-counter-4">Next →</label></div></li>
-<li><p>B still expects seven. The value remains eight.</p><div class="stepnav"><label for="st-shared-counter-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-shared-counter-1">↺ Again</label></div></li>
+<li><p>Two threads, each with its own frames, share one counter holding 7. Both get 7 before either writes.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-shared-counter-2">Next →</label></div></li>
+<li><p>A calls compareAndSet(7, 8) (cas in the picture), a <b>conditional write</b>: the counter still holds the expected 7, so it becomes 8 and A gets true. <i>Predict: B calls compareAndSet(7, 8). What does it get?</i></p><div class="stepnav"><label for="st-shared-counter-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-shared-counter-3">Next →</label></div></li>
+<li><p>false. B expected 7 but the counter holds 8, so nothing is written. Without the check, B would have written 8 again and lost an increment.</p><div class="stepnav"><label for="st-shared-counter-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-shared-counter-4">Next →</label></div></li>
+<li><p>B reads again, gets 8, and calls compareAndSet(8, 9). The counter still holds 8, so this time it returns true.</p><div class="stepnav"><label for="st-shared-counter-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-shared-counter-5">Next →</label></div></li>
+<li><p>The counter holds 9: both increments counted.</p><div class="stepnav"><label for="st-shared-counter-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-shared-counter-1">↺ Again</label></div></li>
 </ol>
-<div class="dots" aria-hidden="true"><label for="st-shared-counter-1" title="Step 1"></label><label for="st-shared-counter-2" title="Step 2"></label><label for="st-shared-counter-3" title="Step 3"></label><label for="st-shared-counter-4" title="Step 4"></label></div>
+<div class="dots" aria-hidden="true"><label for="st-shared-counter-1" title="Step 1"></label><label for="st-shared-counter-2" title="Step 2"></label><label for="st-shared-counter-3" title="Step 3"></label><label for="st-shared-counter-4" title="Step 4"></label><label for="st-shared-counter-5" title="Step 5"></label></div>
 </figure><p class="gif-link"><a href="gifs/shared-counter.gif" download>Save this diagram as a GIF</a></p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Write each caller's calculation on paper. A reads seven and calculates eight. B reads seven and also calculates eight. A writes eight. B writes eight. The second write used an old observation. Reading and writing a value safely as separate operations still leaves a gap between them.</p>
-<p>A <b>conditional write</b> changes a value only if it still matches an expected value. Java's atomic integer offers a method that compares and writes as one indivisible step. A supplies seven as the expected value and eight as the replacement. It succeeds. B supplies the same pair and gets false because the counter already holds eight. B still owes one increment. The lab finishes it with a single operation that adds one to the current value.</p>
-<div class="table-wrap"><table><thead><tr><th scope="col">Event</th><th scope="col">A's observed value</th><th scope="col">B's observed value</th><th scope="col">Shared counter</th></tr></thead><tbody><tr><th scope="row">Both read</th><td>7</td><td>7</td><td>7</td></tr><tr><th scope="row">A compares seven and replaces it with eight</th><td>7</td><td>7</td><td>8</td></tr><tr><th scope="row">B compares seven and proposes eight</th><td>7</td><td>7</td><td>8</td></tr><tr><th scope="row">B reads again, compares eight and proposes nine</th><td>7</td><td>8</td><td>9</td></tr></tbody></table></div>
-<p>The final row assumes no other writer changes eight before B's comparison. If another writer does, B must calculate a fresh candidate again. Reporting success after B's first rejected attempt would quietly lose a requested increment. Java also supplies an atomic increment operation when adding one is the entire rule.</p>
-<p>Now change the rule: both callers want to claim the final seat. A changes one to zero. B's original comparison fails. A fresh read for B returns zero. Retrying the business decision now means declining the reservation. Whether to try another write depends on what the operation promises. A single shared counter in one JVM only coordinates callers using that same object. Two servers with separate counters need a shared authority for the last seat.</p>
+<p>Write each thread's calculation down. A reads 7 and calculates 8. B reads 7 and also calculates 8. A writes 8. B writes 8. Two increments, one lost: B's write was based on an old observation. Reading and writing are each fine on their own; the gap between them is the problem.</p>
+<p>A <b>conditional write</b> changes a value only if it still matches an expected value. Java's AtomicInteger offers one, compareAndSet(expected, replacement), which compares and writes as one indivisible step: no other thread's write can land between the comparison and the write.</p>
+<pre><code class="language-java">AtomicInteger counter = new AtomicInteger(7);
+int firstRead = counter.get();                                   // A reads 7
+int secondRead = counter.get();                                  // B reads 7
+boolean firstSaved = counter.compareAndSet(firstRead, firstRead + 1);    // A: 7 → 8, true
+boolean secondSaved = counter.compareAndSet(secondRead, secondRead + 1); // B: expects 7, finds 8, false
+int result = counter.incrementAndGet();                          // B's increment, done right: 9</code></pre>
+<div class="table-wrap"><table><thead><tr><th scope="col">Event</th><th scope="col">A's observed value</th><th scope="col">B's observed value</th><th scope="col">Shared counter</th></tr></thead><tbody><tr><th scope="row">Both read</th><td>7</td><td>7</td><td>7</td></tr><tr><th scope="row">A: compareAndSet(7, 8) returns true</th><td>7</td><td>7</td><td>8</td></tr><tr><th scope="row">B: compareAndSet(7, 8) returns false</th><td>7</td><td>7</td><td>8</td></tr><tr><th scope="row">B reads again, compareAndSet(8, 9) returns true</th><td>7</td><td>8</td><td>9</td></tr></tbody></table></div>
+<p>false is not a failure to ignore: B still owes one increment, so it must read the current value and try again. Reporting success after B's rejected attempt would quietly lose a requested increment. When adding one is the whole rule, incrementAndGet does the read, the add and the conditional write for you.</p>
+<p>Now change the rule: both threads want to claim the last seat. A changes 1 to 0. B's comparison fails, and a fresh read returns 0. Retrying the business decision now means declining the reservation, not writing -1. Whether to try another write depends on what the operation promises. And a counter in one JVM only coordinates threads using that same object: two servers with their own counters need a shared authority for the last seat.</p>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>Two clerks copy the same tally from a shared sheet. If each replaces the tally with their pencilled answer, one arrival disappears. If the clerk checks and changes the tally while holding the sheet, the second clerk can see the mismatch.</p>
+<p>Two clerks copy the same tally from a shared sheet. If each replaces the tally with their pencilled answer, one arrival disappears. If the rule is &quot;hold the sheet, check it still says what you copied, and only then write&quot;, the second clerk sees the mismatch and has to copy the tally again.</p>
       </section>
-      <section aria-labelledby="try-it">
-        <h2 id="try-it">Try it</h2>
-<p><a href="/labs/jvm-workbench/#04-shared-counter">Run the browser experiment</a></p>
-<h3>Optional local lab</h3>
-<p>Run the following command from the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>.</p>
+      <section aria-labelledby="run-it-yourself">
+        <h2 id="run-it-yourself">Run it yourself</h2>
+<p>Run the following command from the <a href="https://github.com/trOnk12/Company-websites-/tree/main/labs/jvm">JVM source files</a>, which hold SharedCounter.java (the lines above, plus prints and checks).</p>
 <pre><code class="language-sh">java SharedCounter.java</code></pre>
-<p>The statements replay one possible order so you can reproduce it on every run. Before running, write down both return values and the total after each write. Then move B's read just after A's first write in the separate-writes experiment. Predict the result and update the assertion for that experiment. Reset both snapshots to seven before the conditional experiment.</p>
+<p>The statements replay one possible order of the two threads in a single thread, so the result is the same on every run. Before running, write down both compareAndSet results and the value after each line. Then move B's read just after A's write, predict the two results again, and update the check that expects B to be rejected.</p>
+<p><a href="/labs/jvm-workbench/#04-shared-counter">Run the browser experiment</a> for the same steps in the browser.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>B reads only after A writes eight. What does B calculate?</legend>
-<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-1" data-ok><label for="q-04-shared-counter-1-1"><span>Nine</span></label>
-<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-2"><label for="q-04-shared-counter-1-2"><span>Eight</span></label>
-<p class="fb ok opt-1"><b>Right.</b> B reads eight and adds one.</p>
-<p class="fb no opt-2"><b>Not quite.</b> B starts from the value A just stored. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>B reads only after A's compareAndSet(7, 8) has succeeded. What does B's compareAndSet(8, 9) return?</legend>
+<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-1" data-ok><label for="q-04-shared-counter-1-1"><span>true, and the counter becomes 9</span></label>
+<input type="radio" name="q-04-shared-counter-1" id="q-04-shared-counter-1-2"><label for="q-04-shared-counter-1-2"><span>false, because A already wrote</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A comparison succeeds whenever nothing changed since that thread's read.</p>
+<p class="fb no opt-2"><b>Not quite.</b> B's expected value, 8, matches what A left. <label class="show-me" for="st-shared-counter-4" data-goto="st-shared-counter">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Both expect seven. A succeeds. What does B's conditional write report?</legend>
-<input type="radio" name="q-04-shared-counter-2" id="q-04-shared-counter-2-1" data-ok><label for="q-04-shared-counter-2-1"><span>False</span></label>
-<input type="radio" name="q-04-shared-counter-2" id="q-04-shared-counter-2-2"><label for="q-04-shared-counter-2-2"><span>Success</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The rejected write leaves eight in place.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Seven no longer matches eight. <label class="show-me" for="st-shared-counter-3" data-goto="st-shared-counter">Show me step 3 again ↑</label></p>
+<legend>Both threads read 7. A's compareAndSet(7, 8) succeeds. What does B's compareAndSet(7, 8) return?</legend>
+<input type="radio" name="q-04-shared-counter-2" id="q-04-shared-counter-2-1"><label for="q-04-shared-counter-2-1"><span>true, and the counter becomes 9</span></label>
+<input type="radio" name="q-04-shared-counter-2" id="q-04-shared-counter-2-2" data-ok><label for="q-04-shared-counter-2-2"><span>false</span></label>
+<input type="radio" name="q-04-shared-counter-2" id="q-04-shared-counter-2-3"><label for="q-04-shared-counter-2-3"><span>true, and the counter stays 8</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> B's replacement was 8, computed from its stale read; it can't produce 9. <label class="show-me" for="st-shared-counter-3" data-goto="st-shared-counter">Show me step 3 again ↑</label></p>
+<p class="fb ok opt-2"><b>Right.</b> The rejected write leaves 8 in place.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The comparison happens first: B expects 7 and finds 8, so nothing is written. <label class="show-me" for="st-shared-counter-4" data-goto="st-shared-counter">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>A claims the final seat. B's comparison fails and a fresh read returns zero. What should B do?</legend>
+<legend>A claims the last seat. B's comparison fails and a fresh read returns 0. What should B do?</legend>
 <input type="radio" name="q-04-shared-counter-3" id="q-04-shared-counter-3-1" data-ok><label for="q-04-shared-counter-3-1"><span>Decline the reservation</span></label>
-<input type="radio" name="q-04-shared-counter-3" id="q-04-shared-counter-3-2"><label for="q-04-shared-counter-3-2"><span>Subtract one from the new value</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Repeat the business decision using the fresh count.</p>
-<p class="fb no opt-2"><b>Not quite.</b> No seat remains to grant. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<input type="radio" name="q-04-shared-counter-3" id="q-04-shared-counter-3-2"><label for="q-04-shared-counter-3-2"><span>Write -1 with another compareAndSet</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Repeat the business decision using the fresh value.</p>
+<p class="fb no opt-2"><b>Not quite.</b> A conditional write only protects against stale reads; the business rule still decides. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html#compareAndSet(int,int">Java 21 atomic integer, compareAndSet</a>) — “False return indicates that the actual value was not equal to the expected value.”</li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Checking the expected value and changing it in one indivisible step detects the stale increment.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.5.2">JVM specification, 2.5.2 Java Virtual Machine Stacks</a> (&quot;Each Java Virtual Machine thread has a private Java Virtual Machine stack , created at the same time as the thread.&quot;); <a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.5.1">2.5.1</a> (&quot;The Java Virtual Machine can support many threads of execution at once&quot;)</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html#compareAndSet(int,int">Java 21 API: AtomicInteger.compareAndSet</a>) (&quot;Atomically sets the value to newValue if the current value == expectedValue&quot;; &quot;False return indicates that the actual value was not equal to the expected value.&quot;)</li><li>The run of SharedCounter.java (8 with separate writes; true, false and value 8 with conditional writes; 9 after incrementAndGet) was produced in this session with OpenJDK 21.0.12.</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Two threads that read a shared value and write back a result can lose an update, because the value can change between the read and the write. compareAndSet checks the expected value and writes in one indivisible step, so a stale writer gets false and must read again.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="03-reachability.html">← Puzzle 3</a>
-        <a class="button" href="./">Back to the overview →</a>
+        <a class="button primary" href="05-operand-stack.html">Puzzle 5: The operand stack does the arithmetic →</a>
       </nav>
-      <section class="finish" aria-labelledby="finish-heading">
-        <h2 id="finish-heading">Apply what you learned</h2>
-        <p>Continue with worked examples and practice cases. When you reach the final project, make your own decisions before comparing your evidence with the worked review.</p>
-        <p class="actions"><a class="button primary" href="chapter-reasoning-across-threads-and-requests.html">Continue to Reasoning across threads and requests →</a> <a class="button" href="final-project.html">Start the final project →</a></p>
-      </section>
+
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20How%20can%20two%20increments%20produce%20eight%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
