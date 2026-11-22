@@ -37,7 +37,7 @@ public class Score {
 }
 ```
 
-Two runs of `java Score`, and two with the Xint option, which turns HotSpot's compilers off (only some batches shown; the full output has 200 lines):
+Two runs of java Score, and two with the Xint option, which turns HotSpot's compilers off (only some batches shown; the full output has 200 lines):
 
 | Batch | default, run 1 | default, run 2 | Xint, run 1 | Xint, run 2 |
 | --- | --- | --- | --- | --- |
@@ -69,13 +69,13 @@ That explains the slow batches. Compiling happens in the background, on separate
 ### The edges
 
 - *Interpreted, not slow everywhere.* 19 nanoseconds a call is fast for a request that runs once. The cost matters only for code that runs many times, and that's exactly the code HotSpot compiles.
-- *Xint is for experiments.* The java manual: "Compilation to native code is disabled, and all bytecode is executed by the interpreter." Nothing in production should run like that. The default, interpret first and compile hot methods, is what the manual calls mixed mode, and java -version prints it: "mixed mode".
+- *Xint is for experiments.* With it, the java manual says, "all bytecode is executed by the interpreter". Nothing in production should run like that. The default, interpret first and compile hot methods, is what the manual calls mixed mode, and java -version prints it: "mixed mode".
 - *Android does it too.* ART interprets DEX, compiles hot methods while the app runs, and dex2oat compiles profiled methods ahead of time (puzzle 18).
 - *Numbers depend on the machine.* The nanoseconds above come from one Linux machine running OpenJDK 21; yours will differ. The ratio, interpreted several times slower than compiled, is what carries over.
 
 ## The analogy
 
-A clerk handles each request by looking up every line of the procedure in the office binder before doing it: find the page for "add", do it, find the page for "multiply", do it. It's reliable, and it works for a request seen once. The clerk also keeps a tally of how often each kind of request comes in. When one kind passes a few hundred, a specialist writes it out as a single sheet the clerk can follow without opening the binder.
+A clerk handles each request by looking up every line of the procedure in the office manual before doing it: find the page for "add", do it, find the page for "multiply", do it. It's reliable, and it works for a request seen once. The clerk also keeps a tally of how often each kind of request comes in. When one kind passes a few hundred, a specialist writes it out as a single sheet the clerk can follow without opening the manual.
 
 ## Run it yourself
 

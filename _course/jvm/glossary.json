@@ -784,8 +784,7 @@
    "in": "21",
    "def": "A compiler copying a called method's body into the caller's compiled code, so the call disappears.",
    "aliases": [
-    "inlined",
-    "inline (hot)"
+    "inlined"
    ]
   },
   "type profile": {
@@ -794,10 +793,7 @@
   },
   "monomorphic": {
    "in": "21",
-   "def": "A call site that has met only one receiver class.",
-   "aliases": [
-    "bimorphic"
-   ]
+   "def": "A call site that has met only one receiver class."
   },
   "megamorphic": {
    "in": "21",

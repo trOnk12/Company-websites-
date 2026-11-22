@@ -1,7 +1,7 @@
 <!-- label: score's eight instructions run in the template interpreter: each one is read, then a jump to its template, which works on the operand stack; the invocation counter ticks per call; compiled score in the code cache runs without any of that -->
 <!-- question: What does the interpreter do for every instruction of score, and what changes once score is compiled? type: annotated code (the real bytecode, one line highlighted per step, its template and the operand stack drawn beside it) -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="in-t"><title id="in-t">score's bytecode on the left: iload_0, iconst_2, imul, iload_1, iadd, istore_2, iload_2, ireturn. For each line the interpreter jumps to that opcode's template, which updates the operand stack: 3, then 3 and 2, then 6. One call is eight jumps and adds one to the invocation counter. Compiled, score sits in the code cache as machine code and runs in about 2 nanoseconds instead of 19</title>
-<text class="d-mi" x="16" y="28">score(3, 4) in the interpreter</text>
+<text class="d-mi" x="16" y="28">score(3, 4): its 8 instructions</text>
 <g class="step s1 hide-5" data-move="1:20,48 2:20,78 3:20,108 4:20,258"><rect class="d-hl" x="0" y="0" width="216" height="28" rx="4"/></g>
 <text class="d-mi" x="30" y="68">0: iload_0</text>
 <text class="d-mi" x="30" y="98">1: iconst_2</text>
