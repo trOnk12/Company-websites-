@@ -130,7 +130,7 @@
   },
   "constant pool": {
    "in": "06",
-   "def": "The numbered table at the start of a class file holding the names, texts and numbers its code refers to."
+   "def": "The numbered table near the start of a class file holding the names, texts and numbers its code refers to."
   },
   "descriptor": {
    "in": "06",
@@ -502,7 +502,7 @@
    "def": "The list of folders and jars, given with -cp, where the application class loader looks for classes."
   },
   "module path": {
-   "in": "15",
+   "in": "16",
    "def": "The list of folders and jars holding Java modules, given with -p; required modules are checked before main runs."
   },
   "ClassNotFoundException": {

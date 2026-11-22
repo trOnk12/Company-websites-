@@ -1,0 +1,15 @@
+# Review log: JVM internals for Kotlin and Android developers
+
+Every course-clarity run adds a row. Pass bar: lint clean, every puzzle and diagram at least 8, every diagram at least 16/20 on the §3b rubric with no zero on points 1–4.
+
+## To do
+
+- 16 (now 18, android-bridge): add a real d8 + dexdump listing of score() when a machine with build-tools is available.
+- Fresh-agent learner, picture and expert passes on the whole course (this round was self-reviewed: no subagent tool in the authoring session).
+- Resolved 22 Nov: modules 1 and "Changing shared state" merged in course.json, so module numbers match the text (1 source to object, 2 bytecode, 3 loading).
+
+## Log
+
+| Date | Version | Lint | Scores | What the review found → what changed |
+|---|---|---|---|---|
+| 2026-11-22 | v2: strict review applied; module 3 now 11–18 | clean | rubric /20, self-scored from .shots/jvm/strips: class-file 17, frame 18, reference 17, reachability 17, shared-counter 17, operand-stack 18, constant-pool 18, invoke-kinds 18, kotlin-javap 16, lambda-inline 17, method-table 17, class-lifecycle 17, static-order 17, init-failure 17, loader-delegation 17, missing-class 18, module-check 17, metaspace 17, android-bridge 17. No fresh-agent passes this round. | Facts: invokeinterface vs invokevirtual depends on the declared type called through (reproduced: ArrayList-typed add is invokevirtual, a default method through a class-typed variable is invokevirtual) → 07 body, table, Q3, diagram (bootstrap question first, run-time choice step), glossary, 09, 10. d8 always desugars lambdas, ART has no LambdaMetafactory (Jake Wharton) → 18 takeaway, body, table, Q2, diagram, glossary, 09. ART model is interpreter + JIT + profile + dex2oat (AOSP JIT page), Baseline Profiles in one line. Platform loader row and the JDK 9 module shortcut (JEP 261). M5 index size; thread taught in 04; DEX excerpt from the Dalvik reference instead of a meta sentence; 09 Q3 loop; promises to modules 4, 5 and 8 → "coming in a later module"; ART/DEX/JIT/AOT defined in place; Exception vs Error. Should-fix: JLS 12.4.1 edge; Score.java shown; constant pool "near the start"; interface edges (private → invokeinterface, Greet.super → invokespecial InterfaceMethod, kotlinc 2.2 default methods + DefaultImpls, all reproduced); stack-slot count; @JvmSerializableLambda (reproduced); 10 trimmed (ROADMAP note under module 4); linkResolver.cpp line 672; checkcast message reproduced; compressed class space; 12 split (new 13, when static code throws) and 14 split (new 16, the module path) with course-renumber.py; Lazy log filtering stated; jar, reflection, getDeclaredConstructor().newInstance(), machine instructions, hidden class defined; d8 lambda names (R8 source) and R8 + keep rules. Every "Run it yourself" now runnable from the page; JDK/kotlinc install in 05; Android bytecode route in 08. Copy-the-caption quizzes replaced (07 Q1, 09 Q3, 11 Q2, 14 Q3, 16 Q2, 18 Q1). Puzzles 00–04 rewritten: analogy, inline code, predictions, sources with quotes; five new diagrams (before/after, two frames, box-and-pointer, roots and traversal, swimlanes). |

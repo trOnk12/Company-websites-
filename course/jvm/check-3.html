@@ -74,13 +74,13 @@
 </fieldset></section>
 <section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Which method does a call run?</p>
 <fieldset class="quiz" data-n="7">
-<legend>Counter has an open method next(), and Loud extends Counter and overrides it. A variable c of type Counter holds a Loud. Which next() does <code>invokevirtual</code> run for c.next()?</legend>
-<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-1"><label for="q-07-five-invokes-1-1"><span>Neither: the JVM throws an error because the types differ</span></label>
-<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-2"><label for="q-07-five-invokes-1-2"><span>Counter's next(), because the constant pool names Counter</span></label>
-<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-3" data-ok><label for="q-07-five-invokes-1-3"><span>Loud's next()</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> A Loud is a Counter, so the call is valid. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> The pool names the method; <code>invokevirtual</code> picks the version in the receiver's class. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
-<p class="fb ok opt-3"><b>Right.</b> The receiver's class decides.</p>
+<legend>Counter.next() is overridable, and a subclass Loud overrides it. A method takes a parameter c: Counter and calls c.next(). You pass it a Loud. Which instruction is in the method's bytecode, and which next() runs?</legend>
+<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-1" data-ok><label for="q-07-five-invokes-1-1"><span><code>invokevirtual</code> Counter.next, and Loud's next() runs</span></label>
+<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-2"><label for="q-07-five-invokes-1-2"><span><code>invokespecial</code> Counter.next, so Counter's next() runs</span></label>
+<input type="radio" name="q-07-five-invokes-1" id="q-07-five-invokes-1-3"><label for="q-07-five-invokes-1-3"><span><code>invokevirtual</code> Loud.next, because a Loud was passed</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The declared type picks the instruction; the receiver's class picks the code.</p>
+<p class="fb no opt-2"><b>Not quite.</b> invokespecial is for calls that must run one exact method; an overridable call isn't one. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> The compiler only knows the declared type, Counter; the object is known only while the program runs. <a class="show-me" href="07-five-invokes.html">Learn it in puzzle 7 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: What did Kotlin write for you?</p>
 <fieldset class="quiz" data-n="8">

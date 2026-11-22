@@ -1,23 +1,24 @@
-<!-- label: Kotlin compiles to class files as on the JVM; d8 then rewrites them into one DEX file with register-based bytecode, desugaring lambdas; the phone's ART runs DEX and dex2oat compiles it ahead of time -->
-<!-- question: What happens to your class files on the way to an Android phone? type: pipeline (stages left to right, the code's form between them) -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="ab-t"><title id="ab-t">A pipeline: Kotlin source, kotlinc, class files with stack bytecode, d8, one DEX file with register bytecode, and on the phone ART with dex2oat and a PathClassLoader. No class file reaches the phone</title>
-<g class="step s1"><rect class="d-paper" x="8" y="40" width="112" height="56" rx="8"/><text class="d-tiny" x="64" y="73" text-anchor="middle">Kotlin</text>
-<x-arrow tone="ink" d="M122,68 L150,68"/>
-<rect class="d-paper" x="154" y="40" width="130" height="56" rx="8"/><text class="d-tiny" x="219" y="73" text-anchor="middle">class files</text>
-<text class="d-mi" x="160" y="128">iload_0</text><text class="d-mi" x="160" y="152">iconst_2</text><text class="d-mi" x="160" y="176">imul</text><text class="d-m" x="160" y="204">operand stack</text></g>
-<g class="step s2"><x-arrow tone="ink" d="M286,68 L314,68"/><x-machine x="318" y="40" w="100" label="d8"/>
-<x-arrow tone="ink" d="M420,68 L448,68"/><rect class="d-hl" x="452" y="40" width="180" height="56" rx="8"/><text class="d-tiny" x="542" y="73" text-anchor="middle">classes.dex</text>
-<text class="d-m" x="460" y="128">registers,</text><text class="d-m" x="460" y="152">not a stack</text></g>
-<g class="step s3" data-pulse="3"><x-arrow tone="ink" d="M368,74 L368,164"/><rect class="d-adv" x="300" y="170" width="140" height="56" rx="8"/><text class="d-tiny" x="370" y="194" text-anchor="middle">desugar:</text><text class="d-tiny" x="370" y="216" text-anchor="middle">lambdas rewritten</text></g>
-<g class="step s4"><rect class="d-box" x="8" y="250" width="624" height="116" rx="10"/><text class="d-tiny" x="22" y="276">the phone</text></g>
-<g class="step only-4"><text class="d-b" x="320" y="320" text-anchor="middle">?</text></g>
-<g class="step s5"><text class="d-tiny" x="22" y="308">no class files:</text><text class="d-tiny" x="22" y="336">ART runs DEX</text><rect class="d-hl" x="200" y="290" width="200" height="56" rx="8"/><text class="d-tiny" x="300" y="323" text-anchor="middle">dex2oat: AOT</text><rect class="d-paper" x="416" y="290" width="200" height="56" rx="8"/><text class="d-tiny" x="516" y="323" text-anchor="middle">PathClassLoader</text></g>
-<g class="step s2" data-move="2:542,100 5:300,290" data-pulse="5"><circle class="d-dot" r="7"/></g>
+<!-- label: kotlinc writes class files; d8 turns them into register-based DEX and rewrites invokedynamic lambdas into classes; on the phone ART interprets DEX, its JIT compiles hot methods and writes a profile, and dex2oat compiles the profiled methods ahead of time -->
+<!-- question: What happens to your class files on the way to an Android phone, and how does the phone make the code fast? type: pipeline (stages left to right, the code's form between them) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ab-t"><title id="ab-t">Top row: class files with stack bytecode iload_0, iload_1, iadd; d8; classes.dex with the register instruction add-int vAA, vBB, vCC; under d8, a lambda's invokedynamic becomes a generated class. Bottom, the phone: ART interprets DEX, the JIT compiles hot methods and writes a profile file, dex2oat reads the profile and compiles those methods to machine code ahead of time</title>
+<g class="step s1"><rect class="d-paper" x="8" y="20" width="170" height="130" rx="8"/><text class="d-tiny" x="20" y="44">class files</text>
+<text class="d-mi" x="20" y="76">iload_0</text><text class="d-mi" x="20" y="102">iload_1</text><text class="d-mi" x="20" y="128">iadd</text></g>
+<g class="step s2"><x-arrow tone="ink" d="M180,70 L214,70"/><x-machine x="218" y="40" w="96" label="d8"/>
+<x-arrow tone="ink" d="M318,70 L352,70"/><rect class="d-hl" x="356" y="20" width="276" height="130" rx="8"/><text class="d-tiny" x="368" y="44">classes.dex</text>
+<text class="d-mi" x="368" y="84">add-int vAA,</text><text class="d-mi" x="368" y="110">  vBB, vCC</text><text class="d-m" x="368" y="138">from Android's reference</text></g>
+<g class="step s3" data-pulse="3"><x-arrow tone="ink" d="M266,108 L266,166"/><rect class="d-adv" x="150" y="170" width="300" height="48" rx="8"/><text class="d-tiny" x="162" y="200">invokedynamic lambda → a class</text></g>
+<g class="step s4"><rect class="d-box" x="8" y="232" width="624" height="140" rx="10"/><text class="d-tiny" x="22" y="256">the phone</text></g>
+<g class="step only-4"><text class="d-b" x="320" y="310" text-anchor="middle">?</text></g>
+<g class="step s5"><x-machine x="22" y="270" w="120" label="ART"/><rect class="d-paper" x="160" y="272" width="150" height="40" rx="6"/><text class="d-tiny" x="172" y="298">JIT: hot code</text>
+<x-arrow tone="ink" d="M234,314 L234,330"/><rect class="d-paper" x="160" y="330" width="150" height="34" rx="6"/><text class="d-tiny" x="172" y="353">profile file</text></g>
+<g class="step s6" data-pulse="6"><x-arrow tone="acc" d="M312,347 L346,347"/><x-machine x="350" y="318" w="120" label="dex2oat"/><x-arrow tone="acc" d="M474,346 L496,346"/><rect class="d-hl" x="500" y="272" width="124" height="92" rx="8"/><text class="d-tiny" x="510" y="300">machine</text><text class="d-tiny" x="510" y="324">code,</text><text class="d-tiny" x="510" y="348">ahead</text></g>
+<g class="step s2" data-move="2:494,154 3:300,222 5:82,262 6:560,268" data-pulse="5"><circle class="d-dot" r="7"/></g>
 </svg>
 <ol class="caps">
-<li><p>On Android, kotlinc still writes class files: the same stack bytecode as in module 2.</p></li>
-<li><p>The build then runs d8, which converts all the class files into DEX bytecode in classes.dex. DEX instructions name numbered <b>registers</b> instead of using an operand stack.</p></li>
-<li><p>On the way, d8 rewrites newer Java features older phones can't run, such as lambdas: <b>desugaring</b>.</p></li>
+<li><p>On Android, kotlinc still writes class files: the same stack bytecode as in module 2. Adding two locals takes two loads and an add.</p></li>
+<li><p>d8 converts all the class files into DEX, Android's bytecode, in classes.dex. Its add-int names three numbered <b>registers</b> instead of using a stack (the reference's example).</p></li>
+<li><p>On the way, d8 rewrites features Android's runtime can't run as written, such as <code>invokedynamic</code> lambdas, which have no LambdaMetafactory on a phone: <b>desugaring</b>.</p></li>
 <li><p>The APK goes to the phone. <i>Predict: does the phone ever load a class file?</i></p></li>
-<li><p>No. ART runs DEX, dex2oat compiles it ahead of time at install, and the app's classes come from DEX through a PathClassLoader, the class loader Android uses for apps.</p></li>
+<li><p>No. ART runs DEX, at first with an interpreter. Its <b>JIT</b> compiles hot methods while the app runs and records them in a profile file.</p></li>
+<li><p>Later, dex2oat reads that profile and compiles those methods <b>AOT</b>, ahead of time, into machine code, so the next launches start fast.</p></li>
 </ol>

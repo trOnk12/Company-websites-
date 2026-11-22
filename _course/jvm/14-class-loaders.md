@@ -47,7 +47,7 @@ Three loaders come with the JDK, each the parent of the next:
 | --- | --- | --- |
 | bootstrap | the core JDK classes, such as String | null: it's part of the JVM, not a Java object |
 | platform | a selected set of Java SE and JDK modules, such as java.sql (most of the JDK, java.logging included, is still bootstrap) | PlatformClassLoader |
-| application (also called system) | your classes, from the class path given with -cp | AppClassLoader |
+| application (also called system) | your classes, from the **class path**: the folders and jars given with -cp | AppClassLoader |
 
 Every loader except bootstrap has a parent, and the rule they follow is **parent delegation**: when asked for a class, a loader first asks its parent, which asks its parent, up to bootstrap. Only if no parent has the class does the loader look in its own places. That's why your own class called String can never replace the real one: the request reaches bootstrap first, and bootstrap answers with its own.
 
@@ -117,7 +117,7 @@ Before the last command, predict the line with == and whether the cast fails.
 
 - You write your own class named java.lang.String and put it on the class path. Which String does your code get?::*The JDK's, because the request reaches bootstrap first||Yours, because the class path is searched first >> The application loader asks its parents before it looks at the class path. >> s2||Both, one per loader >> Only one loader ever gets to define it: bootstrap answers first. >> s3::Parent delegation protects the core classes.
 - one and two both have app as parent, and Greeter is on the class path. What does a == b print?::*true: app defines Greeter once and both get it||false: each loader defines its own copy >> They ask app first, and app finds Greeter on the class path. >> the-building-block||It depends on which loader asks first >> Whichever asks first, app defines the class once and returns it to both. >> s2::Delegation shares a class.
-- A host creates loader one with app as its parent, but Greeter is in plugin-out only. Then it creates loader three with one as its parent, and asks three for Greeter. How many Greeter classes exist?::*One: three asks one first, and one has already defined it||Two: three defines its own, like two did >> two's parent was app, which lacked Greeter; three's parent is one, which has it. >> s5||None: three can't see plugin-out >> Delegation reaches one, which reads plugin-out. >> s4::Delegation shares a class whenever a parent has it.
+- A host creates loader one with app as its parent, but Greeter is in plugin-out only. Then it creates loader three with one as its parent, and asks three for Greeter. How many Greeter classes exist?::*One: three asks one first, and one has already defined it||Two: three defines its own, like two did >> two's parent was app, which lacked Greeter; three's parent is one, which has it. >> s5||None: three can't see plugin-out >> Delegation reaches one, which reads plugin-out. >> s3::Delegation shares a class whenever a parent has it.
 
 ## Sources
 

@@ -4,13 +4,13 @@
 <rect class="d-box" x="16" y="16" width="290" height="348" rx="10"/>
 <text class="d-tiny" x="30" y="42">main's frame</text>
 <rect class="d-paper" x="30" y="58" width="120" height="50" rx="6"/><text class="d-b" x="90" y="91" text-anchor="middle">7</text>
-<text class="d-tiny" x="160" y="88">original</text>
+<text class="d-tiny" x="30" y="128">original</text>
 <path class="d-line" d="M90,170 V340 H230 V170"/>
 <text class="d-tiny" x="160" y="160" text-anchor="middle">stack</text>
 <g class="step s1 hide-5"><rect class="d-box" x="334" y="16" width="290" height="348" rx="10"/>
 <text class="d-tiny" x="348" y="42">increment's frame</text>
 <rect class="d-paper" x="348" y="58" width="120" height="50" rx="6"/>
-<text class="d-tiny" x="478" y="88">slot 0</text>
+<text class="d-tiny" x="348" y="128">slot 0</text>
 <path class="d-line" d="M410,170 V340 H550 V170"/>
 <text class="d-tiny" x="480" y="160" text-anchor="middle">stack</text></g>
 <g class="step s1 hide-5" data-move="1:368,62"><rect class="d-hl" x="0" y="0" width="80" height="42" rx="6"/><text class="d-b" x="40" y="30" text-anchor="middle">7</text></g>
@@ -20,7 +20,7 @@
 <g class="step only-3"><rect class="d-paper" x="440" y="242" width="80" height="42" rx="6"/><text class="d-b" x="480" y="271" text-anchor="middle">1</text></g>
 <g class="step only-3"><text class="d-b" x="590" y="300" text-anchor="middle">?</text></g>
 <g class="step s4" data-move="4:440,290 5:120,290" data-pulse="4 5"><rect class="d-hl" x="0" y="0" width="80" height="42" rx="6"/><text class="d-b" x="40" y="30" text-anchor="middle">8</text></g>
-<g class="step s5"><text class="d-r" x="370" y="200">frame gone</text><text class="d-mi" x="30" y="140">still 7</text></g>
+<g class="step s5"><text class="d-r" x="370" y="200">frame gone</text><text class="d-a" x="160" y="90">still 7</text></g>
 </svg>
 <ol class="caps">
 <li><p>Calling increment(original) creates a new <b>stack frame</b>, the memory for one call. 7 is copied from main's local original into increment's slot 0.</p></li>

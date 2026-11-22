@@ -37,13 +37,13 @@
 <x-arrow class="step only-4" tone="acc" d="M590,146 C634,146 634,272 594,272"/>
 <x-arrow class="step only-6" tone="acc" d="M262,190 C278,190 270,314 284,314"/>
 <g class="step only-4"><text class="d-a" x="470" y="278">= int</text></g>
-<g class="step only-6"><text class="d-a" x="438" y="360" text-anchor="middle">pushes 100000</text></g>
+<g class="step only-6"><text class="d-tiny" x="296" y="362">stack, top right:</text><rect class="d-paper" x="430" y="338" width="56" height="34" rx="4"/><text class="d-mi" x="458" y="361" text-anchor="middle">…</text><rect class="d-hl" x="492" y="338" width="96" height="34" rx="4"/><text class="d-mi" x="540" y="361" text-anchor="middle">100000</text></g>
 <g class="step s1 hide-3" data-move="1:196,81 2:292,47" data-pulse="2"><rect class="d-bad" x="0" y="0" width="32" height="28" rx="5"/><text class="d-tiny" x="16" y="20" text-anchor="middle">#7</text></g>
 <g class="step s5" data-move="5:136,177 6:292,299" data-pulse="6"><rect class="d-bad" x="0" y="0" width="40" height="28" rx="5"/><text class="d-tiny" x="20" y="20" text-anchor="middle">#13</text></g>
 </svg>
 <ol class="caps">
 <li><p><code>getstatic</code> reads a static field and pushes its value. Its offset jumps from 1 to 4: three bytes, the opcode plus two holding one number, 7. No name of a field is in the instruction.</p></li>
-<li><p>7 is an index into the class file's <b>constant pool</b>, a numbered table at the start of the file. Entry #7 says: a field, described by entries #8 and #9.</p></li>
+<li><p>7 is an index into the class file's <b>constant pool</b>, a numbered table near the start of the file. Entry #7 says: a field, described by entries #8 and #9.</p></li>
 <li><p>Entry #8 names the class that owns the field, through #10: the text Score.</p></li>
 <li><p>Entry #9 gives the field's name, weight, and its <b>descriptor</b>, I: the type written as one letter, I for int.</p></li>
 <li><p><code>ldc</code> pushes a constant from the pool. 100000 is too big for <code>sipush</code>. <i>Predict: what does entry #13 hold?</i></p></li>

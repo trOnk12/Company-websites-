@@ -6,8 +6,9 @@
 <text class="d-mi" x="28" y="52">class&#160;Settings&#160;{</text>
 <text class="d-mi" x="28" y="82">&#160;&#160;val&#160;doubled&#160;=&#160;limit&#160;*&#160;2</text>
 <text class="d-mi" x="28" y="122">&#160;&#160;companion&#160;object&#160;{</text>
-<text class="d-mi" x="28" y="154">&#160;&#160;&#160;&#160;val&#160;shared&#160;=&#160;Settings()</text>
-<text class="d-mi" x="28" y="182">&#160;&#160;&#160;&#160;val&#160;limit&#160;=&#160;10</text>
+<rect class="d-hl step s6" x="22" y="135" width="288" height="56" rx="4"/>
+<g data-move="1:0,0 6:0,28"><text class="d-mi" x="28" y="154">&#160;&#160;&#160;&#160;val&#160;shared&#160;=&#160;Settings()</text></g>
+<g data-move="1:0,0 6:0,-28"><text class="d-mi" x="28" y="182">&#160;&#160;&#160;&#160;val&#160;limit&#160;=&#160;10</text></g>
 <text class="d-mi" x="28" y="214">&#160;&#160;}</text>
 <text class="d-mi" x="28" y="244">}</text>
 <text class="d-tiny" x="350" y="40">static fields</text>
@@ -21,7 +22,7 @@
 <g class="step s4"><x-arrow tone="acc" d="M559,108 C560,130 560,150 560,168"/></g>
 <g class="step s5" data-pulse="5"><text class="d-b" x="415" y="100" text-anchor="middle">10</text></g>
 <g class="step only-5"><text class="d-r" x="350" y="258">too late: doubled stays 0</text></g>
-<g class="step s6" data-pulse="6"><text class="d-b" x="560" y="210" text-anchor="middle">20</text><rect class="d-hl" x="16" y="292" width="608" height="56" rx="8"/><text class="d-tiny" x="30" y="326">fix: put val limit = 10 above val shared</text></g>
+<g class="step s6" data-pulse="6"><text class="d-b" x="560" y="210" text-anchor="middle">20</text><rect class="d-hl" x="16" y="292" width="608" height="56" rx="8"/><text class="d-tiny" x="30" y="326">fixed: limit is written first</text></g>
 </svg>
 <ol class="caps">
 <li><p>Preparation (puzzle 11) gives every static field its default: limit is 0, shared is null. Now initialization runs the static code, top to bottom.</p></li>

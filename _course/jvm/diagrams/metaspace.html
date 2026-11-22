@@ -1,28 +1,31 @@
-<!-- label: Each plugin is a loader and an object on the heap, and its class metadata in metaspace; one kept object holds its class, its loader and everything the loader defined -->
+<!-- label: Each plugin is a loader and an object on the heap, and its class metadata in a metaspace chunk owned by that loader; dropped, all three go; one object kept from a static list holds its class, its loader and the chunk -->
 <!-- question: Where does a loaded class live, and what keeps it from being unloaded? type: memory layout (heap and metaspace side by side, references as arrows) -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="ms-t"><title id="ms-t">Left, the heap with a plugin's loader and a Greeter object; right, metaspace with Greeter's class metadata in a chunk owned by that loader. With no references the three are unloaded together; a list kept by the app reaches the object, the object its class, the class its loader, so nothing is unloaded and metaspace fills</title>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ms-t"><title id="ms-t">Left, the heap with a plugin's loader and a Greeter object; right, metaspace with a chunk owned by that loader holding class Greeter's metadata. With no references the three disappear together. A static list, a root, reaches the object, the object its class, the class its loader, so nothing is unloaded, and each reload adds another chunk until metaspace is full</title>
 <rect class="d-lane" x="16" y="16" width="300" height="290" rx="8"/>
 <rect class="d-lane" x="332" y="16" width="292" height="290" rx="8"/>
-<g class="step s1"><text class="d-tiny" x="28" y="40">heap</text>
-<rect class="d-paper" x="160" y="100" width="140" height="46" rx="6"/><text class="d-tiny" x="230" y="128" text-anchor="middle">a Greeter</text>
+<text class="d-tiny" x="28" y="40">heap</text>
+<text class="d-tiny" x="344" y="40">metaspace</text>
+<g class="step s1 hide-3"><rect class="d-paper" x="160" y="100" width="140" height="46" rx="6"/><text class="d-tiny" x="230" y="128" text-anchor="middle">a Greeter</text>
 <rect class="d-paper" x="160" y="218" width="140" height="46" rx="6"/><text class="d-tiny" x="230" y="246" text-anchor="middle">plugin loader</text></g>
-<g class="step s2"><text class="d-tiny" x="344" y="40">metaspace</text>
-<rect class="d-dash" x="352" y="80" width="256" height="120" rx="8"/>
-<rect class="d-hl" x="368" y="98" width="224" height="84" rx="6"/><text class="d-tiny" x="380" y="124">class Greeter</text><text class="d-m" x="380" y="150">methods, bytecode,</text><text class="d-m" x="380" y="172">constant pool</text>
-<x-arrow tone="ink" d="M302,123 L364,123"/><x-arrow tone="ink" d="M420,184 C420,240 360,241 304,241"/></g>
-<g class="step only-3"><rect class="d-dusk" x="160" y="100" width="140" height="46" rx="6"/><rect class="d-dusk" x="160" y="218" width="140" height="46" rx="6"/><rect class="d-dusk" x="368" y="98" width="224" height="84" rx="6"/></g>
+<g class="step s2 hide-3"><rect class="d-dash" x="352" y="64" width="256" height="130" rx="8"/><text class="d-tiny" x="362" y="84">chunk of plugin loader</text>
+<rect class="d-hl" x="368" y="96" width="224" height="84" rx="6"/><text class="d-tiny" x="380" y="120">class Greeter</text><text class="d-m" x="380" y="146">methods, bytecode,</text><text class="d-m" x="380" y="168">constant pool</text>
+<x-arrow tone="ink" d="M302,123 L364,123"/><x-arrow tone="ink" d="M420,182 C420,240 360,241 304,241"/></g>
 <g class="step only-3" data-pulse="3"><rect class="d-bad" x="16" y="316" width="608" height="50" rx="8"/><text class="d-tiny" x="30" y="346">nothing reaches them: all three unloaded</text></g>
-<g class="step s4"><rect class="d-box" x="28" y="56" width="104" height="40" rx="6"/><text class="d-tiny" x="80" y="81" text-anchor="middle">kept list</text><x-arrow tone="red" d="M134,80 C150,86 150,110 156,118"/></g>
+<g class="step s4"><rect class="d-paper" x="160" y="100" width="140" height="46" rx="6"/><text class="d-tiny" x="230" y="128" text-anchor="middle">a Greeter</text>
+<rect class="d-paper" x="160" y="218" width="140" height="46" rx="6"/><text class="d-tiny" x="230" y="246" text-anchor="middle">plugin loader</text>
+<rect class="d-dash" x="352" y="64" width="256" height="130" rx="8"/><text class="d-tiny" x="362" y="84">chunk</text>
+<rect class="d-hl" x="368" y="96" width="224" height="84" rx="6"/><text class="d-tiny" x="380" y="120">class Greeter</text>
+<rect class="d-hl" x="28" y="56" width="110" height="40" rx="6"/><text class="d-tiny" x="83" y="81" text-anchor="middle">kept list</text><text class="d-a" x="28" y="116">root</text><x-arrow tone="red" d="M138,80 C150,86 150,110 156,118"/></g>
 <g class="step only-4"><text class="d-b" x="80" y="200" text-anchor="middle">?</text></g>
-<g class="step s5"><x-arrow tone="red" d="M302,116 L364,116"/><x-arrow tone="red" d="M440,184 C440,262 360,262 304,256"/><text class="d-r" x="28" y="160">all reachable</text></g>
-<g class="step s6" data-pulse="6"><rect class="d-hl" x="470" y="210" width="130" height="20" rx="4"/><rect class="d-hl" x="470" y="236" width="130" height="20" rx="4"/><rect class="d-hl" x="470" y="262" width="130" height="20" rx="4"/><rect class="d-bad" x="16" y="316" width="608" height="50" rx="8"/><text class="d-tiny" x="30" y="346">5,310 plugins later: OutOfMemoryError: Metaspace</text></g>
-<g class="step s4" data-move="4:80,96 5:230,264" data-pulse="5"><circle class="d-dot" r="8"/></g>
+<g class="step s5"><x-arrow tone="red" d="M302,116 L364,116"/><x-arrow tone="red" d="M440,182 C440,262 360,262 304,256"/><text class="d-r" x="28" y="170">all reachable</text></g>
+<g class="step s6" data-pulse="6"><rect class="d-dash" x="352" y="204" width="122" height="44" rx="6"/><text class="d-tiny" x="360" y="232">chunk 2</text><rect class="d-dash" x="484" y="204" width="122" height="44" rx="6"/><text class="d-tiny" x="492" y="232">chunk 3</text><rect class="d-dash" x="352" y="254" width="254" height="44" rx="6"/><text class="d-tiny" x="360" y="282">… chunk 5,310</text><rect class="d-bad" x="16" y="316" width="608" height="50" rx="8"/><text class="d-tiny" x="30" y="346">OutOfMemoryError: Metaspace</text></g>
+<g class="step s4" data-move="4:83,96 5:230,264" data-pulse="5"><circle class="d-dot" r="8"/></g>
 </svg>
 <ol class="caps">
 <li><p>A plugin, as in puzzle 14: a loader object and a Greeter object. Objects live on the <b>heap</b>, the memory the garbage collector manages (puzzle 3).</p></li>
 <li><p>The class itself, its methods, bytecode and constant pool, lives in <b>metaspace</b>: memory outside the heap that HotSpot asks the operating system for, in a chunk owned by its defining loader.</p></li>
-<li><p>Drop the plugin. Nothing reaches the loader, its object or its class, so the collector can reclaim them all: <b>class unloading</b>.</p></li>
-<li><p>Now the app keeps one Greeter object in a list. <i>Predict: can class Greeter be unloaded?</i></p></li>
+<li><p>Drop the plugin. Nothing reaches the loader, its object or its class, so the collector reclaims all three, and HotSpot frees the chunk: <b>class unloading</b>.</p></li>
+<li><p>Load the plugin again, and this time the app adds the Greeter to a list in a static field, a root. <i>Predict: can class Greeter be unloaded?</i></p></li>
 <li><p>No. The object reaches its class, the class reaches its loader, and a class can only be unloaded together with its loader.</p></li>
-<li><p>Repeat for each plugin load and metaspace only grows. With a 32-megabyte limit, this run failed after 5,310 plugins.</p></li>
+<li><p>Repeat for each plugin load: every reload adds a chunk and none is freed. With a 32-megabyte limit, this run failed after 5,310 plugins.</p></li>
 </ol>

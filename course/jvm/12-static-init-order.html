@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Puzzle 11 showed that preparation fills static fields with defaults and initialization runs the static code once. Here is what goes wrong when that code reads a field before the line that sets it, or throws.">
+  <meta name="description" content="Puzzle 11 showed that preparation fills static fields with defaults and initialization runs the static code once. Here is what goes wrong when that code reads a field before the line that sets it.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Why is it zero? – JVM internals for Kotlin and Android developers – Mateusz Pachulski">
-  <meta property="og:description" content="Puzzle 11 showed that preparation fills static fields with defaults and initialization runs the static code once. Here is what goes wrong when that code reads a field before the line that sets it, or throws.">
+  <meta property="og:description" content="Puzzle 11 showed that preparation fills static fields with defaults and initialization runs the static code once. Here is what goes wrong when that code reads a field before the line that sets it.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/jvm/12-static-init-order">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -51,13 +51,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="jvm" data-n="12">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">JVM internals for Kotlin and Android developers</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 12 · 13 of 17</p>
+        <p class="eyebrow">Puzzle 12 · 13 of 19</p>
         <h1>Why is it zero?</h1>
-        <p class="lede">Puzzle 11 showed that preparation fills static fields with defaults and initialization runs the static code once. Here is what goes wrong when that code reads a field before the line that sets it, or throws.</p>
+        <p class="lede">Puzzle 11 showed that preparation fills static fields with defaults and initialization runs the static code once. Here is what goes wrong when that code reads a field before the line that sets it.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li><li><a href="11-loading-linking.html" title="When does a class arrive?">11</a></li><li><a href="12-static-init-order.html" aria-current="page" title="Why is it zero?">12</a></li><li><a href="13-class-loaders.html" title="Why can't Greeter be cast to Greeter?">13</a></li><li><a href="14-classpath-modulepath.html" title="Not found, or no longer there?">14</a></li><li><a href="15-metaspace.html" title="Where do classes live, and how do they leak?">15</a></li><li><a href="16-android-bridge.html" title="What does Android do with all this?">16</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li><li><a href="11-loading-linking.html" title="When does a class arrive?">11</a></li><li><a href="12-static-init-order.html" aria-current="page" title="Why is it zero?">12</a></li><li><a href="13-static-init-failure.html" title="Why does the second try say something different?">13</a></li><li><a href="14-class-loaders.html" title="Why can't Greeter be cast to Greeter?">14</a></li><li><a href="15-classpath-modulepath.html" title="Not found, or no longer there?">15</a></li><li><a href="16-module-path.html" title="Can the JVM check before main runs?">16</a></li><li><a href="17-metaspace.html" title="Where do classes live, and how do they leak?">17</a></li><li><a href="18-android-bridge.html" title="What does Android do with all this?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -71,7 +71,7 @@
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>JVM</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>compiler</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>This Kotlin class compiles without a warning and prints 0, not 20:</p>
+<p>Puzzle 11 ended with initialization: the JVM runs a class's static code once, at its first real use. This Kotlin class compiles without a warning and prints 0, not 20:</p>
 <pre><code class="language-kotlin">class Settings {
     val doubled = limit * 2
 
@@ -95,8 +95,9 @@ fun main() {
 <text class="d-mi" x="28" y="52">class&#160;Settings&#160;{</text>
 <text class="d-mi" x="28" y="82">&#160;&#160;val&#160;doubled&#160;=&#160;limit&#160;*&#160;2</text>
 <text class="d-mi" x="28" y="122">&#160;&#160;companion&#160;object&#160;{</text>
-<text class="d-mi" x="28" y="154">&#160;&#160;&#160;&#160;val&#160;shared&#160;=&#160;Settings()</text>
-<text class="d-mi" x="28" y="182">&#160;&#160;&#160;&#160;val&#160;limit&#160;=&#160;10</text>
+<rect class="d-hl step s6" x="22" y="135" width="288" height="56" rx="4"/>
+<g data-move="1:0,0 6:0,28"><text class="d-mi" x="28" y="154">&#160;&#160;&#160;&#160;val&#160;shared&#160;=&#160;Settings()</text></g>
+<g data-move="1:0,0 6:0,-28"><text class="d-mi" x="28" y="182">&#160;&#160;&#160;&#160;val&#160;limit&#160;=&#160;10</text></g>
 <text class="d-mi" x="28" y="214">&#160;&#160;}</text>
 <text class="d-mi" x="28" y="244">}</text>
 <text class="d-tiny" x="350" y="40">static fields</text>
@@ -110,7 +111,7 @@ fun main() {
 <g class="step s4"><path class="d-arr-acc" d="M559,108 C560,130 560,150 560,168" marker-end="url(#ah-static-order-acc)"/></g>
 <g class="step s5" data-pulse="5"><text class="d-b" x="415" y="100" text-anchor="middle">10</text></g>
 <g class="step only-5"><text class="d-r" x="350" y="258">too late: doubled stays 0</text></g>
-<g class="step s6" data-pulse="6"><text class="d-b" x="560" y="210" text-anchor="middle">20</text><rect class="d-hl" x="16" y="292" width="608" height="56" rx="8"/><text class="d-tiny" x="30" y="326">fix: put val limit = 10 above val shared</text></g>
+<g class="step s6" data-pulse="6"><text class="d-b" x="560" y="210" text-anchor="middle">20</text><rect class="d-hl" x="16" y="292" width="608" height="56" rx="8"/><text class="d-tiny" x="30" y="326">fixed: limit is written first</text></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
@@ -149,28 +150,22 @@ fun main() {
     final int doubled;
     Config() { doubled = limit * 2; }
 }</code></pre>
-<p>The fixes, both checked by running them: write limit before shared, and doubled is 20; or make it const val limit = 10, which is copied into the constructor's bytecode at compile time (puzzle 6), so there's no field to read too early, and doubled is 20 in any order. In general, keep a static initializer from calling code that reads other statics of the same class.</p>
-<p><b>When static code throws.</b> Initialization can fail. Here the static code tries to turn the text &quot;seven&quot; into a number:</p>
-<pre><code class="language-java">static class Prices {
-    static int base = Integer.parseInt(&quot;seven&quot;);
-}</code></pre>
-<p>Reading Prices.base twice, catching what's thrown each time, prints:</p>
-<pre><code class="language-text">1: java.lang.ExceptionInInitializerError / cause: java.lang.NumberFormatException: For input string: &quot;seven&quot;
-2: java.lang.NoClassDefFoundError: Could not initialize class Broken$Prices / cause: java.lang.ExceptionInInitializerError: Exception java.lang.NumberFormatException: For input string: &quot;seven&quot; [in thread &quot;main&quot;]</code></pre>
-<p>The first attempt gets <code>ExceptionInInitializerError</code> wrapping the real cause. The JVM then marks Prices as failed for good. It never retries: every later use of the class throws <code>NoClassDefFoundError</code> with &quot;Could not initialize class&quot;. In a crash report, that second error is the one you usually see, often far from the first. Always scroll back to the first <code>ExceptionInInitializerError</code>; its cause is the real bug.</p>
+<p>The fixes, both checked by running them: write limit before shared, and doubled is 20; or make it const val limit = 10, which is copied into the constructor's bytecode at compile time (puzzle 6), so there's no field to read too early, and doubled is 20 in any order. In general, keep a static initializer from calling code that reads other statics of the same class. Both compilers reject the plainest case, a direct read of a later field on an earlier line (kotlinc says &quot;variable 'b' must be initialized&quot;, javac &quot;illegal forward reference&quot;), but neither looks inside a constructor or a function the line calls, which is how Settings slipped past.</p>
 <h3>The edges</h3>
 <ul><li><em>Two classes that need each other.</em> If A's static code uses B, and B's static code uses A, the thread initializing A starts B, and B's read of A sees A's defaults: the JVM treats the second request for A as already under way and doesn't wait for itself. The result depends on which class is touched first.</li><li><em>Threads wait for each other.</em> If another thread is initializing the class, the JVM makes the next thread wait until it finishes. That's why a Kotlin object is a safe way to create one shared instance: its static initializer runs once, even with many threads.</li><li><em>A Kotlin object is initialized at first access</em>, a companion object when its outer class is initialized, matching a Java static initializer, as the Kotlin docs put it.</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
-<p>A new office opens and the clerk works through the opening checklist from the top. Line 1: &quot;Print the welcome sign: the opening hours are twice the posted staff count.&quot; Line 2: &quot;Post the staff count: 10.&quot; When line 1 runs, the board still shows the blank the painters left, 0, so the sign says 0 hours, and nobody reprints it. If a line of the checklist fails, the office is marked &quot;closed, could not open&quot;, and every visitor after that is told only that, not why.</p>
+<p>A new office opens and the clerk works through the opening checklist from the top. Line 1: &quot;Print the welcome sign: the opening hours are twice the posted staff count.&quot; Line 2: &quot;Post the staff count: 10.&quot; When line 1 runs, the board still shows the blank the painters left, 0, so the sign says 0 hours, and nobody reprints it.</p>
       </section>
       <section aria-labelledby="run-it-yourself">
         <h2 id="run-it-yourself">Run it yourself</h2>
+<p>Save the Settings class and main from the top of this page as Settings.kt. A Kotlin program needs Kotlin's standard library, kotlin-stdlib.jar, in the list after -cp. That file is a <b>jar</b>: one zip file holding class files, which a -cp list can name just like a folder. It sits in the lib folder next to the bin folder that holds kotlinc, so the command finds it from wherever kotlinc is installed (or run the program with the kotlin command, which adds the library for you):</p>
 <pre><code class="language-sh">kotlinc Settings.kt -d out
-java -cp out:$KOTLIN_HOME/lib/kotlin-stdlib.jar SettingsKt
+java -cp &quot;out:$(dirname &quot;$(command -v kotlinc)&quot;)/../lib/kotlin-stdlib.jar&quot; SettingsKt
+kotlin -cp out SettingsKt
 javap -classpath out -c -p Settings</code></pre>
-<p>Before running, swap the two companion lines and predict the output. Then make limit a const val and predict again.</p>
+<p>Before running, write down what you expect each java line to print. Then swap the two companion lines and predict the output. Then make limit a const val and predict again.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
@@ -193,21 +188,21 @@ javap -classpath out -c -p Settings</code></pre>
 <p class="fb no opt-3"><b>Not quite.</b> The program prints 0, so nothing reordered it. <label class="show-me" for="st-static-order-4" data-goto="st-static-order">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>A crash log shows NoClassDefFoundError: Could not initialize class Prices. Where is the real cause?</legend>
-<input type="radio" name="q-12-static-init-order-3" id="q-12-static-init-order-3-1"><label for="q-12-static-init-order-3-1"><span>In a Prices class file that went missing</span></label>
-<input type="radio" name="q-12-static-init-order-3" id="q-12-static-init-order-3-2" data-ok><label for="q-12-static-init-order-3-2"><span>In an earlier ExceptionInInitializerError</span></label>
-<input type="radio" name="q-12-static-init-order-3" id="q-12-static-init-order-3-3"><label for="q-12-static-init-order-3-3"><span>In the line of code that threw this error</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> &quot;Could not initialize&quot; means the class was found but its static code failed before. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Find the first failure and its cause.</p>
-<p class="fb no opt-3"><b>Not quite.</b> That line only touched a class already marked failed. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>A companion object has val a = readB() + 1, then val b = 5, and fun readB() = b. What does a hold?</legend>
+<input type="radio" name="q-12-static-init-order-3" id="q-12-static-init-order-3-1"><label for="q-12-static-init-order-3-1"><span>It doesn't compile: b is read before its line</span></label>
+<input type="radio" name="q-12-static-init-order-3" id="q-12-static-init-order-3-2"><label for="q-12-static-init-order-3-2"><span>6, because b is 5 in the source</span></label>
+<input type="radio" name="q-12-static-init-order-3" id="q-12-static-init-order-3-3" data-ok><label for="q-12-static-init-order-3-3"><span>1, because readB() ran before b was written</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> kotlinc rejects a direct read of b there, but not a call to a function that reads it, just as it accepted the constructor in Settings. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The line that writes 5 into b runs after the line that calls readB(). <label class="show-me" for="st-static-order-4" data-goto="st-static-order">Show me step 4 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> A read through a function sees the default, 0, and 0 + 1 is 1.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.9.2">JVM specification, 2.9.2 Class Initialization Methods</a> (&quot;A class or interface has at most one class or interface initialization method and is initialized by the Java Virtual Machine invoking that method (§5.5).&quot;; &quot;It has the special name &lt;clinit&gt;.&quot;)</li><li><a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4.2">Java language specification, 12.4.2 Detailed Initialization Procedure</a> (&quot;Next, execute either the class variable initializers and static initializers of the class, or the field initializers of the interface, in textual order, as though they were a single block.&quot;)</li><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-5.html#jvms-5.5">JVM specification, 5.5 Initialization</a> (&quot;If the Class object for C indicates that initialization is in progress for C by some other thread, then release LC and block the current thread until informed that the in-progress initialization has completed&quot;; &quot;If the Class object for C indicates that initialization is in progress for C by the current thread, then this must be a recursive request for initialization. Release LC and complete normally.&quot;; &quot;If the Class object for C is in an erroneous state, then initialization is not possible. Release LC and throw a NoClassDefFoundError.&quot;)</li><li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ExceptionInInitializerError.html">Java 21 API: ExceptionInInitializerError</a> (&quot;Signals that an unexpected exception has occurred in a static initializer.&quot;)</li><li><a href="https://kotlinlang.org/docs/object-declarations.html">Kotlin docs: Object declarations and expressions</a> (&quot;Object declarations are initialized lazily , when accessed for the first time. A companion object is initialized when the corresponding class is loaded (resolved) that matches the semantics of a Java static initializer.&quot;)</li><li>The outputs (0, 0 10, 20 after either fix, and the two errors) were produced in this session with kotlinc 2.2.21 and OpenJDK 21.0.12.</li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A class's static code runs once, top to bottom, as one method the class file calls &lt;clinit&gt;. Any read of a static field whose line hasn't run yet silently sees the default value (0 or null), and if the static code throws, the class is marked as failed and every later use throws NoClassDefFoundError.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-2.html#jvms-2.9.2">JVM specification, 2.9.2 Class Initialization Methods</a> (&quot;A class or interface has at most one class or interface initialization method and is initialized by the Java Virtual Machine invoking that method (§5.5).&quot;; &quot;It has the special name &lt;clinit&gt;.&quot;)</li><li><a href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.4.2">Java language specification, 12.4.2 Detailed Initialization Procedure</a> (&quot;Next, execute either the class variable initializers and static initializers of the class, or the field initializers of the interface, in textual order, as though they were a single block.&quot;)</li><li><a href="https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-5.html#jvms-5.5">JVM specification, 5.5 Initialization</a> (&quot;If the Class object for C indicates that initialization is in progress for C by some other thread, then release LC and block the current thread until informed that the in-progress initialization has completed&quot;; &quot;If the Class object for C indicates that initialization is in progress for C by the current thread, then this must be a recursive request for initialization. Release LC and complete normally.&quot;)</li><li><a href="https://kotlinlang.org/docs/object-declarations.html">Kotlin docs: Object declarations and expressions</a> (&quot;Object declarations are initialized lazily , when accessed for the first time. A companion object is initialized when the corresponding class is loaded (resolved) that matches the semantics of a Java static initializer.&quot;)</li><li>The outputs (0, 0 10, and 20 after either fix) were produced in this session with kotlinc 2.2.21 and OpenJDK 21.0.12.</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A class's static code runs once, top to bottom, as one method the class file calls &lt;clinit&gt;. Any read of a static field whose line hasn't run yet silently sees the default value (0, false or null), with no error and no warning.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="11-loading-linking.html">← Puzzle 11</a>
-        <a class="button primary" href="13-class-loaders.html">Puzzle 13: Class loaders and delegation →</a>
+        <a class="button primary" href="13-static-init-failure.html">Puzzle 13: When static code throws →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Why%20is%20it%20zero%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
