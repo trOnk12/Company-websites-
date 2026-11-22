@@ -16,9 +16,9 @@ Puzzle 27's Run Script builds your framework on your Mac, every time Xcode build
 
 ## The building block
 
-The first thing is the machine that builds, called the **host**. Kotlin's docs list which hosts can build what, and for Apple targets the split is exactly puzzle 23's two stages:
+The first thing is the machine that runs the build, the **build host**. Kotlin's docs list which hosts can build what, and for Apple targets the split is exactly puzzle 23's two stages:
 
-| Host | Final binaries (the link stage) | klibs (the compile stage) |
+| Build host | Final binaries (the link stage) | klibs (the compile stage) |
 |---|---|---|
 | a Mac, Apple chip or Intel | any supported target | any supported target |
 | Linux or Windows | any target except Apple's | Apple targets too, with one exception not taught yet |
@@ -42,13 +42,13 @@ freeCompilerArgs += "-Xoverride-konan-properties=minVersion.ios=14.0"
 
 ## The analogy
 
-The print shop from puzzle 23 only owns the presses for Apple's paper in one city, so the final print run happens there, though manuscripts can be typeset anywhere. Its presses are certified for one model of binding machine at a time: when the restaurant buys a new binder, the shop upgrades too. And a cookbook printed for kitchens built after 2021 can't be promised to a restaurant whose oldest kitchen is from 2020, unless the shop prints a special edition.
+The print shop from puzzle 23 only owns the presses for Apple's paper in one city, so the final print run happens there, though manuscripts can be typeset anywhere. Its presses are certified for one model of stitching machine at a time: when the restaurant's supplier changes the model, the shop upgrades too. And a cookbook printed for kitchens built after 2021 can't be promised to a restaurant whose oldest kitchen is from 2020, unless the shop prints a special edition.
 
 ## Check yourself
 
 - Your build server runs Linux. Which of these can it still do for your iOS targets?::*Compile the shared code into klibs, the compile stage||Run linkReleaseFrameworkIosArm64 and produce the framework >> Final binaries for Apple targets can be built only on a Mac. >> s2||Nothing at all: Kotlin/Native doesn't run on Linux >> It runs on Linux, and can produce klibs for Apple targets; only the link stage for them needs a Mac. >> s2::Linux: klibs yes, Apple binaries no.
-- An iOS colleague installs a newer Xcode than your Kotlin version is listed with, and the Kotlin build fails on their Mac only. Why does Xcode's version matter to a Kotlin build at all?::*Kotlin/Native builds Apple targets with Xcode's tools, and each Kotlin version is tested with one Xcode version||It doesn't: the failure must come from their Swift code >> The Kotlin build itself uses Xcode's tools, so a version it wasn't tested with can break it. >> the-building-block||Xcode compiles the Kotlin code into Swift before linking >> Xcode never compiles Kotlin: Kotlin/Native does, then links with Xcode's tools. >> s3::Kotlin and Xcode versions move together.
-- The app's deployment target is iOS 14.0, and your Kotlin framework uses Kotlin's default minimum. What's the problem, and one fix?::*The framework is built for iOS 15.0 and later: raise the app's target to 15.0, or lower Kotlin's minimum on purpose||None: an iOS 14 phone runs any framework an iOS 15 phone runs >> The framework was built for 15.0 and later, so it's not promised to work on 14. >> s5||The app must use a static framework to support iOS 14 >> Static or dynamic doesn't change which iOS versions the code was built for. >> the-building-block::The app can't support older iOS than its framework.
+- An iOS colleague installs a newer Xcode than your Kotlin version is listed with, and the Kotlin build fails on their Mac only. Why does Xcode's version matter to a Kotlin build at all?::*Kotlin builds Apple targets with Xcode's tools, tested per version||It doesn't matter at all: the failure must come from their own Swift code >> The Kotlin build itself uses Xcode's tools, so a version it wasn't tested with can break it. >> the-building-block||Xcode first compiles the Kotlin code into Swift, then links the result >> Xcode never compiles Kotlin: Kotlin/Native does, then links with Xcode's tools. >> s3::Kotlin and Xcode versions move together.
+- The app's deployment target is iOS 14.0, and your Kotlin framework uses Kotlin's default minimum. What's the problem, and one fix?::*The framework needs iOS 15.0: raise the app's target, or lower Kotlin's||None: an iOS 14 phone can run any framework an iOS 15 phone can run >> The framework was built for 15.0 and later, so it's not promised to work on 14. >> s5||The app must switch to a static framework to support iOS 14 phones >> Static or dynamic doesn't change which iOS versions the code was built for. >> the-building-block::The app can't support older iOS than its framework.
 
 ## Sources
 

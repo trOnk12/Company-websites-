@@ -1,26 +1,17 @@
-<!-- label: Where Kotlin/Native build time goes: the link stage, once per binary; release with link-time optimization; debug with a cache; and where size comes from -->
-<!-- question: Where does Kotlin/Native build time go? type: number chart (relative, ×10 from the docs) -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="bt-t"><title id="bt-t">Bars of build time: the compile stage is short, the debug link stage long; an XCFramework links three targets while embedAndSign links one; a release link with link-time optimization is about ten times longer; a debug link with a warm cache is shorter; then a framework whose exported module comes in whole while other code is trimmed</title>
+<!-- label: Kotlin/Native link time, relative to one debug link for one target: an XCFramework links each target, a release link with LTO takes about ten times as long -->
+<!-- question: Where does Kotlin/Native build time go? type: number chart (relative bars, scaled from the docs: proportional per target, ×10 for release) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="bt-t"><title id="bt-t">Bars of link time in units of one debug link for one target: a debug build for one target is one unit; a debug XCFramework with two targets, two units; a release build for one target, about ten units, because of link-time optimization; a release XCFramework with two targets, about twenty units</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
-<g class="step s1 hide-6"><x-arrow tone="ink" d="M150,320 L600,320"/><text class="d-m" x="150" y="342">time, not to scale</text></g>
-<g class="step s1 hide-6" data-pulse="1"><text class="d-tiny" x="16" y="58">compile</text><rect class="d-ok" x="150" y="40" width="30" height="26" rx="4"/><text class="d-tiny" x="16" y="98">link, debug</text></g>
-<g class="step only-1"><rect class="d-dash" x="150" y="80" width="140" height="26" rx="4"/><text class="d-a" x="220" y="99" text-anchor="middle">?</text></g>
-<g class="step s2 hide-6" data-pulse="2"><rect class="d-band" x="150" y="80" width="140" height="26" rx="4"/><text class="d-tiny" x="220" y="98" text-anchor="middle">LLVM</text></g>
-<g class="step s3 hide-6" data-pulse="3"><text class="d-tiny" x="16" y="148">XCFramework</text><rect class="d-band" x="150" y="130" width="140" height="26" rx="4"/><rect class="d-band" x="290" y="130" width="140" height="26" rx="4"/><rect class="d-band" x="430" y="130" width="140" height="26" rx="4"/><text class="d-tiny" x="220" y="148" text-anchor="middle">iPhone</text><text class="d-tiny" x="360" y="148" text-anchor="middle">simulator</text><text class="d-tiny" x="500" y="148" text-anchor="middle">Intel sim</text>
-<text class="d-tiny" x="16" y="188">embedAndSign</text><rect class="d-ok" x="150" y="170" width="140" height="26" rx="4"/></g>
-<g class="step s4 hide-6" data-pulse="4"><text class="d-tiny" x="16" y="238">release</text><rect class="d-bad" x="150" y="220" width="440" height="26" rx="4"/><text class="d-rt" x="612" y="238" text-anchor="middle">×10</text></g>
-<g class="step s5 hide-6" data-pulse="5"><text class="d-tiny" x="16" y="288">debug, cached</text><rect class="d-ok" x="150" y="270" width="60" height="26" rx="4"/></g>
-<g class="step s6" data-pulse="6"><rect class="d-wood" x="40" y="40" width="300" height="290" rx="10"/><text class="d-b" x="190" y="66" text-anchor="middle">framework</text>
-<rect class="d-band" x="60" y="86" width="260" height="150" rx="6"/><text class="d-tiny" x="190" y="164" text-anchor="middle">exported: whole</text>
-<rect class="d-hl" x="60" y="250" width="110" height="60" rx="6"/><text class="d-tiny" x="115" y="285" text-anchor="middle">trimmed</text>
-<x-machine x="400" y="150" w="180" label="smallBinary"/><x-arrow tone="acc" d="M398,177 L346,177"/></g>
-<g class="step s1" data-move="1:165,53 2:290,93 3:570,143 4:580,233 5:210,283 6:346,177"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+<g class="step s1"><line class="d-line" x1="170" y1="30" x2="170" y2="320"/><line class="d-line" x1="170" y1="320" x2="620" y2="320"/><text class="d-m" x="170" y="344">0</text><text class="d-m" x="390" y="344" text-anchor="middle">10</text><text class="d-m" x="610" y="344" text-anchor="end">20 debug links</text><line class="d-line" x1="390" y1="314" x2="390" y2="326"/></g>
+<g class="step s1" data-pulse="1"><text class="d-tiny" x="16" y="66">debug, 1 target</text><rect class="d-ok" x="170" y="46" width="22" height="30" rx="3"/><text class="d-tiny" x="202" y="66">1 link</text></g>
+<g class="step s2" data-pulse="2"><text class="d-tiny" x="16" y="136">debug, 2 targets</text><rect class="d-band" x="170" y="116" width="22" height="30" rx="3"/><rect class="d-band" x="192" y="116" width="22" height="30" rx="3"/><text class="d-tiny" x="224" y="136">2 links</text></g>
+<g class="step s3" data-pulse="3"><text class="d-tiny" x="16" y="206">release, 1 target</text><rect class="d-bad" x="170" y="186" width="220" height="30" rx="3"/><text class="d-rt" x="400" y="206">LTO: ×10</text></g>
+<g class="step s4" data-pulse="4"><text class="d-tiny" x="16" y="276">release, 2 targets</text><rect class="d-bad" x="170" y="256" width="220" height="30" rx="3"/><rect class="d-bad" x="390" y="256" width="220" height="30" rx="3"/><text class="d-rt" x="500" y="246" text-anchor="middle">2 links × 10</text></g>
+<g class="step s1" data-move="1:192,30 2:214,100 3:390,170 4:610,240"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg>
 <ol class="caps">
-<li><p>One change in commonMain: the compile stage rewrites one klib, quickly. <i>Predict: how long does the link stage take?</i></p></li>
-<li><p>Much longer: it runs once per final binary, and most of it is LLVM optimizing and generating code.</p></li>
-<li><p>An XCFramework links every target in it. Xcode's embedAndSign task links only the one Xcode is building for.</p></li>
-<li><p>A release build uses <b>link-time optimization</b>: all modules optimized together in LLVM. It takes about ten times as long.</p></li>
-<li><p>A debug build reuses a <b>compilation cache</b>: libraries already compiled once, kept in ~/.konan, so their work isn't repeated.</p></li>
-<li><p>Size: an exported module comes in whole; the rest is trimmed. The smallBinary option asks LLVM to optimize release builds for size.</p></li>
+<li><p>The unit: one debug link for one target, what Xcode's embedAndSign task runs. <i>Predict: an XCFramework with two targets, in debug?</i></p></li>
+<li><p>Two links, about twice the time: Kotlin's docs say it takes proportionally more. <i>Predict: one target, but a release build?</i></p></li>
+<li><p>About ten times as long: <b>link-time optimization</b> compiles and optimizes all modules together, an "order of magnitude" more, in the docs' words.</p></li>
+<li><p>A release XCFramework does both: every target, each with link-time optimization. Leave it to the build server.</p></li>
 </ol>

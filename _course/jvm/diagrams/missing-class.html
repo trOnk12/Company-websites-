@@ -1,0 +1,22 @@
+<!-- label: Three runs on one time axis: a class missing from the class path fails at its first use; a name asked for with Class.forName fails there; a module missing from the module path fails before main starts -->
+<!-- question: When, and with which error, does a missing class stop the program? type: timeline / swimlanes (one lane per run, same time axis) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mc-t"><title id="mc-t">Three lanes on a time axis from JVM start through main starting to the first use of the class. Lane 1: class path, Helper deleted: prints start, then NoClassDefFoundError at Helper.bonus. Lane 2: Class.forName of a missing name: ClassNotFoundException. Lane 3: module path with module bonus missing: fails before main</title>
+<text class="d-tiny" x="196" y="28" text-anchor="middle">JVM starts</text>
+<text class="d-tiny" x="352" y="28" text-anchor="middle">main prints start</text>
+<text class="d-tiny" x="532" y="28" text-anchor="middle">first use</text>
+<path class="d-dash" d="M196,38 V366 M352,38 V366 M532,38 V366"/>
+<g class="step s1"><rect class="d-band" x="8" y="48" width="624" height="96" rx="8"/><text class="d-tiny" x="18" y="74">class path,</text><text class="d-tiny" x="18" y="98">Helper deleted</text><path class="d-line" d="M196,96 H520"/><circle class="d-dot" cx="196" cy="96" r="7"/><circle class="d-dot" cx="352" cy="96" r="7"/></g>
+<g class="step s2" data-pulse="2"><circle class="d-bad" cx="532" cy="96" r="13"/><path class="d-red" d="M524,88 L540,104 M540,88 L524,104"/><text class="d-rt" x="624" y="132" text-anchor="end">NoClassDefFoundError</text></g>
+<g class="step s3"><rect class="d-band" x="8" y="156" width="624" height="96" rx="8"/><text class="d-tiny" x="18" y="182">Class.forName</text><text class="d-tiny" x="18" y="206">("Missing")</text><path class="d-line" d="M196,204 H520"/><circle class="d-dot" cx="196" cy="204" r="7"/><circle class="d-dot" cx="352" cy="204" r="7"/><circle class="d-bad" cx="532" cy="204" r="13"/><path class="d-red" d="M524,196 L540,212 M540,196 L524,212"/><text class="d-rt" x="624" y="240" text-anchor="end">ClassNotFoundException</text></g>
+<g class="step s4"><rect class="d-band" x="8" y="264" width="624" height="96" rx="8"/><text class="d-tiny" x="18" y="290">module path,</text><text class="d-tiny" x="18" y="314">bonus missing</text></g>
+<g class="step only-4"><text class="d-b" x="352" y="320" text-anchor="middle">?</text></g>
+<g class="step s5" data-pulse="5"><circle class="d-bad" cx="196" cy="312" r="13"/><path class="d-red" d="M188,304 L204,320 M204,304 L188,320"/><text class="d-rt" x="230" y="318">Module bonus not found: main never runs</text></g>
+<g class="step s1" data-move="1:352,96 2:532,96 3:532,204 4:196,312"><circle class="d-acc" r="18"/></g>
+</svg>
+<ol class="caps">
+<li><p>Run 1 loads from the class path (puzzle 13). Helper.class was deleted after compiling. The JVM starts and main prints start: nobody has needed Helper yet.</p></li>
+<li><p>Helper.bonus() is the first use. The class existed when App was compiled and is gone now: <code>NoClassDefFoundError</code>, thrown only at this line.</p></li>
+<li><p>Run 2 asks for a class by a name in a string, with Class.forName. The loader finds nothing: <code>ClassNotFoundException</code>, an exception code is expected to handle.</p></li>
+<li><p>Run 3 puts Java modules, named groups of packages, on the <b>module path</b>. The module app declares it requires bonus, which is missing. <i>Predict: does main print start?</i></p></li>
+<li><p>No. The JVM checks every declared module before running main and stops with FindException: Module bonus not found, required by app.</p></li>
+</ol>

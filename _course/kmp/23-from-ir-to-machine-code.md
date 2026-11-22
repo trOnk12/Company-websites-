@@ -46,7 +46,7 @@ Frontend is puzzle 0's front end; PsiToIr writes the IR. Bitcode is LLVM IR stor
 
 Puzzle 0's deeper section said a compiler may "work out the answer in advance". This is where. Suppose your code calls add(2, 3). Two different tricks can follow, one after the other.
 
-1. add is tiny, so the optimizer can copy its body into the caller instead of calling it. That's called inlining, and it doesn't care what the inputs are: the call simply becomes 2 + 3.
+1. add is tiny, so the optimizer can copy its body into the caller instead of calling it. That's called inlining, and it doesn't care what the inputs are: the call becomes 2 + 3.
 2. Now both numbers are known while compiling, so the optimizer can replace 2 + 3 with 5. That's called constant folding, and it works only on values fixed before the app runs.
 3. The code generator then writes one instruction that puts 5 where the result goes. No addition is left for the iPhone to do.
 

@@ -37,7 +37,9 @@
       "blurb": "When a class arrives, who loads it, why two loaders mean two classes, and where class metadata lives.",
       "puzzles": [
         "11-loading-linking.md",
-        "12-static-init-order.md"
+        "12-static-init-order.md",
+        "13-class-loaders.md",
+        "14-classpath-modulepath.md"
       ]
     }
   ],

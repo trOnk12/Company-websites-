@@ -1,18 +1,22 @@
-<!-- label: A static library is copied into the app's executable when Xcode builds it; a dynamic library stays a separate file that the dynamic loader joins at launch -->
-<!-- question: When is your framework joined to the app: at build or at launch? type: before/after -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="sd-t"><title id="sd-t">The app's executable and your Kotlin framework are two binaries; static: Xcode copies the Kotlin code into the executable; dynamic: both go into the iPhone as separate files, and the dynamic loader connects them each time the app starts</title>
+<!-- label: Static: Xcode's linker copies your Kotlin into the app's executable, one file on the phone. Dynamic: two files on the phone, and dyld connects Swift's calls to Kotlin at every launch -->
+<!-- question: When is your framework joined to the app: at build or at launch? type: small multiples (static vs dynamic, same layout) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="sd-t"><title id="sd-t">Two identical panels, static on the left and dynamic on the right, each with the app's executable, your Kotlin and an iPhone. Static: at build time the Kotlin block slides into the executable, and one file goes onto the phone. Dynamic: two files go onto the phone, and at launch dyld, on the phone, connects a Swift call to the Kotlin file with a dotted arrow</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
-<x-phone class="step s4" x="420" y="20" w="200" h="300" label="iPhone"/>
-<g class="step s1" data-pulse="1" data-move="1:24,36 4:445,50"><rect class="d-paper" x="0" y="0" width="150" height="124" rx="6"/><text class="d-tiny" x="75" y="24" text-anchor="middle">app executable</text><path class="d-line" d="M14,40 L110,40 M14,54 L90,54"/></g>
-<g class="step s1 hide-4"><x-machine x="214" y="160" w="140" label="Xcode"/><x-arrow tone="ink" d="M176,98 C196,110 214,140 226,158"/></g>
-<g class="step s1" data-pulse="2" data-move="1:34,240 2:34,104 3:34,240 4:455,206"><rect class="d-wood" x="0" y="0" width="130" height="44" rx="6"/><text class="d-tiny" x="65" y="28" text-anchor="middle">Kotlin</text></g>
-<text class="d-a step only-3" x="110" y="226" text-anchor="middle">?</text>
-<g class="step s5" data-pulse="5"><x-machine x="200" y="250" w="190" label="dynamic loader"/><x-arrow tone="acc" d="M392,276 C450,276 500,250 515,190"/><x-arrow tone="acc" d="M515,190 L520,204"/></g>
+<g class="step s1"><text class="d-b" x="160" y="30" text-anchor="middle">static</text><text class="d-b" x="480" y="30" text-anchor="middle">dynamic</text><line class="d-dash" x1="320" y1="14" x2="320" y2="350"/>
+<x-phone x="85" y="180" w="150" h="170"/><x-phone x="405" y="180" w="150" h="170"/></g>
+<g class="step s1" data-pulse="1" data-move="1:40,48 3:92,198"><rect class="d-paper" x="0" y="0" width="136" height="64" rx="6"/><text class="d-tiny" x="68" y="20" text-anchor="middle">app executable</text></g>
+<g class="step s1" data-pulse="2" data-move="1:40,124 2:58,76 3:110,226"><rect class="d-wood" x="0" y="0" width="100" height="28" rx="5"/><text class="d-tiny" x="50" y="20" text-anchor="middle">Kotlin</text></g>
+<text class="d-m step only-2" x="186" y="150">Xcode's linker</text>
+<text class="d-a step only-3" x="480" y="270" text-anchor="middle">?</text>
+<g class="step s1" data-move="1:360,48 4:412,198"><rect class="d-paper" x="0" y="0" width="136" height="64" rx="6"/><text class="d-tiny" x="68" y="20" text-anchor="middle">app executable</text><rect class="d-dash" x="18" y="30" width="100" height="26" rx="5"/></g>
+<g class="step s1" data-pulse="4" data-move="1:378,124 4:430,268"><rect class="d-wood" x="0" y="0" width="100" height="28" rx="5"/><text class="d-tiny" x="50" y="20" text-anchor="middle">Kotlin</text></g>
+<text class="d-m step only-4" x="566" y="290">embedded</text>
+<g class="step s5" data-pulse="5"><x-machine x="416" y="300" w="120" h="28" label="dyld"/><x-arrow tone="path" d="M466,240 C430,250 430,268 444,268"/></g>
 </svg>
 <ol class="caps">
-<li><p>Two binaries: the app's executable, which Xcode builds from Swift, and your Kotlin framework. Swift's calls into Kotlin still need addresses.</p></li>
-<li><p>A <b>static library</b> is joined at build time: Xcode's linker copies your Kotlin into the app's executable. One file reaches the phone.</p></li>
-<li><p><i>Predict: what if the library inside your framework isn't copied in?</i></p></li>
-<li><p>A <b>dynamic library</b> isn't copied in: it ships as its own file inside the app, next to the executable.</p></li>
-<li><p>Each time the app starts, the <b>dynamic loader</b> loads it and connects Swift's calls to its addresses.</p></li>
+<li><p>Two binaries: the app's executable, built by Xcode from Swift, and your Kotlin. Swift's calls into Kotlin still need addresses. Same start, two endings.</p></li>
+<li><p>A <b>static library</b> is joined at build time: Xcode's linker copies your Kotlin into the executable.</p></li>
+<li><p>One file reaches the phone. <i>Predict: what reaches the phone if your Kotlin isn't copied in?</i></p></li>
+<li><p>A <b>dynamic library</b> isn't copied in: two files reach the phone, your Kotlin embedded beside the executable.</p></li>
+<li><p>At every launch, the <b>dynamic loader</b>, dyld, on the phone, loads the Kotlin file and connects Swift's calls to it.</p></li>
 </ol>

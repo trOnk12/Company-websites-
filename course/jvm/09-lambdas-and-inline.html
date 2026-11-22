@@ -51,13 +51,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="jvm" data-n="9">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">JVM internals for Kotlin and Android developers</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 9 · 10 of 11</p>
+        <p class="eyebrow">Puzzle 9 · 10 of 15</p>
         <h1>Where did my lambda go?</h1>
         <p class="lede">Puzzle 7 met invokedynamic and its bootstrap method. Follow one Kotlin lambda passed to two functions, one plain and one inline, and compare what each leaves in the bytecode.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" aria-current="page" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-class-file.html" title="Which program did you actually run?">0</a></li><li><a href="01-frame.html" title="What does a method receive?">1</a></li><li><a href="02-reference.html" title="Why do both names read eight?">2</a></li><li><a href="03-reachability.html" title="When can a counter be reclaimed?">3</a></li><li><a href="04-shared-counter.html" title="How can two increments produce eight?">4</a></li><li><a href="05-operand-stack.html" title="Where does the arithmetic happen?">5</a></li><li><a href="06-constant-pool.html" title="What does #7 point to?">6</a></li><li><a href="07-five-invokes.html" title="Which method does a call run?">7</a></li><li><a href="08-kotlin-in-javap.html" title="What did Kotlin write for you?">8</a></li><li><a href="09-lambdas-and-inline.html" aria-current="page" title="Where did my lambda go?">9</a></li><li><a href="10-virtual-dispatch.html" title="How does a call find the override?">10</a></li><li><a href="11-loading-linking.html" title="When does a class arrive?">11</a></li><li><a href="12-static-init-order.html" title="Why is it zero?">12</a></li><li><a href="13-class-loaders.html" title="Why can't Greeter be cast to Greeter?">13</a></li><li><a href="14-classpath-modulepath.html" title="Not found, or no longer there?">14</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -98,7 +98,7 @@ fun main() {
 <text class="d-tiny" x="340" y="76">main</text>
 <g class="step s1"><text class="d-mi" x="28" y="104">iload_0</text><text class="d-mi" x="28" y="132">invokedynamic</text><text class="d-mi" x="28" y="160">invokestatic runLater</text></g>
 <g class="step s2"><rect class="d-box" x="16" y="222" width="296" height="134" rx="8"/><text class="d-tiny" x="28" y="246">inside runLater</text><text class="d-mi" x="28" y="340">invoke() → lambda body</text></g>
-<g class="step s1" data-move="1:186,108 2:40,262" data-pulse="1"><rect class="d-hl" x="0" y="0" width="118" height="42" rx="8"/><text class="d-tiny" x="59" y="27" text-anchor="middle">step = 7</text></g>
+<g class="step s1" data-move="1:182,107 2:40,262" data-pulse="1"><rect class="d-hl" x="0" y="0" width="118" height="36" rx="8"/><text class="d-tiny" x="59" y="24" text-anchor="middle">step = 7</text></g>
 <g class="step only-3"><text class="d-b" x="476" y="128" text-anchor="middle">?</text></g>
 <g class="step s4" data-pulse="4"><text class="d-mi" x="340" y="104">getstatic System.out</text><text class="d-mi" x="340" y="132">iload_0</text><text class="d-mi" x="340" y="160">invokevirtual println</text><text class="d-r" x="340" y="214">no object, no runNow call</text></g>
 <g class="step s5"><rect class="d-dash" x="328" y="246" width="296" height="110" rx="8"/><text class="d-tiny" x="340" y="276">before Kotlin 2.0:</text><text class="d-mi" x="340" y="306">LambdasKt$main$1.class</text><text class="d-tiny" x="340" y="336">one class per lambda</text></g>

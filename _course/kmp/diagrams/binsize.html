@@ -1,0 +1,38 @@
+<!-- label: In a release build, code nothing reaches drops out before LLVM; an exported module stays whole; smallBinary then shrinks what remains -->
+<!-- question: Which code reaches the release framework, and what makes it smaller? type: before/after (blocks of code kept or dropped) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="bs-t"><title id="bs-t">Three modules as blocks of functions: your code, Ktor, and an exported :network module; in a release build the blocks nothing reaches drop out before LLVM, except in the exported module, whose whole API stays in the header; then smallBinary makes every remaining block smaller</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s1" data-pulse="1"><text class="d-tiny" x="105" y="44" text-anchor="middle">your code</text><text class="d-tiny" x="305" y="44" text-anchor="middle">Ktor</text><text class="d-tiny" x="505" y="44" text-anchor="middle">:network, exported</text></g>
+<rect class="step s1 hide-5 d-ok" x="30" y="60" width="150" height="34" rx="4"/>
+<rect class="step s5 d-ok" x="50" y="64" width="110" height="26" rx="4"/>
+<rect class="step s1 hide-5 d-ok" x="30" y="102" width="150" height="34" rx="4"/>
+<rect class="step s5 d-ok" x="50" y="106" width="110" height="26" rx="4"/>
+<g class="step s1" data-move="1:30,144 2:30,290"><rect class="d-dash" x="0" y="0" width="90" height="34" rx="4"/></g>
+<rect class="step s1 hide-5 d-ok" x="30" y="186" width="150" height="34" rx="4"/>
+<rect class="step s5 d-ok" x="50" y="190" width="110" height="26" rx="4"/>
+<rect class="step s1 hide-5 d-ok" x="230" y="60" width="150" height="34" rx="4"/>
+<rect class="step s5 d-ok" x="250" y="64" width="110" height="26" rx="4"/>
+<g class="step s1" data-move="1:230,102 2:130,290"><rect class="d-dash" x="0" y="0" width="90" height="34" rx="4"/></g>
+<g class="step s1" data-move="1:230,144 2:230,290"><rect class="d-dash" x="0" y="0" width="90" height="34" rx="4"/></g>
+<g class="step s1" data-move="1:230,186 2:330,290"><rect class="d-dash" x="0" y="0" width="90" height="34" rx="4"/></g>
+<rect class="step s1 hide-5 d-ok" x="430" y="60" width="150" height="34" rx="4"/>
+<rect class="step s5 d-ok" x="450" y="64" width="110" height="26" rx="4"/>
+<rect class="step s1 hide-5 d-hl" x="430" y="102" width="150" height="34" rx="4"/>
+<rect class="step s5 d-hl" x="450" y="106" width="110" height="26" rx="4"/>
+<rect class="step s1 hide-5 d-ok" x="430" y="144" width="150" height="34" rx="4"/>
+<rect class="step s5 d-ok" x="450" y="148" width="110" height="26" rx="4"/>
+<rect class="step s1 hide-5 d-hl" x="430" y="186" width="150" height="34" rx="4"/>
+<rect class="step s5 d-hl" x="450" y="190" width="110" height="26" rx="4"/>
+<text class="d-m step s2" x="30" y="282">dropped before LLVM (release)</text>
+<g class="step only-3"><text class="d-a" x="505" y="168" text-anchor="middle">?</text><text class="d-a" x="505" y="252" text-anchor="middle">?</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-wood" x="430" y="232" width="150" height="30" rx="4"/><text class="d-tiny" x="505" y="253" text-anchor="middle">in the header</text><x-arrow tone="ink" d="M505,230 L505,222"/></g>
+<g class="step s5" data-pulse="5"><text class="d-mi" x="500" y="300" text-anchor="middle">smallBinary</text></g>
+<g class="step s1" data-move="1:105,250 2:120,312 3:505,200 4:505,247 5:500,322"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>Three modules as blocks of functions. Green blocks are reached from the API Swift can call; dashed ones, nothing calls.</p></li>
+<li><p>In a release build, dead code elimination drops the unreached blocks before LLVM runs. A debug build would keep them all.</p></li>
+<li><p>The :network module is exported, and two of its blocks are never called from Kotlin. <i>Predict: are they dropped?</i></p></li>
+<li><p>No: exporting puts its whole API in the header, so Swift might call any of it, and every block stays.</p></li>
+<li><p>Then, separately, the smallBinary option asks LLVM to optimize for size, and every remaining block gets smaller.</p></li>
+</ol>

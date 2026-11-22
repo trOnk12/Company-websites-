@@ -50,7 +50,7 @@ Your line names the root, the one without a target. The root publication holds a
 
 So the root doesn't contain the klibs. It points at them: "the variant for ios_arm64 is available at that publication".
 
-Two words here have other meanings you already know, so keep them apart. A variant in this file is not an Android build variant (debug or release, or a product flavor, chosen inside your own app's build): it's one of the library's published builds, chosen by target. And "module" now has three meanings: a Gradle module of your project, such as `:shared` or `:core`; Ktor's published library, which Gradle also calls a module; and the .module file, the metadata that describes it.
+Two words here have other meanings you already know, so keep them apart. A variant in this file is not an Android build variant (debug or release, or a product flavor, chosen inside your own app's build): it's one of the library's published builds, chosen by target. And "module" now has three meanings: a Gradle module of your project, such as `:shared`, written with a colon in a build file; Ktor's published library, which Gradle also calls a module; and the .module file, the metadata that describes it.
 
 Now follow your one line through puzzle 16's compilations. Each compilation asks Gradle for the library, and says what it is: "I'm native, ios_arm64". Gradle reads the .module file and picks the variant whose attributes match:
 

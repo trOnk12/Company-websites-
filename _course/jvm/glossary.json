@@ -447,6 +447,79 @@
       "in": 12,
       "kind": "code",
       "def": "Thrown when text can't be read as a number."
+    },
+    "class loader": {
+      "in": 13,
+      "aliases": [
+        "class loaders"
+      ],
+      "def": "An object that finds a class's bytes by name and asks the JVM to create the class from them."
+    },
+    "parent delegation": {
+      "in": 13,
+      "def": "The rule that a class loader asks its parent for a class before looking in its own places."
+    },
+    "defining loader": {
+      "in": 13,
+      "def": "The class loader that actually created a class; with the name, it identifies the class while the program runs."
+    },
+    "ClassLoader": {
+      "in": 13,
+      "kind": "code",
+      "def": "The JDK class every class loader except bootstrap is an instance of."
+    },
+    "PlatformClassLoader": {
+      "in": 13,
+      "kind": "code",
+      "def": "How the platform class loader prints itself."
+    },
+    "AppClassLoader": {
+      "in": 13,
+      "kind": "code",
+      "def": "How the application (system) class loader prints itself."
+    },
+    "URLClassLoader": {
+      "in": 13,
+      "kind": "code",
+      "def": "A JDK class loader that reads class files from the folders or jars you give it."
+    },
+    "ClassCastException": {
+      "in": 13,
+      "kind": "code",
+      "def": "Thrown when an object is cast to a class it isn't an instance of."
+    },
+    "LinkageError": {
+      "in": 13,
+      "kind": "code",
+      "def": "Thrown when linking finds an inconsistency, such as two loaders disagreeing about a class."
+    },
+    "class path": {
+      "in": 13,
+      "def": "The list of folders and jars, given with -cp, where the application class loader looks for classes."
+    },
+    "module path": {
+      "in": 14,
+      "def": "The list of folders and jars holding Java modules, given with -p; required modules are checked before main runs."
+    },
+    "ClassNotFoundException": {
+      "in": 14,
+      "kind": "code",
+      "def": "Thrown when code asks a loader for a class by a name in a string and no loader has it."
+    },
+    "FindException": {
+      "in": 14,
+      "kind": "code",
+      "def": "Thrown at startup when a required module isn't on the module path."
+    },
+    "NoSuchMethodError": {
+      "in": 14,
+      "kind": "code",
+      "def": "Thrown when compiled code calls a method the loaded class doesn't have."
+    },
+    "Class.forName": {
+      "in": 14,
+      "kind": "code",
+      "def": "Load a class by a name given as a string."
     }
   },
   "from": {

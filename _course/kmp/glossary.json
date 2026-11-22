@@ -801,12 +801,17 @@
   "dynamic loader": {
    "in": "25",
    "def": "The program that loads an app's dynamic libraries and connects calls to them when the app starts.",
-   "aliases": []
+   "aliases": [
+    "dyld"
+   ]
   },
   "isStatic": {
    "in": "25",
    "def": "Framework setting: true puts a static library inside instead of a dynamic one.",
-   "kind": "code"
+   "kind": "code",
+   "aliases": [
+    "isStatic = true"
+   ]
   },
   "architecture": {
    "in": "26",
@@ -888,33 +893,246 @@
    ]
   },
   "embedAndSignAppleFrameworkForXcode": {
-   "in": "30",
-   "def": "Code name in puzzle 28.",
+   "in": "27",
+   "def": "The Gradle task Xcode's Run Script runs: it links the one framework Xcode needs, copies it into derived data, and embeds and signs it.",
    "kind": "code"
   },
   "smallBinary": {
-   "in": "30",
-   "def": "Code name in puzzle 28.",
+   "in": "31",
+   "def": "A binary option that makes LLVM optimize release binaries for size.",
    "kind": "code"
   },
   "binaryOption": {
-   "in": "30",
-   "def": "Code name in puzzle 28.",
+   "in": "26",
+   "def": "Sets a Kotlin/Native binary option on one binary, such as bundleId or smallBinary.",
    "kind": "code"
   },
   "transitiveExport": {
-   "in": "30",
-   "def": "Code name in puzzle 28.",
+   "in": "31",
+   "def": "Exports every dependency of each exported module too; not recommended.",
    "kind": "code"
   },
   "~/.konan": {
    "in": "30",
-   "def": "Code name in puzzle 28.",
+   "def": "Kotlin/Native's folder in your home directory: its downloaded tools and the compilation cache.",
    "kind": "code"
   },
   "PsiToIr": {
    "in": "23",
    "def": "The compiler phase that writes IR, as named in its profiling log.",
+   "kind": "code"
+  },
+  "build phase": {
+   "in": "27",
+   "def": "One step of Xcode's build of an app target, such as Compile Sources; they run in order.",
+   "aliases": [
+    "build phases"
+   ]
+  },
+  "Run Script phase": {
+   "in": "27",
+   "def": "A build phase that runs a shell script you write.",
+   "aliases": [
+    "Run Script"
+   ]
+  },
+  "derived data": {
+   "in": "27",
+   "def": "The folder where Xcode keeps its own build output for a project.",
+   "aliases": []
+  },
+  "deployment target": {
+   "in": "28",
+   "def": "The oldest OS version an app supports.",
+   "aliases": [
+    "deployment targets"
+   ]
+  },
+  "load address": {
+   "in": "29",
+   "def": "Where in memory iOS placed a binary in one run; it changes from launch to launch.",
+   "aliases": [
+    "load addresses"
+   ]
+  },
+  "Gradle build cache": {
+   "in": "30",
+   "def": "Gradle's store of task outputs, reused when a task's inputs haven't changed.",
+   "aliases": [
+    "Gradle's build cache",
+    "build cache"
+   ]
+  },
+  "configuration cache": {
+   "in": "30",
+   "def": "Gradle's stored result of reading the build files, so later builds skip that step.",
+   "aliases": [
+    "Gradle's configuration cache"
+   ]
+  },
+  "enableReleaseBinaryCache": {
+   "in": "30",
+   "def": "The experimental option that lets release builds use the compilation cache.",
+   "kind": "code",
+   "aliases": [
+    "kotlin.native.binary.enableReleaseBinaryCache"
+   ]
+  },
+  "-dead_strip": {
+   "in": "24",
+   "def": "The linker option that removes machine code nothing refers to.",
+   "kind": "code",
+   "aliases": [
+    "dead_strip"
+   ]
+  },
+  "-Xprofile-phases": {
+   "in": "23",
+   "def": "The compiler option that prints the time each phase took.",
+   "kind": "code"
+  },
+  "runtime.bc": {
+   "in": "23",
+   "def": "The main file of Kotlin's runtime, as LLVM bitcode, merged in at the link stage.",
+   "kind": "code"
+  },
+  "bundleId": {
+   "in": "26",
+   "def": "The binary option that sets the framework's bundle ID in its Info.plist.",
+   "kind": "code"
+  },
+  "Info.plist": {
+   "in": "26",
+   "def": "A framework's small settings file.",
+   "kind": "code"
+  },
+  "assembleSharedReleaseXCFramework": {
+   "in": "26",
+   "def": "The task that builds the release XCFramework of a module called shared.",
+   "kind": "code",
+   "aliases": [
+    "assembleSharedDebugXCFramework"
+   ]
+  },
+  "linkDebugFrameworkIosSimulatorArm64": {
+   "in": "27",
+   "def": "The link task for a debug simulator framework.",
+   "kind": "code"
+  },
+  "$SRCROOT": {
+   "in": "27",
+   "def": "Xcode's name for the iOS project's folder.",
+   "kind": "code"
+  },
+  "KOTLIN_FRAMEWORK_BUILD_TYPE": {
+   "in": "27",
+   "def": "The Xcode setting that tells the task to link a Debug or Release framework.",
+   "kind": "code"
+  },
+  "OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED": {
+   "in": "27",
+   "def": "The variable the IDE sets so the Run Script skips a second build.",
+   "kind": "code"
+  },
+  "xcrun crashlog": {
+   "in": "29",
+   "def": "Apple's command that symbolicates a whole crash report.",
+   "kind": "code",
+   "aliases": [
+    "crashlog"
+   ]
+  },
+  "dwarfdump": {
+   "in": "29",
+   "def": "The command that prints a dSYM's build UUID with --uuid.",
+   "kind": "code",
+   "aliases": [
+    "dwarfdump --uuid"
+   ]
+  },
+  "androidTarget": {
+   "in": "16",
+   "def": "The older name of the Android target line, used with com.android.library.",
+   "kind": "code",
+   "aliases": [
+    "androidTarget()"
+   ]
+  },
+  "com.android.library": {
+   "in": "16",
+   "def": "Android's ordinary library plugin.",
+   "kind": "code"
+  },
+  "build host": {
+   "in": "28",
+   "def": "The machine that runs the build.",
+   "aliases": [
+    "build hosts"
+   ]
+  },
+  ":shared": {
+   "in": "21",
+   "def": "How Gradle writes the name of a module called shared.",
+   "kind": "code"
+  },
+  "actual typealias": {
+   "in": "22",
+   "def": "Keeps an expect class by naming an existing platform class.",
+   "kind": "code"
+  },
+  "LinkBitcodeDependencies": {
+   "in": "23",
+   "def": "The link-stage phase that merges bitcode files, such as the runtime, into the program.",
+   "kind": "code"
+  },
+  "x86_64": {
+   "in": "26",
+   "def": "How Apple writes the x86-64 architecture.",
+   "kind": "code"
+  },
+  "import shared": {
+   "in": "27",
+   "def": "Swift's line that imports the Kotlin framework.",
+   "kind": "code"
+  },
+  "cd \"$SRCROOT/..\"": {
+   "in": "27",
+   "def": "The script line that steps up from the iOS project to the Gradle project.",
+   "kind": "code"
+  },
+  "binaries.framework": {
+   "in": "12",
+   "def": "The block that declares a framework for a target.",
+   "kind": "code"
+  },
+  "org.gradle.caching=true": {
+   "in": "30",
+   "def": "The gradle.properties line that turns on Gradle's build cache.",
+   "kind": "code"
+  },
+  "org.gradle.configuration-cache=true": {
+   "in": "30",
+   "def": "The gradle.properties line that turns on Gradle's configuration cache.",
+   "kind": "code"
+  },
+  "export(project(\":network\"))": {
+   "in": "12",
+   "def": "Exports the :network module to Swift through the framework.",
+   "kind": "code"
+  },
+  "./gradlew :shared:embedAndSignAppleFrameworkForXcode": {
+   "in": "27",
+   "def": "The command the Run Script phase runs: Gradle, in the shared module, runs the embedAndSign task.",
+   "kind": "code"
+  },
+  ":network": {
+   "in": "12",
+   "def": "The example network module of puzzle 12.",
+   "kind": "code"
+  },
+  ":db": {
+   "in": "31",
+   "def": "An example module used inside the framework but not exported.",
    "kind": "code"
   }
  },

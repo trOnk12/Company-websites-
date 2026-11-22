@@ -1,0 +1,22 @@
+<!-- label: Three things must match: the build host (a Mac for Apple binaries), the Xcode version Kotlin was tested with, and an app deployment target no older than the framework's iOS 15.0 -->
+<!-- question: What has to match for a Kotlin framework to build and run on iOS? type: small multiples (three checks, same layout: pair, then match or mismatch) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ag-t"><title id="ag-t">Row one: a Linux build host can make klibs but not the framework, a Mac can make both. Row two: Kotlin 2.4.21 is tested with Xcode 26.4. Row three: the framework supports iOS 15.0 and later while the app's deployment target is iOS 14.0, a mismatch; raising the app to 15.0 fixes it</title>
+<line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
+<g class="step s1" data-pulse="1"><text class="d-tiny" x="300" y="30" text-anchor="middle">klib</text><text class="d-tiny" x="480" y="30" text-anchor="middle">framework</text>
+<x-machine x="16" y="40" w="170" h="44" label="Linux host"/><circle class="d-ok" cx="300" cy="62" r="12"/><path class="d-line" d="M293,62 L298,68 L307,56"/></g>
+<text class="d-a step only-1" x="480" y="68" text-anchor="middle">?</text>
+<g class="step s2" data-pulse="2"><circle class="d-bad" cx="480" cy="62" r="12"/><path class="d-red" d="M473,55 L487,69 M487,55 L473,69"/>
+<x-machine x="16" y="96" w="170" h="44" label="Mac host"/><circle class="d-ok" cx="300" cy="118" r="12"/><path class="d-line" d="M293,118 L298,124 L307,112"/><circle class="d-ok" cx="480" cy="118" r="12"/><path class="d-line" d="M473,118 L478,124 L487,112"/></g>
+<g class="step s3" data-pulse="3"><rect class="d-band" x="16" y="168" width="170" height="44" rx="6"/><text class="d-tiny" x="101" y="196" text-anchor="middle">Kotlin 2.4.21</text><rect class="d-band" x="390" y="168" width="170" height="44" rx="6"/><text class="d-tiny" x="475" y="196" text-anchor="middle">Xcode 26.4</text><line class="d-acc" x1="188" y1="190" x2="388" y2="190"/><text class="d-m" x="288" y="182" text-anchor="middle">tested together</text><circle class="d-ok" cx="590" cy="190" r="12"/><path class="d-line" d="M583,190 L588,196 L597,184"/></g>
+<g class="step s4" data-pulse="4"><rect class="d-wood" x="16" y="250" width="170" height="44" rx="6"/><text class="d-tiny" x="101" y="278" text-anchor="middle">framework: 15.0+</text><rect class="d-paper" x="390" y="250" width="170" height="44" rx="6"/><text class="d-tiny" x="475" y="278" text-anchor="middle">app: iOS 14.0+</text><line class="d-line" x1="188" y1="272" x2="388" y2="272"/></g>
+<text class="d-a step only-4" x="288" y="262" text-anchor="middle">?</text>
+<g class="step s5" data-pulse="5"><circle class="d-bad" cx="590" cy="272" r="12"/><path class="d-red" d="M583,265 L597,279 M597,265 L583,279"/><text class="d-rt" x="475" y="320" text-anchor="middle">raise to 15.0</text></g>
+<g class="step s1" data-move="1:240,62 2:540,62 3:288,226 4:288,308 5:540,308"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>The <b>build host</b> is the machine that runs the build. A Linux host can compile your shared code into klibs for iOS. <i>Predict: can it link the framework?</i></p></li>
+<li><p>No: Kotlin builds final binaries for Apple targets only on a Mac. A Mac host makes both.</p></li>
+<li><p>Each Kotlin version is tested with one Xcode version, listed in Kotlin's compatibility guide. Move the two together.</p></li>
+<li><p>The app's <b>deployment target</b> is the oldest iOS it supports. Kotlin's framework supports iOS 15.0 and later. <i>Predict: does an iOS 14.0 app match?</i></p></li>
+<li><p>No: the app would promise to run where its framework wasn't built for. Raise the app to 15.0, or lower Kotlin's minimum on purpose.</p></li>
+</ol>

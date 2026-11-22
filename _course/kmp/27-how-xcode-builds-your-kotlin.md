@@ -29,7 +29,7 @@ cd "$SRCROOT/.."
 ./gradlew :shared:embedAndSignAppleFrameworkForXcode
 ```
 
-`$SRCROOT` is the iOS project's folder, so `cd "$SRCROOT/.."` steps up to the root of your Gradle project, and `:shared` is your shared module's name. The first three lines are a guard: when you start the iOS app from Android Studio instead, the IDE has already built the framework, sets that variable to YES, and the script skips a second build.
+`$SRCROOT` is the iOS project's folder, so `cd "$SRCROOT/.."` steps up to the root of your Gradle project, and `:shared` is your shared module's name. The first three lines are a guard: when you start the iOS app from Android Studio instead, the IDE has already built the framework and sets that variable, so the script skips a second build.
 
 The task, `embedAndSignAppleFrameworkForXcode`, comes from the multiplatform plugin, and it exists only if your iOS targets declare `binaries.framework`. It reads what Xcode is building right now (the simulator or a real iPhone, Debug or Release) and then:
 
@@ -54,7 +54,7 @@ The restaurant from puzzle 25 has a fixed opening routine, a checklist the head 
 ## Check yourself
 
 - On a fresh checkout, the Run Script phase sits below Compile Sources. The developer presses Run. What happens?::*Compiling Swift fails: import shared finds no framework, because Gradle hasn't run yet||It works, since Xcode runs every build phase before compiling Swift >> Build phases run in the listed order, top to bottom; the script would come after Compile Sources. >> s1||It works, but Gradle links every target first, so it's slower >> The task links only one framework; the problem is order: Swift compiles before it exists. >> s2::The framework must exist before Swift is compiled.
-- Why does pressing Run in Xcode link one Kotlin framework, not the whole XCFramework from puzzle 26?::*The task links only the platform and configuration Xcode is building||Xcode can only read a single framework, never an XCFramework >> Xcode reads XCFrameworks fine (puzzle 26); this task simply builds only what this build needs. >> s3||Gradle remembers the other targets from the last build >> Nothing is remembered: the task never asks for the other targets. >> s3::One build, one framework.
+- Why does pressing Run in Xcode link one Kotlin framework, not the whole XCFramework from puzzle 26?::*The task links only the platform and configuration Xcode is building||Xcode can only read a single framework, never an XCFramework >> Xcode reads XCFrameworks fine (puzzle 26); this task builds only what this build needs. >> s3||Gradle remembers the other targets from the last build >> Nothing is remembered: the task never asks for the other targets. >> s3::One build, one framework.
 - Your Kotlin framework is dynamic, the default, and you set it up with this Run Script. What puts it inside the app, so dyld finds it at launch?::*The Gradle task, which embeds and signs it in Xcode's build output||dyld, which fetches it from the Mac's build folder when the app starts >> dyld only loads files that are inside the app on the phone; something must embed the framework first. >> s4||Nothing: with this script, the framework is always static >> The script doesn't change the kind; a Kotlin framework is dynamic unless isStatic is set (puzzle 25). >> s4::The task embeds and signs for you.
 
 ## Sources

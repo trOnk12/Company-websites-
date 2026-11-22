@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="kmp">
       <p class="eyebrow"><a href="./">Kotlin Multiplatform, from the compiler up</a> · check</p>
       <h1>Know Kotlin/Native under the hood already?</h1>
-      <p class="lede">One question for each of the 6 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 9 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 23"><p class="eyebrow">Puzzle 23: From IR to machine code</p>
 <fieldset class="quiz" data-n="23">
 <legend>You change one line in commonMain, then run the app from Xcode with a debug build for the simulator. Which stages run for your shared module?</legend>
@@ -64,53 +64,83 @@
 </fieldset></section>
 <section aria-label="Puzzle 24"><p class="eyebrow">Puzzle 24: &quot;One binary: the linker&quot;</p>
 <fieldset class="quiz" data-n="24">
-<legend>Your shared module has a function that no Kotlin code calls, and it isn't in the API Swift can see. After the link stage, is it in the framework?</legend>
-<input type="radio" name="q-24-one-binary-the-linker-1" id="q-24-one-binary-the-linker-1-1"><label for="q-24-one-binary-the-linker-1-1"><span>Yes: everything in a klib is copied into the binary</span></label>
-<input type="radio" name="q-24-one-binary-the-linker-1" id="q-24-one-binary-the-linker-1-2" data-ok><label for="q-24-one-binary-the-linker-1-2"><span>No: nothing reaches it, so the linker can leave it out</span></label>
-<input type="radio" name="q-24-one-binary-the-linker-1" id="q-24-one-binary-the-linker-1-3"><label for="q-24-one-binary-the-linker-1-3"><span>Yes: the linker keeps every function in case Swift calls it</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The link stage sees the whole program and leaves out code nothing reaches. <a class="show-me" href="24-one-binary-the-linker.html">Learn it in puzzle 24 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Unreached and not exported: left out.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Only code in the API Swift can see must stay; this function isn't in it. <a class="show-me" href="24-one-binary-the-linker.html">Learn it in puzzle 24 →</a></p>
+<legend>Your shared module has a function that no Kotlin code calls, and it isn't in the API Swift can see. You build a release framework. Is the function in it?</legend>
+<input type="radio" name="q-24-one-binary-the-linker-1" id="q-24-one-binary-the-linker-1-1" data-ok><label for="q-24-one-binary-the-linker-1-1"><span>No: dead code elimination dropped it from the IR, before LLVM</span></label>
+<input type="radio" name="q-24-one-binary-the-linker-1" id="q-24-one-binary-the-linker-1-2"><label for="q-24-one-binary-the-linker-1-2"><span>Yes: everything in a klib is copied into the binary</span></label>
+<input type="radio" name="q-24-one-binary-the-linker-1" id="q-24-one-binary-the-linker-1-3"><label for="q-24-one-binary-the-linker-1-3"><span>Yes: dead code elimination runs only in the linker, and the function has a symbol</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Release: unreached and not exported, so dropped before LLVM.</p>
+<p class="fb no opt-2"><b>Not quite.</b> A release build follows calls from the API and drops what nothing reaches. <a class="show-me" href="24-one-binary-the-linker.html">Learn it in puzzle 24 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> It runs in Kotlin/Native's back end on the IR, before LLVM; the linker's trim comes later and is smaller. <a class="show-me" href="24-one-binary-the-linker.html">Learn it in puzzle 24 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 25"><p class="eyebrow">Puzzle 25: Static or dynamic</p>
 <fieldset class="quiz" data-n="25">
-<legend>You set your framework's <code>isStatic</code> to true and rebuild the iOS app. On the phone, what does the dynamic loader load for your Kotlin code at launch?</legend>
-<input type="radio" name="q-25-static-or-dynamic-1" id="q-25-static-or-dynamic-1-1" data-ok><label for="q-25-static-or-dynamic-1-1"><span>Nothing separate: Xcode's linker copied it into the app's executable</span></label>
-<input type="radio" name="q-25-static-or-dynamic-1" id="q-25-static-or-dynamic-1-2"><label for="q-25-static-or-dynamic-1-2"><span>The shared framework once, then it stays in memory even after the app quits</span></label>
-<input type="radio" name="q-25-static-or-dynamic-1" id="q-25-static-or-dynamic-1-3"><label for="q-25-static-or-dynamic-1-3"><span>The shared framework file, as before, only faster</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Static: copied in when the app is built.</p>
-<p class="fb no opt-2"><b>Not quite.</b> &quot;Static&quot; means joined at build time, not kept in memory. <a class="show-me" href="25-static-or-dynamic.html">Learn it in puzzle 25 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> A static library isn't a separate file on the phone; it's inside the executable. <a class="show-me" href="25-static-or-dynamic.html">Learn it in puzzle 25 →</a></p>
+<legend>You set your framework's <code>isStatic</code> to true and rebuild the iOS app. On the phone, what does dyld load for your Kotlin code at launch?</legend>
+<input type="radio" name="q-25-static-or-dynamic-1" id="q-25-static-or-dynamic-1-1"><label for="q-25-static-or-dynamic-1-1"><span>The shared framework file, as before, only faster</span></label>
+<input type="radio" name="q-25-static-or-dynamic-1" id="q-25-static-or-dynamic-1-2" data-ok><label for="q-25-static-or-dynamic-1-2"><span>Nothing separate: Xcode's linker copied it into the app's executable</span></label>
+<input type="radio" name="q-25-static-or-dynamic-1" id="q-25-static-or-dynamic-1-3"><label for="q-25-static-or-dynamic-1-3"><span>The shared framework once, then it stays in memory even after the app quits</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A static library isn't a separate file on the phone; it's inside the executable. <a class="show-me" href="25-static-or-dynamic.html">Learn it in puzzle 25 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Static: copied in when the app is built.</p>
+<p class="fb no opt-3"><b>Not quite.</b> &quot;Static&quot; means joined at build time, not kept in memory. <a class="show-me" href="25-static-or-dynamic.html">Learn it in puzzle 25 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 26"><p class="eyebrow">Puzzle 26: Framework or XCFramework</p>
 <fieldset class="quiz" data-n="26">
 <legend>You try to merge the iosArm64 framework and the iosSimulatorArm64 framework into one universal framework with <code>lipo</code>. What happens?</legend>
-<input type="radio" name="q-26-framework-or-xcframework-1" id="q-26-framework-or-xcframework-1-1" data-ok><label for="q-26-framework-or-xcframework-1-1"><span>It refuses: both are arm64, and a universal file holds each architecture once</span></label>
-<input type="radio" name="q-26-framework-or-xcframework-1" id="q-26-framework-or-xcframework-1-2"><label for="q-26-framework-or-xcframework-1-2"><span>It works, but the simulator runs the device's code more slowly</span></label>
-<input type="radio" name="q-26-framework-or-xcframework-1" id="q-26-framework-or-xcframework-1-3"><label for="q-26-framework-or-xcframework-1-3"><span>It works, and the device and simulator each load their half</span></label>
+<input type="radio" name="q-26-framework-or-xcframework-1" id="q-26-framework-or-xcframework-1-1" data-ok><label for="q-26-framework-or-xcframework-1-1"><span>It can't: both are arm64, and each architecture fits once</span></label>
+<input type="radio" name="q-26-framework-or-xcframework-1" id="q-26-framework-or-xcframework-1-2"><label for="q-26-framework-or-xcframework-1-2"><span>It works, but the simulator then runs the device's code, more slowly</span></label>
+<input type="radio" name="q-26-framework-or-xcframework-1" id="q-26-framework-or-xcframework-1-3"><label for="q-26-framework-or-xcframework-1-3"><span>It works, and the device and the simulator each load their own half of it</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Same architecture, two platforms: lipo can't help.</p>
-<p class="fb no opt-2"><b>Not quite.</b> lipo can't put both in at all, since they share one architecture. <a class="show-me" href="26-framework-or-xcframework.html">Learn it in puzzle 26 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> lipo can't put both in at all, since they share one architecture; and Apple says never to merge device and simulator builds anyway. <a class="show-me" href="26-framework-or-xcframework.html">Learn it in puzzle 26 →</a></p>
 <p class="fb no opt-3"><b>Not quite.</b> The halves are told apart by architecture, and these two have the same one. <a class="show-me" href="26-framework-or-xcframework.html">Learn it in puzzle 26 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 27"><p class="eyebrow">Puzzle 27: Reading a crash from the field</p>
+<section aria-label="Puzzle 27"><p class="eyebrow">Puzzle 27: How Xcode builds your Kotlin</p>
 <fieldset class="quiz" data-n="27">
-<legend>You shipped version 3.2 and kept no dSYM. A crash report for 3.2 arrives, so you rebuild 3.2's source today, with the newer Xcode and Kotlin your project uses now, and use that dSYM. What do you get?</legend>
-<input type="radio" name="q-27-reading-a-crash-1" id="q-27-reading-a-crash-1-1"><label for="q-27-reading-a-crash-1-1"><span>The right names, because the source code is exactly the same as in 3.2</span></label>
-<input type="radio" name="q-27-reading-a-crash-1" id="q-27-reading-a-crash-1-2" data-ok><label for="q-27-reading-a-crash-1-2"><span>No reliable names: its build UUID won't match the shipped binary's</span></label>
-<input type="radio" name="q-27-reading-a-crash-1" id="q-27-reading-a-crash-1-3"><label for="q-27-reading-a-crash-1-3"><span>The right function names, but with every line number missing</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Same source isn't enough: a build with other tool versions gets another build UUID and may lay out code differently. <a class="show-me" href="27-reading-a-crash.html">Learn it in puzzle 27 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Only the dSYM from that exact build matches.</p>
-<p class="fb no opt-3"><b>Not quite.</b> A mismatched dSYM can't be trusted for names either; the addresses may belong to other functions. <a class="show-me" href="27-reading-a-crash.html">Learn it in puzzle 27 →</a></p>
+<legend>On a fresh checkout, the Run Script phase sits below Compile Sources. The developer presses Run. What happens?</legend>
+<input type="radio" name="q-27-how-xcode-builds-your-kotlin-1" id="q-27-how-xcode-builds-your-kotlin-1-1"><label for="q-27-how-xcode-builds-your-kotlin-1-1"><span>It works, since Xcode runs every build phase before compiling Swift</span></label>
+<input type="radio" name="q-27-how-xcode-builds-your-kotlin-1" id="q-27-how-xcode-builds-your-kotlin-1-2" data-ok><label for="q-27-how-xcode-builds-your-kotlin-1-2"><span>Compiling Swift fails: import shared finds no framework, because Gradle hasn't run yet</span></label>
+<input type="radio" name="q-27-how-xcode-builds-your-kotlin-1" id="q-27-how-xcode-builds-your-kotlin-1-3"><label for="q-27-how-xcode-builds-your-kotlin-1-3"><span>It works, but Gradle links every target first, so it's slower</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Build phases run in the listed order, top to bottom; the script would come after Compile Sources. <a class="show-me" href="27-how-xcode-builds-your-kotlin.html">Learn it in puzzle 27 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The framework must exist before Swift is compiled.</p>
+<p class="fb no opt-3"><b>Not quite.</b> The task links only one framework; the problem is order: Swift compiles before it exists. <a class="show-me" href="27-how-xcode-builds-your-kotlin.html">Learn it in puzzle 27 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 28"><p class="eyebrow">Puzzle 28: Build time and binary size</p>
+<section aria-label="Puzzle 28"><p class="eyebrow">Puzzle 28: What has to match</p>
 <fieldset class="quiz" data-n="28">
+<legend>Your build server runs Linux. Which of these can it still do for your iOS targets?</legend>
+<input type="radio" name="q-28-versions-that-must-agree-1" id="q-28-versions-that-must-agree-1-1" data-ok><label for="q-28-versions-that-must-agree-1-1"><span>Compile the shared code into klibs, the compile stage</span></label>
+<input type="radio" name="q-28-versions-that-must-agree-1" id="q-28-versions-that-must-agree-1-2"><label for="q-28-versions-that-must-agree-1-2"><span>Nothing at all: Kotlin/Native doesn't run on Linux</span></label>
+<input type="radio" name="q-28-versions-that-must-agree-1" id="q-28-versions-that-must-agree-1-3"><label for="q-28-versions-that-must-agree-1-3"><span>Run linkReleaseFrameworkIosArm64 and produce the framework</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Linux: klibs yes, Apple binaries no.</p>
+<p class="fb no opt-2"><b>Not quite.</b> It runs on Linux, and can produce klibs for Apple targets; only the link stage for them needs a Mac. <a class="show-me" href="28-versions-that-must-agree.html">Learn it in puzzle 28 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Final binaries for Apple targets can be built only on a Mac. <a class="show-me" href="28-versions-that-must-agree.html">Learn it in puzzle 28 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 29"><p class="eyebrow">Puzzle 29: Reading a crash from the field</p>
+<fieldset class="quiz" data-n="29">
+<legend>The same crash happens twice. The first report says shared 0x104a3c1f4 0x104a20000 + 115188; the second, from a later launch, a different first number. Which number does the dSYM need to find the function?</legend>
+<input type="radio" name="q-29-reading-a-crash-1" id="q-29-reading-a-crash-1-1" data-ok><label for="q-29-reading-a-crash-1-1"><span>The offset, 115188, which the linker fixed and which stays the same</span></label>
+<input type="radio" name="q-29-reading-a-crash-1" id="q-29-reading-a-crash-1-2"><label for="q-29-reading-a-crash-1-2"><span>The load address, since it says where the framework's code begins</span></label>
+<input type="radio" name="q-29-reading-a-crash-1" id="q-29-reading-a-crash-1-3"><label for="q-29-reading-a-crash-1-3"><span>The full address, 0x104a3c1f4, since it's the exact place that crashed</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Offsets are fixed at build time; load addresses change at launch.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The load address is where iOS put the binary this time; the function is found by the offset inside it. <a class="show-me" href="29-reading-a-crash.html">Learn it in puzzle 29 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> That address is only valid for one launch: the load address changes, the offset doesn't. <a class="show-me" href="29-reading-a-crash.html">Learn it in puzzle 29 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 30"><p class="eyebrow">Puzzle 30: Where the build minutes go</p>
+<fieldset class="quiz" data-n="30">
 <legend>An iOS developer runs <code>assembleXCFramework</code> after every Kotlin edit, then tries it in the simulator. Which change saves the most time?</legend>
-<input type="radio" name="q-28-build-time-and-binary-size-1" id="q-28-build-time-and-binary-size-1-1"><label for="q-28-build-time-and-binary-size-1-1"><span>Keep the same task but add the smallBinary option</span></label>
-<input type="radio" name="q-28-build-time-and-binary-size-1" id="q-28-build-time-and-binary-size-1-2" data-ok><label for="q-28-build-time-and-binary-size-1-2"><span>Run the app from Xcode, so embedAndSign builds one debug framework</span></label>
-<input type="radio" name="q-28-build-time-and-binary-size-1" id="q-28-build-time-and-binary-size-1-3"><label for="q-28-build-time-and-binary-size-1-3"><span>Remove the iosSimulatorArm64 target, so there's one fewer to build</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> smallBinary is about size, and it applies to release builds; the time goes into linking every target. <a class="show-me" href="28-build-time-and-binary-size.html">Learn it in puzzle 28 →</a></p>
+<input type="radio" name="q-30-where-the-build-minutes-go-1" id="q-30-where-the-build-minutes-go-1-1"><label for="q-30-where-the-build-minutes-go-1-1"><span>Keep the same task, but add the iosX64 target so all Macs are covered</span></label>
+<input type="radio" name="q-30-where-the-build-minutes-go-1" id="q-30-where-the-build-minutes-go-1-2" data-ok><label for="q-30-where-the-build-minutes-go-1-2"><span>Run the app from Xcode, so embedAndSign links one debug framework</span></label>
+<input type="radio" name="q-30-where-the-build-minutes-go-1" id="q-30-where-the-build-minutes-go-1-3"><label for="q-30-where-the-build-minutes-go-1-3"><span>Turn on Gradle's configuration cache and keep the same task</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> That's one more target to link, so it takes longer, not shorter. <a class="show-me" href="30-where-the-build-minutes-go.html">Learn it in puzzle 30 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Build only the binary you run.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Then there's no simulator build at all (puzzle 16), and nothing to run. <a class="show-me" href="28-build-time-and-binary-size.html">Learn it in puzzle 28 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> It skips reading the build files; every target is still linked, in debug and in release. <a class="show-me" href="30-where-the-build-minutes-go.html">Learn it in puzzle 30 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 31"><p class="eyebrow">Puzzle 31: Where the megabytes come from</p>
+<fieldset class="quiz" data-n="31">
+<legend>After you export one more large module to Swift, the release framework grows by megabytes. Which earlier idea explains it?</legend>
+<input type="radio" name="q-31-where-the-megabytes-come-from-1" id="q-31-where-the-megabytes-come-from-1-1"><label for="q-31-where-the-megabytes-come-from-1-1"><span>Exporting copies the module's klib, with all of its IR, into the app</span></label>
+<input type="radio" name="q-31-where-the-megabytes-come-from-1" id="q-31-where-the-megabytes-come-from-1-2" data-ok><label for="q-31-where-the-megabytes-come-from-1-2"><span>Its whole API is in the header, so dead code elimination can drop none of it</span></label>
+<input type="radio" name="q-31-where-the-megabytes-come-from-1" id="q-31-where-the-megabytes-come-from-1-3"><label for="q-31-where-the-megabytes-come-from-1-3"><span>Exporting switches off LLVM's optimizer for the entire framework</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> No klib reaches the app; the binary holds machine code, and exporting keeps all of the module's code reachable. <a class="show-me" href="31-where-the-megabytes-come-from.html">Learn it in puzzle 31 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Exported API is a starting point, so it all stays.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Export turns off dead code elimination for that module only; LLVM still optimizes everything. <a class="show-me" href="31-where-the-megabytes-come-from.html">Learn it in puzzle 31 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

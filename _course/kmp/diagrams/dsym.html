@@ -1,25 +1,22 @@
-<!-- label: A crash report's backtrace is addresses; the matching dSYM turns them into names and lines; build UUIDs decide which dSYM matches -->
+<!-- label: A backtrace address is load address plus offset; the dSYM maps the offset to a function and line; the build UUID in Binary Images picks the matching dSYM -->
 <!-- question: How does an address in a crash report become a function and a line? type: pipeline -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="ds-t"><title id="ds-t">An iPhone crashes and a crash report lists addresses in the shared framework and the app; the dSYM file turns the first address into Bookmarks.add in Bookmarks.kt line 12; the binary and the dSYM carry the same build UUID; a rebuilt dSYM with another UUID doesn't match</title>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ds-t"><title id="ds-t">An iPhone crashes and the crash report lists addresses in the shared framework and the app; the first address splits into the load address, which changes every launch, plus an offset the linker fixed; the dSYM turns the offset into Bookmarks.add in Bookmarks.kt line 12; the report's Binary Images section gives shared's build UUID, the same as the dSYM's; a rebuilt dSYM with another UUID doesn't match</title>
 <line class="d-grass step s1" x1="0" y1="360" x2="640" y2="360"/>
-<g class="step s1" data-pulse="1"><x-phone x="24" y="40" w="70" h="130" label="iPhone"/><circle class="d-bad" cx="59" cy="98" r="14"/><path class="d-red" d="M51,90 L67,106 M67,90 L51,106"/><x-arrow tone="ink" d="M98,100 L124,100"/>
-<rect class="d-paper" x="130" y="30" width="250" height="170" rx="6"/><text class="d-b" x="255" y="56" text-anchor="middle">crash report</text></g>
-<rect class="d-hl step s2" x="138" y="76" width="234" height="26" rx="4"/>
-<g class="step s1"><text class="d-mi" x="148" y="94">shared 0x104a3c1f4</text><text class="d-mi" x="148" y="132">shared 0x104a3b8e0</text><text class="d-mi" x="148" y="170">app 0x102f1a0c8</text></g>
-<text class="d-a step only-2" x="392" y="96">?</text>
-<g class="step s3" data-pulse="3"><x-sheet x="420" y="40" w="60" h="72" lines="4" label="dSYM"/></g>
-<g class="step s4" data-pulse="4"><x-arrow tone="acc" d="M418,80 C400,140 360,200 330,212"/><rect class="d-ok" x="130" y="216" width="250" height="64" rx="6"/><text class="d-a" x="255" y="244" text-anchor="middle">Bookmarks.add</text><text class="d-tiny" x="255" y="268" text-anchor="middle">Bookmarks.kt:12</text></g>
-<g class="step s5" data-pulse="5"><rect class="d-band" x="408" y="146" width="84" height="26" rx="4"/><text class="d-tiny" x="450" y="164" text-anchor="middle">UUID A</text>
-<rect class="d-wood" x="408" y="270" width="200" height="60" rx="6"/><text class="d-tiny" x="450" y="304" text-anchor="middle">shared</text><rect class="d-band" x="508" y="287" width="84" height="26" rx="4"/><text class="d-tiny" x="550" y="305" text-anchor="middle">UUID A</text>
-<x-arrow tone="ink" d="M470,178 C490,210 520,250 536,282"/><circle class="d-ok" cx="420" cy="230" r="12"/><path class="d-line" d="M413,230 L418,236 L427,224"/></g>
-<g class="step s6" data-pulse="6"><x-sheet x="540" y="40" w="60" h="72" lines="4" label="rebuilt"/><rect class="d-bad" x="528" y="146" width="84" height="26" rx="4"/><text class="d-rt" x="570" y="164" text-anchor="middle">UUID B</text><circle class="d-bad" cx="590" cy="226" r="12"/><path class="d-red" d="M583,219 L597,233 M597,219 L583,233"/></g>
-<g class="step s1" data-move="1:59,140 2:385,89 3:500,76 4:392,248 5:500,159 6:622,159"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
+<g class="step s1" data-pulse="1"><x-phone x="16" y="40" w="70" h="130" label="iPhone"/><circle class="d-bad" cx="51" cy="98" r="14"/><path class="d-red" d="M43,90 L59,106 M59,90 L43,106"/><x-arrow tone="ink" d="M90,100 L116,100"/>
+<rect class="d-paper" x="122" y="20" width="290" height="320" rx="6"/><text class="d-b" x="267" y="46" text-anchor="middle">crash report</text>
+<text class="d-mi" x="138" y="80">shared 0x104a3c1f4</text><text class="d-mi" x="138" y="106">shared 0x104a3b8e0</text><text class="d-mi" x="138" y="132">MyApp  0x102f1a0c8</text></g>
+<rect class="d-hl step s2" x="130" y="62" width="274" height="26" rx="4"/>
+<g class="step s2" data-pulse="2"><text class="d-mi" x="138" y="170">= 0x104a20000 + 115188</text><text class="d-tiny" x="218" y="194" text-anchor="middle">load address</text><text class="d-tiny" x="360" y="194" text-anchor="middle">offset</text><rect class="d-hl" x="322" y="152" width="78" height="26" rx="4"/></g>
+<g class="step s3" data-pulse="3"><x-sheet x="440" y="24" w="56" h="64" lines="4" label="dSYM"/><x-arrow tone="acc" d="M402,166 C430,166 440,150 462,140"/><rect class="d-ok" x="430" y="140" width="196" height="64" rx="6"/><text class="d-a" x="528" y="166" text-anchor="middle">Bookmarks.add</text><text class="d-tiny" x="528" y="192" text-anchor="middle">Bookmarks.kt:12</text></g>
+<g class="step s4" data-pulse="4"><text class="d-tiny" x="138" y="240">Binary Images</text><rect class="d-band" x="134" y="250" width="266" height="30" rx="4"/><text class="d-mi" x="144" y="271">shared  UUID A</text>
+<rect class="d-band" x="512" y="40" width="96" height="28" rx="4"/><text class="d-tiny" x="560" y="60" text-anchor="middle">UUID A</text><x-arrow tone="ink" d="M402,262 C470,262 540,120 558,72"/><circle class="d-ok" cx="618" cy="104" r="11"/><path class="d-line" d="M612,104 L616,109 L625,98"/></g>
+<g class="step s5" data-pulse="5"><x-sheet x="440" y="236" w="56" h="64" lines="4" label="rebuilt"/><rect class="d-bad" x="512" y="252" width="96" height="28" rx="4"/><text class="d-rt" x="560" y="272" text-anchor="middle">UUID B</text><circle class="d-bad" cx="560" cy="312" r="12"/><path class="d-red" d="M553,305 L567,319 M567,305 L553,319"/></g>
+<g class="step s1" data-move="1:51,140 2:404,75 3:420,166 4:420,262 5:620,266"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg>
 <ol class="caps">
-<li><p>The app crashes on a user's iPhone, and iOS collects a <b>crash report</b>: what the app was doing at that moment.</p></li>
-<li><p>Its <b>backtrace</b> lists the functions that were running, as addresses in each binary. <i>Predict: which function is at the highlighted address?</i></p></li>
-<li><p>Nothing on the phone knows. The release build's <b>dSYM</b> file does: it maps those addresses to functions and lines.</p></li>
-<li><p>With it, the address becomes Bookmarks.add, in Bookmarks.kt, line 12. That translation is <b>symbolication</b>.</p></li>
-<li><p>The binary and its dSYM carry the same <b>build UUID</b>, written by the build into both. Only that pair matches.</p></li>
+<li><p>The app crashes on a user's iPhone, and iOS collects a <b>crash report</b>. It lists the functions that were running, as addresses in each binary.</p></li>
+<li><p>Each address is a sum: the <b>load address</b>, where iOS put the binary this launch, plus an offset the linker fixed. <i>Predict: which part identifies the function?</i></p></li>
+<li><p>The offset: it's the same on every launch. The release build's <b>dSYM</b> maps offsets to functions and lines: 115188 becomes Bookmarks.add, line 12.</p></li>
+<li><p>Which dSYM? The report's Binary Images section gives shared's <b>build UUID</b>. The dSYM written by the same build carries the same one.</p></li>
 <li><p>A dSYM from a rebuild has another build UUID, so it can't be trusted for this crash. Keep the dSYM of every build you ship.</p></li>
 </ol>
