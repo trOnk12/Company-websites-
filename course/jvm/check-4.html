@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="jvm">
       <p class="eyebrow"><a href="./">JVM internals for Kotlin and Android developers</a> · check</p>
       <h1>Know Loading and linking code already?</h1>
-      <p class="lede">One question for each of the 5 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 6 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 11"><p class="eyebrow">Puzzle 11: When does a class arrive?</p>
 <fieldset class="quiz" data-n="11">
 <legend>You delete both Rare.value lines but keep new Rare[2]. What does the program print?</legend>
@@ -101,6 +101,16 @@
 <p class="fb no opt-1"><b>Not quite.</b> A class is unloaded only with its loader, and the list reaches the loader. <a class="show-me" href="15-metaspace.html">Learn it in puzzle 15 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Reaching the loader is enough.</p>
 <p class="fb no opt-3"><b>Not quite.</b> The failure comes from class metadata kept in metaspace, not from the size of what's in the list. <a class="show-me" href="15-metaspace.html">Learn it in puzzle 15 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 16"><p class="eyebrow">Puzzle 16: What does Android do with all this?</p>
+<fieldset class="quiz" data-n="16">
+<legend>You inspect your release APK and look for Bookmark.class. What do you find?</legend>
+<input type="radio" name="q-16-android-bridge-1" id="q-16-android-bridge-1-1" data-ok><label for="q-16-android-bridge-1-1"><span>No class files: the code is in classes.dex</span></label>
+<input type="radio" name="q-16-android-bridge-1" id="q-16-android-bridge-1-2"><label for="q-16-android-bridge-1-2"><span>Both, so that old phones can choose</span></label>
+<input type="radio" name="q-16-android-bridge-1" id="q-16-android-bridge-1-3"><label for="q-16-android-bridge-1-3"><span>Bookmark.class, which ART loads like HotSpot does</span></label>
+<p class="fb ok opt-1"><b>Right.</b> d8 converts everything to DEX.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Old phones run desugared DEX, not class files. <a class="show-me" href="16-android-bridge.html">Learn it in puzzle 16 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> d8 converts the class files into DEX; the phone never receives a class file. <a class="show-me" href="16-android-bridge.html">Learn it in puzzle 16 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

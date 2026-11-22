@@ -9,7 +9,7 @@ written in this order; each puzzle has one core idea and uses only what earlier 
 ## Module 1: From source to a live object (written, 5 puzzles)
 Class file, frame, reference, reachability, shared counter.
 
-## Module 2: Reading bytecode
+## Module 2: Reading bytecode (written, puzzles 05–10)
 1. The operand stack does the arithmetic: `iload`, `iadd`, `istore`, step by step.
 2. The constant pool: names and numbers a class file refers to, and why instructions point into it.
 3. Five ways to call a method: invokestatic, invokespecial, invokevirtual, invokeinterface, invokedynamic.
@@ -17,7 +17,7 @@ Class file, frame, reference, reachability, shared counter.
 5. Lambdas and inline functions: invokedynamic and LambdaMetafactory vs code copied at the call site.
 6. Virtual dispatch: the method table, and why `final` (and Kotlin's default) matters less than you think.
 
-## Module 3: Loading and linking code
+## Module 3: Loading and linking code (written, puzzles 11–16)
 1. A class is loaded when first needed: loading, linking (verify, prepare, resolve), initialisation.
 2. Static initialisation order and its traps (a static read before it's set).
 3. Class loaders and delegation: bootstrap, platform, application; why two loaders mean two classes.
