@@ -60,7 +60,7 @@ phase 2 done: 2600000
 
 When C2 compiled use in phase 1, it checked the classes loaded so far: Counter.next had no override. **Class hierarchy analysis** (CHA) is this check: proving from the loaded classes that an open method has exactly one version. With that proof, C2 treated c.next(1) like a call to a final method and inlined Counter's body with no class check at all. The OpenJDK wiki: virtual calls "are often demoted to "special" invocations, if the class hierarchy permits it. A dependency is registered in case further class loading spoils things."
 
-That registered dependency is visible in the LogCompilation log, a detailed XML log of every compiler event (diagnostic, so it also needs UnlockDiagnosticVMOptions). In C2's compile of use:
+That registered dependency is visible in the LogCompilation log, a detailed log file of every compiler event (diagnostic, so it also needs UnlockDiagnosticVMOptions). In C2's compile of use:
 
 ```text
 <dependency type='unique_concrete_method_4' ctxk='1389' x='1395' x2='1389' x3='1395'/>
@@ -122,7 +122,7 @@ class_check is "saw unexpected object class", at offset 8, the `invokevirtual` o
 
 ### Is deoptimization a problem?
 
-Once, no: in the runs above it cost well under a millisecond, and the method was recompiled. The wiki: "A method may in principle be deoptimized dozens of times." It becomes a problem when it repeats: code that keeps switching cases can cycle between compiled and interpreted, and a benchmark that takes a path for the first time while being timed measures the deoptimization (puzzle 24). HotSpot counts traps of one kind at one spot; the PerBytecodeTrapLimit option, 4 by default, is its "Limit on traps (of one kind) at a particular BCI" (bytecode offset), so a spot that keeps failing stops being compiled on that assumption.
+Once, no: in the runs above it cost well under a millisecond, and the method was recompiled. The wiki: "A method may in principle be deoptimized dozens of times." It becomes a problem when it repeats: code that keeps switching cases can cycle between compiled and interpreted, and a benchmark that takes a path for the first time while being timed measures the deoptimization (puzzle 24). HotSpot counts traps of one kind at one spot; the PerBytecodeTrapLimit option, 4 by default, limits the traps "of one kind" at one bytecode offset, so a spot that keeps failing stops being compiled on that assumption.
 
 ### So does final matter?
 
@@ -167,9 +167,9 @@ Run HotKt once without the x and predict which made not entrant line disappears.
 
 ## Check yourself
 
-- In Hot.kt, main creates a Loud before phase 1 but passes only Counter objects until phase 2. When phase 2 starts, what happens to use's level 4 code?::*A class check fails when the first Loud arrives, and use is deoptimized through an uncommon trap||No deoptimization: CHA never proved next unique, so nothing can break >> C2 still assumed something, from the type profile: only Counter. That check fails for Loud. >> the-building-block||A deoptimization when Loud is created, before phase 1 >> use hasn't been compiled yet when Loud is loaded at the start. >> s4::The assumption moved from the loaded classes to the profile.
+- In Hot.kt, main creates a Loud before phase 1 but passes only Counter objects until phase 2. When phase 2 starts, what happens to use's level 4 code?::*A class check fails for the first Loud, and use deoptimizes||No deoptimization: CHA never proved next unique, so nothing can break >> C2 still assumed something, from the type profile: only Counter. That check fails for Loud. >> the-building-block||A deoptimization when Loud is created, before phase 1 >> use hasn't been compiled yet when Loud is loaded at the start. >> s4::The assumption moved from the loaded classes to the profile.
 - Why does HotSpot move a running call back to the interpreter instead of letting it finish in the old compiled code?::*The old code can be wrong now: it runs Counter's body for a Loud||Compiled code can't run while a class is being loaded >> Other compiled code keeps running; only code that depends on the broken assumption is affected. >> s4||The interpreter is faster for a call that is already running >> The interpreter is slower; it is used because it follows the bytecode, which is always correct. >> the-building-block::Code built on a false assumption gives wrong results.
-- Your app's hot method calls an open Kotlin method that no class overrides. A colleague proposes marking the class final for speed. What's the honest answer?::*Same compiled code thanks to CHA; final only rules out a future deoptimization||It removes a method-table lookup from every call >> With no override loaded, C2 already calls or inlines it directly. >> the-building-block||It makes javap show `invokestatic` instead of `invokevirtual` >> Puzzle 10: final doesn't change the caller's bytecode. >> the-building-block::Decide open or final for design.
+- Your app's hot method calls an open Kotlin method that no class overrides. A colleague proposes marking the class final for speed. What's the honest answer?::*CHA already gives the same code, and final only rules out one later deoptimization||It removes a method-table lookup from every call >> With no override loaded, C2 already calls or inlines it directly. >> the-building-block||It makes javap show `invokestatic` instead of `invokevirtual` >> Puzzle 10: final doesn't change the caller's bytecode. >> the-building-block::Decide open or final for design.
 
 ## Sources
 

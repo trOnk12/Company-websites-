@@ -985,6 +985,16 @@
    "in": "23",
    "def": "The HotSpot option that limits how many uncommon traps of one kind one bytecode offset may hit (4).",
    "kind": "code"
+  },
+  "unstable_if": {
+   "in": "23",
+   "def": "The deoptimization reason HotSpot logs when a branch the profile never saw is taken.",
+   "kind": "code"
+  },
+  "class_check": {
+   "in": "23",
+   "def": "The deoptimization reason HotSpot logs when an inlined call meets a class its check did not expect.",
+   "kind": "code"
   }
  },
  "from": {
