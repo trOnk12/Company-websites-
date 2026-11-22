@@ -487,42 +487,47 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/02-who-read-that-state</loc>
+    <loc>https://pachulski.dev/course/compose/02-which-row-is-which</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/03-what-gets-skipped</loc>
+    <loc>https://pachulski.dev/course/compose/03-who-read-that-state</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/04-one-frame</loc>
+    <loc>https://pachulski.dev/course/compose/04-what-gets-skipped</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/05-four-layers</loc>
+    <loc>https://pachulski.dev/course/compose/05-one-frame</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/06-state-reads-and-ui</loc>
+    <loc>https://pachulski.dev/course/compose/06-four-layers</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/07-read-in-the-right-phase</loc>
+    <loc>https://pachulski.dev/course/compose/07-state-reads-and-ui</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/08-who-hosts-the-native-view</loc>
+    <loc>https://pachulski.dev/course/compose/08-read-in-the-right-phase</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/09-pixels-and-voiceover</loc>
+    <loc>https://pachulski.dev/course/compose/09-who-hosts-the-native-view</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/10-pixels-and-voiceover</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -617,6 +622,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/jvm/check-3</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/check-4</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/jvm/00-class-file</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -638,6 +653,66 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/jvm/04-shared-counter</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/05-operand-stack</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/06-constant-pool</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/07-five-invokes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/08-kotlin-in-javap</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/09-lambdas-and-inline</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/10-virtual-dispatch</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/11-loading-linking</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/12-static-init-order</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/13-class-loaders</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/14-classpath-modulepath</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/15-metaspace</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/16-android-bridge</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -817,12 +892,27 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/27-reading-a-crash</loc>
+    <loc>https://pachulski.dev/course/kmp/27-how-xcode-builds-your-kotlin</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/kmp/28-build-time-and-binary-size</loc>
+    <loc>https://pachulski.dev/course/kmp/28-versions-that-must-agree</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/29-reading-a-crash</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/30-where-the-build-minutes-go</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/kmp/31-where-the-megabytes-come-from</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
