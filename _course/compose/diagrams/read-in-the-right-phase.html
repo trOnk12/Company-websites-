@@ -1,17 +1,14 @@
-<!-- label: Which work does a moving card need? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Which work does a moving card need?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">State changes</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Read in phase</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Placement</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Paint position</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: Which work does a moving card need? A read in composition reruns everything; moved into the placement lambda, only placement runs -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Three rows for the phases composition, layout and drawing, and a screen with a card; with the position read in composition, a scroll runs all three phases; with the read moved into the offset lambda, it sits in layout and a scroll runs only placement while the card moves down</title>
+<g class="step s1"><rect class="d-band" x="20" y="40" width="430" height="80" rx="8"/><text class="d-b" x="36" y="70">composition</text><rect class="d-band" x="20" y="140" width="430" height="80" rx="8"/><text class="d-b" x="36" y="170">layout</text><rect class="d-band" x="20" y="240" width="430" height="80" rx="8"/><text class="d-b" x="36" y="270">drawing</text><rect class="d-box" x="480" y="40" width="140" height="300" rx="10"/></g>
+<g class="step only-2"><rect class="d-red" x="20" y="40" width="430" height="80" rx="8"/><text class="d-r" x="436" y="70" text-anchor="end">runs</text><rect class="d-red" x="20" y="140" width="430" height="80" rx="8"/><text class="d-r" x="436" y="170" text-anchor="end">place again</text><rect class="d-red" x="20" y="240" width="430" height="80" rx="8"/><text class="d-r" x="436" y="270" text-anchor="end">draw again</text></g>
+<g class="step s4"><rect class="d-dash" x="24" y="44" width="422" height="72" rx="6"/><text class="d-m" x="436" y="70" text-anchor="end">reused</text><rect class="d-acc" x="20" y="140" width="430" height="80" rx="8"/><text class="d-a" x="436" y="170" text-anchor="end">placement only</text></g>
+<g data-move="1:290,98 3:290,198"><rect class="d-hl" x="-150" y="-17" width="300" height="34" rx="17"/><text class="d-mi" x="0" y="6" text-anchor="middle">reads position.value</text></g>
+<g data-move="1:550,90 2:550,160 4:550,250"><rect class="d-paper" x="-66" y="-26" width="132" height="52" rx="8"/><text class="d-b" x="0" y="6" text-anchor="middle">Saved item</text></g>
 </svg>
 <ol class="caps">
-<li><p>The scroll position changes. The text and size stay constant.</p></li>
-<li><p>Compose tracks the phase that reads the position.</p></li>
-<li><p>Placement reads the new offset and moves the existing card.</p></li>
-<li><p>The card appears at its new position. This update can reuse the composition.</p></li>
+<li><p>First version: <code>val y = position.value</code> at the top of the composable, then <code>y</code> goes into the offset lambda. The read happens in composition.</p></li>
+<li><p>A scroll changes the position. Composition is marked: the composable runs again, then the card is placed and drawn again. All that to move one card of the same size.</p></li>
+<li><p>Second version: read <code>position.value</code> inside the offset lambda, which Compose calls during placement. The read moves down to layout. <i>Predict: which work runs on the next scroll?</i></p></li>
+<li><p>Only placement, and the frame shows the card further down. Composition and the card's measured size are reused: the read was deferred to a later phase.</p></li>
 </ol>

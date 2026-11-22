@@ -1,17 +1,18 @@
-<!-- label: Who read the bookmark count? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Who read the bookmark count?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Count: 2</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Header reads 2</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Tap: count 3</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">Header reads 3</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: Who read the bookmark count? The read in the screen marks the whole screen; moved into the header, it marks only the header -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">BookmarksScreen holds the count and calls a header and a list; when the screen reads the count and passes a number down, a tap marks the whole screen; when it passes a lambda and the header reads it, a tap marks only the header</title>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="20" y="20" width="420" height="330" rx="10"/><text class="d-b" x="36" y="50">BookmarksScreen</text><rect class="d-paper" x="40" y="80" width="380" height="80" rx="8"/><text class="d-b" x="56" y="106">BookmarkHeader</text><rect class="d-paper" x="40" y="180" width="380" height="150" rx="8"/><text class="d-b" x="56" y="206">BookmarkList</text><rect class="d-band" x="60" y="222" width="340" height="30" rx="4"/><rect class="d-band" x="60" y="262" width="340" height="30" rx="4"/><rect class="d-hl" x="470" y="40" width="150" height="48" rx="24"/></g>
+<g class="step s1 hide-3"><text class="d-a" x="545" y="70" text-anchor="middle">count = 2</text></g>
+<g class="step s2 hide-5"><text class="d-mi" x="404" y="50" text-anchor="end">reads count</text><path class="d-dash" d="M466,64 C440,60 420,46 410,44"/><text class="d-mi" x="56" y="140">Bookmarks: 2</text></g>
+<g class="step s3" data-pulse="3"><text class="d-a" x="545" y="70" text-anchor="middle">count = 3</text><rect class="d-hl" x="540" y="300" width="90" height="40" rx="6"/><text class="d-b" x="585" y="325" text-anchor="middle">tap</text><x-arrow tone="acc" d="M600,298 L600,92"/></g>
+<rect class="d-red step only-4" x="16" y="16" width="428" height="338" rx="12"/>
+<g class="step only-4"><rect class="d-paper" x="44" y="118" width="200" height="34" rx="4"/><text class="d-mi" x="56" y="140">Bookmarks: 3</text><text class="d-r" x="520" y="200" text-anchor="middle">all of it runs</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-paper" x="44" y="118" width="200" height="34" rx="4"/><text class="d-mi" x="56" y="140">Bookmarks: 3</text><text class="d-mi" x="404" y="106" text-anchor="end">reads count</text><path class="d-dash" d="M466,70 C440,80 430,96 410,100"/><rect class="d-red" x="36" y="76" width="388" height="88" rx="10"/><text class="d-a" x="520" y="200" text-anchor="middle">only the header</text></g>
+<g class="step s1" data-move="1:545,110 2:280,140 3:600,190 4:30,190 5:430,120"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg>
 <ol class="caps">
-<li><p>The shared screen starts with two bookmarks.</p></li>
-<li><p>The header reads the count. The static title uses its own data.</p></li>
-<li><p>The button event changes the count to three. Predict what needs an updated description.</p></li>
-<li><p>The header reads three and describes the updated text.</p></li>
+<li><p>The shared screen keeps the bookmark count in snapshot state. It calls a header that shows the count, and a list of saved items.</p></li>
+<li><p>The screen reads <code>count.value</code> itself and passes the number 2 down to the header. So the state read happens in the screen's group.</p></li>
+<li><p>A tap changes the count to 3. <i>Predict: which group does Compose mark?</i></p></li>
+<li><p>The screen's, because that's where the read happened. The whole screen runs again; the header gets 3, and the list is skipped only because its arguments are equal.</p></li>
+<li><p>Pass a lambda that reads the count, and call it inside the header. Now the read happens in the header, and a tap marks only the header: <b>deferring a read</b>.</p></li>
 </ol>

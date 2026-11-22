@@ -1,17 +1,17 @@
-<!-- label: Can VoiceOver understand the bookmark? -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">Can VoiceOver understand the bookmark?</title>
-<g class="step s1"><rect class="d-paper" x="36" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="93" y="184" text-anchor="middle">Icon changes</text></g>
-<g class="step s2"><rect class="d-paper" x="187" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="244" y="184" text-anchor="middle">Name and state</text></g>
-<x-arrow class="step s2" tone="acc" d="M154,179 H180"/>
-<g class="step s3"><rect class="d-paper" x="338" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="395" y="184" text-anchor="middle">Native mapping</text></g>
-<x-arrow class="step s3" tone="acc" d="M305,179 H331"/>
-<g class="step s4"><rect class="d-hl" x="489" y="141" width="114" height="76" rx="9"/><text class="d-tiny" x="546" y="184" text-anchor="middle">VoiceOver</text></g>
-<x-arrow class="step s4" tone="acc" d="M456,179 H482"/>
-<g data-move="1:93,241 2:244,241 3:395,241 4:546,241"><circle class="d-acc" r="7"/></g>
+<!-- label: What changes between an icon VoiceOver can't read and one it can? (before and after, same layout twice) -->
+<svg viewBox="0 0 480 285" role="img" aria-labelledby="pv-t"><title id="pv-t">Before: a bookmark icon with a raw tap handler turns solid on tap but has no semantics, and VoiceOver says nothing; after: the same icon with toggleable, role Switch and a content description has a label, a role and an on state, which iOS receives and VoiceOver reads as Bookmark Lake walk, switch button, on</title>
+<g class="step s1" data-pulse="1"><text class="d-a" x="8" y="22">before</text><rect class="d-paper" x="8" y="32" width="224" height="52" rx="8"/><text class="d-tiny" x="22" y="64">Lake walk</text><path class="d-line" d="M196,44 h18 v28 l-9,-7 l-9,7 z"/><text class="d-m" x="8" y="104">tap handler only</text></g>
+<g class="step s1 hide-2"><x-arrow tone="ink" d="M150,58 L186,58"/></g>
+<g class="step s2" data-pulse="2"><path class="d-ink" d="M196,44 h18 v28 l-9,-7 l-9,7 z"/><rect class="d-dash" x="8" y="116" width="224" height="80" rx="8"/><text class="d-m" x="20" y="138">semantics</text><text class="d-r" x="120" y="174" text-anchor="middle">none</text><rect class="d-bad" x="8" y="210" width="224" height="62" rx="16"/><text class="d-b" x="120" y="248" text-anchor="middle">( silence )</text></g>
+<g class="step s3" data-pulse="3"><text class="d-a" x="248" y="22">after</text><rect class="d-paper" x="248" y="32" width="224" height="52" rx="8"/><text class="d-tiny" x="262" y="64">Lake walk</text><path class="d-ink" d="M436,44 h18 v28 l-9,-7 l-9,7 z"/><text class="d-m" x="248" y="104">toggleable · Switch</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-hl" x="248" y="116" width="224" height="80" rx="8"/><text class="d-tiny" x="260" y="140">label: Bookmark Lake walk</text><text class="d-tiny" x="260" y="164">role: switch</text><text class="d-tiny" x="260" y="188">state: on</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-paper" x="248" y="210" width="224" height="62" rx="16"/><text class="d-tiny" x="360" y="236" text-anchor="middle">“Bookmark Lake walk,</text><text class="d-tiny" x="360" y="259" text-anchor="middle">switch button, on”</text><x-arrow tone="acc" d="M360,198 L360,206"/></g>
+<g class="step s1" data-move="1:205,94 2:120,200 3:445,94 4:360,206 5:240,240"><path class="d-dot" d="M0,-9 L8,6 L-8,6 Z"/></g>
 </svg>
 <ol class="caps">
-<li><p>The icon changes shape when the item is saved.</p></li>
-<li><p>The control also exposes its name and its current state.</p></li>
-<li><p>Compose maps the description to iOS accessibility information.</p></li>
-<li><p>VoiceOver can use that information as the person focuses and activates the control.</p></li>
+<li><p>Before: the icon reacts to a tap with a raw touch handler, and the picture turns from outline to solid. A sighted user sees the change.</p></li>
+<li><p>But nothing described it. VoiceOver reads only <b>accessibility semantics</b>: a label, a role, a state, actions. Here there are none, so VoiceOver has nothing to say.</p></li>
+<li><p>After: the same icon, now with <code>Modifier.toggleable</code>, <code>Role.Switch</code> and a content description. <i>Predict: what can VoiceOver say now?</i></p></li>
+<li><p>Compose's semantics now hold a label, a role and an on/off state, and Compose Multiplatform maps them to the element's iOS accessibility label, traits and value.</p></li>
+<li><p>VoiceOver reads them out, roughly like this (the exact words depend on the iOS version and settings). A double-tap flips it, and it says "off".</p></li>
 </ol>

@@ -472,22 +472,62 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/00-state-reads-and-ui</loc>
+    <loc>https://pachulski.dev/course/compose/check-2</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/01-read-in-the-right-phase</loc>
+    <loc>https://pachulski.dev/course/compose/00-what-composable-really-does</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/02-who-hosts-the-native-view</loc>
+    <loc>https://pachulski.dev/course/compose/01-the-tree-compose-remembers</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/compose/03-pixels-and-voiceover</loc>
+    <loc>https://pachulski.dev/course/compose/02-which-row-is-which</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/03-who-read-that-state</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/04-what-gets-skipped</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/05-one-frame</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/06-four-layers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/07-state-reads-and-ui</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/08-read-in-the-right-phase</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/09-who-hosts-the-native-view</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/compose/10-pixels-and-voiceover</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

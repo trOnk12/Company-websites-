@@ -1,22 +1,56 @@
 {
   "title": "Compose Multiplatform, one screen from state to pixels",
-  "intro": "Follow a shared bookmark screen from state reads to rendering, across the iOS hosting boundary and through a VoiceOver check.",
-  "how": "Follow the mechanism, predict a change and check your answer. Optional depth is available from the same puzzle.",
+  "intro": "What Compose really does underneath your @Composable functions, and how Compose Multiplatform takes that machinery to an iPhone. Then one shared bookmark screen, followed from state reads to pixels, across the iOS hosting boundary and through a VoiceOver check. For Android engineers who write Jetpack Compose and want to ship it to iOS.",
+  "how": "Each puzzle starts with a problem, gives you one building block, shows it in a diagram that plays itself, and ends with three questions. Facts come from Android's and Kotlin's documentation and from Compose's own source code, quoted on every page. Optional depth is available from the same puzzle.",
   "assumes": {
     "title": "Kotlin Multiplatform, from the compiler up",
     "href": "../kmp/"
   },
   "modules": [
     {
-      "title": "Module 1: One screen, two platforms",
-      "blurb": "Trace state, placement, native UI and accessibility through the same screen.",
+      "title": "Module 1: Compose underneath",
+      "blurb": "What the compiler plugin does to a composable, the tree Compose remembers, which row is which in a loop, which code runs again when state changes and what gets skipped, one frame from tree to pixels, and the layers that let Compose leave Android.",
       "puzzles": [
-        "00-state-reads-and-ui.md",
-        "01-read-in-the-right-phase.md",
-        "02-who-hosts-the-native-view.md",
-        "03-pixels-and-voiceover.md"
+        "00-what-composable-really-does.md",
+        "01-the-tree-compose-remembers.md",
+        "02-which-row-is-which.md",
+        "03-who-read-that-state.md",
+        "04-what-gets-skipped.md",
+        "05-one-frame.md",
+        "06-four-layers.md"
+      ]
+    },
+    {
+      "title": "Module 2: One screen, two platforms",
+      "blurb": "Trace state reads, placement, native UI and accessibility through the same shared bookmark screen.",
+      "puzzles": [
+        "07-state-reads-and-ui.md",
+        "08-read-in-the-right-phase.md",
+        "09-who-hosts-the-native-view.md",
+        "10-pixels-and-voiceover.md"
       ]
     }
   ],
-  "upcoming": []
+  "upcoming": [
+    {
+      "title": "Module 2b: Seeing and steering recomposition",
+      "topics": "Layout Inspector recomposition counts and the compiler's reports and metrics, what $changed encodes, non-restartable and non-skippable composables (inline Column/Row/Box, @NonRestartableComposable, @ReadOnlyComposable), derivedStateOf, collectAsState, collectAsStateWithLifecycle and snapshotFlow, collections in state (mutableStateListOf, immutable collections, mutation policies), the stability configuration file, phases out of order (SubcomposeLayout, intrinsics, graphicsLayer), and side-effect-free composables."
+    },
+    {
+      "title": "Module 3: Compose Multiplatform on iOS",
+      "topics": "Skia through Skiko, inside ComposeUIViewController, one Metal-backed view, how frames are scheduled with CADisplayLink at up to 120 Hz, how touches arrive, and where a frame's time goes on an iPhone."
+    },
+    {
+      "title": "Module 4: Living with UIKit",
+      "topics": "Interop in both directions done properly, text input and the keyboard, accessibility in depth, and looking at home on iOS."
+    },
+    {
+      "title": "Module 5: Shared app plumbing",
+      "topics": "Resources, navigation, lifecycle and ViewModel in common code, performance on iOS, testing, and Compose Multiplatform or SwiftUI, screen by screen."
+    },
+    {
+      "title": "Module 6: Expert floor",
+      "topics": "Effects and their lifetimes, snapshots in depth, CompositionLocal, custom layouts and Modifier.Node, lazy layouts, and the compiler's stability reports."
+    }
+  ]
 }
