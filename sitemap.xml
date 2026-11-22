@@ -1372,6 +1372,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/music/i-feel-love</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/music/spiral-of-fifths</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -1382,12 +1387,32 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/music/planet-rock</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/music/no-ufos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/music/tape-memory</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://pachulski.dev/music/backwards-dream</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/music/can-you-feel-it</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/music/acid-tracks</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
