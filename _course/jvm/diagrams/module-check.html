@@ -1,0 +1,23 @@
+<!-- label: Before main, the JVM reads app's requires line and looks for bonus on the module path; with bonus present main prints start and 3; with bonus removed it stops with FindException and main never runs -->
+<!-- question: What does the JVM check before main runs, and what happens when a required module is missing? type: before/after (same layout, bonus present then removed) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="mk-t"><title id="mk-t">Left: the module path mods with module app, whose module-info requires bonus, and module bonus. A startup check follows the requires line to bonus. With bonus present, main runs and prints start and 3. With bonus removed, the check fails with FindException: Module bonus not found, required by app, and main never runs</title>
+<text class="d-tiny" x="16" y="30">module path: mods</text>
+<rect class="d-lane" x="16" y="40" width="300" height="250" rx="10"/>
+<rect class="d-paper" x="32" y="60" width="268" height="84" rx="8"/><text class="d-tiny" x="46" y="86">app</text><text class="d-mi" x="46" y="124">requires bonus</text>
+<g class="step s1 hide-4"><rect class="d-paper" x="32" y="186" width="268" height="84" rx="8"/><text class="d-tiny" x="46" y="212">bonus</text><text class="d-mi" x="46" y="250">Helper</text></g>
+<g class="step s4"><rect class="d-dash" x="32" y="186" width="268" height="84" rx="8"/></g>
+<x-arrow class="step s2" tone="acc" d="M280,146 L280,182"/>
+<text class="d-tiny" x="350" y="30">java -p mods -m app/…App</text>
+<rect class="d-box" x="350" y="60" width="274" height="84" rx="8"/><text class="d-tiny" x="364" y="86">startup check</text>
+<g class="step s3 hide-4"><text class="d-a" x="364" y="124">bonus found</text><rect class="d-hl" x="350" y="186" width="274" height="84" rx="8"/><text class="d-mi" x="364" y="216">main: start</text><text class="d-mi" x="364" y="250">3</text></g>
+<g class="step only-4"><text class="d-b" x="487" y="236" text-anchor="middle">?</text></g>
+<g class="step s5" data-pulse="5"><text class="d-r" x="364" y="124">bonus missing</text><rect class="d-bad" x="16" y="306" width="608" height="56" rx="8"/><text class="d-tiny" x="28" y="340">FindException: Module bonus not found, required by app</text><text class="d-r" x="364" y="236">main never runs</text></g>
+<g class="step s2" data-move="2:280,166 3:487,100 5:487,100"><circle class="d-dot" r="8"/></g>
+</svg>
+<ol class="caps">
+<li><p>Two <b>Java modules</b>, app and bonus, compiled into the folder mods. The <b>module path</b>, given with -p, lists where the modules are. app's module-info says requires bonus.</p></li>
+<li><p>Before main runs, the JVM reads app's requires line and looks for bonus on the module path.</p></li>
+<li><p>bonus is there, so the check passes. main runs and prints start, then Helper.bonus() returns 3.</p></li>
+<li><p>Now remove the bonus folder and run the same command. <i>Predict: does main print start?</i></p></li>
+<li><p>No. The check fails first: FindException, Module bonus not found, required by app. Not one line of main runs.</p></li>
+</ol>
