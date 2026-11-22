@@ -37,8 +37,8 @@ Addresses alone say almost nothing. **Symbolication** is translating them back i
 
 Where it lives depends on the build:
 
-- A debug build keeps debug information inside the binary, so Xcode's debugger can stop on a line of your Kotlin.
-- A release build, the one users get, leaves it out of the binary to keep the app small. On Apple platforms, Kotlin/Native writes it to a separate **dSYM** file by default: a file that maps the offsets in a binary to functions and lines. It lands next to the framework, named after it: build/bin/iosArm64/releaseFramework/shared.framework.dSYM.
+- A debug build keeps puzzle 24's symbols in the binary, and Kotlin/Native writes its debug information beside it, so Xcode's debugger can stop on a line of your Kotlin.
+- A release build, the one users get, has its symbols stripped from the binary to keep the app small. On Apple platforms, Kotlin/Native writes it to a separate **dSYM** file by default: a file that maps the offsets in a binary to functions and lines. It lands next to the framework, named after it: build/bin/iosArm64/releaseFramework/shared.framework.dSYM.
 
 But it must be the matching dSYM. Each binary and its dSYM carry the same **build UUID**, a unique ID written into both by the build. Build the same source again with another Xcode version or other settings, and the UUIDs won't match; the layout, and so the offsets, can differ too. Apple's docs are strict: a binary and a dSYM are compatible "only … when they have identical build UUIDs". The crash report says which one you need: its Binary Images section, at the bottom, lists every binary loaded in the app, with its load address and its build UUID. On your Mac, two commands close the loop:
 

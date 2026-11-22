@@ -29,7 +29,7 @@ cd "$SRCROOT/.."
 ./gradlew :shared:embedAndSignAppleFrameworkForXcode
 ```
 
-`$SRCROOT` is the iOS project's folder, so `cd "$SRCROOT/.."` steps up to the root of your Gradle project, and `:shared` is your shared module's name. The first three lines are a guard: when you start the iOS app from Android Studio instead, the IDE has already built the framework and sets that variable, so the script skips a second build.
+`$SRCROOT` is the iOS project's folder, so `cd "$SRCROOT/.."` steps up to the root of your Gradle project, and `:shared` is your shared module's name. The first four lines are a guard: when you start the iOS app from Android Studio instead, the IDE has already built the framework and sets that variable, so the script skips a second build.
 
 The task, `embedAndSignAppleFrameworkForXcode`, comes from the multiplatform plugin, and it exists only if your iOS targets declare `binaries.framework`. It reads what Xcode is building right now (the simulator or a real iPhone, Debug or Release) and then:
 
@@ -42,7 +42,7 @@ Because the framework lands in Xcode's own build output, Swift's `import shared`
 Three settings from Kotlin's docs make this reliable, and each has a reason:
 
 - **Move the Run Script phase above Compile Sources.** Swift is compiled against the framework's header (puzzle 5), so the framework must exist first.
-- **Untick "Based on dependency analysis".** Xcode would otherwise skip the script when it thinks nothing changed; it can't see your Kotlin files.
+- **Untick "Based on dependency analysis".** The script lists no input or output files, so Xcode can't tell whether your Kotlin changed; unticking makes it run the script on every build, on purpose, without warning about missing outputs each time.
 - **Turn off User Script Sandboxing** in Build Settings. With it on, Xcode lets a script touch only the files listed as its inputs, and Gradle reads your whole project.
 
 A custom build configuration, other than Debug or Release, needs one more setting, `KOTLIN_FRAMEWORK_BUILD_TYPE`, set to Debug or Release, so the task knows which kind of framework to link. Other ways of handing a framework to an iOS team that doesn't build Kotlin itself are module 7's (coming soon).

@@ -16,7 +16,7 @@
 <ol class="caps">
 <li><p>The <b>build host</b> is the machine that runs the build. A Linux host can compile your shared code into klibs for iOS. <i>Predict: can it link the framework?</i></p></li>
 <li><p>No: Kotlin builds final binaries for Apple targets only on a Mac. A Mac host makes both.</p></li>
-<li><p>Each Kotlin version is tested with one Xcode version, listed in Kotlin's compatibility guide. Move the two together.</p></li>
+<li><p>Each Kotlin version names the newest Xcode it was tested with, in Kotlin's compatibility guide. Move the two together.</p></li>
 <li><p>The app's <b>deployment target</b> is the oldest iOS it supports. Kotlin's framework supports iOS 15.0 and later. <i>Predict: does an iOS 14.0 app match?</i></p></li>
 <li><p>No: the app would promise to run where its framework wasn't built for. Raise the app to 15.0, or lower Kotlin's minimum on purpose.</p></li>
 </ol>

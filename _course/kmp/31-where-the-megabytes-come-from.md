@@ -18,7 +18,7 @@ Puzzle 30 found where the minutes go. The second complaint: the app's download g
 
 Start with what a release build keeps. Dead code elimination (puzzle 24) starts from the code Swift can call, the API in the framework's header, follows every call through the IR, and drops what nothing reaches, before LLVM runs. Then the linker's `-dead_strip` trims a little more. So in a release framework, a function of Ktor's that your code never reaches isn't there, and neither is one of yours.
 
-Exports are where this stops. To export a module, you list it in the framework block, and Kotlin's docs add one condition: "You can export only api dependencies of the corresponding source set." `api` is Gradle's word, beside the `implementation` you met in puzzle 19, for a dependency that is part of your module's own public face, so whoever uses your module sees it too:
+Exports are where this stops. To export a module, you list it in the framework block, and Kotlin's docs add one condition: "You can export only api dependencies of the corresponding source set." Export one that's only an implementation dependency, and the link task stops with an error: "Following dependencies exported in the debugFramework binary are not specified as API-dependencies of a corresponding source set". (That's Gradle's `api` keyword, not the API Swift sees in the header.) `api` is Gradle's word, beside the `implementation` you met in puzzle 19, for a dependency that is part of your module's own public face, so whoever uses your module sees it too:
 
 ```kotlin
 kotlin {
@@ -50,7 +50,7 @@ iosArm64 {
 
 It's experimental and can slow the app in some cases, so measure both size and speed.
 
-Two traps when measuring. A debug build keeps unused code, because it never runs dead code elimination, and it carries its debug information inside (puzzle 29): measure size only on release builds. And puzzle 30's release cache trades optimizations for speed; in Kotlin's compiler code, dead code elimination is one of the steps it switches off, since that step runs only when no cached libraries are used.
+Two traps when measuring. A debug build keeps unused code, because it never runs dead code elimination, and its symbols are never stripped (puzzle 29): measure size only on release builds. And puzzle 30's release cache trades optimizations for speed; in Kotlin's compiler code, dead code elimination is one of the steps it switches off, since that step runs only when no cached libraries are used.
 
 | Lever | What it removes | When |
 |---|---|---|
@@ -71,6 +71,7 @@ The print shop from puzzle 24 strikes out every recipe nothing refers to, starti
 
 ## Sources
 
+- [Kotlin Gradle plugin source: KotlinNativeLink.kt](https://github.com/JetBrains/kotlin/blob/9180ce6a7a7d3627f88b424717583f28ddca052d/libraries/tools/kotlin-gradle-plugin/src/common/kotlin/org/jetbrains/kotlin/gradle/targets/native/tasks/KotlinNativeLink.kt#L375) ("Following dependencies exported in the ${binaryName.get()} binary are not specified as API-dependencies of a corresponding source set"; "Please add them in the API-dependencies and rerun the build.")
 - [Kotlin docs: Build final native binaries](https://kotlinlang.org/docs/multiplatform/multiplatform-build-native-binaries.html) ("You can export only api dependencies of the corresponding source set."; "When you export a dependency, it includes all of its API to the framework API. The compiler adds the code from this dependency to the framework, even if you use a small fraction of it. This disables dead code elimination for the exported dependency (and for its dependencies, to some extent)."; "It is not recommended to use transitiveExport : it adds all transitive dependencies of the exported dependencies to the framework. This could increase both compilation time and binary size."; the example `api(project(":dependency"))` with `export(project(":dependency"))`)
 - [Kotlin docs: Tips for improving compilation time](https://kotlinlang.org/docs/native-improving-compilation-time.html) ("Each exported module negatively affects compilation time and binary size."; "To reduce the size of release binaries and improve build time, try enabling the binary option smallBinary . It effectively sets -Oz as the default optimization argument for the compiler during the LLVM compilation phase. The option is still Experimental and might affect runtime performance in some cases.")
 - [Kotlin docs: Kotlin/Native binary options](https://kotlinlang.org/docs/native-binary-options.html) (`binaryOption("smallBinary", "true")`; "smallBinary true false (default) Decreases the binary size for release binaries. Experimental since 2.2.20")
