@@ -24,7 +24,7 @@ Docker does more than copy the list. In the container's mount namespace, Docker'
 
 It does this with a system call, pivot_root: it makes the image's files the root mount of the namespace and then unmounts the host's old root, so the host's tree is gone from the container's list of mounts, not just out of reach. The older chroot only changes where one process's paths start; the host's mounts stay in its list.
 
-The mount at / is a little more than the image's files. The first line of the container's mount list reads "overlay / overlay rw,…": Docker stacks the image's files with a thin layer of its own where the container's writes go, so the image itself never changes. How that stack works is Module 2 (coming soon).
+The mount at / is a little more than the image's files. The first line of the container's mount list reads "overlay / overlay rw,…": Docker stacks the image's files with a thin writable part of its own where the container's writes go, so the image itself never changes. How that stack works is puzzle 10.
 
 Two edges that follow:
 
@@ -44,7 +44,7 @@ mkdir -p /tmp/demo
 unshare --mount sh -c 'mount -t tmpfs none /tmp/demo; touch /tmp/demo/inside; ls /tmp/demo'
 ls /tmp/demo
 docker run -d --name box alpine:3.20 sleep 1000
-docker exec box head -1 /proc/mounts | cut -c1-40
+docker exec box head -1 /proc/mounts | cut -c1-20
 grep PRETTY /proc/$(pgrep -x sleep)/root/etc/os-release
 docker rm -f box
 ```
@@ -53,7 +53,7 @@ Output from the run behind this page:
 
 ```
 inside
-overlay / overlay rw,relatime,lowerdir=/
+overlay / overlay rw
 PRETTY_NAME="Alpine Linux v3.20"
 ```
 

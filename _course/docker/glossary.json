@@ -40,7 +40,10 @@
    "Gradle",
    "OK",
    "API",
-   "root"
+   "root",
+   "HTTP",
+   "GET",
+   "HEAD"
   ],
   "homonyms": [
    "root"
@@ -74,7 +77,9 @@
    "aliases": [
     "docker run alpine:3.20 sleep 1000",
     "docker run -d --name box alpine:3.20 sleep 1000",
-    "docker run -d"
+    "docker run -d",
+    "docker run alpine:3.20",
+    "docker run -d --name reg -p 5000:5000 registry:2"
    ]
   },
   "docker exec": {
@@ -143,7 +148,10 @@
   "--rm": {
    "in": "01",
    "kind": "code",
-   "def": "docker run's option that removes the container as soon as its program exits."
+   "def": "docker run's option that removes the container as soon as its program exits.",
+   "aliases": [
+    "docker run --rm"
+   ]
   },
   "namespace": {
    "in": "02",
@@ -563,6 +571,305 @@
    "in": "03",
    "kind": "code",
    "def": "An older system call that changes where one process's paths start, leaving the mounts as they are."
+  },
+  "layer": {
+   "in": "09",
+   "def": "A tar archive of file changes (files added, changed, or deleted); an image's layers, applied in order, make its root filesystem.",
+   "aliases": [
+    "layers"
+   ]
+  },
+  "whiteout": {
+   "in": "09",
+   "def": "An empty file named .wh.<name> in a layer, meaning: delete <name> from the layers below.",
+   "aliases": [
+    "whiteouts",
+    "whiteout file"
+   ]
+  },
+  "image config": {
+   "in": "09",
+   "def": "The JSON file of an image that says how to run it (command, environment, working folder) and lists its layers in order.",
+   "aliases": [
+    "image configs"
+   ]
+  },
+  "docker diff": {
+   "in": "09",
+   "kind": "code",
+   "def": "Lists the files a container added (A), changed (C) or deleted (D) since it started.",
+   "aliases": [
+    "docker diff edit"
+   ]
+  },
+  "docker commit": {
+   "in": "09",
+   "kind": "code",
+   "def": "Turns a container's file changes into a new layer and a new image.",
+   "aliases": [
+    "docker commit edit notes:v1"
+   ]
+  },
+  "docker save": {
+   "in": "09",
+   "kind": "code",
+   "def": "Writes an image, all its layers and JSON files, into one tar archive.",
+   "aliases": [
+    "docker save notes:v1 -o notes.tar"
+   ]
+  },
+  "docker history": {
+   "in": "09",
+   "kind": "code",
+   "def": "Lists an image's layers, newest first, with the step that made each and its size."
+  },
+  "notes:v1": {
+   "in": "09",
+   "kind": "code",
+   "def": "The small image this module builds: alpine:3.20 plus one layer that adds /notes.txt and deletes /etc/motd."
+  },
+  "tar": {
+   "in": "09",
+   "kind": "code",
+   "def": "An archive format that packs many files, with their names and permissions, into one; also the program that makes and reads it.",
+   "aliases": [
+    "tar archive",
+    "tar archives"
+   ]
+  },
+  "overlay filesystem": {
+   "in": "10",
+   "def": "A filesystem in the kernel (OverlayFS) that shows several directories stacked as one: read-only lower ones and one writable upper one.",
+   "aliases": [
+    "OverlayFS",
+    "overlay filesystems"
+   ]
+  },
+  "upper directory": {
+   "in": "10",
+   "def": "The one writable directory of an overlay mount: every write and every deletion lands there.",
+   "aliases": [
+    "upperdir",
+    "upper directories"
+   ]
+  },
+  "lower directory": {
+   "in": "10",
+   "def": "A read-only directory of an overlay mount, such as one unpacked image layer.",
+   "aliases": [
+    "lowerdir",
+    "lower directories"
+   ]
+  },
+  "copy-up": {
+   "in": "10",
+   "def": "The overlay filesystem copying a file from a lower directory into the upper one the first time it is written.",
+   "aliases": [
+    "copy_up"
+   ]
+  },
+  "writable layer": {
+   "in": "11",
+   "def": "A container's own upper directory: everything it writes, kept until the container is removed.",
+   "aliases": [
+    "writable layers",
+    "container layer"
+   ]
+  },
+  "docker rm": {
+   "in": "00",
+   "kind": "code",
+   "def": "Removes a container (with -f, even a running one), and with it the files it wrote."
+  },
+  "storage driver": {
+   "in": "12",
+   "def": "The older part of Docker (overlay2 is the usual one) that stores image layers and containers' writable layers on disk.",
+   "aliases": [
+    "storage drivers",
+    "overlay2",
+    "graph driver",
+    "graph drivers"
+   ]
+  },
+  "containerd image store": {
+   "in": "12",
+   "def": "Docker 29's default way to keep images: containerd keeps each layer compressed, as it was downloaded, and unpacked by a snapshotter.",
+   "aliases": []
+  },
+  "snapshotter": {
+   "in": "12",
+   "def": "The containerd component that unpacks layers into directories (snapshots) and prepares a container's root filesystem from them.",
+   "aliases": [
+    "snapshotters"
+   ]
+  },
+  "docker system df": {
+   "in": "12",
+   "kind": "code",
+   "def": "Shows how much disk space images, containers, volumes and the build cache use."
+  },
+  "hash function": {
+   "in": "13",
+   "def": "A function that turns any bytes into a fixed-size number, the same for the same bytes, and practically never the same for different bytes.",
+   "aliases": [
+    "hash",
+    "hash functions"
+   ]
+  },
+  "digest": {
+   "in": "13",
+   "def": "A content's name made from its bytes: the algorithm, a colon, and a SHA-256 fingerprint, such as sha256:25f1d6…; any change to the bytes changes it.",
+   "aliases": [
+    "digests",
+    "SHA-256",
+    "SHA",
+    "content-addressed"
+   ]
+  },
+  "DiffID": {
+   "in": "13",
+   "def": "The digest of a layer's uncompressed tar; the image config lists layers by DiffID, the manifest by the digest of the compressed blob.",
+   "aliases": [
+    "DiffIDs"
+   ]
+  },
+  "sha256sum": {
+   "in": "13",
+   "kind": "code",
+   "def": "Prints the SHA-256 fingerprint of a file's bytes."
+  },
+  "image tag": {
+   "in": "14",
+   "def": "A movable name for one image in a repository, such as 3.20 or latest; whoever pushes can point it at a different image.",
+   "aliases": [
+    "tag",
+    "tags",
+    "image tags"
+   ]
+  },
+  "repository": {
+   "in": "14",
+   "def": "A named collection of an image's versions in a registry, such as library/alpine; tags pick versions in it.",
+   "aliases": [
+    "repositories"
+   ]
+  },
+  "docker tag": {
+   "in": "14",
+   "kind": "code",
+   "def": "Gives an image one more name (repository and tag).",
+   "aliases": [
+    "docker tag notes:v2 notes:stable"
+   ]
+  },
+  "docker push": {
+   "in": "14",
+   "kind": "code",
+   "def": "Uploads an image's blobs and manifest to a registry under a tag."
+  },
+  "docker pull": {
+   "in": "12",
+   "kind": "code",
+   "def": "Downloads an image by tag or by digest.",
+   "aliases": [
+    "docker pull alpine",
+    "docker pull alpine:3.20",
+    "docker pull localhost:5000/notes:stable"
+   ]
+  },
+  "registry": {
+   "in": "14",
+   "def": "A server that stores images as blobs and manifests and hands them out over HTTP, such as Docker Hub.",
+   "aliases": [
+    "registries"
+   ]
+  },
+  "blob": {
+   "in": "09",
+   "def": "One stored piece of an image (a layer, a config or one of the small JSON files that tie them together), kept as one file and, in a registry, fetched by its name.",
+   "aliases": [
+    "blobs"
+   ]
+  },
+  "image manifest": {
+   "in": "15",
+   "def": "The small JSON file a registry hands out first: one image config and its layers, each named by digest and size.",
+   "aliases": [
+    "image manifests"
+   ]
+  },
+  "curl": {
+   "in": "15",
+   "kind": "code",
+   "def": "A command that makes one HTTP request and prints the answer."
+  },
+  "image index": {
+   "in": "16",
+   "def": "A JSON list of image manifests, one per platform (and attestations), so one tag can serve many kinds of machine.",
+   "aliases": [
+    "image indexes"
+   ]
+  },
+  "platform": {
+   "in": "16",
+   "def": "The operating system and processor an image's programs are built for, such as linux/amd64 or linux/arm64.",
+   "aliases": [
+    "platforms"
+   ]
+  },
+  "OCI image spec": {
+   "in": "16",
+   "def": "The Open Container Initiative's standard for images: the index, the manifest, the config, layers and digests.",
+   "aliases": [
+    "image spec"
+   ]
+  },
+  "docker buildx imagetools inspect": {
+   "in": "16",
+   "kind": "code",
+   "def": "Prints an image's index or manifest straight from its registry.",
+   "aliases": []
+  },
+  "--platform": {
+   "in": "16",
+   "kind": "code",
+   "def": "docker run's and docker pull's option that picks a platform from an image index.",
+   "aliases": [
+    "--platform linux/arm64"
+   ]
+  },
+  "docker restart": {
+   "in": "11",
+   "kind": "code",
+   "def": "Stops a container and starts it again; -t sets how long to wait for its program to exit.",
+   "aliases": [
+    "docker restart -t 1"
+   ]
+  },
+  "docker ps -s": {
+   "in": "11",
+   "kind": "code",
+   "def": "Lists running containers with the size of each one's writable layer."
+  },
+  "docker image ls": {
+   "in": "12",
+   "kind": "code",
+   "def": "Lists local images with their ID, disk usage and content size."
+  },
+  "-p 5000:5000": {
+   "in": "14",
+   "kind": "code",
+   "def": "docker run's option that makes a container's port reachable on a port of the host (Module 5).",
+   "aliases": []
+  },
+  "HTTP header": {
+   "in": "15",
+   "def": "A named line of extra information at the top of an HTTP request or answer, such as Accept or Docker-Content-Digest.",
+   "aliases": [
+    "header",
+    "headers",
+    "HTTP headers"
+   ]
   }
  },
  "from": {

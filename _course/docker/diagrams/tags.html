@@ -1,0 +1,18 @@
+<!-- label: A tag is a movable pointer to one image in a repository; a digest is the image's fixed name. Moving the tag stable from 6b8731de to 640e63e0 changes what notes:stable pulls, never what notes@sha256:6b8731de pulls -->
+<!-- question: What does a tag point at, and what changes for the people pulling it when it moves? type: box-and-pointer (tags as pointers to images named by digest). Real run on 22 November 2026 against a local registry: v1 and stable → sha256:6b8731de… (cat /notes.txt: hello); v2 and latest → sha256:640e63e0… (hello, world); after docker tag v2 stable and a push, stable → 640e63e0…, while a pull by @sha256:6b8731de… still printed hello. -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="tg-t"><title id="tg-t">A repository, notes, holds two images named by digest: 6b8731de, whose notes.txt says hello, and 640e63e0, which says hello, world. Tags v1 and stable point at 6b8731de; v2 and latest at 640e63e0. Then stable is moved to 640e63e0. Pulling notes:stable now gives hello, world; pulling notes@sha256:6b8731de still gives hello</title>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="16" y="24" width="608" height="320" rx="12"/><text class="d-a" x="32" y="50">repository: notes</text><rect class="d-hl" x="330" y="64" width="280" height="110" rx="8"/><text class="d-mi" x="344" y="94">sha256:6b8731de…</text><text class="d-tiny" x="344" y="124">notes.txt: hello</text></g>
+<g class="step s3"><rect class="d-hl" x="330" y="196" width="280" height="120" rx="8"/><text class="d-mi" x="344" y="226">sha256:640e63e0…</text><text class="d-tiny" x="344" y="256">notes.txt: hello, world</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-paper" x="40" y="74" width="90" height="34" rx="17"/><text class="d-mi" x="85" y="97" text-anchor="middle">v1</text><x-arrow tone="ink" d="M132,91 L326,91"/></g>
+<g class="step s2" data-move="2:0,0 4:0,0 5:0,122" data-pulse="5"><rect class="d-paper" x="40" y="124" width="90" height="34" rx="17"/><text class="d-mi" x="85" y="147" text-anchor="middle">stable</text><x-arrow tone="acc" d="M132,141 L326,141"/></g>
+<g class="step s3"><rect class="d-paper" x="40" y="206" width="90" height="34" rx="17"/><text class="d-mi" x="85" y="229" text-anchor="middle">v2</text><x-arrow tone="ink" d="M132,223 L326,223"/><rect class="d-paper" x="40" y="294" width="90" height="34" rx="17"/><text class="d-mi" x="85" y="317" text-anchor="middle">latest</text><x-arrow tone="ink" d="M132,311 C230,311 300,300 326,290"/></g>
+<g class="step s6" data-pulse="6"><text class="d-r" x="610" y="150" text-anchor="end">pull by digest: hello</text><text class="d-r" x="610" y="290" text-anchor="end">pull stable: hello, world</text></g>
+</svg>
+<ol class="caps">
+<li><p>A <b>repository</b>, notes, holds images of one program. Each image is known by its digest: this one, 6b8731de…, has a notes.txt that says hello.</p></li>
+<li><p>An <b>image tag</b> is a short, human name pointing at one image: v1, and also stable. Two tags, one image.</p></li>
+<li><p>A new version, 640e63e0…, says hello, world. Tags v2 and latest point at it. latest is only a name: nothing makes it newest.</p></li>
+<li><p>Someone runs <code>docker tag notes:v2 notes:stable</code> and pushes. <i>Predict: what does pulling notes:stable give now, and what does pulling @sha256:6b8731de… give?</i></p></li>
+<li><p>The tag stable moved: it now points at 640e63e0…. Nothing else changed: both images are still there, under their digests.</p></li>
+<li><p>So notes:stable now gives hello, world, while notes@sha256:6b8731de… gives hello, today and forever.</p></li>
+</ol>
