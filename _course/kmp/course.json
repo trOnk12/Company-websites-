@@ -60,8 +60,11 @@
         "24-one-binary-the-linker.md",
         "25-static-or-dynamic.md",
         "26-framework-or-xcframework.md",
-        "27-reading-a-crash.md",
-        "28-build-time-and-binary-size.md"
+        "27-how-xcode-builds-your-kotlin.md",
+        "28-versions-that-must-agree.md",
+        "29-reading-a-crash.md",
+        "30-where-the-build-minutes-go.md",
+        "31-where-the-megabytes-come-from.md"
       ]
     }
   ],

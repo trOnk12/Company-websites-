@@ -1,0 +1,51 @@
+<!-- label: getstatic #7 carries only a number; the constant pool turns #7 into the class Score, the name weight and the type I -->
+<!-- question: Where does the number 7 in getstatic #7 lead? type: box-and-pointer (instruction pointing into a table) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="cp-t"><title id="cp-t">The bytecode of score on the left; the class file's constant pool on the right, entries 7 to 13. Entry 7 points to entries 8 and 9, which point to the texts Score, weight and I; entry 13 holds the number 100000</title>
+<rect class="d-paper" x="16" y="16" width="250" height="348" rx="8"/>
+<text class="d-tiny" x="30" y="44">score: bytecode</text>
+<rect class="d-hl step only-1" x="22" y="80" width="238" height="28" rx="4"/>
+<rect class="d-hl step s2 hide-5" x="22" y="80" width="238" height="28" rx="4"/>
+<rect class="d-hl step s5" x="22" y="176" width="238" height="28" rx="4"/>
+<text class="d-mi" x="30" y="70">0: iload_0</text>
+<text class="d-mi" x="30" y="100">1: getstatic #7</text>
+<text class="d-mi" x="30" y="132">4: imul</text>
+<text class="d-mi" x="30" y="164">5: iload_1</text>
+<text class="d-mi" x="30" y="196">6: ldc #13</text>
+<text class="d-mi" x="30" y="228">8: imul</text>
+<text class="d-mi" x="30" y="260">9: iadd</text>
+<text class="d-mi" x="30" y="292">10: ireturn</text>
+<text class="d-tiny" x="290" y="34">constant pool</text>
+<rect class="d-box" x="288" y="44" width="300" height="288" rx="6"/>
+<rect class="d-hl step only-2" x="288" y="44" width="300" height="36" rx="4"/>
+<rect class="d-hl step only-3" x="288" y="86" width="300" height="36" rx="4"/>
+<rect class="d-hl step only-3" x="288" y="170" width="300" height="36" rx="4"/>
+<rect class="d-hl step only-4" x="288" y="128" width="300" height="36" rx="4"/>
+<rect class="d-hl step only-4" x="288" y="212" width="300" height="78" rx="4"/>
+<rect class="d-hl step only-6" x="288" y="296" width="300" height="36" rx="4"/>
+<text class="d-mi" x="298" y="68">#7  Fieldref  #8.#9</text>
+<text class="d-mi" x="298" y="110">#8  Class     #10</text>
+<text class="d-mi" x="298" y="152">#9  NameAndType</text>
+<text class="d-mi" x="298" y="194">#10 Utf8  Score</text>
+<text class="d-mi" x="298" y="236">#11 Utf8  weight</text>
+<text class="d-mi" x="298" y="278">#12 Utf8  I</text>
+<text class="d-mi" x="298" y="320">#13 Integer 100000</text>
+<x-arrow class="step only-2" tone="acc" d="M262,94 C276,94 272,62 284,62"/>
+<x-arrow class="step only-3" tone="acc" d="M590,62 C616,62 616,104 594,104"/>
+<x-arrow class="step only-3" tone="acc" d="M590,104 C616,104 616,188 594,188"/>
+<x-arrow class="step only-4" tone="acc" d="M590,62 C626,62 626,146 594,146"/>
+<x-arrow class="step only-4" tone="acc" d="M590,146 C622,146 622,230 594,230"/>
+<x-arrow class="step only-4" tone="acc" d="M590,146 C634,146 634,272 594,272"/>
+<x-arrow class="step only-6" tone="acc" d="M262,190 C278,190 270,314 284,314"/>
+<g class="step only-4"><text class="d-a" x="470" y="278">= int</text></g>
+<g class="step only-6"><text class="d-a" x="438" y="360" text-anchor="middle">pushes 100000</text></g>
+<g class="step s1 hide-3" data-move="1:196,81 2:292,47" data-pulse="2"><rect class="d-bad" x="0" y="0" width="32" height="28" rx="5"/><text class="d-tiny" x="16" y="20" text-anchor="middle">#7</text></g>
+<g class="step s5" data-move="5:136,177 6:292,299" data-pulse="6"><rect class="d-bad" x="0" y="0" width="40" height="28" rx="5"/><text class="d-tiny" x="20" y="20" text-anchor="middle">#13</text></g>
+</svg>
+<ol class="caps">
+<li><p><code>getstatic</code> reads a static field and pushes its value. Its offset jumps from 1 to 4: three bytes, the opcode plus two holding one number, 7. No name of a field is in the instruction.</p></li>
+<li><p>7 is an index into the class file's <b>constant pool</b>, a numbered table at the start of the file. Entry #7 says: a field, described by entries #8 and #9.</p></li>
+<li><p>Entry #8 names the class that owns the field, through #10: the text Score.</p></li>
+<li><p>Entry #9 gives the field's name, weight, and its <b>descriptor</b>, I: the type written as one letter, I for int.</p></li>
+<li><p><code>ldc</code> pushes a constant from the pool. 100000 is too big for <code>sipush</code>. <i>Predict: what does entry #13 hold?</i></p></li>
+<li><p>The number itself. <code>ldc</code> copies it onto the stack. javap's comment, // int 100000, is javap following the same index for you.</p></li>
+</ol>

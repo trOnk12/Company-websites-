@@ -2,7 +2,7 @@
 title: Who can see what
 short: Up the tree, never down
 summary: Puzzle 17 built a tree of source sets. Code in iosMain calls functions in commonMain all the time. Can commonMain call one in iosMain? And which of Apple's APIs may appleMain use? Here's the rule behind both answers.
-takeaway: Each source set dependsOn the one above it, and that link goes one way. A source set sees the code above it, internal declarations included, and can keep the expect promises made there; it never sees down or sideways. And it may use only the APIs that all of its targets have, which is why commonMain, compiled for Android too, can never call UIKit, while iosMain can.
+takeaway: Each source set dependsOn the one above it, and that arrow goes one way. A source set sees the code above it, internal declarations included, and can keep the expect promises made there; it never sees down or sideways. And it may use only the APIs that all of its targets have, which is why commonMain, compiled for Android too, can never call UIKit, while iosMain can.
 ---
 
 ## The problem
@@ -16,15 +16,15 @@ Puzzle 1 said common code can't call Apple's APIs, and puzzle 2 that Apple's bin
 
 ## The building block
 
-Puzzle 17's arrows are links called `dependsOn`: iosArm64Main dependsOn iosMain, iosMain dependsOn appleMain, and so on up to commonMain. When a source set dependsOn another, three things follow:
+Puzzle 17's arrows have a name, `dependsOn`: iosArm64Main dependsOn iosMain, iosMain dependsOn appleMain, and so on up to commonMain. This course calls them dependsOn arrows, not links, on purpose: "link" already has another meaning here. Puzzle 2's compiler "links" platform libraries, and module 5 shows that linking means joining compiled code into one file. A dependsOn arrow joins nothing; it only says which source sets are compiled together and who sees whom. When a source set dependsOn another, three things follow:
 
 - It sees that one's code, `internal` declarations included, and through it, everything further up.
 - It can keep that one's expect promises. That's why puzzle 3's actual for iOS can live in iosMain: both iOS platform source sets depend on iosMain, so one actual serves both targets.
 - It gets that one's libraries (the next puzzle).
 
-The template from puzzle 17 sets every link for you. You rarely write one: a `dependsOn` written by hand in the build file switches the default template off, and then you must build the whole tree yourself.
+The template from puzzle 17 draws every arrow for you. You rarely write one: a `dependsOn` written by hand in the build file switches the default template off, and then you must build the whole tree yourself.
 
-The links go one way, and that's the first rule. A source set sees up, never down and never sideways. commonMain can't call iosMain's code: commonMain is compiled for Android too, and on Android that code doesn't exist. And iosMain can't call androidMain's: they're never compiled together, so for each, the other isn't there.
+The arrows go one way, and that's the first rule. A source set sees up, never down and never sideways. commonMain can't call iosMain's code: commonMain is compiled for Android too, and on Android that code doesn't exist. And iosMain can't call androidMain's: they're never compiled together, so for each, the other isn't there.
 
 The second rule is about the platforms' own APIs, the ones puzzle 2's platform libraries bring: a source set may use only the APIs that all of its targets have. Kotlin checks every source set against that set. That's the precise version of puzzle 1's rule. commonMain has Android among its targets, so no UIKit; it has iOS among them, so no `java.io.File`. iosMain's targets are all iOS, so UIKit is there.
 
@@ -36,7 +36,7 @@ The folders from puzzle 17 again. The Japan folder may quote the shared handbook
 
 ## Check yourself
 
-- Your project has the android, iosArm64 and iosSimulatorArm64 targets. A function in commonMain calls a function you wrote in iosMain. What happens?::*The build fails, because commonMain can't see code in iosMain||It works on iOS, and on Android the call is skipped >> commonMain is checked against all its targets; it can't compile a call to code Android doesn't have. >> s3||It works, because iosMain dependsOn commonMain, so the two share everything >> The link goes one way: iosMain sees commonMain, not the reverse. >> s3::Up, never down.
+- Your project has the android, iosArm64 and iosSimulatorArm64 targets. A function in commonMain calls a function you wrote in iosMain. What happens?::*The build fails, because commonMain can't see code in iosMain||It works on iOS, and on Android the call is skipped >> commonMain is checked against all its targets; it can't compile a call to code Android doesn't have. >> s3||It works, because iosMain dependsOn commonMain, so the two share everything >> The arrow goes one way: iosMain sees commonMain, not the reverse. >> s3::Up, never down.
 - Why can iosMain use UIKit when commonMain can't, although both are compiled for iOS?::*Because every iosMain target has UIKit, while Android, a commonMain target, doesn't||Because iosMain is compiled after commonMain, once UIKit has been loaded >> Order isn't the rule: a source set may use only the APIs all its targets have. >> s5||Because commonMain isn't allowed to import code from any library at all >> It can use libraries built for every target, such as coroutines; UIKit isn't one. >> s5::All of its targets must have the API.
 - Your appleMain calls UIKit and builds fine, since your only Apple targets are the two iOS ones. Then you add a Mac target. What happens?::*appleMain stops compiling, because a Mac target has no UIKit||Nothing changes, because appleMain was always allowed to use UIKit >> It was allowed only while all its targets were iOS ones; now a Mac is one of them. >> the-building-block||The Mac build compiles, and skips appleMain's UIKit calls >> Nothing is skipped: appleMain is checked against all its targets, the Mac included. >> s5::The rule follows the targets, not the name.
 

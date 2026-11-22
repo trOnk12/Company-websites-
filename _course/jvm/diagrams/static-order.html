@@ -1,0 +1,33 @@
+<!-- label: Settings' static code runs top to bottom: creating shared runs the constructor while limit still holds its default 0, so doubled is 0 -->
+<!-- question: What does each static field hold as the static code runs, line by line? type: annotated code with state (one line highlighted per step, field values beside it) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="so-t"><title id="so-t">Kotlin source of Settings on the left with one line highlighted per step; on the right the static fields limit and shared and the new object's doubled, changing from defaults to their final values: doubled ends at 0 because limit was still 0</title>
+<rect class="d-paper" x="16" y="16" width="300" height="250" rx="8"/>
+<g class="step s2 hide-6" data-move="2:22,135 3:22,63 4:22,135 5:22,163"><rect class="d-hl" x="0" y="0" width="288" height="26" rx="4"/></g>
+<text class="d-mi" x="28" y="52">class&#160;Settings&#160;{</text>
+<text class="d-mi" x="28" y="82">&#160;&#160;val&#160;doubled&#160;=&#160;limit&#160;*&#160;2</text>
+<text class="d-mi" x="28" y="122">&#160;&#160;companion&#160;object&#160;{</text>
+<text class="d-mi" x="28" y="154">&#160;&#160;&#160;&#160;val&#160;shared&#160;=&#160;Settings()</text>
+<text class="d-mi" x="28" y="182">&#160;&#160;&#160;&#160;val&#160;limit&#160;=&#160;10</text>
+<text class="d-mi" x="28" y="214">&#160;&#160;}</text>
+<text class="d-mi" x="28" y="244">}</text>
+<text class="d-tiny" x="350" y="40">static fields</text>
+<rect class="d-box" x="350" y="52" width="130" height="56" rx="6"/><text class="d-tiny" x="362" y="74">limit</text>
+<rect class="d-box" x="494" y="52" width="130" height="56" rx="6"/><text class="d-tiny" x="506" y="74">shared</text>
+<g class="step s1 hide-5"><text class="d-b" x="415" y="100" text-anchor="middle">0</text></g>
+<g class="step only-1"><text class="d-mi" x="559" y="100" text-anchor="middle">null</text></g>
+<g class="step s2"><text class="d-tiny" x="350" y="160">new Settings object</text><rect class="d-box" x="350" y="172" width="274" height="56" rx="6"/><text class="d-tiny" x="362" y="206">doubled</text></g>
+<g class="step only-3"><text class="d-b" x="560" y="210" text-anchor="middle">?</text></g>
+<g class="step s4 hide-6"><text class="d-b" x="560" y="210" text-anchor="middle">0</text></g>
+<g class="step s4"><x-arrow tone="acc" d="M559,108 C560,130 560,150 560,168"/></g>
+<g class="step s5" data-pulse="5"><text class="d-b" x="415" y="100" text-anchor="middle">10</text></g>
+<g class="step only-5"><text class="d-r" x="350" y="258">too late: doubled stays 0</text></g>
+<g class="step s6" data-pulse="6"><text class="d-b" x="560" y="210" text-anchor="middle">20</text><rect class="d-hl" x="16" y="292" width="608" height="56" rx="8"/><text class="d-tiny" x="30" y="326">fix: put val limit = 10 above val shared</text></g>
+</svg>
+<ol class="caps">
+<li><p>Preparation (puzzle 11) gives every static field its default: limit is 0, shared is null. Now initialization runs the static code, top to bottom.</p></li>
+<li><p>The first line creates a Settings object, which runs its constructor before the next static line can run.</p></li>
+<li><p>The constructor computes doubled = limit * 2. <i>Predict: which value of limit does it read?</i></p></li>
+<li><p>0, the default: the line that writes 10 hasn't run yet. doubled is 0, and the object goes into shared.</p></li>
+<li><p>Only now does limit become 10. No error, no warning: shared.doubled stays 0 for the rest of the program.</p></li>
+<li><p>Write limit first and doubled is 20. A const val would work in any order: its value is copied in at compile time (puzzle 6).</p></li>
+</ol>

@@ -19,6 +19,26 @@
       "puzzles": [
         "04-shared-counter.md"
       ]
+    },
+    {
+      "title": "Reading bytecode",
+      "blurb": "Read javap output line by line: the operand stack, the constant pool, the five calls, and what Kotlin compiles to.",
+      "puzzles": [
+        "05-operand-stack.md",
+        "06-constant-pool.md",
+        "07-five-invokes.md",
+        "08-kotlin-in-javap.md",
+        "09-lambdas-and-inline.md",
+        "10-virtual-dispatch.md"
+      ]
+    },
+    {
+      "title": "Loading and linking code",
+      "blurb": "When a class arrives, who loads it, why two loaders mean two classes, and where class metadata lives.",
+      "puzzles": [
+        "11-loading-linking.md",
+        "12-static-init-order.md"
+      ]
     }
   ],
   "upcoming": []

@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="compose">
       <p class="eyebrow"><a href="./">Compose Multiplatform, one screen from state to pixels</a> · check</p>
       <h1>Know Compose underneath already?</h1>
-      <p class="lede">One question for each of the 6 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 7 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 0"><p class="eyebrow">Puzzle 0: What @Composable really does</p>
 <fieldset class="quiz" data-n="0">
 <legend>You write a plain function, showName, that calls <code>Text</code>, and you forget the @Composable on it. You build. What happens?</legend>
@@ -64,53 +64,63 @@
 </fieldset></section>
 <section aria-label="Puzzle 1"><p class="eyebrow">Puzzle 1: The tree Compose remembers</p>
 <fieldset class="quiz" data-n="1">
-<legend>Above <code>Counter()</code>, whose count is 3, you add a call to ErrorBanner() that runs only if showError is true. showError becomes true and the screen runs again. What's Counter's count now?</legend>
+<legend>Above <code>Counter()</code>, whose count is 3, the code calls ErrorBanner() only if showError is true. showError was false, becomes true, and the screen runs again. What's Counter's count now?</legend>
 <input type="radio" name="q-01-the-tree-compose-remembers-1" id="q-01-the-tree-compose-remembers-1-1"><label for="q-01-the-tree-compose-remembers-1-1"><span>3, but that count now belongs to ErrorBanner, which took Counter's place</span></label>
-<input type="radio" name="q-01-the-tree-compose-remembers-1" id="q-01-the-tree-compose-remembers-1-2"><label for="q-01-the-tree-compose-remembers-1-2"><span>0: Counter is now the second call and gets new slots</span></label>
-<input type="radio" name="q-01-the-tree-compose-remembers-1" id="q-01-the-tree-compose-remembers-1-3" data-ok><label for="q-01-the-tree-compose-remembers-1-3"><span>Still 3: Counter's call site didn't change, so it finds its own slots</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Slots belong to a group, found by its call site; a new call gets its own. <a class="show-me" href="01-the-tree-compose-remembers.html">Learn it in puzzle 1 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> Order alone doesn't decide: each call site is told apart, so Counter keeps its group. <a class="show-me" href="01-the-tree-compose-remembers.html">Learn it in puzzle 1 →</a></p>
-<p class="fb ok opt-3"><b>Right.</b> Same call site, same slots.</p>
+<input type="radio" name="q-01-the-tree-compose-remembers-1" id="q-01-the-tree-compose-remembers-1-2"><label for="q-01-the-tree-compose-remembers-1-2"><span>0: Counter is now the second call, so it gets new slots</span></label>
+<input type="radio" name="q-01-the-tree-compose-remembers-1" id="q-01-the-tree-compose-remembers-1-3" data-ok><label for="q-01-the-tree-compose-remembers-1-3"><span>Still 3: the if's group was recorded on both runs, so the next group is still Counter's</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> ErrorBanner's group is new, inside the if's group; Counter's group and slots stay Counter's. <a class="show-me" href="01-the-tree-compose-remembers.html">Learn it in puzzle 1 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The if's group was there even while showError was false; Counter's group never moved a place. <a class="show-me" href="01-the-tree-compose-remembers.html">Learn it in puzzle 1 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> The if keeps a group of its own, so nothing after it shifts.</p>
 </fieldset></section>
-<section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Who read that state?</p>
+<section aria-label="Puzzle 2"><p class="eyebrow">Puzzle 2: Which row is which?</p>
 <fieldset class="quiz" data-n="2">
+<legend>Rows for Ana, Ben and Cleo come from a plain for-loop, with no key(). You remember a note in Cleo's row. Then Ana is removed from the top. Where does the note show now?</legend>
+<input type="radio" name="q-02-which-row-is-which-1" id="q-02-which-row-is-which-1-1"><label for="q-02-which-row-is-which-1-1"><span>In Ben's row, which is now first</span></label>
+<input type="radio" name="q-02-which-row-is-which-1" id="q-02-which-row-is-which-1-2"><label for="q-02-which-row-is-which-1-2"><span>Still in Cleo's row: remember follows the person it was typed for</span></label>
+<input type="radio" name="q-02-which-row-is-which-1" id="q-02-which-row-is-which-1-3" data-ok><label for="q-02-which-row-is-which-1-3"><span>Nowhere: Cleo's row is now second, and the third group, holding the note, is removed</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Ben's call is first now, so it gets the first group, Ana's old one, which had no note. <a class="show-me" href="02-which-row-is-which.html">Learn it in puzzle 2 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> Without key(), remember follows the position: the second call gets the second group. <a class="show-me" href="02-which-row-is-which.html">Learn it in puzzle 2 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> Order decides: Cleo's call takes the second group, and the third group goes.</p>
+</fieldset></section>
+<section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: Who read that state?</p>
+<fieldset class="quiz" data-n="3">
 <legend><code>Header</code> reads one snapshot state, title, and <code>Counter</code> reads another, count. A tap changes only title. What runs again at the next frame?</legend>
-<input type="radio" name="q-02-who-read-that-state-1" id="q-02-who-read-that-state-1-1"><label for="q-02-who-read-that-state-1-1"><span>Screen, which then runs Header and Counter again</span></label>
-<input type="radio" name="q-02-who-read-that-state-1" id="q-02-who-read-that-state-1-2"><label for="q-02-who-read-that-state-1-2"><span>Header and Counter, because they sit side by side in Screen</span></label>
-<input type="radio" name="q-02-who-read-that-state-1" id="q-02-who-read-that-state-1-3" data-ok><label for="q-02-who-read-that-state-1-3"><span>Only Header, the one group that read title</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Screen didn't read title, so Screen isn't marked; Header restarts on its own. <a class="show-me" href="02-who-read-that-state.html">Learn it in puzzle 2 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> Marks follow reads: Counter never read title, so it isn't marked. <a class="show-me" href="02-who-read-that-state.html">Learn it in puzzle 2 →</a></p>
+<input type="radio" name="q-03-who-read-that-state-1" id="q-03-who-read-that-state-1-1"><label for="q-03-who-read-that-state-1-1"><span>Screen, which then runs Header and Counter again</span></label>
+<input type="radio" name="q-03-who-read-that-state-1" id="q-03-who-read-that-state-1-2"><label for="q-03-who-read-that-state-1-2"><span>Header and Counter, because they sit side by side in Screen</span></label>
+<input type="radio" name="q-03-who-read-that-state-1" id="q-03-who-read-that-state-1-3" data-ok><label for="q-03-who-read-that-state-1-3"><span>Only Header, the one group that read title</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Screen didn't read title, so Screen isn't marked; Header restarts on its own. <a class="show-me" href="03-who-read-that-state.html">Learn it in puzzle 3 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> Marks follow reads: Counter never read title, so it isn't marked. <a class="show-me" href="03-who-read-that-state.html">Learn it in puzzle 3 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> A write marks only its own readers.</p>
 </fieldset></section>
-<section aria-label="Puzzle 3"><p class="eyebrow">Puzzle 3: What gets skipped</p>
-<fieldset class="quiz" data-n="3">
-<legend><code>Screen</code> runs again and calls Profile(User(name)), building a new <code>User</code> each run. User is a data class with one val, a String, in your own module. name hasn't changed. Does Profile run?</legend>
-<input type="radio" name="q-03-what-gets-skipped-1" id="q-03-what-gets-skipped-1-1" data-ok><label for="q-03-what-gets-skipped-1-1"><span>No: User is stable, so equals compares it, and it's equal</span></label>
-<input type="radio" name="q-03-what-gets-skipped-1" id="q-03-what-gets-skipped-1-2"><label for="q-03-what-gets-skipped-1-2"><span>Yes: every child of a composable that runs again runs too</span></label>
-<input type="radio" name="q-03-what-gets-skipped-1" id="q-03-what-gets-skipped-1-3"><label for="q-03-what-gets-skipped-1-3"><span>Yes: it's a new instance, and new instances always count as changed</span></label>
-<p class="fb ok opt-1"><b>Right.</b> A stable argument is compared with equals.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Each child call compares its arguments first; equal arguments skip. <a class="show-me" href="03-what-gets-skipped.html">Learn it in puzzle 3 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Comparing by instance is for unstable types; a data class of vals is stable and compared with equals. <a class="show-me" href="03-what-gets-skipped.html">Learn it in puzzle 3 →</a></p>
-</fieldset></section>
-<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: One frame, from tree to pixels</p>
+<section aria-label="Puzzle 4"><p class="eyebrow">Puzzle 4: What gets skipped</p>
 <fieldset class="quiz" data-n="4">
-<legend>A <code>Column</code> gets at most 300 pixels of width. Its child, a <code>Text</code>, needs 400 pixels to fit its words on one line. What happens when the <code>Text</code> is measured?</legend>
-<input type="radio" name="q-04-one-frame-1" id="q-04-one-frame-1-1"><label for="q-04-one-frame-1-1"><span>It takes 400 wide and runs past the right edge of the Column</span></label>
-<input type="radio" name="q-04-one-frame-1" id="q-04-one-frame-1-2" data-ok><label for="q-04-one-frame-1-2"><span>It takes at most 300 wide and wraps onto more lines, so it gets taller</span></label>
-<input type="radio" name="q-04-one-frame-1" id="q-04-one-frame-1-3"><label for="q-04-one-frame-1-3"><span>The Column measures it again with 400, then shrinks it to fit</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> A child picks its size within the constraints; it can't choose more than the maximum. <a class="show-me" href="04-one-frame.html">Learn it in puzzle 4 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Within the constraints, so it wraps.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Each child is measured once per layout; the constraints come first. <a class="show-me" href="04-one-frame.html">Learn it in puzzle 4 →</a></p>
+<legend><code>Screen</code> runs again and calls Profile(User(name)), building a new <code>User</code> each run. User is a data class with one val, a String, in your own module. name hasn't changed. Does Profile run?</legend>
+<input type="radio" name="q-04-what-gets-skipped-1" id="q-04-what-gets-skipped-1-1" data-ok><label for="q-04-what-gets-skipped-1-1"><span>No: User is stable, so equals compares it, and it's equal</span></label>
+<input type="radio" name="q-04-what-gets-skipped-1" id="q-04-what-gets-skipped-1-2"><label for="q-04-what-gets-skipped-1-2"><span>Yes: every child of a composable that runs again runs too</span></label>
+<input type="radio" name="q-04-what-gets-skipped-1" id="q-04-what-gets-skipped-1-3"><label for="q-04-what-gets-skipped-1-3"><span>Yes: it's a new instance, and new instances always count as changed</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A stable argument is compared with equals.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Each child call compares its arguments first; equal arguments skip. <a class="show-me" href="04-what-gets-skipped.html">Learn it in puzzle 4 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Comparing by instance is for unstable types; a data class of vals is stable and compared with equals. <a class="show-me" href="04-what-gets-skipped.html">Learn it in puzzle 4 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: Four layers, one edge per platform</p>
+<section aria-label="Puzzle 5"><p class="eyebrow">Puzzle 5: One frame, from tree to pixels</p>
 <fieldset class="quiz" data-n="5">
-<legend>Your shared code calls <code>Button</code> inside a <code>Column</code>, and you build it for iOS. Which layer on that path holds the most code written only for iOS?</legend>
-<input type="radio" name="q-05-four-layers-1" id="q-05-four-layers-1-1"><label for="q-05-four-layers-1-1"><span>material3, where Button is redrawn to look like an iOS button</span></label>
-<input type="radio" name="q-05-four-layers-1" id="q-05-four-layers-1-2" data-ok><label for="q-05-four-layers-1-2"><span>Compose UI, where it meets the window, the canvas and touches</span></label>
-<input type="radio" name="q-05-four-layers-1" id="q-05-four-layers-1-3"><label for="q-05-four-layers-1-3"><span>The runtime, which needs its own way to store the composition on iOS</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Material is shared and looks the same on both; it has no iOS-only code. <a class="show-me" href="05-four-layers.html">Learn it in puzzle 5 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The edge that meets the phone is in Compose UI.</p>
-<p class="fb no opt-3"><b>Not quite.</b> The runtime is shared; it never touches the platform. <a class="show-me" href="05-four-layers.html">Learn it in puzzle 5 →</a></p>
+<legend>A <code>Column</code> gets at most 300 pixels of width. Its child, a <code>Text</code>, needs 400 pixels to fit its words on one line. What happens when the <code>Text</code> is measured?</legend>
+<input type="radio" name="q-05-one-frame-1" id="q-05-one-frame-1-1"><label for="q-05-one-frame-1-1"><span>It takes 400 wide and runs past the right edge of the Column</span></label>
+<input type="radio" name="q-05-one-frame-1" id="q-05-one-frame-1-2" data-ok><label for="q-05-one-frame-1-2"><span>It takes at most 300 wide and wraps onto more lines, so it gets taller</span></label>
+<input type="radio" name="q-05-one-frame-1" id="q-05-one-frame-1-3"><label for="q-05-one-frame-1-3"><span>The Column measures it again with 400, then shrinks it to fit</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A child picks its size within the constraints; it can't choose more than the maximum. <a class="show-me" href="05-one-frame.html">Learn it in puzzle 5 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Within the constraints, so it wraps.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Each child is measured once per layout; the constraints come first. <a class="show-me" href="05-one-frame.html">Learn it in puzzle 5 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: Four layers, one edge per platform</p>
+<fieldset class="quiz" data-n="6">
+<legend>Your shared code calls <code>Button</code> inside a <code>Column</code>, and you build it for iOS. Which layer on that path has the most code written only for iOS?</legend>
+<input type="radio" name="q-06-four-layers-1" id="q-06-four-layers-1-1" data-ok><label for="q-06-four-layers-1-1"><span>Compose UI, with the hosting view controller, the keyboard and touches</span></label>
+<input type="radio" name="q-06-four-layers-1" id="q-06-four-layers-1-2"><label for="q-06-four-layers-1-2"><span>The runtime, which needs its own way to store the composition on iOS</span></label>
+<input type="radio" name="q-06-four-layers-1" id="q-06-four-layers-1-3"><label for="q-06-four-layers-1-3"><span>material3, where Button is redrawn to look like an iOS button</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Compose UI holds the biggest iOS edge.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The slot table is shared; the runtime's few native files are about threads and the frame clock. <a class="show-me" href="06-four-layers.html">Learn it in puzzle 6 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> material3's only Apple-specific files are about dates; Button is shared code. <a class="show-me" href="06-four-layers.html">Learn it in puzzle 6 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

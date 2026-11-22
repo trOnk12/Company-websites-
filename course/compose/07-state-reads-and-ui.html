@@ -9,7 +9,7 @@
   <meta property="og:title" content="Who read the bookmark count? – Compose Multiplatform, one screen from state to pixels – Mateusz Pachulski">
   <meta property="og:description" content="Module 1 took Compose apart. Now a real shared screen. Tap a bookmark, find where the count is read, and move that read so only the header runs again.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/compose/06-state-reads-and-ui">
+  <meta property="og:url" content="https://pachulski.dev/course/compose/07-state-reads-and-ui">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Who read the bookmark count? – Compose Multiplatform, one screen from state to pixels – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/compose/06-state-reads-and-ui">
+  <link rel="canonical" href="https://pachulski.dev/course/compose/07-state-reads-and-ui">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -48,16 +48,16 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="compose" data-n="6">
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="compose" data-n="7">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Compose Multiplatform, one screen from state to pixels</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 6 · 7 of 10</p>
+        <p class="eyebrow">Puzzle 7 · 8 of 11</p>
         <h1>Who read the bookmark count?</h1>
         <p class="lede">Module 1 took Compose apart. Now a real shared screen. Tap a bookmark, find where the count is read, and move that read so only the header runs again.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-composable-really-does.html" title="What @Composable really does">0</a></li><li><a href="01-the-tree-compose-remembers.html" title="The tree Compose remembers">1</a></li><li><a href="02-who-read-that-state.html" title="Who read that state?">2</a></li><li><a href="03-what-gets-skipped.html" title="What gets skipped">3</a></li><li><a href="04-one-frame.html" title="One frame, from tree to pixels">4</a></li><li><a href="05-four-layers.html" title="Four layers, one edge per platform">5</a></li><li><a href="06-state-reads-and-ui.html" aria-current="page" title="Who read the bookmark count?">6</a></li><li><a href="07-read-in-the-right-phase.html" title="Which work does a moving card need?">7</a></li><li><a href="08-who-hosts-the-native-view.html" title="Which side hosts the other?">8</a></li><li><a href="09-pixels-and-voiceover.html" title="Can VoiceOver understand the bookmark?">9</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-composable-really-does.html" title="What @Composable really does">0</a></li><li><a href="01-the-tree-compose-remembers.html" title="The tree Compose remembers">1</a></li><li><a href="02-which-row-is-which.html" title="Which row is which?">2</a></li><li><a href="03-who-read-that-state.html" title="Who read that state?">3</a></li><li><a href="04-what-gets-skipped.html" title="What gets skipped">4</a></li><li><a href="05-one-frame.html" title="One frame, from tree to pixels">5</a></li><li><a href="06-four-layers.html" title="Four layers, one edge per platform">6</a></li><li><a href="07-state-reads-and-ui.html" aria-current="page" title="Who read the bookmark count?">7</a></li><li><a href="08-read-in-the-right-phase.html" title="Which work does a moving card need?">8</a></li><li><a href="09-who-hosts-the-native-view.html" title="Which side hosts the other?">9</a></li><li><a href="10-pixels-and-voiceover.html" title="Can VoiceOver understand the bookmark?">10</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -65,23 +65,23 @@
         <a href="#go-deeper-move-one-read">Go deeper</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
-      <aside class="builds-on" aria-labelledby="builds-on-6">
-        <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="3"><details><summary>Puzzle 3: What gets skipped</summary><p>A call is skipped when every argument equals the one stored in its slots last time. Stable types (Int, String, a data class of vals) are compared with equals. Unstable types (a class with a var, a List) are compared by instance with ===, under strong skipping, on by default since Kotlin 2.0.20. So a new list built on every run makes its child run every time; keep it in remember, or in state, and the same instance comes back.</p><p><a href="03-what-gets-skipped.html">Review puzzle 3</a></p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-what-composable-really-does.html">0</a> → <a href="01-the-tree-compose-remembers.html">1</a> → <a href="02-who-read-that-state.html">2</a> → <a href="03-what-gets-skipped.html">3</a>. Know them already? Start here.</p>
+      <aside class="builds-on" aria-labelledby="builds-on-7">
+        <p id="builds-on-7"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="4"><details><summary>Puzzle 4: What gets skipped</summary><p>A call is skipped when every argument equals the one stored in its slots last time. Stable types (Int, String, a data class whose vals are all of stable types) are compared with equals. Unstable types (a class with a var, a List) are compared by instance with ===, under strong skipping, on by default since Kotlin 2.0.20. So a new list built on every run makes its child run every time; keep it in remember, or in state, and the same instance comes back.</p><p><a href="04-what-gets-skipped.html">Review puzzle 4</a></p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 4 puzzles: <a href="00-what-composable-really-does.html">0</a> → <a href="01-the-tree-compose-remembers.html">1</a> → <a href="03-who-read-that-state.html">3</a> → <a href="04-what-gets-skipped.html">4</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>composable</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>recomposition</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>remember</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>state</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>Compose compiler plugin</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>compiler</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li><li><a href="../android/17-frames-jank-and-anrs.html"><b>frame</b></a> <span class="small">Android from the foundation, puzzle 17: Frames, jank and ANRs</span></li><li><a href="../android/17-frames-jank-and-anrs.html"><b>window</b></a> <span class="small">Android from the foundation, puzzle 17: Frames, jank and ANRs</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Module 1 ended with the whole stack, from the compiler plugin down to the edge that meets the phone. Now we use it on one shared screen that runs on Android and iOS. A reading app shows a header with the number of bookmarks and a list of saved items below it. Tapping a bookmark changes the count from 2 to 3. Puzzle 2 said Compose marks the groups that read the count. On this screen, which group is that, and how much of the screen runs again?</p>
+<p>Module 1 ended with the whole stack, from the compiler plugin down to the edge that meets the phone. Now we use it on one shared screen that runs on Android and iOS. A reading app shows a header with the number of bookmarks and a list of saved items below it. Tapping a bookmark changes the count from 2 to 3. Puzzle 3 said Compose marks the groups that read the count. On this screen, which group is that, and how much of the screen runs again?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="Who read the bookmark count? The read in the screen marks the whole screen; moved into the header, it marks only the header"><input type="radio" name="st-state-reads-and-ui" id="st-state-reads-and-ui-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-state-reads-and-ui" id="st-state-reads-and-ui-2" aria-label="Step 2 of 5"><input type="radio" name="st-state-reads-and-ui" id="st-state-reads-and-ui-3" aria-label="Step 3 of 5"><input type="radio" name="st-state-reads-and-ui" id="st-state-reads-and-ui-4" aria-label="Step 4 of 5"><input type="radio" name="st-state-reads-and-ui" id="st-state-reads-and-ui-5" aria-label="Step 5 of 5">
 <div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="d-title"><title id="d-title">BookmarksScreen holds the count and calls a header and a list; when the screen reads the count and passes a number down, a tap marks the whole screen; when it passes a lambda and the header reads it, a tap marks only the header</title><defs><marker id="ah-state-reads-and-ui-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-state-reads-and-ui-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-state-reads-and-ui-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-state-reads-and-ui-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1" data-pulse="1"><rect class="d-band" x="20" y="20" width="420" height="330" rx="10"/><text class="d-b" x="36" y="50">BookmarksScreen</text><rect class="d-paper" x="40" y="80" width="380" height="80" rx="8"/><text class="d-tiny" x="56" y="106">BookmarkHeader</text><rect class="d-paper" x="40" y="180" width="380" height="150" rx="8"/><text class="d-tiny" x="56" y="206">BookmarkList</text><rect class="d-band" x="60" y="222" width="340" height="30" rx="4"/><rect class="d-band" x="60" y="262" width="340" height="30" rx="4"/><rect class="d-hl" x="470" y="40" width="150" height="48" rx="24"/></g>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="20" y="20" width="420" height="330" rx="10"/><text class="d-b" x="36" y="50">BookmarksScreen</text><rect class="d-paper" x="40" y="80" width="380" height="80" rx="8"/><text class="d-b" x="56" y="106">BookmarkHeader</text><rect class="d-paper" x="40" y="180" width="380" height="150" rx="8"/><text class="d-b" x="56" y="206">BookmarkList</text><rect class="d-band" x="60" y="222" width="340" height="30" rx="4"/><rect class="d-band" x="60" y="262" width="340" height="30" rx="4"/><rect class="d-hl" x="470" y="40" width="150" height="48" rx="24"/></g>
 <g class="step s1 hide-3"><text class="d-a" x="545" y="70" text-anchor="middle">count = 2</text></g>
 <g class="step s2 hide-5"><text class="d-mi" x="404" y="50" text-anchor="end">reads count</text><path class="d-dash" d="M466,64 C440,60 420,46 410,44"/><text class="d-mi" x="56" y="140">Bookmarks: 2</text></g>
-<g class="step s3" data-pulse="3"><text class="d-a" x="545" y="70" text-anchor="middle">count = 3</text><rect class="d-hl" x="540" y="300" width="90" height="40" rx="6"/><text class="d-tiny" x="585" y="325" text-anchor="middle">tap</text><path class="d-arr-acc" d="M600,298 L600,92" marker-end="url(#ah-state-reads-and-ui-acc)"/></g>
+<g class="step s3" data-pulse="3"><text class="d-a" x="545" y="70" text-anchor="middle">count = 3</text><rect class="d-hl" x="540" y="300" width="90" height="40" rx="6"/><text class="d-b" x="585" y="325" text-anchor="middle">tap</text><path class="d-arr-acc" d="M600,298 L600,92" marker-end="url(#ah-state-reads-and-ui-acc)"/></g>
 <rect class="d-red step only-4" x="16" y="16" width="428" height="338" rx="12"/>
 <g class="step only-4"><rect class="d-paper" x="44" y="118" width="200" height="34" rx="4"/><text class="d-mi" x="56" y="140">Bookmarks: 3</text><text class="d-r" x="520" y="200" text-anchor="middle">all of it runs</text></g>
 <g class="step s5" data-pulse="5"><rect class="d-paper" x="44" y="118" width="200" height="34" rx="4"/><text class="d-mi" x="56" y="140">Bookmarks: 3</text><text class="d-mi" x="404" y="106" text-anchor="end">reads count</text><path class="d-dash" d="M466,70 C440,80 430,96 410,100"/><rect class="d-red" x="36" y="76" width="388" height="88" rx="10"/><text class="d-a" x="520" y="200" text-anchor="middle">only the header</text></g>
@@ -106,7 +106,7 @@ fun BookmarksScreen(count: State&lt;Int&gt;) {
     BookmarkHeader(count = count.value)   // the read happens here
     BookmarkList()
 }</code></pre>
-<p><code>count.value</code> is evaluated while <code>BookmarksScreen</code> runs, so the state read is noted against the screen's group. A tap marks the screen, and the whole screen body runs again: the header gets a new number and runs, and the list is skipped only because its arguments are equal (puzzle 3). On a small screen that's cheap. On a big one, or with a value that changes on every frame, it's work you don't need.</p>
+<p><code>count.value</code> is evaluated while <code>BookmarksScreen</code> runs, so the state read is noted against the screen's group. A tap marks the screen, and the whole screen body runs again: the header gets a new number and runs, and the list is skipped only because its arguments are equal (puzzle 4). On a small screen that's cheap. On a big one, or with a value that changes on every frame, it's work you don't need.</p>
 <p>The fix is to move the read to where the value is used. Pass a lambda that reads the count, and call it inside the header:</p>
 <pre><code class="language-kotlin">@Composable
 fun BookmarksScreen(count: State&lt;Int&gt;) {
@@ -119,7 +119,7 @@ fun BookmarkHeader(count: () -&gt; Int) {
     Text(&quot;Bookmarks: ${count()}&quot;)             // the read happens here
 }</code></pre>
 <p>Now the screen never reads the count. The lambda runs, and reads it, while <code>BookmarkHeader</code> runs, so the read is noted against the header's group. A tap marks only the header, and the screen and the list don't run at all. That's <b>deferring a read</b>: moving a state read out of a parent and into the child that needs the value, so less code runs again when it changes. Passing the <code>State</code> object itself works the same way, as long as the child is the one that reads <code>.value</code>.</p>
-<p>The lambda doesn't cost you skipping either. Under strong skipping (puzzle 3), the compiler remembers lambdas written inside a composable, so when the screen runs again for another reason, the header gets the same lambda instance and is skipped.</p>
+<p>The lambda doesn't cost you skipping either. Under strong skipping (puzzle 4), the compiler remembers lambdas written inside a composable, so when the screen runs again for another reason, the header gets the same lambda instance and is skipped.</p>
 <p>Deferring is a tool, not a rule. Android's guide lists it under fixing a performance issue you've found: reach for it when a value changes often, or the parent is big.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-move-one-read">
@@ -136,45 +136,45 @@ fun BookmarkHeader(count: () -&gt; Int) {
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>The screen reads <code>count.value</code> and passes the number to the header. A tap changes the count. Which group does Compose mark?</legend>
-<input type="radio" name="q-06-state-reads-and-ui-1" id="q-06-state-reads-and-ui-1-1" data-ok><label for="q-06-state-reads-and-ui-1-1"><span>The screen's, because the read happened while the screen ran</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-1" id="q-06-state-reads-and-ui-1-2"><label for="q-06-state-reads-and-ui-1-2"><span>Every group in the app, starting from the root</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-1" id="q-06-state-reads-and-ui-1-3"><label for="q-06-state-reads-and-ui-1-3"><span>Only the header's, because the header shows the number</span></label>
+<legend>A settings screen's top composable reads darkMode.value and passes the Boolean down three levels to a small switch row. darkMode flips. Which group does Compose mark?</legend>
+<input type="radio" name="q-07-state-reads-and-ui-1" id="q-07-state-reads-and-ui-1-1" data-ok><label for="q-07-state-reads-and-ui-1-1"><span>The top composable's, where the read ran</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-1" id="q-07-state-reads-and-ui-1-2"><label for="q-07-state-reads-and-ui-1-2"><span>The top composable's and every group between it and the row</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-1" id="q-07-state-reads-and-ui-1-3"><label for="q-07-state-reads-and-ui-1-3"><span>Only the switch row's, because it shows the value</span></label>
 <p class="fb ok opt-1"><b>Right.</b> The read decides which group is marked.</p>
-<p class="fb no opt-2"><b>Not quite.</b> A write marks only the groups that read the value. <label class="show-me" for="st-state-reads-and-ui-3" data-goto="st-state-reads-and-ui">Show me step 3 again ↑</label></p>
-<p class="fb no opt-3"><b>Not quite.</b> Compose follows where the read happened, not where the value is shown. <label class="show-me" for="st-state-reads-and-ui-4" data-goto="st-state-reads-and-ui">Show me step 4 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> A write marks only the groups that read; the ones in between run only because their parent ran (or skip). <label class="show-me" for="st-state-reads-and-ui-3" data-goto="st-state-reads-and-ui">Show me step 3 again ↑</label></p>
+<p class="fb no opt-3"><b>Not quite.</b> Compose follows where the read happened, not where the value ends up. <label class="show-me" for="st-state-reads-and-ui-4" data-goto="st-state-reads-and-ui">Show me step 4 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>Why does passing a lambda that reads <code>count.value</code>, instead of <code>count.value</code> itself, move the rerun into the header?</legend>
-<input type="radio" name="q-06-state-reads-and-ui-2" id="q-06-state-reads-and-ui-2-1"><label for="q-06-state-reads-and-ui-2-1"><span>The lambda copies the count, so the screen no longer holds the state</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-2" id="q-06-state-reads-and-ui-2-2" data-ok><label for="q-06-state-reads-and-ui-2-2"><span>The lambda is called, and reads the count, while the header runs</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-2" id="q-06-state-reads-and-ui-2-3"><label for="q-06-state-reads-and-ui-2-3"><span>Compose never compares lambdas, so it reruns the header on every frame</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-2" id="q-07-state-reads-and-ui-2-1"><label for="q-07-state-reads-and-ui-2-1"><span>The lambda copies the count, so the screen no longer holds the state</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-2" id="q-07-state-reads-and-ui-2-2" data-ok><label for="q-07-state-reads-and-ui-2-2"><span>The lambda is called, and reads the count, while the header runs</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-2" id="q-07-state-reads-and-ui-2-3"><label for="q-07-state-reads-and-ui-2-3"><span>Compose never compares lambdas, so it reruns the header on every frame</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> The lambda reads the same state; what moves is when and where the read happens. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Where the read runs is where it's noted.</p>
 <p class="fb no opt-3"><b>Not quite.</b> Nothing reruns on every frame; a tap marks only the group that read the count. <label class="show-me" for="st-state-reads-and-ui-5" data-goto="st-state-reads-and-ui">Show me step 5 again ↑</label></p>
 </fieldset>
 <fieldset class="quiz">
 <legend>After deferring the read, the screen runs again for another reason, and passes the header the same lambda that reads <code>count.value</code>. Does the header run?</legend>
-<input type="radio" name="q-06-state-reads-and-ui-3" id="q-06-state-reads-and-ui-3-1" data-ok><label for="q-06-state-reads-and-ui-3-1"><span>No: strong skipping remembered the lambda, so the same instance comes back</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-3" id="q-06-state-reads-and-ui-3-2"><label for="q-06-state-reads-and-ui-3-2"><span>Yes: the header read the count, so it runs whenever the screen does</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-3" id="q-06-state-reads-and-ui-3-3"><label for="q-06-state-reads-and-ui-3-3"><span>Yes: a lambda is unstable, so it always counts as changed</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-3" id="q-07-state-reads-and-ui-3-1" data-ok><label for="q-07-state-reads-and-ui-3-1"><span>No: strong skipping remembered the lambda, so the same instance comes back</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-3" id="q-07-state-reads-and-ui-3-2"><label for="q-07-state-reads-and-ui-3-2"><span>Yes: the header read the count, so it runs whenever the screen does</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-3" id="q-07-state-reads-and-ui-3-3"><label for="q-07-state-reads-and-ui-3-3"><span>Yes: a lambda is a new object on every run, so it always counts as changed</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Remembered lambda, same instance, skipped.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A read marks the header only when the count changes; here it didn't. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Unstable arguments are compared by instance, and the remembered lambda is the same instance. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Under strong skipping the lambda is remembered, so the same instance comes back, and lambdas count as stable (puzzle 4). <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
       </section>
       <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://developer.android.com/develop/ui/compose/performance/bestpractices">Android Developers: Follow best practices</a> (&quot;Defer reads as long as possible When a performance issue has been identified, deferring state reads can help.&quot;; &quot;if your UI has state that is hoisted high up in the composable tree and you read the state in a child composable, you can wrap the state read in a lambda function. Doing this makes the read occur only when it is actually needed.&quot;; &quot;Deferring state reads will ensure that Compose re-runs the minimum possible code on recomposition.&quot;)</li><li><a href="https://developer.android.com/develop/ui/compose/performance/stability/strongskipping">Android Developers: Strong skipping mode</a> (&quot;With strong skipping enabled, every lambda inside a composable function will be automatically remembered.&quot;)</li><li><a href="https://developer.android.com/develop/ui/compose/phases">Android Developers: Jetpack Compose phases</a> (&quot;When you read the value of a snapshot state during one of the phases listed previously, Compose automatically tracks what it was doing when it read the value.&quot;)</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The group that runs again is the one where the state read happened, not the one that shows the value. Pass the state object, or a lambda that reads it, down to the composable that needs the value, and a change marks only that composable. That's deferring a read.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="05-four-layers.html">← Puzzle 5</a>
-        <a class="button primary" href="07-read-in-the-right-phase.html">Puzzle 7: Which work does a moving card need? →</a>
+        <a class="button" href="06-four-layers.html">← Puzzle 6</a>
+        <a class="button primary" href="08-read-in-the-right-phase.html">Puzzle 8: Which work does a moving card need? →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Who%20read%20the%20bookmark%20count%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2F06-state-reads-and-ui" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2F07-state-reads-and-ui" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

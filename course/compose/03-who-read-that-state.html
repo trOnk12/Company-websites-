@@ -9,7 +9,7 @@
   <meta property="og:title" content="Who read that state? – Compose Multiplatform, one screen from state to pixels – Mateusz Pachulski">
   <meta property="og:description" content="The composition remembers every call. When a counter changes, Compose doesn't run your whole screen again; it runs only the calls that read the counter. Here's how it knows who read it, and when it runs them.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://pachulski.dev/course/compose/02-who-read-that-state">
+  <meta property="og:url" content="https://pachulski.dev/course/compose/03-who-read-that-state">
   <meta property="og:site_name" content="Mateusz Pachulski">
   <meta property="og:image" content="https://pachulski.dev/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
   <title>Who read that state? – Compose Multiplatform, one screen from state to pixels – Mateusz Pachulski</title>
-  <link rel="canonical" href="https://pachulski.dev/course/compose/02-who-read-that-state">
+  <link rel="canonical" href="https://pachulski.dev/course/compose/03-who-read-that-state">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/literata-600.woff2" crossorigin>
@@ -48,16 +48,16 @@
   </header>
 
   <main id="main">
-    <article class="puzzle course-top wrap narrow" data-support="" data-course="compose" data-n="2">
+    <article class="puzzle course-top wrap narrow" data-support="" data-course="compose" data-n="3">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Compose Multiplatform, one screen from state to pixels</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 2 · 3 of 10</p>
+        <p class="eyebrow">Puzzle 3 · 4 of 11</p>
         <h1>Who read that state?</h1>
         <p class="lede">The composition remembers every call. When a counter changes, Compose doesn't run your whole screen again; it runs only the calls that read the counter. Here's how it knows who read it, and when it runs them.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-composable-really-does.html" title="What @Composable really does">0</a></li><li><a href="01-the-tree-compose-remembers.html" title="The tree Compose remembers">1</a></li><li><a href="02-who-read-that-state.html" aria-current="page" title="Who read that state?">2</a></li><li><a href="03-what-gets-skipped.html" title="What gets skipped">3</a></li><li><a href="04-one-frame.html" title="One frame, from tree to pixels">4</a></li><li><a href="05-four-layers.html" title="Four layers, one edge per platform">5</a></li><li><a href="06-state-reads-and-ui.html" title="Who read the bookmark count?">6</a></li><li><a href="07-read-in-the-right-phase.html" title="Which work does a moving card need?">7</a></li><li><a href="08-who-hosts-the-native-view.html" title="Which side hosts the other?">8</a></li><li><a href="09-pixels-and-voiceover.html" title="Can VoiceOver understand the bookmark?">9</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-what-composable-really-does.html" title="What @Composable really does">0</a></li><li><a href="01-the-tree-compose-remembers.html" title="The tree Compose remembers">1</a></li><li><a href="02-which-row-is-which.html" title="Which row is which?">2</a></li><li><a href="03-who-read-that-state.html" aria-current="page" title="Who read that state?">3</a></li><li><a href="04-what-gets-skipped.html" title="What gets skipped">4</a></li><li><a href="05-one-frame.html" title="One frame, from tree to pixels">5</a></li><li><a href="06-four-layers.html" title="Four layers, one edge per platform">6</a></li><li><a href="07-state-reads-and-ui.html" title="Who read the bookmark count?">7</a></li><li><a href="08-read-in-the-right-phase.html" title="Which work does a moving card need?">8</a></li><li><a href="09-who-hosts-the-native-view.html" title="Which side hosts the other?">9</a></li><li><a href="10-pixels-and-voiceover.html" title="Can VoiceOver understand the bookmark?">10</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -65,9 +65,9 @@
         <a href="#go-deeper-why-wait-for-the-frame">Go deeper</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
-      <aside class="builds-on" aria-labelledby="builds-on-2">
-        <p id="builds-on-2"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="1"><details><summary>Puzzle 1: The tree Compose remembers</summary><p>The first run of your composables builds the composition, a tree of groups, one per call, nested the way the calls nest, and kept after they return. Composables such as Text and Button also leave a node, a real UI element. Groups keep values in slots (last time's arguments, what you remember), and the runtime stores all of it in call order in the slot table. On the next run, a call finds its own group and slots again by its call site, the place in the code it's called from.</p><p><a href="01-the-tree-compose-remembers.html">Review puzzle 1</a></p></details></li></ul>
+      <aside class="builds-on" aria-labelledby="builds-on-3">
+        <p id="builds-on-3"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
+        <ul><li data-block="1"><details><summary>Puzzle 1: The tree Compose remembers</summary><p>The first run of your composables builds the composition, a tree of groups, one per call, nested the way the calls nest, and kept after they return. Composables such as Text and Button also leave a node, a real UI element. Groups keep values in slots, and the runtime stores all of it in call order in the slot table. The next run walks the table in the same order, matching each call to the group with its key at that point; an if keeps a group of its own, so a call that only sometimes runs doesn't shift the ones after it.</p><p><a href="01-the-tree-compose-remembers.html">Review puzzle 1</a></p></details></li></ul>
         <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-what-composable-really-does.html">0</a> → <a href="01-the-tree-compose-remembers.html">1</a>. Know them already? Start here.</p>
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>composable</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>recomposition</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>remember</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>state</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/13-compose-in-one-puzzle.html"><b>Compose compiler plugin</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 13: Compose in one puzzle</span></li><li><a href="../kmp/00-one-kotlin-many-machines.html"><b>compiler</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 0: One Kotlin function, two ways to run it</span></li><li><a href="../kmp/14-what-compose-shares.html"><b>Compose runtime</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 14: What Compose actually shares</span></li><li><a href="../kmp/01-what-every-target-has.html"><b>commonMain</b></a> <span class="small">Kotlin Multiplatform, from the compiler up, puzzle 1: What every target has</span></li><li><a href="../android/17-frames-jank-and-anrs.html"><b>frame</b></a> <span class="small">Android from the foundation, puzzle 17: Frames, jank and ANRs</span></li><li><a href="../android/21-the-viewmodel-outlives-the-screen.html"><b>ViewModel</b></a> <span class="small">Android from the foundation, puzzle 21: The ViewModel outlives the screen</span></li></ul></aside>
       <section aria-labelledby="the-problem">
@@ -78,14 +78,14 @@
         <h2 id="see-it">See it</h2>
 <figure class="stepper" aria-label="A state read is noted; a write marks only the readers; the Recomposer runs them at the next frame"><input type="radio" name="st-reads" id="st-reads-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-reads" id="st-reads-2" aria-label="Step 2 of 5"><input type="radio" name="st-reads" id="st-reads-3" aria-label="Step 3 of 5"><input type="radio" name="st-reads" id="st-reads-4" aria-label="Step 4 of 5"><input type="radio" name="st-reads" id="st-reads-5" aria-label="Step 5 of 5">
 <div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="rd-t"><title id="rd-t">Screen holds Header and Counter; count is snapshot state; Counter reads count; a tap writes count = 1 and only Counter is marked; Counter runs again from its start while Screen and Header do not; the Recomposer does it at the next frame, once for several writes</title><defs><marker id="ah-reads-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reads-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reads-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-reads-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<g class="step s1" data-pulse="1"><rect class="d-band" x="20" y="20" width="400" height="300" rx="8"/><text class="d-tiny" x="34" y="42">Screen</text><rect class="d-paper" x="40" y="56" width="360" height="60" rx="6"/><text class="d-tiny" x="54" y="92">Header</text><rect class="d-paper" x="40" y="136" width="360" height="164" rx="6"/><text class="d-tiny" x="54" y="162">Counter</text><rect class="d-band" x="60" y="180" width="150" height="48" rx="6"/><rect class="d-band" x="230" y="180" width="150" height="48" rx="6"/><text class="d-tiny" x="305" y="210" text-anchor="middle">Button</text><rect class="d-hl" x="470" y="150" width="150" height="48" rx="24"/></g>
-<g class="step s1 hide-4"><text class="d-tiny" x="135" y="210" text-anchor="middle">Text: 0</text></g>
+<g class="step s1" data-pulse="1"><rect class="d-band" x="20" y="20" width="400" height="300" rx="8"/><text class="d-b" x="34" y="42">Screen</text><rect class="d-paper" x="40" y="56" width="360" height="60" rx="6"/><text class="d-b" x="54" y="92">Header</text><rect class="d-paper" x="40" y="136" width="360" height="164" rx="6"/><text class="d-b" x="54" y="162">Counter</text><rect class="d-band" x="60" y="180" width="150" height="48" rx="6"/><rect class="d-band" x="230" y="180" width="150" height="48" rx="6"/><text class="d-b" x="305" y="210" text-anchor="middle">Button</text><rect class="d-hl" x="470" y="150" width="150" height="48" rx="24"/></g>
+<g class="step s1 hide-4"><text class="d-b" x="135" y="210" text-anchor="middle">Text: 0</text></g>
 <g class="step s1 hide-3"><text class="d-a" x="545" y="180" text-anchor="middle">count = 0</text></g>
 <g class="step s2" data-pulse="2"><path class="d-dash" d="M466,174 C440,168 430,160 404,158"/><text class="d-m" x="545" y="232" text-anchor="middle">read by Counter</text></g>
 <g class="step s3" data-pulse="3"><text class="d-a" x="545" y="180" text-anchor="middle">count = 1</text><path class="d-arr-acc" d="M384,206 C420,214 440,206 464,194" marker-end="url(#ah-reads-acc)"/></g>
 <rect class="d-red step only-3" x="36" y="132" width="368" height="172" rx="8"/>
 <rect class="d-acc step s4 hide-5" x="36" y="132" width="368" height="172" rx="8"/>
-<g class="step s4" data-pulse="4"><text class="d-tiny" x="135" y="210" text-anchor="middle">Text: 1</text><text class="d-m" x="390" y="92" text-anchor="end">not run</text><text class="d-m" x="406" y="42" text-anchor="end">not run</text></g>
+<g class="step s4" data-pulse="4"><text class="d-b" x="135" y="210" text-anchor="middle">Text: 1</text><text class="d-m" x="390" y="92" text-anchor="end">not run</text><text class="d-m" x="406" y="42" text-anchor="end">not run</text></g>
 <g class="step s5" data-pulse="5"><g><rect class="d-wood" x="440" y="262" width="180" height="54" rx="8"/><line class="d-line" x1="465.0" y1="289.0" x2="470.0" y2="289.0"/><line class="d-line" x1="462.9" y1="293.9" x2="466.5" y2="297.5"/><line class="d-line" x1="458.0" y1="296.0" x2="458.0" y2="301.0"/><line class="d-line" x1="453.1" y1="293.9" x2="449.5" y2="297.5"/><line class="d-line" x1="451.0" y1="289.0" x2="446.0" y2="289.0"/><line class="d-line" x1="453.1" y1="284.1" x2="449.5" y2="280.5"/><line class="d-line" x1="458.0" y1="282.0" x2="458.0" y2="277.0"/><line class="d-line" x1="462.9" y1="284.1" x2="466.5" y2="280.5"/><circle class="d-paper" cx="458" cy="289" r="8"/><text class="d-tiny" x="547" y="294" text-anchor="middle">Recomposer</text></g><text class="d-a" x="320" y="358" text-anchor="middle">3 writes, 1 frame, 1 run</text></g>
 <g class="step s1" data-move="1:545,128 2:430,148 3:425,236 4:120,162 5:430,340"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg></div>
@@ -103,9 +103,9 @@
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p><code>mutableStateOf(0)</code> doesn't give you a plain <code>Int</code>. It gives you <b>snapshot state</b>: a value holder, <code>MutableState</code>, whose every read and every write of <code>.value</code> Compose watches. (The name comes from Compose's snapshot system, which can also show different threads a consistent picture of all state at once. This module only needs the watching.) Only these objects are watched: change a plain <code>var</code> in some class and Compose never hears about it.</p>
-<p>Whenever a composable reads <code>.value</code> while it runs, that's a <b>state read</b>, and Compose notes which group was running at that moment. With <code>var count by remember { mutableStateOf(0) }</code>, reading <code>count</code> calls a getter that reads <code>.value</code>, so it's the same read. What counts is where the read happens, not where the number ends up on screen: puzzle 6 follows that on a real screen.</p>
-<p>A write that changes the value marks every group that read it. Then the marked groups run again, but a group can only run again on its own if the compiler plugin made it possible. For most composable functions it does: puzzle 0's start was <code>startRestartGroup</code>, and at the end the plugin hands the runtime a small lambda that calls the function again with the same arguments. That makes the function's group a <b>restart group</b>: a group Compose can run again by itself, from its start. Marked <code>Counter</code> runs again; <code>Screen</code> and <code>Header</code> don't run at all. (Some composables, such as <code>Column</code>, are inline functions: their content is part of the caller's group, so a read inside <code>Column { }</code> marks the function around it.)</p>
-<p>Who does the running? The <b>Recomposer</b>, the part of the runtime that decides when marked groups run. It doesn't run anything at the moment of the write. It waits for the next frame, then runs every marked group, so three taps before one frame cost one run, showing the latest value. And if a write puts in the same value that's already there, nothing is marked at all.</p>
+<p>Whenever a composable reads <code>.value</code> while it runs, that's a <b>state read</b>, and Compose notes which group was running at that moment. With <code>var count by remember { mutableStateOf(0) }</code>, reading <code>count</code> calls a getter that reads <code>.value</code>, so it's the same read. What counts is where the read happens, not where the number ends up on screen: puzzle 7 follows that on a real screen.</p>
+<p>A write that changes the value marks every group that read it. Then the marked groups run again, but a group can only run again on its own if the compiler plugin made it possible. For most composable functions it does: puzzle 0's start was <code>startRestartGroup</code>, and at the end the plugin hands the runtime a small lambda that calls the function again with the same arguments. That makes the function's group a <b>restart group</b>: a group Compose can run again by itself, from its start. (Android's docs call a block that can run again this way a restart scope; in this course it's the same thing, and puzzle 8 meets the word again.) Marked <code>Counter</code> runs again; <code>Screen</code> and <code>Header</code> don't run at all. (Some composables, such as <code>Column</code>, are inline functions: their content is part of the caller's group, so a read inside <code>Column { }</code> marks the function around it.)</p>
+<p>Who does the running? The <b>Recomposer</b>, the part of the runtime that decides when marked groups run. It doesn't run anything at the moment of the write. It waits for the next frame, then runs every marked group, so three writes before one frame cost one run, showing the latest value. And if a write puts in the same value that's already there, nothing is marked at all.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-why-wait-for-the-frame">
         <summary><span class="depth-label">Go deeper</span>Why wait for the frame?</summary>
@@ -122,27 +122,27 @@
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
 <legend><code>Header</code> reads one snapshot state, title, and <code>Counter</code> reads another, count. A tap changes only title. What runs again at the next frame?</legend>
-<input type="radio" name="q-02-who-read-that-state-1" id="q-02-who-read-that-state-1-1"><label for="q-02-who-read-that-state-1-1"><span>Screen, which then runs Header and Counter again</span></label>
-<input type="radio" name="q-02-who-read-that-state-1" id="q-02-who-read-that-state-1-2"><label for="q-02-who-read-that-state-1-2"><span>Header and Counter, because they sit side by side in Screen</span></label>
-<input type="radio" name="q-02-who-read-that-state-1" id="q-02-who-read-that-state-1-3" data-ok><label for="q-02-who-read-that-state-1-3"><span>Only Header, the one group that read title</span></label>
+<input type="radio" name="q-03-who-read-that-state-1" id="q-03-who-read-that-state-1-1"><label for="q-03-who-read-that-state-1-1"><span>Screen, which then runs Header and Counter again</span></label>
+<input type="radio" name="q-03-who-read-that-state-1" id="q-03-who-read-that-state-1-2"><label for="q-03-who-read-that-state-1-2"><span>Header and Counter, because they sit side by side in Screen</span></label>
+<input type="radio" name="q-03-who-read-that-state-1" id="q-03-who-read-that-state-1-3" data-ok><label for="q-03-who-read-that-state-1-3"><span>Only Header, the one group that read title</span></label>
 <p class="fb no opt-1"><b>Not quite.</b> Screen didn't read title, so Screen isn't marked; Header restarts on its own. <label class="show-me" for="st-reads-4" data-goto="st-reads">Show me step 4 again ↑</label></p>
 <p class="fb no opt-2"><b>Not quite.</b> Marks follow reads: Counter never read title, so it isn't marked. <label class="show-me" for="st-reads-3" data-goto="st-reads">Show me step 3 again ↑</label></p>
 <p class="fb ok opt-3"><b>Right.</b> A write marks only its own readers.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>A click handler sets count to the value it already has. Why does nothing run again?</legend>
-<input type="radio" name="q-02-who-read-that-state-2" id="q-02-who-read-that-state-2-1"><label for="q-02-who-read-that-state-2-1"><span>The Recomposer runs marked groups at most once a second</span></label>
-<input type="radio" name="q-02-who-read-that-state-2" id="q-02-who-read-that-state-2-2" data-ok><label for="q-02-who-read-that-state-2-2"><span>A write marks the readers only when it changes the value</span></label>
-<input type="radio" name="q-02-who-read-that-state-2" id="q-02-who-read-that-state-2-3"><label for="q-02-who-read-that-state-2-3"><span>The click handler isn't a composable, so its writes go unwatched</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> It waits for the next frame, not a second, and here nothing was marked. <label class="show-me" for="st-reads-5" data-goto="st-reads">Show me step 5 again ↑</label></p>
-<p class="fb ok opt-2"><b>Right.</b> Same value, nothing marked.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Writes are watched wherever they happen; this one didn't change anything. <label class="show-me" for="st-reads-3" data-goto="st-reads">Show me step 3 again ↑</label></p>
+<legend>Counter shows count, now 4. A Reset button's handler sets count to 4, then another tap sets it to 4 again. What runs at the next frame?</legend>
+<input type="radio" name="q-03-who-read-that-state-2" id="q-03-who-read-that-state-2-1"><label for="q-03-who-read-that-state-2-1"><span>Counter twice, once per write</span></label>
+<input type="radio" name="q-03-who-read-that-state-2" id="q-03-who-read-that-state-2-2"><label for="q-03-who-read-that-state-2-2"><span>Counter once: two writes before one frame cost one run</span></label>
+<input type="radio" name="q-03-who-read-that-state-2" id="q-03-who-read-that-state-2-3" data-ok><label for="q-03-who-read-that-state-2-3"><span>Nothing: neither write changed the value, so nothing was marked</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The Recomposer never runs per write; it waits for the frame, and here nothing was marked at all. <label class="show-me" for="st-reads-3" data-goto="st-reads">Show me step 3 again ↑</label></p>
+<p class="fb no opt-2"><b>Not quite.</b> Several writes cost one run only when they change the value; these changed nothing, so nothing was marked. <label class="show-me" for="st-reads-5" data-goto="st-reads">Show me step 5 again ↑</label></p>
+<p class="fb ok opt-3"><b>Right.</b> A write of the same value marks nothing.</p>
 </fieldset>
 <fieldset class="quiz">
 <legend>A ViewModel keeps the count in a plain <code>var</code> field instead of <code>mutableStateOf</code>. Counter shows it, and a tap adds 1. What does the screen show?</legend>
-<input type="radio" name="q-02-who-read-that-state-3" id="q-02-who-read-that-state-3-1" data-ok><label for="q-02-who-read-that-state-3-1"><span>The old number: no state read was noted, so nothing is marked</span></label>
-<input type="radio" name="q-02-who-read-that-state-3" id="q-02-who-read-that-state-3-2"><label for="q-02-who-read-that-state-3-2"><span>The new number, because Counter's restart group reruns on every frame</span></label>
-<input type="radio" name="q-02-who-read-that-state-3" id="q-02-who-read-that-state-3-3"><label for="q-02-who-read-that-state-3-3"><span>The new number at the next frame, as with snapshot state</span></label>
+<input type="radio" name="q-03-who-read-that-state-3" id="q-03-who-read-that-state-3-1" data-ok><label for="q-03-who-read-that-state-3-1"><span>The old number: no state read was noted, so nothing is marked</span></label>
+<input type="radio" name="q-03-who-read-that-state-3" id="q-03-who-read-that-state-3-2"><label for="q-03-who-read-that-state-3-2"><span>The new number, because Counter's restart group reruns on every frame</span></label>
+<input type="radio" name="q-03-who-read-that-state-3" id="q-03-who-read-that-state-3-3"><label for="q-03-who-read-that-state-3-3"><span>The new number at the next frame, as with snapshot state</span></label>
 <p class="fb ok opt-1"><b>Right.</b> Only snapshot state is watched.</p>
 <p class="fb no opt-2"><b>Not quite.</b> A restart group can run again, but only when something marks it. <label class="show-me" for="st-reads-4" data-goto="st-reads">Show me step 4 again ↑</label></p>
 <p class="fb no opt-3"><b>Not quite.</b> The Recomposer only runs groups that a watched write marked; a plain var is never watched. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
@@ -152,14 +152,14 @@
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>mutableStateOf makes snapshot state; Compose watches every read and write of its value. While a composable runs, each state read is noted against the group that was running. A write that changes the value marks those groups, and at the next frame the Recomposer runs each marked restart group again, from its start. Nobody else runs. Writing the same value marks nothing, and several writes before one frame cause one run.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">
-        <a class="button" href="01-the-tree-compose-remembers.html">← Puzzle 1</a>
-        <a class="button primary" href="03-what-gets-skipped.html">Puzzle 3: Skipping and stability →</a>
+        <a class="button" href="02-which-row-is-which.html">← Puzzle 2</a>
+        <a class="button primary" href="04-what-gets-skipped.html">Puzzle 4: Skipping and stability →</a>
       </nav>
 
       <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Who%20read%20that%20state%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
-  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2F02-who-read-that-state" alt="" width="1" height="1"></noscript>
+  <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fcompose%2F03-who-read-that-state" alt="" width="1" height="1"></noscript>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">

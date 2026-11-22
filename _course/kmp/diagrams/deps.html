@@ -15,7 +15,7 @@
 </svg>
 <ol class="caps">
 <li><p>Each source set has its own dependencies. Ktor's core is a <b>multiplatform library</b>, published for every target with one common API, so it can go into commonMain.</p></li>
-<li><p>Added once, it flows down every link: androidMain and iosMain can use it too, without a line of their own.</p></li>
+<li><p>Added once, it flows down every dependsOn arrow: androidMain and iosMain can use it too, without a line of their own.</p></li>
 <li><p>Ktor also has parts built for one platform: one sends requests with OkHttp on Android, one with Apple's own networking. <i>Predict: where does each go?</i></p></li>
 <li><p>Each into its own platform's source set. A library added there flows down too, but never up or sideways.</p></li>
 <li><p>The OkHttp part in commonMain instead? The build fails: commonMain must compile for iOS too, and that part has no iOS build.</p></li>

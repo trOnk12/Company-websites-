@@ -1,0 +1,40 @@
+<!-- label: score(3, 4) runs eight instructions: each takes its inputs from the top of the operand stack and leaves its result there -->
+<!-- question: What is on the operand stack and in the locals after each instruction? type: memory layout (frame state, step by step) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="os-t"><title id="os-t">The bytecode of score(3, 4) on the left, one instruction highlighted per step; on the right the frame's three local slots and its operand stack, showing the values after that instruction</title>
+<rect class="d-paper" x="16" y="16" width="236" height="348" rx="8"/>
+<text class="d-tiny" x="32" y="46">score(3, 4)</text>
+<rect class="d-hl step only-1" x="22" y="63" width="224" height="64" rx="4"/>
+<g class="step s2 hide-6" data-move="2:22,131 3:22,165 4:22,199 5:22,233"><rect class="d-hl" x="0" y="0" width="224" height="30" rx="4"/></g>
+<rect class="d-hl step only-6" x="22" y="267" width="224" height="64" rx="4"/>
+<text class="d-mi" x="34" y="84">0: iload_0</text>
+<text class="d-mi" x="34" y="118">1: iconst_2</text>
+<text class="d-mi" x="34" y="152">2: imul</text>
+<text class="d-mi" x="34" y="186">3: iload_1</text>
+<text class="d-mi" x="34" y="220">4: iadd</text>
+<text class="d-mi" x="34" y="254">5: istore_2</text>
+<text class="d-mi" x="34" y="288">6: iload_2</text>
+<text class="d-mi" x="34" y="322">7: ireturn</text>
+<text class="d-tiny" x="290" y="46">local slots</text>
+<rect class="d-box" x="290" y="60" width="100" height="56" rx="6"/><text class="d-b" x="340" y="96" text-anchor="middle">3</text>
+<rect class="d-box" x="400" y="60" width="100" height="56" rx="6"/><text class="d-b" x="450" y="96" text-anchor="middle">4</text>
+<rect class="d-box" x="510" y="60" width="100" height="56" rx="6"/>
+<text class="d-tiny" x="340" y="138" text-anchor="middle">0 visits</text>
+<text class="d-tiny" x="450" y="138" text-anchor="middle">1 stars</text>
+<text class="d-tiny" x="560" y="138" text-anchor="middle">2 total</text>
+<path class="d-line" d="M370,176 V342 H520 V176"/>
+<text class="d-tiny" x="445" y="366" text-anchor="middle">operand stack (top is up)</text>
+<g class="step only-1"><rect class="d-paper" x="390" y="290" width="90" height="46" rx="6"/><text class="d-b" x="435" y="321" text-anchor="middle">3</text><rect class="d-paper" x="390" y="240" width="90" height="46" rx="6"/><text class="d-b" x="435" y="271" text-anchor="middle">2</text></g>
+<g class="step only-2" data-pulse="2"><rect class="d-hl" x="390" y="290" width="90" height="46" rx="6"/><text class="d-b" x="435" y="321" text-anchor="middle">6</text></g>
+<g class="step only-3"><rect class="d-paper" x="390" y="290" width="90" height="46" rx="6"/><text class="d-b" x="435" y="321" text-anchor="middle">6</text><rect class="d-paper" x="390" y="240" width="90" height="46" rx="6"/><text class="d-b" x="435" y="271" text-anchor="middle">4</text></g>
+<g class="step s4" data-move="4:390,290 5:515,65" data-pulse="4"><rect class="d-hl" x="0" y="0" width="90" height="46" rx="6"/><text class="d-b" x="45" y="31" text-anchor="middle">10</text></g>
+<g class="step only-5"><text class="d-m" x="445" y="318" text-anchor="middle">empty</text></g>
+<g class="step only-6"><rect class="d-paper" x="390" y="290" width="90" height="46" rx="6"/><text class="d-b" x="435" y="321" text-anchor="middle">10</text><x-arrow tone="acc" d="M484,313 L616,313"/><text class="d-a" x="574" y="296" text-anchor="middle">returns 10</text></g>
+</svg>
+<ol class="caps">
+<li><p>score(3, 4) starts with 3 and 4 in local slots 0 and 1. <code>iload_0</code> copies 3 onto the operand stack, then <code>iconst_2</code> pushes 2 on top.</p></li>
+<li><p><code>imul</code> takes the top two values, multiplies them and pushes one result: 6. Every arithmetic instruction works this way: inputs from the top, result back on top.</p></li>
+<li><p><code>iload_1</code> copies 4 on top of 6. <i>Predict: what will <code>iadd</code> leave on the stack?</i></p></li>
+<li><p>One value, 10: the addition used up 6 and 4. The multiplication ran first only because its instruction came first.</p></li>
+<li><p><code>istore_2</code> takes 10 off the stack and puts it in local slot 2, the local the source called total. The stack is empty again.</p></li>
+<li><p><code>iload_2</code> copies 10 back onto the stack, and <code>ireturn</code> hands it to the caller.</p></li>
+</ol>

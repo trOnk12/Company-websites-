@@ -47,7 +47,7 @@ unique_name=io.ktor\:ktor-client-core
 
 So it names the one target it was built for and the libraries it needs. That's why one klib can't serve another target: the iosSimulatorArm64 compilation needs Ktor's iossimulatorarm64 klib.
 
-Now the contradiction from the problem. A klib can't be run, and it can't be handed to Xcode as a library. Kotlin's docs say so plainly. Machine code is still made during the build, as puzzle 0 said, but at a later step: when a final binary, such as the framework from puzzle 5, is built. That step reads the klibs of your module and of every library it uses, and turns them all into machine code at once. Module 5 opens that step.
+Now the contradiction from the problem. A klib can't be run, and it can't be handed to Xcode as a library. Kotlin's docs say so plainly. Machine code is still made during the build, as puzzle 0 said, but at a later step: when a final binary, such as the framework from puzzle 5, is built. That step reads the klibs of your module and of every library it uses, and turns them all into machine code at once. Module 5 opens that step, and puzzle 30 shows the one shortcut: debug builds keep libraries they already turned into machine code once, in a cache, instead of redoing them every time.
 
 Your own shared module works the same way. Each of its Kotlin/Native compilations writes a klib, and the framework build reads it.
 

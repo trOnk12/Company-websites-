@@ -2,7 +2,7 @@
 title: expect/actual or an interface
 short: Handing in platform code
 summary: Puzzle 3 kept a small promise with expect and actual, and said bigger platform services usually go behind an interface instead. Here's what that means in a real module, how the right implementation is handed in on each platform, and how to choose.
-takeaway: expect/actual gives exactly one implementation per target, merged by the compiler: right for small facts and for pointing at an existing platform type. For a service, declare an interface in commonMain, implement it per platform, and hand the implementation in from outside, at the app's start or through a dependency injection framework such as Koin. Then a test can hand in a fake, and expect/actual is needed at most to configure the framework.
+takeaway: expect/actual gives exactly one implementation per target, merged by the compiler: right for small facts and for pointing at an existing platform class. For a service, declare an interface in commonMain, implement it per platform, and hand the implementation in from outside, at the app's start or through a dependency injection framework such as Koin. Then a test can hand in a fake; and once a project uses such a framework, platform parts go through it too, not through a second way.
 ---
 
 ## The problem
@@ -61,26 +61,16 @@ A **fake** is a small, working implementation of an interface written for tests:
 
 Could an expect class Storage do the same? It can give each target its implementation, but the compiler merges each `expect` with exactly one `actual` per target. A test compiled for iOS gets the iOS actual, so there's no place for a fake, and no way to have two storages on one platform. Kotlin's docs also mark expected classes as Beta: the compiler warns when you use them.
 
-As an app grows, writing every constructor call by hand at the start gets long. A **dependency injection framework** builds the objects and hands each one what it needs, from a list of rules you write. Koin is one that works in common code. Only the rule for the platform part differs per target, so that rule is the one place where expect and actual remain:
-
-```kotlin
-// commonMain
-expect val platformModule: Module
-
-// iosMain
-actual val platformModule = module {
-    single<Storage> { DefaultsStorage() }
-}
-```
+As an app grows, writing every constructor call by hand at the start gets long. A **dependency injection framework** builds the objects for you and hands each one what it needs, from rules you write once; Koin is one that works in common code. Its rules are ordinary Kotlin in commonMain, except the few that name a platform class such as `DefaultsStorage`: those live in androidMain and iosMain. Kotlin's docs say that then expect and actual are needed only to configure the framework, and they give one firm piece of advice: if your project already uses dependency injection, keep using it for platform parts too, rather than adding expect and actual functions next to it, so you "avoid mixing two different ways of injecting dependencies". How Koin's rules are written is module 8's subject (coming soon).
 
 How to choose:
 
 | You need | Use |
 |---|---|
-| A small platform fact, like a name or a new ID | expect fun or expect val |
-| An existing platform type under a common name | expect class with actual typealias |
+| A small platform fact, like a name or a new ID, in a project without a DI framework | expect fun or expect val |
+| An existing platform class under a common name | expect class, kept with `actual typealias`: "on this platform, the expected class is this existing one" |
 | A service: storage, network, sensors | an interface, handed in |
-| Many services, already using a framework | that framework, with expect and actual only for its platform rules |
+| Anything platform-specific, once the project uses a DI framework | that framework, with expect and actual only inside its setup |
 
 ## The analogy
 
@@ -90,7 +80,7 @@ The shared handbook from puzzle 3 again. "Call the local tax office" is a blank 
 
 - Your iOS app needs two storages on iOS: NSUserDefaults for settings and an encrypted store for passwords. Storage is an expect class with one `actual` in iosMain. What's the problem?::*The compiler merges one actual per target, so iOS can't have two||There is none, since an actual can be written once in iosMain and once in appleMain >> The compiler accepts exactly one actual per target; a second one for the same target is an error. >> the-building-block||The actual can't use Apple's APIs, so neither store works >> An actual in iosMain can use Apple's APIs; the limit is one actual per target. >> s2::expect/actual: exactly one implementation per target.
 - Why does the test for Bookmarks run without SharedPreferences or NSUserDefaults?::*It hands Bookmarks a FakeStorage that keeps values in memory||The test source set runs only on Android, where SharedPreferences is always there >> commonTest is compiled for every target; the test passes a fake instead of a platform store. >> s5||Kotlin skips platform calls when it runs tests >> Nothing is skipped: Bookmarks calls whatever storage it was handed, here the fake. >> s6::A fake is handed in, like any implementation.
-- Your project already uses Koin, and you need the platform's name in common code. Kotlin's docs recommend one way. Which?::*Bind it in Koin's platform module, like every other dependency||Add an expect fun next to Koin, because small facts always use expect >> expect suits a small fact in a project without a framework; with one, the docs recommend not mixing two ways. >> the-building-block||Read `Build.VERSION.SDK_INT` directly from commonMain >> commonMain can't call Android's APIs (puzzle 18). >> s1::One way of handing things in, not two.
+- Your project already uses Koin, and you now need the platform's name in common code. Which way do Kotlin's docs recommend?::*Hand it in through Koin, like every other platform part||Add an expect fun next to Koin, because small facts always use expect >> expect suits a small fact in a project without a DI framework; with one, the docs advise against mixing two ways of handing things in. >> the-building-block||Read `Build.VERSION.SDK_INT` directly from commonMain >> commonMain can't call Android's APIs (puzzle 18). >> the-building-block::One way of handing things in, not two.
 
 ## Sources
 

@@ -1,0 +1,24 @@
+<!-- label: Four questions decide which of the five invoke instructions a call compiles to -->
+<!-- question: Which invoke instruction does the compiler pick for a call? type: decision tree -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ik-t"><title id="ik-t">A decision tree: no receiver gives invokestatic; exactly one method gives invokespecial; a method declared in an interface gives invokeinterface; otherwise invokevirtual; a call site linked by a bootstrap method gives invokedynamic</title>
+<g class="step s1"><rect class="d-paper" x="20" y="16" width="310" height="54" rx="8"/><text class="d-tiny" x="34" y="49">No object to call it on?</text>
+<x-arrow tone="acc" d="M332,43 L394,43"/><text class="d-a" x="352" y="34">yes</text>
+<rect class="d-hl" x="400" y="14" width="224" height="58" rx="8"/><text class="d-mi" x="412" y="38">invokestatic</text><text class="d-m" x="412" y="62">increment(7)</text></g>
+<g class="step s2"><x-arrow tone="path" d="M60,72 L60,86"/><text class="d-a" x="72" y="84">no</text><rect class="d-paper" x="20" y="88" width="310" height="54" rx="8"/><text class="d-tiny" x="34" y="121">Must run exactly this method?</text>
+<x-arrow tone="acc" d="M332,115 L394,115"/><text class="d-a" x="352" y="106">yes</text>
+<rect class="d-hl" x="400" y="86" width="224" height="58" rx="8"/><text class="d-mi" x="412" y="110">invokespecial</text><text class="d-m" x="412" y="134">Counter(7), super</text></g>
+<g class="step s3"><x-arrow tone="path" d="M60,144 L60,158"/><text class="d-a" x="72" y="156">no</text><rect class="d-paper" x="20" y="160" width="310" height="54" rx="8"/><text class="d-tiny" x="34" y="193">Declared in an interface?</text></g>
+<g class="step s4"><x-arrow tone="acc" d="M332,187 L394,187"/><text class="d-a" x="352" y="178">yes</text>
+<rect class="d-hl" x="400" y="158" width="224" height="58" rx="8"/><text class="d-mi" x="412" y="182">invokeinterface</text><text class="d-m" x="412" y="206">all.add(c)</text>
+<x-arrow tone="path" d="M60,216 L60,230"/><text class="d-a" x="72" y="228">no</text>
+<rect class="d-hl" x="20" y="232" width="310" height="58" rx="8"/><text class="d-mi" x="34" y="256">invokevirtual</text><text class="d-m" x="34" y="280">c.next()</text></g>
+<g class="step s5"><rect class="d-bad" x="20" y="308" width="604" height="58" rx="8"/><text class="d-tiny" x="34" y="342">Call decided by a bootstrap method?</text><text class="d-mi" x="412" y="342">invokedynamic</text><text class="d-m" x="560" y="342">lambda</text></g>
+<g class="step s1" data-move="1:6,43 2:6,115 3:6,187 4:6,187 5:6,337" data-pulse="4"><circle class="d-dot" r="7"/></g>
+</svg>
+<ol class="caps">
+<li><p>increment(7) is a static method: there is no object to call it on. The compiler emits <code>invokestatic</code>; the JVM runs exactly the method the constant pool names.</p></li>
+<li><p>A constructor or a super call has an object, its <b>receiver</b>, but must run one exact method, whatever the object's class. That's <code>invokespecial</code>.</p></li>
+<li><p>The rest have a receiver and the method can be overridden, so the object's class decides. <i>Predict: all is a List; which instruction does all.add(c) get?</i></p></li>
+<li><p>add is declared in the interface List, so <code>invokeinterface</code>. c.next() is declared in the class Counter, so <code>invokevirtual</code>. Both pick the method from the receiver's class when they run.</p></li>
+<li><p>The fifth is different: <code>invokedynamic</code> names a <b>bootstrap method</b>, which the JVM runs once, the first time, to decide what this call does. Lambdas use it.</p></li>
+</ol>

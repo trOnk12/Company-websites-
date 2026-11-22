@@ -1,4 +1,4 @@
-<!-- label: A source set sees up its dependsOn links, never down or sideways, and only the APIs all its targets have -->
+<!-- label: A source set sees up its dependsOn arrows, never down or sideways, and only the APIs all its targets have -->
 <!-- question: Which source sets can call which, and which APIs may each use? type: layer stack (tree) with allowed/forbidden calls -->
 <svg viewBox="0 0 640 380" role="img" aria-labelledby="vi-t"><title id="vi-t">The source set tree with dependsOn arrows pointing up; iosMain can call a function in commonMain; commonMain cannot call iosMain; iosMain cannot call androidMain; UIKit is available to iosMain, appleMain and nativeMain, compiled only for iOS here, but not to commonMain or androidMain</title>
 <line class="d-grass step s1" x1="0" y1="350" x2="640" y2="350"/>
@@ -18,8 +18,8 @@
 <g class="step s1" data-move="1:190,232 2:300,64 3:362,236 4:110,232 5:488,160"><circle class="d-acc" cx="0" cy="0" r="7"/></g>
 </svg>
 <ol class="caps">
-<li><p>Puzzle 17's arrows have a name: each source set <code>dependsOn</code> the one above it. The template draws these links for you.</p></li>
-<li><p>Code sees up its links: iosMain can call <code>price()</code> in commonMain, even an <code>internal</code> one.</p></li>
+<li><p>Puzzle 17's arrows have a name: each source set <code>dependsOn</code> the one above it. The template draws these arrows for you.</p></li>
+<li><p>Code sees up its arrows: iosMain can call <code>price()</code> in commonMain, even an <code>internal</code> one.</p></li>
 <li><p>Never down: commonMain can't call iosMain's code. It's compiled for Android too, where that code doesn't exist. <i>Predict: can iosMain call androidMain?</i></p></li>
 <li><p>No, not sideways either: the two are never compiled together, so neither sees the other.</p></li>
 <li><p>APIs follow the targets: a source set uses only what all its targets have. Here nativeMain, appleMain and iosMain are compiled only for iOS, so all three see UIKit.</p></li>

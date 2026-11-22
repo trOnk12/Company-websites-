@@ -1,0 +1,33 @@
+<!-- label: As main runs, class Rare is loaded at new Rare[2], then verified, prepared, resolved and initialized at the first Rare.value, and nothing happens at the second -->
+<!-- question: When does each phase happen to class Rare, and what triggers it? type: timeline / pipeline (program events on top, Rare's phases below) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="cl-t"><title id="cl-t">Top: main's four events in time order. Bottom: Rare's phases, load, verify, prepare, resolve, initialize. new Rare[2] triggers loading; the first Rare.value triggers the other four, with value going from 0 to 7; the second Rare.value triggers nothing</title>
+<text class="d-tiny" x="16" y="34">main, in time order →</text>
+<rect class="d-paper" x="16" y="46" width="140" height="42" rx="6"/><text class="d-mi" x="86" y="73" text-anchor="middle">main starts</text>
+<rect class="d-paper" x="170" y="46" width="140" height="42" rx="6"/><text class="d-mi" x="240" y="73" text-anchor="middle">new Rare[2]</text>
+<rect class="d-paper" x="324" y="46" width="140" height="42" rx="6"/><text class="d-mi" x="394" y="73" text-anchor="middle">Rare.value</text>
+<rect class="d-paper" x="478" y="46" width="146" height="42" rx="6"/><text class="d-mi" x="551" y="73" text-anchor="middle">Rare.value</text>
+<rect class="d-hl step only-1" x="170" y="46" width="140" height="42" rx="6"/>
+<rect class="d-hl step s2 hide-6" x="324" y="46" width="140" height="42" rx="6"/>
+<rect class="d-hl step only-6" x="478" y="46" width="146" height="42" rx="6"/>
+<text class="d-tiny" x="16" y="150">class Rare</text>
+<g class="step s1"><rect class="d-box" x="16" y="164" width="112" height="50" rx="6"/><text class="d-tiny" x="72" y="194" text-anchor="middle">load</text><x-arrow tone="path" d="M240,90 L80,160"/></g>
+<g class="step s2"><rect class="d-box" x="138" y="164" width="112" height="50" rx="6"/><text class="d-tiny" x="194" y="194" text-anchor="middle">verify</text><x-arrow tone="path" d="M394,90 L200,160"/></g>
+<g class="step s3"><rect class="d-box" x="260" y="164" width="112" height="50" rx="6"/><text class="d-tiny" x="316" y="194" text-anchor="middle">prepare</text></g>
+<g class="step s4"><rect class="d-box" x="382" y="164" width="112" height="50" rx="6"/><text class="d-tiny" x="438" y="194" text-anchor="middle">resolve</text><path class="d-line" d="M138,226 V236 H494 V226"/><text class="d-tiny" x="316" y="258" text-anchor="middle">linking</text></g>
+<g class="step s5"><rect class="d-hl" x="504" y="164" width="120" height="50" rx="6"/><text class="d-tiny" x="564" y="194" text-anchor="middle">initialize</text></g>
+<g class="step s1" data-move="1:16,290 3:260,290 5:504,290" data-pulse="3 5"><rect class="d-paper" x="0" y="0" width="120" height="50" rx="6"/></g>
+<g class="step only-1"><text class="d-mi" x="76" y="321" text-anchor="middle">loaded</text></g>
+<g class="step only-2"><text class="d-mi" x="76" y="321" text-anchor="middle">loaded</text><text class="d-m" x="160" y="321">bytes checked</text></g>
+<g class="step s3 hide-5"><text class="d-mi" x="320" y="321" text-anchor="middle">value = 0</text></g>
+<g class="step only-4"><text class="d-b" x="564" y="322" text-anchor="middle">?</text></g>
+<g class="step s5"><text class="d-mi" x="564" y="321" text-anchor="middle">value = 7</text><text class="d-a" x="482" y="370" text-anchor="end">prints Rare initialized</text></g>
+<g class="step only-6"><text class="d-r" x="551" y="120" text-anchor="middle">nothing to do</text></g>
+</svg>
+<ol class="caps">
+<li><p>main starts and Rare isn't in memory. new Rare[2] needs the class, so the JVM does <b>class loading</b>: it finds Rare's class file and creates the class from its bytes. No code of Rare runs.</p></li>
+<li><p>Rare.value is the first real use. Rare must be linked first, starting with <b>verification</b>: the JVM checks the bytecode is safe to run.</p></li>
+<li><p><b>Preparation</b> creates Rare's static fields with default values: value exists, and holds 0.</p></li>
+<li><p><b>Resolution</b> turns the getstatic's symbolic reference into the real field. Verification, preparation and resolution make up <b>linking</b>. <i>Predict: what does Rare.value read now?</i></p></li>
+<li><p><b>Initialization</b> runs Rare's static code once: value = 7, and the line Rare initialized is printed. Then getstatic reads 7.</p></li>
+<li><p>The second Rare.value finds Rare initialized and its reference resolved, and just reads 7.</p></li>
+</ol>

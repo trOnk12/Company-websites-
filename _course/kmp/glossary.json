@@ -608,7 +608,7 @@
   },
   "dependsOn": {
    "in": "18",
-   "def": "The link from a source set to the one above it: it sees that one's code, can keep its expect promises, and gets its libraries.",
+   "def": "The arrow from a source set to the one above it: it sees that one's code, can keep its expect promises, and gets its libraries.",
    "kind": "code"
   },
   "multiplatform library": {
@@ -718,12 +718,7 @@
   },
   "Koin": {
    "in": "22",
-   "def": "Code name in puzzle 22's example.",
-   "kind": "code"
-  },
-  "platformModule": {
-   "in": "22",
-   "def": "Code name in puzzle 22's example.",
+   "def": "A dependency injection framework that works in common code.",
    "kind": "code"
   },
   "ios_arm64": {
@@ -745,7 +740,7 @@
   },
   "LLVM IR": {
    "in": "23",
-   "def": "LLVM's own intermediate representation: lower level than Kotlin's IR, still not tied to one processor.",
+   "def": "LLVM's own intermediate representation: lower level than Kotlin's IR, already marked with the target, but not yet instructions.",
    "aliases": []
   },
   "LLVM": {
@@ -844,33 +839,33 @@
    "kind": "code"
   },
   "crash report": {
-   "in": "27",
+   "in": "29",
    "def": "What iOS collects when an app crashes, including a backtrace for each thread.",
    "aliases": [
     "crash reports"
    ]
   },
   "backtrace": {
-   "in": "27",
+   "in": "29",
    "def": "The chain of functions that were running in one thread, as addresses in each binary.",
    "aliases": [
     "backtraces"
    ]
   },
   "symbolication": {
-   "in": "27",
+   "in": "29",
    "def": "Turning a crash report's addresses into function names and line numbers.",
    "aliases": []
   },
   "dSYM": {
-   "in": "27",
+   "in": "29",
    "def": "A separate file of debug information for one release binary, used for symbolication.",
    "aliases": [
     ".dSYM"
    ]
   },
   "build UUID": {
-   "in": "27",
+   "in": "29",
    "def": "A unique ID the build writes into a binary and its dSYM; they match only when it's identical.",
    "aliases": [
     "build UUIDs",
@@ -879,41 +874,41 @@
    ]
   },
   "link-time optimization": {
-   "in": "28",
+   "in": "30",
    "def": "Optimizing all modules together during the link stage, as release builds do.",
    "aliases": [
     "LTO"
    ]
   },
   "compilation cache": {
-   "in": "28",
+   "in": "30",
    "def": "Already compiled libraries kept by Kotlin/Native so later debug builds skip that work.",
    "aliases": [
     "compilation caches"
    ]
   },
   "embedAndSignAppleFrameworkForXcode": {
-   "in": "28",
+   "in": "30",
    "def": "Code name in puzzle 28.",
    "kind": "code"
   },
   "smallBinary": {
-   "in": "28",
+   "in": "30",
    "def": "Code name in puzzle 28.",
    "kind": "code"
   },
   "binaryOption": {
-   "in": "28",
+   "in": "30",
    "def": "Code name in puzzle 28.",
    "kind": "code"
   },
   "transitiveExport": {
-   "in": "28",
+   "in": "30",
    "def": "Code name in puzzle 28.",
    "kind": "code"
   },
   "~/.konan": {
-   "in": "28",
+   "in": "30",
    "def": "Code name in puzzle 28.",
    "kind": "code"
   },

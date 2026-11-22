@@ -52,45 +52,45 @@
       <p class="eyebrow"><a href="./">Compose Multiplatform, one screen from state to pixels</a> · check</p>
       <h1>Know One screen, two platforms already?</h1>
       <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
-<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: Who read the bookmark count?</p>
-<fieldset class="quiz" data-n="6">
-<legend>The screen reads <code>count.value</code> and passes the number to the header. A tap changes the count. Which group does Compose mark?</legend>
-<input type="radio" name="q-06-state-reads-and-ui-1" id="q-06-state-reads-and-ui-1-1" data-ok><label for="q-06-state-reads-and-ui-1-1"><span>The screen's, because the read happened while the screen ran</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-1" id="q-06-state-reads-and-ui-1-2"><label for="q-06-state-reads-and-ui-1-2"><span>Every group in the app, starting from the root</span></label>
-<input type="radio" name="q-06-state-reads-and-ui-1" id="q-06-state-reads-and-ui-1-3"><label for="q-06-state-reads-and-ui-1-3"><span>Only the header's, because the header shows the number</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The read decides which group is marked.</p>
-<p class="fb no opt-2"><b>Not quite.</b> A write marks only the groups that read the value. <a class="show-me" href="06-state-reads-and-ui.html">Learn it in puzzle 6 →</a></p>
-<p class="fb no opt-3"><b>Not quite.</b> Compose follows where the read happened, not where the value is shown. <a class="show-me" href="06-state-reads-and-ui.html">Learn it in puzzle 6 →</a></p>
-</fieldset></section>
-<section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Which work does a moving card need?</p>
+<section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: Who read the bookmark count?</p>
 <fieldset class="quiz" data-n="7">
-<legend>The card now also grows taller as you scroll, and its height follows the same position. Can placement alone handle that change?</legend>
-<input type="radio" name="q-07-read-in-the-right-phase-1" id="q-07-read-in-the-right-phase-1-1"><label for="q-07-read-in-the-right-phase-1-1"><span>Yes: the read is still inside the offset lambda, so only placement runs</span></label>
-<input type="radio" name="q-07-read-in-the-right-phase-1" id="q-07-read-in-the-right-phase-1-2" data-ok><label for="q-07-read-in-the-right-phase-1-2"><span>No: a new height needs measuring, and items below may move</span></label>
-<input type="radio" name="q-07-read-in-the-right-phase-1" id="q-07-read-in-the-right-phase-1-3"><label for="q-07-read-in-the-right-phase-1-3"><span>Yes: drawing can stretch the old card to the new height</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The offset lambda only moves the card; a height change has to be measured. <a class="show-me" href="07-read-in-the-right-phase.html">Learn it in puzzle 7 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Size changes need measuring; position changes don't.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Drawing paints what layout decided; it doesn't choose sizes. <a class="show-me" href="07-read-in-the-right-phase.html">Learn it in puzzle 7 →</a></p>
+<legend>A settings screen's top composable reads darkMode.value and passes the Boolean down three levels to a small switch row. darkMode flips. Which group does Compose mark?</legend>
+<input type="radio" name="q-07-state-reads-and-ui-1" id="q-07-state-reads-and-ui-1-1" data-ok><label for="q-07-state-reads-and-ui-1-1"><span>The top composable's, where the read ran</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-1" id="q-07-state-reads-and-ui-1-2"><label for="q-07-state-reads-and-ui-1-2"><span>The top composable's and every group between it and the row</span></label>
+<input type="radio" name="q-07-state-reads-and-ui-1" id="q-07-state-reads-and-ui-1-3"><label for="q-07-state-reads-and-ui-1-3"><span>Only the switch row's, because it shows the value</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The read decides which group is marked.</p>
+<p class="fb no opt-2"><b>Not quite.</b> A write marks only the groups that read; the ones in between run only because their parent ran (or skip). <a class="show-me" href="07-state-reads-and-ui.html">Learn it in puzzle 7 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Compose follows where the read happened, not where the value ends up. <a class="show-me" href="07-state-reads-and-ui.html">Learn it in puzzle 7 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: Which side hosts the other?</p>
+<section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: Which work does a moving card need?</p>
 <fieldset class="quiz" data-n="8">
-<legend>An existing UIKit navigation controller must present a shared screen. Which object belongs in its screen stack?</legend>
-<input type="radio" name="q-08-who-hosts-the-native-view-1" id="q-08-who-hosts-the-native-view-1-1"><label for="q-08-who-hosts-the-native-view-1-1"><span>A shared button with no containing controller</span></label>
-<input type="radio" name="q-08-who-hosts-the-native-view-1" id="q-08-who-hosts-the-native-view-1-2"><label for="q-08-who-hosts-the-native-view-1-2"><span>The UIKitView nested inside a shared field</span></label>
-<input type="radio" name="q-08-who-hosts-the-native-view-1" id="q-08-who-hosts-the-native-view-1-3" data-ok><label for="q-08-who-hosts-the-native-view-1-3"><span>A controller returned by ComposeUIViewController</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The host needs an iOS controller that contains the shared UI. <a class="show-me" href="08-who-hosts-the-native-view.html">Learn it in puzzle 8 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> UIKitView embeds a native view in the other direction. <a class="show-me" href="08-who-hosts-the-native-view.html">Learn it in puzzle 8 →</a></p>
-<p class="fb ok opt-3"><b>Right.</b> Start from whoever owns the surrounding region.</p>
+<legend>The card now also grows taller as you scroll, and its height follows the same position. Can placement alone handle that change?</legend>
+<input type="radio" name="q-08-read-in-the-right-phase-1" id="q-08-read-in-the-right-phase-1-1"><label for="q-08-read-in-the-right-phase-1-1"><span>Yes: the read is still inside the offset lambda, so only placement runs</span></label>
+<input type="radio" name="q-08-read-in-the-right-phase-1" id="q-08-read-in-the-right-phase-1-2" data-ok><label for="q-08-read-in-the-right-phase-1-2"><span>No: a new height needs measuring, and items below may move</span></label>
+<input type="radio" name="q-08-read-in-the-right-phase-1" id="q-08-read-in-the-right-phase-1-3"><label for="q-08-read-in-the-right-phase-1-3"><span>Yes: drawing can stretch the old card to the new height</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The offset lambda only moves the card; a height change has to be measured. <a class="show-me" href="08-read-in-the-right-phase.html">Learn it in puzzle 8 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Size changes need measuring; position changes don't.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Drawing paints what layout decided; it doesn't choose sizes. <a class="show-me" href="08-read-in-the-right-phase.html">Learn it in puzzle 8 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: Can VoiceOver understand the bookmark?</p>
+<section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: Which side hosts the other?</p>
 <fieldset class="quiz" data-n="9">
-<legend>The icon is solid after saving, but the action has no label or state. What is the missing signal?</legend>
-<input type="radio" name="q-09-pixels-and-voiceover-1" id="q-09-pixels-and-voiceover-1-1"><label for="q-09-pixels-and-voiceover-1-1"><span>A larger solid icon so the change is easier to see</span></label>
-<input type="radio" name="q-09-pixels-and-voiceover-1" id="q-09-pixels-and-voiceover-1-2" data-ok><label for="q-09-pixels-and-voiceover-1-2"><span>A semantic description of the action and its state</span></label>
-<input type="radio" name="q-09-pixels-and-voiceover-1" id="q-09-pixels-and-voiceover-1-3"><label for="q-09-pixels-and-voiceover-1-3"><span>An extra native navigation bar above the control</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Changing pixels does not expose a saved state to the screen reader. <a class="show-me" href="09-pixels-and-voiceover.html">Learn it in puzzle 9 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Provide the meaning of the control along with its pixels.</p>
-<p class="fb no opt-3"><b>Not quite.</b> The navigation bar does not describe an unlabeled bookmark. <a class="show-me" href="09-pixels-and-voiceover.html">Learn it in puzzle 9 →</a></p>
+<legend>You delete the <code>update</code> parameter and keep editingChanged. The user types &quot;lake&quot;, then taps Clear. What does the field show?</legend>
+<input type="radio" name="q-09-who-hosts-the-native-view-1" id="q-09-who-hosts-the-native-view-1-1" data-ok><label for="q-09-who-hosts-the-native-view-1-1"><span>Still &quot;lake&quot;: nothing copies the cleared query into the field</span></label>
+<input type="radio" name="q-09-who-hosts-the-native-view-1" id="q-09-who-hosts-the-native-view-1-2"><label for="q-09-who-hosts-the-native-view-1-2"><span>Empty: factory runs again and makes a new, empty field</span></label>
+<input type="radio" name="q-09-who-hosts-the-native-view-1" id="q-09-who-hosts-the-native-view-1-3"><label for="q-09-who-hosts-the-native-view-1-3"><span>Empty: Compose redraws the field from query at the next frame</span></label>
+<p class="fb ok opt-1"><b>Right.</b> State reaches the native view only through update.</p>
+<p class="fb no opt-2"><b>Not quite.</b> factory runs once, when the field first enters the composition. <a class="show-me" href="09-who-hosts-the-native-view.html">Learn it in puzzle 9 →</a></p>
+<p class="fb no opt-3"><b>Not quite.</b> Compose draws around the field; UIKit draws the field itself, and only update writes into it. <a class="show-me" href="09-who-hosts-the-native-view.html">Learn it in puzzle 9 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 10"><p class="eyebrow">Puzzle 10: Can VoiceOver understand the bookmark?</p>
+<fieldset class="quiz" data-n="10">
+<legend>You keep the <code>pointerInput</code> version but give the Icon a content description, &quot;Bookmark&quot;. VoiceOver focuses it. What can the user learn?</legend>
+<input type="radio" name="q-10-pixels-and-voiceover-1" id="q-10-pixels-and-voiceover-1-1"><label for="q-10-pixels-and-voiceover-1-1"><span>Nothing: VoiceOver never reads icons, whatever their description</span></label>
+<input type="radio" name="q-10-pixels-and-voiceover-1" id="q-10-pixels-and-voiceover-1-2"><label for="q-10-pixels-and-voiceover-1-2"><span>Everything: the description is all VoiceOver needs to know</span></label>
+<input type="radio" name="q-10-pixels-and-voiceover-1" id="q-10-pixels-and-voiceover-1-3" data-ok><label for="q-10-pixels-and-voiceover-1-3"><span>Its name, but not that it's a switch, nor whether it's on</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> An icon with a description gets a label and is read; it's the missing role and state that hurt here. <a class="show-me" href="10-pixels-and-voiceover.html">Learn it in puzzle 10 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> A label names an element; the role, the state and the action come from toggleable. <a class="show-me" href="10-pixels-and-voiceover.html">Learn it in puzzle 10 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> A label alone doesn't make a control.</p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

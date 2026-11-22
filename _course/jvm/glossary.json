@@ -3,7 +3,9 @@
     "words": [
       "Java",
       "JDK",
-      "Bookmark"
+      "Bookmark",
+      "ArrayList",
+      "List"
     ]
   },
   "terms": {
@@ -46,6 +48,405 @@
     "garbage collector": {
       "in": 3,
       "def": "The part of the runtime that automatically reclaims storage for objects the program can no longer reach."
+    },
+    "bytecode": {
+      "in": 5,
+      "def": "The instructions inside a class file; each one starts with a one-byte opcode."
+    },
+    "opcode": {
+      "in": 5,
+      "def": "The single byte at the start of an instruction that says which operation to perform.",
+      "aliases": [
+        "opcodes"
+      ]
+    },
+    "byte offset": {
+      "in": 5,
+      "def": "The number javap prints before an instruction: where it starts, counted in bytes from the start of the method."
+    },
+    "type letter": {
+      "in": 5,
+      "def": "The first letter of many instruction names, giving the type it works on: i for int, l for long, a for a reference."
+    },
+    "iadd": {
+      "in": 1,
+      "kind": "code",
+      "def": "Remove two integers from the operand stack and push their sum."
+    },
+    "ireturn": {
+      "in": 1,
+      "kind": "code",
+      "def": "Hand the integer on top of the operand stack to the caller and finish the call."
+    },
+    "imul": {
+      "in": 5,
+      "kind": "code",
+      "def": "Remove two integers from the operand stack and push their product."
+    },
+    "isub": {
+      "in": 5,
+      "kind": "code",
+      "def": "Remove two integers and push the deeper one minus the top one."
+    },
+    "iload": {
+      "in": 5,
+      "kind": "code",
+      "aliases": [
+        "iload_1",
+        "iload_2"
+      ],
+      "def": "Copy the integer in a local slot onto the operand stack."
+    },
+    "istore": {
+      "in": 5,
+      "kind": "code",
+      "aliases": [
+        "istore_2"
+      ],
+      "def": "Remove the integer on top of the operand stack and write it into a local slot."
+    },
+    "iconst_2": {
+      "in": 5,
+      "kind": "code",
+      "def": "Push the integer constant two onto the operand stack."
+    },
+    "bipush": {
+      "in": 5,
+      "kind": "code",
+      "def": "Push a small integer carried in the instruction itself (one extra byte)."
+    },
+    "sipush": {
+      "in": 5,
+      "kind": "code",
+      "def": "Push an integer carried in the instruction itself (two extra bytes)."
+    },
+    "ScoreKt": {
+      "in": 5,
+      "kind": "code",
+      "def": "The class kotlinc creates for the top-level functions of Score.kt."
+    },
+    "constant pool": {
+      "in": 6,
+      "def": "The numbered table at the start of a class file holding the names, texts and numbers its code refers to."
+    },
+    "descriptor": {
+      "in": 6,
+      "aliases": [
+        "descriptors"
+      ],
+      "def": "A type written in the class file short code: I for int, J for long, L plus a class name for a reference; for a method, (parameters) then the return type."
+    },
+    "symbolic reference": {
+      "in": 6,
+      "aliases": [
+        "symbolic references"
+      ],
+      "def": "A reference to a class, field or method by its name and descriptor, which the JVM looks up while the program runs."
+    },
+    "getstatic": {
+      "in": 6,
+      "kind": "code",
+      "def": "Read a static field, named through the constant pool, and push its value."
+    },
+    "ldc": {
+      "in": 6,
+      "kind": "code",
+      "aliases": [
+        "ldc_w"
+      ],
+      "def": "Push a constant stored in the constant pool."
+    },
+    "Fieldref": {
+      "in": 6,
+      "kind": "code",
+      "def": "A constant-pool entry describing a field: its class plus its name and descriptor."
+    },
+    "NameAndType": {
+      "in": 6,
+      "kind": "code",
+      "def": "A constant-pool entry pairing a name with a descriptor."
+    },
+    "Utf8": {
+      "in": 6,
+      "kind": "code",
+      "def": "A constant-pool entry holding a piece of text."
+    },
+    "receiver": {
+      "in": 7,
+      "def": "The object a method is called on; inside the method it arrives in local slot 0."
+    },
+    "bootstrap method": {
+      "in": 7,
+      "def": "A method an invokedynamic instruction names; the JVM runs it once, the first time, to decide what the call does."
+    },
+    "invokestatic": {
+      "in": 7,
+      "kind": "code",
+      "def": "Call a static method: exactly the one the constant pool names."
+    },
+    "invokespecial": {
+      "in": 7,
+      "kind": "code",
+      "def": "Call exactly the named instance method: a constructor, a super call, a Kotlin private method."
+    },
+    "invokevirtual": {
+      "in": 7,
+      "kind": "code",
+      "def": "Call a method declared in a class, choosing the version in the receiver class."
+    },
+    "invokeinterface": {
+      "in": 7,
+      "kind": "code",
+      "def": "Call a method declared in an interface, choosing the version in the receiver class."
+    },
+    "invokedynamic": {
+      "in": 7,
+      "kind": "code",
+      "def": "A call whose target a bootstrap method decides the first time it runs."
+    },
+    "<init>": {
+      "in": 7,
+      "kind": "code",
+      "def": "The name a constructor has inside a class file."
+    },
+    "aload": {
+      "in": 7,
+      "kind": "code",
+      "aliases": [
+        "aload_0",
+        "aload_2"
+      ],
+      "def": "Copy the reference in a local slot onto the operand stack."
+    },
+    "astore": {
+      "in": 7,
+      "kind": "code",
+      "aliases": [
+        "astore_2"
+      ],
+      "def": "Remove the reference on top of the stack and write it into a local slot."
+    },
+    "istore_1": {
+      "in": 7,
+      "kind": "code",
+      "def": "Store the top integer in local slot 1."
+    },
+    "getfield": {
+      "in": 7,
+      "kind": "code",
+      "def": "Read a field of the object whose reference is on top of the stack."
+    },
+    "getter": {
+      "in": 8,
+      "aliases": [
+        "getters"
+      ],
+      "def": "A generated method that returns a property field, such as getVisits()."
+    },
+    "setter": {
+      "in": 8,
+      "aliases": [
+        "setters"
+      ],
+      "def": "A generated method that stores its argument in a property field, such as setVisits(int)."
+    },
+    "mask": {
+      "in": 8,
+      "def": "The extra int a $default method receives: bit n is set when argument n was left out."
+    },
+    "visit$default": {
+      "in": 8,
+      "kind": "code",
+      "def": "The method kotlinc generates to fill in default arguments of visit."
+    },
+    "Bookmark$Companion": {
+      "in": 8,
+      "kind": "code",
+      "def": "The class kotlinc generates for the companion object of Bookmark."
+    },
+    "BookmarkKt": {
+      "in": 8,
+      "kind": "code",
+      "def": "The class holding the top-level functions of Bookmark.kt."
+    },
+    "checkNotNullParameter": {
+      "in": 8,
+      "kind": "code",
+      "def": "The Kotlin runtime check that throws when a non-null parameter receives null."
+    },
+    "@JvmStatic": {
+      "in": 8,
+      "kind": "code",
+      "def": "Kotlin annotation: also generate a real static method for a companion function."
+    },
+    "@JvmOverloads": {
+      "in": 8,
+      "kind": "code",
+      "def": "Kotlin annotation: generate one overload per default argument for Java callers."
+    },
+    "@JvmName": {
+      "in": 8,
+      "kind": "code",
+      "def": "Kotlin annotation: choose the JVM name of a generated method."
+    },
+    "iand": {
+      "in": 8,
+      "kind": "code",
+      "def": "Remove two integers and push the bits set in both."
+    },
+    "ifeq": {
+      "in": 8,
+      "kind": "code",
+      "def": "Jump to the given offset if the integer on top is zero."
+    },
+    "iconst_0": {
+      "in": 8,
+      "kind": "code",
+      "def": "Push the integer constant zero."
+    },
+    "isOpen": {
+      "in": 8,
+      "kind": "code",
+      "def": "A property name starting with is, whose getter keeps the name."
+    },
+    "getIsOpen": {
+      "in": 8,
+      "kind": "code",
+      "def": "The getter name Kotlin does not generate for isOpen."
+    },
+    "getUrl": {
+      "in": 8,
+      "kind": "code",
+      "def": "The getter kotlinc generates for val url."
+    },
+    "getVisits": {
+      "in": 8,
+      "kind": "code",
+      "def": "The getter for var visits."
+    },
+    "setVisits": {
+      "in": 8,
+      "kind": "code",
+      "def": "The setter for var visits."
+    },
+    "function object": {
+      "in": 9,
+      "aliases": [
+        "function objects"
+      ],
+      "def": "An object with one invoke() method that runs a lambda, carrying the values the lambda captured."
+    },
+    "inline function": {
+      "in": 9,
+      "aliases": [
+        "inline functions"
+      ],
+      "def": "A Kotlin function whose body, and the lambdas passed to it, kotlinc copies into each caller."
+    },
+    "call site": {
+      "in": 9,
+      "aliases": [
+        "call sites"
+      ],
+      "def": "One place in the code where a call is written, such as one invokedynamic instruction."
+    },
+    "Function0": {
+      "in": 9,
+      "kind": "code",
+      "def": "Kotlin interface for a function with no parameters; its method is invoke()."
+    },
+    "LambdaMetafactory": {
+      "in": 9,
+      "kind": "code",
+      "def": "The JDK class whose bootstrap method creates lambda classes while the program runs."
+    },
+    "main$lambda$0": {
+      "in": 9,
+      "kind": "code",
+      "def": "The private static method holding the lambda body."
+    },
+    "istore_0": {
+      "in": 9,
+      "kind": "code",
+      "def": "Store the top integer in local slot 0."
+    },
+    "LambdasKt": {
+      "in": 9,
+      "kind": "code",
+      "def": "The class holding the top-level functions of Lambdas.kt."
+    },
+    "HotSpot": {
+      "in": 10,
+      "def": "The JVM inside OpenJDK, the one java runs in this course."
+    },
+    "method table": {
+      "in": 10,
+      "aliases": [
+        "method tables",
+        "vtable"
+      ],
+      "def": "HotSpot per-class list with one entry per overridable method, at the same position as in the parent class."
+    },
+    "OpenJDK": {
+      "in": 10,
+      "kind": "code",
+      "def": "The open-source project that builds the JDK, including HotSpot."
+    },
+    "class loading": {
+      "in": 11,
+      "def": "Finding a class file bytes and creating the class in memory, the first time code needs the class."
+    },
+    "verification": {
+      "in": 11,
+      "def": "The linking step that checks a class bytecode is safe to run before any of it runs."
+    },
+    "preparation": {
+      "in": 11,
+      "def": "The linking step that creates a class static fields with default values (0, null)."
+    },
+    "resolution": {
+      "in": 11,
+      "def": "Turning a symbolic reference into the real class, field or method it names."
+    },
+    "linking": {
+      "in": 11,
+      "def": "Verification, preparation and resolution: making a loaded class ready to run."
+    },
+    "initialization": {
+      "in": 11,
+      "def": "Running a class static code, once, at its first real use."
+    },
+    "static initializer": {
+      "in": 12,
+      "aliases": [
+        "static initializers"
+      ],
+      "def": "All of a class's static code, compiled into one method, <clinit>, that initialization runs once."
+    },
+    "<clinit>": {
+      "in": 12,
+      "kind": "code",
+      "def": "The class-file name of a class's static initializer."
+    },
+    "putstatic": {
+      "in": 12,
+      "kind": "code",
+      "def": "Write the value on top of the stack into a static field."
+    },
+    "ExceptionInInitializerError": {
+      "in": 12,
+      "kind": "code",
+      "def": "Thrown the first time a class's static initializer throws; its cause is the real error."
+    },
+    "NoClassDefFoundError": {
+      "in": 12,
+      "kind": "code",
+      "def": "Thrown when running code needs a class that can't be used: gone since compilation, or failed to initialize."
+    },
+    "NumberFormatException": {
+      "in": 12,
+      "kind": "code",
+      "def": "Thrown when text can't be read as a number."
     }
   },
   "from": {
