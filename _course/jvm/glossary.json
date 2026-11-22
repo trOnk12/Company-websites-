@@ -980,6 +980,11 @@
    "in": "25",
    "def": "The class holding the top-level functions of Start.kt.",
    "kind": "code"
+  },
+  "PerBytecodeTrapLimit": {
+   "in": "23",
+   "def": "The HotSpot option that limits how many uncommon traps of one kind one bytecode offset may hit (4).",
+   "kind": "code"
   }
  },
  "from": {

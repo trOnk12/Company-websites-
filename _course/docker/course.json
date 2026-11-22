@@ -14,7 +14,8 @@
         "04-a-namespace-per-resource.md",
         "05-root-in-the-container.md",
         "06-how-much-it-may-use.md",
-        "07-who-builds-the-container.md"
+        "07-the-cpu-quota.md",
+        "08-who-builds-the-container.md"
       ]
     }
   ],

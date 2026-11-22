@@ -371,7 +371,7 @@
    ]
   },
   "dockerd": {
-   "in": "07",
+   "in": "08",
    "def": "The Docker daemon: the long-running program that the docker command sends every request to.",
    "aliases": [
     "Docker daemon",
@@ -379,17 +379,17 @@
    ]
   },
   "containerd": {
-   "in": "07",
+   "in": "08",
    "def": "The program dockerd asks to manage each container's life: create, start, stop.",
    "aliases": []
   },
   "runc": {
-   "in": "07",
+   "in": "08",
    "def": "The small program that reads a container's config.json, asks the kernel for its namespaces and cgroup, starts its process, and exits.",
    "aliases": []
   },
   "shim": {
-   "in": "07",
+   "in": "08",
    "def": "containerd-shim-runc-v2: a small process that stays behind as the container process's parent once runc has gone.",
    "aliases": [
     "containerd-shim",
@@ -398,7 +398,7 @@
    ]
   },
   "OCI runtime spec": {
-   "in": "07",
+   "in": "08",
    "def": "The Open Container Initiative's standard for config.json: which program to run, its root filesystem, namespaces and limits.",
    "aliases": [
     "OCI",
@@ -467,12 +467,12 @@
    "def": "Reads an endless stream of zero bytes and keeps it in memory: a quick way to use memory up."
   },
   "config.json": {
-   "in": "07",
+   "in": "08",
    "kind": "code",
    "def": "The file, defined by the OCI runtime spec, that tells runc which program to run, from which root filesystem, in which namespaces, with which limits."
   },
   "docker.sock": {
-   "in": "07",
+   "in": "08",
    "kind": "code",
    "def": "The special file, /var/run/docker.sock, through which the docker command sends its requests to dockerd.",
    "aliases": [
