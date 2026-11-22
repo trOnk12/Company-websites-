@@ -19,7 +19,7 @@
 <g class="step s4" data-move="4:80,96 5:230,264" data-pulse="5"><circle class="d-dot" r="8"/></g>
 </svg>
 <ol class="caps">
-<li><p>A plugin, as in puzzle 13: a loader object and a Greeter object. Objects live on the <b>heap</b>, the memory the garbage collector manages (puzzle 3).</p></li>
+<li><p>A plugin, as in puzzle 14: a loader object and a Greeter object. Objects live on the <b>heap</b>, the memory the garbage collector manages (puzzle 3).</p></li>
 <li><p>The class itself, its methods, bytecode and constant pool, lives in <b>metaspace</b>: memory outside the heap that HotSpot asks the operating system for, in a chunk owned by its defining loader.</p></li>
 <li><p>Drop the plugin. Nothing reaches the loader, its object or its class, so the collector can reclaim them all: <b>class unloading</b>.</p></li>
 <li><p>Now the app keeps one Greeter object in a list. <i>Predict: can class Greeter be unloaded?</i></p></li>

@@ -93,7 +93,7 @@ That's why the Kotlin docs say functions that take lambdas impose "runtime penal
 - *Before Kotlin 2.0* a lambda like the one passed to runLater became its own class file, LambdasKt$main$1.class, created with new and `invokespecial`. Kotlin 2.0 made `invokedynamic` the default. The compiler option -Xlambdas=class brings the old way back, for example when a lambda must be serializable.
 - *An inline lambda can't be stored.* Because it never becomes an object, an inline function can only call its lambda or pass it to another inline function. To keep one, mark that parameter noinline; it then becomes a function object again.
 - *Return means something different.* A bare return inside a lambda passed to an inline function, such as forEach, returns from the enclosing function, because the code was copied there; the Kotlin docs show it returning from a function called hasZeros. In a lambda passed to runLater, a bare return isn't allowed.
-- *Android rewrites this.* Android's build tools convert class files into their own format and replace `invokedynamic` lambdas where the phones the app supports need it; module 3 ends with that bridge (puzzle 16).
+- *Android rewrites this.* Android's build tools convert class files into their own format and replace `invokedynamic` lambdas where the phones the app supports need it; module 3 ends with that bridge (puzzle 18).
 
 ## The analogy
 

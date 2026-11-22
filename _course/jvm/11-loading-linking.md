@@ -74,7 +74,7 @@ What triggers initialization? The JVM specification names four instructions: new
 
 - *Loading without initializing.* new Rare[2] loaded Rare but ran none of its code. So does reading Rare.class, the object Java uses to describe the class: in a second run, a line printing Rare.class printed before Rare was initialized.
 - *A constant isn't a use.* Reading a static final constant, such as const val in Kotlin, doesn't even load the class: puzzle 6 showed its value is copied into the caller.
-- *Errors wait for first use.* If something about Rare is wrong (its class file is missing, or verification fails), the error is thrown when the code first needs Rare, not at startup. A program can run for an hour before reaching that line. Puzzle 14 reads those errors.
+- *Errors wait for first use.* If something about Rare is wrong (its class file is missing, or verification fails), the error is thrown when the code first needs Rare, not at startup. A program can run for an hour before reaching that line. Puzzle 15 reads those errors.
 - *Order of classes.* Before a class is linked, its parent class is loaded and linked; before it's initialized, its parent is initialized.
 - *Where JDK classes come from.* In the unfiltered log most JDK classes say "source: shared objects file": they come from an archive HotSpot prepared earlier to start faster. Module 4 opens it.
 

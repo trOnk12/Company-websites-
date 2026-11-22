@@ -1,13 +1,13 @@
 ---
 title: Where do classes live, and how do they leak?
 short: Metaspace and class-loader leaks
-summary: Puzzle 13 created a new loader per plugin, and puzzle 3 showed that unreachable objects can be reclaimed. Put the two together and find out where a loaded class is stored, when it can be thrown away, and how one kept object stops that.
+summary: Puzzle 14 created a new loader per plugin, and puzzle 3 showed that unreachable objects can be reclaimed. Put the two together and find out where a loaded class is stored, when it can be thrown away, and how one kept object stops that.
 takeaway: Objects live on the heap; a loaded class's metadata lives in metaspace, memory outside the heap, owned by its defining loader. A class is unloaded only together with its loader, once nothing reaches either, so a single kept object from a plugin keeps its class, its loader and every class that loader defined, and repeated reloads fill metaspace until OutOfMemoryError: Metaspace.
 ---
 
 ## The problem
 
-A server reloads its plugins whenever they change, each time with a new class loader, the way puzzle 13 did. Memory use climbs a little with every reload, and after a few days the server dies with an OutOfMemoryError whose message doesn't mention objects at all.
+A server reloads its plugins whenever they change, each time with a new class loader, the way puzzle 14 did. Memory use climbs a little with every reload, and after a few days the server dies with an OutOfMemoryError whose message doesn't mention objects at all.
 
 Puzzle 3 said the collector reclaims what can't be reached. Why isn't an old plugin, which nobody uses any more, reclaimed? And where do classes live?
 
@@ -35,15 +35,36 @@ The trap is the chain of references. Every object knows its class (that's how `i
 This program loads Greeter with a new loader in a loop, with metaspace limited to 32 megabytes. With the argument keep, it adds each Greeter to a static list; without it, it drops each plugin at once:
 
 ```java
-static final List<Object> kept = new ArrayList<>();
-...
-while (i < 200_000) {
-    ClassLoader loader = new URLClassLoader(where, Leak.class.getClassLoader());
-    Object greeter = loader.loadClass("Greeter").getDeclaredConstructor().newInstance();
-    if (keep) kept.add(greeter);
-    i++;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Leak {
+    static final List<Object> kept = new ArrayList<>();
+
+    public static void main(String[] args) throws Exception {
+        boolean keep = args.length > 0 && args[0].equals("keep");
+        URL[] where = { Path.of("plugin-out").toUri().toURL() };
+        int i = 0;
+        try {
+            while (i < 200_000) {
+                ClassLoader loader = new URLClassLoader(where, Leak.class.getClassLoader());
+                Object greeter = loader.loadClass("Greeter").getDeclaredConstructor().newInstance();
+                if (keep) kept.add(greeter);
+                i++;
+            }
+            System.out.println(i + " plugins loaded and dropped");
+        } catch (OutOfMemoryError e) {
+            kept.clear();
+            System.out.println("after " + i + " plugins: " + e);
+        }
+    }
 }
 ```
+
+Each loop creates a new loader and a Greeter from it, with getDeclaredConstructor().newInstance() as in puzzle 14. When metaspace runs out, the catch clears the list (so the program has memory to print) and prints how far it got.
 
 ```text
 $ java -XX:MaxMetaspaceSize=32m -cp . Leak keep
@@ -58,8 +79,9 @@ In a real server the "list" is rarely that obvious. Typical holders are a static
 
 ### The edges
 
-- *Diagnose with the chain, not the size.* A growing metaspace says that classes aren't unloaded; a heap dump (module 8) shows which path from a root still reaches the old loader. Check that classes are unloaded at all with -Xlog:class+unload.
-- *Metaspace counts towards the JVM's total memory.* A container's memory limit applies to heap plus metaspace plus everything else; module 5 adds the rest of the off-heap memory.
+- *Diagnose with the chain, not the size.* A growing metaspace says that classes aren't unloaded; a heap dump, a file listing every object on the heap and its references (coming in a later module), shows which path from a root still reaches the old loader. Check that classes are unloaded at all with -Xlog:class+unload.
+- *Metaspace counts towards the JVM's total memory.* A container's memory limit applies to heap plus metaspace plus everything else; the rest of the memory outside the heap is coming in a later module.
+- *A second metaspace limit.* On 64-bit HotSpot, part of class metadata goes into a separate region, the compressed class space, which has its own size (1 GB by default, set with -XX:CompressedClassSpaceSize). So a class-loader leak can also fail as OutOfMemoryError: Compressed class space. Same cause, same fix: find what keeps the old loaders.
 - *Unloading isn't immediate.* HotSpot reclaims class metadata when the garbage collector runs; it starts a collection when metaspace use reaches a threshold, the "high-water mark" in Oracle's guide. A metaspace graph can rise for a while and still be healthy.
 - *Generated classes count too.* Lambdas (puzzle 9), proxies and other classes created while the program runs also take metaspace; libraries that keep generating new ones without reusing them can fill it the same way.
 
@@ -68,6 +90,8 @@ In a real server the "list" is rarely that obvious. Typical holders are a static
 Each visiting company gets its own filing cabinet in the basement for its manuals, and a badge for its staff in the building. When the company leaves, the cabinet goes, but only if no badge of that company is still in use. One forgotten badge on the front desk, and the cabinet, with every manual in it, stays. Invite a new version of the company every day, forget one badge each time, and the basement fills up.
 
 ## Run it yourself
+
+Use plugin/Greeter.java from puzzle 14 and save Leak above as Leak.java next to the plugin folder, then:
 
 ```sh
 javac -d plugin-out plugin/Greeter.java
@@ -89,6 +113,8 @@ Before running, predict which of the two runs finishes, and what changes if the 
 - [Java 21 GC tuning guide: Other Considerations, Class Metadata](https://docs.oracle.com/en/java/javase/21/gctuning/other-considerations.html) ("Java classes have an internal representation within Java Hotspot VM and are referred to as class metadata."; "Starting with JDK 8, the permanent generation was removed and the class metadata is allocated in native memory. The amount of native memory that can be used for class metadata is by default unlimited. Use the option -XX:MaxMetaspaceSize to put an upper limit on the amount of native memory used for class metadata."; "A class loader allocates space for metadata from its chunks (a chunk is bound to a specific class loader). When classes are unloaded for a class loader, its chunks are recycled for reuse or returned to the OS."; "a garbage collection is induced")
 - [Java language specification, 12.7 Unloading of Classes and Interfaces](https://docs.oracle.com/javase/specs/jls/se21/html/jls-12.html#jls-12.7) ("A class or interface may be unloaded if and only if its defining class loader may be reclaimed by the garbage collector as discussed in §12.6 . Classes and interfaces loaded by the bootstrap loader may not be unloaded.")
 - [Java 21 API: ClassLoader](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ClassLoader.html) ("Every Class object contains a reference to the ClassLoader that defined it.")
+- [Java 21 GC tuning guide: Other Considerations, CompressedClassSpaceSize](https://docs.oracle.com/en/java/javase/21/gctuning/other-considerations.html) ("The size of the region can be set with -XX:CompressedClassSpaceSize and is 1 gigabyte (GB) by default.")
+- [Java 21 troubleshooting guide: Understand the OutOfMemoryError Exception](https://docs.oracle.com/en/java/javase/21/troubleshoot/troubleshooting-memory-leaks.html) ("If the space needed for UseCompressedClassPointers exceeds CompressedClassSpaceSize , a java.lang.OutOfMemoryError error with detail message Compressed class space is thrown.")
 - [The java command (JDK 21)](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html) ("-XX:MaxMetaspaceSize= size Sets the maximum amount of native memory that can be allocated for class metadata. By default, the size isn't limited.")
 - [JEP 122: Remove the Permanent Generation](https://openjdk.org/jeps/122) ("Remove the permanent generation from the Hotspot JVM and thus the need to tune the size of the permanent generation.")
 - Both runs (5,310 plugins then OutOfMemoryError: Metaspace; 200,000 plugins finished, 195,033 unload log lines in one run, 196,708 in another) were produced in this session with OpenJDK 21.0.12. The exact count depends on the JDK build and settings.

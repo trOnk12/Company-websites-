@@ -38,10 +38,12 @@
       "puzzles": [
         "11-loading-linking.md",
         "12-static-init-order.md",
-        "13-class-loaders.md",
-        "14-classpath-modulepath.md",
-        "15-metaspace.md",
-        "16-android-bridge.md"
+        "13-static-init-failure.md",
+        "14-class-loaders.md",
+        "15-classpath-modulepath.md",
+        "16-module-path.md",
+        "17-metaspace.md",
+        "18-android-bridge.md"
       ]
     }
   ],

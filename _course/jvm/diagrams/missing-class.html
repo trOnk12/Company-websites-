@@ -14,7 +14,7 @@
 <g class="step s1" data-move="1:352,96 2:532,96 3:532,204 4:196,312"><circle class="d-acc" r="18"/></g>
 </svg>
 <ol class="caps">
-<li><p>Run 1 loads from the class path (puzzle 13). Helper.class was deleted after compiling. The JVM starts and main prints start: nobody has needed Helper yet.</p></li>
+<li><p>Run 1 loads from the class path (puzzle 14). Helper.class was deleted after compiling. The JVM starts and main prints start: nobody has needed Helper yet.</p></li>
 <li><p>Helper.bonus() is the first use. The class existed when App was compiled and is gone now: <code>NoClassDefFoundError</code>, thrown only at this line.</p></li>
 <li><p>Run 2 asks for a class by a name in a string, with Class.forName. The loader finds nothing: <code>ClassNotFoundException</code>, an exception code is expected to handle.</p></li>
 <li><p>Run 3 puts Java modules, named groups of packages, on the <b>module path</b>. The module app declares it requires bonus, which is missing. <i>Predict: does main print start?</i></p></li>
