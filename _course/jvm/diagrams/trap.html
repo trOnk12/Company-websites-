@@ -1,0 +1,31 @@
+<!-- label: label's bytecode with the profile on the branch at offset 1 (taken always); C2's compiled code keeps the taken path and puts an uncommon trap on the other; label(-5) hits the trap and the call continues in the interpreter at offset 4; the same for use's class check -->
+<!-- question: What does C2 compile for a path the profile never saw, and what happens when it's taken? type: annotated code (the real bytecode, the compiled shape beside it, one line highlighted per step) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="tr-t"><title id="tr-t">Left, label's bytecode: ifge 8 at offset 1, then iconst_m1 for the negative path and score times 2 for the other. The profile says ifge was taken 199,489 times and never not taken. Right, C2's code: if score is below 0, trap, else score times 2. label(-5) reaches the trap: the code is retired and the call continues in the interpreter at offset 4, returning -1. Below, use's class check: not a Counter, trap</title>
+<text class="d-tiny" x="16" y="28">label's bytecode</text>
+<text class="d-mi" x="30" y="62">0: iload_0</text>
+<text class="d-mi" x="30" y="92">1: ifge 8</text>
+<text class="d-mi" x="30" y="122">4: iconst_m1</text>
+<text class="d-mi" x="30" y="152">5: goto 11</text>
+<text class="d-mi" x="30" y="182">8: iload_0</text>
+<text class="d-mi" x="30" y="212">9: iconst_2</text>
+<text class="d-mi" x="30" y="242">10: imul</text>
+<text class="d-mi" x="30" y="272">11: ireturn</text>
+<g class="step s1 hide-3"><rect class="d-hl" x="20" y="72" width="200" height="28" rx="4"/><text class="d-mi" x="30" y="92">1: ifge 8</text>
+<rect class="d-paper" x="300" y="56" width="324" height="84" rx="6"/><text class="d-tiny" x="314" y="82">profile</text><text class="d-mi" x="314" y="108">taken: 199,489</text><text class="d-mi" x="314" y="130">not taken: 0</text>
+<x-arrow tone="path" d="M222,86 L294,92"/></g>
+<g class="step s2"><rect class="d-dash" x="20" y="102" width="200" height="58" rx="4"/></g>
+<g class="step s2 hide-5"><rect class="d-hl" x="300" y="160" width="324" height="92" rx="6"/><text class="d-tiny" x="314" y="184">C2's label</text><text class="d-mi" x="314" y="210">if score &lt; 0: trap</text><text class="d-mi" x="314" y="236">else: score * 2</text></g>
+<g class="step only-3"><text class="d-mi" x="314" y="300">label(-5)</text><text class="d-b" x="470" y="300">?</text></g>
+<g class="step s4" data-pulse="4"><rect class="d-bad" x="300" y="56" width="324" height="84" rx="6"/><text class="d-r" x="314" y="86">trap: made not entrant</text><text class="d-mi" x="314" y="120">interpreter at 4</text>
+<x-arrow tone="red" d="M296,110 C260,110 260,116 226,116"/><text class="d-r" x="232" y="156">-1</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-hl" x="300" y="160" width="324" height="92" rx="6"/><text class="d-tiny" x="314" y="184">C2's use</text><text class="d-mi" x="314" y="210">not a Counter: trap</text><text class="d-mi" x="314" y="236">else: v + 1</text>
+<text class="d-r" x="314" y="290">Loud: class_check</text></g>
+<g class="step s1" data-move="1:240,86 2:240,130 3:240,130 4:240,116 5:296,284"><circle class="d-dot" r="7"/><text class="d-tiny" x="0" y="28" text-anchor="middle">now</text></g>
+</svg>
+<ol class="caps">
+<li><p>label's branch at offset 1, ifge, has a profile: taken 199,489 times, not taken never. Every score so far was 0 or more.</p></li>
+<li><p>So C2 compiles only the taken path. Where the -1 path would be, it puts an <b>uncommon trap</b>: a spot that deoptimizes label if it's ever reached.</p></li>
+<li><p>The program now calls label(-5), a negative score. <i>Predict: what runs, and is the answer still -1?</i></p></li>
+<li><p>The trap fires: label's compiled code is retired, and the call continues in the interpreter at offset 4, which returns -1. Slower once, still right.</p></li>
+<li><p>Puzzle 21's class check works the same way: when the type profile only met Counter, a Loud reaching use hits a trap, logged as class_check.</p></li>
+</ol>

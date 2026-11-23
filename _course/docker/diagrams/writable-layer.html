@@ -1,0 +1,21 @@
+<!-- label: Each container gets its own writable layer over the shared image layers: its writes are invisible to other containers, survive a restart, and disappear with docker rm -->
+<!-- question: Which container sees a file another container wrote, and what does it take to lose it? type: before/after (two containers side by side over the same shared layers). Real run on 22 November 2026: box wrote /tmp/draft.txt; w2 got No such file or directory; after docker restart box still read draft; docker ps -s showed box 12.3kB and w2 4.1kB; after docker rm, a new container had no draft.txt. -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="wl-t"><title id="wl-t">Two containers, box and w2, stand on the same two read-only layers of notes:v1. Each has its own writable layer on top. box writes /tmp/draft.txt into its writable layer; w2 cannot see it. After a restart box still has it. docker rm box deletes box's writable layer, and with it draft.txt</title>
+<g class="step s1"><rect class="d-band" x="20" y="304" width="600" height="36" rx="6"/><text class="d-tiny" x="320" y="328" text-anchor="middle">layer 1: alpine (read-only, shared)</text><rect class="d-band" x="20" y="262" width="600" height="36" rx="6"/><text class="d-tiny" x="320" y="286" text-anchor="middle">layer 2: notes.txt (read-only, shared)</text></g>
+<g class="step s1 hide-6" data-pulse="1"><text class="d-b" x="30" y="150">box</text><rect class="d-hl" x="20" y="166" width="280" height="80" rx="8"/></g>
+<g class="step s1" data-pulse="1"><text class="d-b" x="350" y="150">w2</text><rect class="d-hl" x="340" y="166" width="280" height="80" rx="8"/></g>
+<g class="step s2 hide-6" data-move="1:40,40 2:40,182" data-pulse="2"><rect class="d-paper" x="0" y="0" width="180" height="46" rx="6"/><text class="d-mi" x="12" y="29">/tmp/draft.txt</text></g>
+<text class="d-mi step s2 hide-3" x="20" y="40">$ docker exec box … &gt; /tmp/draft.txt</text>
+<text class="d-a step s3 hide-4" x="480" y="214" text-anchor="middle" data-pulse="3">draft.txt?</text>
+<g class="step s4" data-pulse="4"><text class="d-r" x="480" y="200" text-anchor="middle">No such file</text><text class="d-tiny" x="480" y="230" text-anchor="middle">4.1 kB written</text></g>
+<g class="step s5 hide-6" data-pulse="5"><text class="d-a" x="30" y="70">after a restart: still there</text><text class="d-tiny" x="296" y="150" text-anchor="end">12.3 kB written</text></g>
+<g class="step s6" data-pulse="6"><rect class="d-dash" x="20" y="166" width="280" height="80" rx="8"/><text class="d-r" x="160" y="200" text-anchor="middle">docker rm box:</text><text class="d-r" x="160" y="226" text-anchor="middle">layer deleted</text></g>
+</svg>
+<ol class="caps">
+<li><p>Two containers from notes:v1, box and w2, stand on the same read-only layers. Each gets its own upper directory: its <b>writable layer</b>.</p></li>
+<li><p>box writes /tmp/draft.txt. The file lands in box's writable layer; the image's layers don't change.</p></li>
+<li><p>w2 runs the same image, on the same machine. <i>Predict: can w2 read /tmp/draft.txt?</i></p></li>
+<li><p>No: "No such file or directory". w2's tree is its own writable layer over the shared layers, and box's layer isn't in it.</p></li>
+<li><p>Stopping and starting box keeps its writable layer: after a restart, draft.txt is still there.</p></li>
+<li><p><code>docker rm</code> deletes the container and its writable layer. A new container from notes:v1 starts with an empty one: draft.txt is gone for good.</p></li>
+</ol>

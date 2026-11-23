@@ -1,0 +1,26 @@
+<!-- label: before/after: batch calls score (a frame per call) vs score's body copied into batch; use calls c.next(1): with one receiver class seen, Counter's body behind a class check; with three, the method-table lookup stays -->
+<!-- question: What does C2 put in the caller's compiled code instead of a call? type: before/after (the call on the left, C2's compiled code on the right, same framing for a static and a virtual call) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="il-t"><title id="il-t">Top left, batch's loop calls score, and each call makes a frame. Top right, after inlining, the loop says sum += i * 2 + stars, with no call and no frame. Bottom left, use calls c.next(1). Bottom right, with one class seen, the compiled code checks that c is a Counter and runs v + 1; with three classes seen, it keeps the method-table lookup</title>
+<text class="d-tiny" x="16" y="28">bytecode says</text><text class="d-tiny" x="334" y="28">C2 compiles</text>
+<g class="step s1"><rect class="d-box" x="16" y="40" width="290" height="124" rx="6"/><text class="d-mi" x="28" y="70">sum += score(i, stars)</text>
+<rect class="d-paper" x="70" y="96" width="210" height="50" rx="6"/><text class="d-tiny" x="84" y="126">new frame per call</text><x-arrow tone="ink" d="M44,80 C44,110 52,121 64,121"/></g>
+<g class="step only-1"><text class="d-b" x="478" y="110" text-anchor="middle">?</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-hl" x="334" y="40" width="290" height="124" rx="6"/><text class="d-mi" x="346" y="70">sum += i * 2 + stars</text><text class="d-tiny" x="346" y="126">no call, no frame</text>
+<x-arrow tone="acc" d="M308,70 L328,70"/></g>
+<g class="step s3"><rect class="d-box" x="16" y="196" width="290" height="124" rx="6"/><text class="d-mi" x="28" y="226">c.next(1)</text><text class="d-tiny" x="28" y="262">open: which body?</text></g>
+<g class="step s3 hide-5"><text class="d-a" x="28" y="300">seen: Counter</text></g>
+<g class="step only-3"><text class="d-b" x="478" y="266" text-anchor="middle">?</text></g>
+<g class="step only-4" data-pulse="4"><rect class="d-hl" x="334" y="196" width="290" height="124" rx="6"/><text class="d-mi" x="346" y="226">if c is a Counter:</text><text class="d-mi" x="370" y="256">v + 1</text><text class="d-mi" x="346" y="290">else: plan B</text>
+<x-arrow tone="acc" d="M308,226 L328,226"/></g>
+<g class="step s5"><text class="d-r" x="28" y="300">seen: Counter, Loud, Quiet</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-bad" x="334" y="196" width="290" height="124" rx="6"/><text class="d-mi" x="346" y="226">method table[next]</text><text class="d-tiny" x="346" y="262">virtual call, no inlining</text>
+<x-arrow tone="red" d="M308,226 L328,226"/></g>
+<g class="step s1" data-move="1:292,54 2:610,54 3:292,210 4:610,210 5:610,210"><circle class="d-dot" r="8"/><text class="d-tiny" x="-14" y="5" text-anchor="end">now</text></g>
+</svg>
+<ol class="caps">
+<li><p>batch's loop calls score on every turn, and each call makes a frame, copies the arguments, jumps and returns. <i>Predict: what does C2 compile instead?</i></p></li>
+<li><p><b>Inlining</b>: C2 copies score's body into batch's compiled loop. No call, no frame, and C2 can optimize the loop and the arithmetic together.</p></li>
+<li><p>use calls c.next(1), an open method: the body depends on c's class. This call site has only ever met a Counter. <i>Predict: what does C2 copy?</i></p></li>
+<li><p>The <b>type profile</b> says Counter, so the call is <b>monomorphic</b>: C2 inlines Counter's body behind one class check, with a plan B if the check fails.</p></li>
+<li><p>If the call site has met three classes, it is <b>megamorphic</b>: C2 inlines nothing and keeps the method-table lookup from puzzle 10.</p></li>
+</ol>

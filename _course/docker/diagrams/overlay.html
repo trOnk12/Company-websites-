@@ -1,0 +1,20 @@
+<!-- label: An overlay mount shows read-only lower directories and one writable upper directory as one tree: new files land in upper, a changed file is copied up first, a deleted file becomes a whiteout in upper -->
+<!-- question: When a container writes or deletes a file, which directory changes, and what does the merged view show? type: layer stack drawn three times as rows (merged, upper, lower), one file per column. Real run on 22 November 2026 with mount -t overlay in /tmp/ov: upper ended with motd (a 0,0 character device), notes.txt and os-release (changed); lower still held motd and os-release (keep me). -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ov-t"><title id="ov-t">Three rows: merged, the view the process sees; upper, writable; lower, read-only. Lower holds motd and os-release. The merged view shows both. Writing notes.txt puts it in upper and in the merged view. Changing os-release first copies it up into upper, then changes the copy; lower still says keep me. Deleting motd puts a whiteout in upper, and motd disappears from the merged view while lower keeps it</title>
+<g class="step s1"><text class="d-tiny" x="20" y="292">lower etc/</text><rect class="d-band" x="140" y="258" width="470" height="62" rx="8"/><rect class="d-paper" x="150" y="262" width="140" height="54" rx="6"/><text class="d-mi" x="160" y="284">motd</text><text class="d-tiny" x="160" y="306">from the image</text><rect class="d-paper" x="300" y="262" width="140" height="54" rx="6"/><text class="d-mi" x="310" y="284">os-release</text><text class="d-tiny" x="310" y="306">keep me</text></g>
+<g class="step s2" data-pulse="2"><text class="d-tiny" x="20" y="70">merged etc/</text><rect class="d-share" x="140" y="36" width="470" height="62" rx="8"/><text class="d-tiny" x="20" y="182">upper etc/</text><rect class="d-dash" x="140" y="146" width="470" height="62" rx="8"/></g>
+<g class="step s2 hide-6"><rect class="d-paper" x="150" y="40" width="140" height="54" rx="6"/><text class="d-mi" x="160" y="62">motd</text></g>
+<g class="step s2"><rect class="d-paper" x="300" y="40" width="140" height="54" rx="6"/><text class="d-mi" x="310" y="62">os-release</text><text class="d-tiny step s2 hide-5" x="310" y="84">keep me</text><text class="d-tiny step s5" x="310" y="84">changed</text></g>
+<g class="step s3" data-pulse="3"><rect class="d-hl" x="450" y="150" width="140" height="54" rx="6"/><text class="d-mi" x="460" y="172">notes.txt</text><rect class="d-paper" x="450" y="40" width="140" height="54" rx="6"/><text class="d-mi" x="460" y="62">notes.txt</text></g>
+<text class="d-mi step s4 hide-5" x="300" y="232">$ echo changed &gt; os-release</text>
+<g class="step s5" data-move="4:300,262 5:300,150" data-pulse="5"><rect class="d-hl" x="0" y="0" width="140" height="54" rx="6"/><text class="d-mi" x="10" y="22">os-release</text><text class="d-tiny" x="10" y="44">changed</text></g>
+<g class="step s6" data-pulse="6"><rect class="d-bad" x="150" y="150" width="140" height="54" rx="6"/><text class="d-mi" x="160" y="172">motd</text><text class="d-rt" x="160" y="194">whiteout 0,0</text></g>
+</svg>
+<ol class="caps">
+<li><p>One unpacked layer, read-only: a <b>lower directory</b>. It holds motd and os-release.</p></li>
+<li><p>The <b>overlay filesystem</b> (OverlayFS) mounts lower directories with one writable directory above them, and shows both as one tree: merged. The process sees only merged.</p></li>
+<li><p>A process writes etc/notes.txt. It lands in the writable <b>upper directory</b>. etc/ now exists in both, and merged shows their files together. Lower doesn't change.</p></li>
+<li><p>Now the process changes os-release, a file that exists only in lower, which is read-only. <i>Predict: where does the changed os-release end up?</i></p></li>
+<li><p>The kernel first copies the whole file up into upper, then changes the copy: a <b>copy-up</b>. Merged shows the copy. Lower still says keep me.</p></li>
+<li><p>The process deletes motd. Lower can't change, so the kernel puts a whiteout in upper: here a special 0,0 device file. Merged no longer shows motd.</p></li>
+</ol>

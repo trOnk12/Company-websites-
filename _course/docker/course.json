@@ -17,13 +17,23 @@
         "07-the-cpu-quota.md",
         "08-who-builds-the-container.md"
       ]
+    },
+    {
+      "title": "Module 2: Images",
+      "blurb": "Open an image file by file: layers and whiteouts, how the overlay filesystem stacks them, the container's own writable layer, where Docker 29 keeps it all, digests that name content, tags that move, how a registry hands an image out, and the index that serves many machines.",
+      "puzzles": [
+        "09-what-is-inside-an-image.md",
+        "10-stacking-layers.md",
+        "11-the-containers-own-layer.md",
+        "12-where-images-live.md",
+        "13-named-by-content.md",
+        "14-tags-move-digests-dont.md",
+        "15-pulling-from-a-registry.md",
+        "16-one-name-many-machines.md"
+      ]
     }
   ],
   "upcoming": [
-    {
-      "title": "Module 2: Images",
-      "topics": "Layers as stacked file changes, overlayfs (lower and upper directories, copy-up, whiteouts), overlay2 versus the containerd image store, the writable layer, content-addressed digests versus movable tags, registries (pulling, authentication, mirrors, rate limits), and the OCI image spec: index, manifest, config, layers and referrers."
-    },
     {
       "title": "Module 3: The Dockerfile and the build",
       "topics": "Which instructions make layers, the build context and .dockerignore, the build cache's rules, multi-stage builds, BuildKit (cache and secret mounts, remote caches, bake), reproducible builds, and provenance and SBOM attestations."

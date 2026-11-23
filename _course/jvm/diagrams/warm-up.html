@@ -1,0 +1,23 @@
+<!-- label: a bar chart, nanoseconds per call of total(): the naive loop's five rounds (121, 32, 15, 0.44, 0.44) and JMH's 32.0 for the returned result; rounds 1–3 are warm-up, rounds 4–5 are dead code -->
+<!-- question: How much does one call of total() cost, and why does the naive loop give five different answers? type: number chart (bars to scale, real numbers from runs, unit ns per call) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="wu-t"><title id="wu-t">Bars to scale, nanoseconds per call. Naive round 1: 121. Round 2: 32. Round 3: 15. Rounds 4 and 5: 0.44, almost no bar. JMH with the result returned: 32.0 plus or minus 2.2</title>
+<text class="d-tiny" x="16" y="28">ns per call of total(), 100 bookmarks</text>
+<path class="d-line" d="M140,44 L140,330"/>
+<g class="step s1"><text class="d-tiny" x="16" y="82">round 1</text><rect class="d-box" x="140" y="62" width="460" height="30" rx="3"/><text class="d-mi" x="150" y="83">121</text></g>
+<g class="step s2"><text class="d-tiny" x="16" y="128">round 2</text><rect class="d-box" x="140" y="108" width="123" height="30" rx="3"/><text class="d-mi" x="272" y="129">32</text></g>
+<g class="step s3"><text class="d-tiny" x="16" y="174">round 3</text><rect class="d-box" x="140" y="154" width="56" height="30" rx="3"/><text class="d-mi" x="206" y="175">15</text></g>
+<g class="step s1 hide-4"><rect class="d-dash" x="132" y="54" width="490" height="138" rx="6"/></g>
+<g class="step s1 hide-4"><text class="d-a" x="520" y="180">warm-up</text></g>
+<g class="step only-3"><text class="d-b" x="300" y="226" text-anchor="middle">?</text></g>
+<g class="step s4" data-pulse="4"><text class="d-tiny" x="16" y="220">rounds 4–5</text><rect class="d-bad" x="140" y="200" width="3" height="30"/><text class="d-mi" x="152" y="221">0.44</text></g>
+<g class="step s4 hide-5" data-pulse="4"><rect class="d-paper" x="360" y="208" width="264" height="44" rx="6"/><text class="d-mi" x="372" y="236">total(visits)</text><path class="d-red" d="M366,230 L520,230"/><text class="d-r" x="536" y="236">gone</text></g>
+<g class="step s5" data-pulse="5"><text class="d-tiny" x="16" y="286">JMH</text><rect class="d-hl" x="140" y="266" width="122" height="30" rx="3"/><text class="d-mi" x="272" y="287">32.0 ± 2.2</text></g>
+<g class="step s1" data-move="1:600,77 2:263,123 3:196,169 4:143,215 5:262,281"><circle class="d-dot" r="7"/><text class="d-tiny" x="0" y="30" text-anchor="middle">timed</text></g>
+</svg>
+<ol class="caps">
+<li><p>Round 1 of the naive loop: 121 nanoseconds per call. That is <b>warm-up</b>: total and score still run in the interpreter and at level 3 while C2 is busy.</p></li>
+<li><p>Round 2: 32. Faster, as more of the code reaches level 4, but still a mix of levels.</p></li>
+<li><p>Round 3: 15. By round 4, main's loop is compiled by C2 with total and score inlined, and the loop never uses total's result. <i>Predict: what does round 4 show?</i></p></li>
+<li><p>0.44: C2 found total's result unused and removed the call and its loop, <b>dead code elimination</b>. The timer now measures an almost empty loop.</p></li>
+<li><p><b>JMH</b> warms up first and keeps the returned result alive: 32.0 nanoseconds per call, ±2.2 over its five measured iterations.</p></li>
+</ol>

@@ -1,0 +1,26 @@
+<!-- label: before/after: scoreOf's Stats on the heap, reached from the frame; C2 sees inside the inlined code that the reference never leaves, so it keeps visits and stars as values and the heap stays empty; stored in a static field, the object is allocated every call -->
+<!-- question: Where does a Stats created in scoreOf live, and when does it not exist at all? type: before/after memory layout (the compiled loop's values on the left, the heap on the right, references as arrows) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="es-t"><title id="es-t">Left, the compiled loop with the local stats; right, the heap. At first a Stats object with visits and stars sits on the heap, reached from stats. C2 checks where the reference goes: only to two field reads. So the object is crossed out, visits and stars become plain values in the loop, and the heap stays empty. With last = stats, the reference leaves through a static field and an object is allocated on every call</title>
+<rect class="d-lane" x="16" y="40" width="300" height="270" rx="8"/><text class="d-tiny" x="28" y="64">compiled loop in main</text>
+<rect class="d-lane" x="332" y="40" width="292" height="270" rx="8"/><text class="d-tiny" x="344" y="64">heap</text>
+<g class="step s1 hide-4"><rect class="d-paper" x="32" y="90" width="160" height="40" rx="6"/><text class="d-mi" x="44" y="116">stats</text>
+<rect class="d-paper" x="380" y="90" width="200" height="90" rx="6"/><text class="d-tiny" x="394" y="114">a Stats</text><text class="d-mi" x="394" y="142">visits = 7</text><text class="d-mi" x="394" y="166">stars = 2</text>
+<x-arrow tone="ink" d="M194,110 L374,110"/></g>
+<g class="step only-2"><text class="d-b" x="250" y="240" text-anchor="middle">?</text></g>
+<g class="step only-3" data-pulse="3"><rect class="d-hl" x="32" y="170" width="250" height="98" rx="6"/><text class="d-mi" x="44" y="198">stats.visits * 2</text><text class="d-mi" x="44" y="226">+ stats.stars</text><text class="d-a" x="44" y="250">only use: read fields</text></g>
+<g class="step s4 hide-5" data-pulse="4"><rect class="d-hl" x="32" y="90" width="250" height="104" rx="6"/><text class="d-mi" x="44" y="118">visits = 7</text><text class="d-mi" x="44" y="148">stars = 2</text><text class="d-mi" x="44" y="178">7 * 2 + 2</text>
+<text class="d-a" x="380" y="160">nothing allocated</text></g>
+<g class="step s5"><rect class="d-paper" x="32" y="90" width="160" height="40" rx="6"/><text class="d-mi" x="44" y="116">stats</text>
+<rect class="d-bad" x="32" y="214" width="250" height="40" rx="6"/><text class="d-mi" x="44" y="240">last = stats</text>
+<rect class="d-paper" x="380" y="90" width="200" height="56" rx="6"/><text class="d-tiny" x="394" y="124">a Stats per call</text>
+<x-arrow tone="ink" d="M194,110 L374,110"/><x-arrow tone="red" d="M284,234 C340,234 340,140 374,132"/></g>
+<g class="step s1" data-move="1:480,200 3:300,290 4:150,230 5:480,200" data-pulse="1"><circle class="d-dot" r="8"/><text class="d-tiny" x="0" y="28" text-anchor="middle">look here</text></g>
+<g class="step s5"><text class="d-r" x="344" y="290">240,000,000 bytes/round</text></g>
+</svg>
+<ol class="caps">
+<li><p>As written, every call of scoreOf allocates a Stats on the heap, and the local stats holds a reference to it.</p></li>
+<li><p>C2 compiles main's loop with scoreOf, the constructor and score() inlined, so it sees every use of that reference. <i>Predict: does the object need to exist?</i></p></li>
+<li><p><b>Escape analysis</b>: the reference is never stored, returned or passed to a call that wasn't inlined. It is only used to read two fields.</p></li>
+<li><p>So C2 applies <b>scalar replacement</b>: it keeps visits and stars as plain values in the loop and drops the allocation. The heap never sees a Stats.</p></li>
+<li><p>Add last = stats: the reference leaves through a static field, so the object escapes and is allocated on every call, 24 bytes each on JDK 21.</p></li>
+</ol>

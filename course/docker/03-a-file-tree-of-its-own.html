@@ -51,13 +51,13 @@
     <article class="puzzle course-top wrap narrow" data-support="" data-course="docker" data-n="3">
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">Docker from the kernel up</a></p>
       <div class="lesson-header">
-        <p class="eyebrow">Puzzle 3 · 4 of 9</p>
+        <p class="eyebrow">Puzzle 3 · 4 of 17</p>
         <h1>A file tree of its own</h1>
         <p class="lede">Puzzle 1's Alpine container read a different /etc/os-release from the host's, on the same kernel. Here's the second fence: how a process gets its own file tree, and where a container's tree comes from.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-container-is-a-process.html" title="A container is a process">0</a></li><li><a href="01-one-kernel-or-many.html" title="One kernel, or many?">1</a></li><li><a href="02-whose-pid-1.html" title="Whose PID 1?">2</a></li><li><a href="03-a-file-tree-of-its-own.html" aria-current="page" title="A file tree of its own">3</a></li><li><a href="04-a-namespace-per-resource.html" title="A namespace per resource">4</a></li><li><a href="05-root-in-the-container.html" title="Root in the container is root on the host">5</a></li><li><a href="06-how-much-it-may-use.html" title="How much memory may it use?">6</a></li><li><a href="07-the-cpu-quota.html" title="How much processor time?">7</a></li><li><a href="08-who-builds-the-container.html" title="Who builds the container?">8</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-a-container-is-a-process.html" title="A container is a process">0</a></li><li><a href="01-one-kernel-or-many.html" title="One kernel, or many?">1</a></li><li><a href="02-whose-pid-1.html" title="Whose PID 1?">2</a></li><li><a href="03-a-file-tree-of-its-own.html" aria-current="page" title="A file tree of its own">3</a></li><li><a href="04-a-namespace-per-resource.html" title="A namespace per resource">4</a></li><li><a href="05-root-in-the-container.html" title="Root in the container is root on the host">5</a></li><li><a href="06-how-much-it-may-use.html" title="How much memory may it use?">6</a></li><li><a href="07-the-cpu-quota.html" title="How much processor time?">7</a></li><li><a href="08-who-builds-the-container.html" title="Who builds the container?">8</a></li><li><a href="09-what-is-inside-an-image.html" title="What is inside an image?">9</a></li><li><a href="10-stacking-layers.html" title="Stacking layers into one tree">10</a></li><li><a href="11-the-containers-own-layer.html" title="The container's own layer">11</a></li><li><a href="12-where-images-live.html" title="Where images live on disk">12</a></li><li><a href="13-named-by-content.html" title="Named by its content">13</a></li><li><a href="14-tags-move-digests-dont.html" title="Tags move, digests don't">14</a></li><li><a href="15-pulling-from-a-registry.html" title="Pulling from a registry">15</a></li><li><a href="16-one-name-many-machines.html" title="One name, many machines">16</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
@@ -103,7 +103,7 @@
 <p>The kernel keeps the list of mounts per <b>mount namespace</b>. A process in a new mount namespace starts with a copy of its parent's list, so at first it sees the same files. But from then on the two lists are separate: a mount added or removed inside changes only the inside list. In the diagram, <code>unshare --mount</code> gives a shell a new mount namespace, the shell mounts a tmpfs (a filesystem kept in memory) on /tmp/demo and creates a file there. Inside, ls /tmp/demo lists it; on the host, the same command prints nothing. Same path, same kernel, two lists of mounts, two different folders.</p>
 <p>Docker does more than copy the list. In the container's mount namespace, Docker's runtime (puzzle 8 names it) makes the image's files the mount at /. That set of files is the container's <b>root filesystem</b>: the top of its tree, and everything below it. From then on every path the container opens, /etc/os-release, /bin/sh, /home, is looked up in Alpine's files. The host's files are not in the tree at all: ls /home on the host listed three folders on the run behind this page; in the container it printed nothing. That's the answer to puzzle 1's two os-release files.</p>
 <p>It does this with a system call, pivot_root: it makes the image's files the root mount of the namespace and then unmounts the host's old root, so the host's tree is gone from the container's list of mounts, not just out of reach. The older chroot only changes where one process's paths start; the host's mounts stay in its list.</p>
-<p>The mount at / is a little more than the image's files. The first line of the container's mount list reads &quot;overlay / overlay rw,…&quot;: Docker stacks the image's files with a thin layer of its own where the container's writes go, so the image itself never changes. How that stack works is Module 2 (coming soon).</p>
+<p>The mount at / is a little more than the image's files. The first line of the container's mount list reads &quot;overlay / overlay rw,…&quot;: Docker stacks the image's files with a thin writable part of its own where the container's writes go, so the image itself never changes. How that stack works is puzzle 10.</p>
 <p>Two edges that follow:</p>
 <ul><li>The host can look in. Seeing works inward here too: the kernel exposes each process's root filesystem under /proc, so on the host /proc/3393/root/etc/os-release reads Alpine's file. The container can't look out.</li><li>Nothing of the host gets in unless you put it there. A host folder appears in a container only if you mount it in with an option of docker run (volumes and bind mounts, Module 5, coming soon). That is also how a host file can be damaged from a container, which matters in puzzle 5.</li></ul>
       </section>
@@ -118,12 +118,12 @@
 unshare --mount sh -c 'mount -t tmpfs none /tmp/demo; touch /tmp/demo/inside; ls /tmp/demo'
 ls /tmp/demo
 docker run -d --name box alpine:3.20 sleep 1000
-docker exec box head -1 /proc/mounts | cut -c1-40
+docker exec box head -1 /proc/mounts | cut -c1-20
 grep PRETTY /proc/$(pgrep -x sleep)/root/etc/os-release
 docker rm -f box</code></pre>
 <p>Output from the run behind this page:</p>
 <pre><code>inside
-overlay / overlay rw,relatime,lowerdir=/
+overlay / overlay rw
 PRETTY_NAME=&quot;Alpine Linux v3.20&quot;</code></pre>
 <p>The second command printed inside; the third printed nothing, because the host's /tmp/demo is the empty folder on its disk. (The mount stayed inside because unshare makes the new namespace's mounts private: since util-linux 2.27 it &quot;automatically sets propagation to private in a new mount namespace&quot;, so mounts made on one side are not copied to the other.) The last line is the host reading the container's own os-release through /proc.</p>
       </section>

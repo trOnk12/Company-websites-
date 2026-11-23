@@ -1,0 +1,24 @@
+<!-- label: a timeline of use's code in one run, to scale in milliseconds: level 3 at 36, level 4 at 37 with Counter's body inlined on the CHA assumption; Loud loaded at 39; the level 4 code is retired and the running call continues in the interpreter; level 4 again within the same millisecond -->
+<!-- question: When does use's compiled code stop being used, and what runs instead? type: timeline (one lane for use's code, one for class loading, a millisecond axis) -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="de-t"><title id="de-t">A time axis from 35 to 41 milliseconds. use's lane: level 3 from 36 to 37, level 4 from 37 to 39 with Counter's body inlined and the note no override loaded. On the class lane, Loud is loaded at 39. use's level 4 code is crossed out, a short red interpreter segment follows, then a new level 4 from 39 to 41</title>
+<path class="d-line" d="M100,320 L620,320"/>
+<text class="d-tiny" x="100" y="346" text-anchor="middle">35</text><text class="d-tiny" x="186" y="346" text-anchor="middle">36</text><text class="d-tiny" x="272" y="346" text-anchor="middle">37</text><text class="d-tiny" x="358" y="346" text-anchor="middle">38</text><text class="d-tiny" x="444" y="346" text-anchor="middle">39</text><text class="d-tiny" x="530" y="346" text-anchor="middle">40</text><text class="d-tiny" x="616" y="346" text-anchor="middle">41</text>
+<text class="d-tiny" x="560" y="370">ms</text>
+<text class="d-tiny" x="16" y="112">use</text><text class="d-tiny" x="16" y="252">classes</text>
+<g class="step s1"><rect class="d-box" x="186" y="86" width="86" height="40" rx="4"/><text class="d-tiny" x="196" y="112">level 3</text>
+<rect class="d-hl" x="272" y="86" width="172" height="40" rx="4"/><text class="d-tiny" x="282" y="112">level 4</text></g>
+<g class="step s2"><rect class="d-paper" x="246" y="150" width="226" height="64" rx="6"/><text class="d-mi" x="258" y="176">next() inlined</text><text class="d-a" x="258" y="202">no override loaded</text><x-arrow tone="path" d="M358,148 L358,130"/></g>
+<g class="step s3"><rect class="d-bad" x="410" y="232" width="110" height="36" rx="4"/><text class="d-tiny" x="422" y="256">Loud loaded</text></g>
+<g class="step only-3"><text class="d-b" x="540" y="112" text-anchor="middle">?</text></g>
+<g class="step s4" data-pulse="4"><path class="d-red" d="M276,90 L440,122"/><path class="d-red" d="M440,90 L276,122"/><x-arrow tone="red" d="M444,230 L444,132"/>
+<rect class="d-bad" x="444" y="86" width="26" height="40" rx="2"/><text class="d-r" x="456" y="72">interpreter</text></g>
+<g class="step s5"><rect class="d-hl" x="470" y="86" width="146" height="40" rx="4"/><text class="d-tiny" x="480" y="112">level 4 again</text></g>
+<g class="step s1" data-move="1:186,300 2:330,300 3:444,300 4:458,300 5:600,300"><circle class="d-dot" r="8"/><text class="d-tiny" x="12" y="-10">now</text></g>
+</svg>
+<ol class="caps">
+<li><p>One run of Hot.kt, to scale: use is compiled at level 3 at 36 milliseconds, then at level 4 by C2 at 37.</p></li>
+<li><p>C2 inlined Counter's next() with no class check: <b>class hierarchy analysis</b> showed no loaded class overrides it. HotSpot records that assumption beside the code.</p></li>
+<li><p>Phase 2 creates a Loud, so Loud is loaded at 39 ms, and it overrides next(). <i>Predict: what happens to use's level 4 code?</i></p></li>
+<li><p><b>Deoptimization</b>: the recorded assumption fails, the code is retired, and a call running in it continues in the interpreter from the same instruction.</p></li>
+<li><p>use climbs again: C2 compiles it at level 4 within the same millisecond, now from a profile that has met Loud.</p></li>
+</ol>

@@ -1,0 +1,20 @@
+<!-- label: A digest is SHA-256 of the exact bytes: one changed letter gives an unrelated digest; a layer blob's file name is its digest, the config lists the unpacked tar's digest, and an image's ID is its manifest's digest -->
+<!-- question: How does an image name its parts, and what happens to the name when the content changes? type: pipeline (bytes in, SHA-256, name out), one row per kind of content. Real values from 22 November 2026: hello → 5891b5b5…, hellp → bf8c8341…; Alpine's compressed layer → 25f1d6b1… (its file name); unpacked → 08bc4e53… (the config's diff_ids); notes:v1's manifest → 6b8731de… (its image ID). -->
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="dg-t"><title id="dg-t">The bytes hello put through SHA-256 give 5891b5b5. Change one letter, hellp, and the digest becomes bf8c8341, unrelated. Alpine's compressed layer gives 25f1d6b1, which is its file name. The same layer unpacked gives 08bc4e53, which the image config lists. notes:v1's manifest gives 6b8731de, which is the image's ID</title>
+<g class="step s1" data-pulse="1"><rect class="d-paper" x="16" y="30" width="200" height="44" rx="6"/><text class="d-mi" x="30" y="58">hello</text><x-arrow tone="ink" d="M218,52 L300,52"/><text class="d-tiny" x="258" y="44" text-anchor="middle">SHA-256</text><text class="d-a" x="310" y="58">sha256:5891b5b5…</text></g>
+<g class="step s2" data-pulse="2"><rect class="d-paper" x="16" y="84" width="200" height="44" rx="6"/><text class="d-mi" x="30" y="112">hellp</text><x-arrow tone="ink" d="M218,106 L300,106"/></g>
+<text class="d-a step s2 hide-3" x="310" y="112">?</text>
+<text class="d-r step s3" x="310" y="112" data-pulse="3">sha256:bf8c8341…</text>
+<g class="step s4" data-pulse="4"><rect class="d-band" x="16" y="160" width="200" height="44" rx="6"/><text class="d-tiny" x="30" y="188">layer, compressed</text><x-arrow tone="ink" d="M218,182 L300,182"/><text class="d-a" x="310" y="188">sha256:25f1d6b1…</text><text class="d-tiny" x="310" y="210">= its file name</text></g>
+<g class="step s5" data-pulse="5"><rect class="d-band" x="16" y="230" width="200" height="44" rx="6"/><text class="d-tiny" x="30" y="258">same layer, unpacked</text><x-arrow tone="ink" d="M218,252 L300,252"/><text class="d-a" x="310" y="258">sha256:08bc4e53…</text><text class="d-tiny" x="310" y="280">= DiffID in the config</text></g>
+<g class="step s6" data-pulse="6"><rect class="d-hl" x="16" y="300" width="200" height="44" rx="6"/><text class="d-tiny" x="30" y="328">notes:v1's manifest</text><x-arrow tone="ink" d="M218,322 L300,322"/><text class="d-a" x="310" y="328">sha256:6b8731de…</text><text class="d-tiny" x="310" y="350">= its ID (containerd store)</text></g>
+<g class="step s1" data-move="1:258,52 2:258,106 3:258,106 4:258,182 5:258,252 6:258,322"><circle class="d-reddot" cx="0" cy="0" r="6"/></g>
+</svg>
+<ol class="caps">
+<li><p>SHA-256 turns any bytes into a 64-character fingerprint. Written as sha256:…, that is a <b>digest</b>: a name made from the content itself.</p></li>
+<li><p>Now change one letter: hello becomes hellp. <i>Predict: how much of the digest changes?</i></p></li>
+<li><p>All of it: bf8c8341… has nothing in common with 5891b5b5…. Any change, however small, gives a different digest.</p></li>
+<li><p>Alpine's compressed layer has the digest sha256:25f1d6b1…: exactly the name of its file under blobs/sha256 in puzzle 9.</p></li>
+<li><p>Unpacked, the same layer gives another digest, 08bc4e53…: its <b>DiffID</b>, the name the image config lists it under.</p></li>
+<li><p>The manifest, a small JSON file naming the config and layers (puzzle 15), has a digest too: 6b8731de…, which, with the containerd image store, is notes:v1's image ID.</p></li>
+</ol>
