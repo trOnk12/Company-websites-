@@ -70,6 +70,53 @@
       "def": "Asks a write statement to return values from the rows it actually affected.",
       "kind": "code"
     },
+    "request ID": {
+      "in": 4,
+      "def": "A value created for one user action and reused when that same action is retried."
+    },
+    "idempotent": {
+      "in": 4,
+      "def": "Having the same effect when the same request is processed more than once."
+    },
+    "unique constraint": {
+      "in": 4,
+      "def": "A database rule that allows only one row for the same chosen value or values."
+    },
+    "savedRequests": {
+      "in": 4,
+      "def": "The durable request records used by the example handler.",
+      "kind": "code"
+    },
+    "getById": {
+      "in": 4,
+      "def": "Looks for a saved request record in the example handler.",
+      "kind": "code"
+    },
+    "bookings.allocateId": {
+      "in": 4,
+      "def": "Reserves a number for a possible booking without consuming a parking space.",
+      "kind": "code"
+    },
+    "bookings.createWithId": {
+      "in": 4,
+      "def": "Creates the booking under an already allocated number.",
+      "kind": "code"
+    },
+    "RequestIdAlreadyExists": {
+      "in": 4,
+      "def": "The example error used when the unique request row already exists.",
+      "kind": "code"
+    },
+    "requireNotNull": {
+      "in": 4,
+      "def": "Stops the example if an expected saved request is unexpectedly absent.",
+      "kind": "code"
+    },
+    "return@transaction": {
+      "in": 4,
+      "def": "Returns an answer from the transaction function without returning from the outer function.",
+      "kind": "code"
+    },
     "hash": {
       "in": 9,
       "def": "A repeatable value computed from a key and used here to route it to a storage owner."

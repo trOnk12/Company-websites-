@@ -73,6 +73,22 @@ test('committing the losing reservation exposes two grants despite the same free
   await expect(results.nth(2).getByRole('cell')).toHaveText(['Ada', '0', 'Ben', '0']);
 });
 
+test('a retried request ID keeps the first booking and a new ID adds one row', async ({ page }) => {
+  await page.goto('/course/system-design/04-retry-identity.html');
+  await page.locator('summary').filter({ hasText: 'prove the rule with four rows' }).click();
+  const exercise = page.locator('[data-sql-exercise]');
+  await exercise.getByRole('button', { name: 'Run SQL' }).click();
+  const results = exercise.getByRole('table');
+  await expect(results).toHaveCount(2);
+  await expect(results.nth(0)).toHaveAccessibleName('Result 1 · 1 row');
+  await expect(results.nth(0).getByRole('cell')).toHaveText(['Ada', '17', 'west', '301']);
+  await expect(results.nth(1)).toHaveAccessibleName('Result 2 · 2 rows');
+  await expect(results.nth(1).getByRole('cell')).toHaveText([
+    'Ada', '17', 'west', '301',
+    'Ada', '18', 'west', '302'
+  ]);
+});
+
 test('the same history page survives all three access plans', async ({ page }) => {
   await page.goto('/course/system-design/05-history.html');
   await page.locator('summary').filter({ hasText: 'Can the database find the right page with less work?' }).click();
