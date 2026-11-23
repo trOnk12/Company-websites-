@@ -71,7 +71,7 @@
       </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li><li><a href="../android/01-the-kernel-is-in-charge.html"><b>kernel</b></a> <span class="small">Android from the foundation, puzzle 1: The kernel is in charge</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Puzzle 14 pushed notes:v2 and pulled notes:stable, and the output said &quot;Layer already exists&quot; and &quot;Already exists&quot; more often than it downloaded anything. Puzzle 13 explained why layers can be shared: same bytes, same digest. But how does the pulling machine find out which digests an image needs, before it has the image? And what exactly crosses the network?</p>
+<p>Puzzle 14 pushed two images that share two layers. Puzzle 13 explained why layers can be shared: same bytes, same digest. But how does the pulling machine find out which digests an image needs, before it has the image? And what exactly crosses the network?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -98,17 +98,17 @@
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>A registry speaks plain HTTP. GET asks for something; HEAD asks only for the answer's <b>HTTP headers</b>, the named lines of information that come before its body. The paths it answers follow a form the Open Container Initiative's distribution specification fixes. It stores two kinds of thing for each repository:</p>
+<p>A registry speaks ordinary HTTP (over HTTPS on the internet). GET asks for something; HEAD asks only for the answer's <b>HTTP headers</b>, the named lines of information that come before its body. The paths it answers follow a form the Open Container Initiative's distribution specification fixes. It stores two kinds of thing for each repository:</p>
 <ul><li>blobs (puzzle 9): layers and configs, each fetched at /v2/&lt;repository&gt;/blobs/&lt;digest&gt;;</li><li>the <b>image manifest</b>: a small JSON file naming one image config and its layers, each by digest and size, fetched at /v2/&lt;repository&gt;/manifests/&lt;tag or digest&gt;.</li></ul>
 <p>Because the API is plain HTTP, <code>curl</code> (a command that makes one HTTP request) can ask the same questions Docker asks. On the run behind this page, against the local registry from puzzle 14:</p>
 <pre><code>$ curl -s localhost:5000/v2/notes/tags/list
 {&quot;name&quot;:&quot;notes&quot;,&quot;tags&quot;:[&quot;v1&quot;]}
-$ curl -sI -H &quot;Accept: application/vnd.oci.image.index.v1+json, application/vnd.oci.image.manifest.v1+json&quot; localhost:5000/v2/notes/manifests/v1
+$ curl -sI -H &quot;Accept: application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json&quot; localhost:5000/v2/notes/manifests/v1
 HTTP/1.1 200 OK
 Content-Length: 744
 Content-Type: application/vnd.oci.image.manifest.v1+json
 Docker-Content-Digest: sha256:6b8731de370cb2444f1fa5df09bd9342f56c4d2d0a79ed346e0e603a7eca4663</code></pre>
-<p>The Accept line lists the kinds of manifest the client understands; the answer's Docker-Content-Digest header says which image the tag points at, by digest. Without -I, the same request returns the manifest itself:</p>
+<p>(Some headers left out.) The Accept line lists the kinds of manifest the client understands; the answer's Docker-Content-Digest header says which image the tag points at, by digest. Without -I, the same request returns the manifest itself:</p>
 <pre><code class="language-json">{
     &quot;mediaType&quot;: &quot;application/vnd.oci.image.manifest.v1+json&quot;,
     &quot;schemaVersion&quot;: 2,
@@ -127,9 +127,9 @@ Docker-Content-Digest: sha256:6b8731de370cb2444f1fa5df09bd9342f56c4d2d0a79ed346e
 GET  /v2/notes/manifests/sha256:640e63e0bdab9baf…     200
 GET  /v2/notes/blobs/sha256:8bce577cfdd9a025…         200
 GET  /v2/notes/blobs/sha256:476c479cf4d4fd3e…         200</code></pre>
-<p>The tag is resolved to a digest first, then everything is fetched by digest. Of the manifest's three layers, the two notes:v1 already brought were not requested at all; only the config and the one new layer travelled. A push runs the same way backwards: the client asks whether each blob exists and uploads only the missing ones, which is the &quot;Layer already exists&quot; of puzzle 14.</p>
+<p>The tag is resolved to a digest first, then everything is fetched by digest. Resolving first with HEAD is cheap: it moves only headers, Docker Hub doesn't count it as a pull, and if the digest is one the machine already has, nothing else is fetched. Everything after that works by digest, so a tag that moves mid-pull can't mix two images. Of the manifest's three layers, the two notes:v1 already brought were not requested at all; only the config and the one new layer travelled. A push runs the same way backwards: the client asks whether each blob exists and uploads only the missing ones, which is the &quot;Layer already exists&quot; of puzzle 14.</p>
 <p>Edges you will meet:</p>
-<ul><li>Docker Hub is a registry too, at docker.io; <code>alpine</code> is short for docker.io/library/alpine. Docker Hub limits pulls: unauthenticated users get 100 pulls per 6 hours per address, and logged-in personal accounts 200. A build server that pulls on every run without logging in can hit that.</li></ul>
+<ul><li>Docker Hub is a registry too, at docker.io; <code>alpine</code> is short for docker.io/library/alpine. Docker Hub limits pulls: unauthenticated users get 100 pulls per 6 hours per address, and logged-in personal accounts 200. A build server that pulls on every run without logging in can hit that. The numbers change; your own limit is in the ratelimit-limit header of any manifest request (w= is the window in seconds), and a HEAD doesn't count. On the run behind this page, an anonymous request got ratelimit-limit: 100;w=3600. Docker's page adds that pulling an image built for several kinds of processor (puzzle 16) counts once for each kind pulled.</li><li>Docker Hub asks for an <b>access token</b> first: a short-lived string that proves the request is allowed. A request without one gets 401 and a <code>WWW-Authenticate</code> header naming a token server, auth.docker.io; the client gets a token there, anonymously or with your login, and repeats the request with Authorization: Bearer and the token. On the run behind this page: HTTP/2 401 with www-authenticate: Bearer realm=&quot;https://auth.docker.io/token&quot;,service=&quot;registry.docker.io&quot;,scope=&quot;repository:library/alpine:pull&quot;. The local registry here has no login, so its log shows none of this.</li><li>Docker talks plain, unencrypted HTTP only to local registries such as this one; every other registry must use HTTPS, unless the daemon is told otherwise with its insecure-registry setting.</li></ul>
       </section>
       <section aria-labelledby="the-analogy">
         <h2 id="the-analogy">The analogy</h2>
@@ -137,21 +137,25 @@ GET  /v2/notes/blobs/sha256:476c479cf4d4fd3e…         200</code></pre>
       </section>
       <section aria-labelledby="run-it-yourself">
         <h2 id="run-it-yourself">Run it yourself</h2>
-<p>With notes:v1 from puzzle 9. <code>-p 5000:5000</code> makes the registry reachable from the host on port 5000 (Module 5 explains ports). Predict the tags list and which blobs the last pull's log shows.</p>
-<pre><code class="language-sh">docker run -d --name reg -p 5000:5000 registry:2
+<p>After puzzle 14's block, with its registry and notes:v1 and the moved tag stable. (Module 5, coming soon, explains ports.) Predict the tags list (stable from puzzle 14, plus v1) and which blobs the pull at the end asks for.</p>
+<pre><code class="language-sh">docker start reg 2&gt;/dev/null || docker run -d --name reg -p 5000:5000 registry:2
 docker tag notes:v1 localhost:5000/notes:v1 &amp;&amp; docker push localhost:5000/notes:v1
 curl -s localhost:5000/v2/notes/tags/list
-curl -sI -H &quot;Accept: application/vnd.oci.image.manifest.v1+json&quot; localhost:5000/v2/notes/manifests/v1
-curl -s -H &quot;Accept: application/vnd.oci.image.manifest.v1+json&quot; localhost:5000/v2/notes/manifests/v1 | sha256sum
-docker logs --since 1m reg 2&gt;&amp;1 | grep -o '&quot;GET [^&quot;]*&quot;' | tail -5</code></pre>
-<p>If your machine uses a proxy for HTTP, add localhost to NO_PROXY first, or curl will ask the proxy. Output from the run behind this page, the first three commands after the push:</p>
-<pre><code>{&quot;name&quot;:&quot;notes&quot;,&quot;tags&quot;:[&quot;v1&quot;]}
+curl -sI -H &quot;Accept: application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json&quot; localhost:5000/v2/notes/manifests/v1
+curl -s -H &quot;Accept: application/vnd.oci.image.manifest.v1+json, application/vnd.docker.distribution.manifest.v2+json&quot; localhost:5000/v2/notes/manifests/v1 | sha256sum
+docker rmi localhost:5000/notes:stable localhost:5000/notes:v2 &amp;&amp; docker pull localhost:5000/notes:stable
+docker logs --since 1m reg 2&gt;&amp;1 | grep -oE '&quot;(HEAD|GET) [^&quot;]*&quot;' | tail -4</code></pre>
+<p>The rmi removes both names of the moved image, so the pull has something to fetch. If your machine uses a proxy for HTTP, add localhost to NO_PROXY first, or curl will ask the proxy. Output from a fresh run of puzzles 14 and 15 on the containerd image store (some headers left out, pull output shortened, digests cut to 8 characters):</p>
+<pre><code>{&quot;name&quot;:&quot;notes&quot;,&quot;tags&quot;:[&quot;v1&quot;,&quot;stable&quot;]}
 HTTP/1.1 200 OK
-Content-Length: 744
 Content-Type: application/vnd.oci.image.manifest.v1+json
 Docker-Content-Digest: sha256:6b8731de370cb2444f1fa5df09bd9342f56c4d2d0a79ed346e0e603a7eca4663
-X-Content-Type-Options: nosniff
-6b8731de370cb2444f1fa5df09bd9342f56c4d2d0a79ed346e0e603a7eca4663  -</code></pre>
+6b8731de370cb2444f1fa5df09bd9342f56c4d2d0a79ed346e0e603a7eca4663  -
+&quot;HEAD /v2/notes/manifests/stable HTTP/1.1&quot;
+&quot;GET /v2/notes/manifests/sha256:403955e9… HTTP/1.1&quot;
+&quot;GET /v2/notes/blobs/sha256:213d2f04… HTTP/1.1&quot;
+&quot;GET /v2/notes/blobs/sha256:8bd859a3… HTTP/1.1&quot;</code></pre>
+<p>The order of the tags list may vary. With overlay2, the Content-Type is application/vnd.docker.distribution.manifest.v2+json, Docker's older format of the same thing, and the digest is the one docker push printed, not the image ID: on a second daemon using overlay2 it was 6dcc7602…, while that daemon's notes:v1 had the ID abb46f55…, its config's digest.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
@@ -183,7 +187,7 @@ X-Content-Type-Options: nosniff
 <p class="fb ok opt-3"><b>Right.</b> Resolve the tag once, then work by digest.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://github.com/opencontainers/distribution-spec/blob/v1.1.1/spec.md#pull">OCI distribution spec v1.1.1: Pull</a> (&quot;The process of pulling an object centers around retrieving two components: the manifest and one or more blobs.&quot;; &quot;To pull a manifest, perform a GET request to a URL in the following form: /v2/&lt;name&gt;/manifests/&lt;reference&gt;&quot;; &quot;&lt;reference&gt; MUST be either (a) the digest of the manifest or (b) a tag.&quot;; &quot;A successful response SHOULD contain the digest of the uploaded blob in the header Docker-Content-Digest.&quot;; &quot;To pull a blob, perform a GET request to a URL in the following form: /v2/&lt;name&gt;/blobs/&lt;digest&gt;&quot;; &quot;Clients SHOULD verify that the response body matches the requested digest.&quot;; &quot;If the blob is not found in the repository, the response code MUST be 404 Not Found.&quot;)</li><li><a href="https://github.com/opencontainers/image-spec/blob/v1.1.1/manifest.md">OCI image spec v1.1.1: Image Manifest</a> (&quot;an image manifest provides a configuration and set of layers for a single container image for a specific architecture and operating system.&quot;)</li><li><a href="https://docs.docker.com/reference/cli/docker/image/tag/">Docker docs: docker image tag</a> (&quot;Host: docker.io (default) Namespace: library (default) Repository: alpine Tag: latest (default)&quot;)</li><li><a href="https://docs.docker.com/docker-hub/usage/">Docker docs: Docker Hub usage and limits</a> (&quot;Personal (authenticated) 200&quot;; &quot;Unauthenticated users 100 per IPv4 address or IPv6 /64 subnet&quot;; &quot;Pull rate limit per 6 hours&quot;)</li><li>All requests, headers and hashes were produced in this session with Docker Engine 29.9.2 and the registry:2 image on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1). The registry log lines are shortened to method, path and status.</li></ul></details>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://github.com/opencontainers/distribution-spec/blob/v1.1.1/spec.md#pull">OCI distribution spec v1.1.1: Pull</a> (&quot;The process of pulling an object centers around retrieving two components: the manifest and one or more blobs.&quot;; &quot;To pull a manifest, perform a GET request to a URL in the following form: /v2/&lt;name&gt;/manifests/&lt;reference&gt;&quot;; &quot;&lt;reference&gt; MUST be either (a) the digest of the manifest or (b) a tag.&quot;; &quot;A successful response SHOULD contain the digest of the uploaded blob in the header Docker-Content-Digest.&quot;; &quot;To pull a blob, perform a GET request to a URL in the following form: /v2/&lt;name&gt;/blobs/&lt;digest&gt;&quot;; &quot;Clients SHOULD verify that the response body matches the requested digest.&quot;; &quot;If the blob is not found in the repository, the response code MUST be 404 Not Found.&quot;)</li><li><a href="https://github.com/opencontainers/image-spec/blob/v1.1.1/manifest.md">OCI image spec v1.1.1: Image Manifest</a> (&quot;an image manifest provides a configuration and set of layers for a single container image for a specific architecture and operating system.&quot;)</li><li><a href="https://docs.docker.com/reference/cli/docker/image/tag/">Docker docs: docker image tag</a> (&quot;Host: docker.io (default) Namespace: library (default) Repository: alpine Tag: latest (default)&quot;)</li><li><a href="https://docs.docker.com/docker-hub/usage/pulls/">Docker docs: Docker Hub pull usage and limits</a> (&quot;Version checks do not count towards pull rate limits.&quot;; &quot;A pull for a multi-arch image will count as one pull for each different architecture.&quot;; &quot;These headers are returned on both GET and HEAD requests. Using GET emulates a real pull and counts towards the limit. Using HEAD won't.&quot;)</li><li><a href="https://docs.docker.com/reference/cli/dockerd/">Docker docs: dockerd, insecure registries</a> (&quot;By default, Docker assumes all registries to be secure, except for local registries.&quot;; &quot;An insecure registry is either not using TLS (i.e., listening on plain text HTTP)&quot;)</li><li><a href="https://docs.docker.com/docker-hub/usage/">Docker docs: Docker Hub usage and limits</a> (&quot;Personal (authenticated) 200&quot;; &quot;Unauthenticated users 100 per IPv4 address or IPv6 /64 subnet&quot;; &quot;Pull rate limit per 6 hours&quot;)</li><li>All requests, headers and hashes (including the Docker Hub 401, token and ratelimit headers) were produced in this session, on the containerd image store and on a second dockerd using the overlay2 storage driver, with Docker Engine 29.9.2 and the registry:2 image on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1). The registry log lines are shortened to method, path and status.</li></ul></details>
       <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A registry stores images as blobs, each fetched by digest, and image manifests, fetched by tag or digest. A pull asks which manifest the tag points at, fetches that manifest, then fetches only the blobs the machine doesn't already have, each checked against its digest. A push works the same way in reverse and skips blobs the registry already holds.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <nav class="pager" aria-label="Previous and next puzzle">

@@ -38,7 +38,7 @@ Line by line:
 
 - w2 can't see box's file. Each container's tree is its own writable layer over the shared ones; another container's writable layer isn't in it.
 - A restart keeps it. Stopping a container stops its processes; the writable layer stays on disk until the container is removed. (`docker restart -t 1` stops and starts it, waiting at most a second for the program to exit.)
-- `docker ps -s` shows each container's writable layer (the first number) next to the image's size (virtual). box has written 12.3 kB; both share the 8.5 MB.
+- `docker ps -s` shows each container's writable layer (the first number) next to the image's size (virtual). box's writable layer takes 12.3 kB (a 6-byte file plus the /tmp directory it sits in, counted in disk blocks); both share the 8.5 MB.
 - `docker rm` deletes the container and its writable layer. A new container from the same image starts with an empty one. Every deployment that replaces a container, and every `docker run --rm`, throws its writable layer away.
 
 On the host, the writable layer is an ordinary directory, the upperdir of puzzle 10's mount line; for box it was …/snapshots/114/fs. Docker's documentation warns not to change anything under /var/lib/docker by hand: Docker owns that folder and removes the writable layer with the container.

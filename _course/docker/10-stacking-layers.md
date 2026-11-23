@@ -16,7 +16,7 @@ Puzzle 9 left an image as a stack of layers: Alpine's 517 files, then a layer th
 
 ## The building block
 
-The kernel does it, with a filesystem made for exactly this. The **overlay filesystem** (OverlayFS) takes several directories and shows them, stacked, as one: the merged view. The ones underneath are each a **lower directory**: read-only, here one unpacked layer each. On top sits one **upper directory**, the only writable one. When a name exists in both, the upper one wins. The process only ever sees merged.
+The kernel does it, with a filesystem made for exactly this. The **overlay filesystem** (OverlayFS) takes several directories and shows them, stacked, as one: the merged view. The ones underneath are each a **lower directory**: read-only, here one unpacked layer each. On top sits one **upper directory**, the only writable one. When a file exists in both, the upper one wins. A directory that exists in both is merged: merged/etc shows the files of every layer's etc. The process only ever sees merged.
 
 The run behind this page built one by hand, in /tmp/ov:
 
@@ -39,9 +39,10 @@ os-release
 
 - A new file, notes.txt, is created in upper.
 - os-release existed only in lower. Lower is read-only, so on the first write the kernel copies the whole file into upper and changes the copy. That is a **copy-up**. The original in lower still says "keep me".
-- motd can't be removed from lower, so the kernel puts a whiteout in upper. Inside the kernel a whiteout is a special device file numbered 0,0 (the c at the start of its ls -l line); in a layer's tar it is the .wh. file of puzzle 9. Docker converts one form into the other when it packs or unpacks a layer.
+- motd can't be removed from lower, so the kernel puts a whiteout in upper. Inside the kernel a whiteout is a special file of the kind Linux uses for devices, numbered 0,0 (the c at the start of its ls -l line); in a layer's tar it is the .wh. file of puzzle 9. Docker converts one form into the other when it packs or unpacks a layer.
+- A whole directory can be emptied in two ways. A layer can hold one whiteout per file, which is what Docker wrote on the run behind this page when a container replaced /etc/apk; or it can mark the directory **opaque**, with an empty file named .wh..wh..opq inside it, which hides everything below it at once. In the kernel's upper directory, a directory deleted and made again is marked opaque with an extended attribute, trusted.overlay.opaque, which the run behind this page found on it.
 
-A container's root filesystem is the same mount with more lower directories. Inside puzzle 3's box, the first line of /proc/mounts lists them, separated by colons, with the top one first:
+A container's root filesystem is the same mount with more lower directories. Inside a container from notes:v1 (docker run -d --name box notes:v1 sleep 1000), the first line of /proc/mounts lists them, separated by colons, with the top one first:
 
 ```
 overlay / overlay rw,relatime,lowerdir=…/snapshots/81/fs:…/snapshots/80/fs:…/snapshots/76/fs:…/snapshots/1/fs,upperdir=…/snapshots/82/fs,workdir=…/snapshots/82/work
@@ -86,7 +87,7 @@ os-release
 
 - A container from an image with a 1 GB database file in a lower layer appends one line to that file. What happens on disk?::*The whole 1 GB file is copied into upper, then changed||Only the new line is written, into upper >> The overlay filesystem copies whole files, not changed parts. >> s5||The line is written into the lower layer's file >> Lower directories are read-only; every change lands in upper. >> s3::Copy-up copies the whole file before the first write.
 - Two containers from notes:v1 both run, and one deletes /notes.txt. Does the other still see it?::*Yes: the whiteout is in the first container's own upper||No: the file is gone from the image's layer >> Lower layers never change; the deletion is a whiteout in one upper. >> s6||No: both containers share one upper directory >> Each container has its own upper; they share only the lowers. >> the-building-block::Changes are per container; layers are shared.
-- A file exists in a lower layer and in the upper directory, with different contents. Which one does the process read?::*The one in upper||The one in lower, because the image comes first >> When a name exists in both, the upper one wins. >> the-building-block||Both, joined into one file >> Files are never joined: merged shows exactly one, the upper one. >> s5::Upper wins.
+- notes:v1's layer 2 has an etc/ directory with only a whiteout in it. Inside a container, does /etc still show Alpine's other files?::*Yes: directories are merged, and only motd is hidden||No: upper's etc/ wins and hides lower's >> Only files are replaced; a directory in both layers is merged. >> the-building-block||Only after a copy-up of /etc >> Merging needs no copy; directories from every layer are shown together. >> the-building-block::Directories merge; files and whiteouts replace.
 
 ## Sources
 

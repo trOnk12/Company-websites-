@@ -53,9 +53,9 @@ Status: Image is up to date for alpine:3.20
 exec /bin/uname: exec format error
 ```
 
-Same tag, same index digest, different manifest and layers, and the kernel refused to start an ARM program on an x86 processor. Running another platform's programs needs a translator in between, an emulator (Module 8, coming soon). Without one, pull the platform that matches the machine, which Docker does by default. After that pull, `docker image ls alpine:3.20` showed 25.8 MB on disk instead of 12.2 MB: the containerd image store (puzzle 12) now kept two platforms under one name.
+Same tag, same index digest, different manifest and layers, and the kernel refused to start an ARM program on an x86 processor. Running another platform's programs needs a translator in between, an emulator (Module 8, coming soon). The kernel can be told to hand foreign programs to an emulator such as QEMU, through a feature called binfmt_misc; ls /proc/sys/fs/binfmt_misc shows qemu-… entries when it is (on the test machine it listed nothing, hence the error). Docker Desktop has one built in, so there the same command prints aarch64. Without one, pull the platform that matches the machine, which Docker does by default. After that pull, `docker image ls alpine:3.20` showed 25.8 MB on disk instead of 12.2 MB: the containerd image store (puzzle 12) now kept two platforms under one name.
 
-The unknown/unknown entries are attestations: manifests that aren't runnable images but records about one. Saved and opened, alpine:3.20's attestation for amd64 holds two layers of JSON: an SPDX bill of materials (predicateType https://spdx.dev/Document) and build provenance (https://slsa.dev/provenance/v0.2), each naming the amd64 manifest c64c687c… by digest. Checking those records is part of securing your supply of images (Module 7, coming soon).
+The unknown/unknown entries are attestations: manifests that aren't runnable images but records about one. Saved and opened, alpine:3.20's attestation for amd64 holds two layers of JSON: a bill of materials, the list of packages inside, in the SPDX format (predicateType https://spdx.dev/Document), and build provenance, a record of how and from what source it was built (https://slsa.dev/provenance/v0.2), each naming the amd64 manifest c64c687c… by digest. Checking those records is part of securing your supply of images (Module 7, coming soon).
 
 All of this, the index, the manifest, the config, the layers with their whiteouts, and the digests that tie them, is one standard: the **OCI image spec**, from the Open Container Initiative, the same organisation as puzzle 8's runtime spec. Docker, containerd, registries and other tools all read and write images in this one format, which is why an image built with one tool runs with another.
 
@@ -72,9 +72,10 @@ docker buildx imagetools inspect alpine:3.20 | grep Platform
 docker run --rm --platform linux/arm64 alpine:3.20 uname -m
 docker run --rm alpine:3.20 uname -m
 docker image inspect -f '{{.Architecture}}' alpine:3.20
+docker rm -f reg
 ```
 
-On the run behind this page (an x86_64 machine): 16 Platform lines, 8 of them unknown/unknown; then "exec /bin/uname: exec format error"; then x86_64; then amd64. On an arm64 machine, ask for linux/amd64 instead to see the same error.
+On the run behind this page (an x86_64 machine): 16 Platform lines, 8 of them unknown/unknown; then "exec /bin/uname: exec format error"; then x86_64; then amd64. If the second command printed aarch64, your machine has an emulator registered. On an arm64 machine, ask for linux/amd64 instead to see the same error. The last line removes the registry from puzzles 14 and 15.
 
 ## Check yourself
 
@@ -87,5 +88,7 @@ On the run behind this page (an x86_64 machine): 16 Platform lines, 8 of them un
 - [OCI image spec v1.1.1: Image Index](https://github.com/opencontainers/image-spec/blob/v1.1.1/image-index.md) ("The image index is a higher-level manifest which points to specific image manifests, ideal for one or more platforms.")
 - [OCI image spec v1.1.1: Image Manifest](https://github.com/opencontainers/image-spec/blob/v1.1.1/manifest.md) ("Unlike the image index, which contains information about a set of images that can span a variety of architectures and operating systems, an image manifest provides a configuration and set of layers for a single container image for a specific architecture and operating system.")
 - [OCI image spec v1.1.1: spec.md](https://github.com/opencontainers/image-spec/blob/v1.1.1/spec.md) ("This specification defines an OCI Image, consisting of an image manifest, an image index (optional), a set of filesystem layers, and a configuration."; "The goal of this specification is to enable the creation of interoperable tools for building, transporting, and preparing a container image to run.")
+- [Docker docs: Multi-platform builds](https://docs.docker.com/build/building/multi-platform/) ("Docker Desktop supports running and building multi-platform images under emulation by default. No configuration is necessary as the builder uses the QEMU that's bundled within the Docker Desktop VM."; "This installs the QEMU binaries and registers them with binfmt_misc")
+- [Linux kernel docs: Kernel Support for miscellaneous Binary Formats (binfmt_misc)](https://docs.kernel.org/admin-guide/binfmt-misc.html) ("To achieve this you must tell binfmt_misc which interpreter has to be invoked with which binary.")
 - [Docker docs: containerd image store](https://docs.docker.com/engine/storage/containerd/) ("Working with images that include attestations (provenance, SBOM). These use image indices that the classic store doesn't support.")
-- The imagetools output (shortened with …), the exec format error, the architecture lines, the attestation contents and the 25.8 MB figure were produced in this session with Docker Engine 29.9.2 on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1). Nothing was run on an arm64 machine.
+- The imagetools output (shortened with …), the exec format error, the architecture lines, the attestation contents and the 25.8 MB figure were produced in this session with Docker Engine 29.9.2 on the test machine (Ubuntu 24.04 userland in a Firecracker microVM, custom kernel 6.18.44, cgroup v1). Nothing was run on an arm64 machine or on Docker Desktop; the aarch64 result there comes from Docker's statement above.

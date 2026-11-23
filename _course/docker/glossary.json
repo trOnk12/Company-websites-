@@ -763,7 +763,7 @@
    "kind": "code",
    "def": "Gives an image one more name (repository and tag).",
    "aliases": [
-    "docker tag notes:v2 notes:stable"
+    "docker tag localhost:5000/notes:v2 localhost:5000/notes:stable"
    ]
   },
   "docker push": {
@@ -887,6 +887,41 @@
    "in": "16",
    "kind": "code",
    "def": "The 64-bit Intel and AMD processor family; as a Docker platform it is called amd64."
+  },
+  "opaque directory": {
+   "in": "10",
+   "def": "A directory in an upper directory or layer marked so that nothing below it shows through: the files of lower layers' copies are hidden.",
+   "aliases": [
+    "opaque"
+   ]
+  },
+  "RepoDigests": {
+   "in": "13",
+   "kind": "code",
+   "def": "The field of docker image inspect that lists the digests an image has under its registry names."
+  },
+  "WWW-Authenticate": {
+   "in": "15",
+   "kind": "code",
+   "def": "The HTTP header in a 401 answer that says where and how to get permission."
+  },
+  "access token": {
+   "in": "15",
+   "def": "A short-lived string a server hands out that proves you may make a request; the client sends it back with each request.",
+   "aliases": [
+    "token",
+    "tokens"
+   ]
+  },
+  "QEMU": {
+   "in": "16",
+   "kind": "code",
+   "def": "An emulator: a program that runs programs built for another processor by translating their instructions."
+  },
+  "binfmt_misc": {
+   "in": "16",
+   "kind": "code",
+   "def": "The kernel feature that hands programs of a registered kind to an interpreter, such as QEMU for another processor's programs."
   }
  },
  "from": {

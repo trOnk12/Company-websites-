@@ -2,7 +2,7 @@
 title: Named by its content
 short: Digests, DiffIDs and image IDs
 summary: Puzzle 9's blobs had 64-character names, and the image config listed its layer under yet another one. Here's where those names come from, why no two different contents get the same one, and what that lets Docker skip and check.
-takeaway: A digest is sha256: plus the SHA-256 fingerprint of the exact bytes, and any change to the bytes changes it completely. Docker names every piece of an image by its digest: a compressed layer's digest is its file name, the unpacked layer's is its DiffID in the config, and the manifest's digest is the image's ID. So identical layers are stored once, and every download can be checked against its name.
+takeaway: A digest is sha256: plus the SHA-256 fingerprint of the exact bytes, and any change to the bytes changes it completely. Docker names every piece of an image by its digest: a compressed layer's digest is its file name, the unpacked layer's is its DiffID in the config, and, with the containerd image store, the image ID is the digest of what the tag names: a manifest here, an index for most pulled images (puzzle 16). The older overlay2 store uses the config's digest instead. So identical layers are stored once, and every download can be checked against its name.
 ---
 
 ## The problem
@@ -16,7 +16,7 @@ Puzzle 9's saved image was a folder of files with names like 25f1d6b1951ac8eb…
 
 ## The building block
 
-SHA-256 is a **hash function**: it reads any number of bytes and returns a 256-bit number, 64 hexadecimal characters. It is built so that the same bytes always give the same number and no one can find two different contents with the same one. Written with the algorithm in front, sha256:5891b5b5…, it is a **digest**: a name made from the content itself.
+SHA-256 is a **hash function**: it reads any number of bytes and returns a 256-bit number, 64 hexadecimal characters. It is built so that the same bytes always give the same number, and no one has found a way to make two different contents with the same one. Written with the algorithm in front, sha256:5891b5b5…, it is a **digest**: a name made from the content itself.
 
 ```
 $ printf "hello\n" | sha256sum
@@ -34,7 +34,9 @@ An image names every piece this way. In puzzle 9's saved alpine:3.20, each blob'
 | the compressed layer, 3,630,321 bytes | sha256:25f1d6b1951a… | its blob's file name; the manifest's list of layers |
 | the same layer unpacked, 8,092,160 bytes | sha256:08bc4e534116… | the image config's list of layers |
 
-The second is the layer's **DiffID**: the digest of its uncompressed tar. It names the files themselves, whatever compression carried them. The same thing one level up: the manifest (the small JSON file that names an image's config and layers, puzzle 15) has its own digest, and with the containerd image store that digest is the image ID that `docker image ls` shows. notes:v1's ID, 6b8731de…, is the digest of its manifest.
+The second is the layer's **DiffID**: the digest of its uncompressed tar. It names the files themselves, whatever compression carried them. The same thing one level up: the manifest (the small JSON file that names an image's config and layers, puzzle 15) has its own digest, and with the containerd image store that digest is the image ID that docker image ls shows: notes:v1's ID, 6b8731de…, is the digest of its manifest. (With the older overlay2 storage driver the ID is the config's digest; on a second daemon using overlay2, alpine:3.20's ID was bf8527eb…, its config. The manifest digest only appears when you push, and docker image inspect -f '{{.RepoDigests}}' shows it.)
+
+(With the older overlay2 storage, docker save writes layers uncompressed, so the blob's name is the DiffID itself; the server that hands images out (puzzle 14) still stores and names the compressed form.)
 
 Naming by content gives Docker three things for free:
 

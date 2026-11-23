@@ -12,7 +12,7 @@
 <li><p>A <b>repository</b>, notes, holds images of one program. Each image is known by its digest: this one, 6b8731de…, has a notes.txt that says hello.</p></li>
 <li><p>An <b>image tag</b> is a short, human name pointing at one image: v1, and also stable. Two tags, one image.</p></li>
 <li><p>A new version, 640e63e0…, says hello, world. Tags v2 and latest point at it. latest is only a name: nothing makes it newest.</p></li>
-<li><p>Someone runs <code>docker tag notes:v2 notes:stable</code> and pushes. <i>Predict: what does pulling notes:stable give now, and what does pulling @sha256:6b8731de… give?</i></p></li>
+<li><p>Someone runs <code>docker tag localhost:5000/notes:v2 localhost:5000/notes:stable</code> and pushes. <i>Predict: what does pulling notes:stable give now, and what does pulling @sha256:6b8731de… give?</i></p></li>
 <li><p>The tag stable moved: it now points at 640e63e0…. Nothing else changed: both images are still there, under their digests.</p></li>
 <li><p>So notes:stable now gives hello, world, while notes@sha256:6b8731de… gives hello, today and forever.</p></li>
 </ol>

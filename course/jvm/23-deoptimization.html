@@ -136,35 +136,6 @@ phase 2 done: 2600000</code></pre>
 <div class="dots" aria-hidden="true"><label for="st-deopt-1" title="Step 1"></label><label for="st-deopt-2" title="Step 2"></label><label for="st-deopt-3" title="Step 3"></label><label for="st-deopt-4" title="Step 4"></label><label for="st-deopt-5" title="Step 5"></label></div>
 </figure>
       </section>
-      <section aria-labelledby="see-it">
-        <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="a timeline of use's code in one run, to scale in milliseconds: level 3 at 36, level 4 at 37 with Counter's body inlined on the CHA assumption; Loud loaded at 39; the level 4 code is retired and the running call continues in the interpreter; level 4 again within the same millisecond"><input type="radio" name="st-deopt" id="st-deopt-1" checked aria-label="Step 1 of 5"><input type="radio" name="st-deopt" id="st-deopt-2" aria-label="Step 2 of 5"><input type="radio" name="st-deopt" id="st-deopt-3" aria-label="Step 3 of 5"><input type="radio" name="st-deopt" id="st-deopt-4" aria-label="Step 4 of 5"><input type="radio" name="st-deopt" id="st-deopt-5" aria-label="Step 5 of 5">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg viewBox="0 0 640 380" role="img" aria-labelledby="de-t"><title id="de-t">A time axis from 35 to 41 milliseconds. use's lane: level 3 from 36 to 37, level 4 from 37 to 39 with Counter's body inlined and the note no override loaded. On the class lane, Loud is loaded at 39. use's level 4 code is crossed out, a short red interpreter segment follows, then a new level 4 from 39 to 41</title><defs><marker id="ah-deopt-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-deopt-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-deopt-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-deopt-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<path class="d-line" d="M100,320 L620,320"/>
-<text class="d-tiny" x="100" y="346" text-anchor="middle">35</text><text class="d-tiny" x="186" y="346" text-anchor="middle">36</text><text class="d-tiny" x="272" y="346" text-anchor="middle">37</text><text class="d-tiny" x="358" y="346" text-anchor="middle">38</text><text class="d-tiny" x="444" y="346" text-anchor="middle">39</text><text class="d-tiny" x="530" y="346" text-anchor="middle">40</text><text class="d-tiny" x="616" y="346" text-anchor="middle">41</text>
-<text class="d-tiny" x="560" y="370">ms</text>
-<text class="d-tiny" x="16" y="112">use</text><text class="d-tiny" x="16" y="252">classes</text>
-<g class="step s1"><rect class="d-box" x="186" y="86" width="86" height="40" rx="4"/><text class="d-tiny" x="196" y="112">level 3</text>
-<rect class="d-hl" x="272" y="86" width="172" height="40" rx="4"/><text class="d-tiny" x="282" y="112">level 4</text></g>
-<g class="step s2"><rect class="d-paper" x="246" y="150" width="226" height="64" rx="6"/><text class="d-mi" x="258" y="176">next() inlined</text><text class="d-a" x="258" y="202">no override loaded</text><path class="d-arr-path" d="M358,148 L358,130" marker-end="url(#ah-deopt-path)"/></g>
-<g class="step s3"><rect class="d-bad" x="410" y="232" width="110" height="36" rx="4"/><text class="d-tiny" x="422" y="256">Loud loaded</text></g>
-<g class="step only-3"><text class="d-b" x="540" y="112" text-anchor="middle">?</text></g>
-<g class="step s4" data-pulse="4"><path class="d-red" d="M276,90 L440,122"/><path class="d-red" d="M440,90 L276,122"/><path class="d-arr-red" d="M444,230 L444,132" marker-end="url(#ah-deopt-red)"/>
-<rect class="d-bad" x="444" y="86" width="26" height="40" rx="2"/><text class="d-r" x="456" y="72">interpreter</text></g>
-<g class="step s5"><rect class="d-hl" x="470" y="86" width="146" height="40" rx="4"/><text class="d-tiny" x="480" y="112">level 4 again</text></g>
-<g class="step s1" data-move="1:186,300 2:330,300 3:444,300 4:458,300 5:600,300"><circle class="d-dot" r="8"/><text class="d-tiny" x="12" y="-10">now</text></g>
-</svg></div>
-<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
-<ol class="caps">
-<li><p>One run of Hot.kt, to scale: use is compiled at level 3 at 36 milliseconds, then at level 4 by C2 at 37.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 5</span><label class="next" for="st-deopt-2">Next →</label></div></li>
-<li><p>C2 inlined Counter's next() with no class check: <b>class hierarchy analysis</b> showed no loaded class overrides it. HotSpot records that assumption beside the code.</p><div class="stepnav"><label for="st-deopt-1">← Back</label><span class="count">Step 2 of 5</span><label class="next" for="st-deopt-3">Next →</label></div></li>
-<li><p>Phase 2 creates a Loud, so Loud is loaded at 39 ms, and it overrides next(). <i>Predict: what happens to use's level 4 code?</i></p><div class="stepnav"><label for="st-deopt-2">← Back</label><span class="count">Step 3 of 5</span><label class="next" for="st-deopt-4">Next →</label></div></li>
-<li><p><b>Deoptimization</b>: the recorded assumption fails, the code is retired, and a call running in it continues in the interpreter from the same instruction.</p><div class="stepnav"><label for="st-deopt-3">← Back</label><span class="count">Step 4 of 5</span><label class="next" for="st-deopt-5">Next →</label></div></li>
-<li><p>use climbs again: C2 compiles it at level 4 within the same millisecond, now from a profile that has met Loud.</p><div class="stepnav"><label for="st-deopt-4">← Back</label><span class="count">Step 5 of 5</span><label for="st-deopt-1">↺ Again</label></div></li>
-</ol>
-<div class="dots" aria-hidden="true"><label for="st-deopt-1" title="Step 1"></label><label for="st-deopt-2" title="Step 2"></label><label for="st-deopt-3" title="Step 3"></label><label for="st-deopt-4" title="Step 4"></label><label for="st-deopt-5" title="Step 5"></label></div>
-</figure>
-      </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
 <p>When C2 compiled use in phase 1, it checked the classes loaded so far: Counter.next had no override. <b>Class hierarchy analysis</b> (CHA) is this check: proving from the loaded classes that an open method has exactly one version. With that proof, C2 treated c.next(1) like a call to a final method and inlined Counter's body with no class check at all. The OpenJDK wiki: virtual calls &quot;are often demoted to &quot;special&quot; invocations, if the class hierarchy permits it. A dependency is registered in case further class loading spoils things.&quot;</p>

@@ -5,9 +5,9 @@
 <g class="step s2" data-pulse="2"><rect class="d-paper" x="226" y="30" width="200" height="44" rx="6"/><text class="d-tiny" x="238" y="57">linux/amd64 c64c…</text><rect class="d-paper" x="226" y="84" width="200" height="44" rx="6"/><text class="d-tiny" x="238" y="111">linux/arm64 45e0…</text><rect class="d-paper" x="226" y="138" width="200" height="44" rx="6"/><text class="d-tiny" x="238" y="165">linux/arm/v7 bd05…</text><text class="d-tiny" x="238" y="208">+5 more</text><x-arrow tone="ink" d="M178,170 C200,150 206,60 222,54"/><x-arrow tone="ink" d="M178,180 C200,170 206,112 222,106"/><x-arrow tone="ink" d="M178,186 L222,160"/></g>
 <g class="step s3" data-pulse="3"><x-arrow tone="acc" d="M428,52 L452,52"/><rect class="d-band" x="456" y="30" width="168" height="34" rx="6"/><text class="d-tiny" x="466" y="52">config bf85…</text><rect class="d-band" x="456" y="70" width="168" height="34" rx="6"/><text class="d-tiny" x="466" y="92">layer 25f1…</text><text class="d-a" x="622" y="128" text-anchor="end">runs here: x86_64</text></g>
 <text class="d-mi step s4 hide-5" x="226" y="262">$ docker run --platform linux/arm64 …</text>
-<g class="step s5" data-pulse="5"><x-arrow tone="red" d="M428,112 L452,170"/><text class="d-r" x="456" y="190">exec format error</text></g>
+<g class="step s5" data-pulse="5"><x-arrow tone="red" d="M428,112 L452,150"/><rect class="d-bad" x="456" y="140" width="168" height="34" rx="6"/><text class="d-tiny" x="466" y="162">arm64 layer 3f26…</text><x-arrow tone="red" d="M540,176 L540,196"/><text class="d-r" x="540" y="218" text-anchor="middle">exec format error</text></g>
 <g class="step s6" data-pulse="6"><rect class="d-dash" x="226" y="290" width="398" height="62" rx="8"/><text class="d-tiny" x="238" y="314">attestations (unknown/unknown):</text><text class="d-tiny" x="238" y="338">bill of materials, build provenance</text><x-arrow tone="ink" d="M178,214 C200,260 206,310 222,318"/></g>
-<g class="step s3" data-move="3:440,52 4:440,52 5:440,128"><circle class="d-reddot" cx="0" cy="0" r="6"/></g>
+<g class="step s3" data-move="3:440,52 4:440,52 5:440,112"><circle class="d-reddot" cx="0" cy="0" r="6"/></g>
 </svg>
 <ol class="caps">
 <li><p>The tag alpine:3.20 doesn't point at one image. It points at an <b>image index</b>, d9e853e8…: a list of image manifests.</p></li>

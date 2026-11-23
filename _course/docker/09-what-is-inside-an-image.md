@@ -16,7 +16,7 @@ Puzzle 3 showed Docker mounting an image's files at /, and puzzle 0 said ten con
 
 ## The building block
 
-`docker save` writes an image into one tar archive, so you can open it and look. Inside, each piece of the image is a **blob**: one file under blobs/sha256/. For alpine:3.20 on the run behind this page:
+`docker save` writes an image into one `tar` archive (tar is a format that packs many files, with their names and permissions, into one file, and also the program that packs and unpacks it), so you can open it and look. Inside, each piece of the image is a **blob**: one file under blobs/sha256/. For alpine:3.20 on the run behind this page:
 
 ```
 $ docker save alpine:3.20 -o alpine.tar && mkdir img && tar -xf alpine.tar -C img && find img -type f | sort
@@ -27,7 +27,7 @@ img/manifest.json
 img/oci-layout
 ```
 
-(`tar` is the archive format and the program that packs and unpacks it.) Seven of the eight blobs are JSON files, from a few hundred bytes to 73 kB. One is 3,630,321 bytes of gzip-compressed data. Unpack it and it is itself a tar archive of 517 entries: bin/, bin/busybox, bin/cat and the rest of Alpine. That archive is a **layer**: a set of file changes, packed as a tar. Alpine's only layer adds every file, because it starts from nothing.
+Seven of the eight blobs are JSON files, from a few hundred bytes to 73 kB. One is 3,630,321 bytes of gzip-compressed data (squeezed smaller, like a .zip). Unpack it and it is itself a tar archive of 517 entries: bin/, bin/busybox, bin/cat and the rest of Alpine. That archive is a **layer**: a set of file changes, packed as a tar. Alpine's only layer adds every file, because it starts from nothing.
 
 The next layer starts from something. On the run behind this page, a container from alpine:3.20, called edit, ran a shell that wrote /notes.txt and deleted /etc/motd, then exited. `docker diff` lists what it changed, and `docker commit` turns those changes into a new image, notes:v1:
 
@@ -64,7 +64,7 @@ Last, the **image config**: one of the small JSON files. For alpine:3.20 it says
             "diff_ids": ["sha256:08bc4e534116aa76b16015484b82eac51f9a593416feae9296c8a2d4bb7aa4a2"] }
 ```
 
-Cmd is the program a container runs when docker run names none: that's why `docker run alpine:3.20` gives you a shell. rootfs lists the layers, bottom first, each by a long name that puzzle 13 explains; notes:v1's config lists two. The remaining small files tie a config and its layers together for downloading; puzzles 15 and 16 open them.
+Cmd is the program a container runs when docker run names none: that's why `docker run alpine:3.20` gives you a shell. rootfs lists the layers, bottom first, each by a long name that puzzle 13 explains; notes:v1's config lists two. docker commit also writes the container's command into the new config, so notes:v1's Cmd is sh -c "echo hello > /notes.txt; rm /etc/motd", not /bin/sh. That's why the next puzzles always name a program, as in docker run notes:v1 sleep 1000. The remaining small files tie a config and its layers together for downloading; puzzles 15 and 16 open them.
 
 So an image is: an ordered stack of layers, and a config. Usually layers come from a Dockerfile (Module 3, coming soon), not from `docker commit`, but each step still records only what changed.
 
@@ -82,11 +82,11 @@ docker diff edit
 docker commit edit notes:v1
 docker history notes:v1
 mkdir n && docker save notes:v1 | tar -x -C n
-for f in n/blobs/sha256/*; do tar -tzvf "$f" 2>/dev/null | grep -q notes.txt && tar -tzvf "$f"; done
+for f in n/blobs/sha256/*; do tar -tvf "$f" 2>/dev/null | grep -q notes.txt && tar -tvf "$f"; done
 docker rm edit
 ```
 
-The loop looks inside every blob that is a gzip-compressed tar and prints the one that holds notes.txt. Output from the run behind this page, last command:
+The loop looks inside every blob that is a tar archive (gzip-compressed or not) and prints the one that holds notes.txt. With Docker's older way of storing images (puzzle 12) the layers are saved uncompressed, under a different name (puzzle 13). Output from the run behind this page, last command:
 
 ```
 drwxr-xr-x 0/0               0 2026-11-22 22:15 etc/
@@ -100,7 +100,7 @@ Keep notes:v1: the next puzzles use it.
 
 - A container from notes:v1 deletes /notes.txt, and you commit it as notes:v3. How many layers does notes:v3 have, and how big is the new one?::*Three, and the new one is tiny: one whiteout||Two, because the change undoes layer 2 >> Layers only add on top; a deletion is a new layer with a whiteout. >> s4||Three, and the image shrinks by the size of notes.txt >> The bytes stay in layer 2; the whiteout only hides them. >> s4::Each commit adds a layer of changes; deleting hides, never removes.
 - A 500 MB file is added in one layer and deleted in the next. Roughly how much does pulling the image download for it?::*About 500 MB: the lower layer still holds the file||Nothing: the whiteout cancels it out >> The whiteout hides the file in the merged view; layer 1's bytes still travel. >> s4||A few bytes: the two layers merge before download >> Layers are stored and moved separately, in order. >> s1::Deleting later doesn't take bytes out of earlier layers.
-- You start a container from notes:v1 without naming a program. What does it run, and where does that choice come from?::*/bin/sh, from the image config's Cmd||Nothing, because docker commit drops the command >> The config was carried over; Cmd still says /bin/sh. >> s5||sh -c with the commit's command, from layer 2 >> Layers hold files only; how to run the image lives in the config. >> s5::Layers hold files; the config holds how to run.
+- You start a container from notes:v1 without naming a program. What does it run, and where does that choice come from?::*The container's own command, from the new config's Cmd||/bin/sh, from Alpine's original config >> docker commit records the container's command as the new image's Cmd. >> s5||Nothing: docker commit drops the command >> The new config keeps a Cmd: the container's own command. >> s5::Layers hold files; the config holds how to run, and commit rewrote it.
 
 ## Sources
 
