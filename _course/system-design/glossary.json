@@ -117,6 +117,18 @@
       "def": "Returns an answer from the transaction function without returning from the outer function.",
       "kind": "code"
     },
+    "cursor": {
+      "in": 5,
+      "def": "A saved position after the last record returned, sent back to continue a sorted list."
+    },
+    "index": {
+      "in": 5,
+      "def": "An additional ordered structure that a database maintains to find some rows with less work."
+    },
+    "query plan": {
+      "in": 5,
+      "def": "The route a database proposes for finding and processing the rows requested by a query."
+    },
     "hash": {
       "in": 9,
       "def": "A repeatable value computed from a key and used here to route it to a storage owner."

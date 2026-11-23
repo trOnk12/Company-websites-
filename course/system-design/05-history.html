@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Order records and handle ties before choosing an index.">
+  <meta name="description" content="Keep a moving list continuous by saving the last record's complete position.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Where does the next page of history begin? – System design from first principles to design review – Mateusz Pachulski">
-  <meta property="og:description" content="Order records and handle ties before choosing an index.">
+  <meta property="og:description" content="Keep a moving list continuous by saving the last record's complete position.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/system-design/05-history">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -54,7 +54,7 @@
       <div class="lesson-header">
         <p class="eyebrow">Puzzle 5 · 6 of 19</p>
         <h1>Where does the next page of history begin?</h1>
-        <p class="lede">Order records and handle ties before choosing an index.</p>
+        <p class="lede">Keep a moving list continuous by saving the last record's complete position.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
@@ -63,7 +63,7 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#run-both-page-boundaries-on-the-same-records">Run SQL</a>
+        <a href="#break-three-approaches">Run SQL</a>
         <a href="#go-deeper-can-the-database-find-the-right-page-with-less-work">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
@@ -75,7 +75,12 @@
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Use the durable reservation rows from the write path to build the driver’s history. The service stores millions of records across many drivers. Ada's phone shows her own records, two at a time. Several of her sessions began in the same second. What should the phone send when she taps Next?</p>
+<p>Ada opens her parking history. The server returns two sessions at a time, newest first.</p>
+<p>Three sessions started at 10:00:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Position</th><th scope="col">Session</th></tr></thead><tbody><tr><th scope="row">first</th><td>9</td></tr><tr><th scope="row">second</th><td>8</td></tr><tr><th scope="row">third</th><td>7</td></tr></tbody></table></div>
+<p>The first page is 9, 8. Before Ada asks for page two, a new session 10 arrives at 10:01. The live list is now 10, 9, 8, 7.</p>
+<p>Predict page two. Your rule must neither repeat a session nor lose one.</p>
+<p>A <b>cursor</b> is the saved position after the last record on the page. It is not a page number and it is not permission to read another driver's records.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
@@ -122,42 +127,61 @@
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-history-1" title="Step 1"></label><label for="st-history-2" title="Step 2"></label><label for="st-history-3" title="Step 3"></label><label for="st-history-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/history.gif" download>Save this diagram as a GIF</a></p>
+<p>Stop after step two and choose what page two should contain. Then reveal the new record. The saved pair stays (10:00, 8), even though session 8 shifts right.</p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Sort one owner's rows by start time descending, then by unique session number descending. A cursor records the last position shown. If sessions 9, 8 and 7 have the same time and a page ends at 8, the next page should include 7. A time alone cannot identify that boundary.</p>
-<p>Read the pair from left to right. For a cursor at (10:00, 8), every earlier time qualifies. At exactly 10:00 only numbers below 8 qualify. A newer time cannot qualify, even if its number is small. In a production page of twenty rows, select one owner, apply that rule, sort the qualifying pairs in the same order and take the first twenty. An index ordered by owner, time and number gives the database a path into that range. The index takes storage and adds work to writes. If ordering fields change between requests, a cursor alone does not freeze history.</p>
-<p>In PostgreSQL the first page omits the cursor predicate. Subsequent pages supply the last displayed pair.</p>
-<pre><code class="language-sql">SELECT id, started_at FROM sessions
-WHERE owner_id = $1 AND (started_at, id) &lt; ($2, $3)
-ORDER BY started_at DESC, id DESC LIMIT 20;
+<p>The server first gives every row one unambiguous position:</p>
+<ol><li>A later start time comes first.</li><li>When two times are equal, larger <code>id</code> comes first.</li></ol>
+<p>The first page ends at (10:00, 8), so the phone sends that pair back as its cursor. Read the pair from left to right:</p>
+<ul><li>any time before 10:00 is after the cursor;</li><li>at exactly 10:00, only an ID below 8 is after it;</li><li>a time after 10:00 is before the cursor and does not belong on page two.</li></ul>
+<p>That rule selects session 7. The ID is essential because the time alone cannot distinguish sessions 9, 8 and 7.</p>
+<p>Here is the same rule in PostgreSQL. The first request omits the cursor condition. Later requests supply the last displayed time and ID.</p>
+<pre><code class="language-sql">SELECT id, started_at
+FROM sessions
+WHERE owner_id = $1
+  AND (started_at, id) &lt; ($2, $3)
+ORDER BY started_at DESC, id DESC
+LIMIT 20;</code></pre>
+<p>Read the query line by line:</p>
+<ul><li>The first placeholder is Ada's account. The cursor never replaces the ownership check.</li><li>The second and third placeholders are 10:00 and 8 for this example.</li><li>The pair comparison is the compact SQL form of the two bullet rules above.</li><li>The sorting line uses the same two fields in the same order as the cursor.</li><li>The final line returns at most twenty records.</li></ul>
+<p>The service response can make the contract explicit without exposing SQL to the phone:</p>
+<pre><code class="language-kotlin">data class HistoryCursor(val startedAt: Instant, val sessionId: Long)
 
-CREATE INDEX sessions_history ON sessions
-    (owner_id, started_at DESC, id DESC);</code></pre>
-<h3>Walk a cursor by hand</h3>
-<p>Ada owns rows (10:00, 9), (10:00, 8) and (10:00, 7). Ben owns (10:00, 99). With a page size of two, Ada receives 9 and 8. The next request carries (10:00, 8). Insert Ada's new row (10:01, 10) before that request arrives. The next page still contains 7. Starting again from the first page would reveal 10.</p>
-<p>Compare skipping the first two rows instead. The live list now begins 10, 9, 8, 7. Skipping two would return 8 again. Decide whether a product needs a stable position for browsing or a frozen set for an export. For the latter, design how the export records its input snapshot and when that snapshot can expire.</p>
+data class HistoryPage(
+    val sessions: List&lt;Session&gt;,
+    val nextCursor: HistoryCursor?
+)</code></pre>
+<p>The server builds the next cursor from the final returned session. If it returns no sessions, there is no next cursor.</p>
       </section>
-      <section aria-labelledby="run-both-page-boundaries-on-the-same-records">
-        <h2 id="run-both-page-boundaries-on-the-same-records">Run both page boundaries on the same records</h2>
-<p>Ada has three records with the same timestamp. She has already read IDs 9 and 8. A newer record then arrives. Which second page repeats a record? Which loses one? Run the script. The first result is page one. Compare the three candidate second pages before changing their page size.</p>
+      <section aria-labelledby="break-three-approaches">
+        <h2 id="break-three-approaches">Break three approaches</h2>
+<p>Run the SQL and inspect the four result tables in order. Before running it, write these predictions:</p>
+<ol><li>Which approach repeats session 8?</li><li>Which approach loses session 7?</li><li>Which approach returns 7 exactly once?</li></ol>
 <div class="lesson-sql" data-sql-exercise>
 <pre><code class="language-sql">CREATE TABLE history (owner TEXT, started INTEGER, id INTEGER PRIMARY KEY);
 INSERT INTO history VALUES
   ('Ada', 100, 9), ('Ada', 100, 8), ('Ada', 100, 7),
   ('Ben', 100, 99);
+
+-- Result 1: page one
 SELECT id AS first_page FROM history WHERE owner = 'Ada'
 ORDER BY started DESC, id DESC LIMIT 2;
 
+-- A newer row arrives after page one was delivered.
 INSERT INTO history VALUES ('Ada', 101, 10);
+
+-- Result 2: skip two rows in the current list
 SELECT id AS offset_page FROM history WHERE owner = 'Ada'
 ORDER BY started DESC, id DESC LIMIT 2 OFFSET 2;
 
+-- Result 3: save only the time
 SELECT id AS time_only_page FROM history
 WHERE owner = 'Ada' AND started &lt; 100
 ORDER BY started DESC, id DESC LIMIT 2;
 
-SELECT id AS pair_page FROM history
+-- Result 4: save the complete position
+SELECT id AS pair_cursor_page FROM history
 WHERE owner = 'Ada' AND (started, id) &lt; (100, 8)
 ORDER BY started DESC, id DESC LIMIT 2;</code></pre>
 <label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
@@ -167,18 +191,21 @@ ORDER BY started DESC, id DESC LIMIT 2;</code></pre>
 <button type="button" class="button" data-reset hidden>Restore original SQL</button>
 </div>
 <p class="small" role="status"></p><div data-output></div></div>
-<p>The offset page repeats 8. The time-only page skips 7. The pair page returns 7 exactly once. If you change the first page size to one, also take its last pair as the new cursor and use an offset of one for the comparison. An index can make a query faster; it cannot fix a boundary that selects the wrong rows.</p>
-<h3>Change what happens between page requests</h3>
-<p>In the diagram choose <b>Move session 7 to a newer time</b>. Which session now lies below the saved pair? Test your prediction in the SQL above. Replace only the line that inserts Ada’s session 10 with this line:</p>
+<p>The offset page is 8, 7: it repeats 8 because the new session shifted every old position by one. The time-only page is empty: it loses 7 because 7 has the same time as the last displayed record. The pair-cursor page is 7.</p>
+<p>The cursor does not freeze the list. It only gives the next request a stable place from which to continue.</p>
+<h3>Failure: change a field that defines the position</h3>
+<p>Choose “Move session 7 to a newer time” in the diagram. Then replace only the insert of session 10 in the SQL exercise with:</p>
 <pre><code class="language-sql">UPDATE history SET started = 101 WHERE id = 7;</code></pre>
-<p>Page one was already delivered. Session 7 now sorts above both records on that page. The offset query repeats 8 and the pair query returns no rows. The driver never saw 7. A stable cursor works for a moving list when its ordering keys stay fixed. An export that must include every record at a specific instant needs a fixed view of the data.</p>
+<p>Page one was already delivered. Session 7 now moves above its saved boundary. The cursor query returns no rows, so Ada misses 7 during this walk.</p>
+<p>Use ordering fields that do not change after creation. If the product requires an exact export of all rows that existed at one instant, a moving-list cursor is the wrong promise; create a fixed snapshot—a stored view of the rows as they existed at one moment—and define how long it lives.</p>
       </section>
       <details class="depth-puzzle" id="go-deeper-can-the-database-find-the-right-page-with-less-work">
         <summary><span class="depth-label">Go deeper</span>Can the database find the right page with less work?</summary>
         <div class="depth-content">
-<p>You already know that Ada’s second page should contain session 7. Keep the rows and the question fixed. Change only the index and predict two things separately. Will the page change? Will the database still need a separate sort?</p>
-<p>An index is a second ordered structure maintained alongside the table. Imagine cards filed first by driver, then by time, then by session number. Ada’s cards sit together and ties already have an order. The database can look up the relevant part of that structure. A query plan describes how it intends to find the rows.</p>
-<p>The view below gives the page query a name. Both halves run exactly the same query. Read the detail column of each plan and compare the two actual pages.</p>
+<p>Correctness comes first: the cursor query above must return session 7. Now keep that query unchanged and optimize how the database finds its answer.</p>
+<p>An <b>index</b> is another ordered structure that the database maintains beside the table. For this query, imagine cards filed by owner, then time, then ID. An index may avoid reading and sorting many unrelated cards, but every write must also update it.</p>
+<p>A <b>query plan</b> is the database's proposed route to the answer. It is not a timing result. In the output below, the first plan reports a table scan and a temporary sorting structure. The second reports a search through the named index and no separate sort.</p>
+<p>Predict before running: both page results should be <b>7</b>, but only the first plan should contain a separate sort.</p>
 <div class="lesson-sql" data-sql-exercise>
 <pre><code class="language-sql">CREATE TABLE history (
   id INTEGER PRIMARY KEY, owner TEXT NOT NULL, started INTEGER NOT NULL
@@ -194,7 +221,8 @@ CREATE TEMP VIEW next_page AS
 EXPLAIN QUERY PLAN SELECT * FROM next_page;
 SELECT * FROM next_page;
 
-CREATE INDEX by_driver_time_id ON history(owner, started DESC, id DESC);
+CREATE INDEX by_driver_time_id
+  ON history(owner, started DESC, id DESC);
 EXPLAIN QUERY PLAN SELECT * FROM next_page;
 SELECT * FROM next_page;</code></pre>
 <label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
@@ -204,47 +232,54 @@ SELECT * FROM next_page;</code></pre>
 <button type="button" class="button" data-reset hidden>Restore original SQL</button>
 </div>
 <p class="small" role="status"></p><div data-output></div></div>
-<p>Both pages return 7. In the first plan, find the scan and the temporary B-tree for ordering. SQLite reads the table and arranges the qualifying rows. In the second, find the search and the index name. The index supplies the order and contains every column this query needs. The plan describes the strategy. It provides no elapsed time or exact count of visited rows.</p>
-<p>Now edit only the index definition so it ends with (owner). Predict which work comes back. The service can still locate Ada’s rows, but those entries lack the required order by start time. Look for the sorting step again and verify that the returned ID stays 7. This tiny fixture makes the plan readable. To say how much faster it runs, you would need representative data and measurements.</p>
-<h3>Count the work of the read and the next hundred writes</h3>
-<p>The browser showed which strategy the database chose. How much work did it do? Save <a href="/labs/parking-design/history.py">the history measurement</a> and run it with Python 3. It creates 20,000 synthetic records in a fresh database for each index choice. Three quarters belong to Ada. Every ten consecutive IDs starting at a multiple of ten share a timestamp.</p>
+<p>Both pages return 7. The first plan scans and sorts. The second searches the index whose fields match the owner filter and required order.</p>
+<p>Now edit only the index definition so it contains the owner field and nothing else. The page remains 7, but the separate sort returns: finding Ada's records is not the same as having them in the required order.</p>
+<h3>Measure the trade-off, not just the faster read</h3>
+<p>Download <a href="/labs/parking-design/history.py">the history measurement</a> and run:</p>
 <pre><code class="language-sh">python3 history.py</code></pre>
-<p>First check that all three runs returned the same five IDs. Read ops counts SQLite virtual machine instructions for that one page. The next column counts instructions to insert and commit the same 100 new records. The last column gives allocated database bytes after the inserts. The script verifies the page against a separately sorted list.</p>
-<p>On SQLite 3.53.1 the full index took 128 instructions to read the page and 2,206 for the writes. With no secondary index those counts were 210,029 and 1,406. An instruction count is neither elapsed time nor a count of rows. Your version can report different numbers. If this endpoint rarely reads history but writes on every trip, which measurements would you collect on its real traffic before keeping the index?</p>
+<p>It creates 20,000 records three times: without a secondary index, with an owner-only index and with the full owner/time/ID index. It verifies that every version returns the same five IDs. It then counts SQLite virtual-machine instructions for the read and for the next 100 writes, and reports allocated database bytes.</p>
+<p>On SQLite 3.53.1, the full index reduced the page read from 210,029 to 128 instructions, while the 100 writes rose from 1,406 to 2,206. These are instructions, not milliseconds or rows visited, and another SQLite version can differ. Before keeping the index in production, measure representative page response time, write response time, storage and the real read-to-write ratio.</p>
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Create five rows across two owners, including a time tie. Fetch two at a time and insert a newer session between page requests. Trace the next page. On a larger fixture, compare execution plans with and without the matching index. Record rows visited as well as elapsed time.</p>
+<ol><li>Draw five records for Ada and two for Ben. Give three Ada records the same time.</li><li>Take a first page of two and write down its complete cursor.</li><li>Insert a newer Ada record. Predict the offset, time-only and pair-cursor pages.</li><li>Run the editable SQL and compare the output with your prediction.</li><li>Move one unseen record above the cursor. Explain why the cursor cannot recover it.</li><li>Only then compare the query plans and write down the cost you would measure before adding the index.</li></ol>
+<p>You have passed this puzzle when you can construct the cursor from a returned page, expand the pair comparison into plain words, reproduce both failure cases and separate a correctness decision from an index decision.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>Why include a unique number in the cursor?</legend>
-<input type="radio" name="q-05-history-1" id="q-05-history-1-1" data-ok><label for="q-05-history-1-1"><span>To break time ties</span></label>
-<input type="radio" name="q-05-history-1" id="q-05-history-1-2"><label for="q-05-history-1-2"><span>To encrypt the timestamp</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The number completes the ordering.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The number completes the ordering. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>Why is start time alone an incomplete cursor?</legend>
+<input type="radio" name="q-05-history-1" id="q-05-history-1-1" data-ok><label for="q-05-history-1-1"><span>Several sessions can share one time</span></label>
+<input type="radio" name="q-05-history-1" id="q-05-history-1-2"><label for="q-05-history-1-2"><span>It is encrypted and cannot be compared</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The ID identifies a position inside the tie.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The time is readable. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Does a cursor grant access to another owner's rows?</legend>
-<input type="radio" name="q-05-history-2" id="q-05-history-2-1" data-ok><label for="q-05-history-2-1"><span>Keep the owner check</span></label>
-<input type="radio" name="q-05-history-2" id="q-05-history-2-2"><label for="q-05-history-2-2"><span>Yes, if the cursor looks random</span></label>
-<p class="fb ok opt-1"><b>Right.</b> A position does not establish permission.</p>
-<p class="fb no opt-2"><b>Not quite.</b> A position does not establish permission. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>What must remain beside the cursor condition?</legend>
+<input type="radio" name="q-05-history-2" id="q-05-history-2-1"><label for="q-05-history-2-1"><span>Nothing; the cursor grants access</span></label>
+<input type="radio" name="q-05-history-2" id="q-05-history-2-2" data-ok><label for="q-05-history-2-2"><span>The owner check</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> A position is not authorization. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A position is not authorization.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What exposes the cost of the index?</legend>
-<input type="radio" name="q-05-history-3" id="q-05-history-3-1" data-ok><label for="q-05-history-3-1"><span>Measure writes and storage</span></label>
-<input type="radio" name="q-05-history-3" id="q-05-history-3-2"><label for="q-05-history-3-2"><span>Measure only the fastest read</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The database maintains an additional structure.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The database maintains an additional structure. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>Why can session 7 disappear after its time changes?</legend>
+<input type="radio" name="q-05-history-3" id="q-05-history-3-1" data-ok><label for="q-05-history-3-1"><span>It jumps above the boundary already crossed</span></label>
+<input type="radio" name="q-05-history-3" id="q-05-history-3-2"><label for="q-05-history-3-2"><span>The index deletes the record during sorting</span></label>
+<p class="fb ok opt-1"><b>Right.</b> A moving row can jump over the saved position.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Indexes do not define the product promise. <a class="show-me" href="#break-three-approaches">Re-read that part ↑</a></p>
+</fieldset>
+<fieldset class="quiz">
+<legend>What does an index change here?</legend>
+<input type="radio" name="q-05-history-4" id="q-05-history-4-1"><label for="q-05-history-4-1"><span>Which records belong on the next page</span></label>
+<input type="radio" name="q-05-history-4" id="q-05-history-4-2" data-ok><label for="q-05-history-4-2"><span>How the database finds the same page</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The cursor defines the page. <a class="show-me" href="#go-deeper-can-the-database-find-the-right-page-with-less-work">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Correctness stays unchanged.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/indexes-multicolumn.html">PostgreSQL · Multicolumn Indexes</a> — “the index is most efficient when there are constraints on the leading (leftmost) columns”</li></ul>
-<ul><li><a href="https://www.postgresql.org/docs/17/queries-limit.html">PostgreSQL · LIMIT and OFFSET</a></li><li><a href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.set_progress_handler">Python · Counting SQLite instructions</a></li><li><a href="https://www.sqlite.org/eqp.html">SQLite · Reading a query plan</a></li><li><a href="https://www.sqlite.org/rowvalue.html">SQLite · Scrolling window queries</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Put the unique tie-breaker in both the sort order and the cursor.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/current/queries-order.html">PostgreSQL · Sorting rows</a> — later sort expressions break ties left by earlier expressions.</li><li><a href="https://www.postgresql.org/docs/current/functions-comparisons.html#ROW-WISE-COMPARISON">PostgreSQL · Row comparisons</a> — row values are compared from left to right.</li><li><a href="https://www.postgresql.org/docs/current/indexes-multicolumn.html">PostgreSQL · Multicolumn indexes</a> — leading fields determine how effectively a B-tree index can narrow its search.</li><li><a href="https://www.sqlite.org/rowvalue.html#scrolling_window_queries">SQLite · Scrolling window queries</a> — row values express a continuation boundary without increasing <code>OFFSET</code> work.</li><li><a href="https://www.sqlite.org/eqp.html">SQLite · EXPLAIN QUERY PLAN</a> — explains <code>SCAN</code>, <code>SEARCH</code> and temporary sorting output.</li><li><a href="https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.set_progress_handler">Python · <code>set_progress_handler</code></a> — the measurement hook counts SQLite virtual-machine instructions.</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A cursor must contain every field needed to identify one exact place in the sort order.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <p class="puzzle-bridge">History can move between reads. How old can the map reading be by the time the driver sees it?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
