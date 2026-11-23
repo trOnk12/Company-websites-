@@ -70,9 +70,10 @@ Half the startup time of this program was loading classes. The rest, interpretin
 java -XX:AOTMode=record -XX:AOTConfiguration=app.aotconf -cp start.jar StartKt
 java -XX:AOTMode=create -XX:AOTConfiguration=app.aotconf -XX:AOTCache=app.aot -cp start.jar
 java -XX:AOTCache=app.aot -cp start.jar StartKt
+java -XX:AOTCacheOutput=app.aot -cp start.jar StartKt   # JDK 25: the first two steps in one
 ```
 
-JDK 25 made it one step (JEP 514): java -XX:AOTCacheOutput=app.aot -cp start.jar StartKt, the AOTCacheOutput option, and added the method profiles from the training run (JEP 515), so that C2 can start "immediately upon application startup, rather than having to wait for profiles to be collected" (puzzle 20). JEP 483 reports a 42% faster start for its examples; JEP 515 a further 19% for one program. JDK 28, due in March 2027, is to store compiled machine code in the cache as well (JEP 544, ahead-of-time code compilation). The course's reviewer ran this program on JDK 25.0.5.1: the cache was 11.7 megabytes, and the medians of 11 runs were 98 ms with -Xshare:off, 53 ms with the default archive, 30 ms with the AOT cache, and 25 ms with an app archive from ArchiveClassesAtExit. For a program this short, warm-up hardly matters, so the cache's extra content doesn't show; JDK 28's numbers are the JEP's own.
+JDK 25 made it one step (JEP 514, the AOTCacheOutput option, last line below) and added the method profiles from the training run (JEP 515), so that C2 can start "immediately upon application startup, rather than having to wait for profiles to be collected" (puzzle 20). JEP 483 reports a 42% faster start for its examples; JEP 515 a further 19% for one program. JDK 28, due in March 2027, is to store compiled machine code in the cache as well (JEP 544, ahead-of-time code compilation). The course's reviewer ran this program on JDK 25.0.5.1: the cache was 11.7 megabytes, and the medians of 11 runs were 98 ms with -Xshare:off, 53 ms with the default archive, 30 ms with the AOT cache, and 25 ms with an app archive from ArchiveClassesAtExit. For a program this short, warm-up hardly matters, so the cache's extra content doesn't show; JDK 28's numbers are the JEP's own.
 
 ### The archive must match
 
@@ -90,7 +91,7 @@ The program still runs, just without the archive. Rebuilding the jar has the sam
 ### The edges
 
 - *The training run decides what's in it.* JEP 483: "an AOT cache only helps insofar as the training run does similar things as production runs." Classes the training run never loaded still come from the jar.
-- *AOT cache limits.* JEP 483: "Class paths must contain only JAR files", and a later run may only append entries to the training class path. The Z garbage collector can use the cache only from JDK 26 (JEP 516). JDK 27 renamed -XX:AOTMode=on, which makes an unusable cache an error, to -XX:AOTMode=required.
+- *AOT cache limits.* JEP 483: "Class paths must contain only JAR files", and a later run may only append entries to the training class path. The Z garbage collector can use the cache only from JDK 26 (JEP 516). JDK 27 renamed the AOTMode value on, which makes an unusable cache an error, to required.
 - *Archives are bigger than jars.* The java manual: "about 2 to 5 times larger than classes stored in JAR files". app.jsa was 1.9 megabytes here.
 - *Android* solves startup differently: dex2oat compiles ahead of time, and a Baseline Profile ships the profile with the app (puzzle 18).
 

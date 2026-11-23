@@ -1049,6 +1049,11 @@
    "in": "26",
    "def": "The option naming the class list -Xshare:dump reads.",
    "kind": "code"
+  },
+  "AOTMode": {
+   "in": "26",
+   "def": "JDK 24+ option choosing what a run does with the AOT cache: record, create, auto, off, required.",
+   "kind": "code"
   }
  },
  "from": {

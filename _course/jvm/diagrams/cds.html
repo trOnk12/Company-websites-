@@ -1,7 +1,7 @@
 <!-- label: pipeline: without an archive each class goes jar → read → parse → metaspace; with CDS the JDK's archive is mapped and only 41 classes still come from the jar; a training run writes app.jsa and all 635 come from archives; startup 95 → 67–75 → 45–47 ms; JDK 24+ AOT cache adds linking, JDK 25 profiles -->
 <!-- question: What work does an archive save at startup, and how much time is that? type: pipeline (stages left to right with what each class goes through, then the measured medians as bars) -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="cd-t"><title id="cd-t">Top: a class goes from start.jar through read and parse into metaspace, for 681 classes per run. Then the JDK's archive is mapped straight into metaspace, leaving 41 classes from the jar. Then the app's archive from a training run covers all 635. Bars: 95 milliseconds without archives, 67 to 75 with the JDK's, 45 to 47 with the app's. Last, the AOT cache also stores classes linked and method profiles</title>
-<g class="step s1"><rect class="d-paper" x="16" y="40" width="120" height="50" rx="6"/><text class="d-tiny" x="28" y="70">start.jar</text>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="cd-t"><title id="cd-t">Top: a class goes from start.jar or the JDK's module file through read and parse into metaspace, for 681 classes per run. Then the JDK's archive is mapped straight into metaspace, leaving 41 classes from the jar. Then the app's archive from a training run covers all 635. Bars: 95 milliseconds without archives, 67 to 75 with the JDK's, 45 to 47 with the app's. Last, the AOT cache also stores classes linked and method profiles</title>
+<g class="step s1"><rect class="d-paper" x="16" y="40" width="120" height="50" rx="6"/><text class="d-tiny" x="28" y="70">jar + JDK</text>
 <x-arrow tone="ink" d="M138,65 L170,65"/><rect class="d-box" x="174" y="40" width="96" height="50" rx="6"/><text class="d-tiny" x="190" y="70">read</text>
 <x-arrow tone="ink" d="M272,65 L300,65"/><rect class="d-box" x="304" y="40" width="96" height="50" rx="6"/><text class="d-tiny" x="318" y="70">parse</text>
 <x-arrow tone="ink" d="M402,65 L440,65"/><rect class="d-hl" x="444" y="40" width="180" height="50" rx="6"/><text class="d-tiny" x="456" y="70">metaspace</text></g>
@@ -19,10 +19,10 @@
 <g class="step s1" data-move="1:76,108 2:534,108 3:226,140 4:228,250 5:136,342 6:600,316"><circle class="d-dot" r="8"/><text class="d-tiny" x="12" y="-10">a class</text></g>
 </svg>
 <ol class="caps">
-<li><p>Without help, every class of start.jar is read, parsed and built in metaspace when first needed: 681 classes, in every run.</p></li>
+<li><p>Without an archive, every class the program needs, 640 of the JDK's own and 41 from start.jar, is read, parsed and built in metaspace when first needed: 681 classes, in every run.</p></li>
 <li><p>The next run loads the same classes and builds the same metadata again. <i>Predict: which of these steps could be done once, ahead?</i></p></li>
 <li><p>Reading and parsing. With <b>class data sharing</b>, the JDK's <b>CDS archive</b> is mapped into memory with its classes already parsed. Only 41 classes still come from the jar.</p></li>
-<li><p>A <b>training run</b> with ArchiveClassesAtExit writes app.jsa for the rest. Now all 635 classes come from archives.</p></li>
+<li><p>A <b>training run</b> with ArchiveClassesAtExit writes app.jsa for the rest. Now none come from the jar: all 635 classes come from archives.</p></li>
 <li><p>The time to start, run and exit, medians of 21 runs: 95 ms, then 67 to 75, then 45 to 47.</p></li>
 <li><p>JDK 24's <b>AOT cache</b> also stores the classes loaded and linked, and JDK 25 adds the training run's method profiles (puzzle 20).</p></li>
 </ol>
