@@ -56,11 +56,6 @@ phase 2 done: 2600000
 ```diagram deopt
 ```
 
-## See it
-
-```diagram deopt
-```
-
 ## The building block
 
 When C2 compiled use in phase 1, it checked the classes loaded so far: Counter.next had no override. **Class hierarchy analysis** (CHA) is this check: proving from the loaded classes that an open method has exactly one version. With that proof, C2 treated c.next(1) like a call to a final method and inlined Counter's body with no class check at all. The OpenJDK wiki: virtual calls "are often demoted to "special" invocations, if the class hierarchy permits it. A dependency is registered in case further class loading spoils things."
