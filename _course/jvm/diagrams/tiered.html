@@ -1,24 +1,25 @@
-<!-- label: score climbs the levels: interpreter (0), C1 with profiling (3), C2 (4); its profile is empty so it moves on at once; the old version is retired; a broken assumption sends a method back to level 0 -->
+<!-- label: score climbs the levels: interpreter (0), C1 with profiling (3), C2 (4); its profile is empty so it moves on at once; the old version is retired; batch's loop jumps from 0 to 3 by on-stack replacement after 60,000 loop turns; a broken assumption sends a method back to level 0 -->
 <!-- question: What state is a method's code in, and what moves it to the next one? type: state machine (levels as states, transitions labelled with their trigger, the way back marked in red) -->
-<svg viewBox="0 0 640 380" role="img" aria-labelledby="ti-t"><title id="ti-t">Three states in a row: level 0, the interpreter; level 3, C1 code that records a profile; level 4, C2 code. score moves from 0 to 3 after 200 calls. Its profile has no branches and no calls, so it moves to 4 at once, and the level 3 version is crossed out. A red dashed arrow from 4 back to 0 is labelled assumption broken</title>
+<svg viewBox="0 0 640 380" role="img" aria-labelledby="ti-t"><title id="ti-t">Three states in a row: level 0, the interpreter; level 3, C1 code that records a profile; level 4, C2 code. score moves from 0 to 3 after 200 calls. Its profile has no branches and no calls, so it moves to 4 at once, and the level 3 version is crossed out. batch, called only 200 times, has its loop moved from 0 to 3 after 60,000 loop turns. A red dashed arrow from 4 back to 0 is labelled assumption broken</title>
 <g class="step s1"><rect class="d-box" x="16" y="150" width="168" height="76" rx="10"/><text class="d-tiny" x="30" y="180">level 0</text><text class="d-mi" x="30" y="208">interpreter</text></g>
 <g class="step only-1"><text class="d-a" x="30" y="132">calls: 1 … 200</text></g>
 <g class="step s2"><rect class="d-box" x="236" y="150" width="168" height="76" rx="10"/><text class="d-tiny" x="250" y="180">level 3</text><text class="d-mi" x="250" y="208">C1 + profile</text>
 <x-arrow tone="ink" d="M186,188 L230,188"/><text class="d-a" x="186" y="250">200 calls</text></g>
-<g class="step s3 hide-6"><rect class="d-paper" x="236" y="28" width="210" height="90" rx="6"/><text class="d-tiny" x="248" y="52">score's profile</text><text class="d-mi" x="248" y="80">branches: none</text><text class="d-mi" x="248" y="104">calls: none</text>
+<g class="step s3 hide-5"><rect class="d-paper" x="236" y="28" width="210" height="90" rx="6"/><text class="d-tiny" x="248" y="52">score's profile</text><text class="d-mi" x="248" y="80">branches: none</text><text class="d-mi" x="248" y="104">calls: none</text>
 <x-arrow tone="path" d="M320,148 L320,122"/></g>
-<g class="step only-4"><text class="d-b" x="530" y="196" text-anchor="middle">?</text></g>
-<g class="step s5"><rect class="d-hl" x="456" y="150" width="168" height="76" rx="10"/><text class="d-tiny" x="470" y="180">level 4</text><text class="d-mi" x="470" y="208">C2</text>
+<g class="step only-3"><text class="d-b" x="530" y="196" text-anchor="middle">?</text></g>
+<g class="step s4"><rect class="d-hl" x="456" y="150" width="168" height="76" rx="10"/><text class="d-tiny" x="470" y="180">level 4</text><text class="d-mi" x="470" y="208">C2</text>
 <x-arrow tone="acc" d="M406,188 L450,188"/><text class="d-a" x="420" y="250">at once</text></g>
-<g class="step s5" data-pulse="5"><path class="d-red" d="M244,158 L396,218"/><path class="d-red" d="M396,158 L244,218"/></g>
-<g class="step s1" data-move="1:100,276 2:320,276 5:540,276"><circle class="d-dot" r="9"/><text class="d-tiny" x="16" y="6">score</text></g>
+<g class="step s4" data-pulse="4"><path class="d-red" d="M244,158 L396,218"/><path class="d-red" d="M396,158 L244,218"/></g>
+<g class="step s1" data-move="1:100,276 2:320,276 4:540,276"><circle class="d-dot" r="9"/><text class="d-tiny" x="16" y="6">score</text></g>
+<g class="step s5 hide-6" data-pulse="5"><path class="d-acc" d="M70,148 C70,96 130,96 130,148"/><path class="d-aha" d="M130,152 L123,138 L137,138 Z"/><text class="d-a" x="16" y="56">batch: 60,000 loop turns</text><text class="d-a" x="16" y="84">→ OSR @ 4, level 3</text><x-arrow tone="acc" d="M160,148 C200,110 280,110 300,146"/><circle class="d-dot" cx="300" cy="140" r="7"/><text class="d-tiny" x="312" y="136">batch</text></g>
 <g class="step s6" data-pulse="6"><path class="d-red" d="M540,300 C540,370 100,370 100,232" stroke-dasharray="8 6"/><path class="d-ahr" d="M100,226 L93,240 L107,240 Z"/><text class="d-r" x="210" y="292">assumption broken: back to 0</text></g>
 </svg>
 <ol class="caps">
 <li><p>With <b>tiered compilation</b>, every method's code is at a level. score starts at level 0, the interpreter, while its invocation counter climbs.</p></li>
 <li><p>After 200 calls, <b>C1</b>, HotSpot's quick compiler, compiles score at level 3: much faster code than the interpreter, ready in a moment.</p></li>
-<li><p>Level 3 code also fills score's <b>method profile</b>: how each branch went, which classes each call met. score has no branch and no call.</p></li>
-<li><p>Normally a method stays at level 3 for thousands of calls, until its profile is full enough. <i>Predict: how long does score stay?</i></p></li>
+<li><p>Level 3 code also fills score's <b>method profile</b>: how each branch went, which classes each call met. score has none. <i>Predict: how long does it stay at level 3?</i></p></li>
 <li><p>Hardly at all: there is nothing to profile, so <b>C2</b>, the optimizing compiler, compiles score at level 4 at once. The level 3 version is retired: made not entrant.</p></li>
+<li><p>batch is called only 200 times, but its loop counts back edges, the jumps back to the loop's start. At 60,000 HotSpot compiles the loop while it runs: <b>on-stack replacement</b>.</p></li>
 <li><p>C2 code can rest on assumptions from the profile. If one turns out wrong, the method goes back to level 0 and climbs again (puzzle 23).</p></li>
 </ol>

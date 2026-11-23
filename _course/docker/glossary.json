@@ -43,7 +43,11 @@
    "root",
    "HTTP",
    "GET",
-   "HEAD"
+   "HEAD",
+   "ARM",
+   "amd64",
+   "arm64",
+   "Intel"
   ],
   "homonyms": [
    "root"
@@ -854,7 +858,10 @@
   "docker image ls": {
    "in": "12",
    "kind": "code",
-   "def": "Lists local images with their ID, disk usage and content size."
+   "def": "Lists local images with their ID, disk usage and content size.",
+   "aliases": [
+    "docker image ls alpine:3.20"
+   ]
   },
   "-p 5000:5000": {
    "in": "14",
@@ -870,6 +877,16 @@
     "headers",
     "HTTP headers"
    ]
+  },
+  "SPDX": {
+   "in": "16",
+   "kind": "code",
+   "def": "A standard format for a software bill of materials: the list of packages inside something."
+  },
+  "x86_64": {
+   "in": "16",
+   "kind": "code",
+   "def": "The 64-bit Intel and AMD processor family; as a Docker platform it is called amd64."
   }
  },
  "from": {

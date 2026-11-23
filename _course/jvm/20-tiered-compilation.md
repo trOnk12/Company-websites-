@@ -7,7 +7,7 @@ takeaway: HotSpot compiles a hot method in levels: the interpreter (0), then C1 
 
 ## The problem
 
-Puzzle 19's batches stayed slow for about 60 to 100 batches, then sped up. score was called 1,000 times in the very first batch, well past any threshold a call counter could set. So was score compiled late, or was something else slow? HotSpot can print a line each time it compiles a method, with the PrintCompilation option:
+Puzzle 19's batches stayed slow for about 60 to 100 batches, then sped up. score was called 1,000 times in the very first batch, well past the 200-call threshold below. So was score compiled late, or was something else slow? HotSpot can print a line each time it compiles a method, with the PrintCompilation option:
 
 ```text
 $ java -XX:+PrintCompilation Score
@@ -35,7 +35,7 @@ batch 101: 3216 ns
 …
 ```
 
-The output is trimmed: the full run prints about 350 lines, most of them for JDK methods (… marks cuts). Each compile line holds, in order: milliseconds since the JVM started, a compile number, a % mark on some lines, a level (3 or 4), the method, its bytecode size, and sometimes a message. score was compiled during batch 1, then again at level 4, yet the batches only sped up after batch 64. Why two compilations, and why did compiling score not help?
+The output is trimmed: the full run prints about 350 lines, most of them for JDK methods (… marks cuts). Each compile line holds, in order: milliseconds since the JVM started, a compile number, a % mark on some lines (explained below; other flag letters there are s for synchronized, ! for has exception handlers, n for native), a level (0 to 4), the method, its bytecode size, and sometimes a message. Compiler lines and batch lines can print interleaved, even mid-line: two threads are writing at once. score was compiled during batch 1, then again at level 4, yet the batches only sped up after batch 64. Why two compilations, and why did compiling score not help?
 
 ## See it
 
@@ -48,7 +48,7 @@ HotSpot has two compilers. **C1** compiles quickly and does simple optimizations
 
 | Level | Who runs the method | Records a profile? |
 | --- | --- | --- |
-| 0 | the interpreter | yes |
+| 0 | the interpreter | counters; a full profile only while waiting for level 3 |
 | 1 | C1-compiled code, no profiling | no |
 | 2 | C1-compiled code with call and loop counters | counters only |
 | 3 | C1-compiled code with full profiling | yes |
@@ -56,11 +56,27 @@ HotSpot has two compilers. **C1** compiles quickly and does simple optimizations
 
 The usual path is 0, then 3, then 4. A method starts in the interpreter. When its invocation counter passes a threshold (200 calls by default, the Tier3InvocationThreshold option), C1 compiles it at level 3. That code is much faster than the interpreter and keeps recording what the method does: its **method profile**, how often each branch went each way and which classes the receiver had at each call (puzzle 7). HotSpot keeps it in an object it calls the MethodData. When the level 3 code has run enough (5,000 calls by default for level 4), C2 compiles the method again, using the profile to decide what to optimize. Levels 1 and 2 are for special cases: a method too simple to need C2 goes to level 1, and level 2 is used while C2 is too busy.
 
-Two details of the predicate matter for the log above. First, the thresholds are multiplied by a factor that grows when the compilers have a queue, so the same program crosses them at slightly different moments in each run. Second, HotSpot's source: "if a method does not contain anything worth profiling, a transition from level 3 to level 4 occurs without considering thresholds". score has no branch and no call, so its profile had nothing to wait for: level 3 at 27 ms, level 4 at 44 ms, long before 5,000 calls.
+Two details of how HotSpot applies these thresholds matter for the log above. First, the thresholds are multiplied by a factor that grows when the compilers have a queue, so the same program crosses them at slightly different moments in each run. Second, HotSpot's source: "if a method does not contain anything worth profiling, a transition from level 3 to level 4 occurs without considering thresholds". score has no branch and no call, so its profile had nothing to wait for: level 3 at 27 ms, level 4 at 44 ms, long before 5,000 calls.
 
 *made not entrant* is how the log says that a version was retired: once the level 4 code was installed, new calls could no longer enter the level 3 code. Nothing went wrong; that line is a replacement, not an error.
 
-Why were the batches still slow after score was at level 4? Because the time went to batch, not score. batch is called once per batch, 200 times in the whole run, far below its call threshold, yet each call runs a 1,000-turn loop in the interpreter. So HotSpot also counts loop turns: each jump back to the start of a loop (the goto 4 at the end of batch's loop) increases a back-edge counter. At 60,000 (the Tier3BackEdgeThreshold option), 60 batches of 1,000, HotSpot compiles the method while it is still running and switches the running loop over to the compiled code. That is **on-stack replacement** (OSR): the % mark in the log, with @ 4, the offset of the loop's first instruction. It arrived after batch 60, and batch 65 took 5,628 ns instead of 15,000 to 19,000. Later the loop and the whole method reached level 4 too.
+Why were the batches still slow after score was at level 4? Because the time went to batch, not score. batch is called once per batch, 200 times in the whole run, far below its call threshold, yet each call runs a 1,000-turn loop in the interpreter. So HotSpot also counts loop turns. Here is batch's loop, from javap -c:
+
+```text
+       4: iload_2
+       5: sipush        1000
+       8: if_icmpge     25
+      11: iload_1
+      12: iload_2
+      13: iload_0
+      14: invokestatic  #7                  // Method score:(II)I
+      17: iadd
+      18: istore_1
+      19: iinc          2, 1
+      22: goto          4
+```
+
+if_icmpge jumps out of the loop when i ≥ 1000, iinc adds 1 to slot 2 (i), and goto 4 jumps back to the loop's first instruction: that jump is the back edge. Each one increases the method's back-edge counter. At 60,000 (the Tier3BackEdgeThreshold option), 60 batches of 1,000, HotSpot compiles the method while it is still running and switches the running loop over to the compiled code. That is **on-stack replacement** (OSR): the % mark in the log, with @ 4, the offset of the loop's first instruction. It arrived after batch 60, and batch 65 took 5,628 ns instead of 15,000 to 19,000. Later the loop and the whole method reached level 4 too.
 
 A second run printed the same events in the same order at slightly different times: score at level 3 at 26 ms and level 4 at 43 ms, batch's loop at level 3 after batch 60.
 
@@ -68,10 +84,10 @@ So "the first thousand calls are slow" really means: slow until each hot method,
 
 ### The edges
 
-- *Two meanings of profile.* ART's profile (puzzle 18) is a file kept between runs that lists hot methods for dex2oat. HotSpot's method profile lives in memory, per method, and is lost when the JVM exits, unless you use JDK 25's ahead-of-time cache (puzzle 25).
+- *Two meanings of profile.* ART's profile (puzzle 18) is a file kept between runs that lists hot methods for dex2oat. HotSpot's method profile lives in memory, per method, and is lost when the JVM exits, unless you use JDK 25's ahead-of-time cache (puzzle 26).
 - *C1 only.* The TieredStopAtLevel option stops at a lower level; with 1, HotSpot never runs C2. In two runs of the batch program it reached about 1,000 ns per batch, so for a loop this simple C1's code was enough; for real code, C2's optimizations from the next puzzles make the difference. Tools that run for seconds sometimes use it to save compile time.
 - *Compiling costs time on other threads.* Compiler threads run beside your code. On a machine with few processor cores, they compete with it while the program starts.
-- *Read the log, not the numbers.* PrintCompilation shows that something was compiled, not how fast it is. Puzzle 24 shows how to measure.
+- *Read the log, not the numbers.* PrintCompilation shows that something was compiled, not how fast it is. Puzzle 25 shows how to measure.
 
 ## The analogy
 
@@ -92,8 +108,8 @@ Before running, predict which level score reaches first and at which batch batch
 ## Check yourself
 
 - You change batch's loop to 10,000 calls per batch and keep 200 batches. After which batch do you expect batch's loop to be compiled by on-stack replacement?::*After about batch 6||After about batch 60, as before >> The back-edge counter counts loop turns, not calls of batch; ten times more turns per batch get there ten times sooner. >> the-building-block||Never: batch is called only 200 times >> A rarely called method with a hot loop is exactly the case on-stack replacement exists for. >> the-building-block::The trigger is 60,000 loop turns: 6 batches of 10,000.
-- Why does HotSpot compile a hot method with C1 first instead of going straight to C2?::*C1 code is ready sooner and records the profile C2 needs||C2 can only compile code that C1 has already compiled >> C2 compiles from the bytecode, using the profile recorded at level 3. >> s3||C1's code is faster, and C2 only shrinks it >> C2's code is the fastest; C1 trades speed for compile time. >> s5::Level 3 is fast code that also takes notes.
-- Right after a level 4 line for score, the log prints a level 3 line for score ending in made not entrant. What happened?::*The level 3 version was retired because the level 4 version replaced it||score threw an error and will run in the interpreter from now on >> The level 4 line just before it is the replacement; new calls go there. >> s5||The code cache was full, so score's machine code was deleted >> Nothing in the log points to the code cache; a new version was installed a moment earlier. >> s5::A newer version arrived.
+- Why does HotSpot compile a hot method with C1 first instead of going straight to C2?::*C1 code is ready sooner and records the profile C2 needs||C2 can only compile code that C1 has already compiled >> C2 compiles from the bytecode, using the profile recorded at level 3. >> s3||C1's code is faster, and C2 only shrinks it >> C2's code is the fastest; C1 trades speed for compile time. >> s4::Level 3 is fast code that also takes notes.
+- You run the batch program with the TieredStopAtLevel option set to 3. Which PrintCompilation lines for score do you expect?::*One level 3 line, never followed by made not entrant||A level 3 line, then a level 4 line, as before >> TieredStopAtLevel=3 never lets C2 run, so there is no level 4. >> s4||Only level 1 lines, since score has nothing to profile >> Going to level 1 instead of 4 is a choice made when C2 would add nothing; here the levels stop at 3 and score stays there. >> the-building-block::Nothing replaces the level 3 code, so nothing retires it.
 
 ## Sources
 
@@ -104,4 +120,4 @@ Before running, predict which level score reaches first and at which batch batch
 - [OpenJDK wiki: HotSpot performance techniques, Profiling](https://wiki.openjdk.org/display/HotSpot/PerformanceTechniques) ("Profiling is performed at the bytecode level in the interpreter and tier one compiler. The compiler leans heavily on profile data to motivate optimistic optimizations."; "Every call site with a receiver has a record of which types were encountered (up to 2-3 types)."; "Every call site and branch point has a record of execution counts.")
 - [OpenJDK wiki: So You Want to Write a Micro-Benchmark](https://wiki.openjdk.org/display/HotSpot/MicroBenchmarks) ("The -XX:+PrintCompilation flag reports OSR compilations with an at-sign to denote the non-initial entry point")
 - [The java command (JDK 21)](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html) ("-XX:-TieredCompilation Disables the use of tiered compilation. By default, this option is enabled.")
-- The PrintCompilation logs (three runs), the javap listing of batch the TieredStopAtLevel=1 runs, and two runs with 10,000 calls per batch (the loop's on-stack replacement came after batch 6 in both) were produced in this session with OpenJDK 21.0.12.
+- The PrintCompilation logs (three runs), the javap listing of batch the TieredStopAtLevel=1 runs, two TieredStopAtLevel=3 runs (one level 3 line for score each), and two runs with 10,000 calls per batch (the loop's on-stack replacement came after batch 6 in both) were produced in this session with OpenJDK 21.0.12.

@@ -49,8 +49,9 @@
         "21-inlining.md",
         "22-escape-analysis.md",
         "23-deoptimization.md",
-        "24-warm-up-and-jmh.md",
-        "25-class-data-sharing.md"
+        "24-uncommon-traps.md",
+        "25-warm-up-and-jmh.md",
+        "26-class-data-sharing.md"
       ]
     }
   ],

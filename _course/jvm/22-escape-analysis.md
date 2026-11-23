@@ -59,7 +59,7 @@ Fifty million Stats objects, and from round 2 on, zero bytes and not one collect
 
 ## The building block
 
-Puzzle 21 left C2 with one big piece of code: the loop in main, with scoreOf, the Stats constructor and score() inlined into it. Inside that code C2 can see everything the new Stats is used for. **Escape analysis** is C2's check of whether a new object can be reached from anywhere outside the code it is compiling. Oracle's guide lists the ways out:
+As in puzzle 21, C2 compiles one big piece of code: the loop in main, with scoreOf, the Stats constructor and score() inlined into it. Inside that code C2 can see everything the new Stats is used for. **Escape analysis** is C2's check of whether a new object can be reached from anywhere outside the code it is compiling. Oracle's guide lists the ways out:
 
 | What the code does with the object | Escapes? |
 | --- | --- |
@@ -86,7 +86,7 @@ round 5: 240000000 bytes allocated
 500000100000000
 ```
 
-(Trimmed after round 2; the run made 9 collections in all, and a second run printed the same allocation numbers.) 240,000,000 bytes for ten million objects: 24 bytes each, two 4-byte ints plus HotSpot's own bookkeeping for every object. Each GC line is one collection; 127M->1M means the heap held about 127 megabytes before and 1 after, because every Stats was already unreachable. How collections work is module 5's subject.
+(Trimmed after round 2; the run made 9 collections in all, and a second run printed the same allocation numbers.) 240,000,000 bytes for ten million objects: 24 bytes each, two 4-byte ints plus HotSpot's own bookkeeping for every object. (JDK 27 makes that bookkeeping smaller by default, JEP 534. With the same layout turned on in JDK 25, by the UseCompactObjectHeaders option, the same run allocated 160,000,000 bytes: 16 each.) Each GC line is one collection; 127M->1M means the heap held about 127 megabytes before and 1 after, because every Stats was already unreachable. Using G1 names the collector: G1, HotSpot's default collector. How collections work is coming in a later module.
 
 Round 1 of the default run still allocated about 400 kilobytes. Those calls ran before C2 compiled the loop: the interpreter and C1's code allocate every object.
 
@@ -107,6 +107,8 @@ A top-level var compiles to a static field, so the object escapes: 240,000,000 b
 ### The edges
 
 - *Small, short-lived objects are the ones it removes.* A Pair returned from a small inlined function, an iterator in a loop, a Kotlin data class used for one calculation: all can disappear. One stored in a field, a list or a lambda that escapes cannot.
+- *Two allocations meeting at one variable.* When stats is one of two new objects, val stats = if (visits % 2 == 0) Stats(visits, stars) else Stats(stars, visits), JDK 21 allocated 240,000,000 bytes every round, in two runs: it can't remove objects whose references merge like that. JDK 22 added support for it, and on JDK 25 the same program allocated 0.
+- *Arrays.* An array longer than 64 elements is never scalar-replaced (the EliminateAllocationArraySizeLimit option).
 - *Only C2 does it.* Interpreted and C1-compiled code allocate every object; that's round 1's 400 kilobytes.
 - *Don't design around it.* Whether an object is removed depends on inlining decisions (puzzle 21) that change with code size and profiles. Measure allocation, as above, instead of assuming.
 - *Android:* ART's compilers do their own allocation removal; how much is not covered here (puzzle 18 links the Android course).
@@ -132,7 +134,7 @@ Before running the third command, predict the bytes per round.
 
 - scoreOf now adds every Stats to a list that main prints at the end. With the default options, what does round 2 allocate?::*At least 240,000,000 bytes: every Stats escapes into the list||Zero, because C2 inlined scoreOf >> Inlining lets C2 see the object; here it sees the object stored in a list that outlives the call. >> s5||Zero, but only after round 5, once C2 has seen enough >> Escape is a property of the code, not of how long it runs. >> the-building-block::Stored where outside code can reach it means allocated.
 - Why does turning inlining off bring the allocations back?::*The object is passed to calls C2 can't see into, so it escapes||Without inlining, escape analysis isn't allowed to run >> The analysis runs; it finds the object passed to a call that wasn't inlined. >> the-building-block||The constructor stores the object in a static field >> Stats' constructor only sets its two fields. >> s5::Passed to a call that wasn't inlined counts as escaping.
-- In the default run, where are visits and stars of a removed Stats kept?::*As plain values in the compiled loop, like local variables||In a Stats object allocated on the thread's stack >> Oracle's guide: C2 does not replace a heap allocation with a stack allocation. >> s4||In the heap, but marked so the collector skips them >> No bytes reach the heap: the measured allocation is zero. >> s4::Scalar replacement keeps only the fields.
+- scoreOf also passes stats to log(stats), a logging function of 756 bytes of bytecode that only prints in rare cases. What does round 2 allocate?::*240,000,000 bytes: the object escapes into the call||Zero: log never prints, so stats is never used >> What counts is where the reference can go; log is too big to inline, so C2 can't see inside it. >> s3||Zero: escape analysis sees through any call >> Only inlined calls; for log, PrintInlining says hot method too big. >> the-building-block::Too big to inline means escaping into the call.
 
 ## Sources
 
@@ -140,5 +142,9 @@ Before running the third command, predict the bytes per round.
 - [OpenJDK wiki: EscapeAnalysis (Vladimir Kozlov)](https://wiki.openjdk.org/display/HotSpot/EscapeAnalysis) ("After escape analysis C2 eliminates scalar replaceable object allocations and associated locks."; "C2 does NOT replace a heap allocation with a stack allocation for non globally escaping objects.")
 - [The java command (JDK 21)](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html) ("-XX:+DoEscapeAnalysis Enables the use of escape analysis. This option is enabled by default. To disable the use of escape analysis, specify -XX:-DoEscapeAnalysis."; "-XX:+Inline Enables method inlining. This option is enabled by default to increase performance. To disable method inlining, specify -XX:-Inline.")
 - [OpenJDK source, c2_globals.hpp, jdk-21+35](https://github.com/openjdk/jdk/blob/jdk-21%2B35/src/hotspot/share/opto/c2_globals.hpp#L473-L487) (line 473: DoEscapeAnalysis, "Perform escape analysis"; line 486: EliminateAllocations, "Use escape analysis to eliminate allocations")
+- [JEP 534: Compact Object Headers by Default (JDK 27)](https://openjdk.org/jeps/534) ("Make compact object headers the default object header layout in the HotSpot JVM. Compact object headers reduce object headers from 96 bits down to 64 bits on 64-bit architectures")
+- [JDK-8287061: Support for rematerializing scalar replaced objects participating in allocation merges](https://bugs.openjdk.org/browse/JDK-8287061) (Fix Version: 22)
+- [OpenJDK source, c2_globals.hpp, jdk-21+35, line 492](https://github.com/openjdk/jdk/blob/jdk-21%2B35/src/hotspot/share/opto/c2_globals.hpp#L492-L493) (EliminateAllocationArraySizeLimit 64, "Array size (number of elements) limit for scalar replacement")
+- The JDK 25.0.5.1 runs (the if/else version: 0 bytes; +UseCompactObjectHeaders: 160,000,000 bytes per round) were made by the course's reviewer.
 - [Java 21 API: com.sun.management.ThreadMXBean](https://docs.oracle.com/en/java/javase/21/docs/api/jdk.management/com/sun/management/ThreadMXBean.html#getThreadAllocatedBytes(long)) ("Returns an approximation of the total amount of memory, in bytes, allocated in heap memory for the thread with the specified ID.")
-- All runs (default and -XX:-DoEscapeAnalysis twice each with -Xlog:gc, -XX:-Inline twice, the version with last twice, and a version adding each Stats to a list, which allocated in every round) were produced in this session with kotlinc 2.2.21 and OpenJDK 21.0.12 (G1 collector).
+- All runs (default and -XX:-DoEscapeAnalysis twice each with -Xlog:gc, -XX:-Inline twice, the version with last twice, a version adding each Stats to a list, which allocated in every round, a version passing stats to a 756-byte log function (hot method too big; 240,000,000 bytes per round, two runs), and the if/else version (240,000,000 bytes per round, two runs)) were produced in this session with kotlinc 2.2.21 and OpenJDK 21.0.12 (G1 collector).

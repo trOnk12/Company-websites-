@@ -1,13 +1,13 @@
 ---
 title: Why does every run load the same classes again?
 short: Starting faster with class data sharing and AOT caches
-summary: Puzzles 11 and 17 showed HotSpot reading, parsing and linking each class the first time it's needed, and puzzles 19 to 24 showed every run warming up from nothing. Measure what a small Kotlin program spends on that at each start, and how much an archive prepared by an earlier run saves.
+summary: Puzzles 11 and 17 showed HotSpot reading, parsing and linking each class the first time it's needed, and puzzles 19 to 25 showed every run warming up from nothing. Measure what a small Kotlin program spends on that at each start, and how much an archive prepared by an earlier run saves.
 takeaway: Class data sharing maps an archive of already parsed classes into memory instead of reading and parsing class files: the JDK ships one for its own classes, and a training run can write one for your app. JDK 24's AOT cache also stores classes loaded and linked, JDK 25 adds method profiles, and the archive is only used if the class path and JDK match the training run.
 ---
 
 ## The problem
 
-Puzzle 11 said a class is loaded, linked and initialized the first time code needs it, and puzzle 17 that its metadata is built in metaspace. A JVM does all of that again in every run, for the same classes, and then warms up again (puzzle 24). For a server that runs for weeks it hardly matters. For a command-line tool, a test run, or a container that is started for each request, startup is most of the run.
+Puzzle 11 said a class is loaded, linked and initialized the first time code needs it, and puzzle 17 that its metadata is built in metaspace. A JVM does all of that again in every run, for the same classes, and then warms up again (puzzle 25). For a server that runs for weeks it hardly matters. For a command-line tool, a test run, or a container that is started for each request, startup is most of the run.
 
 This Kotlin program sorts three bookmarks; kotlinc packed it and the Kotlin standard library into start.jar:
 
@@ -31,7 +31,7 @@ $ java -Xlog:class+load -jar start.jar
 …
 ```
 
-Counting the lines: 597 classes came from a source called "shared objects file", and 41 from start.jar. With the -Xshare:off option, all 681 loaded classes came from class files. What is the shared objects file, and what does it save?
+Counting the lines: 597 classes came from a source called "shared objects file", 41 from start.jar and 6 from jrt:/java.base, the JDK's own module file. With the -Xshare:off option, all 681 loaded classes came from class files: 640 of the JDK's own and 41 from start.jar. What is the shared objects file, and what does it save?
 
 ## See it
 
@@ -56,27 +56,27 @@ $ java -XX:SharedArchiveFile=app.jsa -Xlog:class+load -jar start.jar
 …
 ```
 
-All 635 loaded classes now came from archives, none from the jar; (top) marks the app's archive, which sits on top of the JDK's. The time to start, run and exit, as the median of 21 runs, in two rounds:
+All 635 loaded classes now came from archives, none from the jar or the JDK's module file (in two runs); (top) marks the app's archive, which sits on top of the JDK's. The time to start, run and exit, as the median of 21 runs, in two rounds:
 
-| Run | Classes from class files | Round 1 | Round 2 |
+| Run | Classes parsed at startup (JDK + jar) | Round 1 | Round 2 |
 | --- | --- | --- | --- |
 | -Xshare:off | 681 | 95 ms | 97 ms |
-| default (JDK's archive) | 41 | 75 ms | 67 ms |
+| default (JDK's archive) | 47 | 75 ms | 67 ms |
 | SharedArchiveFile=app.jsa | 0 | 45 ms | 47 ms |
 
 Half the startup time of this program was loading classes. The rest, interpreting and warming up, an archive of classes doesn't touch. That's what the newer **AOT cache** goes after. JDK 24 (JEP 483) introduced it: an archive that stores classes "in a loaded and linked state", created from a training run in two steps:
 
 ```sh
-java -XX:AOTMode=record -XX:AOTConfiguration=app.aotconf -cp app.jar com.example.App
-java -XX:AOTMode=create -XX:AOTConfiguration=app.aotconf -XX:AOTCache=app.aot -cp app.jar
-java -XX:AOTCache=app.aot -cp app.jar com.example.App
+java -XX:AOTMode=record -XX:AOTConfiguration=app.aotconf -cp start.jar StartKt
+java -XX:AOTMode=create -XX:AOTConfiguration=app.aotconf -XX:AOTCache=app.aot -cp start.jar
+java -XX:AOTCache=app.aot -cp start.jar StartKt
 ```
 
-JDK 25 made it one step (JEP 514, with the AOTCacheOutput option) and added the method profiles from the training run (JEP 515), so that C2 can start "immediately upon application startup, rather than having to wait for profiles to be collected" (puzzle 20). JEP 483 reports a 42% faster start for its examples; JEP 515 a further 19% for one program. JDK 28, due in March 2027, is to store compiled machine code in the cache as well (JEP 544, ahead-of-time code compilation). Those JDK 24 to 28 numbers are the JEPs' own; this course ran only JDK 21.
+JDK 25 made it one step (JEP 514): java -XX:AOTCacheOutput=app.aot -cp start.jar StartKt, the AOTCacheOutput option, and added the method profiles from the training run (JEP 515), so that C2 can start "immediately upon application startup, rather than having to wait for profiles to be collected" (puzzle 20). JEP 483 reports a 42% faster start for its examples; JEP 515 a further 19% for one program. JDK 28, due in March 2027, is to store compiled machine code in the cache as well (JEP 544, ahead-of-time code compilation). The course's reviewer ran this program on JDK 25.0.5.1: the cache was 11.7 megabytes, and the medians of 11 runs were 98 ms with -Xshare:off, 53 ms with the default archive, 30 ms with the AOT cache, and 25 ms with an app archive from ArchiveClassesAtExit. For a program this short, warm-up hardly matters, so the cache's extra content doesn't show; JDK 28's numbers are the JEP's own.
 
 ### The archive must match
 
-It's only valid for the same JDK and a compatible class path. Run the app's archive with an extra folder in front of the class path and HotSpot quietly ignores it:
+It's only valid for the same JDK and a compatible class path. Appending entries after the training class path is allowed (-cp start.jar:extra still used the archive here); changing or prepending is not. Run the app's archive with an extra folder in front of the class path and HotSpot quietly ignores it:
 
 ```text
 $ java -XX:SharedArchiveFile=app.jsa -cp extra:start.jar StartKt
@@ -90,7 +90,7 @@ The program still runs, just without the archive. Rebuilding the jar has the sam
 ### The edges
 
 - *The training run decides what's in it.* JEP 483: "an AOT cache only helps insofar as the training run does similar things as production runs." Classes the training run never loaded still come from the jar.
-- *A static archive, the older way.* -Xshare:dump with a class list (written by a run with the DumpLoadedClassList option) writes an archive that replaces the JDK's; in this run its median was 41 and 38 ms. ArchiveClassesAtExit needs one step fewer.
+- *AOT cache limits.* JEP 483: "Class paths must contain only JAR files", and a later run may only append entries to the training class path. The Z garbage collector can use the cache only from JDK 26 (JEP 516). JDK 27 renamed -XX:AOTMode=on, which makes an unusable cache an error, to -XX:AOTMode=required.
 - *Archives are bigger than jars.* The java manual: "about 2 to 5 times larger than classes stored in JAR files". app.jsa was 1.9 megabytes here.
 - *Android* solves startup differently: dex2oat compiles ahead of time, and a Baseline Profile ships the profile with the app (puzzle 18).
 
@@ -111,6 +111,14 @@ time java -Xshare:off -jar start.jar
 time java -XX:SharedArchiveFile=app.jsa -jar start.jar
 ```
 
+The older way to make an app archive, a static one that replaces the JDK's, takes two runs: one that writes the class list, and -Xshare:dump. In this run its median was 41 and 38 ms:
+
+```sh
+java -XX:DumpLoadedClassList=classes.lst -jar start.jar
+java -Xshare:dump -XX:SharedClassListFile=classes.lst -XX:SharedArchiveFile=static.jsa -cp start.jar
+java -XX:SharedArchiveFile=static.jsa -jar start.jar
+```
+
 Before running the last two, predict which one is faster, and by about how much. Run each several times; single timings vary.
 
 ## Check yourself
@@ -125,8 +133,10 @@ Before running the last two, predict which one is faster, and by about how much.
 - [JEP 341: Default CDS Archives (JDK 12)](https://openjdk.org/jeps/341) ("Enhance the JDK build process to generate a class data-sharing (CDS) archive, using the default class list, on 64-bit platforms.")
 - [JEP 350: Dynamic CDS Archives (JDK 13)](https://openjdk.org/jeps/350) ("Extend application class-data sharing to allow the dynamic archiving of classes at the end of Java application execution. The archived classes will include all loaded application classes and library classes that are not present in the default, base-layer CDS archive."; "% bin/java -XX:ArchiveClassesAtExit=hello.jsa -cp hello.jar Hello"; "% bin/java -XX:SharedArchiveFile=hello.jsa -cp hello.jar Hello")
 - [JEP 483: Ahead-of-Time Class Loading & Linking (JDK 24)](https://openjdk.org/jeps/483) ("Improve startup time by making the classes of an application instantly available, in a loaded and linked state, when the HotSpot Java Virtual Machine starts."; "$ java -XX:AOTMode=record -XX:AOTConfiguration=app.aotconf"; "$ java -XX:AOTMode=create -XX:AOTConfiguration=app.aotconf -XX:AOTCache=app.aot -cp app.jar"; "$ java -XX:AOTCache=app.aot -cp app.jar com.example.App ..."; "an improvement of 42%"; "Keep in mind that an AOT cache only helps insofar as the training run does similar things as production runs."; "(Update: As of JDK 27, -XX:AOTMode=on is now -XX:AOTMode=required.)")
+- JEP 483 also: "All runs must have consistent class paths. A subsequent run may specify extra class-path entries, appended to the training class path; otherwise, the class paths must be identical. Class paths must contain only JAR files"; "ZGC is not yet supported."
+- [JEP 516: Ahead-of-Time Object Caching with Any GC (JDK 26)](https://openjdk.org/jeps/516) ("so that it can be used with any garbage collector, including the low-latency Z Garbage Collector (ZGC)")
 - [JEP 514: Ahead-of-Time Command-Line Ergonomics (JDK 25)](https://openjdk.org/jeps/514) ("Make it easier to create ahead-of-time caches, which accelerate the startup of Java applications, by simplifying the commands required for common use cases."; "$ java -XX:AOTCacheOutput=app.aot -cp app.jar com.example.App ...")
 - [JEP 515: Ahead-of-Time Method Profiling (JDK 25)](https://openjdk.org/jeps/515) ("Improve warmup time by making method-execution profiles from a previous run of an application instantly available, when the HotSpot Java Virtual Machine starts. This will enable the JIT compiler to generate native code immediately upon application startup, rather than having to wait for profiles to be collected."; "an improvement of 19%")
 - [JEP 544: Ahead-of-Time Code Compilation (Release 28)](https://openjdk.org/jeps/544) ("Improve startup and warmup time by making optimized native code for an application instantly available when the HotSpot Java Virtual Machine starts.") and [JDK 28 schedule](https://openjdk.org/projects/jdk/28/) ("2027/03/09 General Availability"); status checked 22 November 2026.
 - [The java command (JDK 21): Application Class Data Sharing](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html) ("Application Class Data Sharing (AppCDS) stores classes used by your applications in an archive file. Since these classes are stored in a format that can be loaded very quickly (compared to classes stored in a JAR file), AppCDS can improve the start-up time of your applications."; "This archive contains about 1300 core library classes that are used by most applications."; "Classes in the CDS archive are stored in an optimized format that's about 2 to 5 times larger than classes stored in JAR files"; "-Xshare:mode Sets the class data sharing (CDS) mode."; "on Require using shared class data, otherwise fail.")
-- The class counts, the archives, the warnings and the timings (median of 21 runs, two rounds each) were produced in this session with kotlinc 2.2.21 and OpenJDK 21.0.12. The JDK 24 to 28 features were not run here.
+- The class counts, the archives, the warnings and the timings (median of 21 runs, two rounds each) were produced in this session with kotlinc 2.2.21 and OpenJDK 21.0.12. The JDK 25.0.5.1 AOT-cache runs (11.7 MB cache; medians of 11 runs: 98, 53, 30 and 25 ms) were made by the course's reviewer; JDK 28's AOT code was not run.

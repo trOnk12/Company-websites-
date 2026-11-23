@@ -33,5 +33,5 @@
 <li><p>Then the next opcode, iconst_2: read it, jump to its template, which pushes 2. Every instruction repeats the same three things: read, jump, work on the stack.</p></li>
 <li><p>imul's template multiplies the two values and leaves 6. Five more instructions to go. <i>Predict: how many template jumps does one call of score cost?</i></p></li>
 <li><p>Eight, one per instruction, on every call. The interpreter also adds one to score's <b>invocation counter</b>, so HotSpot can tell which methods are called often.</p></li>
-<li><p>When the count is high enough, a compiler turns all of score into machine code in the <b>code cache</b>. Calls then run it directly: about 2 nanoseconds instead of 19 in the runs above.</p></li>
+<li><p>When the count is high enough, a compiler turns score into machine code in the <b>code cache</b>. Once batch's loop is compiled too (puzzle 20), the thousand calls take about 2 nanoseconds each instead of 19.</p></li>
 </ol>

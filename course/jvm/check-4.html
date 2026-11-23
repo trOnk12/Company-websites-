@@ -51,7 +51,7 @@
     <article class="module-check course-top wrap narrow" data-course="jvm">
       <p class="eyebrow"><a href="./">JVM internals for Kotlin and Android developers</a> · check</p>
       <h1>Know How the JVM makes code fast already?</h1>
-      <p class="lede">One question for each of the 7 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
+      <p class="lede">One question for each of the 8 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 19"><p class="eyebrow">Puzzle 19: Why are the first thousand calls slow?</p>
 <fieldset class="quiz" data-n="19">
 <legend>You run the 200 batches with the Xint option and print batch 1,000 instead of 200. What does it cost?</legend>
@@ -92,34 +92,44 @@
 <p class="fb no opt-2"><b>Not quite.</b> Inlining lets C2 see the object; here it sees the object stored in a list that outlives the call. <a class="show-me" href="22-escape-analysis.html">Learn it in puzzle 22 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> Stored where outside code can reach it means allocated.</p>
 </fieldset></section>
-<section aria-label="Puzzle 23"><p class="eyebrow">Puzzle 23: What happens when C2's guess turns out wrong?</p>
+<section aria-label="Puzzle 23"><p class="eyebrow">Puzzle 23: What happens when a new class breaks C2's proof?</p>
 <fieldset class="quiz" data-n="23">
-<legend>In Hot.kt, main creates a Loud before phase 1 but passes only Counter objects until phase 2. When phase 2 starts, what happens to use's level 4 code?</legend>
-<input type="radio" name="q-23-deoptimization-1" id="q-23-deoptimization-1-1"><label for="q-23-deoptimization-1-1"><span>No deoptimization: CHA never proved next unique, so nothing can break</span></label>
-<input type="radio" name="q-23-deoptimization-1" id="q-23-deoptimization-1-2" data-ok><label for="q-23-deoptimization-1-2"><span>A class check fails for the first Loud, and use deoptimizes</span></label>
-<input type="radio" name="q-23-deoptimization-1" id="q-23-deoptimization-1-3"><label for="q-23-deoptimization-1-3"><span>A deoptimization when Loud is created, before phase 1</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> C2 still assumed something, from the type profile: only Counter. That check fails for Loud. <a class="show-me" href="23-deoptimization.html">Learn it in puzzle 23 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The assumption moved from the loaded classes to the profile.</p>
-<p class="fb no opt-3"><b>Not quite.</b> use hasn't been compiled yet when Loud is loaded at the start. <a class="show-me" href="23-deoptimization.html">Learn it in puzzle 23 →</a></p>
+<legend>Phase 2 creates a Loud but never passes it to use; it keeps passing Counter objects. Does use's level 4 code survive?</legend>
+<input type="radio" name="q-23-deoptimization-1" id="q-23-deoptimization-1-1"><label for="q-23-deoptimization-1-1"><span>Yes, but only until the garbage collector next runs</span></label>
+<input type="radio" name="q-23-deoptimization-1" id="q-23-deoptimization-1-2"><label for="q-23-deoptimization-1-2"><span>Yes: use never meets a Loud, so nothing it assumed is wrong</span></label>
+<input type="radio" name="q-23-deoptimization-1" id="q-23-deoptimization-1-3" data-ok><label for="q-23-deoptimization-1-3"><span>No: loading Loud fails the recorded assumption, whatever use is passed</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Deoptimization happens when the dependency fails, at class loading, not when the collector runs. <a class="show-me" href="23-deoptimization.html">Learn it in puzzle 23 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> The assumption was about the loaded classes, and loading Loud breaks it. <a class="show-me" href="23-deoptimization.html">Learn it in puzzle 23 →</a></p>
+<p class="fb ok opt-3"><b>Right.</b> CHA's assumption is about what is loaded.</p>
 </fieldset></section>
-<section aria-label="Puzzle 24"><p class="eyebrow">Puzzle 24: How long does score really take?</p>
+<section aria-label="Puzzle 24"><p class="eyebrow">Puzzle 24: What if the profile guessed wrong?</p>
 <fieldset class="quiz" data-n="24">
-<legend>You change the naive loop to add every result to a sum and print the sum at the end. What do rounds 4 and 5 show now?</legend>
-<input type="radio" name="q-24-warm-up-and-jmh-1" id="q-24-warm-up-and-jmh-1-1"><label for="q-24-warm-up-and-jmh-1-1"><span>Still about 0.44 ns: C2 removes the loop anyway</span></label>
-<input type="radio" name="q-24-warm-up-and-jmh-1" id="q-24-warm-up-and-jmh-1-2" data-ok><label for="q-24-warm-up-and-jmh-1-2"><span>About 32 ns per call: the work is no longer dead code</span></label>
-<input type="radio" name="q-24-warm-up-and-jmh-1" id="q-24-warm-up-and-jmh-1-3"><label for="q-24-warm-up-and-jmh-1-3"><span>About 121 ns: printing keeps the code interpreted</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The sum is printed, so its value is needed and the computation must run. <a class="show-me" href="24-warm-up-and-jmh.html">Learn it in puzzle 24 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> A used result can't be eliminated.</p>
-<p class="fb no opt-3"><b>Not quite.</b> Printing once at the end doesn't stop main's loop from being compiled. <a class="show-me" href="24-warm-up-and-jmh.html">Learn it in puzzle 24 →</a></p>
+<legend>In Hot.kt, main creates a Loud before phase 1 but passes only Counter objects until phase 2. When phase 2 starts, what happens to use's level 4 code?</legend>
+<input type="radio" name="q-24-uncommon-traps-1" id="q-24-uncommon-traps-1-1"><label for="q-24-uncommon-traps-1-1"><span>No deoptimization: CHA never proved next unique, so nothing can break</span></label>
+<input type="radio" name="q-24-uncommon-traps-1" id="q-24-uncommon-traps-1-2" data-ok><label for="q-24-uncommon-traps-1-2"><span>A class check fails for the first Loud, and use deoptimizes</span></label>
+<input type="radio" name="q-24-uncommon-traps-1" id="q-24-uncommon-traps-1-3"><label for="q-24-uncommon-traps-1-3"><span>A deoptimization when Loud is created, before phase 1</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> C2 still assumed something, from the type profile: only Counter. That check fails for Loud. <a class="show-me" href="24-uncommon-traps.html">Learn it in puzzle 24 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The assumption moved from the loaded classes to the profile.</p>
+<p class="fb no opt-3"><b>Not quite.</b> use hasn't been compiled yet when Loud is loaded at the start. <a class="show-me" href="24-uncommon-traps.html">Learn it in puzzle 24 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 25"><p class="eyebrow">Puzzle 25: Why does every run load the same classes again?</p>
+<section aria-label="Puzzle 25"><p class="eyebrow">Puzzle 25: How long does score really take?</p>
 <fieldset class="quiz" data-n="25">
+<legend>You change the naive loop to add every result to a sum and print the sum at the end. What do rounds 4 and 5 show now?</legend>
+<input type="radio" name="q-25-warm-up-and-jmh-1" id="q-25-warm-up-and-jmh-1-1"><label for="q-25-warm-up-and-jmh-1-1"><span>Still about 0.44 ns: C2 removes the loop anyway</span></label>
+<input type="radio" name="q-25-warm-up-and-jmh-1" id="q-25-warm-up-and-jmh-1-2" data-ok><label for="q-25-warm-up-and-jmh-1-2"><span>About 32 ns per call: the work is no longer dead code</span></label>
+<input type="radio" name="q-25-warm-up-and-jmh-1" id="q-25-warm-up-and-jmh-1-3"><label for="q-25-warm-up-and-jmh-1-3"><span>About 121 ns: printing keeps the code interpreted</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The sum is printed, so its value is needed and the computation must run. <a class="show-me" href="25-warm-up-and-jmh.html">Learn it in puzzle 25 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> A used result can't be eliminated.</p>
+<p class="fb no opt-3"><b>Not quite.</b> Printing once at the end doesn't stop main's loop from being compiled. <a class="show-me" href="25-warm-up-and-jmh.html">Learn it in puzzle 25 →</a></p>
+</fieldset></section>
+<section aria-label="Puzzle 26"><p class="eyebrow">Puzzle 26: Why does every run load the same classes again?</p>
+<fieldset class="quiz" data-n="26">
 <legend>You add a new class to your app and rebuild start.jar, but keep the old app.jsa. What happens at startup?</legend>
-<input type="radio" name="q-25-class-data-sharing-1" id="q-25-class-data-sharing-1-1"><label for="q-25-class-data-sharing-1-1"><span>Old classes come from app.jsa, only the new class from the jar</span></label>
-<input type="radio" name="q-25-class-data-sharing-1" id="q-25-class-data-sharing-1-2"><label for="q-25-class-data-sharing-1-2"><span>The JVM refuses to start until the archive is rebuilt</span></label>
-<input type="radio" name="q-25-class-data-sharing-1" id="q-25-class-data-sharing-1-3" data-ok><label for="q-25-class-data-sharing-1-3"><span>HotSpot sees the jar changed, warns, and loads the app's classes from the jar</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> HotSpot checks the jar's timestamp and drops the whole app archive when it changed. <a class="show-me" href="25-class-data-sharing.html">Learn it in puzzle 25 →</a></p>
-<p class="fb no opt-2"><b>Not quite.</b> Only -Xshare:on makes an unusable archive an error; by default the JVM continues. <a class="show-me" href="25-class-data-sharing.html">Learn it in puzzle 25 →</a></p>
+<input type="radio" name="q-26-class-data-sharing-1" id="q-26-class-data-sharing-1-1"><label for="q-26-class-data-sharing-1-1"><span>Old classes come from app.jsa, only the new class from the jar</span></label>
+<input type="radio" name="q-26-class-data-sharing-1" id="q-26-class-data-sharing-1-2"><label for="q-26-class-data-sharing-1-2"><span>The JVM refuses to start until the archive is rebuilt</span></label>
+<input type="radio" name="q-26-class-data-sharing-1" id="q-26-class-data-sharing-1-3" data-ok><label for="q-26-class-data-sharing-1-3"><span>HotSpot sees the jar changed, warns, and loads the app's classes from the jar</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> HotSpot checks the jar's timestamp and drops the whole app archive when it changed. <a class="show-me" href="26-class-data-sharing.html">Learn it in puzzle 26 →</a></p>
+<p class="fb no opt-2"><b>Not quite.</b> Only -Xshare:on makes an unusable archive an error; by default the JVM continues. <a class="show-me" href="26-class-data-sharing.html">Learn it in puzzle 26 →</a></p>
 <p class="fb ok opt-3"><b>Right.</b> A changed jar means a new training run.</p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>

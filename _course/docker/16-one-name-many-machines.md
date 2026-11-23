@@ -61,7 +61,7 @@ All of this, the index, the manifest, the config, the layers with their whiteout
 
 ## The analogy
 
-The catalogue entry "the usual chair" doesn't point at one packing list but at a page of them: one for flats with high ceilings, one for low ceilings, one for each kind of building. The concierge reads the page and orders the list that fits this building. Order the wrong one, and the furniture arrives but doesn't fit through the door. Clipped to the page are certificates: what the chair is made of and which workshop built it.
+The catalogue entry "the usual chair" doesn't point at one packing list but at a page of them: one for flats with high ceilings, one for low ceilings, one for each kind of building. The concierge reads the page and orders the list that fits this building. Order the wrong one, and the furniture arrives but doesn't fit through the door. Clipped to the page are signed notes: what the chair is made of and which workshop built it.
 
 ## Run it yourself
 

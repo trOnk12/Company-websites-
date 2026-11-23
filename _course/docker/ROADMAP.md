@@ -28,17 +28,18 @@ container's fence is a dashed blue frame; programs in a chain are lifelines. Ana
 7. How much processor time: the CPU quota, cpu.max, throttling counters, threads sharing one quota, shares versus quota.
 8. Who builds the container: docker → dockerd → containerd → shim → runc → kernel; config.json and the OCI runtime spec; the three daemon errors.
 
-## Module 2: Images (*next*)
-1. What's in an image: layers as tar archives of file changes; `docker save` and looking inside one.
-2. The union filesystem: overlayfs lower and upper directories, the merged view, copy-up on write, whiteout files for deletes.
-3. Where images live: the classic overlay2 storage driver versus the containerd image store and its snapshotters (the default for new Docker 29 installations), and how to tell which one `docker info` reports.
-4. The container's writable layer: what survives `docker stop`, what `docker rm` throws away, why the image never changes.
-5. Content addressing: SHA-256 digests of layers and configs, why the same bytes give the same name everywhere.
-6. Tags versus digests: a tag is a movable label, a digest is a fixed name; `image@sha256:…` and what "latest" really means.
-7. Registries and pulling: repository, tag, manifest, the pull as blobs fetched by digest; authentication, credential helpers, mirrors and Docker Hub's rate limits.
-8. The OCI image spec: index (one image, many platforms), manifest, config (the command, env, user), layers, and referrers (signatures and attestations attached to an image).
+## Module 2: Images (**done**, puzzles 9–16)
+9. What is inside an image: docker save, blobs, layers as tar archives of changes, docker diff and commit, whiteouts, the image config.
+10. Stacking layers: the overlay filesystem by hand, lower and upper directories, the merged view, copy-up, whiteouts as 0,0 devices.
+11. The container's own layer: separate writable layers, what survives a restart, what docker rm throws away, docker ps -s.
+12. Where images live: the containerd image store (content store plus snapshotter; Docker 29's default) versus the overlay2 storage driver; why disk usage exceeds content size.
+13. Named by its content: SHA-256 digests, blob names, DiffID versus layer digest, image ID as manifest digest, sharing and checking.
+14. Tags move, digests don't: repositories, tags, latest, moving a tag, pinning by digest.
+15. Pulling from a registry: the distribution spec's manifest and blob endpoints with curl, the real request sequence of a pull, skipped blobs, Docker Hub's pull limits.
+16. One name, many machines: the image index, platforms, exec format error, attestation manifests (SBOM, provenance), the OCI image spec.
+Still to add here (from the earlier plan): registry authentication, credential helpers and mirrors (planned for Module 9, puzzle 1's neighbourhood), and the OCI referrers API.
 
-## Module 3: The Dockerfile and the build
+## Module 3: The Dockerfile and the build (*next*)
 1. Instructions to layers: which instructions add a layer (RUN, COPY, ADD) and which only change the config (CMD, ENV, USER).
 2. The build context and .dockerignore: what gets sent to the builder, and secrets that leak in by accident.
 3. The build cache: the rules for a hit, why one changed line rebuilds everything after it.

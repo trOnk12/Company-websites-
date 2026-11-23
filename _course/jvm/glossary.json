@@ -886,7 +886,7 @@
    ]
   },
   "uncommon trap": {
-   "in": "23",
+   "in": "24",
    "def": "A spot in compiled code, for a case the profile never saw, that deoptimizes if that case happens.",
    "aliases": [
     "uncommon traps"
@@ -903,12 +903,12 @@
    "kind": "code"
   },
   "BranchKt": {
-   "in": "23",
+   "in": "24",
    "def": "The class holding the top-level functions of Branch.kt.",
    "kind": "code"
   },
   "warm-up": {
-   "in": "24",
+   "in": "25",
    "def": "The start of a run, while methods are still interpreted or compiled at lower levels.",
    "aliases": [
     "warm up",
@@ -916,94 +916,138 @@
    ]
   },
   "dead code elimination": {
-   "in": "24",
+   "in": "25",
    "def": "A compiler removing code whose result is never used.",
    "aliases": [
     "dead-code elimination"
    ]
   },
   "JMH": {
-   "in": "24",
+   "in": "25",
    "def": "The Java Microbenchmark Harness: an OpenJDK tool that warms code up, keeps results alive and runs each benchmark in a fresh JVM."
   },
   "Blackhole": {
-   "in": "24",
+   "in": "25",
    "def": "The JMH object that consumes a value so the compiler cannot treat it as unused.",
    "kind": "code"
   },
   "class data sharing": {
-   "in": "25",
+   "in": "26",
    "def": "Loading classes from a prepared archive file instead of reading and parsing class files.",
    "aliases": [
     "CDS"
    ]
   },
   "CDS archive": {
-   "in": "25",
+   "in": "26",
    "def": "The file class data sharing maps into memory: classes already parsed, in the form HotSpot keeps them.",
    "aliases": [
     "CDS archives"
    ]
   },
   "training run": {
-   "in": "25",
+   "in": "26",
    "def": "A run of the application whose only purpose is to record what a later cache should contain.",
    "aliases": [
     "training runs"
    ]
   },
   "AOT cache": {
-   "in": "25",
+   "in": "26",
    "def": "JDK 24's successor to the CDS archive: classes already loaded and linked, and from JDK 25 method profiles too."
   },
   "ArchiveClassesAtExit": {
-   "in": "25",
+   "in": "26",
    "def": "The option that writes the classes a run loaded into a CDS archive when it exits.",
    "kind": "code"
   },
   "SharedArchiveFile": {
-   "in": "25",
+   "in": "26",
    "def": "The option that names the CDS archive to use.",
    "kind": "code"
   },
   "AOTCache": {
-   "in": "25",
+   "in": "26",
    "def": "JDK 24+ option that names the AOT cache to use.",
    "kind": "code"
   },
   "AOTCacheOutput": {
-   "in": "25",
+   "in": "26",
    "def": "JDK 25+ option: do a training run and write an AOT cache in one command.",
    "kind": "code"
   },
   "StartKt": {
-   "in": "25",
+   "in": "26",
    "def": "The class holding the top-level functions of Start.kt.",
    "kind": "code"
   },
   "PerBytecodeTrapLimit": {
-   "in": "23",
+   "in": "24",
    "def": "The HotSpot option that limits how many uncommon traps of one kind one bytecode offset may hit (4).",
    "kind": "code"
   },
   "unstable_if": {
-   "in": "23",
+   "in": "24",
    "def": "The deoptimization reason HotSpot logs when a branch the profile never saw is taken.",
    "kind": "code"
   },
   "class_check": {
-   "in": "23",
+   "in": "24",
    "def": "The deoptimization reason HotSpot logs when an inlined call meets a class its check did not expect.",
    "kind": "code"
   },
   "ScoreBench": {
-   "in": "24",
+   "in": "25",
    "def": "The JMH benchmark class in puzzle 24.",
    "kind": "code"
   },
   "DumpLoadedClassList": {
-   "in": "25",
+   "in": "26",
    "def": "The option that writes the list of classes a run loaded, for -Xshare:dump.",
+   "kind": "code"
+  },
+  "if_icmpge": {
+   "in": "20",
+   "def": "Jump if the deeper of the two top integers is greater than or equal to the top one.",
+   "kind": "code"
+  },
+  "bimorphic": {
+   "in": "21",
+   "def": "A call site that has met exactly two receiver classes; C2 can inline both behind class checks."
+  },
+  "InlineSmallCode": {
+   "in": "21",
+   "def": "C2 does not inline a method whose existing compiled code is bigger than this many bytes (1,000 on x86-64).",
+   "kind": "code"
+  },
+  "MaxInlineLevel": {
+   "in": "21",
+   "def": "How many calls deep C2 inlines at most (15).",
+   "kind": "code"
+  },
+  "EliminateAllocationArraySizeLimit": {
+   "in": "22",
+   "def": "Arrays with more elements than this (64) are never scalar-replaced.",
+   "kind": "code"
+  },
+  "UseCompactObjectHeaders": {
+   "in": "22",
+   "def": "The HotSpot option for the smaller per-object bookkeeping layout (default from JDK 27).",
+   "kind": "code"
+  },
+  "leaf_type": {
+   "in": "23",
+   "def": "The dependency LogCompilation logs for the assumption that a class has no subclass loaded.",
+   "kind": "code"
+  },
+  "iconst_m1": {
+   "in": "24",
+   "def": "Push the integer constant minus one.",
+   "kind": "code"
+  },
+  "SharedClassListFile": {
+   "in": "26",
+   "def": "The option naming the class list -Xshare:dump reads.",
    "kind": "code"
   }
  },
