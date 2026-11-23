@@ -547,6 +547,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://pachulski.dev/course/docker/check-2</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://pachulski.dev/course/docker/00-a-container-is-a-process</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -588,6 +593,46 @@
   </url>
   <url>
     <loc>https://pachulski.dev/course/docker/08-who-builds-the-container</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/09-what-is-inside-an-image</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/10-stacking-layers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/11-the-containers-own-layer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/12-where-images-live</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/13-named-by-content</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/14-tags-move-digests-dont</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/15-pulling-from-a-registry</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/docker/16-one-name-many-machines</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -812,12 +857,17 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/jvm/24-warm-up-and-jmh</loc>
+    <loc>https://pachulski.dev/course/jvm/24-uncommon-traps</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://pachulski.dev/course/jvm/25-class-data-sharing</loc>
+    <loc>https://pachulski.dev/course/jvm/25-warm-up-and-jmh</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pachulski.dev/course/jvm/26-class-data-sharing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
