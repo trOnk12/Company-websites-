@@ -64,7 +64,7 @@ docker rm -f box w2
 docker run --rm notes:v1 cat /tmp/draft.txt
 ```
 
-The output from the run behind this page is the listing above; your sizes may differ slightly.
+The output from the run behind this page is the listing above. Sizes depend on how your machine stores images: on a second daemon using Docker's older way of storing images (puzzle 12), the same steps showed box at 6B and w2 at 0B, counting file contents rather than disk blocks.
 
 ## Check yourself
 
