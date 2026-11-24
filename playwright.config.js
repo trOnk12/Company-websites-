@@ -2,6 +2,8 @@
 
 const { defineConfig, devices } = require('@playwright/test');
 
+const baseURL = `http://localhost:${process.env.PORT || 3000}`;
+
 module.exports = defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -9,7 +11,7 @@ module.exports = defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: 'list',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL,
     trace: 'on-first-retry',
   },
   projects: [
@@ -32,7 +34,7 @@ module.exports = defineConfig({
   ],
   webServer: {
     command: 'node tests/server.js',
-    url: 'http://localhost:3000',
+    url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 15000,
   },

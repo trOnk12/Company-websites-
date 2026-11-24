@@ -6,7 +6,7 @@ const fs   = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -23,7 +23,7 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-  const safePath = path.normalize(req.url.split('?')[0]);
+  const safePath = path.posix.normalize(req.url.split('?')[0]);
   // Resolve to an absolute path and verify it stays inside ROOT
   // Directory URLs serve their index.html, as GitHub Pages does.
   const rel = safePath.replace(/^\//, '');

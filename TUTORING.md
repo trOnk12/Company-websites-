@@ -4,11 +4,13 @@ Strona: https://pachulski.dev/korepetycje/ (po polsku, dla rodziców i uczniów 
 albo na miejscu w okolicy Wschowy: 45 zł (klasy 4–6), 50 zł (7–8, egzamin ósmoklasisty), 60 zł (liceum, technikum,
 matura) za 45 minut; pierwsze 20 minut za darmo. Zmiany na stronie nie mogą psuć wyglądu, który Mateusz zaakceptował.
 
-## Zrobione na stronie (21 listopada 2026)
+## Zrobione na stronie (24 listopada 2026)
 
 - Tytuł i opis z frazami, których szuka rodzic: „korepetycje z matematyki online, klasy 4–6, Wschowa”.
 - Adres kanoniczny, strona w `sitemap.xml`, dane strukturalne (usługa, cena 45 zł, Lgiń, Wschowa).
 - Podgląd linku na Facebooku, Messengerze i WhatsAppie: `korepetycje/og.png` (zdjęcie, cena, klasy).
+- Telefon +48 789 174 023, SMS i link do WhatsApp przy głównym przycisku. Numer jest też w trzech tekstach do udostępnienia.
+- FAQ o lekcji, płatności i odwołaniu. Przy kontakcie informacja o odpowiedzi zwykle w ciągu godziny.
 - Test: `tests/tutoring.test.js`.
 
 ## Do zrobienia przez Mateusza (to przyniesie uczniów szybciej niż sama strona)
@@ -16,11 +18,9 @@ matura) za 45 minut; pierwsze 20 minut za darmo. Zmiany na stronie nie mogą psu
 1. **Wizytówka w Google (Google Business Profile)** jako firma usługowa bez adresu publicznego: obszar Wschowa,
    Lgiń, Sława, Góra; kategoria „Korepetytor”; link do strony. To ona pokazuje się w Mapach na „korepetycje
    matematyka Wschowa”.
-2. **Profil na e-korepetycje.net**: dopisać matematykę (od 4 klasy do matury) i link do strony; tam są już opinie 5,0/5.
+2. **Profil na e-korepetycje.net**: dopisać matematykę (od 4 klasy do matury) i link do strony, uzgodnić ceny z cennikiem strony; tam są już opinie 5,0/5.
 3. **Lokalne grupy na Facebooku** (Wschowa, Sława, Lgiń, grupy rodziców szkół): post poniżej; link pokaże podgląd.
 4. **Ogłoszenie na tablicy** w szkole, bibliotece, sklepie w Lginiu: kartka A5 z ceną i kodem QR do strony.
-5. **Numer telefonu** na stronie: wielu rodziców woli zadzwonić lub napisać SMS niż e-mail. Decyzja Mateusza;
-   wtedy dodać przycisk „Zadzwoń” obok e-maila.
 
 ## Z telefonu jednym dotknięciem
 
@@ -73,4 +73,12 @@ Mateusz: „dlaczego nie liceum?”. Decyzja: **od 4 klasy do matury, online i n
 `_tutoring-review-2026-11-21.md`): we Wschowie jedyna konkurencja uczy klasy 4–8 i maturę za 90 zł/h, tylko na
 miejscu; matura podstawowa w regionie kosztuje 60–100 zł/h. Cena 60 zł / 45 min (80 zł/h) jest w środku rynku.
 Zasada: nie pisać o wynikach matur ani zdawalności, dopóki nie ma uczniów po egzaminie; opisywać tylko sposób pracy.
-Do ustalenia: lekcje na miejscu u Mateusza czy dojazd do ucznia (promień, koszt dojazdu).
+## Do ustalenia
+- Miejscowości, do których Mateusz dojeżdża, i ewentualna opłata za dojazd.
+- Potwierdzenie numeru WhatsApp +48 789 174 023; opcjonalnie nazwa m.me do Messengera.
+- Program do lekcji online, wymagania dotyczące kamery i liczba lekcji tygodniowo.
+- Akceptacja zdania „Jako programista tłumaczę krok po kroku…”.
+- Sprawdzenie kwestii JDG przed pierwszą płatną lekcją.
+- Matura rozszerzona dopiero po samodzielnym rozwiązaniu dwóch ostatnich arkuszy CKE.
+- Autentyczna opinia rodzica po pierwszych uczniach matematyki.
+- Opcjonalny licznik bez cookies wyłącznie za zgodą Mateusza.
