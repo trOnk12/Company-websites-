@@ -89,9 +89,9 @@ publish event → rollback booking → false event</code></pre>
 <figure class="stepper" aria-label="Follow event 41 across two independent stores"><input type="radio" name="st-outbox" id="st-outbox-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-outbox" id="st-outbox-2" aria-label="Step 2 of 4"><input type="radio" name="st-outbox" id="st-outbox-3" aria-label="Step 3 of 4"><input type="radio" name="st-outbox" id="st-outbox-4" aria-label="Step 4 of 4">
 <div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="outbox-title">
 <title id="outbox-title">Follow event 41 across two independent stores</title><defs><marker id="ah-outbox-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-outbox-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-outbox-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-outbox-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
-<text class="d-b" x="12" y="28" text-anchor="start">Booking store</text>
+<text class="d-b" x="12" y="28" text-anchor="start">Booking DB</text>
 <text class="d-b" x="174" y="28" text-anchor="start">Relay</text>
-<text class="d-b" x="280" y="28" text-anchor="start">Dashboard store</text>
+<text class="d-b" x="280" y="28" text-anchor="start">Dashboard</text>
 <path class="d-dash" d="M158,14V218 M268,14V218"/>
 <rect class="d-band" x="12" y="48" width="136" height="118" rx="5"/>
 <rect class="d-band" x="280" y="48" width="128" height="118" rx="5"/>
@@ -253,7 +253,7 @@ SELECT * FROM evidence;</code></pre>
       </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<ol><li>Run the main SQL and confirm that Result 3 reports zero added rows while the dashboard still has one row.</li><li>Remove the conflict-handling clause from both dashboard inserts. Predict the error on the replacement delivery and confirm it.</li><li>Move the update that marks the outbox row published above the first dashboard insert, then delete both dashboard inserts to model a crash. Explain why the database now says “published” while the dashboard has no row.</li><li>Change the replacement row to event 42 for booking 302. Explain why two rows are now correct: the IDs describe two different bookings.</li><li>Replace the dashboard row with an external email call. State what evidence the email provider must accept so a retry does not send two emails.</li></ol>
+<ol><li>Run the main SQL and confirm that Result 3 reports zero added rows while the dashboard still has one row.</li><li>Remove the conflict-handling clause from both dashboard inserts, but leave each insert's semicolon. Predict the uniqueness error on the replacement delivery and confirm it.</li><li>Move the update that marks the outbox row published above the first dashboard insert, then delete both dashboard inserts to model a crash. Explain why the database now says “published” while the dashboard has no row.</li><li>Change the replacement row to event 42 for booking 302. Explain why two rows are now correct: the IDs describe two different bookings.</li><li>Replace the dashboard row with an external email call. State what evidence the email provider must accept so a retry does not send two emails.</li></ol>
 <p>You have passed when you can place a crash before or after every boundary, predict the surviving rows and explain why one booking may require repeated delivery but only one consumer effect.</p>
       </section>
       <section aria-labelledby="check-yourself">

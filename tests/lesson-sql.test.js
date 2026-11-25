@@ -59,7 +59,7 @@ test('outbox failure mutations expose a lost effect and an unsafe duplicate', as
   await run.click();
   await expect(exercise.getByRole('table').nth(3).getByRole('cell')).toHaveText(['1', '0']);
 
-  await editor.fill(original.replaceAll('ON CONFLICT(event_id) DO NOTHING;', ''));
+  await editor.fill(original.replaceAll('ON CONFLICT(event_id) DO NOTHING;', ';'));
   await run.click();
   await expect(status).toContainText('UNIQUE constraint failed: dashboard_booking.event_id');
 });

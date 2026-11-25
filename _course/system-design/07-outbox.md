@@ -157,7 +157,7 @@ Suppose event 41 says booking 301 is confirmed at version one, while event 42 sa
 ## Try it
 
 1. Run the main SQL and confirm that Result 3 reports zero added rows while the dashboard still has one row.
-2. Remove the conflict-handling clause from both dashboard inserts. Predict the error on the replacement delivery and confirm it.
+2. Remove the conflict-handling clause from both dashboard inserts, but leave each insert's semicolon. Predict the uniqueness error on the replacement delivery and confirm it.
 3. Move the update that marks the outbox row published above the first dashboard insert, then delete both dashboard inserts to model a crash. Explain why the database now says “published” while the dashboard has no row.
 4. Change the replacement row to event 42 for booking 302. Explain why two rows are now correct: the IDs describe two different bookings.
 5. Replace the dashboard row with an external email call. State what evidence the email provider must accept so a retry does not send two emails.
