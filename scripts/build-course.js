@@ -255,6 +255,7 @@ function renderPuzzle(course, p, terms) {
     s.blocks.some(b => b.type === 'code' && b.lang === 'python')));
   const depth = sections.filter(s => s.title.startsWith('Go deeper: '));
   let questionCount = 0;
+  let diagramCount = 0;
   const body = sections.map(s => {
     const sid = sectionId(s.title);
     const html = s.title === 'Check yourself'
@@ -265,7 +266,7 @@ function renderPuzzle(course, p, terms) {
         return html;
       }).join('\n')
       : s.blocks.map(b => b.type === 'code' && b.lang.startsWith('diagram')
-      ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file, p.prediction) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
+      ? diagram(course, b.text.trim() || b.lang.split(/\s+/)[1], p.file, diagramCount++ === 0 ? p.prediction : null) + gifLink(course, b.text.trim() || b.lang.split(/\s+/)[1])
       : b.type === 'code' && b.lang.startsWith('read-path ') ? require('./read-path-example').render(b.lang.slice(10))
       : b.type === 'code' && b.lang === 'sql run' ? sqlExercise(b, ctx)
       : L.renderBlocks([b], ctx, { recall: depth.includes(s) && b.type === 'ul' })).join('\n');

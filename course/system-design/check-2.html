@@ -76,13 +76,13 @@
 <p class="fb ok opt-1"><b>Right.</b> The ID identifies a position inside the tie.</p>
 <p class="fb no opt-2"><b>Not quite.</b> The time is readable. <a class="show-me" href="05-history.html">Learn it in puzzle 5 →</a></p>
 </fieldset></section>
-<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: Why does a confirmed space still look free?</p>
+<section aria-label="Puzzle 6"><p class="eyebrow">Puzzle 6: Why does a confirmed booking still look missing?</p>
 <fieldset class="quiz" data-n="6">
-<legend>What can hide a committed write?</legend>
-<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-1"><label for="q-06-freshness-1-1"><span>The presence of an index</span></label>
-<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-2" data-ok><label for="q-06-freshness-1-2"><span>Replication delay</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The copy may not have applied the change yet. <a class="show-me" href="06-freshness.html">Learn it in puzzle 6 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The copy may not have applied the change yet.</p>
+<legend>Ada’s write committed at 41. A replica has applied through 40. Can it satisfy her read-after-41 request?</legend>
+<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-1" data-ok><label for="q-06-freshness-1-1"><span>No, because position 41 is missing there</span></label>
+<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-2"><label for="q-06-freshness-1-2"><span>Yes, because any confirmed write exists on every copy</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The request needs another copy or must wait.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The replica has not applied that write. <a class="show-me" href="06-freshness.html">Learn it in puzzle 6 →</a></p>
 </fieldset></section>
       <p class="check-result" aria-live="polite"></p>
       <p class="actions"><a class="button" href="./">Back to the overview →</a></p>

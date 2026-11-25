@@ -1,0 +1,40 @@
+<!-- label: Follow one confirmed booking to the next read -->
+<svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="ryw-title">
+<title id="ryw-title">Follow one confirmed booking to the next read</title>
+<text class="d-b" x="14" y="27" text-anchor="start">Ada books space B12</text>
+<text class="d-mi" x="55" y="62" text-anchor="middle">Phone</text>
+<text class="d-mi" x="210" y="62" text-anchor="middle">Write copy</text>
+<text class="d-mi" x="360" y="62" text-anchor="middle">Read copy</text>
+<rect class="d-box" x="14" y="77" width="82" height="58" rx="6"/>
+<rect class="d-box" x="159" y="77" width="102" height="58" rx="6"/>
+<rect class="d-box" x="309" y="77" width="97" height="58" rx="6"/>
+<g class="step s1">
+  <text class="d-t" x="210" y="101" text-anchor="middle">B12 → Ada</text>
+  <text class="d-a" x="210" y="122" text-anchor="middle">position 41</text>
+  <x-arrow tone="acc" d="M159,105H96"/>
+  <text class="d-a" x="14" y="170" text-anchor="start">Confirmed: 301 · after 41</text>
+</g>
+<g class="step s2 hide-4">
+  <text class="d-r" x="360" y="101" text-anchor="middle">B12 free</text>
+  <text class="d-r" x="360" y="122" text-anchor="middle">applied 40</text>
+  <x-arrow tone="red" d="M96,190H309"/>
+  <text class="d-r" x="14" y="216" text-anchor="start">Ordinary read: old answer</text>
+</g>
+<g class="step s3">
+  <x-arrow tone="acc" d="M96,190H159"/>
+  <text class="d-a" x="14" y="244" text-anchor="start">Read after 41: write copy shows 301</text>
+</g>
+<g class="step s4">
+  <x-arrow tone="path" d="M261,105H309"/>
+  <text class="d-t" x="360" y="101" text-anchor="middle">B12 → Ada</text>
+  <text class="d-a" x="360" y="122" text-anchor="middle">applied 41</text>
+  <text class="d-a" x="14" y="272" text-anchor="start">Read copy may answer after applying 41</text>
+</g>
+<g transform="translate(55 106)" data-move="1:55,106 2:55,190 3:55,190 4:55,190"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
+</svg>
+<ol class="caps">
+<li><p>The write copy commits booking 301 at position 41. Ada’s reply carries both values.</p></li>
+<li><p>The read copy has applied only through 40. Predict what it says about B12 before revealing the next step.</p></li>
+<li><p>A read carrying “after 41” goes to the write copy, which already includes Ada’s booking.</p></li>
+<li><p>After the read copy applies position 41, it may answer too. The promise follows Ada’s write, not every user’s latest write.</p></li>
+</ol>

@@ -83,15 +83,15 @@
   },
   "06-freshness": {
     "step": 2,
-    "question": "The source observed the lot at 92. At 115, how old is the answer?",
+    "question": "Ada needs position 41. The replica has applied through 40. What does that replica return for booking 301?",
     "options": [
-      "15 seconds",
-      "23 seconds"
+      "Booking 301",
+      "No booking"
     ],
     "answer": 1,
-    "hint": "The cache received it at 100, but the underlying observation was already eight seconds old.",
-    "why": "The source observation is 23 seconds old. Seven seconds of the allowance remain.",
-    "bridge": "A map can lag a booking. How does the system remember to announce the booking if its process dies?"
+    "hint": "Which positions has the replica actually applied: through 40 or through 41?",
+    "why": "Position 41 is not present on that copy yet, so its local state contains no booking 301.",
+    "bridge": "Ada can now read her confirmed booking. How does the service remember to announce it if the process dies?"
   },
   "07-outbox": {
     "step": 3,

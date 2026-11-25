@@ -145,6 +145,26 @@ test('moving an unseen session above the cursor changes the prediction and the S
   await expect(exercise.getByRole('table').nth(3)).toHaveAccessibleName('Result 4 · 0 rows');
 });
 
+test('a dependent read rejects a replica until it applies the confirmed position', async ({ page }) => {
+  await page.goto('/course/system-design/06-freshness.html');
+  const exercise = page.locator('[data-sql-exercise]').first();
+  await exercise.getByRole('button', { name: 'Run SQL' }).click();
+  const tables = exercise.getByRole('table');
+  await expect(tables).toHaveCount(4);
+  await expect(tables.nth(0).getByRole('cell')).toHaveText(['301', '41']);
+  await expect(tables.nth(1)).toHaveAccessibleName('Result 2 · 0 rows');
+  await expect(tables.nth(2).getByRole('cell')).toHaveText(['301']);
+  await expect(tables.nth(3).getByRole('cell')).toHaveText(['301']);
+
+  await exercise.getByRole('button', { name: 'Edit SQL' }).click();
+  const editor = exercise.getByRole('textbox', { name: 'SQL to run' });
+  const sql = await editor.inputValue();
+  const replay = "INSERT INTO replica_bookings\nSELECT * FROM primary_bookings WHERE write_position = 41;\nUPDATE replica_state SET applied_position = 41;";
+  await editor.fill(sql.replace(replay, '').replace('-- Result 2:', replay + '\n\n-- Result 2:'));
+  await exercise.getByRole('button', { name: 'Run SQL' }).click();
+  await expect(tables.nth(1).getByRole('cell')).toHaveText(['301']);
+});
+
 test('an older Raft log still loses the vote after adding more old entries', async ({ page }) => {
   await page.goto('/course/system-design/10-consensus.html');
   const exercise = page.locator('[data-sql-exercise]');

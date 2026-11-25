@@ -45,6 +45,26 @@
       "in": 6,
       "def": "A separate copy that replays the changes it receives from the primary store."
     },
+    "primary store": {
+      "in": 6,
+      "def": "The database copy that accepts the booking writes in this design."
+    },
+    "write position": {
+      "in": 6,
+      "def": "An ordered marker identifying how far a database copy has applied changes."
+    },
+    "read-your-writes": {
+      "in": 6,
+      "def": "A promise that a client's reads will not go behind a write already confirmed to that client."
+    },
+    "map cache": {
+      "in": 6,
+      "def": "A place that keeps an answer so another request can reuse it without repeating the original work."
+    },
+    "freshness limit": {
+      "in": 6,
+      "def": "The greatest allowed age of information when the user receives it."
+    },
     "SQL": {
       "in": 0,
       "def": "A language for asking questions about records and changing them in a database.",

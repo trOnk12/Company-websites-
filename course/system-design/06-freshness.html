@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Give map reads and confirmation reads explicit freshness rules.">
+  <meta name="description" content="Make Ada's next read include the booking the service just confirmed.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="Why does a confirmed space still look free? – System design from first principles to design review – Mateusz Pachulski">
-  <meta property="og:description" content="Give map reads and confirmation reads explicit freshness rules.">
+  <meta property="og:title" content="Why does a confirmed booking still look missing? – System design from first principles to design review – Mateusz Pachulski">
+  <meta property="og:description" content="Make Ada's next read include the booking the service just confirmed.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/system-design/06-freshness">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>Why does a confirmed space still look free? – System design from first principles to design review – Mateusz Pachulski</title>
+  <title>Why does a confirmed booking still look missing? – System design from first principles to design review – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/system-design/06-freshness">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -53,34 +53,161 @@
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
         <p class="eyebrow">Puzzle 6 · 7 of 19</p>
-        <h1>Why does a confirmed space still look free?</h1>
-        <p class="lede">Give map reads and confirmation reads explicit freshness rules.</p>
+        <h1>Why does a confirmed booking still look missing?</h1>
+        <p class="lede">Make Ada's next read include the booking the service just confirmed.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Two drivers tap Reserve. Who gets the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Where is Ada’s booking when her reply is lost?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="The booking succeeded, but the reply was lost">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" aria-current="page" title="Why does a confirmed space still look free?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Two drivers tap Reserve. Who gets the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Where is Ada’s booking when her reply is lost?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="The booking succeeded, but the reply was lost">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" aria-current="page" title="Why does a confirmed booking still look missing?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#make-the-cache-prove-the-age-of-its-answer">Run SQL</a>
+        <a href="#run-the-stale-read-and-both-repairs">Run SQL</a>
+        <a href="#go-deeper-how-old-is-a-three-second-old-saved-map-answer">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-6">
         <p id="builds-on-6"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: Two drivers tap Reserve. Who gets the last space?</summary><p>Two phones can show the same free space. At most one driver can have it booked for the same time.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
+        <ul><li data-block="3"><details><summary>Puzzle 3: How does the database choose a winner?</summary><p>Check that a space is free at the moment you take it. Save the booking only when that change succeeds.</p><p><a href="03-conditional-write.html">Review puzzle 3</a></p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 2 puzzles: <a href="00-promise.html">0</a> → <a href="03-conditional-write.html">3</a>. Know them already? Start here.</p>
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>Ada has her confirmation. The map still shows one free space. Did the database lose her reservation?</p>
+<p>The previous puzzle kept Ada’s place while she paged through a moving list. Now she creates booking 301 for B12 and immediately opens its details.</p>
+<p>The booking service replies “confirmed”. The next request says “booking not found”. Both replies came from the same service. How can both be true?</p>
+<p>The <b>primary store</b> is the database copy that accepts the booking write. A <b>replica</b> is a second copy that applies the primary store’s changes, sometimes later. The diagram calls them the write copy and read copy so you can follow the request before learning the routing rule.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
+<figure class="stepper" aria-label="Follow one confirmed booking to the next read"><input type="radio" name="st-read-your-writes" id="st-read-your-writes-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-read-your-writes" id="st-read-your-writes-2" aria-label="Step 2 of 4"><input type="radio" name="st-read-your-writes" id="st-read-your-writes-3" aria-label="Step 3 of 4"><input type="radio" name="st-read-your-writes" id="st-read-your-writes-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="ryw-title">
+<title id="ryw-title">Follow one confirmed booking to the next read</title><defs><marker id="ah-read-your-writes-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-read-your-writes-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-read-your-writes-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-read-your-writes-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<text class="d-b" x="14" y="27" text-anchor="start">Ada books space B12</text>
+<text class="d-mi" x="55" y="62" text-anchor="middle">Phone</text>
+<text class="d-mi" x="210" y="62" text-anchor="middle">Write copy</text>
+<text class="d-mi" x="360" y="62" text-anchor="middle">Read copy</text>
+<rect class="d-box" x="14" y="77" width="82" height="58" rx="6"/>
+<rect class="d-box" x="159" y="77" width="102" height="58" rx="6"/>
+<rect class="d-box" x="309" y="77" width="97" height="58" rx="6"/>
+<g class="step s1">
+  <text class="d-t" x="210" y="101" text-anchor="middle">B12 → Ada</text>
+  <text class="d-a" x="210" y="122" text-anchor="middle">position 41</text>
+  <path class="d-arr-acc" d="M159,105H96" marker-end="url(#ah-read-your-writes-acc)"/>
+  <text class="d-a" x="14" y="170" text-anchor="start">Confirmed: 301 · after 41</text>
+</g>
+<g class="step s2 hide-4">
+  <text class="d-r" x="360" y="101" text-anchor="middle">B12 free</text>
+  <text class="d-r" x="360" y="122" text-anchor="middle">applied 40</text>
+  <path class="d-arr-red" d="M96,190H309" marker-end="url(#ah-read-your-writes-red)"/>
+  <text class="d-r" x="14" y="216" text-anchor="start">Ordinary read: old answer</text>
+</g>
+<g class="step s3">
+  <path class="d-arr-acc" d="M96,190H159" marker-end="url(#ah-read-your-writes-acc)"/>
+  <text class="d-a" x="14" y="244" text-anchor="start">Read after 41: write copy shows 301</text>
+</g>
+<g class="step s4">
+  <path class="d-arr-path" d="M261,105H309" marker-end="url(#ah-read-your-writes-path)"/>
+  <text class="d-t" x="360" y="101" text-anchor="middle">B12 → Ada</text>
+  <text class="d-a" x="360" y="122" text-anchor="middle">applied 41</text>
+  <text class="d-a" x="14" y="272" text-anchor="start">Read copy may answer after applying 41</text>
+</g>
+<g transform="translate(55 106)" data-move="1:55,106 2:55,190 3:55,190 4:55,190"><circle class="d-dot" cx="0" cy="0" r="5"/></g>
+</svg></div>
+<p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
+<ol class="caps">
+<li><p>The write copy commits booking 301 at position 41. Ada’s reply carries both values.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-read-your-writes-2">Next →</label></div></li>
+<li><p>The read copy has applied only through 40. Predict what it says about B12 before revealing the next step.</p><fieldset class="diagram-prediction" data-hint="Which positions has the replica actually applied: through 40 or through 41?" data-reason="Position 41 is not present on that copy yet, so its local state contains no booking 301.">
+<legend>Ada needs position 41. The replica has applied through 40. What does that replica return for booking 301?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button">Booking 301</button><button type="button" class="button" data-answer>No booking</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-read-your-writes-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-read-your-writes-3">Next →</label></div></li>
+<li><p>A read carrying “after 41” goes to the write copy, which already includes Ada’s booking.</p><div class="stepnav"><label for="st-read-your-writes-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-read-your-writes-4">Next →</label></div></li>
+<li><p>After the read copy applies position 41, it may answer too. The promise follows Ada’s write, not every user’s latest write.</p><div class="stepnav"><label for="st-read-your-writes-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-read-your-writes-1">↺ Again</label></div></li>
+</ol>
+<div class="dots" aria-hidden="true"><label for="st-read-your-writes-1" title="Step 1"></label><label for="st-read-your-writes-2" title="Step 2"></label><label for="st-read-your-writes-3" title="Step 3"></label><label for="st-read-your-writes-4" title="Step 4"></label></div>
+</figure>
+<p>Stop after step two. The write copy has booking 301 at position 41, while the read copy has applied only through 40. Predict its answer.</p>
+      </section>
+      <section aria-labelledby="the-building-block">
+        <h2 id="the-building-block">The building block</h2>
+<p>The primary store commits booking 301 and records the change at position 41. The replica receives the same changes, but applying them later lets the write return without waiting for every copy. That creates a period in which the copies disagree.</p>
+<p>Ada’s confirmation contains two facts:</p>
+<pre><code class="language-json">{
+  &quot;bookingId&quot;: 301,
+  &quot;readAfter&quot;: 41
+}</code></pre>
+<p>The booking ID identifies the result. The <b>write position</b> identifies how far a database copy must have applied changes before it can include that result.</p>
+<p>When Ada immediately asks for booking 301, her phone sends the position back:</p>
+<pre><code class="language-text">GET /bookings/301?after=41</code></pre>
+<p>The service may now choose one of three honest actions:</p>
+<ol><li>read from the primary, which has already applied 41;</li><li>use a replica only after it has applied at least 41;</li><li>wait for that replica up to a deadline, then fall back to the primary or report that the read cannot yet be satisfied.</li></ol>
+<p>Sending the request to a random replica is not an honest fourth action. A copy at position 40 can correctly report that booking 301 is absent from <em>its current state</em>, even though the write succeeded on the primary.</p>
+<p>This promise is called <b>read-your-writes</b>: after the service confirms Ada’s write, Ada’s later reads do not go backwards past that write. It does not promise that every user sees every latest write. It also does not prove that booking 301 survives loss of the primary; durability during failover is a separate promise tested later in the course.</p>
+      </section>
+      <section aria-labelledby="the-analogy">
+        <h2 id="the-analogy">The analogy</h2>
+<p>Ada hands form 301 to the main clerk. The clerk stamps it and gives her a receipt marked 41. A second clerk’s folder is updated by courier and still ends at 40. When Ada shows receipt 41, the desk must use the main folder or wait until the second folder reaches 41. Asking the second clerk without showing the receipt can produce an old but locally truthful answer.</p>
+      </section>
+      <section aria-labelledby="run-the-stale-read-and-both-repairs">
+        <h2 id="run-the-stale-read-and-both-repairs">Run the stale read and both repairs</h2>
+<p>Two booking tables model the two database copies. A third table records the replica’s applied position. The browser does not run a replication engine; the explicit insert and state update together represent the replica applying position 41.</p>
+<p>Before running, predict the four result tables:</p>
+<ol><li>What does the successful write return?</li><li>What does the replica return before applying 41?</li><li>What does the primary return for Ada’s read?</li><li>What does the replica return after applying 41?</li></ol>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">CREATE TABLE primary_bookings (
+  id INTEGER PRIMARY KEY, owner TEXT, space TEXT, write_position INTEGER
+);
+CREATE TABLE replica_bookings (
+  id INTEGER PRIMARY KEY, owner TEXT, space TEXT, write_position INTEGER
+);
+CREATE TABLE replica_state (applied_position INTEGER NOT NULL);
+INSERT INTO replica_state VALUES (40);
+
+INSERT INTO primary_bookings VALUES (301, 'Ada', 'B12', 41);
+
+-- Result 1: the committed result returned to Ada
+SELECT id, write_position FROM primary_bookings WHERE id = 301;
+
+-- Result 2: a replica still applied only through position 40
+WITH request(required_position) AS (VALUES (41))
+SELECT b.id
+FROM replica_bookings b, replica_state s, request r
+WHERE b.id = 301 AND s.applied_position &gt;= r.required_position;
+
+-- Result 3: route read-after-41 to the primary
+SELECT id FROM primary_bookings
+WHERE id = 301;
+
+-- The replica now applies the change at position 41.
+INSERT INTO replica_bookings
+SELECT * FROM primary_bookings WHERE write_position = 41;
+UPDATE replica_state SET applied_position = 41;
+
+-- Result 4: the caught-up replica may answer
+WITH request(required_position) AS (VALUES (41))
+SELECT b.id
+FROM replica_bookings b, replica_state s, request r
+WHERE b.id = 301 AND s.applied_position &gt;= r.required_position;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>The results are booking 301 with position 41, no row, booking 301, and booking 301. The empty second result is the failure Ada observed. The third and fourth results demonstrate the two repair routes.</p>
+<h3>Failure: wait forever for one replica</h3>
+<p>Waiting for position 41 without a deadline can turn one slow or disconnected replica into a request that never finishes.</p>
+<p>Use a deadline. When it expires, either route to an eligible source such as the primary or return a deliberate retryable response. Record how often reads wait, fall back or fail. A position is evidence that one copy is far enough along; it is not permission to show another owner’s booking, so the normal ownership check remains required.</p>
+      </section>
+      <details class="depth-puzzle" id="go-deeper-how-old-is-a-three-second-old-saved-map-answer">
+        <summary><span class="depth-label">Go deeper</span>How old is a three-second-old saved map answer?</summary>
+        <div class="depth-content">
+<p>A dependent read is a read whose acceptable answer depends on an earlier write in the same user journey. Ada’s dependent read must include her confirmed booking. A public map can make a different promise: its information may be old, but never by more than thirty seconds.</p>
+<p>A <b>map cache</b> keeps a map answer so another request can reuse it without repeating the original work. A <b>freshness limit</b> is the greatest allowed age of that information when the driver receives it.</p>
 <figure class="stepper" aria-label="Measure the age of a cached observation"><input type="radio" name="st-freshness" id="st-freshness-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-freshness" id="st-freshness-2" aria-label="Step 2 of 4"><input type="radio" name="st-freshness" id="st-freshness-3" aria-label="Step 3 of 4"><input type="radio" name="st-freshness" id="st-freshness-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="d-title">
-<title id="d-title">Measure the age of a cached observation</title><defs><marker id="ah-freshness-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="cache-age-title">
+<title id="cache-age-title">Measure the age of a cached observation</title><defs><marker id="ah-freshness-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-ink" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-acc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-acc" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-red" d="M0,0 L10,5 L0,10 Z"/></marker><marker id="ah-freshness-path" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="d-ah-path" d="M0,0 L10,5 L0,10 Z"/></marker></defs>
 <text class="d-b" x="14" y="30" text-anchor="start">Life of one map reading</text>
 <path class="d-line" d="M30,130H396"/>
 <path class="d-line" d="M32,127v8"/><text class="d-mi" x="32" y="158" text-anchor="middle">92</text>
@@ -102,44 +229,36 @@
 <g class="step s4">
   <path class="d-red" d="M333,65 V130"/>
   <text class="d-r" x="398" y="57" text-anchor="end">30 s limit</text>
-  <text class="d-r" x="18" y="271" text-anchor="start">After 122 · too old</text>
+  <text class="d-r" x="18" y="271" text-anchor="start">At 122 · exactly 30 s</text>
 </g>
 <g transform="translate(32 130)" data-move="1:32,130 2:112,130 3:260,130 4:333,130"><circle class="d-dot" cx="0" cy="0" r="6"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
 <li><p>At second 92 the data source observes one free space. That observation is the origin of the age calculation.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-freshness-2">Next →</label></div></li>
-<li><p>At 100 the cache fetches the reading. Eight seconds of the thirty-second allowance are already gone.</p><fieldset class="diagram-prediction" data-hint="The cache received it at 100, but the underlying observation was already eight seconds old." data-reason="The source observation is 23 seconds old. Seven seconds of the allowance remain.">
-<legend>The source observed the lot at 92. At 115, how old is the answer?</legend>
-<div class="actions" data-prediction-controls hidden><button type="button" class="button">15 seconds</button><button type="button" class="button" data-answer>23 seconds</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-freshness-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-freshness-3">Next →</label></div></li>
+<li><p>At 100 the cache fetches the reading. Eight seconds of the thirty-second allowance are already gone.</p><div class="stepnav"><label for="st-freshness-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-freshness-3">Next →</label></div></li>
 <li><p>At 115 the cache has held the reading for fifteen seconds. Add the original eight. The driver receives a 23-second-old observation.</p><div class="stepnav"><label for="st-freshness-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-freshness-4">Next →</label></div></li>
 <li><p>At 122 the reading is exactly thirty seconds old. A later refresh of the same observation cannot reset its age. A separate confirmation can use the committed grant.</p><div class="stepnav"><label for="st-freshness-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-freshness-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-freshness-1" title="Step 1"></label><label for="st-freshness-2" title="Step 2"></label><label for="st-freshness-3" title="Step 3"></label><label for="st-freshness-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/freshness.gif" download>Save this diagram as a GIF</a></p>
-      </section>
-      <section aria-labelledby="the-building-block">
-        <h2 id="the-building-block">The building block</h2>
-<p>The primary store has committed the write. A <b>replica</b> is another copy that replays changes. Asynchronous replication lets that copy lag. A cache holds a previously computed answer for repeated reads. It can also be stale. These are independent sources of delay.</p>
-<p>Suppose a map answer is fetched from a copy already eight seconds behind and kept for another thirty seconds. Near expiry it can describe a state about 38 seconds old. A cache lifetime does not bound the age of its source. Return the committed result for the confirmation screen, or read from a source known to have observed that write. Measure end-to-end age to enforce the map's thirty-second promise.</p>
-<h3>Spend the freshness budget</h3>
-<p>Assume the response reports the time of a trustworthy source observation and the clocks agree. At second 100, a cache stores a reading from second 92. At second 115 the reader receives a value 23 seconds old. Seven seconds of a 30-second allowance remain. Keeping the entry until second 130 would exceed that allowance by eight seconds.</p>
-<p>What if refreshing it at second 122 returns the very same reading from second 92? Starting another 30-second timer hides the lag. Retain the source observation time. A map could mark availability unknown when the age limit is exceeded. The separate reservation path still checks the current inventory before granting a space.</p>
-      </section>
-      <section aria-labelledby="make-the-cache-prove-the-age-of-its-answer">
-        <h2 id="make-the-cache-prove-the-age-of-its-answer">Make the cache prove the age of its answer</h2>
-<p>A reading has two times: the second the source observed the lot and the second the cache copied that reading. At second 125 both policies below see the same entry. Which one would let the driver see a reading older than the thirty-second promise?</p>
+<p>The source observed one free space at second 92. The map cache copied that reading at second 100 and served it at second 115:</p>
+<pre><code class="language-text">information age = 115 - 92 = 23 seconds
+time in this cache = 115 - 100 = 15 seconds</code></pre>
+<p>Only the first number tests the product promise. Copying the same observation again cannot restart its age. At second 125, a reading observed at 92 is thirty-three seconds old even if the latest cache copied it at 122.</p>
+<h3>Reproduce the reset-timer failure</h3>
+<p>Before running the SQL, predict which policy displays information older than the thirty-second limit.</p>
 <div class="lesson-sql" data-sql-exercise>
-<pre><code class="language-sql">CREATE TABLE map_entry (source_second INTEGER, cached_second INTEGER);
+<pre><code class="language-sql">CREATE TABLE map_entry (observed_second INTEGER, copied_second INTEGER);
 INSERT INTO map_entry VALUES (92, 122);
 
 WITH clock(now) AS (VALUES (125))
-SELECT now - source_second AS true_age,
-       now - cached_second AS time_in_cache,
-       CASE WHEN now - cached_second &lt;= 30 THEN 'show' ELSE 'unknown' END
-         AS cache_timer,
-       CASE WHEN now - source_second &lt;= 30 THEN 'show' ELSE 'unknown' END
-         AS source_timer
+SELECT now - observed_second AS information_age,
+       now - copied_second AS time_in_this_cache,
+       CASE WHEN now - copied_second &lt;= 30 THEN 'show' ELSE 'unknown' END
+         AS copy_time_policy,
+       CASE WHEN now - observed_second &lt;= 30 THEN 'show' ELSE 'unknown' END
+         AS observation_time_policy
 FROM map_entry, clock;</code></pre>
 <label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
 <div class="actions" data-sql-controls hidden>
@@ -148,46 +267,57 @@ FROM map_entry, clock;</code></pre>
 <button type="button" class="button" data-reset hidden>Restore original SQL</button>
 </div>
 <p class="small" role="status"></p><div data-output></div></div>
-<p>The reading is 33 seconds old after only three seconds in this cache. The cache timer shows it. The source timer marks it unknown. Change 125 to 122, then 123 to locate the exact boundary. This contract includes age 30. It assumes the two timestamps use comparable clocks and the source time describes the observation itself. If the source supplies only the time the cache fetched its response, the service lacks evidence to make this age promise.</p>
+<p>The information is thirty-three seconds old after only three seconds in this cache. The copy-time policy shows it; the observation-time policy marks it unknown. Change 125 to 122 and then 123 to test the exact boundary.</p>
+<p>The example assumes comparable clocks and a trustworthy observation time. If the source reports only when the cache fetched its response, the service lacks evidence for a source-to-screen age promise. Carry the original observation time—or a correctly maintained HTTP response age—through every layer, and return unknown or validate the answer when its total age crosses the limit.</p>
+<details class="recall"><summary>A reading was observed at 40, copied at 55 and served at 60. How old is its information?</summary><p>5 seconds &gt;&gt; That measures only time in the latest cache. &gt;&gt; go-deeper-how-old-is-a-three-second-old-map-cache-entry||*20 seconds</p></details>
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>
+      <section aria-labelledby="in-practice-postgresql-positions">
+        <h2 id="in-practice-postgresql-positions">In practice: PostgreSQL positions</h2>
+<p>PostgreSQL calls a write position a log sequence number. On PostgreSQL 17, an application can carry a primary position and compare it with the standby’s last replayed position. PostgreSQL 19 adds a direct wait statement for a log position. The portable design rule is unchanged: the required position must be at or after the relevant commit, and the standby must replay through it before serving the dependent read.</p>
+<p>Do not compare wall-clock timestamps to prove this ordering. Clocks can disagree, and “five milliseconds later” does not prove which database changes a replica has applied.</p>
       </section>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Draw a write at second 10, a stale fetch at 17 and replication at 18. When can the cached response outlive the map promise? Now let many clients refresh one popular entry at expiry. Coalescing them into one in-flight fetch reduces duplicate work.</p>
+<ol><li>Run the SQL and confirm that Result 2 has zero rows.</li><li>Move both replica-apply statements—the insert and the state update—above Result 2. Predict which result changes.</li><li>In Result 4, change the required position to 42 while the replica’s applied position remains at 41. Confirm that no row is returned and explain why that replica is not eligible.</li><li>Add Ben’s booking at position 42. Then add an owner filter that limits Ada’s reads to Ada’s rows and prove that her request cannot return Ben’s row.</li><li>Write a routing rule with a 200 ms deadline and name the metric emitted for wait, fallback and failure.</li></ol>
+<p>You have passed when you can reproduce the stale read, repair it by routing or waiting, and explain why read-your-writes is narrower than “every read is current”.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>What can hide a committed write?</legend>
-<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-1"><label for="q-06-freshness-1-1"><span>The presence of an index</span></label>
-<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-2" data-ok><label for="q-06-freshness-1-2"><span>Replication delay</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The copy may not have applied the change yet. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The copy may not have applied the change yet.</p>
+<legend>Ada’s write committed at 41. A replica has applied through 40. Can it satisfy her read-after-41 request?</legend>
+<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-1" data-ok><label for="q-06-freshness-1-1"><span>No, because position 41 is missing there</span></label>
+<input type="radio" name="q-06-freshness-1" id="q-06-freshness-1-2"><label for="q-06-freshness-1-2"><span>Yes, because any confirmed write exists on every copy</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The request needs another copy or must wait.</p>
+<p class="fb no opt-2"><b>Not quite.</b> The replica has not applied that write. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What measures the thirty-second promise?</legend>
-<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-1"><label for="q-06-freshness-2-1"><span>Time since cache insertion alone</span></label>
-<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-2" data-ok><label for="q-06-freshness-2-2"><span>Age from source to screen</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> The cached value may already have been old. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> The cached value may already have been old.</p>
+<legend>Why send the write position with Ada’s next read?</legend>
+<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-1" data-ok><label for="q-06-freshness-2-1"><span>To state the minimum applied change her read requires</span></label>
+<input type="radio" name="q-06-freshness-2" id="q-06-freshness-2-2"><label for="q-06-freshness-2-2"><span>To authorize access to every booking</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The route can reject copies that are behind it.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Position is not authorization. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Where can the first confirmation view come from?</legend>
-<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-1"><label for="q-06-freshness-3-1"><span>Any old map entry</span></label>
-<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-2" data-ok><label for="q-06-freshness-3-2"><span>The committed result</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Confirmation requires knowledge of the completed grant. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Confirmation requires knowledge of the completed grant.</p>
+<legend>Does read-your-writes make every reader see the latest global state?</legend>
+<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-1"><label for="q-06-freshness-3-1"><span>Yes, every replica becomes current immediately</span></label>
+<input type="radio" name="q-06-freshness-3" id="q-06-freshness-3-2" data-ok><label for="q-06-freshness-3-2"><span>No, it prevents this client from going behind its confirmed write</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Other copies can still lag. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The promise is scoped to Ada’s earlier write.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/warm-standby.html">PostgreSQL · Standby Servers</a> — “PostgreSQL streaming replication is asynchronous by default.”</li><li><a href="https://aws.amazon.com/builders-library/caching-challenges-and-strategies/">AWS · Caching challenges and strategies</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A cache can extend the staleness it inherited from its source.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/warm-standby.html">PostgreSQL 17 · Log-shipping standby servers</a> — streaming replication is asynchronous by default, so a standby can temporarily omit a committed primary transaction.</li><li><a href="https://www.postgresql.org/docs/17/functions-admin.html#FUNCTIONS-RECOVERY-INFO-TABLE">PostgreSQL 17 · Recovery information functions</a> — the replay position reports the last log location applied during recovery.</li><li><a href="https://www.postgresql.org/docs/current/warm-standby.html#READ-YOUR-WRITES">PostgreSQL 19 · Read-your-writes consistency</a> — current PostgreSQL documents carrying a primary position and waiting for standby replay; the lesson labels the new direct wait syntax by version.</li><li><a href="https://www.rfc-editor.org/rfc/rfc9111.html#section-4.2.3">RFC 9111 · HTTP Caching</a> — response age includes age received from an earlier cache plus time resident in the current cache.</li></ul>
+<p>The example and client-facing contract are original. The separation between a client’s session guarantee and globally current reads follows the consistency-model treatment in <em>Designing Data-Intensive Applications</em>.</p></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A successful write and an immediate read need an explicit route when copies can lag.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
-      <p class="puzzle-bridge">A map can lag a booking. How does the system remember to announce the booking if its process dies?</p>
+      <p class="puzzle-bridge">Ada can now read her confirmed booking. How does the service remember to announce it if the process dies?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="05-history.html">← Puzzle 5</a>
         <a class="button primary" href="07-outbox.html">Puzzle 7: How do you send an event after a crash? →</a>
       </nav>
 
-      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Why%20does%20a%20confirmed%20space%20still%20look%20free%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
+      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Why%20does%20a%20confirmed%20booking%20still%20look%20missing%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
   <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsystem-design%2F06-freshness" alt="" width="1" height="1"></noscript>
