@@ -106,15 +106,15 @@
     "bridge": "A retry can be safe for the data. What happens when retries still consume scarce processing capacity?"
   },
   "08-overload": {
-    "step": 2,
-    "question": "After the burst, 80 new requests arrive each second and 100 can finish. How quickly can old work drain?",
+    "step": 3,
+    "question": "After the burst, 80 new requests and 20 retries arrive each second. Capacity is 100. What happens to the 300 queued requests?",
     "options": [
-      "100 requests/s",
-      "20 requests/s"
+      "The queue drains by 20/s",
+      "The queue stays at 300"
     ],
     "answer": 1,
-    "hint": "Some of the 100 completions are already needed for the 80 new arrivals.",
-    "why": "Only 20 completions per second are spare, so 1,200 queued requests need 60 seconds.",
+    "hint": "Add new requests and retry attempts before comparing arrivals with capacity.",
+    "why": "Eighty new requests plus twenty retries replace 100 completed requests, so the queue has no net decrease.",
     "bridge": "If one owner stays busy, can splitting data across more owners actually divide its work?"
   },
   "09-partitioning": {

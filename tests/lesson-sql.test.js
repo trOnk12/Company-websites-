@@ -64,6 +64,33 @@ test('outbox failure mutations expose a lost effect and an unsafe duplicate', as
   await expect(status).toContainText('UNIQUE constraint failed: dashboard_booking.event_id');
 });
 
+test('retry traffic keeps the bounded queue full until its budget ends', async ({ page }) => {
+  await page.goto('/course/system-design/08-overload.html');
+  const exercise = page.locator('[data-sql-exercise]').first();
+  const run = exercise.getByRole('button', { name: 'Run SQL' });
+  await run.click();
+  const table = exercise.getByRole('table');
+  await expect(table).toHaveCount(1);
+  await expect(table.getByRole('cell')).toHaveText([
+    'no_retries_after_peak', '15', '300', '0',
+    'no_retries_after_peak', '60', '300', '900',
+    'no_retries_after_peak', '75', '0', '900',
+    'no_retries_after_peak', '120', '0', '900',
+    'unbounded_retries', '15', '300', '0',
+    'unbounded_retries', '60', '300', '900',
+    'unbounded_retries', '75', '300', '900',
+    'unbounded_retries', '120', '300', '900'
+  ]);
+
+  await exercise.getByRole('button', { name: 'Edit SQL' }).click();
+  const editor = exercise.getByRole('textbox', { name: 'SQL to run' });
+  await editor.fill((await editor.inputValue()).replace("('unbounded_retries', 120)", "('unbounded_retries', 70)"));
+  await run.click();
+  const cells = table.getByRole('cell');
+  await expect(cells.nth(26)).toHaveText('200');
+  await expect(cells.nth(30)).toHaveText('0');
+});
+
 test('changing the transaction outcome changes the lock diagram and its explanation', async ({ page }) => {
   await page.goto('/course/system-design/03-conditional-write.html');
   const figure = page.locator('.stepper').first();

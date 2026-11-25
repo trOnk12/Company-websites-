@@ -12,9 +12,17 @@
       "def": "A relational database management system.",
       "kind": "code"
     },
-    "token": {
+    "backlog": {
       "in": 8,
-      "def": "One permit consumed to admit a request."
+      "def": "Work already accepted but not yet completed."
+    },
+    "retry budget": {
+      "in": 8,
+      "def": "A limit on retry attempts or the elapsed time they may consume."
+    },
+    "admission control": {
+      "in": 8,
+      "def": "A decision at entry that refuses work which should not join the service."
     },
     "CAP": {
       "in": 10,

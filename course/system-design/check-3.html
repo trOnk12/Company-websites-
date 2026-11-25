@@ -62,11 +62,11 @@
 </fieldset></section>
 <section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: Why can retries prolong an outage?</p>
 <fieldset class="quiz" data-n="8">
-<legend>What happens when arrivals equal capacity?</legend>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1"><span>The old backlog disappears</span></label>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2"><span>The backlog stays level in this model</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> There is no spare capacity to clear old work. <a class="show-me" href="08-overload.html">Learn it in puzzle 8 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> There is no spare capacity to clear old work.</p>
+<legend>New traffic is 80/s, retries are 20/s and capacity is 100/s. What happens to 300 queued requests?</legend>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1"><span>They drain at 20/s and reach zero after 15 seconds</span></label>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2"><span>They stay at 300 because no capacity is spare</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Retries consume the spare capacity. <a class="show-me" href="08-overload.html">Learn it in puzzle 8 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Total arrivals equal completion capacity.</p>
 </fieldset></section>
 <section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: When does splitting the data help?</p>
 <fieldset class="quiz" data-n="9">

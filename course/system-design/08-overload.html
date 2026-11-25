@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Calculate backlog growth and recovery time.">
+  <meta name="description" content="Follow one queue until retries either stop or keep it full.">
   <meta name="author" content="Mateusz Pachulski">
   <meta property="og:title" content="Why can retries prolong an outage? – System design from first principles to design review – Mateusz Pachulski">
-  <meta property="og:description" content="Calculate backlog growth and recovery time.">
+  <meta property="og:description" content="Follow one queue until retries either stop or keep it full.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/system-design/08-overload">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -27,6 +27,7 @@
   <link rel="stylesheet" href="../../style.css">
   <script src="../progress-index.js" defer></script>
   <script src="../course.js" defer></script>
+  <script src="../../labs/sql/lesson.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -53,7 +54,7 @@
       <div class="lesson-header">
         <p class="eyebrow">Puzzle 8 · 9 of 19</p>
         <h1>Why can retries prolong an outage?</h1>
-        <p class="lede">Calculate backlog growth and recovery time.</p>
+        <p class="lede">Follow one queue until retries either stop or keep it full.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
@@ -62,8 +63,8 @@
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#admit-a-request-only-if-it-can-still-finish">Worked code</a>
-        <a href="#go-deeper-how-do-you-admit-a-short-burst">Go deeper</a>
+        <a href="#run-the-same-traffic-with-two-retry-policies">Run SQL</a>
+        <a href="#go-deeper-can-this-request-finish-before-its-deadline">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
@@ -74,69 +75,142 @@
       </aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>After a concert, the service receives 120 reservations per second and completes 100. Drivers retry after a few seconds. How long until it catches up?</p>
+<p>The booking service can finish 100 requests each second. After a concert, 120 new requests arrive each second. Its waiting queue can hold 300 requests.</p>
+<p>During the first fifteen seconds, twenty more requests arrive than finish each second:</p>
+<pre><code class="language-text">queue growth = 120 arrivals - 100 completions = 20 requests/s
+time to fill = 300 requests ÷ 20 requests/s = 15 seconds</code></pre>
+<p>The burst lasts sixty seconds. Once the queue is full, another twenty requests are refused each second:</p>
+<pre><code class="language-text">time at the full limit = 60 - 15 = 45 seconds
+refused = 45 seconds × 20 requests/s = 900 requests</code></pre>
+<p>Then new traffic falls to 80 requests per second. That sounds like recovery: capacity is still 100. But clients now send 20 retry attempts per second. Total arrivals remain 100, so there is no net spare capacity to shrink the 300-request <b>backlog</b>, the accepted work not yet finished. Completed queued requests are replaced by 100 arriving attempts.</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="A queue grows for a minute and drains for a minute"><input type="radio" name="st-overload" id="st-overload-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-overload" id="st-overload-2" aria-label="Step 2 of 4"><input type="radio" name="st-overload" id="st-overload-3" aria-label="Step 3 of 4"><input type="radio" name="st-overload" id="st-overload-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 270" role="img" aria-labelledby="d-title">
-<title id="d-title">A queue grows for a minute and drains for a minute</title>
-<text class="d-b" x="14" y="26" text-anchor="start">Waiting requests</text>
-<path class="d-line" d="M53,50V200H393"/>
-<text class="d-mi" x="47" y="193" text-anchor="end">0</text>
-<text class="d-mi" x="47" y="68" text-anchor="end">1200</text>
-<path class="d-line" d="M58,196v8"/><text class="d-mi" x="58" y="227" text-anchor="middle">0</text>
-<path class="d-line" d="M217,196v8"/><text class="d-mi" x="217" y="227" text-anchor="middle">60</text>
-<path class="d-line" d="M376,196v8"/><text class="d-mi" x="376" y="227" text-anchor="middle">120</text>
-<text class="d-mi" x="400" y="252" text-anchor="end">seconds</text>
+<figure class="stepper" aria-label="A bounded queue either drains or stays full"><input type="radio" name="st-overload" id="st-overload-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-overload" id="st-overload-2" aria-label="Step 2 of 4"><input type="radio" name="st-overload" id="st-overload-3" aria-label="Step 3 of 4"><input type="radio" name="st-overload" id="st-overload-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 290" role="img" aria-labelledby="overload-title">
+<title id="overload-title">A bounded queue either drains or stays full</title>
+<text class="d-b" x="14" y="28" text-anchor="start">Waiting requests</text>
+<path class="d-line" d="M54,52V215H401"/>
+<text class="d-mi" x="47" y="211" text-anchor="end">0</text>
+<text class="d-mi" x="47" y="76" text-anchor="end">300</text>
+<path class="d-dash" d="M54,72H399"/>
+<text class="d-r" x="397" y="63" text-anchor="end">queue limit</text>
+<path class="d-line" d="M58,212v8"/><text class="d-mi" x="58" y="240" text-anchor="middle">0</text>
+<path class="d-line" d="M132,212v8"/><text class="d-mi" x="132" y="240" text-anchor="middle">15</text>
+<path class="d-line" d="M269,212v8"/><text class="d-mi" x="269" y="240" text-anchor="middle">60</text>
+<path class="d-line" d="M350,212v8"/><text class="d-mi" x="350" y="240" text-anchor="middle">75</text>
+<text class="d-mi" x="402" y="269" text-anchor="end">seconds</text>
 <g class="step s1">
-  <circle class="d-dot" cx="58" cy="195" r="5"/>
+  <circle class="d-dot" cx="58" cy="211" r="5"/>
 </g>
 <g class="step s2">
-  <path class="d-acc" d="M58,195 L217,65"/>
-  <text class="d-a" x="66" y="78" text-anchor="start">+20/s</text>
+  <path class="d-acc" d="M58,211L132,72"/>
+  <text class="d-a" x="72" y="154" text-anchor="start">+20/s</text>
 </g>
 <g class="step s3">
-  <path class="d-acc" d="M217,65 L376,195"/>
-  <text class="d-a" x="312" y="87" text-anchor="start">−20/s</text>
+  <path class="d-red" d="M132,72H269"/>
+  <text class="d-r" x="201" y="99" text-anchor="middle">900 refused</text>
 </g>
 <g class="step s4">
-  <path class="d-dash" d="M217,65H376"/>
-  <text class="d-r" x="373" y="52" text-anchor="end">0/s spare</text>
+  <path class="d-acc" d="M269,72L350,211"/>
+  <text class="d-a" x="334" y="174" text-anchor="end">no retries</text>
+  <path class="d-red" d="M269,72H397"/>
+  <text class="d-r" x="397" y="99" text-anchor="end">+20 retries/s</text>
 </g>
-<g transform="translate(58 195)" data-move="1:58,195 2:217,65 3:376,195 4:376,65"><circle class="d-dot" cx="0" cy="0" r="6"/></g>
+<g transform="translate(58 211)" data-move="1:58,211 2:132,72 3:269,72 4:397,72"><circle class="d-dot" cx="0" cy="0" r="6"/></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>The queue starts empty. Every second, 120 requests arrive and 100 finish. Where will the extra twenty go?</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-overload-2">Next →</label></div></li>
-<li><p>After sixty seconds, 1,200 are still waiting. The slope measures the difference between the arrival and completion rates.</p><fieldset class="diagram-prediction" data-hint="Some of the 100 completions are already needed for the 80 new arrivals." data-reason="Only 20 completions per second are spare, so 1,200 queued requests need 60 seconds.">
-<legend>After the burst, 80 new requests arrive each second and 100 can finish. How quickly can old work drain?</legend>
-<div class="actions" data-prediction-controls hidden><button type="button" class="button">100 requests/s</button><button type="button" class="button" data-answer>20 requests/s</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-overload-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-overload-3">Next →</label></div></li>
-<li><p>Traffic falls to eighty per second. Twenty slots per second drain old work; the queue reaches zero at second 120.</p><div class="stepnav"><label for="st-overload-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-overload-4">Next →</label></div></li>
-<li><p>Compare the dashed alternative from the peak: if retries keep arrivals at one hundred per second, all capacity serves incoming work. The 1,200-request backlog persists.</p><div class="stepnav"><label for="st-overload-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-overload-1">↺ Again</label></div></li>
+<li><p>The queue starts empty. Each second, 120 new requests arrive and 100 finish.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-overload-2">Next →</label></div></li>
+<li><p>Twenty requests per second fill the 300-place queue at second 15.</p><div class="stepnav"><label for="st-overload-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-overload-3">Next →</label></div></li>
+<li><p>The burst lasts to second 60. The queue stays full and 900 later arrivals are refused. New traffic now falls to 80 per second.</p><fieldset class="diagram-prediction" data-hint="Add new requests and retry attempts before comparing arrivals with capacity." data-reason="Eighty new requests plus twenty retries replace 100 completed requests, so the queue has no net decrease.">
+<legend>After the burst, 80 new requests and 20 retries arrive each second. Capacity is 100. What happens to the 300 queued requests?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button">The queue drains by 20/s</button><button type="button" class="button" data-answer>The queue stays at 300</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-overload-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-overload-4">Next →</label></div></li>
+<li><p>Without retries, twenty spare completions per second empty the queue by second 75. Twenty retry attempts per second instead keep total arrivals at 100 and the queue at 300.</p><div class="stepnav"><label for="st-overload-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-overload-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-overload-1" title="Step 1"></label><label for="st-overload-2" title="Step 2"></label><label for="st-overload-3" title="Step 3"></label><label for="st-overload-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/overload.gif" download>Save this diagram as a GIF</a></p>
+<p>Stop after step three. New traffic is 80 per second, retries add 20 and capacity is 100. Predict what happens to the full queue.</p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>With constant rates, no rejections and no retries, the <b>backlog</b>, the number of requests still waiting, grows by twenty per second. After a minute, 1,200 requests are waiting. When arrivals drop to eighty per second, twenty completions per second are available to drain the backlog. Recovery takes another minute. If arrivals stay at one hundred, the old backlog stays.</p>
-<p>Bound both work in flight and waiting work. Before admitting work, ask whether it can finish before the caller's deadline. Distinguish a per-client limit from whole-service overload. Give retries one owner, a maximum number of attempts, increasing delays and randomized timing. Three layers each making three total attempts can generate up to twenty-seven calls at the last dependency.</p>
-<h3>Decide what to do at the door</h3>
-<p>A service can finish 100 equal-cost requests per second. With 300 already waiting ahead of you, the approximate wait alone is three seconds. A caller with half a second left would time out before service even begins. Refusing that work early frees room for useful requests. This estimate assumes a fixed completion rate and arrival order.</p>
-<p>Run the browser model with peak 120, recovery 80, capacity 100 and a waiting limit of 300. After one minute, 1,200 more requests have arrived than could be served: 300 wait and 900 have been dropped. With spare capacity of 20 per second the queue drains in 15 seconds. A shorter queue improves waiting time by rejecting some work; count those refusals in your result.</p>
+<p>Here the backlog is the queue of at most 300 requests.</p>
+<p>Use total arrivals, not only new user actions:</p>
+<pre><code class="language-text">total arrivals = new requests + retry attempts
+spare capacity = completion capacity - total arrivals</code></pre>
+<p>When new traffic drops to 80 and retries stop, spare capacity is twenty per second. The queue drains in fifteen seconds:</p>
+<pre><code class="language-text">300 waiting ÷ 20 spare completions/s = 15 seconds</code></pre>
+<p>When retries continue at twenty per second, total arrivals equal capacity. Spare capacity is zero. The service is no longer getting worse, but it is not recovering either. A retry intended to improve reliability has preserved the overloaded state.</p>
+<p>A <b>retry budget</b> limits retry work by attempt count or elapsed time. The client also retries only failures that may be temporary, waits longer between attempts and adds random timing so many clients do not return together. One layer should own the retry for a dependency; otherwise retries at several layers multiply.</p>
+<p>The queue limit is <b>admission control</b>: the service refuses new work when accepting it would exceed a chosen waiting bound. This protects memory and waiting time. It does not create more completion capacity. A refusal must tell the caller whether to stop, retry later or use a degraded result; otherwise immediate retries can replace every refused request.</p>
       </section>
-      <details class="depth-puzzle" id="go-deeper-how-do-you-admit-a-short-burst">
-        <summary><span class="depth-label">Go deeper</span>How do you admit a short burst?</summary>
+      <section aria-labelledby="run-the-same-traffic-with-two-retry-policies">
+        <h2 id="run-the-same-traffic-with-two-retry-policies">Run the same traffic with two retry policies</h2>
+<p>The SQL simulates one-second buckets. Both policies see sixty seconds at 120 new requests per second, then sixty seconds at 80. Capacity is 100 per second and the queue limit is 300.</p>
+<p>The only difference is how long retry traffic continues:</p>
+<ul><li>One policy stops retries when recovery traffic begins at second 60.</li><li>The other continues twenty retry attempts per second through second 120.</li></ul>
+<p>Before running, predict the queue at seconds 15, 60, 75 and 120 for both policies.</p>
+<p>The first named block holds every assumption in one row, so each Try it change has one edit. The opening words tell SQLite that the later simulation block may use its previous row to create its next row. One repeated step:</p>
+<ol><li>starts with the queue and refused count at the end of the previous second;</li><li>chooses peak or recovery traffic and adds retries when their policy is still active;</li><li>subtracts 100 completions;</li><li>keeps the queue between zero and its limit;</li><li>adds overflow above the limit to the refused count.</li></ol>
+<div class="lesson-sql" data-sql-exercise>
+<pre><code class="language-sql">WITH RECURSIVE
+parameters(capacity, queue_limit, peak_rate, recovery_rate, retry_rate, peak_until, simulation_until) AS (
+  VALUES (100, 300, 120, 80, 20, 60, 120)
+),
+policy(name, retry_until) AS (
+  VALUES ('no_retries_after_peak', 60),
+         ('unbounded_retries', 120)
+),
+traffic(name, retry_until, second, queued, dropped) AS (
+  SELECT name, retry_until, 0, 0, 0
+  FROM policy
+
+  UNION ALL
+
+  SELECT name,
+         retry_until,
+         second + 1,
+         MIN(queue_limit, MAX(0,
+           queued
+           + CASE WHEN second &lt; peak_until THEN peak_rate ELSE recovery_rate END
+           + CASE WHEN second &gt;= peak_until AND second &lt; retry_until THEN retry_rate ELSE 0 END
+           - capacity
+         )),
+         dropped + MAX(0,
+           queued
+           + CASE WHEN second &lt; peak_until THEN peak_rate ELSE recovery_rate END
+           + CASE WHEN second &gt;= peak_until AND second &lt; retry_until THEN retry_rate ELSE 0 END
+           - capacity - queue_limit
+         )
+  FROM traffic, parameters
+  WHERE second &lt; simulation_until
+)
+SELECT name, second, queued, dropped
+FROM traffic
+WHERE second IN (15, 60, 75, 120)
+ORDER BY name, second;</code></pre>
+<label hidden>SQL to run<textarea rows="12" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></label>
+<div class="actions" data-sql-controls hidden>
+<button type="button" class="button" data-run>Run SQL</button>
+<button type="button" class="button" data-edit>Edit SQL</button>
+<button type="button" class="button" data-reset hidden>Restore original SQL</button>
+</div>
+<p class="small" role="status"></p><div data-output></div></div>
+<p>Both policies reach 300 queued at second 15 and 900 refused by second 60. With no recovery retries, the queue reaches zero at second 75. With twenty retries per second, it remains at 300 even at second 120.</p>
+<p>The model deliberately keeps capacity and cost fixed. Production work is not uniform: overload can slow each request, reduce completion capacity and make this feedback loop worse. Measure new requests, retry attempts, queue age, refusals, completions and response time separately; a single total request rate hides the cause.</p>
+      </section>
+      <section aria-labelledby="failure-every-layer-retries">
+        <h2 id="failure-every-layer-retries">Failure: every layer retries</h2>
+<p>Suppose the phone makes at most three attempts to the edge service. For every phone attempt, the edge service makes at most three attempts to the booking service. For every booking-service attempt, the database client makes at most three attempts.</p>
+<p>One user action can now create as many as:</p>
+<pre><code class="language-text">3 phone attempts × 3 edge-service attempts × 3 database attempts = 27 database calls</code></pre>
+<p>The multiplication is a worst-case upper bound, not a prediction of normal traffic. Repair it by assigning retry ownership to the layer that understands the dependency failure, limiting attempts and elapsed time, and propagating a deadline so a lower layer does not start work after the caller has given up.</p>
+      </section>
+      <details class="depth-puzzle" id="go-deeper-can-this-request-finish-before-its-deadline">
+        <summary><span class="depth-label">Go deeper</span>Can this request finish before its deadline?</summary>
         <div class="depth-content">
-<p>Imagine twenty permits in a bucket. Each accepted call consumes one. Five permits return per second, up to twenty. After a quiet period twenty calls may pass together. A second burst can use only replenished permits. Each permit is a <b>token</b>. This rate limiter is called a token bucket. If four instances each independently grant twenty permits to the same client, the effective initial allowance can reach eighty.</p>
-<details class="recall"><summary>An empty bucket sees two full seconds of silence. How many requests can pass immediately?</summary><p>Ten under these assumptions.</p></details>
-          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
-        </div>
-      </details>
-      <section aria-labelledby="admit-a-request-only-if-it-can-still-finish">
-        <h2 id="admit-a-request-only-if-it-can-still-finish">Admit a request only if it can still finish</h2>
-<p>A limit on queue length bounds memory. The caller cares about time. Model one worker that processes ten equally expensive requests per second, one at a time. Four requests arrive together at time zero with 250 milliseconds left. How many can receive a timely result?</p>
+<p>A queue length bounds memory. The caller experiences time.</p>
+<p>One worker needs 100 milliseconds per request. Four requests arrive together with 250 milliseconds remaining. The first finishes at 100, the second at 200, and the third would finish at 300—after its deadline. Refusing the third and fourth requests avoids work whose answers would be discarded.</p>
 <pre><code class="language-python">def admit(arrivals_ms, service_ms, budget_ms):
     free_at = 0
     for arrival in arrivals_ms:
@@ -149,40 +223,57 @@
             print(arrival, &quot;accepted; finishes at&quot;, finish)
 
 admit([0, 0, 0, 0], service_ms=100, budget_ms=250)</code></pre>
-<p>Run this file with Python 3. Only the first two are accepted. The third would finish at 300 milliseconds. A refusal leaves the scheduled work unchanged. Change the last arrival to 100. Its deadline moves to 350, so the worker can finish it at 300. That is admission control: make a decision before adding work.</p>
-<p>The model assumes a known service time. A real dependency can suddenly take longer. Measure actual completion times and refused requests together. A policy can reduce the waiting time of accepted requests merely by rejecting most arrivals.</p>
-      </section>
+<p>This estimate assumes known service time and arrival order. A real service must measure the distribution of completion times. Report accepted response time and refusals together: rejecting most requests can make the response time of the surviving requests look excellent.</p>
+<details class="recall"><summary>The worker becomes free at 200 ms. A new request arrives at 100 ms with 250 ms remaining. Can it finish?</summary><p>Yes. It starts at 200 and finishes at 300, before its deadline at 350.</p></details>
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Give a request 500 milliseconds. Entry processing takes 60, the first dependency call takes 200, and the retry delay takes 100. Only 140 remain for all remaining work. Would you start a call that usually needs 180? Run the queue model and change only the arrival rate after the peak.</p>
-<p><a href="/labs/parking-design/#queue">Run the overload experiment</a></p>
+<h3>1. Prove the first full second</h3>
+<p>Replace the final result query with the query below. It asks for the earliest row at the queue limit instead of merely showing that second 15 is full.</p>
+<pre><code class="language-sql">SELECT name, MIN(second) AS first_full_second
+FROM traffic, parameters
+WHERE queued = queue_limit
+GROUP BY name;</code></pre>
+<h3>2. End retries earlier</h3>
+<p>In the policy values, change the unbounded retry end from 120 to 70. Predict its queue at second 75, then run: ten seconds without spare capacity leave five seconds to drain 100 requests.</p>
+<h3>3. Add one retry per second</h3>
+<p>In the parameters row, change the one retry rate from 20 to 21. Explain why the full queue now refuses one additional request every second even after new traffic falls.</p>
+<h3>4. Shorten the queue</h3>
+<p>In the parameters row, change the one queue limit from 300 to 100. Compare time to fill, refused requests and recovery time. State which metric improved and which got worse.</p>
+<h3>5. Spend one deadline</h3>
+<p>Give one request a 500 ms deadline. Entry work uses 60 ms, the first dependency call 200 ms and retry delay 100 ms. Calculate the 140 ms left and refuse a second call that normally needs 180 ms.</p>
+<p><a href="/labs/parking-design/#queue">Run the existing overload controls with different rates</a></p>
+<p>You have passed when you can calculate queue growth, identify retries as arrivals, reproduce a queue that cannot drain and change one retry limit so recovery completes.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>What happens when arrivals equal capacity?</legend>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1"><span>The old backlog disappears</span></label>
-<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2"><span>The backlog stays level in this model</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> There is no spare capacity to clear old work. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> There is no spare capacity to clear old work.</p>
+<legend>New traffic is 80/s, retries are 20/s and capacity is 100/s. What happens to 300 queued requests?</legend>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-1"><label for="q-08-overload-1-1"><span>They drain at 20/s and reach zero after 15 seconds</span></label>
+<input type="radio" name="q-08-overload-1" id="q-08-overload-1-2" data-ok><label for="q-08-overload-1-2"><span>They stay at 300 because no capacity is spare</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Retries consume the spare capacity. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Total arrivals equal completion capacity.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>How much of the deadline remains?</legend>
-<input type="radio" name="q-08-overload-2" id="q-08-overload-2-1" data-ok><label for="q-08-overload-2-1"><span>140 milliseconds</span></label>
-<input type="radio" name="q-08-overload-2" id="q-08-overload-2-2"><label for="q-08-overload-2-2"><span>240 milliseconds</span></label>
-<p class="fb ok opt-1"><b>Right.</b> The delay between attempts consumes the deadline too.</p>
-<p class="fb no opt-2"><b>Not quite.</b> The delay between attempts consumes the deadline too. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>Why can a queue limit fail to restore the service by itself?</legend>
+<input type="radio" name="q-08-overload-2" id="q-08-overload-2-1"><label for="q-08-overload-2-1"><span>A queue limit silently doubles completion capacity</span></label>
+<input type="radio" name="q-08-overload-2" id="q-08-overload-2-2" data-ok><label for="q-08-overload-2-2"><span>Refused clients may immediately replace the dropped work with retries</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The limit bounds waiting work; it does not add capacity. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The limit bounds waiting work; it does not add capacity.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>What spreads simultaneous retries over time?</legend>
-<input type="radio" name="q-08-overload-3" id="q-08-overload-3-1"><label for="q-08-overload-3-1"><span>One fixed retry time</span></label>
-<input type="radio" name="q-08-overload-3" id="q-08-overload-3-2" data-ok><label for="q-08-overload-3-2"><span>Randomized delays</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> A common retry time can recreate the burst. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> A common retry time can recreate the burst.</p>
+<legend>Which retry plan gives a recovering dependency room?</legend>
+<input type="radio" name="q-08-overload-3" id="q-08-overload-3-1" data-ok><label for="q-08-overload-3-1"><span>One layer retries with a bounded, randomized schedule</span></label>
+<input type="radio" name="q-08-overload-3" id="q-08-overload-3-2"><label for="q-08-overload-3-2"><span>Every layer retries immediately with the same fixed schedule</span></label>
+<p class="fb ok opt-1"><b>Right.</b> The retry load eventually stops and does not return as one burst.</p>
+<p class="fb no opt-2"><b>Not quite.</b> Independent retries multiply and synchronize load. <a class="show-me" href="#failure-every-layer-retries">Re-read that part ↑</a></p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/sre-book/handling-overload/">Google SRE · Handling Overload</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>The backlog drains only when completion capacity exceeds new demand.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://sre.google/sre-book/handling-overload/">Google SRE · Handling overload</a> — after repeated rejection, the immediate caller should return an overload/no-retry error or a degraded response instead of multiplying retries through the stack.</li><li><a href="https://sre.google/sre-book/addressing-cascading-failures/">Google SRE · Addressing cascading failures</a> — limiting queue length is load shedding; synchronized retries can amplify a disturbance.</li><li><a href="https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html">AWS SDK retry behavior</a> — standard mode combines exponential backoff with jitter and a retry quota that can stop retries.</li><li><a href="https://grpc.io/docs/guides/retry/">gRPC · Retry</a> — a retry policy includes retryable status codes, a maximum attempt count and backoff settings.</li></ul>
+<p>The queue trace and SQL fixture are original. The failure analysis follows the overload and retry guidance in the <em>Site Reliability Engineering</em> books.</p></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Recovery begins only when total arrivals, including retries, fall below completion capacity.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
       <p class="puzzle-bridge">If one owner stays busy, can splitting data across more owners actually divide its work?</p>
       <nav class="pager" aria-label="Previous and next puzzle">

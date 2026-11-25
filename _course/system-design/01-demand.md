@@ -57,7 +57,7 @@ Run the code and compare the three counts with your tally: 1, 1 and 6. Change on
 
 ## Try it
 
-Shorten the peak to five minutes while keeping its total demand. Predict the arrival rate and work in flight before reading on. At the same mean duration the answers are 800 per second and 120 in flight. Measure arrivals, completions and backlog separately to check whether the duration actually holds.
+Shorten the peak to five minutes while keeping its total demand. Predict the arrival rate and work in flight before reading on. At the same mean duration the answers are 800 per second and 120 in flight. Measure arrivals, completions and queued work separately to check whether the duration actually holds.
 
 ## Check yourself
 
