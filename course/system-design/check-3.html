@@ -54,11 +54,11 @@
       <p class="lede">One question for each of the 4 puzzles in this module. A right answer marks that puzzle as passed, so you can jump ahead. A wrong one tells you which puzzle to start with. Nothing is sent anywhere: it's saved in this browser.</p>
 <section aria-label="Puzzle 7"><p class="eyebrow">Puzzle 7: How do you send an event after a crash?</p>
 <fieldset class="quiz" data-n="7">
-<legend>Which two writes belong together?</legend>
-<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-1" data-ok><label for="q-07-outbox-1-1"><span>Grant and pending event</span></label>
-<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-2"><label for="q-07-outbox-1-2"><span>Grant and any later log line</span></label>
-<p class="fb ok opt-1"><b>Right.</b> An independent later write can disappear after a crash.</p>
-<p class="fb no opt-2"><b>Not quite.</b> An independent later write can disappear after a crash. <a class="show-me" href="07-outbox.html">Learn it in puzzle 7 →</a></p>
+<legend>The sender transaction rolls back after inserting both rows. What can the relay find?</legend>
+<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-1"><label for="q-07-outbox-1-1"><span>Booking 301 without event 41</span></label>
+<input type="radio" name="q-07-outbox-1" id="q-07-outbox-1-2" data-ok><label for="q-07-outbox-1-2"><span>Neither booking 301 nor event 41</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> Both writes were in the same transaction. <a class="show-me" href="07-outbox.html">Learn it in puzzle 7 →</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The rollback removes both rows.</p>
 </fieldset></section>
 <section aria-label="Puzzle 8"><p class="eyebrow">Puzzle 8: Why can retries prolong an outage?</p>
 <fieldset class="quiz" data-n="8">

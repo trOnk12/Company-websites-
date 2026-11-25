@@ -28,12 +28,40 @@ test('run, change, repair and restore the reservation contract in its lesson', a
   await expect(exercise.getByRole('cell', { name: 'Ben' })).toBeVisible();
 });
 
-test('duplicate delivery leaves one effect and rollback leaves zero', async ({ page }) => {
+test('duplicate outbox delivery adds zero rows after the first consumer effect', async ({ page }) => {
   await page.goto('/course/system-design/07-outbox.html');
-  const exercise = page.locator('[data-sql-exercise]').nth(1);
+  const exercise = page.locator('[data-sql-exercise]').first();
   await exercise.getByRole('button', { name: 'Run SQL' }).click();
-  await expect(exercise.getByRole('table')).toHaveCount(2);
-  await expect(exercise.getByRole('cell')).toHaveText(['0', '1', '1']);
+  const tables = exercise.getByRole('table');
+  await expect(tables).toHaveCount(4);
+  await expect(tables.nth(0).getByRole('cell')).toHaveText(['1', '1']);
+  await expect(tables.nth(1).getByRole('cell')).toHaveText(['1', '1']);
+  await expect(tables.nth(2).getByRole('cell')).toHaveText(['0', '1']);
+  await expect(tables.nth(3).getByRole('cell')).toHaveText(['1', '1']);
+});
+
+test('outbox failure mutations expose a lost effect and an unsafe duplicate', async ({ page }) => {
+  await page.goto('/course/system-design/07-outbox.html');
+  const exercise = page.locator('[data-sql-exercise]').first();
+  await exercise.getByRole('button', { name: 'Edit SQL' }).click();
+  const editor = exercise.getByRole('textbox', { name: 'SQL to run' });
+  const run = exercise.getByRole('button', { name: 'Run SQL' });
+  const status = exercise.getByRole('status');
+  const original = await editor.inputValue();
+  const delivery = "INSERT INTO dashboard_booking VALUES (41, 301)\nON CONFLICT(event_id) DO NOTHING;";
+  const mark = 'UPDATE outbox SET published = 1 WHERE event_id = 41;';
+
+  const markedTooEarly = original
+    .replaceAll(delivery, '')
+    .replace(mark, '')
+    .replace('-- Result 2:', `${mark}\n\n-- Result 2:`);
+  await editor.fill(markedTooEarly);
+  await run.click();
+  await expect(exercise.getByRole('table').nth(3).getByRole('cell')).toHaveText(['1', '0']);
+
+  await editor.fill(original.replaceAll('ON CONFLICT(event_id) DO NOTHING;', ''));
+  await run.click();
+  await expect(status).toContainText('UNIQUE constraint failed: dashboard_booking.event_id');
 });
 
 test('changing the transaction outcome changes the lock diagram and its explanation', async ({ page }) => {
@@ -111,7 +139,8 @@ test('the same history page survives all three access plans', async ({ page }) =
 
 test('move the commit boundary and observe a reservation without an event', async ({ page }) => {
   await page.goto('/course/system-design/07-outbox.html');
-  const exercise = page.locator('[data-sql-exercise]').first();
+  await page.locator('summary').filter({ hasText: 'Why not save the booking and event in two commits?' }).click();
+  const exercise = page.locator('[data-sql-exercise]').nth(1);
   const run = exercise.getByRole('button', { name: 'Run SQL' });
   const counts = exercise.getByRole('table').nth(1).getByRole('cell');
   await run.click();
@@ -122,7 +151,7 @@ test('move the commit boundary and observe a reservation without an event', asyn
   await editor.fill(committed);
   await run.click();
   await expect(counts).toHaveText(['1', '1']);
-  await editor.fill(committed.replace('INSERT INTO outbox VALUES (41, 301);', ''));
+  await editor.fill(committed.replace('INSERT INTO pending_event VALUES (41, 301);', ''));
   await run.click();
   await expect(counts).toHaveText(['1', '0']);
 });

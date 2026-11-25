@@ -95,14 +95,14 @@
   },
   "07-outbox": {
     "step": 3,
-    "question": "The first delivery of event 41 already changed the dashboard. What should a second delivery do?",
+    "question": "Event 41 already created one dashboard row. How many rows should remain after the replacement delivers 41 again?",
     "options": [
-      "Leave the count at one",
-      "Increase it to two"
+      "One dashboard row",
+      "Two dashboard rows"
     ],
     "answer": 0,
-    "hint": "Look at the identity remembered beside the count. What new fact does a repeated 41 carry?",
-    "why": "The repeated delivery adds no new grant. Record identity and effect in the same transaction.",
+    "hint": "Look at the event ID stored in the row. Does the repeated 41 describe a second booking?",
+    "why": "The repeated delivery adds no new booking. Event ID 41 already identifies the stored consumer effect.",
     "bridge": "A retry can be safe for the data. What happens when retries still consume scarce processing capacity?"
   },
   "08-overload": {

@@ -29,6 +29,14 @@
       "in": 7,
       "def": "A durable list of messages stored with the business changes that create them."
     },
+    "relay": {
+      "in": 7,
+      "def": "A worker that finds committed outbox rows and publishes their messages."
+    },
+    "consumer effect": {
+      "in": 7,
+      "def": "A durable change made by the service that receives an event."
+    },
     "error budget": {
       "in": 12,
       "def": "The number or fraction of bad outcomes allowed by a service objective."
