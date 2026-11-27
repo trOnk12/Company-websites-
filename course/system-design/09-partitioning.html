@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Choose a key by following the reads and writes.">
+  <meta name="description" content="Follow one busy parking lot across sixteen places that store bookings.">
   <meta name="author" content="Mateusz Pachulski">
-  <meta property="og:title" content="When does splitting the data help? – System design from first principles to design review – Mateusz Pachulski">
-  <meta property="og:description" content="Choose a key by following the reads and writes.">
+  <meta property="og:title" content="Why can sixteen owners still leave one owner overloaded? – System design from first principles to design review – Mateusz Pachulski">
+  <meta property="og:description" content="Follow one busy parking lot across sixteen places that store bookings.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://pachulski.dev/course/system-design/09-partitioning">
   <meta property="og:site_name" content="Mateusz Pachulski">
@@ -19,7 +19,7 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: https://pachulski.goatcounter.com; connect-src 'none'; base-uri 'self'; object-src 'none'; form-action 'none'">
-  <title>When does splitting the data help? – System design from first principles to design review – Mateusz Pachulski</title>
+  <title>Why can sixteen owners still leave one owner overloaded? – System design from first principles to design review – Mateusz Pachulski</title>
   <link rel="canonical" href="https://pachulski.dev/course/system-design/09-partitioning">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231B1F24'/><text x='16' y='21.5' font-family='Georgia,serif' font-size='14' font-weight='700' fill='%23F6F3EC' text-anchor='middle'>MP</text></svg>">
   <link rel="preload" as="font" type="font/woff2" href="../../fonts/atkinson-hyperlegible-next-var.woff2" crossorigin>
@@ -52,148 +52,199 @@
       <p class="lesson-context"><a href="../">Courses</a><span aria-hidden="true">/</span><a href="./">System design from first principles to design review</a></p>
       <div class="lesson-header">
         <p class="eyebrow">Puzzle 9 · 10 of 19</p>
-        <h1>When does splitting the data help?</h1>
-        <p class="lede">Choose a key by following the reads and writes.</p>
+        <h1>Why can sixteen owners still leave one owner overloaded?</h1>
+        <p class="lede">Follow one busy parking lot across sixteen places that store bookings.</p>
       </div>
       <details class="lesson-outline">
         <summary>All puzzles in this course</summary>
-        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Two drivers tap Reserve. Who gets the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Where is Ada’s booking when her reply is lost?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="The booking succeeded, but the reply was lost">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed booking still look missing?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" aria-current="page" title="When does splitting the data help?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
+        <nav aria-label="Puzzles"><ol class="progress"><li><a href="00-promise.html" title="Two drivers tap Reserve. Who gets the last space?">0</a></li><li><a href="01-demand.html" title="How much traffic arrives after a concert?">1</a></li><li><a href="02-write-boundary.html" title="Where is Ada’s booking when her reply is lost?">2</a></li><li><a href="03-conditional-write.html" title="How does the database choose a winner?">3</a></li><li><a href="04-retry-identity.html" title="The booking succeeded, but the reply was lost">4</a></li><li><a href="05-history.html" title="Where does the next page of history begin?">5</a></li><li><a href="06-freshness.html" title="Why does a confirmed booking still look missing?">6</a></li><li><a href="07-outbox.html" title="How do you send an event after a crash?">7</a></li><li><a href="08-overload.html" title="Why can retries prolong an outage?">8</a></li><li><a href="09-partitioning.html" aria-current="page" title="Why can sixteen owners still leave one owner overloaded?">9</a></li><li><a href="10-consensus.html" title="Who can confirm a write when regions cannot talk?">10</a></li><li><a href="11-payment.html" title="What if the space expires before payment is confirmed?">11</a></li><li><a href="12-diagnosis.html" title="Is the database slow, or is the request waiting to reach it?">12</a></li><li><a href="13-recovery.html" title="Can you recover the right history after a bad release?">13</a></li><li><a href="14-design-review.html" title="Does the design survive a changed assumption?">14</a></li><li><a href="15-routing.html" title="Why does an idle worker watch a request wait?">15</a></li><li><a href="16-coalescing.html" title="Can two cache misses share one read?">16</a></li><li><a href="17-circuit-breaker.html" title="When is it worth calling a failing dependency again?">17</a></li><li><a href="18-waiter-deadlines.html" title="If one driver gives up, whose read should stop?">18</a></li></ol></nav>
       </details>
       <nav class="lesson-jumps" aria-label="In this puzzle">
         <a href="#see-it">Diagram</a>
         <a href="#the-building-block">Mechanism</a>
-        <a href="#add-a-shard-without-moving-every-key">Worked code</a>
-        <a href="#go-deeper-how-do-you-move-a-lot-while-it-is-accepting-reservations">Go deeper</a>
+        <a href="#run-the-routing-decision">Worked code</a>
+        <a href="#go-deeper-is-a-postgresql-table-partition-another-machine">Go deeper</a>
         <a href="#try-it">Try it</a>
         <a href="#check-yourself">Check your understanding</a>
       </nav>
       <aside class="builds-on" aria-labelledby="builds-on-9">
         <p id="builds-on-9"><b>Builds on</b>: open one to see the idea this puzzle uses.</p>
-        <ul><li data-block="0"><details><summary>Puzzle 0: Two drivers tap Reserve. Who gets the last space?</summary><p>Two phones can show the same free space. At most one driver can have it booked for the same time.</p><p><a href="00-promise.html">Review puzzle 0</a></p></details></li></ul>
-        <p class="small">Starting from zero? The blocks under this puzzle are 1 puzzle: <a href="00-promise.html">0</a>. Know them already? Start here.</p>
-      </aside>
+        <ul><li data-block="4"><details><summary>Puzzle 4: The booking succeeded, but the reply was lost</summary><p>Create one request ID for one tap. Reuse that ID when the reply is lost, so the service can return the first booking instead of creating another one.</p><p><a href="04-retry-identity.html">Review puzzle 4</a></p></details></li></ul>
+        <p class="small">Starting from zero? The blocks under this puzzle are 3 puzzles: <a href="00-promise.html">0</a> → <a href="03-conditional-write.html">3</a> → <a href="04-retry-identity.html">4</a>. Know them already? Start here.</p>
+      </aside>      <aside class="builds-on from-other" aria-label="From other courses"><p><b>New to these?</b> This puzzle uses ideas another course teaches:</p><ul><li><a href="../android/00-a-running-app-is-a-process.html"><b>process</b></a> <span class="small">Android from the foundation, puzzle 0: A running app is a process</span></li></ul></aside>
       <section aria-labelledby="the-problem">
         <h2 id="the-problem">The problem</h2>
-<p>The last-space invariant must hold even if storage ownership changes. One database is busy after a concert. Most writes concern just one lot. A teammate proposes sixteen partitions. Which particular bottleneck would that remove?</p>
+<p>The previous lesson measured overload for one service. Now the booking service has sixteen <b>storage owners</b>, independent database processes that each accept writes for an assigned part of the data. Each owner can finish 100 equal-cost reservation attempts per second. In this model, one attempt produces one storage write.</p>
+<p>A concert sends 1,000 attempts per second: 700 concern the west lot and the other 300 are evenly spread across fifteen lots, twenty per lot. The current routing rule sends every attempt naming the same lot to the same owner.</p>
+<p>The average is only 62.5 attempts per owner. Does that prove every owner has enough capacity?</p>
       </section>
       <section aria-labelledby="see-it">
         <h2 id="see-it">See it</h2>
-<figure class="stepper" aria-label="Ten local rights split between two regions"><input type="radio" name="st-partitioning" id="st-partitioning-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-2" aria-label="Step 2 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-3" aria-label="Step 3 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-4" aria-label="Step 4 of 4">
-<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 246" role="img" aria-labelledby="d-title">
-<title id="d-title">Ten local rights split between two regions</title>
-<text class="d-b" x="16" y="29" text-anchor="start">Rights to grant a space</text>
-<text class="d-b" x="18" y="77" text-anchor="start">West</text>
-<text class="d-b" x="18" y="151" text-anchor="start">East</text>
-<circle class="d-box" cx="141" cy="70" r="15"/><circle class="d-box" cx="192" cy="70" r="15"/><circle class="d-box" cx="243" cy="70" r="15"/><circle class="d-box" cx="294" cy="70" r="15"/><circle class="d-box" cx="345" cy="70" r="15"/>
-<circle class="d-box" cx="141" cy="145" r="15"/><circle class="d-box" cx="192" cy="145" r="15"/><circle class="d-box" cx="243" cy="145" r="15"/><circle class="d-box" cx="294" cy="145" r="15"/><circle class="d-box" cx="345" cy="145" r="15"/>
-<g class="step s2">
-  <path class="d-acc" d="M134,69l5,6 9,-12"/>
-  <path class="d-acc" d="M185,69l5,6 9,-12"/>
-  <path class="d-acc" d="M236,69l5,6 9,-12"/>
-  <path class="d-acc" d="M287,69l5,6 9,-12"/>
-  <path class="d-acc" d="M338,69l5,6 9,-12"/>
-  <text class="d-a" x="18" y="109" text-anchor="start">5 granted</text>
+<figure class="stepper" aria-label="Does the average hide one overloaded owner?"><input type="radio" name="st-partitioning" id="st-partitioning-1" checked aria-label="Step 1 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-2" aria-label="Step 2 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-3" aria-label="Step 3 of 4"><input type="radio" name="st-partitioning" id="st-partitioning-4" aria-label="Step 4 of 4">
+<div class="stage" tabindex="0" aria-label="Diagram"><svg class="design-figure" viewBox="0 0 420 292" role="img" aria-labelledby="partitioning-title">
+<title id="partitioning-title">One hot parking lot overloads one of sixteen owners</title>
+<text class="d-b" x="18" y="26" text-anchor="start">Attempts per second</text>
+<path class="d-line" d="M58,42V238H401"/>
+<path class="d-dash" d="M58,210H400"/>
+<text class="d-r" x="397" y="202" text-anchor="end">capacity 100</text>
+<text class="d-mi" x="52" y="238" text-anchor="end">0</text>
+<text class="d-mi" x="52" y="214" text-anchor="end">100</text>
+<text class="d-mi" x="52" y="49" text-anchor="end">700</text>
+
+<g class="step s1">
+  <text class="d-b" x="100" y="265" text-anchor="middle">owner 0</text>
+  <text class="d-b" x="205" y="265" text-anchor="middle">owner 1</text>
+  <text class="d-b" x="315" y="265" text-anchor="middle">owners 2–15</text>
 </g>
-<g class="step s3">
-  <path class="d-acc" d="M134,144l5,6 9,-12"/>
-  <text class="d-a" x="18" y="184" text-anchor="start">1 granted</text>
+<g class="step s2 hide-3">
+  <path class="d-acc" d="M100,238V221M205,238V221M315,238V221"/>
+  <text class="d-a" x="205" y="193" text-anchor="middle">average 62.5</text>
+</g>
+<g class="step s3 hide-4">
+  <path class="d-red" d="M100,238V49"/>
+  <path class="d-acc" d="M205,238V232M315,238V232"/>
+  <text class="d-r" x="112" y="58" text-anchor="start">west 700</text>
+  <text class="d-a" x="260" y="224" text-anchor="middle">other lots 20 each</text>
 </g>
 <g class="step s4">
-  <text class="d-r" x="18" y="227" text-anchor="start">West: 2 refused</text>
-  <text class="d-a" x="215" y="227" text-anchor="start">East: 4 unused</text>
+  <path class="d-acc" d="M100,238V221M205,238V221M315,238V221"/>
+  <text class="d-a" x="205" y="193" text-anchor="middle">by request: at most 63</text>
+  <circle class="d-box" cx="178" cy="154" r="16"/><text class="d-b" x="178" y="159" text-anchor="middle">1</text>
+  <circle class="d-box" cx="232" cy="154" r="16"/><text class="d-b" x="232" y="159" text-anchor="middle">1</text>
+  <path class="d-red" d="M190,142L220,166M220,142L190,166"/>
+  <text class="d-r" x="205" y="125" text-anchor="middle">two copies of last space</text>
 </g>
-<g transform="translate(141 89)" data-move="1:141,89 2:345,89 3:141,165 4:193,165"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
+<g transform="translate(82 238)" data-move="1:82,238 2:82,221 3:82,49 4:82,221"><text class="d-b" x="0" y="0" text-anchor="middle">W</text></g>
 </svg></div>
 <p class="diagram-scroll-hint small">Scroll sideways to see the full diagram.</p>
 <ol class="caps">
-<li><p>Each ring is an independent right to grant one space. Five belong to west and five to east. Count all ten before sending requests.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-partitioning-2">Next →</label></div></li>
-<li><p>Seven drivers reach west. West can consume five rights without asking east. What happens to drivers six and seven?</p><fieldset class="diagram-prediction" data-hint="A right can be available somewhere without being spendable by this owner." data-reason="West must refuse or acquire a right through a safe transfer. It cannot spend east's right independently.">
-<legend>West has spent its five local rights. Can it grant a sixth space using an unused east right without a transfer?</legend>
-<div class="actions" data-prediction-controls hidden><button type="button" class="button">Yes</button><button type="button" class="button" data-answer>No</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-partitioning-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-partitioning-3">Next →</label></div></li>
-<li><p>One driver reaches east and uses one local right. The four empty rings there can still back four new grants.</p><div class="stepnav"><label for="st-partitioning-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-partitioning-4">Next →</label></div></li>
-<li><p>Two west requests are refused despite four spare rights in east. Moving a right would have to remove it from one owner before the other spends it.</p><div class="stepnav"><label for="st-partitioning-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-partitioning-1">↺ Again</label></div></li>
+<li><p>Sixteen owners can each finish 100 attempts per second. A thousand attempts arrive. First calculate the average: 62.5.</p><div class="stepnav"><span class="spacer"></span><span class="count">Step 1 of 4</span><label class="next" for="st-partitioning-2">Next →</label></div></li>
+<li><p>The average is below every owner's limit. The routing rule keeps equal lot names together. Predict the busiest owner's rate.</p><fieldset class="diagram-prediction" data-hint="Follow equal lot keys before averaging across owners." data-reason="Every west write follows the same partition key to owner 0, so that owner receives 700 attempts per second.">
+<legend>The average is 62.5 per owner. Can every owner stay below 100 when west alone receives 700?</legend>
+<div class="actions" data-prediction-controls hidden><button type="button" class="button">Yes, the average is below 100</button><button type="button" class="button" data-answer>No, west's owner receives all 700</button></div><p class="small" role="status"></p></fieldset><div class="stepnav"><label for="st-partitioning-1">← Back</label><span class="count">Step 2 of 4</span><label class="next" for="st-partitioning-3">Next →</label></div></li>
+<li><p>All 700 west attempts carry the same lot key, so they meet at owner 0. Its queue grows by 600 per second while the other fifteen owners receive twenty each.</p><div class="stepnav"><label for="st-partitioning-2">← Back</label><span class="count">Step 3 of 4</span><label class="next" for="st-partitioning-4">Next →</label></div></li>
+<li><p>The broken alternative routes by request ID and stores one remaining-space copy per owner. Its balanced bars now hide two grants of west's final space.</p><div class="stepnav"><label for="st-partitioning-3">← Back</label><span class="count">Step 4 of 4</span><label for="st-partitioning-1">↺ Again</label></div></li>
 </ol>
 <div class="dots" aria-hidden="true"><label for="st-partitioning-1" title="Step 1"></label><label for="st-partitioning-2" title="Step 2"></label><label for="st-partitioning-3" title="Step 3"></label><label for="st-partitioning-4" title="Step 4"></label></div>
 </figure><p class="gif-link"><a href="gifs/partitioning.gif" download>Save this diagram as a GIF</a></p>
+<p>Stop after step two. Use the routing rule from the problem to predict the busiest owner's rate before revealing it.</p>
       </section>
       <section aria-labelledby="the-building-block">
         <h2 id="the-building-block">The building block</h2>
-<p>Partitioning divides rows into pieces by a rule. A month-based split can make old history easier to remove. All pieces can still live on one machine. When pieces live in independent databases, the service must also find the owner of each key and move ownership while requests continue.</p>
-<p>Splitting by lot keeps one reservation and its count together. A driver's history across lots may need reads from several pieces or a separate read model. If seventy percent of traffic goes to one lot, the hot key still goes to one owner. A different design allocates independent rights to regional pools. Transfers between pools must preserve the total number of rights.</p>
-<h3>Test both balance and ownership</h3>
-<p>A thousand reservation attempts arrive per second. Seven hundred go to west. With sixteen equally fast storage owners, hashing by lot still sends at least 700 attempts per second to one owner. Dividing 1,000 by sixteen gives an average of 62.5 and hides west. Measure the busiest owner's rate when deciding whether the split helped.</p>
-<p>To transfer two unused rights from west to east, subtract two at west and record a durable transfer identity before east can spend them. East credits that identity at most once. If delivery pauses, the two rights may be temporarily unspendable. Retry the same transfer twice and reconcile available, granted and in-transit rights against the original capacity.</p>
+<p>A <b>data partition</b> is one piece of the stored data. A <b>router</b> is code that sends a request to its current storage owner. A <b>partition key</b> is the value the router uses to choose which piece owns a record. In this design, the lot ID is the partition key, so all west reservations and west's remaining-space record meet at owner 0.</p>
+<p>That preserves the last-space invariant: one owner can apply the conditional write from lesson 03 to the complete west count. But it creates a <b>hot key</b>, one key receiving much more work than the others.</p>
+<pre><code class="language-text">owner 0 arrivals = 700 attempts/s
+owner 0 capacity = 100 attempts/s
+owner 0 queue growth = 700 - 100 = 600 attempts/s
+
+overall average = 1,000 ÷ 16 = 62.5 attempts/s</code></pre>
+<p>The average hides the failure. For a proposed key, measure at least the busiest owner's arrival rate, its completion capacity and how the distribution changes during a real peak.</p>
       </section>
-      <details class="depth-puzzle" id="go-deeper-how-do-you-move-a-lot-while-it-is-accepting-reservations">
-        <summary><span class="depth-label">Go deeper</span>How do you move a lot while it is accepting reservations?</summary>
+      <section aria-labelledby="run-the-routing-decision">
+        <h2 id="run-the-routing-decision">Run the routing decision</h2>
+<p>The program routes all requests for one lot to one owner. It then shows a deliberately broken alternative: routing by request ID and storing an independent remaining-space copy at each request owner. The first change separates two requests that compete for the same last space; the second lets both owners believe they can grant it.</p>
+<pre><code class="language-python">from collections import Counter
+
+OWNER_COUNT = 16
+attempts = [&quot;west&quot;] * 700
+for lot in range(1, 16):
+    attempts += [f&quot;lot-{lot}&quot;] * 20
+
+def owner_for_lot(lot_id):
+    if lot_id == &quot;west&quot;:
+        return 0
+    return int(lot_id.split(&quot;-&quot;)[1])
+
+safe_load = Counter(owner_for_lot(lot_id) for lot_id in attempts)
+print(&quot;by_lot&quot;, max(safe_load.values()))
+
+spread_load = Counter(request_id % OWNER_COUNT
+                      for request_id in range(len(attempts)))
+print(&quot;by_request&quot;, max(spread_load.values()))</code></pre>
+<p>The complete file also performs the last-space failure and prints:</p>
+<pre><code class="language-text">by_lot busiest_owner=0 requests=700 overload=600
+by_request busiest_requests=63
+unsafe_last_space_grants=2</code></pre>
+<p>One thousand successive numbers cannot divide equally among sixteen owners: eight receive 63 and eight receive 62. That is why the balanced result's maximum is 63. Real IDs require a measured distribution; the program uses successive numbers only to isolate the ownership failure.</p>
+<p>The failure itself is this small broken model:</p>
+<pre><code class="language-python">free_by_owner = {0: 1, 1: 1}  # two independent copies of west's count
+grants = 0
+for owner in [0, 1]:
+    if free_by_owner[owner] == 1:
+        free_by_owner[owner] = 0
+        grants += 1
+print(grants)  # 2: the last space was granted twice</code></pre>
+<p>[Open the complete runnable program](../../labs/partitioning/hot_key.py)</p>
+<p>The first result is correct but overloaded. Its queue-growth calculation assumes constant rates and equal-cost writes for this owner, just like lesson 08. The second distribution looks balanced, but request IDs do not identify the state that must change together. A balanced graph is not a repair if it breaks the invariant.</p>
+      </section>
+      <section aria-labelledby="the-parking-desk-analogy">
+        <h2 id="the-parking-desk-analogy">The parking-desk analogy</h2>
+<p>Sixteen booking desks do not shorten west's line when every west driver must visit the one desk holding west's count. Sending successive west drivers to different desks shortens that line only if the desks do not hand out copies of the same final ticket. The routing rule and the ownership of the ticket must agree.</p>
+      </section>
+      <details class="depth-puzzle" id="go-deeper-is-a-postgresql-table-partition-another-machine">
+        <summary><span class="depth-label">Go deeper</span>Is a PostgreSQL table partition another machine?</summary>
         <div class="depth-content">
-<p>Moving the west lot from storage A to B takes time. Copying the current rows alone misses later writes. Record a starting position, copy the snapshot, replay subsequent changes, and compare results. At cutover, identify one active write owner and define what happens to requests sent using stale routing information. Otherwise both stores can grant the last space.</p>
-<details class="recall"><summary>Which test is stronger than comparing row counts after the move?</summary><p>Keep reserving during migration. Record every confirmed identity and verify each grant and capacity after cutover.</p></details>
+<p>Not necessarily. PostgreSQL can divide one logical table into stored pieces by range, list or the number left after division. Those pieces may still be ordinary tables in one database. This can make old monthly data cheap to detach and can let a query ignore pieces that cannot contain its answer. The database may process some work in parallel, but the table layout alone does not prove that sixteen independent servers now accept writes.</p>
+<details class="recall"><summary>A monthly table is divided into twelve pieces on one database server. How many independent server capacities has this created?</summary><p>One. The table layout changed; the deployment did not.</p></details>
           <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
         </div>
       </details>
-      <section aria-labelledby="add-a-shard-without-moving-every-key">
-        <h2 id="add-a-shard-without-moving-every-key">Add a shard without moving every key</h2>
-<p>A shard is a storage owner responsible for some keys. The service routes each reservation to the current write owner. At cutover a service instance using an old owner list must refresh it and the former owner must refuse the stale write. Try two routing functions in Python 3. The first reduces a <b>hash</b>, a repeatable number derived from the key, to a list position. The second scores each pair of key and owner and chooses the highest score. This second technique is called rendezvous hashing.</p>
-<pre><code class="language-python">from hashlib import sha256
-
-def score(text):
-    return int.from_bytes(sha256(text.encode()).digest(), &quot;big&quot;)
-
-def modulo(key, owners):
-    return owners[score(key) % len(owners)]
-
-def rendezvous(key, owners):
-    return max(owners, key=lambda owner: score(key + &quot;:&quot; + owner))
-
-old = [&quot;north&quot;, &quot;south&quot;, &quot;west&quot;]
-new = old + [&quot;east&quot;]
-for route in (modulo, rendezvous):
-    moves = [(route(str(k), old), route(str(k), new)) for k in range(1000)]
-    changed = [(before, after) for before, after in moves if before != after]
-    print(route.__name__, len(changed),
-          sum(after != &quot;east&quot; for before, after in changed))</code></pre>
-<p>For these keys the output is 769 keys moved under modulo and 222 under rendezvous. Of those moves, 512 and zero respectively went between existing owners. The last column counts moves between two <em>existing</em> owners. Predict why it must be zero for rendezvous: adding east changes none of the old scores. If east wins, the key moves there. Otherwise the old winner stays ahead. The calculation scans every candidate and assumes agreed, stable owner names. Membership changes still require a protocol for copying state and switching the write owner.</p>
-<p>Now route one thousand requests for the same key. Every request goes to the same winner. Reducing the number of keys you move during expansion solves a different problem from a hot lot receiving most of the traffic.</p>
-      </section>
+      <details class="depth-puzzle" id="go-deeper-can-one-owner-divide-the-last-space-decision-safely">
+        <summary><span class="depth-label">Go deeper</span>Can one owner divide the last-space decision safely?</summary>
+        <div class="depth-content">
+<p>This section is optional; the main partition-key lesson and its checks do not require it.</p>
+<p>One option is to allocate <b>local rights</b>, saved permissions to grant a fixed number of spaces without contacting another owner. With ten spaces in the west lot, owner A may hold five rights and owner B five. Owner A can confirm five grants while disconnected, but must refuse its sixth even if owner B still holds unused rights.</p>
+<p>The safety equation is:</p>
+<pre><code class="language-text">unused A rights + unused B rights + confirmed grants + rights moving = 10</code></pre>
+<p>A transfer of two rights starts at A=5 and B=5. In one database transaction, owner A saves A=3 and a unique transfer request ID marked as moving. Owner B processes that ID in its own transaction: it credits B=7 once and marks the transfer received. Repeating the same ID leaves B at seven, as in lesson 04. If the transfer stops between those transactions, the two moving rights cannot be spent. Copying them would be worse because two owners could spend them. This bounded-quantity pattern is called the escrow approach.</p>
+<details class="recall"><summary>Owner A has spent its five local rights while B still has five unused. Can A independently confirm a sixth grant?</summary><p>No. It must refuse or complete a transfer that removes a right from B before A can spend it.</p></details>
+          <p class="small"><a href="#the-building-block">Back to the main puzzle</a></p>
+        </div>
+      </details>
       <section aria-labelledby="try-it">
         <h2 id="try-it">Try it</h2>
-<p>Give two pools five spaces each. Seven drivers arrive at A and one at B. Without transfers, A grants five and refuses two even though B has spare capacity. Compare that cost with waiting for a shared counter. Propose a test showing that transferring a right does not copy it.</p>
+<p>Run these commands in the project folder:</p>
+<pre><code class="language-bash">python3 labs/partitioning/hot_key.py
+python3 labs/partitioning/hot_key.py --owners 32
+python3 labs/partitioning/hot_key.py --west 100</code></pre>
+<p>Only the owner count changes in the second run: the same 1,000 attempts and fifteen non-west lots remain. The overall average falls from 62.5 to 31.25, but west remains at 700 and its owner's capacity remains 100. Explain why adding owners did not change that key's route.</p>
+<p>For the third run, check the busiest owner and state which assumption changed. Finally, change the two unsafe last-space requests so they use the lot key. The output must fall from two grants to one.</p>
+<p>You have passed when you can name the state that must stay together, calculate the busiest owner's load and demonstrate the extra broken assumption that makes request-based spreading unsafe.</p>
       </section>
       <section aria-labelledby="check-yourself">
         <h2 id="check-yourself">Check yourself</h2>
 <fieldset class="quiz">
-<legend>What can a month-based split help with?</legend>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1"><label for="q-09-partitioning-1-1"><span>Every last-space conflict</span></label>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2" data-ok><label for="q-09-partitioning-1-2"><span>Removing old periods</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> One hot inventory row can still serialize writes. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> One hot inventory row can still serialize writes.</p>
+<legend>A thousand writes average 62.5 per owner, but one key receives 700. Which number tests the owner of that key?</legend>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1" data-ok><label for="q-09-partitioning-1-1"><span>700</span></label>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2"><label for="q-09-partitioning-1-2"><span>62.5</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Every write for the equal key follows the same owner rule.</p>
+<p class="fb no opt-2"><b>Not quite.</b> An average can hide one overloaded owner. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
 </fieldset>
 <fieldset class="quiz">
-<legend>Where do writes for one lot go when the key is the lot?</legend>
-<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-1" data-ok><label for="q-09-partitioning-2-1"><span>To the same piece</span></label>
-<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-2"><label for="q-09-partitioning-2-2"><span>Evenly across sixteen pieces</span></label>
-<p class="fb ok opt-1"><b>Right.</b> Equal keys follow the same routing rule.</p>
-<p class="fb no opt-2"><b>Not quite.</b> Equal keys follow the same routing rule. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<legend>Why not route reservations for one lot by request ID?</legend>
+<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-1"><label for="q-09-partitioning-2-1"><span>It makes every request slower by definition</span></label>
+<input type="radio" name="q-09-partitioning-2" id="q-09-partitioning-2-2" data-ok><label for="q-09-partitioning-2-2"><span>Two owners could independently grant the same last space</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> The failure is broken ownership, not a guaranteed timing change. <a class="show-me" href="#run-the-routing-decision">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> The requests that change one count would no longer meet at its owner.</p>
 </fieldset>
 <fieldset class="quiz">
-<legend>How many rights may the pools own in total?</legend>
-<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-1"><label for="q-09-partitioning-3-1"><span>Ten per region</span></label>
-<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-2" data-ok><label for="q-09-partitioning-3-2"><span>At most ten</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> Copying rights would allow double allocation. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
-<p class="fb ok opt-2"><b>Right.</b> Copying rights would allow double allocation.</p>
+<legend>The owner count doubles to 32, but all 700 west attempts still share one key. What is west's owner's arrival rate?</legend>
+<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-1"><label for="q-09-partitioning-3-1"><span>31.25 per second</span></label>
+<input type="radio" name="q-09-partitioning-3" id="q-09-partitioning-3-2" data-ok><label for="q-09-partitioning-3-2"><span>700 per second</span></label>
+<p class="fb no opt-1"><b>Not quite.</b> That is the new overall average, not the hot owner's rate. <a class="show-me" href="#the-building-block">Re-read that part ↑</a></p>
+<p class="fb ok opt-2"><b>Right.</b> Adding owners does not divide requests that still share one routing key.</p>
 </fieldset>
       </section>
-      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/ddl-partitioning.html">PostgreSQL · Table Partitioning</a> — “splitting what is logically one large table into smaller physical pieces”</li><li><a href="https://www.cs.kent.edu/~javed/DL/web/p1-thaler.pdf">Thaler and Ravishankar · Using name-based mappings to increase hit rates</a></li></ul></details>
-      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>Choose the partition key for the operations that must stay together and test the hottest key.</p></div></section>
+      <details class="puzzle-sources" id="sources"><summary>Sources</summary><ul><li><a href="https://www.postgresql.org/docs/17/ddl-partitioning.html">PostgreSQL 17 · Table partitioning</a> — defines range, list and hash table partitioning, partition pruning and the maintenance trade-offs; it also warns that more partitions are not automatically better.</li><li><a href="https://www.mongodb.com/docs/manual/core/sharding-choose-a-shard-key/">MongoDB · Choose a shard key</a> — evaluates a key by both work distribution and whether common queries can target one owner instead of every owner.</li><li><a href="https://cloud.google.com/spanner/docs/schema-design">Google Cloud Spanner · Schema design best practices</a> — documents hot spots caused when a key pattern directs a high write rate to one server.</li><li>Patrick O'Neil, <em>The Escrow Transactional Method</em>, ACM TODS 11(4), 1986 — develops bounded quantity updates that avoid one shared hot record while preserving the aggregate constraint.</li><li>Martin Kleppmann and Chris Riccomini, <em>Designing Data-Intensive Applications</em>, 2nd ed., O'Reilly, 2026, chapter 7 — inspiration for separating balanced key distribution from skewed workloads and cross-partition operations. The example and code here are original.</li></ul></details>
+      <section aria-labelledby="takeaway"><h2 id="takeaway">What you now know</h2><div class="takeaway"><p>A partition key keeps related writes at one owner. Measure the busiest owner, not the average across all owners.</p></div></section>
       <p class="gate-msg" hidden>Answer every question above correctly to unlock the next puzzle.</p>
-      <p class="puzzle-bridge">Local rights work without a remote vote. What if the design instead needs one shared decision during a split?</p>
+      <p class="puzzle-bridge">One owner preserves the last-space decision. Can divided rights preserve it without a remote vote?</p>
       <nav class="pager" aria-label="Previous and next puzzle">
         <a class="button" href="08-overload.html">← Puzzle 8</a>
         <a class="button primary" href="10-consensus.html">Puzzle 10: Who can confirm a write when regions cannot talk? →</a>
       </nav>
 
-      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20When%20does%20splitting%20the%20data%20help%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
+      <p class="small fix-link">Something wrong or unclear on this page? <a href="mailto:m.pachulski94@gmail.com?subject=Course%3A%20Why%20can%20sixteen%20owners%20still%20leave%20one%20owner%20overloaded%3F&body=Which%20part%2C%20and%20what%20was%20wrong%20or%20unclear%3F%0A%0A">Tell me</a>: a puzzle that didn't click is a bug in the puzzle.</p>
     </article>
   </main>
   <noscript><img class="gc" src="https://pachulski.goatcounter.com/count?p=%2Fcourse%2Fsystem-design%2F09-partitioning" alt="" width="1" height="1"></noscript>

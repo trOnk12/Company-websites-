@@ -165,9 +165,44 @@
       "in": 5,
       "def": "The route a database proposes for finding and processing the rows requested by a query."
     },
-    "hash": {
+    "data partition": {
       "in": 9,
-      "def": "A repeatable value computed from a key and used here to route it to a storage owner."
+      "def": "One piece of stored data created by a rule."
+    },
+    "storage owner": {
+      "in": 9,
+      "def": "An independent database process that accepts writes for an assigned part of the data."
+    },
+    "router": {
+      "in": 9,
+      "def": "Code that sends a request to the current storage owner for its key."
+    },
+    "partition key": {
+      "in": 9,
+      "def": "The value a router uses to choose which data partition owns a record."
+    },
+    "hot key": {
+      "in": 9,
+      "def": "One routing key receiving much more work than other keys."
+    },
+    "local right": {
+      "in": 9,
+      "def": "A durable permission for one owner to grant a bounded unit without asking another owner."
+    },
+    "hot_key": {
+      "in": 9,
+      "def": "The runnable Python file for the hot-key experiment.",
+      "kind": "code"
+    },
+    "--owners": {
+      "in": 9,
+      "def": "Changes the number of storage owners in the experiment.",
+      "kind": "code"
+    },
+    "--west": {
+      "in": 9,
+      "def": "Changes how many attempts concern the west lot.",
+      "kind": "code"
     },
     "round robin": {
       "in": 15,

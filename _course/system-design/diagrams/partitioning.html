@@ -1,32 +1,42 @@
-<!-- label: Ten local rights split between two regions -->
-<svg class="design-figure" viewBox="0 0 420 246" role="img" aria-labelledby="d-title">
-<title id="d-title">Ten local rights split between two regions</title>
-<text class="d-b" x="16" y="29" text-anchor="start">Rights to grant a space</text>
-<text class="d-b" x="18" y="77" text-anchor="start">West</text>
-<text class="d-b" x="18" y="151" text-anchor="start">East</text>
-<circle class="d-box" cx="141" cy="70" r="15"/><circle class="d-box" cx="192" cy="70" r="15"/><circle class="d-box" cx="243" cy="70" r="15"/><circle class="d-box" cx="294" cy="70" r="15"/><circle class="d-box" cx="345" cy="70" r="15"/>
-<circle class="d-box" cx="141" cy="145" r="15"/><circle class="d-box" cx="192" cy="145" r="15"/><circle class="d-box" cx="243" cy="145" r="15"/><circle class="d-box" cx="294" cy="145" r="15"/><circle class="d-box" cx="345" cy="145" r="15"/>
-<g class="step s2">
-  <path class="d-acc" d="M134,69l5,6 9,-12"/>
-  <path class="d-acc" d="M185,69l5,6 9,-12"/>
-  <path class="d-acc" d="M236,69l5,6 9,-12"/>
-  <path class="d-acc" d="M287,69l5,6 9,-12"/>
-  <path class="d-acc" d="M338,69l5,6 9,-12"/>
-  <text class="d-a" x="18" y="109" text-anchor="start">5 granted</text>
+<!-- label: Does the average hide one overloaded owner? -->
+<svg class="design-figure" viewBox="0 0 420 292" role="img" aria-labelledby="partitioning-title">
+<title id="partitioning-title">One hot parking lot overloads one of sixteen owners</title>
+<text class="d-b" x="18" y="26" text-anchor="start">Attempts per second</text>
+<path class="d-line" d="M58,42V238H401"/>
+<path class="d-dash" d="M58,210H400"/>
+<text class="d-r" x="397" y="202" text-anchor="end">capacity 100</text>
+<text class="d-mi" x="52" y="238" text-anchor="end">0</text>
+<text class="d-mi" x="52" y="214" text-anchor="end">100</text>
+<text class="d-mi" x="52" y="49" text-anchor="end">700</text>
+
+<g class="step s1">
+  <text class="d-b" x="100" y="265" text-anchor="middle">owner 0</text>
+  <text class="d-b" x="205" y="265" text-anchor="middle">owner 1</text>
+  <text class="d-b" x="315" y="265" text-anchor="middle">owners 2–15</text>
 </g>
-<g class="step s3">
-  <path class="d-acc" d="M134,144l5,6 9,-12"/>
-  <text class="d-a" x="18" y="184" text-anchor="start">1 granted</text>
+<g class="step s2 hide-3">
+  <path class="d-acc" d="M100,238V221M205,238V221M315,238V221"/>
+  <text class="d-a" x="205" y="193" text-anchor="middle">average 62.5</text>
+</g>
+<g class="step s3 hide-4">
+  <path class="d-red" d="M100,238V49"/>
+  <path class="d-acc" d="M205,238V232M315,238V232"/>
+  <text class="d-r" x="112" y="58" text-anchor="start">west 700</text>
+  <text class="d-a" x="260" y="224" text-anchor="middle">other lots 20 each</text>
 </g>
 <g class="step s4">
-  <text class="d-r" x="18" y="227" text-anchor="start">West: 2 refused</text>
-  <text class="d-a" x="215" y="227" text-anchor="start">East: 4 unused</text>
+  <path class="d-acc" d="M100,238V221M205,238V221M315,238V221"/>
+  <text class="d-a" x="205" y="193" text-anchor="middle">by request: at most 63</text>
+  <circle class="d-box" cx="178" cy="154" r="16"/><text class="d-b" x="178" y="159" text-anchor="middle">1</text>
+  <circle class="d-box" cx="232" cy="154" r="16"/><text class="d-b" x="232" y="159" text-anchor="middle">1</text>
+  <path class="d-red" d="M190,142L220,166M220,142L190,166"/>
+  <text class="d-r" x="205" y="125" text-anchor="middle">two copies of last space</text>
 </g>
-<g transform="translate(141 89)" data-move="1:141,89 2:345,89 3:141,165 4:193,165"><circle class="d-dot" cx="0" cy="0" r="4"/></g>
+<g transform="translate(82 238)" data-move="1:82,238 2:82,221 3:82,49 4:82,221"><text class="d-b" x="0" y="0" text-anchor="middle">W</text></g>
 </svg>
 <ol class="caps">
-<li><p>Each ring is an independent right to grant one space. Five belong to west and five to east. Count all ten before sending requests.</p></li>
-<li><p>Seven drivers reach west. West can consume five rights without asking east. What happens to drivers six and seven?</p></li>
-<li><p>One driver reaches east and uses one local right. The four empty rings there can still back four new grants.</p></li>
-<li><p>Two west requests are refused despite four spare rights in east. Moving a right would have to remove it from one owner before the other spends it.</p></li>
+<li><p>Sixteen owners can each finish 100 attempts per second. A thousand attempts arrive. First calculate the average: 62.5.</p></li>
+<li><p>The average is below every owner's limit. The routing rule keeps equal lot names together. Predict the busiest owner's rate.</p></li>
+<li><p>All 700 west attempts carry the same lot key, so they meet at owner 0. Its queue grows by 600 per second while the other fifteen owners receive twenty each.</p></li>
+<li><p>The broken alternative routes by request ID and stores one remaining-space copy per owner. Its balanced bars now hide two grants of west's final space.</p></li>
 </ol>

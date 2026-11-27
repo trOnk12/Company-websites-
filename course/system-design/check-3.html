@@ -68,13 +68,13 @@
 <p class="fb no opt-1"><b>Not quite.</b> Retries consume the spare capacity. <a class="show-me" href="08-overload.html">Learn it in puzzle 8 →</a></p>
 <p class="fb ok opt-2"><b>Right.</b> Total arrivals equal completion capacity.</p>
 </fieldset></section>
-<section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: When does splitting the data help?</p>
+<section aria-label="Puzzle 9"><p class="eyebrow">Puzzle 9: Why can sixteen owners still leave one owner overloaded?</p>
 <fieldset class="quiz" data-n="9">
-<legend>What can a month-based split help with?</legend>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1"><label for="q-09-partitioning-1-1"><span>Every last-space conflict</span></label>
-<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2" data-ok><label for="q-09-partitioning-1-2"><span>Removing old periods</span></label>
-<p class="fb no opt-1"><b>Not quite.</b> One hot inventory row can still serialize writes. <a class="show-me" href="09-partitioning.html">Learn it in puzzle 9 →</a></p>
-<p class="fb ok opt-2"><b>Right.</b> One hot inventory row can still serialize writes.</p>
+<legend>A thousand writes average 62.5 per owner, but one key receives 700. Which number tests the owner of that key?</legend>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-1" data-ok><label for="q-09-partitioning-1-1"><span>700</span></label>
+<input type="radio" name="q-09-partitioning-1" id="q-09-partitioning-1-2"><label for="q-09-partitioning-1-2"><span>62.5</span></label>
+<p class="fb ok opt-1"><b>Right.</b> Every write for the equal key follows the same owner rule.</p>
+<p class="fb no opt-2"><b>Not quite.</b> An average can hide one overloaded owner. <a class="show-me" href="09-partitioning.html">Learn it in puzzle 9 →</a></p>
 </fieldset></section>
 <section aria-label="Puzzle 10"><p class="eyebrow">Puzzle 10: Who can confirm a write when regions cannot talk?</p>
 <fieldset class="quiz" data-n="10">

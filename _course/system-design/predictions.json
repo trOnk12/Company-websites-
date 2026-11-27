@@ -119,15 +119,15 @@
   },
   "09-partitioning": {
     "step": 2,
-    "question": "West has spent its five local rights. Can it grant a sixth space using an unused east right without a transfer?",
+    "question": "The average is 62.5 per owner. Can every owner stay below 100 when west alone receives 700?",
     "options": [
-      "Yes",
-      "No"
+      "Yes, the average is below 100",
+      "No, west's owner receives all 700"
     ],
     "answer": 1,
-    "hint": "A right can be available somewhere without being spendable by this owner.",
-    "why": "West must refuse or acquire a right through a safe transfer. It cannot spend east's right independently.",
-    "bridge": "Local rights work without a remote vote. What if the design instead needs one shared decision during a split?"
+    "hint": "Follow equal lot keys before averaging across owners.",
+    "why": "Every west write follows the same partition key to owner 0, so that owner receives 700 attempts per second.",
+    "bridge": "One owner preserves the last-space decision. Can divided rights preserve it without a remote vote?"
   },
   "10-consensus": {
     "step": 2,
